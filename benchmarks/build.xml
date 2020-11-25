@@ -3,7 +3,11 @@
 <project basedir="." default="run" name="benchmarks">
 	<import file="../build-common.xml" />
 
+	<property name="build.dir" value="build" />
+
 	<target name="build-sample-sql">
+		<property name="sample.sql.output.dir" value="${basedir}/${build.dir}" />
+
 		<gradle-execute dir="../modules/util/portal-tools-sample-sql-builder" task="jar" />
 
 		<echoproperties destfile="benchmarks-actual.properties" prefix="sample.sql." />
@@ -29,7 +33,7 @@
 		<delete includeemptydirs="true">
 			<fileset
 				dir="."
-				includes="*.csv,*.sql,benchmarks-actual.properties,output/**,temp/**"
+				includes="*.sql,benchmarks-actual.properties, liferay/**, ${build.dir}/**"
 			/>
 		</delete>
 	</target>

@@ -20,12 +20,16 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.increment.BufferedIncrementThreadLocal;
 import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -56,11 +60,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -244,6 +251,37 @@ public class CompanySampleDataGenerationTest {
 		}
 	}
 
+	private void _exportClassNameTableData(
+			BufferedWriter classNameTableBufferedWriter)
+		throws Exception {
+
+		List<ClassName> classNames = _classNameLocalService.getClassNames(
+			-1, -1);
+
+		for (ClassName className : classNames) {
+			classNameTableBufferedWriter.append(
+				CSVUtil.encode(className.getClassNameId()));
+			classNameTableBufferedWriter.append(StringPool.COMMA);
+			classNameTableBufferedWriter.append(
+				CSVUtil.encode(className.getValue()));
+			classNameTableBufferedWriter.newLine();
+		}
+	}
+
+	private void _exportCompanyTableData(
+			Company company, BufferedWriter companyTableBufferedWriter)
+		throws Exception {
+
+		companyTableBufferedWriter.append(
+			CSVUtil.encode(company.getCompanyId()));
+		companyTableBufferedWriter.append(StringPool.COMMA);
+		companyTableBufferedWriter.append(
+			CSVUtil.encode(company.getAccountId()));
+		companyTableBufferedWriter.append(StringPool.COMMA);
+		companyTableBufferedWriter.append(CSVUtil.encode(company.getWebId()));
+		companyTableBufferedWriter.newLine();
+	}
+
 	private void _exportCSVs() throws Exception {
 		String outputDir = PropsUtil.get("sample.data.output.dir");
 
@@ -266,8 +304,17 @@ public class CompanySampleDataGenerationTest {
 				outputDirFile.getAbsolutePath());
 			BufferedWriter companyBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("company.csv"));
+			BufferedWriter classNameTableBufferedWriter =
+				Files.newBufferedWriter(
+					outputDirPath.resolve("classNameTable.csv"));
+			BufferedWriter companyTableBufferedWriter = Files.newBufferedWriter(
+				outputDirPath.resolve("companyTable.csv"));
+			BufferedWriter groupTableBufferedWriter = Files.newBufferedWriter(
+				outputDirPath.resolve("groupTable.csv"));
 			BufferedWriter hostBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("host.csv"));
+			BufferedWriter roleTableBufferedWriter = Files.newBufferedWriter(
+				outputDirPath.resolve("roleTable.csv"));
 			BufferedWriter userBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("user.csv"))) {
 
@@ -293,11 +340,83 @@ public class CompanySampleDataGenerationTest {
 					userBufferedWriter.append(CSVUtil.encode(screenName));
 					userBufferedWriter.newLine();
 				}
+
+				Company company = _companyLocalService.getCompanyByWebId(key);
+
+				_exportCompanyTableData(company, companyTableBufferedWriter);
+
+				_exportGroupTableData(
+					company.getCompanyId(), groupTableBufferedWriter);
+
+				_exportRoleTableData(
+					company.getCompanyId(), roleTableBufferedWriter);
 			}
 
+			_exportClassNameTableData(classNameTableBufferedWriter);
+
+			classNameTableBufferedWriter.flush();
+			companyTableBufferedWriter.flush();
 			companyBufferedWriter.flush();
 			hostBufferedWriter.flush();
+			roleTableBufferedWriter.flush();
 			userBufferedWriter.flush();
+		}
+	}
+
+	private void _exportGroupTableData(
+			long companyId, BufferedWriter groupTableBufferedWriter)
+		throws Exception {
+
+		Set<String> expectedGroupKeyNames = new HashSet<>(
+			Arrays.asList("Guest", String.valueOf(companyId)));
+
+		List<Group> groups = _groupLocalService.getCompanyGroups(
+			companyId, -1, -1);
+
+		for (Group group : groups) {
+			String groupKey = group.getGroupKey();
+
+			if (expectedGroupKeyNames.contains(groupKey)) {
+				groupTableBufferedWriter.append(CSVUtil.encode(companyId));
+				groupTableBufferedWriter.append(StringPool.COMMA);
+				groupTableBufferedWriter.append(
+					CSVUtil.encode(group.getGroupId()));
+				groupTableBufferedWriter.append(StringPool.COMMA);
+
+				if (groupKey.equals(String.valueOf(companyId))) {
+					groupTableBufferedWriter.append("Global");
+				}
+				else {
+					groupTableBufferedWriter.append(groupKey);
+				}
+
+				groupTableBufferedWriter.newLine();
+			}
+		}
+	}
+
+	private void _exportRoleTableData(
+			long companyId, BufferedWriter roleTableBufferedWriter)
+		throws Exception {
+
+		Set<String> unexpectedRoleNames = new HashSet<>(
+			Arrays.asList(
+				"Analytics Administrator", "Publications User",
+				"Asset Library Connected Site Member", "Asset Library Member"));
+
+		List<Role> roles = _roleLocalService.getRoles(
+			companyId, new int[] {1, 2, 3, 5});
+
+		for (Role role : roles) {
+			if (!unexpectedRoleNames.contains(role.getName())) {
+				roleTableBufferedWriter.append(CSVUtil.encode(companyId));
+				roleTableBufferedWriter.append(StringPool.COMMA);
+				roleTableBufferedWriter.append(
+					CSVUtil.encode(role.getRoleId()));
+				roleTableBufferedWriter.append(StringPool.COMMA);
+				roleTableBufferedWriter.append(role.getName());
+				roleTableBufferedWriter.newLine();
+			}
 		}
 	}
 
@@ -326,10 +445,17 @@ public class CompanySampleDataGenerationTest {
 		PropsUtil.get("sample.data.user.per.company.count"), 2);
 
 	@Inject
+	private ClassNameLocalService _classNameLocalService;
+
+	@Inject
 	private CompanyLocalService _companyLocalService;
 
 	private final Map<String, List<String>> _csvMap = new ConcurrentHashMap<>();
 	private ExecutorService _executorService;
+
+	@Inject
+	private GroupLocalService _groupLocalService;
+
 	private AtomicReference<InetSocketAddress> _originalAtomicReference;
 
 	@Inject

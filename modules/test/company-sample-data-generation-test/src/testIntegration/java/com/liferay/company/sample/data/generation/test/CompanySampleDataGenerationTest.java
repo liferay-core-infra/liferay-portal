@@ -307,6 +307,9 @@ public class CompanySampleDataGenerationTest {
 					outputDirPath.resolve("classNameTable.csv"));
 			BufferedWriter companyTableBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("companyTable.csv"));
+			BufferedWriter defaultUserIdBufferedWriter =
+				Files.newBufferedWriter(
+					outputDirPath.resolve("defaultUserId.csv"));
 			BufferedWriter groupTableBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("groupTable.csv"));
 			BufferedWriter hostBufferedWriter = Files.newBufferedWriter(
@@ -345,16 +348,31 @@ public class CompanySampleDataGenerationTest {
 
 				_exportRoleTableData(
 					company.getCompanyId(), roleTableBufferedWriter);
+
+				_exportDefaultUserId(
+					company.getCompanyId(), defaultUserIdBufferedWriter);
 			}
 
 			_exportClassNameTableData(classNameTableBufferedWriter);
 
 			classNameTableBufferedWriter.flush();
 			companyTableBufferedWriter.flush();
+			defaultUserIdBufferedWriter.flush();
 			hostBufferedWriter.flush();
 			roleTableBufferedWriter.flush();
 			userBufferedWriter.flush();
 		}
+	}
+
+	private void _exportDefaultUserId(
+			long companyId, BufferedWriter defaultUserIdBufferedWriter)
+		throws Exception {
+
+		defaultUserIdBufferedWriter.append(CSVUtil.encode(companyId));
+		defaultUserIdBufferedWriter.append(StringPool.COMMA);
+		defaultUserIdBufferedWriter.append(
+			CSVUtil.encode(_userLocalService.getDefaultUserId(companyId)));
+		defaultUserIdBufferedWriter.newLine();
 	}
 
 	private void _exportGroupTableData(

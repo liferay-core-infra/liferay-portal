@@ -314,6 +314,8 @@ public class CompanySampleDataGenerationTest {
 
 		outputDirFile.mkdir();
 
+		long oldCompanyId = CompanyThreadLocal.getCompanyId();
+
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				outputDirFile.getAbsolutePath());
 			BufferedWriter classNameTableBufferedWriter =
@@ -357,6 +359,8 @@ public class CompanySampleDataGenerationTest {
 
 				Company company = _companyLocalService.getCompanyByWebId(key);
 
+				CompanyThreadLocal.setCompanyId(company.getCompanyId());
+
 				_exportCompanyTableData(company, companyTableBufferedWriter);
 
 				_exportGroupTableData(
@@ -379,6 +383,9 @@ public class CompanySampleDataGenerationTest {
 			hostBufferedWriter.flush();
 			roleTableBufferedWriter.flush();
 			userBufferedWriter.flush();
+		}
+		finally {
+			CompanyThreadLocal.setCompanyId(oldCompanyId);
 		}
 	}
 

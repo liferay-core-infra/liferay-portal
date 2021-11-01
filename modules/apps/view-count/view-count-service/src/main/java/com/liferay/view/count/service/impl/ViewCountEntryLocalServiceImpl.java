@@ -14,6 +14,13 @@
 
 package com.liferay.view.count.service.impl;
 
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
+import com.liferay.petra.sql.dsl.Table;
+import com.liferay.petra.sql.dsl.expression.Expression;
+import com.liferay.petra.sql.dsl.query.JoinStep;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
+import com.liferay.petra.sql.dsl.spi.expression.Scalar;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.change.tracking.CTAware;
@@ -31,6 +38,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.view.count.ViewCountManager;
 import com.liferay.view.count.configuration.ViewCountConfiguration;
 import com.liferay.view.count.model.ViewCountEntry;
+import com.liferay.view.count.model.ViewCountEntryTable;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
 import com.liferay.view.count.service.base.ViewCountEntryLocalServiceBaseImpl;
 import com.liferay.view.count.service.persistence.ViewCountEntryPK;
@@ -80,6 +88,15 @@ public class ViewCountEntryLocalServiceImpl
 	}
 
 	@Override
+	public OrderByExpression getOrderByExpression(boolean ascending) {
+		if (ascending) {
+			return ViewCountEntryTable.INSTANCE.viewCount.ascending();
+		}
+
+		return ViewCountEntryTable.INSTANCE.viewCount.descending();
+	}
+
+	@Override
 	public long getViewCount(long companyId, long classNameId, long classPK) {
 		ViewCountEntry viewCountEntry = null;
 
@@ -93,6 +110,19 @@ public class ViewCountEntryLocalServiceImpl
 		}
 
 		return viewCountEntry.getViewCount();
+	}
+
+	@Override
+	public Expression<String> getViewCountExpression() {
+		return DSLFunctionFactoryUtil.caseWhenThen(
+			ViewCountEntryTable.INSTANCE.viewCount.isNull(),
+			DSLFunctionFactoryUtil.castText(new Scalar<>(0))
+		).elseEnd(
+			DSLFunctionFactoryUtil.castText(
+				new Scalar<>(ViewCountEntryTable.INSTANCE.viewCount.toString()))
+		).as(
+			"viewCount"
+		);
 	}
 
 	@BufferedIncrement(incrementClass = NumberIncrement.class)
@@ -130,6 +160,22 @@ public class ViewCountEntryLocalServiceImpl
 		}
 
 		return isViewCountEnabled();
+	}
+
+	@Override
+	public <T extends Table<T>> JoinStep leftJoinOnViewCountEntryTable(
+		JoinStep joinStep, Column<T, Long> classPKColumn, Class<?> clazz,
+		Column<T, Long> companyIdColumn) {
+
+		return joinStep.leftJoinOn(
+			ViewCountEntryTable.INSTANCE,
+			ViewCountEntryTable.INSTANCE.classNameId.eq(
+				_classNameLocalService.getClassNameId(clazz)
+			).and(
+				ViewCountEntryTable.INSTANCE.classPK.eq(classPKColumn)
+			).and(
+				ViewCountEntryTable.INSTANCE.companyId.eq(companyIdColumn)
+			));
 	}
 
 	@Activate

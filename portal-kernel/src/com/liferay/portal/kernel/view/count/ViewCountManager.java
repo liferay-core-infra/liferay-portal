@@ -14,6 +14,11 @@
 
 package com.liferay.portal.kernel.view.count;
 
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.Table;
+import com.liferay.petra.sql.dsl.expression.Expression;
+import com.liferay.petra.sql.dsl.query.JoinStep;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -27,7 +32,11 @@ public interface ViewCountManager {
 	public void deleteViewCount(long companyId, long classNameId, long classPK)
 		throws PortalException;
 
+	public OrderByExpression getOrderByExpression(boolean ascending);
+
 	public long getViewCount(long companyId, long classNameId, long classPK);
+
+	public Expression<String> getViewCountExpression();
 
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment);
@@ -35,5 +44,9 @@ public interface ViewCountManager {
 	public boolean isViewCountEnabled();
 
 	public boolean isViewCountEnabled(long classNameId);
+
+	public <T extends Table<T>> JoinStep leftJoinOnViewCountEntryTable(
+		JoinStep joinStep, Column<T, Long> classPKColumn, Class<?> clazz,
+		Column<T, Long> companyIdColumn);
 
 }

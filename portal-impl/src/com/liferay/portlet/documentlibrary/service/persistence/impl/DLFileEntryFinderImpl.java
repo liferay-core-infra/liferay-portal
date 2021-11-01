@@ -25,6 +25,7 @@ import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.petra.sql.dsl.query.FromStep;
 import com.liferay.petra.sql.dsl.query.JoinStep;
+import com.liferay.petra.sql.dsl.spi.expression.TableStar;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
@@ -41,6 +42,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.view.count.ViewCountManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl;
@@ -623,19 +625,38 @@ public class DLFileEntryFinderImpl
 		List<Long> folderIds, String[] mimeTypes,
 		QueryDefinition<DLFileEntry> queryDefinition, boolean inlineSQLHelper) {
 
-		JoinStep joinStep = _getJoinStep(
-			DSLQueryFactoryUtil.select(DLFileEntryTable.INSTANCE), folderIds,
-			groupId, inlineSQLHelper, mimeTypes, queryDefinition, repositoryIds,
-			userId);
-
-		DSLQuery dslQuery = null;
+		FromStep fromStep = DSLQueryFactoryUtil.select(
+			DLFileEntryTable.INSTANCE);
 
 		OrderByComparator<DLFileEntry> orderByComparator =
 			queryDefinition.getOrderByComparator();
 
+		if (_isOrderByReadCount(orderByComparator)) {
+			fromStep = DSLQueryFactoryUtil.select(
+				new TableStar(DLFileEntryTable.INSTANCE),
+				ViewCountManagerUtil.getViewCountExpression());
+		}
+
+		JoinStep joinStep = _getJoinStep(
+			fromStep, folderIds, groupId, inlineSQLHelper, mimeTypes,
+			queryDefinition, repositoryIds, userId);
+
+		if (_isOrderByReadCount(orderByComparator)) {
+			joinStep = ViewCountManagerUtil.leftJoinOnViewCountEntryTable(
+				joinStep, DLFileEntryTable.INSTANCE.fileEntryId,
+				DLFileEntry.class, DLFileEntryTable.INSTANCE.companyId);
+		}
+
+		DSLQuery dslQuery = null;
+
 		if (orderByComparator == null) {
 			dslQuery = joinStep.orderBy(
 				DLFileEntryTable.INSTANCE.fileEntryId.ascending());
+		}
+		else if (_isOrderByReadCount(orderByComparator)) {
+			dslQuery = joinStep.orderBy(
+				ViewCountManagerUtil.getOrderByExpression(
+					orderByComparator.isAscending()));
 		}
 		else {
 			dslQuery = joinStep.orderBy(
@@ -940,5 +961,27 @@ public class DLFileEntryFinderImpl
 			)
 		);
 	}
+
+	private boolean _isOrderByReadCount(
+		OrderByComparator<DLFileEntry> orderByComparator) {
+
+		if ((orderByComparator != null) &&
+			(StringUtil.containsIgnoreCase(
+				orderByComparator.getOrderBy(), _READ_COUNT_FIELD,
+				StringPool.COMMA) ||
+			 StringUtil.containsIgnoreCase(
+				 orderByComparator.getOrderBy(), _READ_COUNT_FIELD + " ASC",
+				 StringPool.COMMA) ||
+			 StringUtil.containsIgnoreCase(
+				 orderByComparator.getOrderBy(), _READ_COUNT_FIELD + " DESC",
+				 StringPool.COMMA))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static final String _READ_COUNT_FIELD = "readCount";
 
 }

@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.view.count.ViewCountManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl;
@@ -637,6 +638,12 @@ public class DLFileEntryFinderImpl
 			dslQuery = joinStep.orderBy(
 				DLFileEntryTable.INSTANCE.fileEntryId.ascending());
 		}
+		else if (_isOrderByReadCount(orderByComparator)) {
+			dslQuery = ViewCountManagerUtil.insertOrderByReadCountComparator(
+				joinStep, orderByComparator.isAscending(),
+				DLFileEntryTable.INSTANCE.fileEntryId, DLFileEntry.class,
+				DLFileEntryTable.INSTANCE.companyId);
+		}
 		else {
 			dslQuery = joinStep.orderBy(
 				DLFileEntryTable.INSTANCE, orderByComparator);
@@ -940,5 +947,27 @@ public class DLFileEntryFinderImpl
 			)
 		);
 	}
+
+	private boolean _isOrderByReadCount(
+		OrderByComparator<DLFileEntry> orderByComparator) {
+
+		if ((orderByComparator != null) &&
+			(StringUtil.containsIgnoreCase(
+				orderByComparator.getOrderBy(), _READ_COUNT_FIELD,
+				StringPool.COMMA) ||
+			 StringUtil.containsIgnoreCase(
+				 orderByComparator.getOrderBy(), _READ_COUNT_FIELD + " ASC",
+				 StringPool.COMMA) ||
+			 StringUtil.containsIgnoreCase(
+				 orderByComparator.getOrderBy(), _READ_COUNT_FIELD + " DESC",
+				 StringPool.COMMA))) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private static final String _READ_COUNT_FIELD = "readCount";
 
 }

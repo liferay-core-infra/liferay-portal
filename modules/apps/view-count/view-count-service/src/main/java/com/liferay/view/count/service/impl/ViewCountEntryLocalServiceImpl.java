@@ -14,6 +14,22 @@
 
 package com.liferay.view.count.service.impl;
 
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
+import com.liferay.petra.sql.dsl.Table;
+import com.liferay.petra.sql.dsl.ast.ASTNode;
+import com.liferay.petra.sql.dsl.expression.Expression;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.petra.sql.dsl.query.JoinStep;
+import com.liferay.petra.sql.dsl.query.OrderByStep;
+import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
+import com.liferay.petra.sql.dsl.spi.ast.BaseASTNode;
+import com.liferay.petra.sql.dsl.spi.expression.Scalar;
+import com.liferay.petra.sql.dsl.spi.query.From;
+import com.liferay.petra.sql.dsl.spi.query.Join;
+import com.liferay.petra.sql.dsl.spi.query.JoinType;
+import com.liferay.petra.sql.dsl.spi.query.OrderBy;
+import com.liferay.petra.sql.dsl.spi.query.Select;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.change.tracking.CTAware;
@@ -31,11 +47,16 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.view.count.ViewCountManager;
 import com.liferay.view.count.configuration.ViewCountConfiguration;
 import com.liferay.view.count.model.ViewCountEntry;
+import com.liferay.view.count.model.ViewCountEntryTable;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
 import com.liferay.view.count.service.base.ViewCountEntryLocalServiceBaseImpl;
 import com.liferay.view.count.service.persistence.ViewCountEntryPK;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -114,6 +135,96 @@ public class ViewCountEntryLocalServiceImpl
 			viewCountEntryFinder.incrementViewCount(
 				companyId, classNameId, classPK, increment);
 		}
+	}
+
+	@Override
+	public <T extends Table<T>> DSLQuery insertOrderByReadCountComparator(
+		DSLQuery dslQuery, boolean ascending, Column<T, Long> classPKColumn,
+		Class<?> clazz, Column<T, Long> companyIdColumn) {
+
+		JoinStep joinStep = null;
+		Select select = null;
+
+		Deque<BaseASTNode> baseASTNodes = new LinkedList<>();
+
+		ASTNode astNode = dslQuery;
+
+		while (astNode instanceof BaseASTNode) {
+			BaseASTNode baseASTNode = (BaseASTNode)astNode;
+
+			if (baseASTNode instanceof From || baseASTNode instanceof Join) {
+				if (joinStep == null) {
+					joinStep = (JoinStep)baseASTNode;
+
+					baseASTNodes.push(
+						new Join(
+							joinStep, JoinType.LEFT,
+							ViewCountEntryTable.INSTANCE,
+							ViewCountEntryTable.INSTANCE.classNameId.eq(
+								_classNameLocalService.getClassNameId(clazz)
+							).and(
+								ViewCountEntryTable.INSTANCE.classPK.eq(
+									classPKColumn)
+							).and(
+								ViewCountEntryTable.INSTANCE.companyId.eq(
+									companyIdColumn)
+							)));
+				}
+			}
+			else if (baseASTNode instanceof Select) {
+				select = (Select)baseASTNode;
+
+				break;
+			}
+
+			if (!(baseASTNode instanceof OrderBy)) {
+				baseASTNodes.push(baseASTNode);
+			}
+
+			astNode = baseASTNode.getChild();
+		}
+
+		if (joinStep == null) {
+			throw new IllegalArgumentException(
+				"No From or Join found for " + dslQuery);
+		}
+		else if (select == null) {
+			throw new IllegalArgumentException(
+				"No Select found for " + dslQuery);
+		}
+
+		Collection<Expression<?>> expressions = new ArrayList<>(
+			select.getExpressions());
+
+		expressions.add(
+			DSLFunctionFactoryUtil.caseWhenThen(
+				ViewCountEntryTable.INSTANCE.viewCount.isNull(),
+				DSLFunctionFactoryUtil.castText(new Scalar<>(0))
+			).elseEnd(
+				DSLFunctionFactoryUtil.castText(
+					new Scalar<>(
+						ViewCountEntryTable.INSTANCE.viewCount.toString()))
+			).as(
+				"viewCount"
+			));
+
+		ASTNode childASTNode = new Select(false, expressions);
+
+		for (BaseASTNode baseASTNode : baseASTNodes) {
+			childASTNode = baseASTNode.withNewChild(childASTNode);
+		}
+
+		OrderByExpression orderByExpression =
+			ViewCountEntryTable.INSTANCE.viewCount.descending();
+
+		if (ascending) {
+			orderByExpression =
+				ViewCountEntryTable.INSTANCE.viewCount.ascending();
+		}
+
+		return new OrderBy(
+			(OrderByStep)childASTNode,
+			new OrderByExpression[] {orderByExpression});
 	}
 
 	@Override

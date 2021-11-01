@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.view.count;
 
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.Table;
+import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -31,6 +34,10 @@ public interface ViewCountManager {
 
 	public void incrementViewCount(
 		long companyId, long classNameId, long classPK, int increment);
+
+	public <T extends Table<T>> DSLQuery insertOrderByReadCountComparator(
+		DSLQuery dslQuery, boolean ascending, Column<T, Long> classPKColumn,
+		Class<?> clazz, Column<T, Long> companyIdColumn);
 
 	public boolean isViewCountEnabled();
 

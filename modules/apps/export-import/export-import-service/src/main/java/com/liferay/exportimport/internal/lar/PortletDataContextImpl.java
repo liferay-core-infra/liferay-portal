@@ -1241,7 +1241,8 @@ public class PortletDataContextImpl implements PortletDataContext {
 			return null;
 		}
 
-		return getZipReader().getEntryAsString(path);
+		return _zipEntriesCache.computeIfAbsent(
+			path, key -> getZipReader().getEntryAsString(path));
 	}
 
 	@Override
@@ -2810,6 +2811,7 @@ public class PortletDataContextImpl implements PortletDataContext {
 	private String _type;
 	private transient UserIdStrategy _userIdStrategy;
 	private long _userPersonalSiteGroupId;
+	private final Map<String, String> _zipEntriesCache = new HashMap<>();
 	private transient ZipReader _zipReader;
 	private transient ZipWriter _zipWriter;
 

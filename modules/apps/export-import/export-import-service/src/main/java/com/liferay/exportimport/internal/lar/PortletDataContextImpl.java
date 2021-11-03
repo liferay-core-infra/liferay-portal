@@ -1912,16 +1912,19 @@ public class PortletDataContextImpl implements PortletDataContext {
 
 		// Permissions
 
-		String xml = getZipEntryAsString(
-			ExportImportPathUtil.getSourceRootPath(this) +
-				"/portlet-data-permissions.xml");
+		if (MapUtil.getBoolean(
+				_parameterMap, PortletDataHandlerKeys.PERMISSIONS)) {
 
-		if (!MapUtil.getBoolean(
-				_parameterMap, PortletDataHandlerKeys.PERMISSIONS) ||
-			Validator.isNull(xml)) {
+			String xml = getZipEntryAsString(
+				ExportImportPathUtil.getSourceRootPath(this) +
+					"/portlet-data-permissions.xml");
 
-			serviceContext.setAddGroupPermissions(true);
-			serviceContext.setAddGuestPermissions(true);
+			if (Validator.isNull(xml)) {
+				_setAddGroupAndGuestPermissions(serviceContext);
+			}
+		}
+		else {
+			_setAddGroupAndGuestPermissions(serviceContext);
 		}
 
 		// Asset
@@ -2747,6 +2750,13 @@ public class PortletDataContextImpl implements PortletDataContext {
 		}
 
 		return null;
+	}
+
+	private void _setAddGroupAndGuestPermissions(
+		ServiceContext serviceContext) {
+
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setAddGuestPermissions(true);
 	}
 
 	private static final Class<?>[] _XSTREAM_DEFAULT_ALLOWED_TYPES = {

@@ -33,6 +33,7 @@ if (!System.getenv("JENKINS_HOME") || !systemPackagesExtraManifestFile.exists())
 
 		property "-check", "IMPORTS"
 		property "-fixupmessages.liferay.services", "This bundle contains Liferay services"
+		property "-fixupmessages", 'Classes found in the wrong directory: ...;is:=ignore'
 		property "-include", "system.packages.extra.bnd"
 
 		property "Bundle-SymbolicName", {

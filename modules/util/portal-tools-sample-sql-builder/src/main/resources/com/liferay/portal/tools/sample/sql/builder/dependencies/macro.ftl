@@ -1,5 +1,7 @@
 <#setting number_format = "computer">
 
+<#assign contentPageDataFactory = dataFactory.getDataFactoryInstance("contentPageDataFactory") />
+
 <#macro insertAssetEntry
 	_entry
 	_categoryAndTag = false
@@ -71,7 +73,7 @@
 
 		${dataFactory.toInsertSQL(layoutPageTemplateStructureModel)}
 
-		<#local layoutPageTemplateStructureRelModel = dataFactory.newLayoutPageTemplateStructureRelModel(layoutModel, layoutPageTemplateStructureModel, _fragmentEntryLinkModels, _templateFileName)>
+		<#local layoutPageTemplateStructureRelModel = contentPageDataFactory.newLayoutPageTemplateStructureRelModel(layoutModel, layoutPageTemplateStructureModel, _fragmentEntryLinkModels, _templateFileName)>
 
 		${dataFactory.toInsertSQL(layoutPageTemplateStructureRelModel)}
 	</#list>

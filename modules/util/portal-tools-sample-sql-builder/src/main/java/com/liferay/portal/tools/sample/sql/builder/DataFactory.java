@@ -412,19 +412,21 @@ public class DataFactory extends BaseDataFactory {
 			getClassNameId(JournalArticle.class), getClassNameId(WikiPage.class)
 		};
 
-		_dlDDMStructureContent = readFile("ddm_structure_basic_document.json");
-		_dlDDMStructureLayoutContent = readFile(
-			"ddm_structure_layout_basic_document.json");
-		_journalDDMStructureContent = readFile(
-			"ddm_structure_basic_web_content.json");
-		_journalDDMStructureLayoutContent = readFile(
-			"ddm_structure_layout_basic_web_content.json");
-		_layoutPageTemplateStructureRelData = readFile(
-			"layout_page_template_structure_rel_data.json");
+		_dlDDMStructureContent = ResourceUtil.readFile(
+			"ddm_structure_basic_document.json", getClass());
+		_dlDDMStructureLayoutContent = ResourceUtil.readFile(
+			"ddm_structure_layout_basic_document.json", getClass());
+		_journalDDMStructureContent = ResourceUtil.readFile(
+			"ddm_structure_basic_web_content.json", getClass());
+		_journalDDMStructureLayoutContent = ResourceUtil.readFile(
+			"ddm_structure_layout_basic_web_content.json", getClass());
+		_layoutPageTemplateStructureRelData = ResourceUtil.readFile(
+			"layout_page_template_structure_rel_data.json", getClass());
 
 		_defaultAssetPublisherPortletPreferencesImpl =
 			(PortletPreferencesImpl)_portletPreferencesFactory.fromDefaultXML(
-				readFile("default_asset_publisher_preference.xml"));
+				ResourceUtil.readFile(
+					"default_asset_publisher_preference.xml", getClass()));
 
 		initJournalArticleContent();
 
@@ -752,7 +754,9 @@ public class DataFactory extends BaseDataFactory {
 		_firstNames = new ArrayList<>();
 
 		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new InputStreamReader(getResourceInputStream("first_names.txt")));
+			new InputStreamReader(
+				ResourceUtil.getResourceInputStream(
+					"first_names.txt", getClass())));
 
 		String line = null;
 
@@ -765,7 +769,9 @@ public class DataFactory extends BaseDataFactory {
 		_lastNames = new ArrayList<>();
 
 		unsyncBufferedReader = new UnsyncBufferedReader(
-			new InputStreamReader(getResourceInputStream("last_names.txt")));
+			new InputStreamReader(
+				ResourceUtil.getResourceInputStream(
+					"last_names.txt", getClass())));
 
 		while ((line = unsyncBufferedReader.readLine()) != null) {
 			_lastNames.add(line);
@@ -1554,7 +1560,9 @@ public class DataFactory extends BaseDataFactory {
 		List<LayoutModel> layoutModels = new ArrayList<>();
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
-			StringUtil.read(getResourceInputStream("commerce_layouts.json")));
+			StringUtil.read(
+				ResourceUtil.getResourceInputStream(
+					"commerce_layouts.json", getClass())));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -1608,7 +1616,9 @@ public class DataFactory extends BaseDataFactory {
 			new ArrayList<>();
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
-			StringUtil.read(getResourceInputStream("commerce_layouts.json")));
+			StringUtil.read(
+				ResourceUtil.getResourceInputStream(
+					"commerce_layouts.json", getClass())));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -1639,8 +1649,8 @@ public class DataFactory extends BaseDataFactory {
 				portletPreferencesModels,
 				JSONFactoryUtil.createJSONArray(
 					StringUtil.read(
-						getResourceInputStream(
-							"commerce_portlet_settings.json")))));
+						ResourceUtil.getResourceInputStream(
+							"commerce_portlet_settings.json", getClass())))));
 
 		return portletPreferenceValueModels;
 	}
@@ -2041,8 +2051,8 @@ public class DataFactory extends BaseDataFactory {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 			StringUtil.read(
-				getResourceInputStream(
-					"commerce_theme_portlet_settings.json")));
+				ResourceUtil.getResourceInputStream(
+					"commerce_theme_portlet_settings.json", getClass())));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -2060,7 +2070,9 @@ public class DataFactory extends BaseDataFactory {
 					groupId, SAMPLE_USER_ID,
 					DDMTemplateConstants.TEMPLATE_MODE_CREATE,
 					displayStyleJSONObject.getString("Name"),
-					StringUtil.read(getResourceInputStream(fileName)),
+					StringUtil.read(
+						ResourceUtil.getResourceInputStream(
+							fileName, getClass())),
 					getClassNameId(NavItem.class), 0,
 					getClassNameId(PortletDisplayTemplate.class), counter.get(),
 					StringUtil.removeSubstring(fileName, ".ftl")));
@@ -2079,8 +2091,8 @@ public class DataFactory extends BaseDataFactory {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 			StringUtil.read(
-				getResourceInputStream(
-					"commerce_theme_portlet_settings.json")));
+				ResourceUtil.getResourceInputStream(
+					"commerce_theme_portlet_settings.json", getClass())));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -2105,8 +2117,8 @@ public class DataFactory extends BaseDataFactory {
 			portletPreferencesModels,
 			JSONFactoryUtil.createJSONArray(
 				StringUtil.read(
-					getResourceInputStream(
-						"commerce_theme_portlet_settings.json"))));
+					ResourceUtil.getResourceInputStream(
+						"commerce_theme_portlet_settings.json", getClass()))));
 	}
 
 	public CompanyModel newCompanyModel() {
@@ -3837,7 +3849,8 @@ public class DataFactory extends BaseDataFactory {
 		fragmentEntryModel.setFragmentEntryKey("web_content");
 		fragmentEntryModel.setName("web_content");
 		fragmentEntryModel.setCss(StringPool.BLANK);
-		fragmentEntryModel.setHtml(readFile("web_content.html"));
+		fragmentEntryModel.setHtml(
+			ResourceUtil.readFile("web_content.html", getClass()));
 		fragmentEntryModel.setJs(StringPool.BLANK);
 		fragmentEntryModel.setType(FragmentConstants.TYPE_COMPONENT);
 		fragmentEntryModel.setStatus(WorkflowConstants.STATUS_APPROVED);

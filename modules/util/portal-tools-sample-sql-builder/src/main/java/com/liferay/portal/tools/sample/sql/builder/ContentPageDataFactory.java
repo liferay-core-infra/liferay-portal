@@ -31,10 +31,6 @@ import com.liferay.portal.model.impl.LayoutModelImpl;
 import com.liferay.portal.service.impl.LayoutLocalServiceImpl;
 import com.liferay.util.SimpleCounter;
 
-import java.io.InputStream;
-
-import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,31 +76,43 @@ public class ContentPageDataFactory extends BaseDataFactory {
 			fragmentEntryLinkModels.add(
 				newFragmentEntryLinkModel(
 					layoutModel, _HEADING_RENDER_KEY,
-					readFile(
-						_getFragmentComponentInputStream("heading", "css")),
-					readFile(
-						_getFragmentComponentInputStream("heading", "html")),
-					readFile("heading_configuration.json"),
-					readFile("heading_editValue.json"), 0,
-					headingRenderNamespace));
+					ResourceUtil.readFile(
+						ResourceUtil.getFragmentComponentInputStream(
+							"heading", "css", getClass())),
+					ResourceUtil.readFile(
+						ResourceUtil.getFragmentComponentInputStream(
+							"heading", "html", getClass())),
+					ResourceUtil.readFile(
+						"heading_configuration.json", getClass()),
+					ResourceUtil.readFile("heading_editValue.json", getClass()),
+					0, headingRenderNamespace));
 
 			fragmentEntryLinkModels.add(
 				newFragmentEntryLinkModel(
 					layoutModel, _PARAGRAPH_RENDER_KEY,
-					readFile(
-						_getFragmentComponentInputStream("paragraph", "css")),
-					readFile(
-						_getFragmentComponentInputStream("paragraph", "html")),
-					readFile("paragraph_configuration.json"),
-					_replaceReleaseInfo(readFile("paragraph_editValue.json")),
+					ResourceUtil.readFile(
+						ResourceUtil.getFragmentComponentInputStream(
+							"paragraph", "css", getClass())),
+					ResourceUtil.readFile(
+						ResourceUtil.getFragmentComponentInputStream(
+							"paragraph", "html", getClass())),
+					ResourceUtil.readFile(
+						"paragraph_configuration.json", getClass()),
+					_replaceReleaseInfo(
+						ResourceUtil.readFile(
+							"paragraph_editValue.json", getClass())),
 					0, paragraphRenderNamespace));
 
 			fragmentEntryLinkModels.add(
 				newFragmentEntryLinkModel(
 					layoutModel, _IMAGE_RENDER_KEY, "",
-					readFile(_getFragmentComponentInputStream("image", "html")),
-					readFile("image_configuration.json"),
-					readFile("image_editValue.json"), 0, imageRenderNamespace));
+					ResourceUtil.readFile(
+						ResourceUtil.getFragmentComponentInputStream(
+							"image", "html", getClass())),
+					ResourceUtil.readFile(
+						"image_configuration.json", getClass()),
+					ResourceUtil.readFile("image_editValue.json", getClass()),
+					0, imageRenderNamespace));
 		}
 
 		return fragmentEntryLinkModels;
@@ -221,7 +229,7 @@ public class ContentPageDataFactory extends BaseDataFactory {
 		String data = null;
 
 		try {
-			data = readFile(templateFileName);
+			data = ResourceUtil.readFile(templateFileName, getClass());
 
 			for (FragmentEntryLinkModel fragmentEntryLinkModel :
 					fragmentEntryLinkModels) {
@@ -253,22 +261,6 @@ public class ContentPageDataFactory extends BaseDataFactory {
 		}
 
 		return data;
-	}
-
-	private InputStream _getFragmentComponentInputStream(
-			String fragmentName, String suffix)
-		throws Exception {
-
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		URL url = classLoader.getResource(
-			StringBundler.concat(
-				"com/liferay/fragment/collection/contributor/basic/component",
-				"/dependencies/", fragmentName, "/index.", suffix));
-
-		return url.openStream();
 	}
 
 	private LayoutModel _newContentPageLayoutModel(

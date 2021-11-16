@@ -14,16 +14,10 @@
 
 package com.liferay.portal.tools.sample.sql.builder;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ClassNameModel;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.util.SimpleCounter;
 
-import java.io.InputStream;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,27 +29,6 @@ public abstract class BaseDataFactory {
 		ClassNameModel classNameModel = classNameModels.get(clazz.getName());
 
 		return classNameModel.getClassNameId();
-	}
-
-	protected InputStream getResourceInputStream(String resourceName) {
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		return classLoader.getResourceAsStream(
-			_DEPENDENCIES_DIR + resourceName);
-	}
-
-	protected String readFile(InputStream inputStream) throws Exception {
-		List<String> lines = new ArrayList<>();
-
-		StringUtil.readLines(inputStream, lines);
-
-		return StringUtil.merge(lines, StringPool.SPACE);
-	}
-
-	protected String readFile(String resourceName) throws Exception {
-		return readFile(getResourceInputStream(resourceName));
 	}
 
 	protected static final long COMPANY_ID;
@@ -82,8 +55,5 @@ public abstract class BaseDataFactory {
 
 		SAMPLE_USER_ID = counter.get();
 	}
-
-	private static final String _DEPENDENCIES_DIR =
-		"com/liferay/portal/tools/sample/sql/builder/dependencies/data/";
 
 }

@@ -69,15 +69,13 @@ public class ResourceUtil {
 		return readFile(getResourceInputStream(resourceName, clazz));
 	}
 
-	public static List<String> readLines(String resourceName, Class<?> clazz)
+	public static List<String> readLines(InputStream inputStream)
 		throws Exception {
 
 		List<String> lines = new ArrayList<>();
 
 		try (UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(
-					new InputStreamReader(
-						getResourceInputStream(resourceName, clazz)))) {
+				new UnsyncBufferedReader(new InputStreamReader(inputStream))) {
 
 			String line = null;
 
@@ -87,6 +85,12 @@ public class ResourceUtil {
 		}
 
 		return lines;
+	}
+
+	public static List<String> readLines(String resourceName, Class<?> clazz)
+		throws Exception {
+
+		return readLines(getResourceInputStream(resourceName, clazz));
 	}
 
 	private static final String _DEPENDENCIES_DIR =

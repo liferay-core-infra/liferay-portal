@@ -199,7 +199,6 @@ import com.liferay.message.boards.model.impl.MBMessageModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadFlagModelImpl;
 import com.liferay.message.boards.model.impl.MBThreadModelImpl;
 import com.liferay.message.boards.social.MBActivityKeys;
-import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -345,9 +344,6 @@ import com.liferay.wiki.model.impl.WikiPageResourceModelImpl;
 import com.liferay.wiki.social.WikiActivityKeys;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -4744,7 +4740,7 @@ public class DataFactory extends BaseDataFactory {
 		return portletPreferenceValueModel;
 	}
 
-	public List<ReleaseModel> newReleaseModels() throws IOException {
+	public List<ReleaseModel> newReleaseModels() throws Exception {
 		List<ReleaseModel> releases = new ArrayList<>();
 
 		releases.add(
@@ -4755,26 +4751,21 @@ public class DataFactory extends BaseDataFactory {
 				ReleaseInfo.getBuildNumber(), false,
 				ReleaseConstants.TEST_STRING));
 
-		try (InputStream inputStream = DataFactory.class.getResourceAsStream(
-				"dependencies/releases.txt");
-			Reader reader = new InputStreamReader(inputStream);
-			UnsyncBufferedReader unsyncBufferedReader =
-				new UnsyncBufferedReader(reader)) {
+		for (String release :
+				ResourceUtil.readLines(
+					DataFactory.class.getResourceAsStream(
+						"dependencies/releases.txt"))) {
 
-			String line = null;
+			String[] parts = StringUtil.split(release, CharPool.COLON);
 
-			while ((line = unsyncBufferedReader.readLine()) != null) {
-				String[] parts = StringUtil.split(line, CharPool.COLON);
+			if (parts.length > 0) {
+				String servletContextName = parts[0];
+				String schemaVersion = parts[1];
 
-				if (parts.length > 0) {
-					String servletContextName = parts[0];
-					String schemaVersion = parts[1];
-
-					releases.add(
-						newReleaseModel(
-							counter.get(), servletContextName, schemaVersion, 0,
-							true, null));
-				}
+				releases.add(
+					newReleaseModel(
+						counter.get(), servletContextName, schemaVersion, 0,
+						true, null));
 			}
 		}
 

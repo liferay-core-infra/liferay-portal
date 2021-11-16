@@ -430,7 +430,9 @@ public class DataFactory extends BaseDataFactory {
 
 		initJournalArticleContent();
 
-		initUserNames();
+		_firstNames = ResourceUtil.readLines("first_names.txt", getClass());
+
+		_lastNames = ResourceUtil.readLines("last_names.txt", getClass());
 	}
 
 	public RoleModel getAdministratorRoleModel() {
@@ -748,36 +750,6 @@ public class DataFactory extends BaseDataFactory {
 		}
 
 		_journalArticleContent = new String(chars);
-	}
-
-	public void initUserNames() throws IOException {
-		_firstNames = new ArrayList<>();
-
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new InputStreamReader(
-				ResourceUtil.getResourceInputStream(
-					"first_names.txt", getClass())));
-
-		String line = null;
-
-		while ((line = unsyncBufferedReader.readLine()) != null) {
-			_firstNames.add(line);
-		}
-
-		unsyncBufferedReader.close();
-
-		_lastNames = new ArrayList<>();
-
-		unsyncBufferedReader = new UnsyncBufferedReader(
-			new InputStreamReader(
-				ResourceUtil.getResourceInputStream(
-					"last_names.txt", getClass())));
-
-		while ((line = unsyncBufferedReader.readLine()) != null) {
-			_lastNames.add(line);
-		}
-
-		unsyncBufferedReader.close();
 	}
 
 	public AccountEntryModel newAccountEntryModel(String type, int index) {
@@ -6958,7 +6930,7 @@ public class DataFactory extends BaseDataFactory {
 	private final String _dlDDMStructureContent;
 	private final String _dlDDMStructureLayoutContent;
 	private final SimpleCounter _dLFileEntryIdCounter;
-	private List<String> _firstNames;
+	private final List<String> _firstNames;
 	private final SimpleCounter _futureDateCounter;
 	private long _globalGroupId;
 	private long _guestGroupId;
@@ -6968,7 +6940,7 @@ public class DataFactory extends BaseDataFactory {
 		new HashMap<>();
 	private final String _journalDDMStructureContent;
 	private final String _journalDDMStructureLayoutContent;
-	private List<String> _lastNames;
+	private final List<String> _lastNames;
 	private final String _layoutPageTemplateStructureRelData;
 	private final SimpleCounter _layoutSetIdCounter;
 	private RoleModel _ownerRoleModel;

@@ -14,11 +14,13 @@
 
 package com.liferay.portal.tools.sample.sql.builder;
 
+import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import java.net.URL;
 
@@ -65,6 +67,26 @@ public class ResourceUtil {
 		throws Exception {
 
 		return readFile(getResourceInputStream(resourceName, clazz));
+	}
+
+	public static List<String> readLines(String resourceName, Class<?> clazz)
+		throws Exception {
+
+		List<String> lines = new ArrayList<>();
+
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(
+					new InputStreamReader(
+						getResourceInputStream(resourceName, clazz)))) {
+
+			String line = null;
+
+			while ((line = unsyncBufferedReader.readLine()) != null) {
+				lines.add(line);
+			}
+		}
+
+		return lines;
 	}
 
 	private static final String _DEPENDENCIES_DIR =

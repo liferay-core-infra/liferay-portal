@@ -2863,6 +2863,9 @@ public interface PropsKeys {
 	public static final String RTL_CSS_EXCLUDED_PATHS_REGEXP =
 		"rtl.css.excluded.paths.regexp";
 
+	public static final String RUNTIME_MAX_EMBEDDED_PORTLETS =
+		"runtime.max.embedded.portlets";
+
 	public static final String SANITIZER_IMPL = "sanitizer.impl";
 
 	public static final String SCHEDULER_DESCRIPTION_MAX_LENGTH =

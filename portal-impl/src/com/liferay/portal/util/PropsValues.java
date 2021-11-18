@@ -2564,6 +2564,10 @@ public class PropsValues {
 	public static String[] RTL_CSS_EXCLUDED_PATHS_REGEXP = PropsUtil.getArray(
 		PropsKeys.RTL_CSS_EXCLUDED_PATHS_REGEXP);
 
+	public static final int RUNTIME_MAX_EMBEDDED_PORTLETS =
+		GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.RUNTIME_MAX_EMBEDDED_PORTLETS));
+
 	public static final boolean SCHEDULER_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.SCHEDULER_ENABLED));
 

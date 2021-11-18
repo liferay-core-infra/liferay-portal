@@ -42,8 +42,11 @@ import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.servlet.DynamicServletRequest;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.DirectTag;
@@ -255,11 +258,27 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 				_embeddedPortletIds.set(embeddedPortletIds);
 			}
 
-			if (embeddedPortletIds.search(portlet.getPortletId()) > -1) {
-				String errorMessage = LanguageUtil.get(
+			boolean displayError = false;
+
+			String errorMessage = StringPool.BLANK;
+
+			if (embeddedPortletIds.size() > GetterUtil.getInteger(
+					PropsUtil.get(PropsKeys.RUNTIME_MAX_EMBEDDED_PORTLETS))) {
+
+				errorMessage = LanguageUtil.get(
+					httpServletRequest, "unable-to-render-embedded-portlet");
+
+				displayError = true;
+			}
+			else if (embeddedPortletIds.search(portlet.getPortletId()) > -1) {
+				errorMessage = LanguageUtil.get(
 					httpServletRequest,
 					"the-application-cannot-include-itself");
 
+				displayError = true;
+			}
+
+			if (displayError) {
 				httpServletRequest.setAttribute(
 					"liferay-portlet:runtime:errorMessage", errorMessage);
 

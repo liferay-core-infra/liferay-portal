@@ -260,8 +260,9 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 					httpServletRequest,
 					"the-application-cannot-include-itself");
 
-				httpServletRequest.setAttribute(
-					"liferay-portlet:runtime:errorMessage", errorMessage);
+				pageContext.setAttribute(
+					"liferay-portlet:runtime:errorMessage", errorMessage,
+					PageContext.REQUEST_SCOPE);
 
 				PortalIncludeUtil.include(pageContext, _ERROR_PAGE);
 

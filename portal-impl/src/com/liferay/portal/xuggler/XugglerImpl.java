@@ -47,7 +47,9 @@ public class XugglerImpl implements Xuggler {
 		try {
 			JarUtil.downloadAndInstallJar(
 				new URL(PropsValues.XUGGLER_JAR_URL + name),
-				Paths.get(PropsValues.LIFERAY_LIB_PORTAL_DIR, name));
+				Paths.get(
+					PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+					name));
 
 			_nativeLibraryCopied = true;
 		}

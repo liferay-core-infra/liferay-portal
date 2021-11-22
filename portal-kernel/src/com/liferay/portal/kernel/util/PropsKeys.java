@@ -3216,6 +3216,9 @@ public interface PropsKeys {
 	public static final String STAGING_SYSTEM_EVENT_MAX_AGE =
 		"staging.system.event.max.age";
 
+	public static final String STAGING_USE_HIBERNATE_COMMIT_FLUSH_MODE =
+		"staging.use.hibernate.commit.flush.mode";
+
 	public static final String STRIP_CSS_SASS_ENABLED =
 		"strip.css.sass.enabled";
 

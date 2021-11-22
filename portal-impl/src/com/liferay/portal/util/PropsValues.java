@@ -2831,6 +2831,10 @@ public class PropsValues {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.STAGING_SYSTEM_EVENT_MAX_AGE));
 
+	public static final boolean STAGING_USE_HIBERNATE_COMMIT_FLUSH_MODE =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.STAGING_USE_HIBERNATE_COMMIT_FLUSH_MODE));
+
 	public static boolean STRIP_CSS_SASS_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.STRIP_CSS_SASS_ENABLED));
 

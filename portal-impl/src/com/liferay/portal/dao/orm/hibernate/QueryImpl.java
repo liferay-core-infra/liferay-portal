@@ -14,6 +14,7 @@
 
 package com.liferay.portal.dao.orm.hibernate;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.CacheMode;
 import com.liferay.portal.kernel.dao.orm.LockMode;
@@ -21,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.ScrollableResults;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.io.Serializable;
 
@@ -33,6 +35,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.FlushMode;
 import org.hibernate.LockOptions;
 
 /**
@@ -107,6 +110,12 @@ public class QueryImpl implements Query {
 	@Override
 	public List<?> list(boolean copy, boolean unmodifiable)
 		throws ORMException {
+
+		if (ExportImportThreadLocal.isExportInProcess() &&
+			PropsValues.STAGING_USE_HIBERNATE_COMMIT_FLUSH_MODE) {
+
+			_query.setFlushMode(FlushMode.COMMIT);
+		}
 
 		try {
 			List<?> list = _query.list();

@@ -266,6 +266,8 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 
 				PortalIncludeUtil.include(pageContext, _ERROR_PAGE);
 
+				_log.error(errorMessage);
+
 				return;
 			}
 

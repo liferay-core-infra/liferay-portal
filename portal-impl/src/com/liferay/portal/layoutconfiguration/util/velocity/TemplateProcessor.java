@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.layoutconfiguration.util.PortletRenderer;
@@ -218,9 +217,7 @@ public class TemplateProcessor implements ColumnProcessor {
 				}
 
 				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
-					layout.getCompanyId(), layout.getGroupId(),
-					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, layout.getPlid(),
-					portletId, defaultPreferences);
+					layout, portletId, defaultPreferences);
 			}
 		}
 

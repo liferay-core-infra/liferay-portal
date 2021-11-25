@@ -1,0 +1,19 @@
+diff --git a/com/sun/el/parser/ELParser.java b/com/sun/el/parser/ELParser.java
+index 4d766413da01..e205b25f694c 100644
+--- a/com/sun/el/parser/ELParser.java
++++ b/com/sun/el/parser/ELParser.java
+@@ -3577,7 +3577,7 @@ public class ELParser/* @bgen(jjtree) */ implements ELParserTreeConstants, ELPar
+     static private final class LookaheadSuccess extends java.lang.Error {
+     }
+ 
+-    static final private LookaheadSuccess jj_ls = new LookaheadSuccess();
++    final private LookaheadSuccess jj_ls = new LookaheadSuccess();
+ 
+     private boolean jj_scan_token(int kind) {
+         if (jj_scanpos == jj_lastpos) {
+@@ -3780,3 +3780,4 @@ public class ELParser/* @bgen(jjtree) */ implements ELParserTreeConstants, ELPar
+     }
+ 
+ }
++/* @generated */
+\ No newline at end of file

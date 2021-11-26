@@ -24,10 +24,12 @@ import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.PortletContainerUtil;
 import com.liferay.portal.kernel.portlet.PortletJSONUtil;
+import com.liferay.portal.kernel.portlet.PortletLayoutListener;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.BufferCacheServletResponse;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.PortletInstanceSettingsLocator;
@@ -222,6 +224,27 @@ public class TemplateProcessor implements ColumnProcessor {
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
 					PortletKeys.PREFS_PLID_SHARED, portletId,
 					defaultPreferences);
+
+				long count =
+					PortletPreferencesLocalServiceUtil.
+						getPortletPreferencesCount(
+							PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+							themeDisplay.getPlid(), portletId);
+
+				if (count < 1) {
+					PortletPreferencesFactoryUtil.getLayoutPortletSetup(
+						layout, portletId, defaultPreferences);
+					PortletPreferencesFactoryUtil.getPortletSetup(
+						_httpServletRequest, portletId, defaultPreferences);
+
+					PortletLayoutListener portletLayoutListener =
+						portlet.getPortletLayoutListenerInstance();
+
+					if (portletLayoutListener != null) {
+						portletLayoutListener.onAddToLayout(
+							portletId, themeDisplay.getPlid());
+					}
+				}
 			}
 		}
 

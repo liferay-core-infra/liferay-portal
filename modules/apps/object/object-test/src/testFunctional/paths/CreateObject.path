@@ -111,6 +111,11 @@
 		<td></td>
 	</tr>
 	<tr>
+		<td>DISABLED_TAB_TYPE_RELATIONSHIPS</td>
+		<td>//div[@class = 'layout-tab__tab-types disabled']//h4[@class = 'layout-tab__tab-types__title' and contains(text(),'Relationships')]</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td>OBJECT_NAME</td>
 		<td>//div[(@class='table-list-title') and contains(.,'${key_labelName}')]</td>
 		<td></td>

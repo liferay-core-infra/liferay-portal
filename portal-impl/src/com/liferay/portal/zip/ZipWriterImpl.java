@@ -15,6 +15,7 @@
 package com.liferay.portal.zip;
 
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
+import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.memory.DeleteFileFinalizeAction;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.StringBundler;
@@ -116,6 +117,18 @@ public class ZipWriterImpl implements ZipWriter {
 		throws IOException {
 
 		if (inputStream == null) {
+			return;
+		}
+
+		if (ExportImportThreadLocal.isExportInProcess()) {
+			if (_exportEntries == null) {
+				_exportEntries = new LinkedList<>();
+			}
+
+			_exportEntries.add(
+				new AbstractMap.SimpleImmutableEntry<>(
+					name, StreamUtil.toByteArray(inputStream)));
+
 			return;
 		}
 

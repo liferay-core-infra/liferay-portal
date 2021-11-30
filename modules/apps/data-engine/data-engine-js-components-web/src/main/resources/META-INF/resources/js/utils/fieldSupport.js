@@ -461,42 +461,13 @@ export function getField(pages, fieldName) {
 }
 
 export function getParentField(pages, fieldName) {
-	let parentField = null;
 	const visitor = new PagesVisitor(pages);
 
-	visitor.visitFields((field) => {
+	return visitor.findField((field) => {
 		const nestedFieldsVisitor = new PagesVisitor(field.nestedFields || []);
 
-		if (nestedFieldsVisitor.containsField(fieldName)) {
-			parentField = field;
-		}
-
-		return false;
+		return nestedFieldsVisitor.containsField(fieldName);
 	});
-
-	return parentField;
-}
-
-export function isFieldSet(field) {
-	return field.type === FIELD_TYPE_FIELDSET && field.ddmStructureId;
-}
-
-export function getParentFieldSet(pages, fieldName) {
-	let parentField = getParentField(pages, fieldName);
-
-	while (parentField) {
-		if (isFieldSet(parentField)) {
-			return parentField;
-		}
-
-		parentField = getParentField(pages, parentField.fieldName);
-	}
-
-	return null;
-}
-
-export function isFieldSetChild(pages, fieldName) {
-	return !!getParentFieldSet(pages, fieldName);
 }
 
 export function localizeField(field, defaultLanguageId, editingLanguageId) {

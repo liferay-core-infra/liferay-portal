@@ -899,12 +899,28 @@ definition {
 	}
 
 	@description = "LPS-135397 - Verify that the Relationship tab cannot be added first"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CannotAddRelationshipTabFirst {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-141521 CannotAddRelationshipTabFirst pending implementation
+		ObjectAdmin.addObjectLayoutViaAPI(
+			layoutName = "Layout Name",
+			objectName = "CustomObject");
 
+		ObjectAdmin.openObjectAdmin();
+
+		ObjectPortlet.selectCustomObject(label = "Custom Object");
+
+		ObjectAdmin.goToLayoutsTab();
+
+		ObjectAdmin.selectKebabMenuOption(kebabOption = "View");
+
+		ObjectAdmin.goToLayoutTabOnLayouts();
+
+		CreateObject.assertCannotAddRelationshipTabFirst();	
 	}
 
 	@description = "LPS-135549 - Verify that it is not possible to create a Field with a duplicated Field Name"

@@ -133,7 +133,7 @@ public class BeanELResolver extends ELResolver {
 
     private boolean isReadOnly;
 
-    private static final SoftConcurrentHashMap properties = new SoftConcurrentHashMap();
+    private final SoftConcurrentHashMap properties = new SoftConcurrentHashMap();
 
     /*
      * Defines a property for a bean.
@@ -579,3 +579,4 @@ public class BeanELResolver extends ELResolver {
         return beanProperty;
     }
 }
+/* @generated */

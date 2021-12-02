@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.osgi.web.portlet.container.test.BasePortletContainerTestCase;
 import com.liferay.portal.osgi.web.portlet.container.test.TestPortlet;
@@ -37,6 +38,8 @@ import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -67,6 +70,52 @@ public class EmbeddedPortletWhenEmbeddingPortletUsingRuntimeTagTest
 		_layoutTypePortlet = (LayoutTypePortlet)layout.getLayoutType();
 
 		_layoutStaticPortletsAll = PropsValues.LAYOUT_STATIC_PORTLETS_ALL;
+	}
+
+	@Test
+	public void testRenderInfiniteRecursionEmbeddedAndRuntimePortlets()
+		throws Exception {
+
+		TestPortlet testPortlet = new TestPortlet() {
+
+			@Override
+			public void render(
+					RenderRequest renderRequest, RenderResponse renderResponse)
+				throws IOException, PortletException {
+
+				super.render(renderRequest, renderResponse);
+
+				PortletContext portletContext = getPortletContext();
+
+				PortletRequestDispatcher portletRequestDispatcher =
+					portletContext.getRequestDispatcher(
+						"/runtime_portlet_with_random_instanceid.jsp");
+
+				portletRequestDispatcher.include(renderRequest, renderResponse);
+			}
+
+		};
+
+		setUpPortlet(
+			testPortlet,
+			HashMapDictionaryBuilder.<String, Object>put(
+				"com.liferay.portlet.instanceable", Boolean.TRUE.toString()
+			).build(),
+			TEST_PORTLET_ID);
+
+		PortletContainerTestUtil.Response response =
+			PortletContainerTestUtil.request(
+				PortletURLBuilder.create(
+					PortletURLFactoryUtil.create(
+						PortletContainerTestUtil.getHttpServletRequest(
+							group, layout),
+						TEST_PORTLET_ID, layout.getPlid(),
+						PortletRequest.RENDER_PHASE)
+				).buildString());
+
+		Assert.assertEquals(200, response.getCode());
+
+		Assert.assertTrue(testPortlet.isCalledRender());
 	}
 
 	@Test

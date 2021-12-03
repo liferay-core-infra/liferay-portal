@@ -55,14 +55,14 @@ public class UpgradeConfigurationPidUpgradeTest {
 	public static final LiferayIntegrationTestRule liferayIntegrationTestRule =
 		new LiferayIntegrationTestRule();
 
-	public void createConfiguration(Character separator) throws Exception {
+	private void createFileConfiguration(Character separator) throws Exception {
 		Dictionary<String, String> dictionary = HashMapDictionaryBuilder.put(
 			"felix.fileinstall.filename",
-			"test.configuration" + separator + "instance1-1234.config"
+			_SERVICE_FACTORY_PID + separator + "instance1-1234.config"
 		).put(
-			"service.factoryPid", "test.configuration"
+			"service.factoryPid", _SERVICE_FACTORY_PID
 		).put(
-			"service.pid", "test.configuration.instance1"
+			"service.pid", _CONFIGURATION_PID
 		).build();
 
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
@@ -88,13 +88,21 @@ public class UpgradeConfigurationPidUpgradeTest {
 		_upgradeConfigurationPidUpgradeProcess.upgrade();
 	}
 
+	private void createUIConfiguration(Character separator) throws Exception {
+		Dictionary<String, String> dictionary = HashMapDictionaryBuilder.put(
+			"service.factoryPid", _SERVICE_FACTORY_PID
+		).put(
+			"service.pid", _CONFIGURATION_PID
+		).build();
+	}
+
 	public Dictionary<String, String> getDictionary() throws Exception {
 		String dictionaryString = null;
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select dictionary from Configuration_ where configurationId " +
-					"like 'test.configuration%'");
+					"like '" + _SERVICE_FACTORY_PID + "%'");
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
@@ -112,23 +120,23 @@ public class UpgradeConfigurationPidUpgradeTest {
 		DB db = DBManagerUtil.getDB();
 
 		db.runSQL(
-			"delete from Configuration_ where configurationId like " +
-				"'test.configuration%'");
+			"delete from Configuration_ where configurationId like '" +
+				_SERVICE_FACTORY_PID + "%'");
 	}
 
 	@Test
 	public void testUpgradeConfigurationPid() throws Exception {
-		createConfiguration(CharPool.DASH);
+		createFileConfiguration(CharPool.DASH);
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select configurationId from Configuration_ where " +
-					"configurationId like 'test.configuration%'");
+					"configurationId like '" + _SERVICE_FACTORY_PID + "%'");
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
 				Assert.assertEquals(
-					"test.configuration~instance1",
+					_SERVICE_FACTORY_PID + "~instance1",
 					resultSet.getString("configurationId"));
 			}
 		}
@@ -136,47 +144,47 @@ public class UpgradeConfigurationPidUpgradeTest {
 
 	@Test
 	public void testUpgradeDashFileSeparator() throws Exception {
-		createConfiguration(CharPool.DASH);
+		createFileConfiguration(CharPool.DASH);
 
 		Dictionary<String, String> dictionary = getDictionary();
 
 		Assert.assertEquals(
-			"test.configuration~instance1-1234.config",
+			_SERVICE_FACTORY_PID + "~instance1-1234.config",
 			dictionary.get("felix.fileinstall.filename"));
 	}
 
 	@Test
 	public void testUpgradeDictionary() throws Exception {
-		createConfiguration(CharPool.DASH);
+		createFileConfiguration(CharPool.DASH);
 
 		Dictionary<String, String> dictionary = getDictionary();
 
 		Assert.assertEquals(
-			"test.configuration", dictionary.get("service.factoryPid"));
+			_SERVICE_FACTORY_PID, dictionary.get("service.factoryPid"));
 
 		Assert.assertEquals(
-			"test.configuration~instance1", dictionary.get("service.pid"));
+			_SERVICE_FACTORY_PID + "~instance1", dictionary.get("service.pid"));
 	}
 
 	@Test
 	public void testUpgradeTildeFileSeparator() throws Exception {
-		createConfiguration(CharPool.TILDE);
+		createFileConfiguration(CharPool.TILDE);
 
 		Dictionary<String, String> dictionary = getDictionary();
 
 		Assert.assertEquals(
-			"test.configuration~instance1-1234.config",
+			_SERVICE_FACTORY_PID + "~instance1-1234.config",
 			dictionary.get("felix.fileinstall.filename"));
 	}
 
 	@Test
 	public void testUpgradeUnderlineFileSeparator() throws Exception {
-		createConfiguration(CharPool.UNDERLINE);
+		createFileConfiguration(CharPool.UNDERLINE);
 
 		Dictionary<String, String> dictionary = getDictionary();
 
 		Assert.assertEquals(
-			"test.configuration~instance1-1234.config",
+			_SERVICE_FACTORY_PID + "~instance1-1234.config",
 			dictionary.get("felix.fileinstall.filename"));
 	}
 
@@ -210,6 +218,8 @@ public class UpgradeConfigurationPidUpgradeTest {
 
 	private static final String _CONFIGURATION_PID =
 		"test.configuration.instance1";
+
+	private static final String _SERVICE_FACTORY_PID = "test.configuration";
 
 	@Inject(
 		filter = "(&(objectClass=com.liferay.portal.configuration.persistence.internal.upgrade.ConfigurationPersistenceUpgrade))"

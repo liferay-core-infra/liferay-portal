@@ -65,15 +65,29 @@ public class UpgradeConfigurationPidUpgradeTest {
 			"service.pid", _CONFIGURATION_PID
 		).build();
 
+		updateDatabase(dictionary);
+	}
+
+	private void createUIConfiguration(Character separator) throws Exception {
+		Dictionary<String, String> dictionary = HashMapDictionaryBuilder.put(
+			"service.factoryPid", _SERVICE_FACTORY_PID
+		).put(
+			"service.pid", _CONFIGURATION_PID
+		).build();
+
+		updateDatabase(dictionary);
+	}
+
+	private void updateDatabase(Dictionary dictionary) throws Exception {
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 			new UnsyncByteArrayOutputStream();
 
 		ConfigurationHandler.write(unsyncByteArrayOutputStream, dictionary);
 
 		try (Connection connection = DataAccess.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(
-				"insert into Configuration_ (configurationId, dictionary) " +
-					"values(?, ?)")) {
+			 PreparedStatement preparedStatement = connection.prepareStatement(
+				 "insert into Configuration_ (configurationId, dictionary) " +
+				 "values(?, ?)")) {
 
 			preparedStatement.setString(1, _CONFIGURATION_PID);
 
@@ -86,14 +100,6 @@ public class UpgradeConfigurationPidUpgradeTest {
 		setUpUpgradeConfigurationPid();
 
 		_upgradeConfigurationPidUpgradeProcess.upgrade();
-	}
-
-	private void createUIConfiguration(Character separator) throws Exception {
-		Dictionary<String, String> dictionary = HashMapDictionaryBuilder.put(
-			"service.factoryPid", _SERVICE_FACTORY_PID
-		).put(
-			"service.pid", _CONFIGURATION_PID
-		).build();
 	}
 
 	public Dictionary<String, String> getDictionary() throws Exception {
@@ -126,7 +132,7 @@ public class UpgradeConfigurationPidUpgradeTest {
 
 	@Test
 	public void testUpgradeConfigurationPid() throws Exception {
-		createFileConfiguration(CharPool.DASH);
+		createUIConfiguration(CharPool.DASH);
 
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -155,7 +161,7 @@ public class UpgradeConfigurationPidUpgradeTest {
 
 	@Test
 	public void testUpgradeDictionary() throws Exception {
-		createFileConfiguration(CharPool.DASH);
+		createUIConfiguration(CharPool.DASH);
 
 		Dictionary<String, String> dictionary = getDictionary();
 

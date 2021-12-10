@@ -233,15 +233,17 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 		queryString = PortletParameterUtil.addNamespace(
 			portletInstanceKey, queryString);
 
-		httpServletRequest = DynamicServletRequest.addQueryString(
-			restrictPortletServletRequest, parameterMap, queryString, false);
+		HttpServletRequest dynamicHttpServletRequest =
+			DynamicServletRequest.addQueryString(
+				restrictPortletServletRequest, parameterMap, queryString,
+				false);
 
 		try {
-			httpServletRequest.setAttribute(
+			dynamicHttpServletRequest.setAttribute(
 				WebKeys.RENDER_PORTLET_RESOURCE, Boolean.TRUE);
 
 			ThemeDisplay themeDisplay =
-				(ThemeDisplay)httpServletRequest.getAttribute(
+				(ThemeDisplay)dynamicHttpServletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
 			Portlet portlet = getPortlet(
@@ -292,7 +294,7 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 
 			Layout layout = themeDisplay.getLayout();
 
-			httpServletRequest.setAttribute(
+			dynamicHttpServletRequest.setAttribute(
 				WebKeys.SETTINGS_SCOPE, settingsScope);
 
 			JSONObject jsonObject = null;
@@ -321,7 +323,8 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
 					layout, portletInstanceKey, defaultPreferences);
 				PortletPreferencesFactoryUtil.getPortletSetup(
-					httpServletRequest, portletInstanceKey, defaultPreferences);
+					dynamicHttpServletRequest, portletInstanceKey,
+					defaultPreferences);
 
 				PortletLayoutListener portletLayoutListener =
 					portlet.getPortletLayoutListenerInstance();
@@ -356,7 +359,7 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 				}
 
 				PortletContainerUtil.render(
-					httpServletRequest, httpServletResponse, portlet);
+					dynamicHttpServletRequest, httpServletResponse, portlet);
 			}
 			finally {
 				if (resetLifecycleRender) {

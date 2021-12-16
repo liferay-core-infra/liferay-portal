@@ -274,7 +274,7 @@ public class DBPartitionUtil {
 				connection.setCatalog(
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
-				return _wrapStatement(super.createStatement());
+				return _wrapStatement(super.createStatement(), connection);
 			}
 
 			@Override
@@ -286,7 +286,8 @@ public class DBPartitionUtil {
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
 				return _wrapStatement(
-					super.createStatement(resultSetType, resultSetConcurrency));
+					super.createStatement(resultSetType, resultSetConcurrency),
+					connection);
 			}
 
 			@Override
@@ -301,7 +302,8 @@ public class DBPartitionUtil {
 				return _wrapStatement(
 					super.createStatement(
 						resultSetType, resultSetConcurrency,
-						resultSetHoldability));
+						resultSetHoldability),
+					connection);
 			}
 
 			@Override
@@ -461,8 +463,10 @@ public class DBPartitionUtil {
 		return false;
 	}
 
-	private static boolean _isSkip(String tableName) throws SQLException {
-		try (Connection connection = DataAccess.getConnection()) {
+	private static boolean _isSkip(String tableName, Connection connection)
+		throws SQLException {
+
+		try {
 			DBInspector dbInspector = new DBInspector(connection);
 
 			if (_isControlTable(dbInspector, tableName) &&
@@ -536,7 +540,9 @@ public class DBPartitionUtil {
 		statement.executeUpdate(_getCreateViewSQL(companyId, tableName));
 	}
 
-	private static Statement _wrapStatement(Statement statement) {
+	private static Statement _wrapStatement(
+		Statement statement, Connection connection) {
+
 		return new StatementWrapper(statement) {
 
 			@Override
@@ -546,13 +552,13 @@ public class DBPartitionUtil {
 				String[] query = sql.split(StringPool.SPACE);
 
 				if ((StringUtil.startsWith(lowerCaseSQL, "alter table") &&
-					 _isSkip(query[2])) ||
+					 _isSkip(query[2], connection)) ||
 					((StringUtil.startsWith(lowerCaseSQL, "create index") ||
 					  StringUtil.startsWith(lowerCaseSQL, "drop index")) &&
-					 _isSkip(query[4])) ||
+					 _isSkip(query[4], connection)) ||
 					(StringUtil.startsWith(
 						lowerCaseSQL, "create unique index") &&
-					 _isSkip(query[5]))) {
+					 _isSkip(query[5], connection))) {
 
 					return 0;
 				}

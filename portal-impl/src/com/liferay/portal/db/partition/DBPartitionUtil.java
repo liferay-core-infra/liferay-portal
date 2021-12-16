@@ -274,7 +274,7 @@ public class DBPartitionUtil {
 				connection.setCatalog(
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
-				return _wrapStatement(super.createStatement(), connection);
+				return _wrapStatement(super.createStatement());
 			}
 
 			@Override
@@ -286,8 +286,7 @@ public class DBPartitionUtil {
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
 				return _wrapStatement(
-					super.createStatement(resultSetType, resultSetConcurrency),
-					connection);
+					super.createStatement(resultSetType, resultSetConcurrency));
 			}
 
 			@Override
@@ -302,8 +301,7 @@ public class DBPartitionUtil {
 				return _wrapStatement(
 					super.createStatement(
 						resultSetType, resultSetConcurrency,
-						resultSetHoldability),
-					connection);
+						resultSetHoldability));
 			}
 
 			@Override
@@ -540,9 +538,7 @@ public class DBPartitionUtil {
 		statement.executeUpdate(_getCreateViewSQL(companyId, tableName));
 	}
 
-	private static Statement _wrapStatement(
-		Statement statement, Connection connection) {
-
+	private static Statement _wrapStatement(Statement statement) {
 		return new StatementWrapper(statement) {
 
 			@Override
@@ -552,13 +548,13 @@ public class DBPartitionUtil {
 				String[] query = sql.split(StringPool.SPACE);
 
 				if ((StringUtil.startsWith(lowerCaseSQL, "alter table") &&
-					 _isSkip(query[2], connection)) ||
+					 _isSkip(query[2], statement.getConnection())) ||
 					((StringUtil.startsWith(lowerCaseSQL, "create index") ||
 					  StringUtil.startsWith(lowerCaseSQL, "drop index")) &&
-					 _isSkip(query[4], connection)) ||
+					 _isSkip(query[4], statement.getConnection())) ||
 					(StringUtil.startsWith(
 						lowerCaseSQL, "create unique index") &&
-					 _isSkip(query[5], connection))) {
+					 _isSkip(query[5], statement.getConnection()))) {
 
 					return 0;
 				}

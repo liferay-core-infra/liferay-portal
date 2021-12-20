@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -169,8 +168,7 @@ public class PortletAutoDeployer
 		List<Element> portletElements = rootElement.elements("portlet");
 
 		for (Element portletElement : portletElements) {
-			String portletName = PortalUtil.getJsSafePortletId(
-				portletElement.elementText("portlet-name"));
+			String portletName = portletElement.elementText("portlet-name");
 			String portletClassName = portletElement.elementText(
 				"portlet-class");
 

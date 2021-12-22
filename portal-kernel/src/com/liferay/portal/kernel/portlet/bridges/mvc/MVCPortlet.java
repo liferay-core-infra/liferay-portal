@@ -229,24 +229,24 @@ public class MVCPortlet extends LiferayPortlet {
 
 		Portlet portlet = liferayPortletConfig.getPortlet();
 
-		String portletName = portlet.getPortletName();
+		_portletName = portlet.getPortletName();
 
 		_actionMVCCommandCache = new MVCCommandCache<>(
 			MVCActionCommand.EMPTY,
-			getInitParameter("mvc-action-command-package-prefix"), portletName,
+			getInitParameter("mvc-action-command-package-prefix"), _portletName,
 			portletId, MVCActionCommand.class, "ActionCommand");
 		_headerMVCCommandCache = new MVCCommandCache<>(
 			MVCHeaderCommand.EMPTY,
-			getInitParameter("mvc-header-command-package-prefix"), portletName,
+			getInitParameter("mvc-header-command-package-prefix"), _portletName,
 			portletId, MVCHeaderCommand.class, "HeaderCommand");
 		_renderMVCCommandCache = new MVCCommandCache<>(
 			MVCRenderCommand.EMPTY,
-			getInitParameter("mvc-render-command-package-prefix"), portletName,
+			getInitParameter("mvc-render-command-package-prefix"), _portletName,
 			portletId, MVCRenderCommand.class, "RenderCommand");
 		_resourceMVCCommandCache = new MVCCommandCache<>(
 			MVCResourceCommand.EMPTY,
 			getInitParameter("mvc-resource-command-package-prefix"),
-			portletName, portletId, MVCResourceCommand.class,
+			_portletName, portletId, MVCResourceCommand.class,
 			"ResourceCommand");
 	}
 
@@ -616,7 +616,7 @@ public class MVCPortlet extends LiferayPortlet {
 				throw new PortletException(
 					StringBundler.concat(
 						"Path ", path, " is not accessible by portlet ",
-						getPortletName()));
+						_portletName));
 			}
 
 			portletRequestDispatcher.include(portletRequest, portletResponse);
@@ -773,7 +773,7 @@ public class MVCPortlet extends LiferayPortlet {
 			if (!portletApp.isWARFile()) {
 				_log.error(
 					StringBundler.concat(
-						"Disabling paths for portlet ", getPortletName(),
+						"Disabling paths for portlet ", _portletName,
 						" because root path is configured to have access to ",
 						"all portal paths"));
 
@@ -835,6 +835,7 @@ public class MVCPortlet extends LiferayPortlet {
 
 	private MVCCommandCache<MVCActionCommand> _actionMVCCommandCache;
 	private MVCCommandCache<MVCHeaderCommand> _headerMVCCommandCache;
+	private String _portletName;
 	private MVCCommandCache<MVCRenderCommand> _renderMVCCommandCache;
 	private MVCCommandCache<MVCResourceCommand> _resourceMVCCommandCache;
 	private Set<String> _validPaths;

@@ -70,10 +70,6 @@ public class PortletConfigImpl implements LiferayPortletConfig {
 
 		String portletName = portlet.getPortletName();
 
-		if (portletName == null) {
-			portletName = portlet.getRootPortletId();
-		}
-
 		int pos = portletName.indexOf(PortletConstants.WAR_SEPARATOR);
 
 		if (pos != -1) {

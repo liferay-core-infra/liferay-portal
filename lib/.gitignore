@@ -127,7 +127,6 @@
 /portal/concurrent.jar
 /portal/crypt.jar
 /portal/curvesapi.jar
-/portal/daisydiff.jar
 /portal/dom4j.jar
 /portal/eclipse-core-runtime.jar
 /portal/fontbox.jar
@@ -153,7 +152,6 @@
 /portal/jai_codec.jar
 /portal/jai_core.jar
 /portal/jakarta-regexp.jar
-/portal/java-diff.jar
 /portal/java-libpst.jar
 /portal/javassist.jar
 /portal/jaxb-api.jar

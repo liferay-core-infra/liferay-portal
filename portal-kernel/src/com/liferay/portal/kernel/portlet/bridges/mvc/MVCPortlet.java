@@ -20,6 +20,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.internal.util.ContextResourcePathsUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.portlet.LiferayPortlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
@@ -226,25 +227,26 @@ public class MVCPortlet extends LiferayPortlet {
 
 		String portletId = liferayPortletConfig.getPortletId();
 
+		Portlet portlet = liferayPortletConfig.getPortlet();
+
+		String portletName = portlet.getPortletName();
+
 		_actionMVCCommandCache = new MVCCommandCache<>(
 			MVCActionCommand.EMPTY,
-			getInitParameter("mvc-action-command-package-prefix"),
-			getPortletName(), portletId, MVCActionCommand.class,
-			"ActionCommand");
+			getInitParameter("mvc-action-command-package-prefix"), portletName,
+			portletId, MVCActionCommand.class, "ActionCommand");
 		_headerMVCCommandCache = new MVCCommandCache<>(
 			MVCHeaderCommand.EMPTY,
-			getInitParameter("mvc-header-command-package-prefix"),
-			getPortletName(), portletId, MVCHeaderCommand.class,
-			"HeaderCommand");
+			getInitParameter("mvc-header-command-package-prefix"), portletName,
+			portletId, MVCHeaderCommand.class, "HeaderCommand");
 		_renderMVCCommandCache = new MVCCommandCache<>(
 			MVCRenderCommand.EMPTY,
-			getInitParameter("mvc-render-command-package-prefix"),
-			getPortletName(), portletId, MVCRenderCommand.class,
-			"RenderCommand");
+			getInitParameter("mvc-render-command-package-prefix"), portletName,
+			portletId, MVCRenderCommand.class, "RenderCommand");
 		_resourceMVCCommandCache = new MVCCommandCache<>(
 			MVCResourceCommand.EMPTY,
 			getInitParameter("mvc-resource-command-package-prefix"),
-			getPortletName(), portletId, MVCResourceCommand.class,
+			portletName, portletId, MVCResourceCommand.class,
 			"ResourceCommand");
 	}
 

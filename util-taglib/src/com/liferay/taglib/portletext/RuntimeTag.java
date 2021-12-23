@@ -312,26 +312,32 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 				writeObject = true;
 			}
 
-			long count =
-				PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, themeDisplay.getPlid(),
-					portletInstanceKey);
+			if (!layout.isPortletEmbedded(
+					portlet.getPortletId(), layout.getGroupId())) {
 
-			if (count < 1) {
-				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
-					layout, portletInstanceKey, defaultPreferences);
-				PortletPreferencesFactoryUtil.getPortletSetup(
-					httpServletRequest, portletInstanceKey, defaultPreferences);
+				long count =
+					PortletPreferencesLocalServiceUtil.
+						getPortletPreferencesCount(
+							PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+							themeDisplay.getPlid(), portletInstanceKey);
 
-				PortletLayoutListener portletLayoutListener =
-					portlet.getPortletLayoutListenerInstance();
+				if (count < 1) {
+					PortletPreferencesFactoryUtil.getLayoutPortletSetup(
+						layout, portletInstanceKey, defaultPreferences);
+					PortletPreferencesFactoryUtil.getPortletSetup(
+						httpServletRequest, portletInstanceKey,
+						defaultPreferences);
 
-				if (portletLayoutListener != null) {
-					portletLayoutListener.onAddToLayout(
-						portletInstanceKey, themeDisplay.getPlid());
+					PortletLayoutListener portletLayoutListener =
+						portlet.getPortletLayoutListenerInstance();
+
+					if (portletLayoutListener != null) {
+						portletLayoutListener.onAddToLayout(
+							portletInstanceKey, themeDisplay.getPlid());
+					}
+
+					writeObject = true;
 				}
-
-				writeObject = true;
 			}
 
 			if (writeObject) {

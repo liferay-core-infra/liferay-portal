@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Libraries JFreeChart Provider
+Bundle-SymbolicName: com.liferay.libraries.jfreechart.provider
+Bundle-Version: 1.0.0
+Export-Package: org.jfree.*
+-includeresource:\
+	@jcommon-[0-9.]*.jar!/META-INF/*,\
+	@jcommon-[0-9.]*.jar!/com/*,\
+	@jcommon-[0-9.]*.jar!/org/*,\
+	@jfreechart-[0-9.]*.jar!/META-INF/*,\
+	@jfreechart-[0-9.]*.jar!/org/*

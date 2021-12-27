@@ -1,7 +1,4 @@
 dependencies {
-	compileInclude group: "org.jfree", name: "jcommon", version: "1.0.24"
-	compileInclude group: "org.jfree", name: "jfreechart", version: "1.0.19"
-
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bnd.annotation", version: "4.2.0"
 	compileOnly group: "com.liferay", name: "org.apache.logging.log4j", version: "2.17.0.LIFERAY-PATCHED-1"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
@@ -17,6 +14,7 @@ dependencies {
 	compileOnly project(":apps:frontend-taglib:frontend-taglib")
 	compileOnly project(":apps:frontend-taglib:frontend-taglib-clay")
 	compileOnly project(":apps:frontend-taglib:frontend-taglib-soy")
+	compileOnly project(":apps:libraries:libraries-jfreechart-provider")
 	compileOnly project(":apps:petra:petra-log4j")
 	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")

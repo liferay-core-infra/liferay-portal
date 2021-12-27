@@ -28,8 +28,6 @@ dependencies {
 	compileInclude group: "org.apache.poi", name: "poi-ooxml-schemas", version: "4.1.2"
 	compileInclude group: "org.codehaus.groovy", name: "groovy-all", version: "2.4.21"
 	compileInclude group: "org.eclipse.jdt.core.compiler", name: "ecj", version: "4.4.2"
-	compileInclude group: "org.jfree", name: "jcommon", version: "1.0.24"
-	compileInclude group: "org.jfree", name: "jfreechart", version: "1.0.19"
 	compileInclude group: "org.olap4j", name: "olap4j", version: "1.2.0"
 
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
@@ -41,6 +39,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly group: "xalan", name: "xalan", version: "2.7.2"
 	compileOnly group: "xml-apis", name: "xml-apis", version: "1.4.01"
+	compileOnly project(":apps:libraries:libraries-jfreechart-provider")
 	compileOnly project(":apps:portal-reports-engine:portal-reports-engine-api")
 	compileOnly project(":apps:portal:portal-spring-extender-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")

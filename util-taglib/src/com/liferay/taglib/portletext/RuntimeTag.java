@@ -309,10 +309,6 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 					PortletKeys.PREFS_PLID_SHARED, portletInstanceKey,
 					defaultPreferences);
 
-				writeObject = true;
-			}
-
-			if (persistSettings) {
 				long count =
 					PortletPreferencesLocalServiceUtil.
 						getPortletPreferencesCount(
@@ -333,9 +329,9 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 						portletLayoutListener.onAddToLayout(
 							portletInstanceKey, themeDisplay.getPlid());
 					}
-
-					writeObject = true;
 				}
+
+				writeObject = true;
 			}
 
 			if (writeObject) {

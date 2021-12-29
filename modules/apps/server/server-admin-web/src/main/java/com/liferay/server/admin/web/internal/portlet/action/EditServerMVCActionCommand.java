@@ -107,11 +107,9 @@ import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.ShutdownUtil;
 
-import java.io.Serializable;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -170,7 +168,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 		if (cmd.equals("addLogLevel")) {
-			addLogLevel(actionRequest);
+			_updateLogLevels(
+				Collections.singletonMap(
+					ParamUtil.getString(actionRequest, "loggerName"),
+					ParamUtil.getString(actionRequest, "priority")));
 		}
 		else if (cmd.equals("cacheDb")) {
 			cacheDb();
@@ -228,23 +229,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		sendRedirect(actionRequest, actionResponse, redirect);
-	}
-
-	protected void addLogLevel(ActionRequest actionRequest) throws Exception {
-		String loggerName = ParamUtil.getString(actionRequest, "loggerName");
-		String priority = ParamUtil.getString(actionRequest, "priority");
-
-		Log4JUtil.setLevel(loggerName, priority, true);
-
-		if (_clusterMasterExecutor.isMaster()) {
-			_notifySlaves(_updateLogLevelsMethodKey, _getLog4JLevelConfigs());
-		}
-		else {
-			_notifyMaster(
-				_updateLogLevelsMethodKey,
-				Collections.singletonList(
-					new Log4JLevelConfig(loggerName, priority, true)));
-		}
 	}
 
 	protected void cacheDb() throws Exception {
@@ -607,35 +591,23 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		ImageMagickUtil.reset();
 	}
 
-	protected void updateLogLevels(ActionRequest actionRequest)
-		throws Exception {
-
+	protected void updateLogLevels(ActionRequest actionRequest) {
 		Enumeration<String> enumeration = actionRequest.getParameterNames();
 
-		List<Log4JLevelConfig> log4JLevelConfigs = new ArrayList<>();
+		Map<String, String> logLevels = new HashMap<>();
 
 		while (enumeration.hasMoreElements()) {
 			String name = enumeration.nextElement();
 
 			if (name.startsWith("logLevel")) {
-				String loggerName = name.substring(8);
-
-				String priority = ParamUtil.getString(
-					actionRequest, name, Level.INFO.toString());
-
-				Log4JUtil.setLevel(loggerName, priority, true);
-
-				log4JLevelConfigs.add(
-					new Log4JLevelConfig(loggerName, priority, true));
+				logLevels.put(
+					name.substring(8),
+					ParamUtil.getString(
+						actionRequest, name, Level.INFO.toString()));
 			}
 		}
 
-		if (_clusterMasterExecutor.isMaster()) {
-			_notifySlaves(_updateLogLevelsMethodKey, _getLog4JLevelConfigs());
-		}
-		else if (!log4JLevelConfigs.isEmpty()) {
-			_notifyMaster(_updateLogLevelsMethodKey, log4JLevelConfigs);
-		}
+		_updateLogLevels(logLevels);
 	}
 
 	protected void updateMail(
@@ -782,65 +754,48 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		return portletIds.contains(portletId);
 	}
 
-	private List<Log4JLevelConfig> _getLog4JLevelConfigs() {
-		Map<String, String> priorities = Log4JUtil.getPriorities();
-		Map<String, String> customLogSettings =
-			Log4JUtil.getCustomLogSettings();
+	private void _resetLogLevels(
+		Map<String, String> logLevels, Map<String, String> customLogSettings) {
 
-		List<Log4JLevelConfig> log4JLevelConfigs = new ArrayList<>();
-
-		priorities.forEach(
-			(name, priority) -> log4JLevelConfigs.add(
-				new Log4JLevelConfig(
-					name, priority, customLogSettings.containsKey(name))));
-
-		return log4JLevelConfigs;
-	}
-
-	private void _notifyMaster(MethodKey methodKey, Object... arguments) {
-		try {
-			_clusterMasterExecutor.executeOnMaster(
-				new MethodHandler(methodKey, arguments));
-		}
-		catch (Throwable throwable) {
-			_log.error("Unable to notify master", throwable);
+		for (Map.Entry<String, String> logLevel : logLevels.entrySet()) {
+			Log4JUtil.setLevel(
+				logLevel.getKey(), logLevel.getValue(),
+				customLogSettings.containsKey(logLevel.getKey()));
 		}
 	}
 
-	private void _notifySlaves(MethodKey methodKey, Object... arguments) {
-		try {
-			MethodHandler methodHandler = new MethodHandler(
-				methodKey, arguments);
+	private void _updateLogLevels(Map<String, String> logLevels) {
+		for (Map.Entry<String, String> logLevelEntry : logLevels.entrySet()) {
+			Log4JUtil.setLevel(
+				logLevelEntry.getKey(), logLevelEntry.getValue(), true);
+		}
 
+		if (_clusterMasterExecutor.isMaster()) {
 			ClusterRequest clusterRequest =
-				ClusterRequest.createMulticastRequest(methodHandler, true);
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(
+						_resetLogLevelsMethodKey, Log4JUtil.getPriorities(),
+						Log4JUtil.getCustomLogSettings()),
+					true);
 
 			clusterRequest.setFireAndForget(true);
 
 			ClusterExecutorUtil.execute(clusterRequest);
 		}
-		catch (Throwable throwable) {
-			_log.error("Unable to notify slave", throwable);
-		}
-	}
-
-	private void _updateLogLevels(List<Log4JLevelConfig> log4JLevelConfigs) {
-		for (Log4JLevelConfig log4JLevelConfig : log4JLevelConfigs) {
-			Log4JUtil.setLevel(
-				log4JLevelConfig.getName(), log4JLevelConfig.getPriority(),
-				log4JLevelConfig.isCustom());
-		}
-
-		if (_clusterMasterExecutor.isMaster()) {
-			_notifySlaves(_updateLogLevelsMethodKey, _getLog4JLevelConfigs());
+		else {
+			_clusterMasterExecutor.executeOnMaster(
+				new MethodHandler(_updateLogLevelsMethodKey, logLevels));
 		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditServerMVCActionCommand.class);
 
+	private static final MethodKey _resetLogLevelsMethodKey = new MethodKey(
+		EditServerMVCActionCommand.class, "_resetLogLevels", Map.class,
+		Map.class);
 	private static final MethodKey _updateLogLevelsMethodKey = new MethodKey(
-		EditServerMVCActionCommand.class, "_updateLogLevels", List.class);
+		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class);
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;
@@ -899,31 +854,5 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private UserGroupMembershipPolicyFactory _userGroupMembershipPolicyFactory;
-
-	private static class Log4JLevelConfig implements Serializable {
-
-		public Log4JLevelConfig(String name, String priority, boolean custom) {
-			_name = name;
-			_priority = priority;
-			_custom = custom;
-		}
-
-		public String getName() {
-			return _name;
-		}
-
-		public String getPriority() {
-			return _priority;
-		}
-
-		public boolean isCustom() {
-			return _custom;
-		}
-
-		private final boolean _custom;
-		private final String _name;
-		private final String _priority;
-
-	}
 
 }

@@ -318,7 +318,18 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		_configuration.setNewBuiltinClassResolver(_templateClassResolver);
 
 		try {
-			_configuration.setSetting("auto_import", _getMacroLibrary());
+			String macroLibrary = _getMacroLibrary(
+				_freeMarkerEngineConfiguration);
+
+			if (macroLibrary.length() == 0) {
+				macroLibrary = _getMacroLibrary(
+					ConfigurableUtil.createConfigurable(
+						FreeMarkerEngineConfiguration.class,
+						Collections.emptyMap()));
+			}
+
+			_configuration.setSetting("auto_import", macroLibrary);
+
 			_configuration.setSetting(
 				"template_exception_handler",
 				_freeMarkerEngineConfiguration.templateExceptionHandler());
@@ -601,7 +612,9 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		_singleVMPool = singleVMPool;
 	}
 
-	private String _getMacroLibrary() {
+	private String _getMacroLibrary(
+		FreeMarkerEngineConfiguration freeMarkerEngineConfiguration) {
+
 		Class<?> clazz = getClass();
 
 		String contextName = ClassLoaderPool.getContextName(
@@ -610,7 +623,7 @@ public class FreeMarkerManager extends BaseTemplateManager {
 		contextName = contextName.concat(
 			TemplateConstants.CLASS_LOADER_SEPARATOR);
 
-		String[] macroLibrary = _freeMarkerEngineConfiguration.macroLibrary();
+		String[] macroLibrary = freeMarkerEngineConfiguration.macroLibrary();
 
 		StringBundler sb = new StringBundler(3 * macroLibrary.length);
 
@@ -633,6 +646,10 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	}
 
 	private boolean _hasLibrary(String library) {
+		if (library.length() == 0) {
+			return false;
+		}
+
 		int index = library.indexOf(CharPool.SPACE);
 
 		if (index != -1) {

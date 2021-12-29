@@ -770,6 +770,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 				logLevelEntry.getKey(), logLevelEntry.getValue(), true);
 		}
 
+		if (!_clusterExecutor.isEnabled()) {
+			return;
+		}
+
 		if (_clusterMasterExecutor.isMaster()) {
 			ClusterRequest clusterRequest =
 				ClusterRequest.createMulticastRequest(

@@ -193,7 +193,8 @@ public class SetupWizardUtil {
 		_updateCompany(httpServletRequest, unicodeProperties);
 
 		_updateAdminUser(
-			httpServletRequest, httpServletResponse, unicodeProperties);
+			httpServletRequest, httpServletResponse, unicodeProperties,
+			databaseConfigured);
 
 		_updateCompanyWebId(httpServletRequest, unicodeProperties);
 
@@ -326,7 +327,7 @@ public class SetupWizardUtil {
 	private static void _updateAdminUser(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse,
-			UnicodeProperties unicodeProperties)
+			UnicodeProperties unicodeProperties, boolean databaseConfigured)
 		throws Exception {
 
 		ThemeDisplay themeDisplay =
@@ -360,6 +361,12 @@ public class SetupWizardUtil {
 
 		if ((passwordPolicy != null) && passwordPolicy.isChangeable()) {
 			passwordReset = true;
+
+			if (!databaseConfigured) {
+				unicodeProperties.put(
+					PropsKeys.DEFAULT_ADMIN_PASSWORD_RESET_ENABLED,
+					Boolean.TRUE.toString());
+			}
 		}
 
 		User user = SetupWizardSampleDataUtil.updateAdminUser(

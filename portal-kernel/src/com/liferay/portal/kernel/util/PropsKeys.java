@@ -739,6 +739,9 @@ public interface PropsKeys {
 	public static final String DEFAULT_ADMIN_PASSWORD =
 		"default.admin.password";
 
+	public static final String DEFAULT_ADMIN_PASSWORD_RESET_ENABLED =
+		"default.admin.password.reset.enabled";
+
 	public static final String DEFAULT_ADMIN_SCREEN_NAME =
 		"default.admin.screen.name";
 

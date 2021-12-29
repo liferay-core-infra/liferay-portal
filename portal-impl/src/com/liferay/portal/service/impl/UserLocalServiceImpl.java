@@ -318,7 +318,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		updateLastLogin(
 			defaultAdminUser.getUserId(), defaultAdminUser.getLoginIP());
 
-		updatePasswordReset(defaultAdminUser.getUserId(), false);
+		updatePasswordReset(
+			defaultAdminUser.getUserId(),
+			PropsValues.DEFAULT_ADMIN_PASSWORD_RESET_ENABLED);
 
 		return defaultAdminUser;
 	}

@@ -675,6 +675,10 @@ public class PropsValues {
 	public static final String DEFAULT_ADMIN_PASSWORD = PropsUtil.get(
 		PropsKeys.DEFAULT_ADMIN_PASSWORD);
 
+	public static final boolean DEFAULT_ADMIN_PASSWORD_RESET_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.DEFAULT_ADMIN_PASSWORD_RESET_ENABLED));
+
 	public static String DEFAULT_ADMIN_SCREEN_NAME = PropsUtil.get(
 		PropsKeys.DEFAULT_ADMIN_SCREEN_NAME);
 

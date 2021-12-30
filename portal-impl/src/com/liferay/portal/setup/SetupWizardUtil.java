@@ -178,10 +178,12 @@ public class SetupWizardUtil {
 			PropsKeys.LIFERAY_HOME,
 			SystemProperties.get(PropsKeys.LIFERAY_HOME));
 
-		boolean databaseConfigured = _isDatabaseConfigured(unicodeProperties);
+		boolean databaseConfigurationUnchanged =
+			_isDatabaseConfigurationUnchanged(unicodeProperties);
 
 		_processDatabaseProperties(
-			httpServletRequest, unicodeProperties, databaseConfigured);
+			httpServletRequest, unicodeProperties,
+			databaseConfigurationUnchanged);
 
 		_processOtherProperties(httpServletRequest, unicodeProperties);
 
@@ -229,7 +231,7 @@ public class SetupWizardUtil {
 			unicodeProperties.toString(), _NULL_HOLDER);
 	}
 
-	private static boolean _isDatabaseConfigured(
+	private static boolean _isDatabaseConfigurationUnchanged(
 		UnicodeProperties unicodeProperties) {
 
 		String defaultDriverClassName = unicodeProperties.get(
@@ -254,13 +256,14 @@ public class SetupWizardUtil {
 
 	private static void _processDatabaseProperties(
 			HttpServletRequest httpServletRequest,
-			UnicodeProperties unicodeProperties, boolean databaseConfigured)
+			UnicodeProperties unicodeProperties,
+			boolean databaseConfigurationUnchanged)
 		throws Exception {
 
 		boolean defaultDatabase = ParamUtil.getBoolean(
 			httpServletRequest, "defaultDatabase", true);
 
-		if (defaultDatabase || databaseConfigured) {
+		if (defaultDatabase || databaseConfigurationUnchanged) {
 			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_URL);
 			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_DRIVER_CLASS_NAME);
 			unicodeProperties.remove(PropsKeys.JDBC_DEFAULT_USERNAME);

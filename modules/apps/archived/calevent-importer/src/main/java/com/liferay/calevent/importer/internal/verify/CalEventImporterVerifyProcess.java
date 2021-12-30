@@ -56,7 +56,7 @@ import com.liferay.portal.kernel.cal.TZSRecurrence;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -453,7 +453,7 @@ public class CalEventImporterVerifyProcess extends VerifyProcess {
 		TZSRecurrence tzsRecurrence = null;
 
 		try {
-			tzsRecurrence = (TZSRecurrence)JSONFactoryUtil.deserialize(
+			tzsRecurrence = (TZSRecurrence)_jsonFactory.deserialize(
 				originalRecurrence);
 		}
 		catch (IllegalStateException illegalStateException) {
@@ -1429,6 +1429,9 @@ public class CalEventImporterVerifyProcess extends VerifyProcess {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	private JSONSerializer _jsonSerializer;
 

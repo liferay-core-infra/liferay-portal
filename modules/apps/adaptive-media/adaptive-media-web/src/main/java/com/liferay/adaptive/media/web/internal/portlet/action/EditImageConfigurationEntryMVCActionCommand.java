@@ -20,7 +20,7 @@ import com.liferay.adaptive.media.image.configuration.AMImageConfigurationHelper
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
@@ -106,7 +106,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 			newUuid = ParamUtil.getString(actionRequest, "newUuid");
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", themeDisplay.getLocale(), getClass());
 
@@ -318,5 +318,8 @@ public class EditImageConfigurationEntryMVCActionCommand
 
 	@Reference
 	private AMImageEntryLocalService _amImageEntryLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

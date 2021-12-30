@@ -19,7 +19,7 @@ import com.liferay.analytics.reports.web.internal.data.provider.AnalyticsReports
 import com.liferay.analytics.reports.web.internal.model.HistoricalMetric;
 import com.liferay.analytics.reports.web.internal.model.TimeSpan;
 import com.liferay.layout.seo.kernel.LayoutSEOLinkManager;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -59,7 +59,7 @@ public class GetHistoricalReadsMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		try {
 			AnalyticsReportsDataProvider analyticsReportsDataProvider =
@@ -107,6 +107,9 @@ public class GetHistoricalReadsMVCResourceCommand
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

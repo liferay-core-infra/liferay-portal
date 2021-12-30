@@ -21,7 +21,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.storage.Field;
 import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.DDMUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -44,6 +44,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jürgen Kappler
@@ -91,7 +92,7 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 			Serializable fieldValue = field.getValue(
 				themeDisplay.getLocale(), 0);
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+			JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 			if (fieldValue != null) {
 				jsonObject.put("success", true);
@@ -175,5 +176,8 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 
 		return fieldValue;
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

@@ -18,7 +18,7 @@ import com.liferay.analytics.settings.web.internal.util.AnalyticsSettingsUtil;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -239,7 +239,7 @@ public class EditChannelMVCActionCommand extends BaseAnalyticsMVCActionCommand {
 			String channelId, String json, String[] selectedGroupIds)
 		throws Exception {
 
-		JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(json);
+		JSONObject responseJSONObject = _jsonFactory.createJSONObject(json);
 
 		String[] removedGroupIds = JSONUtil.toStringArray(
 			responseJSONObject.getJSONArray("removedGroupIds"));
@@ -268,5 +268,8 @@ public class EditChannelMVCActionCommand extends BaseAnalyticsMVCActionCommand {
 
 	@Reference
 	private CompanyService _companyService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

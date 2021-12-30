@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.diff.DiffHtmlUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -155,8 +155,7 @@ public class GetEntryRenderDataMVCResourceCommand
 		String[] availableLanguageIds = null;
 		String defaultLanguageId = null;
 		String editURL = null;
-		JSONObject localizedTitlesJSONObject =
-			JSONFactoryUtil.createJSONObject();
+		JSONObject localizedTitlesJSONObject = _jsonFactory.createJSONObject();
 		String rightPreview = null;
 		JSONObject rightLocalizedPreviewJSONObject = null;
 		JSONObject rightLocalizedRenderJSONObject = null;
@@ -537,7 +536,7 @@ public class GetEntryRenderDataMVCResourceCommand
 			(rightLocalizedPreviewJSONObject != null)) {
 
 			JSONObject unifiedLocalizedPreviewJSONObject =
-				JSONFactoryUtil.createJSONObject();
+				_jsonFactory.createJSONObject();
 
 			for (String languageId : availableLanguageIds) {
 				String leftLocalizedPreview =
@@ -564,7 +563,7 @@ public class GetEntryRenderDataMVCResourceCommand
 			(rightLocalizedRenderJSONObject != null)) {
 
 			JSONObject unifiedLocalizedRenderJSONObject =
-				JSONFactoryUtil.createJSONObject();
+				_jsonFactory.createJSONObject();
 
 			for (String languageId : availableLanguageIds) {
 				String leftLocalizedRender =
@@ -596,7 +595,7 @@ public class GetEntryRenderDataMVCResourceCommand
 		}
 
 		if (ArrayUtil.isNotEmpty(availableLanguageIds)) {
-			JSONArray localesJSONArray = JSONFactoryUtil.createJSONArray();
+			JSONArray localesJSONArray = _jsonFactory.createJSONArray();
 
 			for (String languageId : availableLanguageIds) {
 				localesJSONArray.put(_getLocaleJSONObject(languageId));
@@ -648,7 +647,7 @@ public class GetEntryRenderDataMVCResourceCommand
 
 				if (preview != null) {
 					if (jsonObject == null) {
-						jsonObject = JSONFactoryUtil.createJSONObject();
+						jsonObject = _jsonFactory.createJSONObject();
 					}
 
 					jsonObject.put(languageId, preview);
@@ -672,7 +671,7 @@ public class GetEntryRenderDataMVCResourceCommand
 			CTSQLModeThreadLocal.CTSQLMode ctSQLMode, T model, String type)
 		throws Exception {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		for (String languageId : availableLanguageIds) {
 			jsonObject.put(
@@ -825,6 +824,9 @@ public class GetEntryRenderDataMVCResourceCommand
 
 	@Reference
 	private CTEntryLocalService _ctEntryLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

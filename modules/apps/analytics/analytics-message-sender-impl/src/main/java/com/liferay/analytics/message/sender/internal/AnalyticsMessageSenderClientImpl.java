@@ -19,7 +19,7 @@ import aQute.bnd.annotation.metatype.Meta;
 import com.liferay.analytics.message.sender.client.AnalyticsMessageSenderClient;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -164,7 +164,7 @@ public class AnalyticsMessageSenderClientImpl
 			JSONObject responseJSONObject = null;
 
 			try {
-				responseJSONObject = JSONFactoryUtil.createJSONObject(
+				responseJSONObject = _jsonFactory.createJSONObject(
 					EntityUtils.toString(
 						closeableHttpResponse.getEntity(),
 						Charset.defaultCharset()));
@@ -230,7 +230,7 @@ public class AnalyticsMessageSenderClientImpl
 				return closeableHttpResponse;
 			}
 
-			JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(
+			JSONObject responseJSONObject = _jsonFactory.createJSONObject(
 				EntityUtils.toString(
 					closeableHttpResponse.getEntity(),
 					Charset.defaultCharset()));
@@ -289,6 +289,9 @@ public class AnalyticsMessageSenderClientImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnalyticsMessageSenderClientImpl.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private SettingsFactory _settingsFactory;

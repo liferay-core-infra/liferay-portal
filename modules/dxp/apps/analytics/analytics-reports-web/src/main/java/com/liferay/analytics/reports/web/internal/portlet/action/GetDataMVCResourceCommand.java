@@ -30,7 +30,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -222,7 +222,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 		AnalyticsReportsInfoItem<Object> analyticsReportsInfoItem,
 		String canonicalURL, Locale locale, ResourceResponse resourceResponse) {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		Optional.ofNullable(
 			analyticsReportsInfoItem.getActions()
@@ -554,6 +554,9 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

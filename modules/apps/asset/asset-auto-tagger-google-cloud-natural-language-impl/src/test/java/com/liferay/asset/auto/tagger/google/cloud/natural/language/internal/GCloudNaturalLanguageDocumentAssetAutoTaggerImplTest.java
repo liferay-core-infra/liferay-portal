@@ -15,6 +15,7 @@
 package com.liferay.asset.auto.tagger.google.cloud.natural.language.internal;
 
 import com.liferay.asset.auto.tagger.google.cloud.natural.language.internal.configuration.GCloudNaturalLanguageAssetAutoTaggerCompanyConfiguration;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -54,6 +55,10 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImplTest {
 		ReflectionTestUtil.setFieldValue(
 			_gCloudNaturalLanguageDocumentAssetAutoTaggerImpl, "_http",
 			new HttpImpl());
+
+		ReflectionTestUtil.setFieldValue(
+			_gCloudNaturalLanguageDocumentAssetAutoTaggerImpl, "_jsonFactory",
+			new JSONFactoryImpl());
 	}
 
 	@Test

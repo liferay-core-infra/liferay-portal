@@ -2838,6 +2838,10 @@ public interface PropsKeys {
 	public static final String SETUP_WIZARD_ADD_SAMPLE_DATA =
 		"setup.wizard.add.sample.data";
 
+	public static final String
+		SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED =
+			"setup.wizard.default.admin.password.reset.enabled";
+
 	public static final String SETUP_WIZARD_ENABLED = "setup.wizard.enabled";
 
 	public static final String SHAREPOINT_STORAGE_CLASS =

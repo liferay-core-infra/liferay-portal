@@ -2553,6 +2553,13 @@ public class PropsValues {
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.SETUP_WIZARD_ADD_SAMPLE_DATA));
 
+	public static final boolean
+		SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED =
+			GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.
+						SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED));
+
 	public static boolean SETUP_WIZARD_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.SETUP_WIZARD_ENABLED));
 

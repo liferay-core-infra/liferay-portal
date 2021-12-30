@@ -882,6 +882,7 @@
 			<property name="serviceReferenceUtilClassNames" value="com.liferay.portal.kernel.editor.configuration.EditorConfigurationFactoryUtil" />
 			<property name="serviceReferenceUtilClassNames" value="com.liferay.portal.kernel.image.GhostscriptUtil" />
 			<property name="serviceReferenceUtilClassNames" value="com.liferay.portal.kernel.image.ImageMagickUtil" />
+			<property name="serviceReferenceUtilClassNames" value="com.liferay.portal.kernel.image.ImageToolUtil" />
 			<property name="serviceReferenceUtilClassNames" value="com.liferay.portal.kernel.util.HttpUtil" />
 			<property name="serviceReferenceUtilClassNames" value="com.liferay.portal.kernel.util.PortalUtil" />
 		</check>

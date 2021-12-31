@@ -420,15 +420,12 @@ public class MainServlet extends HttpServlet {
 					Company company = CompanyLocalServiceUtil.getCompanyByWebId(
 						PropsValues.COMPANY_DEFAULT_WEB_ID);
 
-					User adminUser =
-						UserLocalServiceUtil.fetchUserByEmailAddress(
+					UserLocalServiceUtil.updatePasswordReset(
+						UserLocalServiceUtil.getUserIdByEmailAddress(
 							company.getCompanyId(),
 							PropsValues.DEFAULT_ADMIN_EMAIL_ADDRESS_PREFIX +
-								"@" + company.getMx());
-
-					adminUser.setPasswordReset(true);
-
-					UserLocalServiceUtil.updateUser(adminUser);
+								"@" + company.getMx()),
+						true);
 				}
 			}
 			catch (Exception exception) {

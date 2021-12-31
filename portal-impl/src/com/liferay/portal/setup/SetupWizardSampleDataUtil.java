@@ -64,7 +64,8 @@ public class SetupWizardSampleDataUtil {
 			companyId, PropsValues.COMPANY_DEFAULT_NAME,
 			PropsValues.DEFAULT_ADMIN_FIRST_NAME,
 			PropsValues.DEFAULT_ADMIN_LAST_NAME,
-			PropsValues.ADMIN_EMAIL_FROM_ADDRESS, false);
+			PropsValues.ADMIN_EMAIL_FROM_ADDRESS,
+			PropsValues.SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED);
 	}
 
 	public static void addSampleData(

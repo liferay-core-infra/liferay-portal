@@ -413,9 +413,8 @@ public class MainServlet extends HttpServlet {
 					SetupWizardSampleDataUtil.addSampleData(
 						PortalInstances.getDefaultCompanyId());
 				}
-
-				if (PropsValues.
-						SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED) {
+				else if (PropsValues.
+							SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED) {
 
 					Company company = CompanyLocalServiceUtil.getCompanyByWebId(
 						PropsValues.COMPANY_DEFAULT_WEB_ID);

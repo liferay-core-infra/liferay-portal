@@ -17,7 +17,7 @@ package com.liferay.document.library.video.internal.video.external.shortcut.prov
 import com.liferay.document.library.video.external.shortcut.DLVideoExternalShortcut;
 import com.liferay.document.library.video.external.shortcut.provider.DLVideoExternalShortcutProvider;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -106,10 +106,10 @@ public class YouTubeDLVideoExternalShortcutProvider
 			JSONObject jsonObject;
 
 			if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				jsonObject = JSONFactoryUtil.createJSONObject();
+				jsonObject = _jsonFactory.createJSONObject();
 			}
 			else {
-				jsonObject = JSONFactoryUtil.createJSONObject(responseJSON);
+				jsonObject = _jsonFactory.createJSONObject(responseJSON);
 			}
 
 			return jsonObject;
@@ -119,7 +119,7 @@ public class YouTubeDLVideoExternalShortcutProvider
 				_log.debug(exception, exception);
 			}
 
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 	}
 
@@ -147,5 +147,8 @@ public class YouTubeDLVideoExternalShortcutProvider
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

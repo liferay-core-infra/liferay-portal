@@ -37,7 +37,7 @@ import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -131,7 +131,7 @@ public class ContentDashboardItemSubtypeItemSelectorView
 		ServletRequest servletRequest, ThemeDisplay themeDisplay) {
 
 		JSONArray contentDashboardItemTypesJSONArray =
-			JSONFactoryUtil.createJSONArray();
+			_jsonFactory.createJSONArray();
 
 		Set<String> checkedContentDashboardItemSubtypes = SetUtil.fromArray(
 			servletRequest.getParameterValues(
@@ -235,7 +235,7 @@ public class ContentDashboardItemSubtypeItemSelectorView
 			infoItemFormVariationsProvider.getInfoItemFormVariations(
 				_getGroupIds(themeDisplay.getCompanyId()));
 
-		JSONArray itemSubtypesJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray itemSubtypesJSONArray = _jsonFactory.createJSONArray();
 
 		for (InfoItemFormVariation infoItemFormVariation :
 				infoItemFormVariations) {
@@ -328,6 +328,9 @@ public class ContentDashboardItemSubtypeItemSelectorView
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.content.dashboard.web)"

@@ -26,7 +26,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.type.WebImage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -161,7 +161,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 						contentDashboardItem, httpServletRequest)
 				)
 			).orElseGet(
-				JSONFactoryUtil::createJSONObject
+				_jsonFactory::createJSONObject
 			);
 
 			JSONPortletResponseUtil.writeJSON(
@@ -232,7 +232,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 		Stream<Map.Entry<String, Object>> stream = entries.stream();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		stream.forEach(
 			entry -> jsonObject.put(
@@ -366,6 +366,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

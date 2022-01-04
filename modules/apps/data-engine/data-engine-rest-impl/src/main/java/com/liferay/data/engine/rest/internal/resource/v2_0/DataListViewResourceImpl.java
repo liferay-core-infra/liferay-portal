@@ -34,7 +34,6 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -359,7 +358,7 @@ public class DataListViewResourceImpl
 	}
 
 	private String _toJSON(Map<String, Object> appliedFilters) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		if (MapUtil.isEmpty(appliedFilters)) {
 			return jsonObject.toString();
@@ -375,7 +374,7 @@ public class DataListViewResourceImpl
 	private Map<String, Object> _toMap(String json) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(json);
 
 		Set<String> keySet = jsonObject.keySet();
 

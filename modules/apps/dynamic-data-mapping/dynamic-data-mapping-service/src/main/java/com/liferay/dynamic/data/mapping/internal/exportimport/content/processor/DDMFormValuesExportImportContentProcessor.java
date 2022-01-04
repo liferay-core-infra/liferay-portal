@@ -34,7 +34,7 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.layout.dynamic.data.mapping.form.field.type.constants.LayoutDDMFormFieldTypeConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -155,6 +155,9 @@ public class DDMFormValuesExportImportContentProcessor
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
 
+	@Reference
+	private JSONFactory _jsonFactory;
+
 	private LayoutLocalService _layoutLocalService;
 
 	private class FileEntryExportDDMFormFieldValueTransformer
@@ -186,7 +189,7 @@ public class DDMFormValuesExportImportContentProcessor
 				JSONObject jsonObject = null;
 
 				try {
-					jsonObject = JSONFactoryUtil.createJSONObject(valueString);
+					jsonObject = _jsonFactory.createJSONObject(valueString);
 				}
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {
@@ -280,7 +283,7 @@ public class DDMFormValuesExportImportContentProcessor
 				JSONObject jsonObject = null;
 
 				try {
-					jsonObject = JSONFactoryUtil.createJSONObject(valueString);
+					jsonObject = _jsonFactory.createJSONObject(valueString);
 				}
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {
@@ -403,7 +406,7 @@ public class DDMFormValuesExportImportContentProcessor
 				JSONObject jsonObject = null;
 
 				try {
-					jsonObject = JSONFactoryUtil.createJSONObject(valueString);
+					jsonObject = _jsonFactory.createJSONObject(valueString);
 				}
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {
@@ -499,7 +502,7 @@ public class DDMFormValuesExportImportContentProcessor
 				JSONObject jsonObject = null;
 
 				try {
-					jsonObject = JSONFactoryUtil.createJSONObject(valueString);
+					jsonObject = _jsonFactory.createJSONObject(valueString);
 				}
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {
@@ -598,7 +601,7 @@ public class DDMFormValuesExportImportContentProcessor
 				JSONObject jsonObject = null;
 
 				try {
-					jsonObject = JSONFactoryUtil.createJSONObject(valueString);
+					jsonObject = _jsonFactory.createJSONObject(valueString);
 				}
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {
@@ -660,7 +663,7 @@ public class DDMFormValuesExportImportContentProcessor
 				JSONObject jsonObject = null;
 
 				try {
-					jsonObject = JSONFactoryUtil.createJSONObject(valueString);
+					jsonObject = _jsonFactory.createJSONObject(valueString);
 				}
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {

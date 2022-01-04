@@ -31,7 +31,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.localized.InfoLocalizedValue;
 import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -253,8 +253,7 @@ public class DDMFormValuesInfoFieldValuesProviderImpl
 						ddmFormFieldValue.getType(), DDMFormFieldType.IMAGE) ||
 					 Objects.equals(ddmFormFieldValue.getType(), "image")) {
 
-				return _getWebImage(
-					JSONFactoryUtil.createJSONObject(valueString));
+				return _getWebImage(_jsonFactory.createJSONObject(valueString));
 			}
 
 			return SanitizerUtil.sanitize(
@@ -286,5 +285,8 @@ public class DDMFormValuesInfoFieldValuesProviderImpl
 
 	@Reference
 	private DLURLHelper _dlURLHelper;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

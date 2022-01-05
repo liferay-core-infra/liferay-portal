@@ -57,6 +57,8 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.portlet.LiferayActionResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -138,7 +140,8 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = MVCActionCommand.class
 )
-public class EditServerMVCActionCommand extends BaseMVCActionCommand {
+public class EditServerMVCActionCommand
+	extends BaseMVCActionCommand implements IdentifiableOSGiService {
 
 	@Override
 	public void doProcessAction(
@@ -229,6 +232,11 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		sendRedirect(actionRequest, actionResponse, redirect);
+	}
+
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return EditServerMVCActionCommand.class.getName();
 	}
 
 	protected void cacheDb() throws Exception {
@@ -711,6 +719,31 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		_serviceComponentLocalService.verifyDB();
 	}
 
+	private static void _resetLogLevels(
+		Map<String, String> logLevels, Map<String, String> customLogSettings) {
+
+		for (Map.Entry<String, String> logLevel : logLevels.entrySet()) {
+			Log4JUtil.setLevel(
+				logLevel.getKey(), logLevel.getValue(),
+				customLogSettings.containsKey(logLevel.getKey()));
+		}
+	}
+
+	private static void _updateLogLevels(
+		Map<String, String> logLevels, String osgiServiceIdentifier) {
+
+		EditServerMVCActionCommand editServerMVCActionCommand =
+			(EditServerMVCActionCommand)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		if (editServerMVCActionCommand == null) {
+			return;
+		}
+
+		editServerMVCActionCommand._updateLogLevels(logLevels);
+	}
+
 	private void _cleanUpAddToPagePermissions(
 			long companyId, long roleId, boolean limitScope)
 		throws Exception {
@@ -754,16 +787,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		return portletIds.contains(portletId);
 	}
 
-	private void _resetLogLevels(
-		Map<String, String> logLevels, Map<String, String> customLogSettings) {
-
-		for (Map.Entry<String, String> logLevel : logLevels.entrySet()) {
-			Log4JUtil.setLevel(
-				logLevel.getKey(), logLevel.getValue(),
-				customLogSettings.containsKey(logLevel.getKey()));
-		}
-	}
-
 	private void _updateLogLevels(Map<String, String> logLevels) {
 		for (Map.Entry<String, String> logLevelEntry : logLevels.entrySet()) {
 			Log4JUtil.setLevel(
@@ -788,7 +811,9 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		}
 		else {
 			_clusterMasterExecutor.executeOnMaster(
-				new MethodHandler(_updateLogLevelsMethodKey, logLevels));
+				new MethodHandler(
+					_updateLogLevelsMethodKey, logLevels,
+					getOSGiServiceIdentifier()));
 		}
 	}
 
@@ -799,7 +824,8 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		EditServerMVCActionCommand.class, "_resetLogLevels", Map.class,
 		Map.class);
 	private static final MethodKey _updateLogLevelsMethodKey = new MethodKey(
-		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class);
+		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class,
+		String.class);
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;

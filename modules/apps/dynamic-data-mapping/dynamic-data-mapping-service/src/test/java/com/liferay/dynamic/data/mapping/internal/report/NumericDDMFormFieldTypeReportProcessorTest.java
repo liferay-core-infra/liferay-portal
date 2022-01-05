@@ -23,10 +23,12 @@ import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -41,6 +43,7 @@ import java.util.Locale;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,6 +65,16 @@ public class NumericDDMFormFieldTypeReportProcessorTest extends PowerMockito {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		_numericDDMFormFieldTypeReportProcessor =
+			new NumericDDMFormFieldTypeReportProcessor();
+
+		ReflectionTestUtil.setFieldValue(
+			_numericDDMFormFieldTypeReportProcessor, "_jsonFactory",
+			new JSONFactoryImpl());
+	}
 
 	@Before
 	public void setUp() {
@@ -430,12 +443,11 @@ public class NumericDDMFormFieldTypeReportProcessorTest extends PowerMockito {
 
 	private static final int _VALUES_MAX_LENGTH = 5;
 
+	private static NumericDDMFormFieldTypeReportProcessor
+		_numericDDMFormFieldTypeReportProcessor;
+
 	@Mock
 	private DDMFormInstanceRecordLocalService
 		_ddmFormInstanceRecordLocalService;
-
-	private final NumericDDMFormFieldTypeReportProcessor
-		_numericDDMFormFieldTypeReportProcessor =
-			new NumericDDMFormFieldTypeReportProcessor();
 
 }

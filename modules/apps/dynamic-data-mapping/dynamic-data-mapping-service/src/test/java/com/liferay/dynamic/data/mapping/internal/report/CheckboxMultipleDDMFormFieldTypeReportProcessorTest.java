@@ -19,13 +19,16 @@ import com.liferay.dynamic.data.mapping.model.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.model.Value;
 import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -46,6 +49,16 @@ public class CheckboxMultipleDDMFormFieldTypeReportProcessorTest
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		_checkboxMultipleDDMFormFieldTypeReportProcessor =
+			new CheckboxMultipleDDMFormFieldTypeReportProcessor();
+
+		ReflectionTestUtil.setFieldValue(
+			_checkboxMultipleDDMFormFieldTypeReportProcessor, "_jsonFactory",
+			new JSONFactoryImpl());
+	}
 
 	@Test
 	public void testProcessDDMFormInstanceReportOnDeleteEvent()
@@ -211,8 +224,7 @@ public class CheckboxMultipleDDMFormFieldTypeReportProcessorTest
 		Assert.assertEquals(1, valuesJSONObject.getLong("option2"));
 	}
 
-	private final CheckboxMultipleDDMFormFieldTypeReportProcessor
-		_checkboxMultipleDDMFormFieldTypeReportProcessor =
-			new CheckboxMultipleDDMFormFieldTypeReportProcessor();
+	private static CheckboxMultipleDDMFormFieldTypeReportProcessor
+		_checkboxMultipleDDMFormFieldTypeReportProcessor;
 
 }

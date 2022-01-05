@@ -17,7 +17,6 @@ package com.liferay.dynamic.data.mapping.form.field.type.internal.fieldset;
 import com.liferay.dynamic.data.mapping.form.field.type.BaseDDMFormFieldTypeSettingsTestCase;
 import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -26,6 +25,7 @@ import java.io.InputStream;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,12 +41,19 @@ public class FieldSetDDMFormFieldTemplateContextContributorTest
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@BeforeClass
+	public static void setUpClass() {
+		_fieldSetDDMFormFieldTemplateContextContributor =
+			new FieldSetDDMFormFieldTemplateContextContributor();
+
+		_fieldSetDDMFormFieldTemplateContextContributor.jsonFactory =
+			new JSONFactoryImpl();
+	}
+
 	@Before
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-
-		_setUpJSONFactoryUtil();
 	}
 
 	@Test
@@ -126,14 +133,7 @@ public class FieldSetDDMFormFieldTemplateContextContributorTest
 		return StringUtil.read(inputStream);
 	}
 
-	private void _setUpJSONFactoryUtil() {
-		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
-
-		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
-	}
-
-	private final FieldSetDDMFormFieldTemplateContextContributor
-		_fieldSetDDMFormFieldTemplateContextContributor =
-			new FieldSetDDMFormFieldTemplateContextContributor();
+	private static FieldSetDDMFormFieldTemplateContextContributor
+		_fieldSetDDMFormFieldTemplateContextContributor;
 
 }

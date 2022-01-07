@@ -15,7 +15,7 @@
 package com.liferay.saml.web.internal.struts;
 
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
@@ -159,7 +159,7 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 	private JSONObject _toJSONObject(
 		List<SamlSpIdpConnection> samlSpIdpConnections) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (SamlSpIdpConnection samlSpIdpConnection : samlSpIdpConnections) {
 			jsonArray.put(
@@ -174,6 +174,9 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 
 		return JSONUtil.put("relevantIdpConnections", jsonArray);
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

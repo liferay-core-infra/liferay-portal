@@ -57,7 +57,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -1004,7 +1004,7 @@ public class ObjectEntryLocalServiceImpl
 
 	private String _getValue(String valueString) {
 		try {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray(valueString);
+			JSONArray jsonArray = _jsonFactory.createJSONArray(valueString);
 
 			return GetterUtil.getString(jsonArray.get(0));
 		}
@@ -1707,6 +1707,9 @@ public class ObjectEntryLocalServiceImpl
 
 	@Reference
 	private InlineSQLHelper _inlineSQLHelper;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;

@@ -17,7 +17,7 @@ package com.liferay.portal.search.tuning.rankings.web.internal.storage.helper;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.json.storage.service.JSONStorageEntryLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -42,7 +42,7 @@ public class RankingJSONStorageHelper {
 
 		long classPK = counterLocalService.increment();
 
-		JSONArray pinsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray pinsJSONArray = jsonFactory.createJSONArray();
 
 		for (Ranking.Pin pin : pins) {
 			pinsJSONArray.put(
@@ -54,10 +54,9 @@ public class RankingJSONStorageHelper {
 		}
 
 		JSONObject jsonObject = JSONUtil.put(
-			"aliases", JSONFactoryUtil.createJSONArray(aliases)
+			"aliases", jsonFactory.createJSONArray(aliases)
 		).put(
-			"hiddenDocumentIds",
-			JSONFactoryUtil.createJSONArray(hiddenDocumentIds)
+			"hiddenDocumentIds", jsonFactory.createJSONArray(hiddenDocumentIds)
 		).put(
 			"inactive", inactive
 		).put(
@@ -113,7 +112,7 @@ public class RankingJSONStorageHelper {
 		JSONObject jsonObject = jsonStorageEntryLocalService.getJSONObject(
 			classNameLocalService.getClassNameId(Ranking.class), classPK);
 
-		JSONArray pinsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray pinsJSONArray = jsonFactory.createJSONArray();
 
 		for (Ranking.Pin pin : pins) {
 			pinsJSONArray.put(
@@ -125,10 +124,9 @@ public class RankingJSONStorageHelper {
 		}
 
 		jsonObject.put(
-			"aliases", JSONFactoryUtil.createJSONArray(aliases)
+			"aliases", jsonFactory.createJSONArray(aliases)
 		).put(
-			"hiddenDocumentIds",
-			JSONFactoryUtil.createJSONArray(hiddenDocumentIds)
+			"hiddenDocumentIds", jsonFactory.createJSONArray(hiddenDocumentIds)
 		).put(
 			"inactive", inactive
 		).put(
@@ -148,6 +146,9 @@ public class RankingJSONStorageHelper {
 
 	@Reference
 	protected CounterLocalService counterLocalService;
+
+	@Reference
+	protected JSONFactory jsonFactory;
 
 	@Reference
 	protected JSONStorageEntryLocalService jsonStorageEntryLocalService;

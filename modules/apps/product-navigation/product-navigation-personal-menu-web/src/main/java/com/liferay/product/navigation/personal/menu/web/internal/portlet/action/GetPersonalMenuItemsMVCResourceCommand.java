@@ -17,7 +17,7 @@ package com.liferay.product.navigation.personal.menu.web.internal.portlet.action
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -190,7 +190,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 			List<PersonalMenuEntry> personalMenuEntries)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -234,7 +234,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 			PortletRequest portletRequest)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		List<List<PersonalMenuEntry>> groupedPersonalMenuEntries =
 			_personalMenuEntryRegistry.getGroupedPersonalMenuEntries();
@@ -307,6 +307,9 @@ public class GetPersonalMenuItemsMVCResourceCommand
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private PersonalMenuEntryRegistry _personalMenuEntryRegistry;

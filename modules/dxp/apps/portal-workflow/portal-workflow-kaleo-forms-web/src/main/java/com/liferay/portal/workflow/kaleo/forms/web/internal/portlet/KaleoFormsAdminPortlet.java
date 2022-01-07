@@ -23,7 +23,7 @@ import com.liferay.dynamic.data.mapping.util.DDMDisplayRegistry;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
@@ -336,7 +336,7 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 		String name = ParamUtil.getString(resourceRequest, "name");
 		String version = ParamUtil.getString(resourceRequest, "version");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		if (Validator.isNotNull(name) && Validator.isNotNull(version)) {
 			ThemeDisplay themeDisplay =
@@ -448,6 +448,9 @@ public class KaleoFormsAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private DDMFormDeserializerTracker _ddmFormDeserializerTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private KaleoDefinitionVersionLocalService

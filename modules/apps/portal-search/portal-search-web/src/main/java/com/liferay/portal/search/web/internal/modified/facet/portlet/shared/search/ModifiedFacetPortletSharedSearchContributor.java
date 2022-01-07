@@ -16,7 +16,6 @@ package com.liferay.portal.search.web.internal.modified.facet.portlet.shared.sea
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
@@ -60,11 +59,19 @@ public class ModifiedFacetPortletSharedSearchContributor
 			_buildFacet(
 				modifiedFacetPortletPreferences, portletSharedSearchSettings));
 	}
-
+	protected CalendarFactory calendarFactory;
 	protected CalendarFactory calendarFactory;
 	protected DateFormatFactory dateFormatFactory;
+	protected DateFormatFactory dateFormatFactory;
+	protected DateRangeFactory dateRangeFactory;
 	protected DateRangeFactory dateRangeFactory;
 	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected ModifiedFacetFactory modifiedFacetFactory;
 
 	@Reference
 	protected ModifiedFacetFactory modifiedFacetFactory;
@@ -75,7 +82,7 @@ public class ModifiedFacetPortletSharedSearchContributor
 
 		ModifiedFacetBuilder modifiedFacetBuilder = new ModifiedFacetBuilder(
 			modifiedFacetFactory, _getCalendarFactory(),
-			_getDateFormatFactory(), _getJSONFactory());
+			_getDateFormatFactory(), jsonFactory);
 
 		modifiedFacetBuilder.setRangesJSONArray(
 			_replaceAliases(
@@ -133,24 +140,13 @@ public class ModifiedFacetPortletSharedSearchContributor
 		return dateRangeFactory;
 	}
 
-	private JSONFactory _getJSONFactory() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (jsonFactory != null) {
-			return jsonFactory;
-		}
-
-		return JSONFactoryUtil.getJSONFactory();
-	}
-
 	private JSONArray _replaceAliases(JSONArray rangesJSONArray) {
 		DateRangeFactory dateRangeFactory = _getDateRangeFactory();
 
 		CalendarFactory calendarFactory = _getCalendarFactory();
 
 		return dateRangeFactory.replaceAliases(
-			rangesJSONArray, calendarFactory.getCalendar(), _getJSONFactory());
+			rangesJSONArray, calendarFactory.getCalendar(), jsonFactory);
 	}
 
 }

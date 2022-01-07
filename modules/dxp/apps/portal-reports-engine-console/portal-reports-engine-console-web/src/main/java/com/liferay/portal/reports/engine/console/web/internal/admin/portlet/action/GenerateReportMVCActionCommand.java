@@ -15,7 +15,7 @@
 package com.liferay.portal.reports.engine.console.web.internal.admin.portlet.action;
 
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -80,13 +80,13 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 		String reportName = ParamUtil.getString(actionRequest, "reportName");
 
 		JSONArray entryReportParametersJSONArray =
-			JSONFactoryUtil.createJSONArray();
-		JSONArray reportParametersJSONArray = JSONFactoryUtil.createJSONArray();
+			_jsonFactory.createJSONArray();
+		JSONArray reportParametersJSONArray = _jsonFactory.createJSONArray();
 
 		Definition definition = _definitionService.getDefinition(definitionId);
 
 		if (Validator.isNotNull(definition.getReportParameters())) {
-			reportParametersJSONArray = JSONFactoryUtil.createJSONArray(
+			reportParametersJSONArray = _jsonFactory.createJSONArray(
 				definition.getReportParameters());
 		}
 
@@ -134,6 +134,9 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private EntryService _entryService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

@@ -19,7 +19,7 @@ import com.liferay.mobile.device.rules.exception.NoSuchRuleGroupException;
 import com.liferay.mobile.device.rules.service.MDRRuleGroupInstanceService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -105,8 +105,8 @@ public class EditRuleGroupInstancePrioritiesMVCActionCommand
 		String ruleGroupsInstancesJSON = ParamUtil.getString(
 			actionRequest, "ruleGroupsInstancesJSON");
 
-		JSONArray ruleGroupsInstancesJSONArray =
-			JSONFactoryUtil.createJSONArray(ruleGroupsInstancesJSON);
+		JSONArray ruleGroupsInstancesJSONArray = _jsonFactory.createJSONArray(
+			ruleGroupsInstancesJSON);
 
 		for (int i = 0; i < ruleGroupsInstancesJSONArray.length(); i++) {
 			JSONObject ruleGroupInstanceJSONObject =
@@ -121,6 +121,9 @@ public class EditRuleGroupInstancePrioritiesMVCActionCommand
 				ruleGroupInstanceId, priority);
 		}
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	private MDRRuleGroupInstanceService _mdrRuleGroupInstanceService;
 

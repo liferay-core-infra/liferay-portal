@@ -23,7 +23,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -134,7 +134,7 @@ public class MentionsPortlet extends MVCPortlet {
 			Supplier<List<User>> usersSupplier, ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (User user : usersSupplier.get()) {
 			if (user.isDefaultUser() ||
@@ -177,8 +177,7 @@ public class MentionsPortlet extends MVCPortlet {
 			return JSONUtil.put("strategy", "default");
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-			strategyString);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(strategyString);
 
 		if (jsonObject.isNull("strategy")) {
 			throw new PortalException(
@@ -242,6 +241,9 @@ public class MentionsPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MentionsPortlet.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutPermission _layoutPermission;

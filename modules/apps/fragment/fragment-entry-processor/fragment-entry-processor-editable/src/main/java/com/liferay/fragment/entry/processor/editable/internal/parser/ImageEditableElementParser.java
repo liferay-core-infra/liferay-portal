@@ -24,7 +24,7 @@ import com.liferay.layout.responsive.ViewportSize;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -192,7 +192,7 @@ public class ImageEditableElementParser implements EditableElementParser {
 
 		if (JSONUtil.isValid(value)) {
 			try {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+				JSONObject jsonObject = _jsonFactory.createJSONObject(value);
 
 				fileEntryId = jsonObject.getLong("fileEntryId");
 				value = jsonObject.getString("url");
@@ -337,5 +337,8 @@ public class ImageEditableElementParser implements EditableElementParser {
 
 	@Reference
 	private Html _html;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

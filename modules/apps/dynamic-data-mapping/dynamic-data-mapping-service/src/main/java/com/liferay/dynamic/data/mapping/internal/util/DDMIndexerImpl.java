@@ -33,7 +33,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -407,7 +407,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 					String type = field.getType();
 
 					if (type.equals(DDMFormFieldTypeConstants.SELECT)) {
-						JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+						JSONArray jsonArray = jsonFactory.createJSONArray(
 							valueString);
 
 						String[] stringArray = ArrayUtil.toStringArray(
@@ -606,6 +606,9 @@ public class DDMIndexerImpl implements DDMIndexer {
 	}
 
 	@Reference
+	protected JSONFactory jsonFactory;
+
+	@Reference
 	protected Queries queries;
 
 	@Reference
@@ -729,7 +732,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 			String type = field.getType();
 
 			if (type.equals(DDMFormFieldTypeConstants.GEOLOCATION)) {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				JSONObject jsonObject = jsonFactory.createJSONObject(
 					valueString);
 
 				double latitude = jsonObject.getDouble("lat", 0);
@@ -742,11 +745,11 @@ public class DDMIndexerImpl implements DDMIndexer {
 				document.addKeyword(
 					_getSortableFieldName(name),
 					ArrayUtil.toStringArray(
-						JSONFactoryUtil.createJSONArray(sortableValueString)));
+						jsonFactory.createJSONArray(sortableValueString)));
 				document.addKeyword(
 					name,
 					ArrayUtil.toStringArray(
-						JSONFactoryUtil.createJSONArray(valueString)));
+						jsonFactory.createJSONArray(valueString)));
 			}
 			else {
 				if (type.equals(DDMFormFieldTypeConstants.RICH_TEXT)) {

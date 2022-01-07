@@ -46,7 +46,7 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -286,7 +286,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 			return layoutIdMap;
 		}
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(layoutIdsJSON);
+		JSONArray jsonArray = _jsonFactory.createJSONArray(layoutIdsJSON);
 
 		for (int i = 0; i < jsonArray.length(); ++i) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -596,7 +596,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	public String getSelectedLayoutsJSON(
 		long groupId, boolean privateLayout, String selectedNodes) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		List<Layout> layouts = _layoutLocalService.getLayouts(
 			groupId, privateLayout, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
@@ -1447,7 +1447,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		boolean includeChildren = true;
 
 		if (ListUtil.isNotEmpty(childLayouts)) {
-			childLayoutsJSONArray = JSONFactoryUtil.createJSONArray();
+			childLayoutsJSONArray = _jsonFactory.createJSONArray();
 
 			for (Layout childLayout : childLayouts) {
 				if (!_populateLayoutsJSON(
@@ -1531,6 +1531,10 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 
 	private DLFileEntryLocalService _dlFileEntryLocalService;
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
+
 	private LayoutLocalService _layoutLocalService;
 	private LayoutRevisionLocalService _layoutRevisionLocalService;
 	private LayoutService _layoutService;

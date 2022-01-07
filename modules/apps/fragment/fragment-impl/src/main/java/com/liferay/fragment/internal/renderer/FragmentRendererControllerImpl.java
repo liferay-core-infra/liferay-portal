@@ -33,7 +33,7 @@ import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -73,7 +73,7 @@ public class FragmentRendererControllerImpl
 			fragmentRendererContext.getFragmentEntryLink());
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				fragmentRenderer.getConfiguration(fragmentRendererContext));
 
 			return _translateConfigurationFields(
@@ -249,6 +249,9 @@ public class FragmentRendererControllerImpl
 
 	@Reference
 	private FragmentRendererTracker _fragmentRendererTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutAdaptiveMediaProcessor _layoutAdaptiveMediaProcessor;

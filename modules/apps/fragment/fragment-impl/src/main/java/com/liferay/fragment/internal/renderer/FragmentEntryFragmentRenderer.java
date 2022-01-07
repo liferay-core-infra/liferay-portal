@@ -32,7 +32,7 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.taglib.util.OutputData;
@@ -318,7 +318,7 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 				httpServletResponse);
 		}
 
-		JSONObject configurationJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject configurationJSONObject = _jsonFactory.createJSONObject();
 
 		if (Validator.isNotNull(fragmentEntryLink.getConfiguration())) {
 			configurationJSONObject =
@@ -371,6 +371,9 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 
 	@Reference
 	private FragmentEntryProcessorRegistry _fragmentEntryProcessorRegistry;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private MultiVMPool _multiVMPool;

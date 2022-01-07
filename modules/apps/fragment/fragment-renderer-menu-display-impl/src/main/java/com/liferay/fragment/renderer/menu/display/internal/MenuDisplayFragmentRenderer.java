@@ -26,7 +26,7 @@ import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -76,7 +76,7 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 			"content.Language", getClass());
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				StringUtil.read(
 					getClass(),
 					"/com/liferay/fragment/renderer/menu/display/internal" +
@@ -307,6 +307,9 @@ public class MenuDisplayFragmentRenderer implements FragmentRenderer {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

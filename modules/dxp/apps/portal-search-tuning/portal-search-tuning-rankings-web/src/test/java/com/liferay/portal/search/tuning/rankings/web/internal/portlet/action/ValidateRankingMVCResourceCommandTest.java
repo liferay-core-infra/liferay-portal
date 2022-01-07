@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.portlet.action;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -59,6 +60,10 @@ public class ValidateRankingMVCResourceCommandTest
 		ReflectionTestUtil.setFieldValue(
 			_validateRankingMVCResourceCommand, "searchRequestBuilderFactory",
 			searchRequestBuilderFactory);
+
+		ReflectionTestUtil.setFieldValue(
+			_validateRankingMVCResourceCommand, "jsonFactory",
+			JSONFactoryUtil.getJSONFactory());
 	}
 
 	@Test

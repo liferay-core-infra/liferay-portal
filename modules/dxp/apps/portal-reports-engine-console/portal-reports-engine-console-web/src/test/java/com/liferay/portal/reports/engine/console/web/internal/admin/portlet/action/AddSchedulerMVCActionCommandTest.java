@@ -14,7 +14,9 @@
 
 package com.liferay.portal.reports.engine.console.web.internal.admin.portlet.action;
 
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.cal.Recurrence;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
@@ -28,6 +30,7 @@ import javax.portlet.ActionRequest;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -42,6 +45,15 @@ public class AddSchedulerMVCActionCommandTest {
 	@ClassRule
 	public static LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@BeforeClass
+	public static void setUpClass() {
+		_addSchedulerMVCActionCommand = new AddSchedulerMVCActionCommand();
+
+		ReflectionTestUtil.setFieldValue(
+			_addSchedulerMVCActionCommand, "_jsonFactory",
+			new JSONFactoryImpl());
+	}
 
 	@Before
 	public void setUp() {
@@ -202,7 +214,6 @@ public class AddSchedulerMVCActionCommandTest {
 		);
 	}
 
-	private final AddSchedulerMVCActionCommand _addSchedulerMVCActionCommand =
-		new AddSchedulerMVCActionCommand();
+	private static AddSchedulerMVCActionCommand _addSchedulerMVCActionCommand;
 
 }

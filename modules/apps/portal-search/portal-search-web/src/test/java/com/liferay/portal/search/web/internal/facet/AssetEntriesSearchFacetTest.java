@@ -15,7 +15,10 @@
 package com.liferay.portal.search.web.internal.facet;
 
 import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.search.SearchEngineHelper;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.internal.asset.AssetRendererFactoryRegistry;
 import com.liferay.portal.search.internal.asset.SearchableAssetClassNamesProviderImpl;
@@ -56,7 +59,12 @@ public class AssetEntriesSearchFacetTest {
 			}
 		};
 
-		_mockAssetRendererFactoryGetClassName(
+		_jsonFactory = new JSONFactoryImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			assetEntriesSearchFacet, "jsonFactory", _jsonFactory);
+
+		mockAssetRendererFactoryGetClassName(
 			assetRendererFactory1, CLASS_NAME_1);
 		_mockAssetRendererFactoryIsSearchable(assetRendererFactory1, true);
 
@@ -177,6 +185,9 @@ public class AssetEntriesSearchFacetTest {
 
 	@Mock
 	private AssetRendererFactoryRegistry _assetRendererFactoryRegistry;
+
+	@Mock
+	private JSONFactory _jsonFactory;
 
 	@Mock
 	private SearchEngineHelper _searchEngineHelper;

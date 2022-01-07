@@ -75,6 +75,9 @@ public class WorkflowTaskUserNotificationHandlerTest extends PowerMockito {
 		_setUpUserNotificationEventLocalService();
 		_setUpWorkflowTaskManagerUtil();
 		_setUpWorkflowTaskPermissionChecker();
+		ReflectionTestUtil.setFieldValue(
+			_workflowTaskUserNotificationHandler, "_jsonFactory",
+			new JSONFactoryImpl());
 	}
 
 	@Before

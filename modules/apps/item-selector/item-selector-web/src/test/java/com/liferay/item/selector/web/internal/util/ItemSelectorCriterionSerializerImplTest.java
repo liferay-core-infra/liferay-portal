@@ -20,6 +20,8 @@ import com.liferay.item.selector.web.internal.TestFileEntryItemSelectorReturnTyp
 import com.liferay.item.selector.web.internal.TestStringItemSelectorReturnType;
 import com.liferay.item.selector.web.internal.TestURLItemSelectorReturnType;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -48,6 +50,10 @@ public class ItemSelectorCriterionSerializerImplTest {
 
 		_flickrItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 			_testStringItemSelectorReturnType, _testURLItemSelectorReturnType);
+
+		ReflectionTestUtil.setFieldValue(
+			_stubItemSelectorCriterionSerializerImpl, "_jsonFactory",
+			new JSONFactoryImpl());
 
 		_stubItemSelectorCriterionSerializerImpl.addItemSelectorReturnType(
 			_testFileEntryItemSelectorReturnType);

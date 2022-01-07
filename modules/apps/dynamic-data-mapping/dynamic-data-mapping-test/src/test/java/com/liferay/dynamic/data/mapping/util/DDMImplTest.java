@@ -39,6 +39,7 @@ import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -51,6 +52,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -72,6 +74,14 @@ import org.skyscreamer.jsonassert.JSONAssert;
 	}
 )
 public class DDMImplTest extends BaseDDMTestCase {
+
+	@BeforeClass
+	public static void setUpClass() {
+		_ddmImpl = new DDMImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			_ddmImpl, "_jsonFactory", new JSONFactoryImpl());
+	}
 
 	@Before
 	@Override
@@ -792,10 +802,11 @@ public class DDMImplTest extends BaseDDMTestCase {
 		}
 	}
 
+	private static DDMImpl _ddmImpl;
+
 	private final DDMFormValuesDeserializer _ddmFormValuesDeserializer =
 		new DDMFormValuesJSONDeserializer();
 	private final DDMFormValuesSerializer _ddmFormValuesSerializer =
 		new DDMFormValuesJSONSerializer();
-	private final DDMImpl _ddmImpl = new DDMImpl();
 
 }

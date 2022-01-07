@@ -304,6 +304,9 @@ public class DDMIndexerImplTest {
 				ReflectionTestUtil.setFieldValue(
 					this, "_ddmIndexerConfiguration", ddmIndexerConfiguration);
 
+				ReflectionTestUtil.setFieldValue(
+					this, "jsonFactory", new JSONFactoryImpl());
+
 				setDDMFormValuesToFieldsConverter(
 					new DDMFormValuesToFieldsConverterImpl());
 			}

@@ -15,8 +15,10 @@
 package com.liferay.fragment.internal.validator;
 
 import com.liferay.fragment.exception.FragmentEntryConfigurationException;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -26,7 +28,6 @@ import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import org.hamcrest.core.StringContains;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -51,16 +52,16 @@ public class FragmentEntryValidatorImplTest {
 		_classLoader = PortalClassLoaderUtil.getClassLoader();
 
 		PortalClassLoaderUtil.setClassLoader(null);
+
+		_fragmentEntryValidatorImpl = new FragmentEntryValidatorImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			_fragmentEntryValidatorImpl, "_jsonFactory", new JSONFactoryImpl());
 	}
 
 	@AfterClass
 	public static void tearDownClass() {
 		PortalClassLoaderUtil.setClassLoader(_classLoader);
-	}
-
-	@Before
-	public void setUp() {
-		_fragmentEntryValidatorImpl = new FragmentEntryValidatorImpl();
 	}
 
 	@Test
@@ -775,7 +776,6 @@ public class FragmentEntryValidatorImplTest {
 	}
 
 	private static ClassLoader _classLoader;
-
-	private FragmentEntryValidatorImpl _fragmentEntryValidatorImpl;
+	private static FragmentEntryValidatorImpl _fragmentEntryValidatorImpl;
 
 }

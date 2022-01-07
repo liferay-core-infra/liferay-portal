@@ -22,7 +22,7 @@ import com.liferay.layout.admin.web.internal.servlet.taglib.util.LayoutActionDro
 import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.layout.util.template.LayoutConverterRegistry;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -66,7 +66,7 @@ public class MoveLayoutMVCActionCommand extends BaseAddLayoutMVCActionCommand {
 
 		long parentPlid = ParamUtil.getLong(actionRequest, "parentPlid");
 
-		JSONArray plidsJSONArray = JSONFactoryUtil.createJSONArray(
+		JSONArray plidsJSONArray = _jsonFactory.createJSONArray(
 			ParamUtil.getString(actionRequest, "plids"));
 
 		Iterator<JSONObject> iterator = plidsJSONArray.iterator();
@@ -131,6 +131,9 @@ public class MoveLayoutMVCActionCommand extends BaseAddLayoutMVCActionCommand {
 				actionRequest, actionResponse, exception);
 		}
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutConverterRegistry _layoutConverterRegistry;

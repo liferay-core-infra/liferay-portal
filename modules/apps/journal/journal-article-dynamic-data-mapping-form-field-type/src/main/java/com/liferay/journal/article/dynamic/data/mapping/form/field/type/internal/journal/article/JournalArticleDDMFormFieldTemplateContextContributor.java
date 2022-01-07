@@ -26,7 +26,7 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -132,7 +132,7 @@ public class JournalArticleDDMFormFieldTemplateContextContributor
 		}
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(value);
 
 			long classPK = jsonObject.getLong("classPK");
 
@@ -172,7 +172,7 @@ public class JournalArticleDDMFormFieldTemplateContextContributor
 		}
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(value);
 
 			long classPK = jsonObject.getLong("classPK");
 
@@ -196,8 +196,7 @@ public class JournalArticleDDMFormFieldTemplateContextContributor
 					"title", journalArticle.getTitle()
 				).put(
 					"titleMap",
-					JSONFactoryUtil.createJSONObject(
-						journalArticle.getTitleMap())
+					_jsonFactory.createJSONObject(journalArticle.getTitleMap())
 				);
 			}
 
@@ -216,6 +215,9 @@ public class JournalArticleDDMFormFieldTemplateContextContributor
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

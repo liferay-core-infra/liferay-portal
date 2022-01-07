@@ -25,7 +25,7 @@ import com.liferay.layout.content.page.editor.web.internal.util.ContentUtil;
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -80,10 +80,9 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 		String languageId = ParamUtil.getString(
 			actionRequest, "languageId", themeDisplay.getLanguageId());
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
-		JSONArray fragmentEntryLinksJSONArray =
-			JSONFactoryUtil.createJSONArray();
+		JSONArray fragmentEntryLinksJSONArray = _jsonFactory.createJSONArray();
 
 		List<FragmentEntryLink> fragmentEntryLinks = new ArrayList<>(
 			_fragmentEntryLinkLocalService.
@@ -100,9 +99,8 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 					_KEY_COLLECTION_APPLIED_FILTERS_FRAGMENT_RENDERER));
 
 		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
-			JSONObject editableValuesJSONObject =
-				JSONFactoryUtil.createJSONObject(
-					fragmentEntryLink.getEditableValues());
+			JSONObject editableValuesJSONObject = _jsonFactory.createJSONObject(
+				fragmentEntryLink.getEditableValues());
 
 			if (!JSONUtil.isValid(
 					editableValuesJSONObject.getString(
@@ -181,7 +179,7 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 					themeDisplay.getScopeGroupId(), segmentsExperienceId,
 					themeDisplay.getPlid(),
 					layoutStructure -> layoutStructure.updateItemConfig(
-						JSONFactoryUtil.createJSONObject(itemConfig), itemId))
+						_jsonFactory.createJSONObject(itemConfig), itemId))
 			).put(
 				"pageContents",
 				ContentUtil.getPageContentsJSONArray(
@@ -229,6 +227,9 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 
 	@Reference
 	private FragmentRendererController _fragmentRendererController;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

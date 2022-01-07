@@ -35,7 +35,7 @@ import com.liferay.layout.content.page.editor.web.internal.util.layout.structure
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
 import com.liferay.layout.display.page.constants.LayoutDisplayPageWebKeys;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -82,7 +82,7 @@ public class GetFragmentEntryLinkMVCResourceCommand
 			_fragmentEntryLinkLocalService.fetchFragmentEntryLink(
 				fragmentEntryLinkId);
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		if (fragmentEntryLink != null) {
 			DefaultFragmentRendererContext defaultFragmentRendererContext =
@@ -196,7 +196,7 @@ public class GetFragmentEntryLinkMVCResourceCommand
 					EditableFragmentEntryProcessorUtil.getEditableTypes(content)
 				).put(
 					"editableValues",
-					JSONFactoryUtil.createJSONObject(
+					_jsonFactory.createJSONObject(
 						fragmentEntryLink.getEditableValues())
 				);
 
@@ -253,6 +253,9 @@ public class GetFragmentEntryLinkMVCResourceCommand
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutDisplayPageProviderTracker _layoutDisplayPageProviderTracker;

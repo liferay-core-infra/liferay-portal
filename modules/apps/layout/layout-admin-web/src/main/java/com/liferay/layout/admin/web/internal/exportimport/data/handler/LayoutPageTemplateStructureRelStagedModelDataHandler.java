@@ -28,7 +28,7 @@ import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructureRel;
 import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -241,7 +241,7 @@ public class LayoutPageTemplateStructureRelStagedModelDataHandler
 			return data;
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(data);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(data);
 
 		if (!jsonObject.has("items")) {
 			return data;
@@ -297,6 +297,9 @@ public class LayoutPageTemplateStructureRelStagedModelDataHandler
 	@Reference(target = "(content.processor.type=DLReferences)")
 	private ExportImportContentProcessor<String>
 		_dlReferencesExportImportContentProcessor;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

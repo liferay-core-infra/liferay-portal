@@ -25,7 +25,7 @@ import com.liferay.document.library.kernel.util.DLValidator;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -63,7 +63,7 @@ public class MultipleUploadResponseHandler implements UploadResponseHandler {
 			PortletRequest portletRequest, PortalException portalException)
 		throws PortalException {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		if (portalException instanceof AntivirusScannerException ||
 			portalException instanceof DLStorageQuotaExceededException ||
@@ -173,6 +173,9 @@ public class MultipleUploadResponseHandler implements UploadResponseHandler {
 
 	@Reference
 	private DLValidator _dlValidator;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

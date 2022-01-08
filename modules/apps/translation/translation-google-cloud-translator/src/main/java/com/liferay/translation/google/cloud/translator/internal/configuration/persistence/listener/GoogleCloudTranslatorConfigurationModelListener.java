@@ -16,7 +16,7 @@ package com.liferay.translation.google.cloud.translator.internal.configuration.p
 
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListener;
 import com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
@@ -26,6 +26,7 @@ import com.liferay.translation.google.cloud.translator.internal.configuration.Go
 import java.util.Dictionary;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
@@ -59,7 +60,7 @@ public class GoogleCloudTranslatorConfigurationModelListener
 
 	private boolean _isValid(String serviceAccountPrivateKey) {
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				serviceAccountPrivateKey);
 
 			if (jsonObject.length() > 0) {
@@ -72,5 +73,8 @@ public class GoogleCloudTranslatorConfigurationModelListener
 			return false;
 		}
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

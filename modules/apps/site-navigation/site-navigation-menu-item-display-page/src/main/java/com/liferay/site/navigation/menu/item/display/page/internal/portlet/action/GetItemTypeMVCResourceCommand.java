@@ -24,7 +24,7 @@ import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderTracker;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -72,7 +72,7 @@ public class GetItemTypeMVCResourceCommand extends BaseMVCResourceCommand {
 		long classTypeId = ParamUtil.getLong(resourceRequest, "classTypeId");
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+			JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 			String itemType = _getItemType(classNameId, themeDisplay);
 
@@ -170,6 +170,9 @@ public class GetItemTypeMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutDisplayPageProviderTracker _layoutDisplayPageProviderTracker;

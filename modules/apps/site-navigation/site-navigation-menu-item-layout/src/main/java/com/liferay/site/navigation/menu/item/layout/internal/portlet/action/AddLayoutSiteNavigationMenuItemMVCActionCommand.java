@@ -15,7 +15,7 @@
 package com.liferay.site.navigation.menu.item.layout.internal.portlet.action;
 
 import com.liferay.petra.string.StringUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -90,7 +90,7 @@ public class AddLayoutSiteNavigationMenuItemMVCActionCommand
 		Map<Long, SiteNavigationMenuItem> layoutSiteNavigationMenuItemMap =
 			new HashMap<>();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		try {
 			for (String layoutUuid : layoutUUIDs) {
@@ -188,6 +188,9 @@ public class AddLayoutSiteNavigationMenuItemMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AddLayoutSiteNavigationMenuItemMVCActionCommand.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

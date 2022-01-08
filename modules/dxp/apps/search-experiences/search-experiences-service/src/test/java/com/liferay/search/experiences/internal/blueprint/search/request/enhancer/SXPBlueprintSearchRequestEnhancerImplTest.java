@@ -680,6 +680,9 @@ public class SXPBlueprintSearchRequestEnhancerImplTest {
 			sxpBlueprintSearchRequestEnhancerImpl, "_highlightBuilderFactory",
 			new HighlightBuilderFactoryImpl());
 		ReflectionTestUtil.setFieldValue(
+			sxpBlueprintSearchRequestEnhancerImpl, "_jsonFactory",
+			JSONFactoryUtil.getJSONFactory());
+		ReflectionTestUtil.setFieldValue(
 			sxpBlueprintSearchRequestEnhancerImpl, "_queries",
 			new QueriesImpl());
 		ReflectionTestUtil.setFieldValue(

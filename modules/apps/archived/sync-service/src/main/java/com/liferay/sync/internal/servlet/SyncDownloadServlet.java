@@ -24,7 +24,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchImageException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -139,7 +139,7 @@ public class SyncDownloadServlet extends HttpServlet {
 						"Missing parameter zipFileIds");
 				}
 
-				JSONArray zipFileIdsJSONArray = JSONFactoryUtil.createJSONArray(
+				JSONArray zipFileIdsJSONArray = _jsonFactory.createJSONArray(
 					zipFileIds);
 
 				_sendZipFile(httpServletResponse, zipFileIdsJSONArray);
@@ -515,7 +515,7 @@ public class SyncDownloadServlet extends HttpServlet {
 
 		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
 
-		JSONObject errorsJSONObject = JSONFactoryUtil.createJSONObject();
+		JSONObject errorsJSONObject = _jsonFactory.createJSONObject();
 
 		for (int i = 0; i < zipFileIdsJSONArray.length(); i++) {
 			JSONObject zipObjectJSONObject = zipFileIdsJSONArray.getJSONObject(
@@ -581,6 +581,9 @@ public class SyncDownloadServlet extends HttpServlet {
 	private Http _http;
 
 	private ImageLocalService _imageLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

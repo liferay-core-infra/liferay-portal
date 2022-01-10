@@ -22,7 +22,7 @@ import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -134,7 +134,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 						newUuid, properties);
 
 				if (autoModifiedUuid) {
-					message = LanguageUtil.format(
+					message = _language.format(
 						resourceBundle,
 						"x-was-saved-successfully.-the-id-was-duplicated-and-" +
 							"renamed-to-x",
@@ -145,7 +145,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 						});
 				}
 				else {
-					message = LanguageUtil.format(
+					message = _language.format(
 						resourceBundle, "x-was-saved-successfully",
 						amImageConfigurationEntry.getName());
 				}
@@ -166,7 +166,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 								themeDisplay.getCompanyId(),
 								amImageConfigurationEntry);
 
-					message = LanguageUtil.format(
+					message = _language.format(
 						resourceBundle, "x-and-x-were-saved-successfully",
 						new String[] {
 							HtmlUtil.escape(
@@ -178,7 +178,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 				}
 				else {
 					if (autoModifiedUuid) {
-						message = LanguageUtil.format(
+						message = _language.format(
 							resourceBundle,
 							"x-was-saved-successfully.-the-id-was-duplicated-" +
 								"and-renamed-to-x",
@@ -189,7 +189,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 							});
 					}
 					else {
-						message = LanguageUtil.format(
+						message = _language.format(
 							resourceBundle, "x-was-saved-successfully",
 							amImageConfigurationEntry.getName());
 					}
@@ -205,7 +205,7 @@ public class EditImageConfigurationEntryMVCActionCommand
 		catch (AMImageConfigurationException amImageConfigurationException) {
 			jsonObject.put(
 				"message",
-				LanguageUtil.get(
+				_language.get(
 					resourceBundle,
 					_errorMessagesMap.get(
 						amImageConfigurationException.getClass()))
@@ -321,5 +321,8 @@ public class EditImageConfigurationEntryMVCActionCommand
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 }

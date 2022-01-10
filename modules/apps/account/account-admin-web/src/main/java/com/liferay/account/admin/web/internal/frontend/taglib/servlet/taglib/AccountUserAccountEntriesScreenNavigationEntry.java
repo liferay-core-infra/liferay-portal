@@ -20,7 +20,7 @@ import com.liferay.account.constants.AccountActionKeys;
 import com.liferay.account.constants.AccountPortletKeys;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -63,7 +63,7 @@ public class AccountUserAccountEntriesScreenNavigationEntry
 
 	@Override
 	public String getLabel(Locale locale) {
-		return LanguageUtil.get(
+		return language.get(
 			locale, AccountScreenNavigationEntryConstants.ENTRY_KEY_ACCOUNTS);
 	}
 
@@ -102,5 +102,8 @@ public class AccountUserAccountEntriesScreenNavigationEntry
 
 	@Reference
 	protected JSPRenderer jspRenderer;
+
+	@Reference
+	protected Language language;
 
 }

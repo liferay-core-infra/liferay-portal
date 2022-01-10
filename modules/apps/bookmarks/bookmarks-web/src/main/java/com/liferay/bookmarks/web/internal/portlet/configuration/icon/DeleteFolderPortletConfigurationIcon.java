@@ -19,7 +19,7 @@ import com.liferay.bookmarks.constants.BookmarksPortletKeys;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.web.internal.portlet.action.ActionUtil;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
@@ -64,8 +64,7 @@ public class DeleteFolderPortletConfigurationIcon
 			key = "move-to-recycle-bin";
 		}
 
-		return LanguageUtil.get(
-			getResourceBundle(themeDisplay.getLocale()), key);
+		return _language.get(getResourceBundle(themeDisplay.getLocale()), key);
 	}
 
 	@Override
@@ -191,6 +190,9 @@ public class DeleteFolderPortletConfigurationIcon
 	)
 	private ModelResourcePermission<BookmarksFolder>
 		_bookmarksFolderModelResourcePermission;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

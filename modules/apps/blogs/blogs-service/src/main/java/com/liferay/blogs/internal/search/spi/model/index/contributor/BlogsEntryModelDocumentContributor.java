@@ -15,7 +15,7 @@
 package com.liferay.blogs.internal.search.spi.model.index.contributor;
 
 import com.liferay.blogs.model.BlogsEntry;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -26,6 +26,7 @@ import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContri
 import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Luan Maoski
@@ -54,7 +55,7 @@ public class BlogsEntryModelDocumentContributor
 		document.addKeywordSortable("urlTitle", blogsEntry.getUrlTitle());
 
 		for (Locale locale :
-				LanguageUtil.getAvailableLocales(blogsEntry.getGroupId())) {
+				_language.getAvailableLocales(blogsEntry.getGroupId())) {
 
 			String languageId = LocaleUtil.toLanguageId(locale);
 
@@ -66,5 +67,8 @@ public class BlogsEntryModelDocumentContributor
 				blogsEntry.getTitle());
 		}
 	}
+
+	@Reference
+	private Language _language;
 
 }

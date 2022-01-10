@@ -22,7 +22,7 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.kernel.service.AssetVocabularyService;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
@@ -63,7 +63,7 @@ public class AssetCategoriesNavigationPortletDisplayTemplateHandler
 			AssetCategoriesNavigationPortletKeys.ASSET_CATEGORIES_NAVIGATION,
 			resourceBundle);
 
-		return LanguageUtil.format(locale, "x-template", portletTitle, false);
+		return _language.format(locale, "x-template", portletTitle, false);
 	}
 
 	@Override
@@ -114,6 +114,9 @@ public class AssetCategoriesNavigationPortletDisplayTemplateHandler
 		return "com/liferay/asset/categories/navigation/web/portlet/template" +
 			"/dependencies/portlet-display-templates.xml";
 	}
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

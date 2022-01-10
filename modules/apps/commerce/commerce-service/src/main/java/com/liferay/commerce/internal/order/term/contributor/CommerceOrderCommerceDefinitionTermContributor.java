@@ -25,7 +25,7 @@ import com.liferay.commerce.order.CommerceDefinitionTermContributor;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Country;
@@ -129,7 +129,7 @@ public class CommerceOrderCommerceDefinitionTermContributor
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
-		return LanguageUtil.get(
+		return _language.get(
 			resourceBundle, _commerceOrderDefinitionTermsMap.get(term));
 	}
 
@@ -245,13 +245,13 @@ public class CommerceOrderCommerceDefinitionTermContributor
 			"<table style=\"border: 1px solid black;\">");
 
 		orderItemsTableSB.append("<tr><th style=\"border: 1px solid black;\">");
-		orderItemsTableSB.append(LanguageUtil.get(locale, "product-name"));
+		orderItemsTableSB.append(_language.get(locale, "product-name"));
 		orderItemsTableSB.append("</th>");
 		orderItemsTableSB.append("<th style=\"border: 1px solid black;\">");
-		orderItemsTableSB.append(LanguageUtil.get(locale, "sku"));
+		orderItemsTableSB.append(_language.get(locale, "sku"));
 		orderItemsTableSB.append("</th>");
 		orderItemsTableSB.append("<th style=\"border: 1px solid black;\">");
-		orderItemsTableSB.append(LanguageUtil.get(locale, "quantity"));
+		orderItemsTableSB.append(_language.get(locale, "quantity"));
 		orderItemsTableSB.append("</th></tr>");
 
 		// And add the order items
@@ -307,6 +307,9 @@ public class CommerceOrderCommerceDefinitionTermContributor
 		).put(
 			_ORDER_SHIPPING_ADDRESS, "order-shipping-address-definition-term"
 		).build();
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -78,7 +78,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Hai Yu
  */
-@DataGuard(scope = DataGuard.Scope.CLASS)
+@DataGuard(scope = DataGuard.Scope.NONE)
 @RunWith(Arquillian.class)
 public class CompanySampleDataGenerationTest {
 

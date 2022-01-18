@@ -1221,9 +1221,6 @@ public class PropsValues {
 			PropsUtil.get(
 				PropsKeys.INDEX_SEARCH_QUERY_SUGGESTION_SCORES_THRESHOLD));
 
-	public static final boolean INDEX_WITH_THREAD = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.INDEX_WITH_THREAD));
-
 	public static final String INTRABAND_PROXY_DUMP_CLASSES_DIR = PropsUtil.get(
 		PropsKeys.INTRABAND_PROXY_DUMP_CLASSES_DIR);
 

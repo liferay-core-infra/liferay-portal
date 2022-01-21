@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.image;
 
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
+
 import java.io.IOException;
 
 import java.net.URL;
@@ -44,10 +46,9 @@ public class SpriteProcessorUtil {
 		return _spriteProcessor;
 	}
 
-	public void setSpriteProcessor(SpriteProcessor spriteProcessor) {
-		_spriteProcessor = spriteProcessor;
-	}
-
-	private static SpriteProcessor _spriteProcessor;
+	private static volatile SpriteProcessor _spriteProcessor =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			SpriteProcessor.class, SpriteProcessorUtil.class, "_spriteProcessor",
+			true);
 
 }

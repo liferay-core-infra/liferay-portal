@@ -2503,10 +2503,6 @@ public class PropsValues {
 	public static boolean RSS_FEEDS_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.RSS_FEEDS_ENABLED));
 
-	public static final boolean RSS_PUBLISH_TO_LIVE_BY_DEFAULT =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.RSS_PUBLISH_TO_LIVE_BY_DEFAULT));
-
 	public static String[] RTL_CSS_EXCLUDED_PATHS_REGEXP = PropsUtil.getArray(
 		PropsKeys.RTL_CSS_EXCLUDED_PATHS_REGEXP);
 

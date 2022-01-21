@@ -2805,9 +2805,6 @@ public interface PropsKeys {
 
 	public static final String RSS_FEEDS_ENABLED = "rss.feeds.enabled";
 
-	public static final String RSS_PUBLISH_TO_LIVE_BY_DEFAULT =
-		"rss.publish.to.live.by.default";
-
 	public static final String RTL_CSS_EXCLUDED_PATHS_REGEXP =
 		"rtl.css.excluded.paths.regexp";
 

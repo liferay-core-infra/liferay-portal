@@ -2441,9 +2441,6 @@ public interface PropsKeys {
 	public static final String POP_SERVER_NOTIFICATIONS_ENABLED =
 		"pop.server.notifications.enabled";
 
-	public static final String POP_SERVER_NOTIFICATIONS_INTERVAL =
-		"pop.server.notifications.interval";
-
 	public static final String POP_SERVER_SUBDOMAIN = "pop.server.subdomain";
 
 	public static final String PORTAL_FABRIC_AGENT_SELECTOR_CLASS =

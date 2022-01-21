@@ -2120,10 +2120,6 @@ public class PropsValues {
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.POP_SERVER_NOTIFICATIONS_ENABLED));
 
-	public static final int POP_SERVER_NOTIFICATIONS_INTERVAL =
-		GetterUtil.getInteger(
-			PropsUtil.get(PropsKeys.POP_SERVER_NOTIFICATIONS_INTERVAL));
-
 	public static final String POP_SERVER_SUBDOMAIN = PropsUtil.get(
 		PropsKeys.POP_SERVER_SUBDOMAIN);
 

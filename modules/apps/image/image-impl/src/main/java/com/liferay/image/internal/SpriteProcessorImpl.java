@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.image;
+package com.liferay.image.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.image.ImageBag;
@@ -65,9 +65,12 @@ import javax.media.jai.operator.TranslateDescriptor;
 
 import javax.servlet.ServletContext;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
  */
+@Component(immediate = true, service = SpriteProcessor.class)
 public class SpriteProcessorImpl implements SpriteProcessor {
 
 	@Override

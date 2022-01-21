@@ -1,3 +1,12 @@
 Bundle-Name: Liferay Image Implementation
 Bundle-SymbolicName: com.liferay.image.impl
 Bundle-Version: 1.0.5
+Import-Package:\
+	!com.sun.image.*,\
+	!com.sun.medialib.*,\
+	\
+	!sun.awt.image.*,\
+	\
+	!sun.security.action,\
+	\
+	*

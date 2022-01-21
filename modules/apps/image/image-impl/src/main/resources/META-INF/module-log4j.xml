@@ -3,5 +3,6 @@
 <Configuration strict="true">
 	<Loggers>
 		<Logger level="ERROR" name="com.liferay.image.internal.CMYKImageToolImpl" />
+		<Logger level="WARN" name="com.liferay.image.internal.SpriteProcessorImpl" />
 	</Loggers>
 </Configuration>

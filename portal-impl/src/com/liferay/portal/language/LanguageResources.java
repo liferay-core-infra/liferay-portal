@@ -303,7 +303,7 @@ public class LanguageResources {
 			languageMap = Collections.emptyMap();
 		}
 
-		_languageMaps.put(locale, languageMap);
+		_languageMaps.putIfAbsent(locale, languageMap);
 
 		return languageMap;
 	}

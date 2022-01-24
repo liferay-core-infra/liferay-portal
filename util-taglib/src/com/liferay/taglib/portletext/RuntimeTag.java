@@ -299,20 +299,20 @@ public class RuntimeTag extends TagSupport implements DirectTag {
 
 			boolean writeObject = false;
 
-			if (persistSettings &&
-				!layout.isPortletEmbedded(
-					portlet.getPortletId(), layout.getGroupId())) {
-
-				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
-					themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
-					PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
-					PortletKeys.PREFS_PLID_SHARED, portletInstanceKey,
-					defaultPreferences);
-
-				writeObject = true;
-			}
-
 			if (persistSettings) {
+				if (!layout.isPortletEmbedded(
+						portlet.getPortletId(), layout.getGroupId())) {
+
+					PortletPreferencesFactoryUtil.getLayoutPortletSetup(
+						themeDisplay.getCompanyId(),
+						themeDisplay.getScopeGroupId(),
+						PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+						PortletKeys.PREFS_PLID_SHARED, portletInstanceKey,
+						defaultPreferences);
+
+					writeObject = true;
+				}
+
 				long count =
 					PortletPreferencesLocalServiceUtil.
 						getPortletPreferencesCount(

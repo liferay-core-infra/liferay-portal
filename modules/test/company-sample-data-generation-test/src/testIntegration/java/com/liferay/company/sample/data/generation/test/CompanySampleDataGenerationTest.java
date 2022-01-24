@@ -383,6 +383,9 @@ public class CompanySampleDataGenerationTest {
 			_exportGroupTableData(
 				defaultCompany.getCompanyId(), groupTableBufferedWriter);
 
+			_exportRoleTableData(
+				defaultCompany.getCompanyId(), roleTableBufferedWriter);
+
 			List<String> keys = new ArrayList<>(_csvMap.keySet());
 
 			Collections.sort(keys);

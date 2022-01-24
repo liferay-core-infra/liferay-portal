@@ -354,6 +354,9 @@ public class CompanySampleDataGenerationTest {
 				outputDirPath.resolve("companyTable.csv"));
 			BufferedWriter counterTableBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("counterTable.csv"));
+			BufferedWriter defaultUserIdBufferedWriter =
+				Files.newBufferedWriter(
+					outputDirPath.resolve("defaultUserId.csv"));
 			BufferedWriter groupTableBufferedWriter = Files.newBufferedWriter(
 				outputDirPath.resolve("groupTable.csv"));
 			BufferedWriter hostBufferedWriter = Files.newBufferedWriter(
@@ -373,6 +376,9 @@ public class CompanySampleDataGenerationTest {
 			_exportCommerceCurrencyTableData(
 				defaultCompany.getCompanyId(),
 				commerceCurrencyTableBufferedWriter);
+			
+			_exportDefaultUserId(
+				defaultCompany.getCompanyId(), defaultUserIdBufferedWriter);
 
 			List<String> keys = new ArrayList<>(_csvMap.keySet());
 
@@ -404,6 +410,9 @@ public class CompanySampleDataGenerationTest {
 					company.getCompanyId(),
 					commerceCurrencyTableBufferedWriter);
 
+				_exportDefaultUserId(
+					company.getCompanyId(), defaultUserIdBufferedWriter);
+
 				_exportGroupTableData(
 					company.getCompanyId(), groupTableBufferedWriter);
 
@@ -418,6 +427,7 @@ public class CompanySampleDataGenerationTest {
 			commerceCurrencyTableBufferedWriter.flush();
 			companyTableBufferedWriter.flush();
 			counterTableBufferedWriter.flush();
+			defaultUserIdBufferedWriter.flush();
 			groupTableBufferedWriter.flush();
 			hostBufferedWriter.flush();
 			roleTableBufferedWriter.flush();
@@ -426,6 +436,17 @@ public class CompanySampleDataGenerationTest {
 		finally {
 			CompanyThreadLocal.setCompanyId(oldCompanyId);
 		}
+	}
+
+	private void _exportDefaultUserId(
+			long companyId, BufferedWriter defaultUserIdBufferedWriter)
+		throws Exception {
+
+		defaultUserIdBufferedWriter.append(String.valueOf(companyId));
+		defaultUserIdBufferedWriter.append(StringPool.COMMA);
+		defaultUserIdBufferedWriter.append(
+			String.valueOf(_userLocalService.getDefaultUserId(companyId)));
+		defaultUserIdBufferedWriter.newLine();
 	}
 
 	private void _exportGroupTableData(

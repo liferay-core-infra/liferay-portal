@@ -380,6 +380,9 @@ public class CompanySampleDataGenerationTest {
 			_exportDefaultUserId(
 				defaultCompany.getCompanyId(), defaultUserIdBufferedWriter);
 
+			_exportGroupTableData(
+				defaultCompany.getCompanyId(), groupTableBufferedWriter);
+
 			List<String> keys = new ArrayList<>(_csvMap.keySet());
 
 			Collections.sort(keys);

@@ -1911,21 +1911,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/portal/kxml2.jar</file-name>
-				<version>2.3.0</version>
-				<project-name>kXML 2</project-name>
-				<project-url>http://kxml.sourceforge.net/kxml2</project-url>
-				<licenses>
-					<license>
-						<license-name>BSD Style License</license-name>
-						<license-url>http://en.wikipedia.org/wiki/BSD_licenses</license-url>
-					</license>
-				</licenses>
-				<comments>
-					See LPS-24702.
-				</comments>
-			</library>
-			<library>
 				<file-name>lib/portal/liferay-icu4j.jar</file-name>
 				<version>54.1.1.LIFERAY-PATCHED-2</version>
 				<project-name>ICU4J</project-name>

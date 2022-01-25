@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.util.MethodKey;
  * </p>
  *
  * @author Edward C. Han
- * @see MDRActionServiceSoap
  * @generated
  */
 public class MDRActionServiceHttp {

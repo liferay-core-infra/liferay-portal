@@ -95,7 +95,6 @@
 /portal/asm.jar
 /portal/axis.jar
 /portal/c3p0.jar
-/portal/cglib-nodep.jar
 /portal/closure-compiler.jar
 /portal/commons-beanutils.jar
 /portal/commons-codec.jar
@@ -160,7 +159,6 @@
 /portal/json-java.jar
 /portal/juniversalchardet.jar
 /portal/jws-api.jar
-/portal/kxml2.jar
 /portal/liferay-icu4j.jar
 /portal/log4j-1.2-api.jar
 /portal/log4j-api.jar
@@ -227,6 +225,4 @@
 /portal/xml-apis.jar
 /portal/xmlsec.jar
 /portal/xmpcore.jar
-/portal/xpp3.jar
-/portal/xstream.jar
 /portal/xz.jar

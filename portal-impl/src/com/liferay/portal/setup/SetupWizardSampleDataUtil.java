@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -41,7 +40,6 @@ import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -171,29 +169,14 @@ public class SetupWizardSampleDataUtil {
 			String greeting = LanguageUtil.format(
 				locale, "welcome-x", fullName, false);
 
-			Contact contact = adminUser.getContact();
+			adminUser.setScreenName(screenName);
+			adminUser.setEmailAddress(emailAddress);
+			adminUser.setLanguageId(languageId);
+			adminUser.setGreeting(greeting);
+			adminUser.setFirstName(firstName);
+			adminUser.setLastName(lastName);
 
-			Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
-
-			birthdayCal.setTime(contact.getBirthday());
-
-			int birthdayMonth = birthdayCal.get(Calendar.MONTH);
-			int birthdayDay = birthdayCal.get(Calendar.DAY_OF_MONTH);
-			int birthdayYear = birthdayCal.get(Calendar.YEAR);
-
-			adminUser = UserLocalServiceUtil.updateUser(
-				adminUser.getUserId(), StringPool.BLANK, StringPool.BLANK,
-				StringPool.BLANK, false, adminUser.getReminderQueryQuestion(),
-				adminUser.getReminderQueryAnswer(), screenName, emailAddress,
-				adminUser.getFacebookId(), adminUser.getOpenId(), false, null,
-				languageId, adminUser.getTimeZoneId(), greeting,
-				adminUser.getComments(), firstName, adminUser.getMiddleName(),
-				lastName, contact.getPrefixId(), contact.getSuffixId(),
-				contact.isMale(), birthdayMonth, birthdayDay, birthdayYear,
-				contact.getSmsSn(), contact.getFacebookSn(),
-				contact.getJabberSn(), contact.getSkypeSn(),
-				contact.getTwitterSn(), contact.getJobTitle(), null, null, null,
-				null, null, new ServiceContext());
+			adminUser = UserLocalServiceUtil.updateUser(adminUser);
 		}
 		else {
 			UserLocalServiceUtil.addDefaultAdminUser(

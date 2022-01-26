@@ -62,13 +62,12 @@ public class SetupWizardSampleDataUtil {
 			companyId, PropsValues.COMPANY_DEFAULT_NAME,
 			PropsValues.DEFAULT_ADMIN_FIRST_NAME,
 			PropsValues.DEFAULT_ADMIN_LAST_NAME,
-			PropsValues.ADMIN_EMAIL_FROM_ADDRESS, false);
+			PropsValues.ADMIN_EMAIL_FROM_ADDRESS);
 	}
 
 	public static void addSampleData(
 			long companyId, String companyName, String adminUserFirstName,
-			String adminUserLastName, String adminUserEmailAddress,
-			boolean resetPassword)
+			String adminUserLastName, String adminUserEmailAddress)
 		throws Exception {
 
 		StopWatch stopWatch = new StopWatch();
@@ -91,8 +90,7 @@ public class SetupWizardSampleDataUtil {
 		User adminUser = updateAdminUser(
 			company, LocaleUtil.getDefault(),
 			LocaleUtil.toLanguageId(LocaleUtil.getDefault()),
-			adminUserEmailAddress, adminUserFirstName, adminUserLastName,
-			resetPassword);
+			adminUserEmailAddress, adminUserFirstName, adminUserLastName);
 
 		Organization organization =
 			OrganizationLocalServiceUtil.addOrganization(
@@ -135,10 +133,25 @@ public class SetupWizardSampleDataUtil {
 		}
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 *             #addSampleData(long, String, String, String)}
+	 */
+	@Deprecated
+	public static void addSampleData(
+			long companyId, String companyName, String adminUserFirstName,
+			String adminUserLastName, String adminUserEmailAddress,
+			boolean resetPassword)
+		throws Exception {
+
+		addSampleData(
+			companyId, companyName, adminUserFirstName, adminUserLastName,
+			adminUserEmailAddress);
+	}
+
 	public static User updateAdminUser(
 			Company company, Locale locale, String languageId,
-			String emailAddress, String firstName, String lastName,
-			boolean resetPassword)
+			String emailAddress, String firstName, String lastName)
 		throws PortalException {
 
 		ScreenNameGenerator screenNameGenerator =
@@ -202,8 +215,23 @@ public class SetupWizardSampleDataUtil {
 			}
 		}
 
-		return UserLocalServiceUtil.updatePasswordReset(
-			adminUser.getUserId(), resetPassword);
+		return adminUser;
+	}
+
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+	 *             #updateAdminUser(Company, Local, String, String, String,
+	 *             String)}
+	 */
+	@Deprecated
+	public static User updateAdminUser(
+			Company company, Locale locale, String languageId,
+			String emailAddress, String firstName, String lastName,
+			boolean resetPassword)
+		throws PortalException {
+
+		return updateAdminUser(
+			company, locale, languageId, emailAddress, firstName, lastName);
 	}
 
 	public static Company updateCompany(

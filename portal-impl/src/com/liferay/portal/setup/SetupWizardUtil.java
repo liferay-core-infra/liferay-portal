@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -357,6 +358,10 @@ public class SetupWizardUtil {
 			httpServletRequest, "adminLastName",
 			PropsValues.DEFAULT_ADMIN_LAST_NAME);
 
+		User user = SetupWizardSampleDataUtil.updateAdminUser(
+			company, themeDisplay.getLocale(), themeDisplay.getLanguageId(),
+			emailAddress, firstName, lastName);
+
 		boolean passwordReset = false;
 
 		PasswordPolicy passwordPolicy =
@@ -373,9 +378,8 @@ public class SetupWizardUtil {
 				Boolean.toString(passwordReset));
 		}
 
-		User user = SetupWizardSampleDataUtil.updateAdminUser(
-			company, themeDisplay.getLocale(), themeDisplay.getLanguageId(),
-			emailAddress, firstName, lastName, passwordReset);
+		UserLocalServiceUtil.updatePasswordReset(
+			user.getUserId(), passwordReset);
 
 		PropsValues.ADMIN_EMAIL_FROM_NAME = user.getFullName();
 

@@ -15,12 +15,10 @@
 package com.liferay.portal.webserver;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.image.SpriteProcessor;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -73,16 +71,6 @@ public class DynamicResourceServlet extends WebServerServlet {
 		File rootDir = _tempDir;
 
 		File file = new File(rootDir, path);
-
-		if (servletPath.equals(SpriteProcessor.PATH)) {
-			String spriteRootDirName = PropsValues.SPRITE_ROOT_DIR;
-
-			if (Validator.isNotNull(spriteRootDirName)) {
-				rootDir = new File(spriteRootDirName);
-
-				file = new File(rootDir, pathInfo);
-			}
-		}
 
 		String canonicalPath = file.getCanonicalPath();
 

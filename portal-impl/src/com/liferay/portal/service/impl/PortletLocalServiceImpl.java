@@ -30,8 +30,6 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.PortletIdException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.image.SpriteProcessor;
-import com.liferay.portal.kernel.image.SpriteProcessorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -829,12 +827,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 					}
 				}
 			}
-
-			// Sprite images
-
-			if (PropsValues.SPRITE_ENABLED) {
-				setSpriteImages(servletContext, portletApp, "/html/icons/");
-			}
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
@@ -938,12 +930,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 				portletBagFactory.create(portlet, true);
 
 				_portletsMap.put(entry.getKey(), portlet);
-			}
-
-			// Sprite images
-
-			if (PropsValues.SPRITE_ENABLED) {
-				setSpriteImages(servletContext, portletApp, "/icons/");
 			}
 
 			return ListUtil.fromMapValues(portletsMap);
@@ -2642,59 +2628,6 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		}
 
 		return servletURLPatterns;
-	}
-
-	protected void setSpriteImages(
-			ServletContext servletContext, PortletApp portletApp,
-			String resourcePath)
-		throws Exception {
-
-		Set<String> resourcePaths = servletContext.getResourcePaths(
-			resourcePath);
-
-		if ((resourcePaths == null) || resourcePaths.isEmpty()) {
-			return;
-		}
-
-		List<URL> imageURLs = new ArrayList<>(resourcePaths.size());
-
-		for (String curResourcePath : resourcePaths) {
-			if (curResourcePath.endsWith(StringPool.SLASH)) {
-				setSpriteImages(servletContext, portletApp, curResourcePath);
-			}
-			else if (curResourcePath.endsWith(".png")) {
-				URL imageURL = servletContext.getResource(curResourcePath);
-
-				if (imageURL != null) {
-					imageURLs.add(imageURL);
-				}
-				else {
-					_log.error(
-						"Resource URL for " + curResourcePath + " is null");
-				}
-			}
-		}
-
-		String spriteRootDirName = PropsValues.SPRITE_ROOT_DIR;
-		String spriteFileName = resourcePath.concat(
-			PropsValues.SPRITE_FILE_NAME);
-		String spritePropertiesFileName = resourcePath.concat(
-			PropsValues.SPRITE_PROPERTIES_FILE_NAME);
-		String rootPath = ServletContextUtil.getRootPath(servletContext);
-
-		Properties spriteProperties = SpriteProcessorUtil.generate(
-			servletContext, imageURLs, spriteRootDirName, spriteFileName,
-			spritePropertiesFileName, rootPath, 16, 16, 10240);
-
-		if (spriteProperties == null) {
-			return;
-		}
-
-		spriteFileName = StringBundler.concat(
-			servletContext.getContextPath(), SpriteProcessor.PATH,
-			spriteFileName);
-
-		portletApp.setSpriteImages(spriteFileName, spriteProperties);
 	}
 
 	protected Portlet updatePortlet(

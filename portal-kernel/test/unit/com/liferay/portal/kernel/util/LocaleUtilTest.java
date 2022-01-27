@@ -101,4 +101,22 @@ public class LocaleUtilTest extends PowerMockito {
 			LocaleUtil.fromLanguageId("zh-Hant-TW"));
 	}
 
+	@Test
+	public void testFromLanguageIdConsistency() {
+		mockStatic(LanguageUtil.class);
+
+		when(
+			LanguageUtil.isAvailableLocale(Locale.GERMANY)
+		).thenReturn(
+			false
+		);
+
+		Assert.assertNull(LocaleUtil.fromLanguageId("de_DE", true, false));
+
+		Assert.assertEquals(
+			Locale.GERMANY, LocaleUtil.fromLanguageId("de_DE", false, false));
+
+		Assert.assertNull(LocaleUtil.fromLanguageId("de_DE", true, false));
+	}
+
 }

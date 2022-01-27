@@ -286,7 +286,7 @@ public class LocaleUtil {
 				_log.warn(languageId + " is not a valid language id");
 			}
 		}
-		else {
+		else if (validate) {
 			_locales.put(languageId, locale);
 		}
 

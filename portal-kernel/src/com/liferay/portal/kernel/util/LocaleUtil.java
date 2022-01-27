@@ -279,7 +279,11 @@ public class LocaleUtil {
 			}
 		}
 
-		if (validate && !LanguageUtil.isAvailableLocale(locale)) {
+		if (validate &&
+			(((pos == -1) &&
+			  !LanguageUtil.isAvailableLanguageCode(languageId)) ||
+			 ((pos != -1) && !LanguageUtil.isAvailableLocale(locale)))) {
+
 			locale = null;
 
 			if (_log.isWarnEnabled()) {

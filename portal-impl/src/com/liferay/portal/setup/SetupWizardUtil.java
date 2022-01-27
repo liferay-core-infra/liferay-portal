@@ -365,12 +365,12 @@ public class SetupWizardUtil {
 
 		if ((passwordPolicy != null) && passwordPolicy.isChangeable()) {
 			passwordReset = true;
+		}
 
-			if (!databaseConfigurationUnchanged) {
-				unicodeProperties.put(
-					PropsKeys.SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED,
-					Boolean.TRUE.toString());
-			}
+		if (!databaseConfigurationUnchanged) {
+			unicodeProperties.put(
+				PropsKeys.SETUP_WIZARD_DEFAULT_ADMIN_PASSWORD_RESET_ENABLED,
+				Boolean.toString(passwordReset));
 		}
 
 		User user = SetupWizardSampleDataUtil.updateAdminUser(

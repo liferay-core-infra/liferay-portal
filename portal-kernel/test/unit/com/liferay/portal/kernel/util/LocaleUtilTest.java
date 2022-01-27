@@ -51,6 +51,18 @@ public class LocaleUtilTest {
 			true
 		);
 
+		Mockito.when(
+			language.isAvailableLanguageCode("en")
+		).thenReturn(
+			false
+		);
+
+		Mockito.when(
+			language.isAvailableLanguageCode("fr")
+		).thenReturn(
+			true
+		);
+
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
 				LocaleUtil.class.getName(), Level.WARNING)) {
 
@@ -69,6 +81,11 @@ public class LocaleUtilTest {
 
 			Assert.assertEquals(
 				"en is not a valid language id", logEntry.getMessage());
+
+			logEntries.clear();
+
+			Assert.assertEquals(Locale.FRENCH, LocaleUtil.fromLanguageId("fr"));
+			Assert.assertEquals(logEntries.toString(), 0, logEntries.size());
 		}
 	}
 

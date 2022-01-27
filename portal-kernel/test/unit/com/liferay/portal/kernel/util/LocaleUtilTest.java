@@ -105,4 +105,26 @@ public class LocaleUtilTest {
 			LocaleUtil.fromLanguageId("zh-Hant-TW"));
 	}
 
+	@Test
+	public void testFromLanguageIdConsistency() {
+		LanguageUtil languageUtil = new LanguageUtil();
+
+		Language language = Mockito.mock(Language.class);
+
+		languageUtil.setLanguage(language);
+
+		Mockito.when(
+			language.isAvailableLocale(Locale.GERMANY)
+		).thenReturn(
+			false
+		);
+
+		Assert.assertNull(LocaleUtil.fromLanguageId("de_DE", true, false));
+
+		Assert.assertEquals(
+			Locale.GERMANY, LocaleUtil.fromLanguageId("de_DE", false));
+
+		Assert.assertNull(LocaleUtil.fromLanguageId("de_DE", true, false));
+	}
+
 }

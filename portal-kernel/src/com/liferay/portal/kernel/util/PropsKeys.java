@@ -1774,9 +1774,6 @@ public interface PropsKeys {
 
 	public static final String LOGOUT_EVENTS_PRE = "logout.events.pre";
 
-	public static final String LOOK_AND_FEEL_MODIFIABLE =
-		"look.and.feel.modifiable";
-
 	public static final String MAIL_AUDIT_TRAIL = "mail.audit.trail";
 
 	public static final String MAIL_BATCH_SIZE = "mail.batch.size";

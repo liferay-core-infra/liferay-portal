@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.license.util.LicenseManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ThrowableCollector;
@@ -398,7 +398,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 					JSONObject jsonObject = JSONUtil.put("licenseXML", content);
 
-					LicenseManagerUtil.registerLicense(jsonObject);
+					_licenseManager.registerLicense(jsonObject);
 				}
 				catch (Exception exception) {
 					if (_log.isDebugEnabled()) {
@@ -778,6 +778,10 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		DefaultLPKGDeployer.class);
 
 	private Path _deploymentDirPath;
+
+	@Reference
+	private LicenseManager _licenseManager;
+
 	private BundleTracker<List<Bundle>> _lpkgBundleTracker;
 
 	@Reference

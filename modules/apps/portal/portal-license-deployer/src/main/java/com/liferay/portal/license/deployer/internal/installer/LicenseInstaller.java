@@ -16,7 +16,7 @@ package com.liferay.portal.license.deployer.internal.installer;
 
 import com.liferay.portal.file.install.FileInstaller;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
+import com.liferay.portal.kernel.license.util.LicenseManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -72,7 +72,7 @@ public class LicenseInstaller implements FileInstaller {
 
 	@Override
 	public URL transformURL(File file) throws Exception {
-		LicenseManagerUtil.registerLicense(
+		_licenseManager.registerLicense(
 			JSONUtil.put("licenseXML", FileUtil.read(file)));
 
 		return null;
@@ -84,6 +84,9 @@ public class LicenseInstaller implements FileInstaller {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseInstaller.class);
+
+	@Reference
+	private LicenseManager _licenseManager;
 
 	@Reference(target = ModuleServiceLifecycle.LICENSE_INSTALL)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

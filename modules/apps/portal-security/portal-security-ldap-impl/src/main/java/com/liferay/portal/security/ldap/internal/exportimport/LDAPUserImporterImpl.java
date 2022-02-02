@@ -51,7 +51,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -639,7 +639,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			}
 		}
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = _calendarFactory.getCalendar();
 
 		birthdayCal.setTime(ldapUser.getBirthday());
 
@@ -1913,7 +1913,7 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			ldapImportContext.getUserMappings(),
 			ldapImportContext.getContactMappings(), ldapUserIgnoreAttributes);
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = _calendarFactory.getCalendar();
 
 		birthdayCal.setTime(ldapContact.getBirthday());
 
@@ -2040,6 +2040,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 	@Reference
 	private BeanProperties _beanProperties;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	private CompanyLocalService _companyLocalService;
 	private String _companySecurityAuthType;

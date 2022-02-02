@@ -14,7 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.calendar;
 
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.workflow.kaleo.definition.DelayDuration;
 import com.liferay.portal.workflow.kaleo.definition.DurationScale;
 import com.liferay.portal.workflow.kaleo.runtime.calendar.DueDateCalculator;
@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -32,7 +33,7 @@ public class DefaultDueDateCalculator implements DueDateCalculator {
 
 	@Override
 	public Date getDueDate(Date startDate, DelayDuration delayDuration) {
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = _calendarFactory.getCalendar();
 
 		cal.setTime(startDate);
 
@@ -61,5 +62,8 @@ public class DefaultDueDateCalculator implements DueDateCalculator {
 
 		return cal.getTime();
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 }

@@ -15,10 +15,12 @@
 package com.liferay.portal.reports.engine.console.web.internal.admin.portlet.action;
 
 import com.liferay.portal.kernel.cal.Recurrence;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.CalendarFactoryImpl;
 import com.liferay.portal.util.FastDateFormatFactoryImpl;
 
 import java.util.Calendar;
@@ -45,6 +47,7 @@ public class AddSchedulerMVCActionCommandTest {
 
 	@Before
 	public void setUp() {
+		_setCalendarFactory();
 		_setUpFastDateFormatFactoryUtil();
 	}
 
@@ -181,6 +184,12 @@ public class AddSchedulerMVCActionCommandTest {
 		calendar.set(Calendar.MILLISECOND, 0);
 
 		return calendar;
+	}
+
+	private void _setCalendarFactory() {
+		ReflectionTestUtil.setFieldValue(
+			_addSchedulerMVCActionCommand, "_calendarFactory",
+			new CalendarFactoryImpl());
 	}
 
 	private void _setUpFastDateFormatFactoryUtil() {

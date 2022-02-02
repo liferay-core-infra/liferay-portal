@@ -100,6 +100,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			mock(DDMFormInstanceRecordExporterImpl.class);
 
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
+
 		ddmFormInstanceRecordExporterImpl.ddmFormInstanceRecordLocalService =
 			_ddmFormInstanceRecordLocalService;
 
@@ -221,6 +224,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
 
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
+
 		ddmFormInstanceRecordExporterImpl.ddmFormInstanceRecordLocalService =
 			_ddmFormInstanceRecordLocalService;
 
@@ -242,6 +248,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 	public void testGetDDMFormFieldsLabel() {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
+
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
 
 		Locale locale = new Locale("pt", "BR");
 
@@ -320,6 +329,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
 
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
+
 		ddmFormInstanceRecordExporterImpl.ddmFormFieldTypeServicesTracker =
 			_ddmFormFieldTypeServicesTracker;
 
@@ -389,6 +401,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 	public void testGetDDMFormFieldValues() throws Exception {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			mock(DDMFormInstanceRecordExporterImpl.class);
+
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
 
 		Locale locale = new Locale("pt", "BR");
 
@@ -548,6 +563,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			mock(DDMFormInstanceRecordExporterImpl.class);
 
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
+
 		DDMStructureVersion ddmStructureVersion = mock(
 			DDMStructureVersion.class);
 
@@ -606,6 +624,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
 
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
+
 		DDMStructureVersion ddmStructureVersion = mock(
 			DDMStructureVersion.class);
 
@@ -638,6 +659,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
 
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
+
 		Locale locale = new Locale("pt", "BR");
 
 		when(
@@ -663,6 +687,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 	public void testGetStructureVersions() throws Exception {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
+
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
 
 		ddmFormInstanceRecordExporterImpl.ddmFormInstanceVersionLocalService =
 			_ddmFormInstanceVersionLocalService;
@@ -714,6 +741,9 @@ public class DDMFormInstanceRecordExporterImplTest extends PowerMockito {
 	public void testWrite() throws Exception {
 		DDMFormInstanceRecordExporterImpl ddmFormInstanceRecordExporterImpl =
 			new DDMFormInstanceRecordExporterImpl();
+
+		ddmFormInstanceRecordExporterImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
 
 		ddmFormInstanceRecordExporterImpl.ddmFormInstanceRecordWriterTracker =
 			_ddmFormInstanceRecordWriterTracker;

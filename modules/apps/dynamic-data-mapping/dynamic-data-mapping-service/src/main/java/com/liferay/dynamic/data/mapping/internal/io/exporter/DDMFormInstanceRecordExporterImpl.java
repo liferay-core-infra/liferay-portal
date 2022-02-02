@@ -39,7 +39,7 @@ import com.liferay.dynamic.data.mapping.util.comparator.FormInstanceVersionVersi
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -174,7 +174,7 @@ public class DDMFormInstanceRecordExporterImpl
 
 		List<Map<String, String>> ddmFormFieldValues = new ArrayList<>();
 
-		Format dateTimeFormat = FastDateFormatFactoryUtil.getDateTime(locale);
+		Format dateTimeFormat = fastDateFormatFactory.getDateTime(locale);
 
 		for (DDMFormInstanceRecord ddmFormInstanceRecord :
 				ddmFormInstanceRecords) {
@@ -324,6 +324,9 @@ public class DDMFormInstanceRecordExporterImpl
 	@Reference
 	protected DDMFormInstanceVersionLocalService
 		ddmFormInstanceVersionLocalService;
+
+	@Reference
+	protected FastDateFormatFactory fastDateFormatFactory;
 
 	private static final String _KEY_AUTHOR = "author";
 

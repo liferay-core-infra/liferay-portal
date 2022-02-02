@@ -15,7 +15,7 @@
 package com.liferay.portal.odata.internal.filter;
 
 import com.liferay.portal.kernel.search.filter.Filter;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -46,13 +46,16 @@ public class ExpressionConvertImpl implements ExpressionConvert<Filter> {
 			Expression expression, Locale locale, EntityModel entityModel)
 		throws ExpressionVisitException {
 
-		Format format = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format format = fastDateFormatFactory.getSimpleDateFormat(
 			PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
 
 		return (Filter)expression.accept(
 			new ExpressionVisitorImpl(
 				format, locale, entityModel, nestedFieldQueryHelper));
 	}
+
+	@Reference
+	protected FastDateFormatFactory fastDateFormatFactory;
 
 	@Reference
 	protected NestedFieldQueryHelper nestedFieldQueryHelper;

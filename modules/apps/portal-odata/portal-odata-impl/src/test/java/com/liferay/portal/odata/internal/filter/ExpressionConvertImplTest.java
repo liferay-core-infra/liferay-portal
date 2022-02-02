@@ -81,6 +81,9 @@ public class ExpressionConvertImplTest {
 
 		fastDateFormatFactoryUtil.setFastDateFormatFactory(
 			Mockito.mock(FastDateFormatFactory.class));
+
+		_expressionConvertImpl.fastDateFormatFactory =
+			FastDateFormatFactoryUtil.getFastDateFormatFactory();
 	}
 
 	@Test

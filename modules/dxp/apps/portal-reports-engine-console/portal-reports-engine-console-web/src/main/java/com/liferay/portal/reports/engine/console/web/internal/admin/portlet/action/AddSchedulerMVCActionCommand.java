@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -125,7 +125,7 @@ public class AddSchedulerMVCActionCommand extends BaseMVCActionCommand {
 
 			String value = StringPool.BLANK;
 
-			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+			DateFormat dateFormat = _dateFormatFactory.getSimpleDateFormat(
 				"yyyy-MM-dd");
 
 			String type = ParamUtil.getString(
@@ -322,6 +322,9 @@ public class AddSchedulerMVCActionCommand extends BaseMVCActionCommand {
 			dayAndPositions.add(new DayAndPosition(day, 0));
 		}
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private DefinitionService _definitionService;

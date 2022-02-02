@@ -14,8 +14,10 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.internal.calendar;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.CalendarFactoryImpl;
 import com.liferay.portal.workflow.kaleo.definition.DelayDuration;
 import com.liferay.portal.workflow.kaleo.definition.DurationScale;
 
@@ -25,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -55,6 +58,13 @@ public class DefaultDueDateCalculatorTest {
 				{Calendar.SECOND, 1.5, DurationScale.SECOND, 2},
 				{Calendar.YEAR, 1.5, DurationScale.YEAR, 2}
 			});
+	}
+
+	@Before
+	public void setUp() {
+		ReflectionTestUtil.setFieldValue(
+			_defaultDueDateCalculator, "_calendarFactory",
+			new CalendarFactoryImpl());
 	}
 
 	@Test

@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -178,7 +178,7 @@ public class AddSchedulerMVCActionCommand extends BaseMVCActionCommand {
 		Calendar calendar = null;
 
 		if (timeZoneSensitive) {
-			calendar = CalendarFactoryUtil.getCalendar();
+			calendar = _calendarFactory.getCalendar();
 
 			calendar.setTime(startCalendar.getTime());
 		}
@@ -322,6 +322,9 @@ public class AddSchedulerMVCActionCommand extends BaseMVCActionCommand {
 			dayAndPositions.add(new DayAndPosition(day, 0));
 		}
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private DefinitionService _definitionService;

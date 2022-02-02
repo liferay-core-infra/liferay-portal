@@ -14,11 +14,14 @@
 
 package com.liferay.portal.security.ldap.internal.exportimport;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.CalendarFactoryImpl;
 
 import javax.naming.InvalidNameException;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +35,13 @@ public class LDAPUserImporterImplTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@Before
+	public void setUp() {
+		ReflectionTestUtil.setFieldValue(
+			_ldapUserImporterImpl, "_calendarFactory",
+			new CalendarFactoryImpl());
+	}
 
 	@Test
 	public void testBindingInNamespaceEscape() throws InvalidNameException {

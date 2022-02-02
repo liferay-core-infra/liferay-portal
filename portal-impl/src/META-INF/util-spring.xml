@@ -232,10 +232,9 @@
 			<bean class="com.liferay.portal.util.CustomJspRegistryImpl" />
 		</property>
 	</bean>
+	<bean class="com.liferay.portal.util.DateFormatFactoryImpl" id="com.liferay.portal.kernel.util.DateFormatFactory" />
 	<bean class="com.liferay.portal.kernel.util.DateFormatFactoryUtil" id="com.liferay.portal.kernel.util.DateFormatFactoryUtil">
-		<property name="dateFormatFactory">
-			<bean class="com.liferay.portal.util.DateFormatFactoryImpl" />
-		</property>
+		<property name="dateFormatFactory" ref="com.liferay.portal.kernel.util.DateFormatFactory" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.util.DigesterUtil" id="com.liferay.portal.kernel.util.DigesterUtil">
 		<property name="digester">

@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -380,7 +380,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 			sb.append(StringUtil.extractFirst(reportName, StringPool.PERIOD));
 
-			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+			DateFormat dateFormat = _dateFormatFactory.getSimpleDateFormat(
 				"MM_dd_yyyy_HH_mm");
 
 			sb.append(dateFormat.format(date));
@@ -589,6 +589,9 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private JSONFactory _jsonFactory;

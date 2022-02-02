@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -118,10 +118,13 @@ public class EditRedirectEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		return GetterUtil.getDate(
 			expirationDateString,
-			DateFormatFactoryUtil.getSimpleDateFormat(
+			_dateFormatFactory.getSimpleDateFormat(
 				"yyyy-MM-dd", themeDisplay.getLocale()),
 			null);
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private Http _http;

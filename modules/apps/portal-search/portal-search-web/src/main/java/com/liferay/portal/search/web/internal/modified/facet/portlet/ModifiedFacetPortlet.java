@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateFormatFactory;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -102,7 +101,9 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		super.render(renderRequest, renderResponse);
 	}
 
+	@Reference
 	protected CalendarFactory calendarFactory;
+
 	protected DateFormatFactory dateFormatFactory;
 
 	@Reference
@@ -128,8 +129,7 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 
 		ModifiedFacetDisplayContextBuilder modifiedFacetDisplayContextBuilder =
 			_createModifiedFacetDisplayContextBuilder(
-				_getCalendarFactory(), _getDateFormatFactory(), http,
-				renderRequest);
+				_getCalendarFactory(), dateFormatFactory, http, renderRequest);
 
 		modifiedFacetDisplayContextBuilder.setCurrentURL(
 			portal.getCurrentURL(renderRequest));
@@ -198,17 +198,6 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 		}
 
 		return CalendarFactoryUtil.getCalendarFactory();
-	}
-
-	private DateFormatFactory _getDateFormatFactory() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (dateFormatFactory != null) {
-			return dateFormatFactory;
-		}
-
-		return DateFormatFactoryUtil.getDateFormatFactory();
 	}
 
 	private String _getFieldName() {

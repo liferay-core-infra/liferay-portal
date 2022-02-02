@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -143,14 +143,14 @@ public class ViewManageCollaboratorsMVCRenderCommand
 
 				if (expirationDate != null) {
 					DateFormat expirationDateFormat =
-						DateFormatFactoryUtil.getSimpleDateFormat(
+						_dateFormatFactory.getSimpleDateFormat(
 							"yyyy-MM-dd", themeDisplay.getLocale());
 
 					expirationDateAsText = expirationDateFormat.format(
 						expirationDate);
 
 					Format expirationDateTooltipDateFormat =
-						DateFormatFactoryUtil.getDate(themeDisplay.getLocale());
+						_dateFormatFactory.getDate(themeDisplay.getLocale());
 
 					expirationDateTooltip = LanguageUtil.format(
 						themeDisplay.getLocale(), "until-x",
@@ -228,6 +228,9 @@ public class ViewManageCollaboratorsMVCRenderCommand
 
 		return sharingEntryPermissionDisplaySelectOptionsJSONArray;
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private SharingEntryLocalService _sharingEntryLocalService;

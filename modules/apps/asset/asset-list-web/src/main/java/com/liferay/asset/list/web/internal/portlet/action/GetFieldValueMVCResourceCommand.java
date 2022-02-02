@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -49,6 +49,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jürgen Kappler
@@ -138,7 +139,7 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 
 					if (fieldValue instanceof Date) {
 						DateFormat dateFormat =
-							DateFormatFactoryUtil.getSimpleDateFormat(
+							_dateFormatFactory.getSimpleDateFormat(
 								"yyyyMM ddHHmmss");
 
 						return dateFormat.format(fieldValue);
@@ -197,5 +198,8 @@ public class GetFieldValueMVCResourceCommand extends BaseMVCResourceCommand {
 
 		return fieldValue;
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 }

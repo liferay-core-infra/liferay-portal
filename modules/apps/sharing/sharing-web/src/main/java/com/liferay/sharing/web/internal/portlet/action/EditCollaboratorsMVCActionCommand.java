@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -120,7 +120,7 @@ public class EditCollaboratorsMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private DateFormat _getDateFormat(Locale locale) {
-		return DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd", locale);
+		return _dateFormatFactory.getSimpleDateFormat("yyyy-MM-dd", locale);
 	}
 
 	private Map<Long, Collection<SharingEntryAction>> _getSharingEntryActions(
@@ -281,6 +281,9 @@ public class EditCollaboratorsMVCActionCommand extends BaseMVCActionCommand {
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private Portal _portal;

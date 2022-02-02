@@ -41,7 +41,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -291,7 +291,7 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 			_layoutReportsIssuesPortalCache.get(cacheKey);
 
 		if (layoutReportsIssuesJSONObject != null) {
-			Format format = DateFormatFactoryUtil.getSimpleDateFormat(
+			Format format = _dateFormatFactory.getSimpleDateFormat(
 				"MMMM d, yyyy HH:mm a", resourceBundle.getLocale(),
 				themeDisplay.getTimeZone());
 
@@ -326,6 +326,9 @@ public class GetLayoutReportsIssuesMVCResourceCommand
 		_layoutReportsIssuesPortalCache = PortalCacheHelperUtil.getPortalCache(
 			PortalCacheManagerNames.MULTI_VM,
 			GetLayoutReportsIssuesMVCResourceCommand.class.getName());
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

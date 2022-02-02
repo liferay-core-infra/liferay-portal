@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -538,7 +538,7 @@ public class KBCommentLocalServiceImpl extends KBCommentLocalServiceBaseImpl {
 	private String _getFormattedKBCommentCreateDate(
 		KBComment kbComment, Locale locale) {
 
-		DateFormat dateFormat = DateFormatFactoryUtil.getDate(locale);
+		DateFormat dateFormat = _dateFormatFactory.getDate(locale);
 
 		return dateFormat.format(kbComment.getCreateDate());
 	}
@@ -551,6 +551,9 @@ public class KBCommentLocalServiceImpl extends KBCommentLocalServiceBaseImpl {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private JSONFactory _jSONFactory;

@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -70,7 +70,7 @@ public class CommerceMLForecastAlertEntryDispatchTaskExecutor
 			unicodeProperties.getProperty(
 				CommerceMLForecastAlertConstants.
 					COMMERCE_ML_FORECAST_ALERT_ENTRY_CHECK_DATE),
-			DateFormatFactoryUtil.getSimpleDateFormat(_DATE_FORMAT));
+			_dateFormatFactory.getSimpleDateFormat(_DATE_FORMAT));
 
 		if (commerceMLForecastAlertEntryCheckDate != null) {
 			if (_log.isWarnEnabled()) {
@@ -171,5 +171,8 @@ public class CommerceMLForecastAlertEntryDispatchTaskExecutor
 	@Reference
 	private CommerceMLForecastAlertEntryLocalService
 		_commerceMLForecastAlertEntryLocalService;
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 }

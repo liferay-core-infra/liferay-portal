@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.URLTemplateResource;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
@@ -164,7 +164,7 @@ public class SharingNotificationHelper {
 			return null;
 		}
 
-		Format expirationDateFormat = DateFormatFactoryUtil.getDate(locale);
+		Format expirationDateFormat = _dateFormatFactory.getDate(locale);
 
 		return expirationDateFormat.format(sharingEntry.getExpirationDate());
 	}
@@ -249,6 +249,9 @@ public class SharingNotificationHelper {
 
 		return ResourceBundleUtil.getString(resourceBundle, "someone");
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private SharingEntryInterpreterProvider _sharingEntryInterpreterProvider;

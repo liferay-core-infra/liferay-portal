@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateFormatFactory;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.search.facet.modified.ModifiedFacetFactory;
 import com.liferay.portal.search.web.internal.modified.facet.builder.DateRangeFactory;
 import com.liferay.portal.search.web.internal.modified.facet.builder.ModifiedFacetBuilder;
@@ -62,7 +61,10 @@ public class ModifiedFacetPortletSharedSearchContributor
 	}
 
 	protected CalendarFactory calendarFactory;
+
+	@Reference
 	protected DateFormatFactory dateFormatFactory;
+
 	protected DateRangeFactory dateRangeFactory;
 	protected JSONFactory jsonFactory;
 
@@ -74,8 +76,8 @@ public class ModifiedFacetPortletSharedSearchContributor
 		PortletSharedSearchSettings portletSharedSearchSettings) {
 
 		ModifiedFacetBuilder modifiedFacetBuilder = new ModifiedFacetBuilder(
-			modifiedFacetFactory, _getCalendarFactory(),
-			_getDateFormatFactory(), _getJSONFactory());
+			modifiedFacetFactory, _getCalendarFactory(), dateFormatFactory,
+			_getJSONFactory());
 
 		modifiedFacetBuilder.setRangesJSONArray(
 			_replaceAliases(
@@ -114,20 +116,9 @@ public class ModifiedFacetPortletSharedSearchContributor
 		return CalendarFactoryUtil.getCalendarFactory();
 	}
 
-	private DateFormatFactory _getDateFormatFactory() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (dateFormatFactory != null) {
-			return dateFormatFactory;
-		}
-
-		return DateFormatFactoryUtil.getDateFormatFactory();
-	}
-
 	private DateRangeFactory _getDateRangeFactory() {
 		if (dateRangeFactory == null) {
-			dateRangeFactory = new DateRangeFactory(_getDateFormatFactory());
+			dateRangeFactory = new DateRangeFactory(dateFormatFactory);
 		}
 
 		return dateRangeFactory;

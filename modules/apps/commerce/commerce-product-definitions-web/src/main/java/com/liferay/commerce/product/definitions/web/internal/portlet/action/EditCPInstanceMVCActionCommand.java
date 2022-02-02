@@ -51,7 +51,7 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -377,7 +377,7 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 			Date discontinuedDate = ParamUtil.getDate(
 				actionRequest, "discontinuedDate",
-				DateFormatFactoryUtil.getSimpleDateFormat("MM/dd/yyyy"), null);
+				_dateFormatFactory.getSimpleDateFormat("MM/dd/yyyy"), null);
 
 			if (discontinuedDate != null) {
 				Calendar calendar = CalendarFactoryUtil.getCalendar(
@@ -482,6 +482,9 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private CPInstanceService _cpInstanceService;
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	private class CPInstanceCallable implements Callable<CPInstance> {
 

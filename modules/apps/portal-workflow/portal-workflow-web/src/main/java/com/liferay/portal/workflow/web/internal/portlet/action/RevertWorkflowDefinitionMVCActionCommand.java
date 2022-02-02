@@ -17,7 +17,7 @@ package com.liferay.portal.workflow.web.internal.portlet.action;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -39,6 +39,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Inácio Nery
@@ -158,12 +159,15 @@ public class RevertWorkflowDefinitionMVCActionCommand
 
 	private DateFormat _getDateFormat(Locale locale) {
 		if (DateUtil.isFormatAmPm(locale)) {
-			return DateFormatFactoryUtil.getSimpleDateFormat(
+			return _dateFormatFactory.getSimpleDateFormat(
 				"MMM d, yyyy, hh:mm a", locale);
 		}
 
-		return DateFormatFactoryUtil.getSimpleDateFormat(
+		return _dateFormatFactory.getSimpleDateFormat(
 			"MMM d, yyyy, HH:mm", locale);
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 }

@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -57,10 +57,9 @@ public class LastLoginDateRuleConverter implements RuleConverter {
 			String startDateTimeZoneId = jsonObject.getString(
 				"startDateTimeZoneId");
 
-			DateFormat startDateFormat =
-				DateFormatFactoryUtil.getSimpleDateFormat(
-					"yyyy-MM-dd HH:mm", LocaleUtil.ENGLISH,
-					TimeZoneUtil.getTimeZone(startDateTimeZoneId));
+			DateFormat startDateFormat = _dateFormatFactory.getSimpleDateFormat(
+				"yyyy-MM-dd HH:mm", LocaleUtil.ENGLISH,
+				TimeZoneUtil.getTimeZone(startDateTimeZoneId));
 
 			Date startDate = startDateFormat.parse(
 				jsonObject.getString("startDate"));
@@ -94,7 +93,7 @@ public class LastLoginDateRuleConverter implements RuleConverter {
 						"endDateTimeZoneId");
 
 					DateFormat endDateFormat =
-						DateFormatFactoryUtil.getSimpleDateFormat(
+						_dateFormatFactory.getSimpleDateFormat(
 							"yyyy-MM-dd HH:mm", LocaleUtil.ENGLISH,
 							TimeZoneUtil.getTimeZone(endDateTimeZoneId));
 
@@ -131,5 +130,8 @@ public class LastLoginDateRuleConverter implements RuleConverter {
 
 	@Reference(target = "(segments.criteria.contributor.key=context)")
 	private SegmentsCriteriaContributor _contextSegmentsCriteriaContributor;
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 }

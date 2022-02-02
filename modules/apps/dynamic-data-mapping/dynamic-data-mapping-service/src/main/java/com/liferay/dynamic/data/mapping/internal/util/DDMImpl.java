@@ -72,7 +72,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -455,7 +455,7 @@ public class DDMImpl implements DDM {
 		if (fieldValue instanceof Date) {
 			Date valueDate = (Date)fieldValue;
 
-			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+			DateFormat dateFormat = _dateFormatFactory.getSimpleDateFormat(
 				"yyyyMMddHHmmss");
 
 			fieldValue = dateFormat.format(valueDate);
@@ -1332,6 +1332,9 @@ public class DDMImpl implements DDM {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMImpl.class);
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	private DDMFormValuesToFieldsConverter _ddmFormValuesToFieldsConverter;
 	private DLAppLocalService _dlAppLocalService;

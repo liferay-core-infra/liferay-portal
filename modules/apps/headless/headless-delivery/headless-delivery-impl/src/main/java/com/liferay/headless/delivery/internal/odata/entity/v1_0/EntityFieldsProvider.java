@@ -22,7 +22,7 @@ import com.liferay.dynamic.data.mapping.util.DDMIndexer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -147,14 +147,14 @@ public class EntityFieldsProvider {
 	}
 
 	private String _toFieldValue(Object fieldValue) {
-		DateFormat indexDateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+		DateFormat indexDateFormat = _dateFormatFactory.getSimpleDateFormat(
 			PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
 
 		try {
 			Date date = indexDateFormat.parse(String.valueOf(fieldValue));
 
 			DateFormat searchDateFormat =
-				DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+				_dateFormatFactory.getSimpleDateFormat("yyyy-MM-dd");
 
 			return searchDateFormat.format(date);
 		}
@@ -172,6 +172,9 @@ public class EntityFieldsProvider {
 				_ddmIndexer.encodeName(ddmStructureId, fieldReference, locale),
 				StringPool.UNDERLINE, type));
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private DDMIndexer _ddmIndexer;

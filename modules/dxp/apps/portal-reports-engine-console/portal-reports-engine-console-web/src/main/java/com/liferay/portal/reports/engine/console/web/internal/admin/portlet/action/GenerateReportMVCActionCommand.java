@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -108,8 +108,8 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 				Calendar calendar = ReportsEngineConsoleUtil.getDate(
 					actionRequest, key, true);
 
-				DateFormat dateFormat =
-					DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+				DateFormat dateFormat = _dateFormatFactory.getSimpleDateFormat(
+					"yyyy-MM-dd");
 
 				value = dateFormat.format(calendar.getTime());
 			}
@@ -128,6 +128,9 @@ public class GenerateReportMVCActionCommand extends BaseMVCActionCommand {
 			generatedReportsURL, reportName,
 			entryReportParametersJSONArray.toString(), serviceContext);
 	}
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private DefinitionService _definitionService;

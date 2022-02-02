@@ -54,7 +54,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -198,7 +198,7 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 					if (fieldValue instanceof Date) {
 						DateFormat dateFormat =
-							DateFormatFactoryUtil.getSimpleDateFormat(
+							dateFormatFactory.getSimpleDateFormat(
 								"yyyyMM ddHHmmss");
 
 						return dateFormat.format(fieldValue);
@@ -452,6 +452,9 @@ public class AssetPublisherPortlet extends MVCPortlet {
 
 	@Reference
 	protected AssetRSSHelper assetRSSHelper;
+
+	@Reference
+	protected DateFormatFactory dateFormatFactory;
 
 	@Reference
 	protected HttpUtil httpUtil;

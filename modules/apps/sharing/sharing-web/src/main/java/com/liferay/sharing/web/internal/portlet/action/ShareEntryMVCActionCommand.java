@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -84,7 +84,7 @@ public class ShareEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		Date expirationDate = ParamUtil.getDate(
 			actionRequest, "expirationDate",
-			DateFormatFactoryUtil.getDate(themeDisplay.getLocale()), null);
+			_dateFormatFactory.getDate(themeDisplay.getLocale()), null);
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			actionRequest);
@@ -148,6 +148,9 @@ public class ShareEntryMVCActionCommand extends BaseMVCActionCommand {
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	private DateFormatFactory _dateFormatFactory;
 
 	@Reference
 	private Portal _portal;

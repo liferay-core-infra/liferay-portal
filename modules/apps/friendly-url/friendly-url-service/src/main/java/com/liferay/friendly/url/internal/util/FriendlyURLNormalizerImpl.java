@@ -18,7 +18,7 @@ import com.liferay.petra.nio.CharsetEncoderUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -29,6 +29,7 @@ import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -51,10 +52,10 @@ public class FriendlyURLNormalizerImpl implements FriendlyURLNormalizer {
 			return friendlyURL;
 		}
 
-		String decodedFriendlyURL = HttpUtil.decodePath(friendlyURL);
+		String decodedFriendlyURL = _http.decodePath(friendlyURL);
 
 		if (Validator.isNull(decodedFriendlyURL)) {
-			decodedFriendlyURL = HttpUtil.decodePath(
+			decodedFriendlyURL = _http.decodePath(
 				StringUtil.replace(
 					friendlyURL, CharPool.PERCENT, CharPool.POUND));
 		}
@@ -235,5 +236,8 @@ public class FriendlyURLNormalizerImpl implements FriendlyURLNormalizer {
 
 		_REPLACE_CHARS = replaceChars;
 	}
+
+	@Reference
+	private Http _http;
 
 }

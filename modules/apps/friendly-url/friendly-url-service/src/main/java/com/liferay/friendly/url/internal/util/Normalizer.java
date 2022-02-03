@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.util;
+package com.liferay.friendly.url.internal.util;
 
 import com.liferay.ibm.icu.text.Transliterator;
 import com.liferay.portal.kernel.util.StringUtil;

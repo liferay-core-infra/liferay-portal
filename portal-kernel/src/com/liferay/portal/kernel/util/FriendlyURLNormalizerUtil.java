@@ -42,6 +42,6 @@ public class FriendlyURLNormalizerUtil {
 	private static volatile FriendlyURLNormalizer _friendlyURLNormalizer =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			FriendlyURLNormalizer.class, FriendlyURLNormalizerUtil.class,
-			"_friendlyURLNormalizer", true);
+			"_friendlyURLNormalizer", false);
 
 }

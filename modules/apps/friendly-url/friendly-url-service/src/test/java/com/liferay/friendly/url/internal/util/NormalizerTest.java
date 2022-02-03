@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.util;
+package com.liferay.friendly.url.internal.util;
 
 import com.liferay.petra.string.StringBundler;
 

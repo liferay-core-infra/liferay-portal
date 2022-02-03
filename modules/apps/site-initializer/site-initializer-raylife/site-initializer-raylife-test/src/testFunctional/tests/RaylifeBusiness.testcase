@@ -391,6 +391,7 @@ definition {
 	}
 
 	@description = "LPS-142383 - Verify error message 'Must be equal or greater than 0.' in the 'Years of industry experience?' field"
+	@ignore = "true"
 	@priority = "4"
 	test YearsOfExperienceNotBelowZero {
 		ApplicationsMenu.gotoSite(key_site = "Raylife");

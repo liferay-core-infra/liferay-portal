@@ -162,7 +162,7 @@ public class FileEntryInfoItemFormProvider
 		).infoFieldSetEntry(
 			FileEntryInfoItemFields.authorProfileImageInfoField
 		).infoFieldSetEntry(
-			FileEntryInfoItemFields.previewImage
+			FileEntryInfoItemFields.previewImageInfoField
 		).labelInfoLocalizedValue(
 			InfoLocalizedValue.localize(getClass(), "basic-information")
 		).name(
@@ -210,15 +210,15 @@ public class FileEntryInfoItemFormProvider
 	private InfoFieldSet _getFileInformationFieldSet() {
 		return InfoFieldSet.builder(
 		).infoFieldSetEntry(
-			FileEntryInfoItemFields.fileName
+			FileEntryInfoItemFields.fileNameInfoField
 		).infoFieldSetEntry(
-			FileEntryInfoItemFields.downloadURL
+			FileEntryInfoItemFields.downloadURLInfoField
 		).infoFieldSetEntry(
-			FileEntryInfoItemFields.fileURL
+			FileEntryInfoItemFields.fileURLInfoField
 		).infoFieldSetEntry(
-			FileEntryInfoItemFields.mimeType
+			FileEntryInfoItemFields.mimeTypeInfoField
 		).infoFieldSetEntry(
-			FileEntryInfoItemFields.size
+			FileEntryInfoItemFields.sizeInfoField
 		).labelInfoLocalizedValue(
 			InfoLocalizedValue.localize(getClass(), "file-information")
 		).name(

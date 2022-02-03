@@ -17,8 +17,11 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String redirect = ParamUtil.getString(request, "redirect");
+
+String backURL = ParamUtil.getString(request, "backURL", redirect);
+
 DispatchTrigger dispatchTrigger = (DispatchTrigger)request.getAttribute(DispatchWebKeys.DISPATCH_TRIGGER);
-String fileEntryName = (String)request.getAttribute(DispatchWebKeys.FILE_ENTRY_NAME);
 %>
 
 <liferay-portlet:actionURL name="/dispatch_talend/edit_dispatch_talend_job_archive" portletName="<%= DispatchPortletKeys.DISPATCH %>" var="editDispatchTalendJobArchiveActionURL" />
@@ -34,6 +37,12 @@ String fileEntryName = (String)request.getAttribute(DispatchWebKeys.FILE_ENTRY_N
 			<liferay-ui:error exception="<%= TalendArchiveException.class %>">
 				<liferay-ui:message key="the-file-must-be-a-valid-talend-job-archive" />
 			</liferay-ui:error>
+
+			<%
+			ExpandoValue expandoValue = ExpandoValueLocalServiceUtil.getValue(dispatchTrigger.getCompanyId(), DispatchTrigger.class.getName(), "DispatchArchiveFile", "fileName", dispatchTrigger.getUserId());
+
+			String fileEntryName = expandoValue.getData();
+			%>
 
 			<p class="<%= Objects.equals(fileEntryName, StringPool.BLANK) ? "hide" : StringPool.BLANK %> text-default" id="<portlet:namespace />fileEntryName">
 				<span id="<portlet:namespace />fileEntryRemove">
@@ -57,7 +66,7 @@ String fileEntryName = (String)request.getAttribute(DispatchWebKeys.FILE_ENTRY_N
 			<div class="sheet-footer">
 				<aui:button type="submit" value="save" />
 
-				<aui:button href="<%= currentURL %>" type="cancel" />
+				<aui:button href="<%= backURL %>" type="cancel" value="back" />
 			<div>
 		</aui:form>
 	</div>

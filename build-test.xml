@@ -3701,8 +3701,12 @@ tell application "Safari" to quit
 
 			<beanshell>
 				<![CDATA[
+					import com.liferay.jenkins.results.parser.GitWorkingDirectory;
+					import com.liferay.jenkins.results.parser.GitWorkingDirectoryFactory;
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 					import com.liferay.jenkins.results.parser.Job;
 					import com.liferay.jenkins.results.parser.JobFactory;
+					import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 					import com.liferay.jenkins.results.parser.test.clazz.group.BatchTestClassGroup;
 					import com.liferay.jenkins.results.parser.test.clazz.group.JUnitBatchTestClassGroup;
 					import com.liferay.jenkins.results.parser.test.clazz.group.NPMTestBatchTestClassGroup;
@@ -3718,8 +3722,34 @@ tell application "Safari" to quit
 						return Job.BuildProfile.PORTAL;
 					}
 
+					public GitWorkingDirectory getPortalGitWorkingDirectory() {
+						File gitWorkingDir = JenkinsResultsParserUtil.getGitWorkingDir(new File(project.getProperty("project.dir")));
+
+						GitWorkingDirectory gitWorkingDirectory = GitWorkingDirectoryFactory.newGitWorkingDirectory(getUpstreamBranchName(), gitWorkingDir, getRepositoryName());
+
+						if (gitWorkingDirectory instanceof PortalGitWorkingDirectory) {
+							return (PortalGitWorkingDirectory)gitWorkingDirectory;
+						}
+
+						return null;
+					}
+
+					public String getRepositoryName() {
+						String upstreamBranchName = getUpstreamBranchName();
+
+						if (upstreamBranchName.equals("master")) {
+							return "liferay-portal";
+						}
+
+						return "liferay-portal-ee";
+					}
+
+					public String getUpstreamBranchName() {
+						return project.getProperty("git.working.branch.name");
+					}
+
 					try {
-						Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), null, null, null, getBuildProfile());
+						Job job = JobFactory.newJob(project.getProperty("top.level.job.name"), null, getUpstreamBranchName(), getRepositoryName(), getBuildProfile(), getPortalGitWorkingDirectory());
 
 						BatchTestClassGroup batchTestClassGroup = TestClassGroupFactory.newBatchTestClassGroup(project.getProperty("test.batch.name"), job);
 
@@ -4127,9 +4157,7 @@ module.framework.base.dir=${liferay.home}/osgi
 
 memory.scheduler.org.quartz.threadPool.threadCount=1
 
-persisted.scheduler.org.quartz.threadPool.threadCount=1
-
-sprite.root.dir=/tmp/sprite]]></echo>
+persisted.scheduler.org.quartz.threadPool.threadCount=1]]></echo>
 				</post-action>
 			</generate-jdbc-properties>
 		</sequential>
@@ -6652,9 +6680,94 @@ go</echo>
 		<if>
 			<isset property="cluster.invoke.method" />
 			<then>
-				<echo file="${liferay.home}/osgi/configs/com.liferay.portal.cluster.multiple.sample.configuration.ClusterTestConfiguration.config">clusterTestCommand="${cluster.invoke.method}"</echo>
+				<echo file="${liferay.home}/osgi/configs/com.liferay.portal.cluster.multiple.sample.web.internal.configuration.ClusterSampleConfiguration.config">clusterSampleCommand="${cluster.invoke.method}"</echo>
 			</then>
 		</if>
+	</target>
+
+	<target name="cluster-session-replication">
+		<replace
+			failOnNoReplacements="true"
+			file="${app.server.tomcat.dir}/conf/context.xml"
+		>
+			<replacetoken><![CDATA[<Context>]]></replacetoken>
+			<replacevalue><![CDATA[<Context>
+
+		<Manager
+			className="org.apache.catalina.ha.session.DeltaManager"
+			expireSessionsOnShutdown="false"
+			notifyListenersOnReplication="true"/>]]></replacevalue>
+		</replace>
+
+		<replace
+			failOnNoReplacements="true"
+			file="${app.server.tomcat.dir}/webapps/ROOT/WEB-INF/web.xml"
+		>
+			<replacetoken><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">]]></replacetoken>
+			<replacevalue><![CDATA[xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<distributable />]]></replacevalue>
+		</replace>
+
+		<echo append="true" file="${app.server.tomcat.dir}/conf/logging.properties">
+			<![CDATA[
+5cluster.org.apache.juli.AsyncFileHandler.directory = ${catalina.base}/logs
+5cluster.org.apache.juli.AsyncFileHandler.level = FINER
+5cluster.org.apache.juli.AsyncFileHandler.prefix = cluster.
+
+org.apache.catalina.ha.deploy.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+org.apache.catalina.ha.deploy.level = INFO
+
+org.apache.catalina.ha.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+org.apache.catalina.ha.level = FINE
+
+org.apache.catalina.tribes.MESSAGES.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+org.apache.catalina.tribes.MESSAGES.level = FINE
+
+org.apache.catalina.tribes.handlers = 5cluster.org.apache.juli.AsyncFileHandler
+org.apache.catalina.tribes.level = FINE]]>
+		</echo>
+
+		<replace
+			failOnNoReplacements="true"
+			file="${app.server.tomcat.dir}/conf/server.xml"
+		>
+			<replacetoken><![CDATA[<Engine name="Catalina" defaultHost="localhost">]]></replacetoken>
+			<replacevalue><![CDATA[<Engine defaultHost="localhost" name="Catalina">
+
+    	<Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>]]></replacevalue>
+		</replace>
+	</target>
+
+	<target name="cluster-session-replication-log">
+		<local name="log.dir" />
+
+		<condition else="${app.server.parent.dir}-${app.server.bundle.index}/tomcat-${app.server.version}/logs" property="log.dir" value="${app.server.parent.dir}/tomcat-${app.server.version}/logs">
+			<or>
+				<not>
+					<isset property="app.server.bundle.index" />
+				</not>
+				<equals arg1="${app.server.bundle.index}" arg2="0" />
+			</or>
+		</condition>
+
+		<for param="log.file">
+			<path>
+				<fileset
+					dir="${log.dir}"
+				>
+					<include name="cluster*.log" />
+				</fileset>
+			</path>
+			<sequential>
+				<copy
+					file="@{log.file}"
+					overwrite="true"
+					tofile="${liferay.home}/cluster${app.server.bundle.index}.log"
+				/>
+
+				<echo> ${liferay.home}/cluster${app.server.bundle.index}.log </echo>
+			</sequential>
+		</for>
 	</target>
 
 	<target name="copy-cluster-log">
@@ -6996,8 +7109,6 @@ go</echo>
 				</if>
 			</then>
 		</if>
-
-		<delete dir="/tmp/sprite" />
 	</target>
 
 	<target name="delete-portal-theme">
@@ -8639,8 +8750,6 @@ mail.session.jndi.name=
 
 module.framework.properties.dependency.manager.sync.timeout=1800
 module.framework.properties.initial.system.check.enabled=true
-
-sprite.root.dir=/tmp/sprite
 
 memory.scheduler.org.quartz.threadPool.threadCount=1
 
@@ -12485,9 +12594,12 @@ if (ppstate.equals("normal")) {
 		<beanshell>
 			<![CDATA[
 				import com.liferay.jenkins.results.parser.CIJobSummaryReportUtil;
+				import com.liferay.jenkins.results.parser.GitWorkingDirectory;
+				import com.liferay.jenkins.results.parser.GitWorkingDirectoryFactory;
 				import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 				import com.liferay.jenkins.results.parser.Job;
 				import com.liferay.jenkins.results.parser.JobFactory;
+				import com.liferay.jenkins.results.parser.PortalGitWorkingDirectory;
 
 				public Job.BuildProfile getBuildProfile() {
 					String testPortalBuildProfile = project.getProperty("build.profile");
@@ -12501,6 +12613,18 @@ if (ppstate.equals("normal")) {
 
 				public String getJobName() {
 					return project.getProperty("job.name");
+				}
+
+				public GitWorkingDirectory getPortalGitWorkingDirectory() {
+					File gitWorkingDir = JenkinsResultsParserUtil.getGitWorkingDir(new File(project.getProperty("project.dir")));
+
+					GitWorkingDirectory gitWorkingDirectory = GitWorkingDirectoryFactory.newGitWorkingDirectory(getUpstreamBranchName(), gitWorkingDir, getRepositoryName());
+
+					if (gitWorkingDirectory instanceof PortalGitWorkingDirectory) {
+						return (PortalGitWorkingDirectory)gitWorkingDirectory;
+					}
+
+					return null;
 				}
 
 				public String getRepositoryName() {
@@ -12529,7 +12653,7 @@ if (ppstate.equals("normal")) {
 					return project.getProperty("git.working.branch.name");
 				}
 
-				Job job = JobFactory.newJob(getJobName(), getTestSuiteName(), getUpstreamBranchName(), getRepositoryName(), getBuildProfile());
+				Job job = JobFactory.newJob(getJobName(), getTestSuiteName(), getUpstreamBranchName(), getRepositoryName(), getBuildProfile(), getPortalGitWorkingDirectory());
 
 				CIJobSummaryReportUtil.writeJobSummaryReport(getSummaryDir(), job);
 
@@ -13425,6 +13549,15 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 		</if>
 
 		<antcall target="deploy-extra-apps" />
+
+		<get-testcase-property property.name="cluster.session.replicated" />
+
+		<if>
+			<equals arg1="${cluster.session.replicated}" arg2="true" />
+			<then>
+				<antcall target="cluster-session-replication" />
+			</then>
+		</if>
 
 		<set-up-search-engine />
 

@@ -21,9 +21,11 @@ definition {
 	}
 
 	macro viewChangeDetailsInData {
+		var key_columnName = "${columnName}";
+
 		if ("${changeType}" == "Added") {
 			AssertElementPresent(
-				key_displayItem = "PUBLICATION (NEW)",
+				key_displayItem = "Publication (New)",
 				locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM");
 
 			var key_columnValueInPublication = "${columnValueInPublication}";
@@ -35,7 +37,7 @@ definition {
 
 		if ("${changeType}" == "Deleted") {
 			AssertElementPresent(
-				key_displayItem = "PRODUCTION (DELETED)",
+				key_displayItem = "Production (Deleted)",
 				locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM");
 
 			var key_columnValueInPublication = "${columnValueInProduction}";
@@ -49,8 +51,6 @@ definition {
 			if (IsElementNotPresent(key_displayItem = "Unified View", locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM")) {
 				PublicationsChangeDetails.changeDisplayItem(displayItem = "Unified View");
 			}
-
-			var key_columnName = "${columnName}";
 
 			if (isSet(diffAddedValue)) {
 				AssertTextEquals.assertPartialText(
@@ -107,25 +107,25 @@ definition {
 	macro viewChangeDetailsInDisplay {
 		if ("${changeType}" == "Added") {
 			AssertElementPresent(
-				key_displayItem = "PUBLICATION (NEW)",
+				key_displayItem = "Publication (New)",
 				locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM");
 
 			var key_contentValueInPublication = "${contentValueInPublication}";
 
 			AssertTextEquals.assertPartialText(
-				locator1 = "PublicationsChangeDetails#DISPALY_CONTENT_VALUE_IN_PUBLICATION",
+				locator1 = "PublicationsChangeDetails#DISPLAY_CONTENT_VALUE_IN_PUBLICATION",
 				value1 = "${contentValueInPublication}");
 		}
 
 		if ("${changeType}" == "Deleted") {
 			AssertElementPresent(
-				key_displayItem = "PRODUCTION (DELETED)",
+				key_displayItem = "Production (Deleted)",
 				locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM");
 
 			var key_contentValueInPublication = "${contentValueInProduction}";
 
 			AssertTextEquals.assertPartialText(
-				locator1 = "PublicationsChangeDetails#DISPALY_CONTENT_VALUE_IN_PRODUCTION",
+				locator1 = "PublicationsChangeDetails#DISPLAY_CONTENT_VALUE_IN_PRODUCTION",
 				value1 = "${contentValueInProduction}");
 		}
 
@@ -154,7 +154,7 @@ definition {
 				var key_contentValueInProduction = "${contentValueInProduction}";
 
 				AssertTextEquals.assertPartialText(
-					locator1 = "PublicationsChangeDetails#DISPALY_CONTENT_VALUE_IN_PRODUCTION",
+					locator1 = "PublicationsChangeDetails#DISPLAY_CONTENT_VALUE_IN_PRODUCTION",
 					value1 = "${contentValueInProduction}");
 			}
 
@@ -162,7 +162,7 @@ definition {
 				var key_contentValueInPublication = "${contentValueInPublication}";
 
 				AssertTextEquals.assertPartialText(
-					locator1 = "PublicationsChangeDetails#DISPALY_CONTENT_VALUE_IN_PUBLICATION",
+					locator1 = "PublicationsChangeDetails#DISPLAY_CONTENT_VALUE_IN_PUBLICATION",
 					value1 = "${contentValueInPublication}");
 			}
 
@@ -172,7 +172,7 @@ definition {
 				var key_contentValueInProduction = "${contentValueInProduction}";
 
 				AssertTextEquals.assertPartialText(
-					locator1 = "PublicationsChangeDetails#DISPALY_CONTENT_VALUE_IN_PRODUCTION",
+					locator1 = "PublicationsChangeDetails#DISPLAY_CONTENT_VALUE_IN_PRODUCTION",
 					value1 = "${contentValueInProduction}");
 			}
 
@@ -182,7 +182,7 @@ definition {
 				var key_contentValueInPublication = "${contentValueInPublication}";
 
 				AssertTextEquals.assertPartialText(
-					locator1 = "PublicationsChangeDetails#DISPALY_CONTENT_VALUE_IN_PUBLICATION",
+					locator1 = "PublicationsChangeDetails#DISPLAY_CONTENT_VALUE_IN_PUBLICATION",
 					value1 = "${contentValueInPublication}");
 			}
 		}
@@ -335,6 +335,58 @@ definition {
 				AssertElementPresent(
 					locator1 = "PublicationsChangeDetails#FIELD_VALUE_IN_PUBLICATION",
 					value1 = "${fieldValueInPublication}");
+			}
+		}
+	}
+
+	macro viewDocumentChangeDetailsInDisplay {
+		if (("${changeType}" == "Added") || ("${changeType}" == "Deleted")) {
+			AssertVisible(
+				key_imageSourceURL = "${keyImage}",
+				locator1 = "DocumentsAndMediaDocument#DOCUMENT_VIEWPORT_PREVIEW");
+
+			if ("${changeType}" == "Added") {
+				AssertElementPresent(
+					key_displayItem = "Publication (New)",
+					locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM");
+			}
+
+			if ("${changeType}" == "Deleted") {
+				AssertElementPresent(
+					key_displayItem = "Production (Deleted)",
+					locator1 = "PublicationsChangeDetails#CURRENT_DISPLAY_ITEM");
+			}
+		}
+
+		if ("${changeType}" == "Modified") {
+			PublicationsChangeDetails.changeDisplayItem(displayItem = "Split View");
+
+			if (isSet(keyImageInProduction)) {
+				AssertVisible(
+					key_imageSourceURL = "${keyImageInProduction}",
+					locator1 = "DocumentsAndMediaDocument#DOCUMENT_VIEWPORT_PREVIEW");
+			}
+
+			if (isSet(keyImageInPublication)) {
+				AssertVisible(
+					key_imageSourceURL = "${keyImageInPublication}",
+					locator1 = "DocumentsAndMediaDocument#DOCUMENT_VIEWPORT_PREVIEW");
+			}
+
+			PublicationsChangeDetails.changeDisplayItem(displayItem = "Production");
+
+			if (isSet(keyImageInProduction)) {
+				AssertVisible(
+					key_imageSourceURL = "${keyImageInProduction}",
+					locator1 = "DocumentsAndMediaDocument#DOCUMENT_VIEWPORT_PREVIEW");
+			}
+
+			PublicationsChangeDetails.changeDisplayItem(displayItem = "Publication");
+
+			if (isSet(keyImageInPublication)) {
+				AssertVisible(
+					key_imageSourceURL = "${keyImageInPublication}",
+					locator1 = "DocumentsAndMediaDocument#DOCUMENT_VIEWPORT_PREVIEW");
 			}
 		}
 	}

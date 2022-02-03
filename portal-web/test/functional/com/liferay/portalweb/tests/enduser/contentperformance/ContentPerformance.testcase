@@ -300,7 +300,7 @@ definition {
 	@description = "LPS-126047: When the user changes the language using the flag selector in the panel and so the URL, the metrics corresponding the canonical URL that corresponds to the language selected are shown"
 	@priority = "3"
 	test ChangeLanguageInWidgetPage {
-		property test.name.skip.portal.instance = "ContentPerformance#LanguageSelector";
+		property test.name.skip.portal.instance = "ContentPerformance#ChangeLanguageInWidgetPage";
 
 		task ("Set portal to use Localized URL") {
 			SystemSettings.openSystemSettingsAdmin();
@@ -415,15 +415,6 @@ definition {
 		}
 	}
 
-	@description = "LPS-108856: When user opens Content Performance panel and AC is not connected, a Dont show me this again button is displayed"
-	@ignore = "true"
-	@priority = "3"
-	test DontShowButton {
-
-		// TODO LPS-139239 DontShowButton pending implementation
-
-	}
-
 	@description = "LPS-105216: Validate that Free trial and dismiss buttons ARE NOT displayed when AC is enabled"
 	@priority = "3"
 	test FreeTrialButtonNotPresent {
@@ -444,33 +435,18 @@ definition {
 		}
 	}
 
-	@description = "LPS-105216: Validate that Free trial and dismiss buttons are displayed when AC is disabled"
-	@ignore = "true"
-	@priority = "5"
-	test FreeTrialButtonPresent {
-
-		// TODO LPS-139217 FreeTrialButtonPresent pending implementation
-
-	}
-
 	@description = "LPS-108068: When there is no views nor reads in the selected range or in the default view, the line of the graphic will be at 0"
 	@priority = "3"
 	test GraphicLineNoViewsReads {
+		task ("Open Content Performance panel") {
+			ContentPerformance.openContentPerformance();
+		}
+
 		task ("Assert line equal 0") {
 			AssertElementPresent(
-				key_number = "2",
 				locator1 = "ContentPerformance#NUMBER_VIEWS",
 				value1 = "0");
 		}
-	}
-
-	@description = "LPS-108856: When user clicks on Dont show me this again button, the Content Performance panel disappears"
-	@ignore = "true"
-	@priority = "5"
-	test HideContentPerformancePanel {
-
-		// TODO LPS-139239 HideContentPerformancePanel pending implementation
-
 	}
 
 	@description = "LPS-126044: When the user accesses to the content performance panel of a blog display page, the date interval selector is shown in the content performance panel, with 7 days selected as default"
@@ -524,6 +500,23 @@ definition {
 	@description = "LPS-110920: When the user selects a language in the switcher, the title, the URL and the metrics change accordingly"
 	@priority = "5"
 	test LanguageSelector {
+		property test.name.skip.portal.instance = "ContentPerformance#LanguageSelector";
+
+		task ("Set portal to use Localized URL") {
+			SystemSettings.openSystemSettingsAdmin();
+
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "Pages",
+				configurationName = "SEO",
+				configurationScope = "Virtual Instance Scope");
+
+			SystemSettings.selectOptionSetting(
+				fieldName = "Canonical URL",
+				selectOption = "Use Localized URL");
+
+			SystemSettings.saveConfiguration();
+		}
+
 		task ("Add a translation for that page") {
 			PagesAdmin.openPagesAdmin(siteURLKey = "test-site-name");
 
@@ -537,33 +530,26 @@ definition {
 				localizedNameList = "Pagina principal");
 		}
 
-		task ("Set a custom page as canonical URL and go to Content Performance") {
-			PageAudit.setSEOcanonicalURL(url = "https://liferay.com.br");
-		}
-
 		task ("Open Content Performance and Assert if element is not present") {
 			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/content-page");
 
-			if (IsVisible(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_PANEL")) {
-				Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
-			}
-
-			Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
+			ContentPerformance.openContentPerformance();
 		}
 
-		task ("Change language and assert") {
-			PageAudit.changeLocale(locale = "Portuguese");
+		task ("Change language") {
+			ContentPerformance.changeLocale(locale = "Portuguese");
+		}
 
+		task ("Check if date is from respective language") {
 			AssertTextPresent(
 				locator1 = "PageAudit#PANEL_PAGE_TITLE",
 				value1 = "Pagina principal");
 
-			AssertTextPresent(
-				locator1 = "PageAudit#PANEL_PAGE_URL",
-				value1 = "https://liferay.com.br");
+			AssertTextEquals.assertPartialText(
+				locator1 = "ContentPerformance#CONTENT_PERFORMANCE_URL",
+				value1 = "/pt/web/test-site-name");
 
 			AssertElementPresent(
-				key_number = "2",
 				locator1 = "ContentPerformance#NUMBER_VIEWS",
 				value1 = "0");
 		}
@@ -572,30 +558,49 @@ definition {
 	@description = "LPS-110920: When the user selects a language in the switcher, it doesn't affect the user's language"
 	@priority = "3"
 	test LanguageSelectorUserLanguage {
-		task ("Set a custom page as canonical URL to have data already loaded") {
-			PageAudit.setSEOcanonicalURL(url = "https://liferay.com.br");
-		}
-
-		task ("Open Content Performance and Assert if element is not present") {
+		task ("Go to Edit page") {
 			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/content-page");
 
-			if (IsVisible(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_PANEL")) {
-				Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
-			}
+			ContentPages.gotoPageEditor();
+		}
 
-			Click(locator1 = "ContentPerformance#CONTENT_PERFORMANCE_BUTTON");
+		task ("Add a heading fragment to page") {
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Heading");
+
+			PageEditor.editFragmentText(
+				fragmentName = "Heading",
+				id = "element-text",
+				text = "Text in English");
+		}
+
+		task ("Change locale to es-ES") {
+			PageEditor.changeLocale(
+				currentLocale = "en-US",
+				locale = "es-ES");
+		}
+
+		task ("Edit the localized inline text of Heading") {
+			PageEditor.editFragmentText(
+				fragmentName = "Heading",
+				id = "element-text",
+				text = "Texto en Español");
+
+			PageEditor.clickPublish();
+		}
+
+		task ("Open Content Performance") {
+			ContentPerformance.openContentPerformance();
 		}
 
 		task ("Change language and assert") {
-			PageAudit.changeLocale(locale = "Portuguese");
+			ContentPerformance.changeLocale(locale = "Spanish");
 
-			AssertTextPresent(
-				locator1 = "ContentPerformance#CONTENT_PERFORMANCE_TITLE_PANEL",
-				value1 = "Content Performance");
-
-			AssertTextPresent(
-				locator1 = "PageAudit#PANEL_PAGE_URL",
-				value1 = "https://liferay.com.br");
+			ContentPages.viewFragmentText(
+				fragmentName = "heading",
+				id = "element-text",
+				text = "Text in English");
 		}
 	}
 
@@ -749,24 +754,6 @@ definition {
 				locator1 = "ContentPerformance#TOTAL_VIEWS_NUMBER",
 				value1 = "0");
 		}
-	}
-
-	@description = "LPS-118006: When the DXP is not connected to AC, if the user clicks on the Metrics button, the sidebar panel shows up and displays a button titled Dont show me this again and a message informing the user that the panel will show up again if AC is connected"
-	@ignore = "true"
-	@priority = "4"
-	test MetricsInContentDashboardACDisabled {
-
-		// TODO LPS-139257 MetricsInContentDashboardACDisabled pending implementation
-
-	}
-
-	@description = "LPS-118006: When the DXP is connected to AC after the user has clicked the Don't show me this again button, the Metrics option is shown again, and the sidebar panel with instructions to sync, and without the Dont show me this again button shows up when the user clicks on it"
-	@ignore = "true"
-	@priority = "4"
-	test MetricsInContentDashboardACEnabled {
-
-		// TODO LPS-139257 MetricsInContentDashboardACEnabled pending implementation
-
 	}
 
 	@description = "LPS-113910: When the user selects the info option while the Content performance panel is open, the side panel shows the Info panel"
@@ -1300,15 +1287,6 @@ definition {
 				locator1 = "ContentPerformance#SELECT_TRAFFIC_SOURCES_NUMBER",
 				value1 = "0");
 		}
-	}
-
-	@description = "LPS-108856: When user opens Content Performance panel and AC is connected but not synced, the Content Performance panel displays instructions to sync to AC (Dont show me this again button and the message is not displayed)"
-	@ignore = "true"
-	@priority = "3"
-	test NotSyncedPanel {
-
-		// TODO LPS-139239 NotSyncedPanel pending implementation
-
 	}
 
 	@description = "LPS-126044: When the user accesses to the content performance panel of a blog display page, the name, the URL of the page and the language selector are shown in the content performance panel"

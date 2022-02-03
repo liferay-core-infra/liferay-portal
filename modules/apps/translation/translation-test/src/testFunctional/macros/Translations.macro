@@ -32,20 +32,6 @@ definition {
 		}
 	}
 
-	macro assertUnzippedFileNameFromTempFolder {
-		var tempDir = PropsUtil.get("output.dir.name");
-		var unzippedTranslationFileName = FileUtil.getFileName("${tempDir}/${translationFileName}.xlf");
-
-		echo("## translationFileName: ${translationFileName}");
-
-		if (contains("${unzippedTranslationFileName}", "${translationFileName}")) {
-			echo("This is a translation file.");
-		}
-		else {
-			fail("FAIL!");
-		}
-	}
-
 	macro changeBaseLocale {
 		Portlet.waitForForm();
 
@@ -149,8 +135,15 @@ definition {
 	}
 
 	macro gotoBulkExportTranslation {
-		for (var exportTranslationEntry : list "${exportTranslationEntry}") {
-			LexiconEntry.selectEntry(rowEntry = "${exportTranslationEntry}");
+		if (contains("${exportTranslationEntry}", "Page")) {
+			for (var exportTranslationEntry : list "${exportTranslationEntry}") {
+				PagesAdmin.selectPageItem(pageName = "${exportTranslationEntry}");
+			}
+		}
+		else {
+			for (var exportTranslationEntry : list "${exportTranslationEntry}") {
+				LexiconEntry.selectEntry(rowEntry = "${exportTranslationEntry}");
+			}
 		}
 
 		if (isSet(options)) {
@@ -262,11 +255,16 @@ definition {
 		else {
 			Button.clickPublish();
 
+			while (IsElementPresent(key_text = "Publish", locator1 = "Button#ANY_DISABLED")) {
+				Pause(locator1 = "1000");
+			}
+
 			if (isSet(successFileName)) {
 				Translations.viewImportResult(
 					errorMessage = "${errorMessage}",
 					errorMessageItem = "${errorMessageItem}",
 					failFileName = "${failFileName}",
+					failFileName2 = "${failFileName2}",
 					successFileName = "${successFileName}",
 					successFileName2 = "${successFileName2}",
 					successFileNumber = "${successFileNumber}");
@@ -681,6 +679,13 @@ definition {
 				locator1 = "Message#ERROR_IMPORT_TRANSLATIONS_ITEM",
 				value1 = "${failFileName}");
 		}
+
+		if (isSet(failFileName2)) {
+			AssertTextEquals.assertPartialText(
+				key_indexNumber = "2",
+				locator1 = "Message#ERROR_IMPORT_TRANSLATIONS_ITEM_N",
+				value1 = "${failFileName2}");
+		}
 	}
 
 	macro viewNoTranslationEntry {
@@ -879,10 +884,18 @@ definition {
 			key_currentLocale = StringUtil.lowerCase("en-US"),
 			locator1 = "Button#TRANSLATIONS_LOCALIZATION");
 
-		AssertTextEquals(
-			key_localizedLanguage = "${locale}",
-			locator1 = "Translation#TRANSLATION_STATUS_TITLE",
-			value1 = "Not Translated");
+		if (isSet(page)) {
+			AssertTextEquals(
+				key_localizedLanguage = "${locale}",
+				locator1 = "Translation#TRANSLATION_STATUS_TITLE_PAGE",
+				value1 = "Not Translated");
+		}
+		else {
+			AssertTextEquals(
+				key_localizedLanguage = "${locale}",
+				locator1 = "Translation#TRANSLATION_STATUS_TITLE",
+				value1 = "Not Translated");
+		}
 	}
 
 }

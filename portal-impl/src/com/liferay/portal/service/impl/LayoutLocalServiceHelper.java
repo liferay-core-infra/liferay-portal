@@ -44,6 +44,8 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.portlet.FriendlyURLResolverRegistryUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.LayoutFriendlyURLEntryValidator;
+import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -57,6 +59,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.LayoutPriorityComparator;
@@ -107,13 +110,23 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 				validateFriendlyURL(
 					groupId, privateLayout, layoutId, friendlyURL, languageId);
 
+				if (_layoutFriendlyURLEntryValidator != null) {
+					_layoutFriendlyURLEntryValidator.validateFriendlyURLEntry(
+						groupId, privateLayout, layoutId, friendlyURL);
+				}
+
 				break;
 			}
 			catch (LayoutFriendlyURLException layoutFriendlyURLException) {
 				int type = layoutFriendlyURLException.getType();
 
 				if (type == LayoutFriendlyURLException.DUPLICATE) {
-					friendlyURL = originalFriendlyURL + i;
+					Layout layout = LayoutLocalServiceUtil.fetchLayout(
+						groupId, privateLayout, layoutId);
+
+					if (layout == null) {
+						friendlyURL = originalFriendlyURL + i;
+					}
 				}
 				else {
 					friendlyURL = StringPool.SLASH + layoutId;
@@ -713,6 +726,12 @@ public class LayoutLocalServiceHelper implements IdentifiableOSGiService {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutLocalServiceHelper.class);
 
+	private static volatile LayoutFriendlyURLEntryValidator
+		_layoutFriendlyURLEntryValidator =
+			ServiceProxyFactory.newServiceTrackedInstance(
+				LayoutFriendlyURLEntryValidator.class,
+				LayoutLocalServiceHelper.class,
+				"_layoutFriendlyURLEntryValidator", false, true);
 	private static final Pattern _urlSeparatorPattern = Pattern.compile(
 		"/[A-Za-z]");
 

@@ -197,6 +197,18 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 			"CONTENT_TYPE", "text/plain; charset=UTF-8", ddmStructureId, map);
 	}
 
+	protected void populateContentLength(
+			FileEntry fileEntry, Map<String, String> map)
+		throws Exception {
+
+		String contentLength = "5";
+
+		String key = "contentLength_ja_JP";
+
+		map.put(key, contentLength);
+		map.put(key.concat("_sortable"), contentLength);
+	}
+
 	protected void populateDates(FileEntry fileEntry, Map<String, String> map) {
 		indexedFieldsFixture.populateDate(
 			Field.CREATE_DATE, fileEntry.getCreateDate(), map);
@@ -257,8 +269,12 @@ public class DLFileEntryIndexerIndexedFieldsTest extends BaseDLIndexerTestCase {
 		map.put("size", String.valueOf(fileEntry.getSize()));
 		map.put("size_sortable", String.valueOf(fileEntry.getSize()));
 		map.put("title_ja_JP", fileEntry.getTitle());
+		map.put("versionCount", String.valueOf(fileEntry.getVersion()));
+		map.put(
+			"versionCount_sortable", String.valueOf(fileEntry.getVersion()));
 		map.put("visible", "true");
 
+		populateContentLength(fileEntry, map);
 		populateDates(fileEntry, map);
 
 		if (_ddmIndexer.isLegacyDDMIndexFieldsEnabled()) {

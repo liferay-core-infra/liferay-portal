@@ -63,7 +63,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				CommerceNotificationType.class,
 				new ObjectDefinitionCommerceNotificationType(
 					"create", objectDefinition.getClassName() + "#create",
-					objectDefinition.getName()),
+					objectDefinition.getShortName()),
 				HashMapDictionaryBuilder.put(
 					"commerce.notification.type.key",
 					objectDefinition.getClassName() + "#create"

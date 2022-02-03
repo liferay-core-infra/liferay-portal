@@ -14,6 +14,7 @@
 
 package com.liferay.site.navigation.menu.item.display.page.internal.display.context;
 
+import com.liferay.asset.display.page.util.AssetDisplayPageUtil;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.InfoItemFieldValues;
@@ -24,11 +25,10 @@ import com.liferay.item.selector.criteria.InfoItemItemSelectorReturnType;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
 import com.liferay.layout.display.page.LayoutDisplayPageInfoItemFieldValuesProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
+import com.liferay.petra.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -38,15 +38,15 @@ import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.site.navigation.constants.SiteNavigationWebKeys;
 import com.liferay.site.navigation.menu.item.display.page.internal.configuration.FFDisplayPageSiteNavigationMenuItemConfigurationUtil;
-import com.liferay.site.navigation.menu.item.display.page.internal.constants.SiteNavigationMenuItemTypeDisplayPageWebKeys;
 import com.liferay.site.navigation.menu.item.display.page.internal.type.DisplayPageTypeContext;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 
@@ -56,6 +56,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,46 +67,32 @@ import javax.servlet.http.HttpServletRequest;
 public class DisplayPageTypeSiteNavigationMenuTypeDisplayContext {
 
 	public DisplayPageTypeSiteNavigationMenuTypeDisplayContext(
-		HttpServletRequest httpServletRequest) {
+		DisplayPageTypeContext displayPageTypeContext,
+		HttpServletRequest httpServletRequest, ItemSelector itemSelector,
+		SiteNavigationMenuItem siteNavigationMenuItem) {
 
-		_displayPageTypeContext =
-			(DisplayPageTypeContext)httpServletRequest.getAttribute(
-				SiteNavigationMenuItemTypeDisplayPageWebKeys.
-					DISPLAY_PAGE_TYPE_CONTEXT);
-		_itemSelector = (ItemSelector)httpServletRequest.getAttribute(
-			SiteNavigationMenuItemTypeDisplayPageWebKeys.ITEM_SELECTOR);
-		_siteNavigationMenuItem =
-			(SiteNavigationMenuItem)httpServletRequest.getAttribute(
-				SiteNavigationWebKeys.SITE_NAVIGATION_MENU_ITEM);
+		_displayPageTypeContext = displayPageTypeContext;
+		_httpServletRequest = httpServletRequest;
+		_itemSelector = itemSelector;
+		_siteNavigationMenuItem = siteNavigationMenuItem;
+
+		PortletResponse portletResponse =
+			(PortletResponse)_httpServletRequest.getAttribute(
+				JavaConstants.JAVAX_PORTLET_RESPONSE);
+
+		_liferayPortletResponse = PortalUtil.getLiferayPortletResponse(
+			portletResponse);
+
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 
-	public JSONArray getAvailableLocalesJSONArray() throws Exception {
-		return JSONUtil.toJSONArray(
-			LanguageUtil.getAvailableLocales(_themeDisplay.getSiteGroupId()),
-			locale -> {
-				String w3cLanguageId = LocaleUtil.toW3cLanguageId(locale);
-
-				return JSONUtil.put(
-					"id", LocaleUtil.toLanguageId(locale)
-				).put(
-					"label", w3cLanguageId
-				).put(
-					"symbol", StringUtil.toLowerCase(w3cLanguageId)
-				);
-			});
-	}
-
-	public Map<String, Object> getChooseInfoItemButtonContext(
-		HttpServletRequest httpServletRequest,
-		LiferayPortletResponse liferayPortletResponse) {
-
+	public Map<String, Object> getChooseInfoItemButtonContext() {
 		return HashMapBuilder.<String, Object>put(
 			"eventName",
-			liferayPortletResponse.getNamespace() + "selectInfoItem"
+			_liferayPortletResponse.getNamespace() + "selectInfoItem"
 		).put(
-			"getItemTypeURL", getItemTypeURL(liferayPortletResponse)
+			"getItemDetailsURL", getItemDetailsURL()
 		).put(
 			"itemSelectorURL",
 			() -> {
@@ -119,12 +106,12 @@ public class DisplayPageTypeSiteNavigationMenuTypeDisplayContext {
 
 				RequestBackedPortletURLFactory requestBackedPortletURLFactory =
 					RequestBackedPortletURLFactoryUtil.create(
-						httpServletRequest);
+						_httpServletRequest);
 
 				PortletURL infoItemSelectorURL =
 					_itemSelector.getItemSelectorURL(
 						requestBackedPortletURLFactory,
-						liferayPortletResponse.getNamespace() +
+						_liferayPortletResponse.getNamespace() +
 							"selectInfoItem",
 						itemSelectorCriterion);
 
@@ -198,46 +185,93 @@ public class DisplayPageTypeSiteNavigationMenuTypeDisplayContext {
 		return _classTypeId;
 	}
 
-	public JSONArray getDataJSONArray() throws Exception {
-		Optional<LayoutDisplayPageInfoItemFieldValuesProvider<?>>
-			layoutDisplayPageInfoItemFieldValuesProviderOptional =
-				_displayPageTypeContext.
-					getLayoutDisplayPageInfoItemFieldValuesProviderOptional();
+	public Map<String, Object> getDisplayPageItemContextualSidebarContext()
+		throws Exception {
 
-		LayoutDisplayPageInfoItemFieldValuesProvider
-			layoutDisplayPageInfoItemFieldValuesProvider =
-				layoutDisplayPageInfoItemFieldValuesProviderOptional.orElse(
-					null);
-
-		if (layoutDisplayPageInfoItemFieldValuesProvider == null) {
-			return JSONFactoryUtil.createJSONArray();
-		}
-
-		InfoItemFieldValues infoItemFieldValues =
-			layoutDisplayPageInfoItemFieldValuesProvider.getInfoItemFieldValues(
-				getClassPK());
-
-		Collection<InfoFieldValue<Object>> infoFieldValues =
-			infoItemFieldValues.getInfoFieldValues();
-
-		Stream<InfoFieldValue<Object>> stream = infoFieldValues.stream();
-
-		return JSONUtil.toJSONArray(
-			stream.collect(Collectors.toList()),
-			infoFieldValue -> JSONUtil.put(
-				"title",
-				() -> {
-					InfoField infoField = infoFieldValue.getInfoField();
-
-					return infoField.getLabel(_themeDisplay.getLocale());
-				}
+		return HashMapBuilder.<String, Object>put(
+			"chooseItemProps", getChooseInfoItemButtonContext()
+		).put(
+			"defaultLanguageId",
+			LocaleUtil.toLanguageId(LocaleUtil.getMostRelevantLocale())
+		).put(
+			"hasDisplayPage",
+			AssetDisplayPageUtil.hasAssetDisplayPage(
+				_themeDisplay.getScopeGroupId(), getClassNameId(), getClassPK(),
+				getClassTypeId())
+		).put(
+			"item",
+			HashMapBuilder.<String, Object>put(
+				"classNameId", getClassNameId()
 			).put(
-				"value", infoFieldValue.getValue(_themeDisplay.getLocale())
-			));
+				"classPK", getClassPK()
+			).put(
+				"classTypeId", getClassTypeId()
+			).put(
+				"data", _getDataJSONArray()
+			).put(
+				"title", getTitle()
+			).put(
+				"type", getType()
+			).build()
+		).put(
+			"itemSubtype", getItemSubtype()
+		).put(
+			"itemType", getItemType()
+		).put(
+			"locales",
+			JSONUtil.toJSONArray(
+				LanguageUtil.getAvailableLocales(
+					_themeDisplay.getSiteGroupId()),
+				locale -> {
+					String w3cLanguageId = LocaleUtil.toW3cLanguageId(locale);
+
+					return JSONUtil.put(
+						"id", LocaleUtil.toLanguageId(locale)
+					).put(
+						"label", w3cLanguageId
+					).put(
+						"symbol", StringUtil.toLowerCase(w3cLanguageId)
+					);
+				})
+		).put(
+			"localizedNames",
+			() -> {
+				UnicodeProperties typeSettingsUnicodeProperties =
+					UnicodePropertiesBuilder.fastLoad(
+						_siteNavigationMenuItem.getTypeSettings()
+					).build();
+
+				return JSONFactoryUtil.createJSONObject(
+					typeSettingsUnicodeProperties.getProperty(
+						"localizedNames", "{}"));
+			}
+		).put(
+			"namespace", _liferayPortletResponse.getNamespace()
+		).put(
+			"useCustomName",
+			() -> {
+				UnicodeProperties typeSettingsUnicodeProperties =
+					UnicodePropertiesBuilder.fastLoad(
+						_siteNavigationMenuItem.getTypeSettings()
+					).build();
+
+				return GetterUtil.getBoolean(
+					typeSettingsUnicodeProperties.get("useCustomName"));
+			}
+		).build();
 	}
 
-	public String getDefaultLanguageId() {
-		return LocaleUtil.toLanguageId(LocaleUtil.getMostRelevantLocale());
+	public String getItemDetailsURL() {
+		LiferayPortletURL itemDetailsURL =
+			(LiferayPortletURL)ResourceURLBuilder.createResourceURL(
+				_liferayPortletResponse
+			).setResourceID(
+				"/navigation_menu/get_item_details"
+			).buildResourceURL();
+
+		itemDetailsURL.setCopyCurrentRenderParameters(false);
+
+		return itemDetailsURL.toString();
 	}
 
 	public String getItemSubtype() {
@@ -269,34 +303,6 @@ public class DisplayPageTypeSiteNavigationMenuTypeDisplayContext {
 
 	public String getItemType() {
 		return _displayPageTypeContext.getLabel(_themeDisplay.getLocale());
-	}
-
-	public String getItemTypeURL(
-		LiferayPortletResponse liferayPortletResponse) {
-
-		LiferayPortletURL itemTypeURL =
-			(LiferayPortletURL)liferayPortletResponse.createResourceURL();
-
-		itemTypeURL.setCopyCurrentRenderParameters(false);
-		itemTypeURL.setResourceID("/navigation_menu/get_item_details");
-
-		return itemTypeURL.toString();
-	}
-
-	public JSONObject getLocalizedNamesJSONObject() throws JSONException {
-		if (_localizedNamesJSONObject != null) {
-			return _localizedNamesJSONObject;
-		}
-
-		UnicodeProperties typeSettingsUnicodeProperties =
-			UnicodePropertiesBuilder.fastLoad(
-				_siteNavigationMenuItem.getTypeSettings()
-			).build();
-
-		_localizedNamesJSONObject = JSONFactoryUtil.createJSONObject(
-			typeSettingsUnicodeProperties.getProperty("localizedNames", "{}"));
-
-		return _localizedNamesJSONObject;
 	}
 
 	public String getOriginalTitle() {
@@ -358,20 +364,42 @@ public class DisplayPageTypeSiteNavigationMenuTypeDisplayContext {
 			multipleSelectionEnabled();
 	}
 
-	public boolean isUseCustomName() {
-		if (_useCustomName != null) {
-			return _useCustomName;
+	private JSONArray _getDataJSONArray() throws Exception {
+		Optional<LayoutDisplayPageInfoItemFieldValuesProvider<?>>
+			layoutDisplayPageInfoItemFieldValuesProviderOptional =
+				_displayPageTypeContext.
+					getLayoutDisplayPageInfoItemFieldValuesProviderOptional();
+
+		LayoutDisplayPageInfoItemFieldValuesProvider<?>
+			layoutDisplayPageInfoItemFieldValuesProvider =
+				layoutDisplayPageInfoItemFieldValuesProviderOptional.orElse(
+					null);
+
+		if (layoutDisplayPageInfoItemFieldValuesProvider == null) {
+			return JSONFactoryUtil.createJSONArray();
 		}
 
-		UnicodeProperties typeSettingsUnicodeProperties =
-			UnicodePropertiesBuilder.fastLoad(
-				_siteNavigationMenuItem.getTypeSettings()
-			).build();
+		InfoItemFieldValues infoItemFieldValues =
+			layoutDisplayPageInfoItemFieldValuesProvider.getInfoItemFieldValues(
+				getClassPK());
 
-		_useCustomName = GetterUtil.getBoolean(
-			typeSettingsUnicodeProperties.get("useCustomName"));
+		Collection<InfoFieldValue<Object>> infoFieldValues =
+			infoItemFieldValues.getInfoFieldValues();
 
-		return _useCustomName;
+		Stream<InfoFieldValue<Object>> stream = infoFieldValues.stream();
+
+		return JSONUtil.toJSONArray(
+			stream.collect(Collectors.toList()),
+			infoFieldValue -> JSONUtil.put(
+				"title",
+				() -> {
+					InfoField<?> infoField = infoFieldValue.getInfoField();
+
+					return infoField.getLabel(_themeDisplay.getLocale());
+				}
+			).put(
+				"value", infoFieldValue.getValue(_themeDisplay.getLocale())
+			));
 	}
 
 	private LayoutDisplayPageObjectProvider<?>
@@ -392,14 +420,14 @@ public class DisplayPageTypeSiteNavigationMenuTypeDisplayContext {
 	private Long _classPK;
 	private Long _classTypeId;
 	private final DisplayPageTypeContext _displayPageTypeContext;
+	private final HttpServletRequest _httpServletRequest;
 	private final ItemSelector _itemSelector;
 	private LayoutDisplayPageObjectProvider<?> _layoutDisplayPageObjectProvider;
-	private JSONObject _localizedNamesJSONObject;
+	private final LiferayPortletResponse _liferayPortletResponse;
 	private String _originalTitle;
 	private final SiteNavigationMenuItem _siteNavigationMenuItem;
 	private final ThemeDisplay _themeDisplay;
 	private String _title;
 	private String _type;
-	private Boolean _useCustomName;
 
 }

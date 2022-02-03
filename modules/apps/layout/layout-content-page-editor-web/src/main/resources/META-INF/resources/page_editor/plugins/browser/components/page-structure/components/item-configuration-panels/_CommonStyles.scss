@@ -1,10 +1,12 @@
 @import 'cadmin-variables';
 
+@import '../../../../../../app/components/variables';
+
 html#{$cadmin-selector} {
 	.cadmin {
 		.page-editor__common-styles {
-			.page-editor__sidebar__fieldset--no-label {
-				margin-top: $pageEditorSpacing * 2;
+			.page-editor__sidebar__fieldset__field-checkbox {
+				min-height: $pageEditorSpacing * 4;
 			}
 		}
 	}

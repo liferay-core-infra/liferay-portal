@@ -437,7 +437,7 @@ definition {
 	@description = "LPS-135400 - Verify it is possible to add a relation with an entry through the Relationship field"
 	@priority = "5"
 	test CanAddRelationOnRelationshipField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 
 		ObjectAdmin.addObjectViaAPI(
 			labelName = "Custom Object 141652",
@@ -1332,7 +1332,7 @@ definition {
 	@description = "LPS-135401 - Verify that it is possible to delete a relation with an entry on the Relationship tab"
 	@priority = "5"
 	test CanDeleteRelationOnRelationshipTab {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 
 		ObjectAdmin.addObjectViaAPI(
 			labelName = "Custom Object 141661",
@@ -2639,7 +2639,7 @@ definition {
 	@description = "LPS-135401 - Verify that it is possible to relate to many other entries on both objects"
 	@priority = "5"
 	test CanRelateManyOtherEntriesBothObjects {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 
 		for (var nameObject : list "A,B") {
 			ObjectAdmin.addObjectViaAPI(
@@ -3869,8 +3869,6 @@ definition {
 			fieldName = "ObjectEdit",
 			pluralLabelName = "Objects Edit");
 
-		CreateObject.selectTitleField(fieldLabel = "Custom Field");
-
 		ObjectAdmin.selectObjectScope(fieldOption = "Company");
 
 		CreateObject.selectPanelCategoryKey(panelCategoryKey = "Control Panel > Object");
@@ -3880,8 +3878,6 @@ definition {
 		for (var valueFieldLabel : list "ObjectEdit,Object Edit,Objects Edit") {
 			CreateObject.assertValuesOnObjectData(fieldLabel = "${valueFieldLabel}");
 		}
-
-		CreateObject.assertTitleFieldIsSelected(fieldLabel = "Custom Field");
 
 		CreateObject.assertValuesOnScope(
 			valuePanelCategory = "Control Panel > Object",
@@ -4383,7 +4379,7 @@ definition {
 
 		Button.clickSave();
 
-		ObjectAdmin.addObjectSingleFieldNumericAndBooleanEntryViaAPI(
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
 			fieldName = "customObjectField",
 			objectName = "CustomObject141614",
 			value = "12.34");
@@ -4425,7 +4421,7 @@ definition {
 
 		Button.clickSave();
 
-		ObjectAdmin.addObjectSingleFieldNumericAndBooleanEntryViaAPI(
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
 			fieldName = "customObjectField",
 			objectName = "CustomObject141615",
 			value = "123");
@@ -4533,6 +4529,8 @@ definition {
 	@description = "LPS-139803 - Verify it the Object Entry Title is displayed on the Relationship tab"
 	@priority = "4"
 	test CanViewObjectEntryTitleOnRelationshipTab {
+		property portal.upstream = "quarantine";
+
 		ObjectAdmin.addObjectViaAPI(
 			labelName = "Custom Object 141620",
 			objectName = "CustomObject141620",
@@ -5167,7 +5165,7 @@ definition {
 	@description = "LPS-135401 - Verify if Cascade deletion type of Relationship One to Many will allow the entry with relation (from the parent Object) and its relations to be deleted"
 	@priority = "5"
 	test CascadeDeletionOneToManyWillAllowDeleteParent {
-		property portal.acceptance = "true";
+		property portal.acceptance = "quarantine";
 
 		for (var letter : list "A,B") {
 			ObjectAdmin.addObjectViaAPI(
@@ -5242,6 +5240,8 @@ definition {
 	@description = "LPS-135401 - Verify that when adding an entry that was already related to another it will keep related to both entries"
 	@priority = "4"
 	test ChoosingAlreadyRelatedEntryWillKeepOnBothEntries {
+		property portal.upstream = "quarantine";
+
 		for (var letter : list "A,B") {
 			ObjectAdmin.addObjectViaAPI(
 				labelName = "Custom Object ${letter}",
@@ -6180,12 +6180,69 @@ definition {
 	}
 
 	@description = "LPS-139005 - Verify that the Object entries are not displayed on Page fragments from an Object that was inactivated"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test ObjectEntriesDisappearsPageFragmentsWhenInactivated {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-140867 ObjectEntriesDisappearsPageFragmentsWhenInactivated pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "String",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.openObjectAdmin();
+
+		ObjectPortlet.selectCustomObject(label = "Custom Object");
+
+		CreateObject.selectTitleField(fieldLabel = "Custom Field");
+
+		CreateObject.saveObject();
+
+		Navigator.openURL();
+
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
+			fieldName = "customObjectField",
+			objectName = "CustomObject",
+			value = "Entry Test");
+
+		Navigator.openURL();
+
+		ContentPages.addPage(pageName = "Blank Display Page");
+
+		PageEditor.addFragment(
+			collectionName = "Content Display",
+			fragmentName = "Collection Display");
+
+		PageEditor.editCollectionDisplay(
+			fragmentName = "Collection Display",
+			infoListProviderName = "Custom Objects");
+
+		PageEditor.editCollectionDisplay(
+			fragmentName = "Collection Display",
+			listStyle = "Table",
+			selectedName = "Custom Objects");
+
+		PageEditor.clickPublish();
+
+		Navigator.openURL();
+
+		ObjectAdmin.openObjectAdmin();
+
+		CreateObject.inactiveCustomObject(objectName = "Custom Object");
+
+		PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+		PagesAdmin.gotoPageEllipsisMenuItem(
+			menuItem = "View",
+			pageName = "Blank Display Page");
+
+		ObjectAdmin.assertEntryOnPageNotPresent(entryName = "Entry Test");
 	}
 
 	@description = "LPS-135649 - Verify that pending and completed Object entries disappears from Workflow Metrics page when they are deleted"
@@ -6241,30 +6298,30 @@ definition {
 	@priority = "4"
 	test ObjectEntriesDisappearsWorkflowPagesWhenDeleted {
 		ObjectAdmin.addObjectViaAPI(
-			labelName = "Custom Object",
-			objectName = "CustomObject",
-			pluralLabelName = "Custom Objects");
+			labelName = "Custom Object 141635",
+			objectName = "CustomObject141635",
+			pluralLabelName = "Custom Objects 141635");
 
 		ObjectAdmin.addObjectFieldViaAPI(
 			fieldLabelName = "Custom Field",
 			fieldName = "customObjectField",
 			fieldType = "String",
 			isRequired = "false",
-			objectName = "CustomObject");
+			objectName = "CustomObject141635");
 
-		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject141635");
 
 		ObjectAdmin.openWorkflowProcessBuilderConfiguration();
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
-			workflowResourceValue = "Custom Object");
+			workflowResourceValue = "Custom Object 141635");
 
-		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject141635");
 
 		ObjectPortlet.addSingleFieldEntryViaUI(entry = "Entry Test");
 
-		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject141635");
 
 		ObjectPortlet.deleteEntry(entry = "Entry Test");
 
@@ -6274,33 +6331,33 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
 
-		Workflow.viewCompletedTasksTaskNotPresentCP(workflowAssetTitle = "Custom Object");
+		Workflow.viewCompletedTasksTaskNotPresentCP(workflowAssetTitle = "Custom Object 141635");
 
 		ObjectAdmin.openMySubmissions();
 
-		CreateObject.assertObjectNotPresentInSubmissions(objectName = "Custom Object");
+		CreateObject.assertObjectNotPresentInSubmissions(objectName = "Custom Object 141635");
 
 		ObjectAdmin.openSubmissions();
 
-		CreateObject.assertObjectNotPresentInSubmissions(objectName = "Custom Object");
+		CreateObject.assertObjectNotPresentInSubmissions(objectName = "Custom Object 141635");
 	}
 
 	@description = "LPS-139005 - Verify that pending and completed Object entries with workflow are not displayed on the workflow pages (My Workflow Tasks, My Submissions, and Submissions) when inactivated"
 	@priority = "4"
 	test ObjectEntriesDisappearsWorkflowPagesWhenInactivated {
 		ObjectAdmin.addObjectViaAPI(
-			labelName = "Custom Object",
-			objectName = "CustomObject",
-			pluralLabelName = "Custom Objects");
+			labelName = "Custom Object 140865",
+			objectName = "CustomObject140865",
+			pluralLabelName = "Custom Objects 140865");
 
 		ObjectAdmin.addObjectFieldViaAPI(
 			fieldLabelName = "Custom Field",
 			fieldName = "customObjectField",
 			fieldType = "String",
 			isRequired = "false",
-			objectName = "CustomObject");
+			objectName = "CustomObject140865");
 
-		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject140865");
 
 		ObjectAdmin.openObjectAdmin();
 
@@ -6310,16 +6367,16 @@ definition {
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
-			workflowResourceValue = "Custom Object");
+			workflowResourceValue = "Custom Object 140865");
 
 		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
 			fieldName = "customObjectField",
-			objectName = "CustomObject",
+			objectName = "CustomObject140865",
 			value = "Test");
 
 		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
 			fieldName = "customObjectField",
-			objectName = "CustomObject",
+			objectName = "CustomObject140865",
 			value = "Test 2");
 
 		ObjectAdmin.openMyWorkflowTasks();
@@ -6336,7 +6393,7 @@ definition {
 
 		ObjectAdmin.openObjectAdmin();
 
-		ObjectPortlet.selectCustomObject(label = "Custom Object");
+		ObjectPortlet.selectCustomObject(label = "Custom Object 140865");
 
 		CreateObject.checkToggleInactive();
 
@@ -6345,25 +6402,25 @@ definition {
 		ObjectAdmin.openMyWorkflowTasks();
 
 		AssertElementNotPresent(
-			key_workflowAssetTitle = "Custom Object",
+			key_workflowAssetTitle = "Custom Object 140865",
 			locator1 = "MyWorkflowTasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE");
 
 		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
 
 		AssertElementNotPresent(
-			key_workflowAssetTitle = "Custom Object",
+			key_workflowAssetTitle = "Custom Object 140865",
 			locator1 = "MyWorkflowTasks#ASSIGNED_TO_ME_TABLE_ASSET_TYPE");
 
 		ObjectAdmin.openMySubmissions();
 
 		AssertElementNotPresent(
-			key_submissionName = "Custom Object",
+			key_submissionName = "Custom Object 140865",
 			locator1 = "WorkflowSubmissions#SUBMISSION_BY_NAME");
 
 		ObjectAdmin.openSubmissions();
 
 		AssertElementNotPresent(
-			key_submissionName = "Custom Object",
+			key_submissionName = "Custom Object 140865",
 			locator1 = "WorkflowSubmissions#SUBMISSION_BY_NAME");
 	}
 
@@ -6371,9 +6428,9 @@ definition {
 	@priority = "4"
 	test ObjectEntriesReappearsPageFragmentsWhenReactivated {
 		ObjectAdmin.addObjectViaAPI(
-			labelName = "Custom Object",
+			labelName = "Custom Object 142598",
 			objectName = "CustomObject142598",
-			pluralLabelName = "Custom Objects");
+			pluralLabelName = "Custom Objects 142598");
 
 		ObjectAdmin.addObjectFieldViaAPI(
 			fieldLabelName = "Custom Field",
@@ -6401,7 +6458,7 @@ definition {
 
 		VisualizeObjectDisplayPage.addItem(
 			frameTitle = "Select",
-			pluralLabelName = "Custom Objects");
+			pluralLabelName = "Custom Objects 142598");
 
 		VisualizeObjectCollectionDisplay.mapFragment(fieldLabel = "Custom Field");
 
@@ -6409,7 +6466,7 @@ definition {
 
 		ObjectAdmin.openObjectAdmin();
 
-		ObjectPortlet.selectCustomObject(label = "Custom Object");
+		ObjectPortlet.selectCustomObject(label = "Custom Object 142598");
 
 		CreateObject.checkToggleInactive();
 
@@ -6417,7 +6474,7 @@ definition {
 
 		ObjectAdmin.openObjectAdmin();
 
-		ObjectPortlet.selectCustomObject(label = "Custom Object");
+		ObjectPortlet.selectCustomObject(label = "Custom Object 142598");
 
 		CreateObject.checkToggleActive();
 
@@ -6437,12 +6494,76 @@ definition {
 	}
 
 	@description = "LPS-139005 - Verify that the Object entries with workflow are displayed again on the Workflow Metrics page when reactivated"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test ObjectEntriesReappearsWorkflowMetricsWhenReactivated {
+		property test.run.environment = "EE";
 
-		// TODO LPS-140888 ObjectEntriesReappearsWorkflowMetricsWhenReactivated pending implementation
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "String",
+			isRequired = "false",
+			objectName = "CustomObject");
+
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.openWorkflowProcessBuilderConfiguration();
+
+		Workflow.configureWorkflow(
+			workflowDefinition = "Single Approver",
+			workflowResourceValue = "Custom Object");
+
+		for (var fieldEntry : list "A,B") {
+			ObjectAdmin.addObjectSingleFieldEntryViaAPI(
+				fieldName = "customObjectField",
+				objectName = "CustomObject",
+				value = "Entry ${fieldEntry}");
+		}
+
+		Navigator.openURL();
+
+		ObjectAdmin.openMyWorkflowTasks();
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Assign to Me");
+
+		Workflow.confirmWorkflowAction();
+
+		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Approve");
+
+		Workflow.confirmWorkflowAction();
+
+		ObjectAdmin.openObjectAdmin();
+
+		CreateObject.inactiveCustomObject(objectName = "Custom Object");
+
+		ObjectAdmin.openObjectAdmin();
+
+		CreateObject.activeCustomObject(objectName = "Custom Object");
+
+		Navigator.openURL();
+
+		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
+
+		WorkflowMetrics.checkPendingWorkflowValues(
+			key_ontime = "0",
+			key_overdue = "0",
+			key_pending = "1",
+			key_untracked = "1");
+
+		Click(locator1 = "WorkflowMetrics#METRICS_PERFORMANCE_TAB");
+
+		WorkflowMetrics.checkCompletedWorkflowValues(
+			key_completed = "1",
+			key_ontime = "0",
+			key_overdue = "0",
+			key_untracked = "1");
 	}
 
 	@description = "LPS-139005 - Verify that pending and completed Object entries with workflow are displayed again on the workflow pages (My Workflow Tasks, My Submissions, and Submissions) when reactivated"
@@ -6470,7 +6591,7 @@ definition {
 
 		Workflow.configureWorkflow(
 			workflowDefinition = "Single Approver",
-			workflowResourceValue = "Custom Object");
+			workflowResourceValue = "Custom Object 140887");
 
 		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
 			fieldName = "customObjectField",
@@ -7949,6 +8070,8 @@ definition {
 	@description = "LPS-139005 - Verify that the Relationship tab is no longer displayed when the child object is inactivated (One to Many)"
 	@priority = "4"
 	test RelationshipTabDisappearsWhenInactivatedOneToMany {
+		property portal.upstream = "quarantine";
+
 		for (var letter : list "A,B") {
 			ObjectAdmin.addObjectViaAPI(
 				labelName = "Custom Object 140872 ${letter}",

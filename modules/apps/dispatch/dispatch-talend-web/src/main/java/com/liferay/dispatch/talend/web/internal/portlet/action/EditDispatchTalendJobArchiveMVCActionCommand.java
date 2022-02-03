@@ -20,6 +20,7 @@ import com.liferay.dispatch.repository.DispatchFileRepository;
 import com.liferay.dispatch.service.DispatchTriggerLocalService;
 import com.liferay.dispatch.talend.archive.TalendArchiveParserUtil;
 import com.liferay.dispatch.talend.archive.exception.TalendArchiveException;
+import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -90,6 +91,17 @@ public class EditDispatchTalendJobArchiveMVCActionCommand
 					uploadPortletRequest.getSize("jobArchive"),
 					uploadPortletRequest.getContentType("jobArchive"),
 					new FileInputStream(jobArchiveFile));
+
+				_expandoValueLocalService.addValue(
+					_portal.getCompanyId(actionRequest),
+					DispatchTrigger.class.getName(), "DispatchArchiveFile",
+					"dispatchTriggerId", _portal.getUserId(actionRequest),
+					String.valueOf(dispatchTriggerId));
+				_expandoValueLocalService.addValue(
+					_portal.getCompanyId(actionRequest),
+					DispatchTrigger.class.getName(), "DispatchArchiveFile",
+					"fileName", _portal.getUserId(actionRequest),
+					uploadPortletRequest.getFileName("jobArchive"));
 			}
 			finally {
 				FileUtil.delete(jobArchiveFile);
@@ -161,6 +173,9 @@ public class EditDispatchTalendJobArchiveMVCActionCommand
 
 	@Reference
 	private DispatchTriggerLocalService _dispatchTriggerLocalService;
+
+	@Reference
+	private ExpandoValueLocalService _expandoValueLocalService;
 
 	@Reference
 	private Portal _portal;

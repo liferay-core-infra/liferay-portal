@@ -83,6 +83,7 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.function.UnsafeSupplier;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -178,6 +179,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import javax.servlet.ServletContext;
 
@@ -193,7 +195,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		AccountResource.Factory accountResourceFactory,
 		AssetCategoryLocalService assetCategoryLocalService,
 		AssetListEntryLocalService assetListEntryLocalService, Bundle bundle,
-		CommerceReferencesHolder commerceReferencesHolder,
+		Supplier<CommerceReferencesHolder> commerceReferencesHolderSupplier,
 		DDMStructureLocalService ddmStructureLocalService,
 		DDMTemplateLocalService ddmTemplateLocalService,
 		DefaultDDMStructureHelper defaultDDMStructureHelper,
@@ -235,16 +237,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 		UserAccountResource.Factory userAccountResourceFactory,
 		UserLocalService userLocalService) {
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Commerce references holder " + commerceReferencesHolder);
-		}
-
 		_accountResourceFactory = accountResourceFactory;
 		_assetCategoryLocalService = assetCategoryLocalService;
 		_assetListEntryLocalService = assetListEntryLocalService;
 		_bundle = bundle;
-		_commerceReferencesHolder = commerceReferencesHolder;
+		_commerceReferencesHolderSupplier = commerceReferencesHolderSupplier;
 		_ddmStructureLocalService = ddmStructureLocalService;
 		_ddmTemplateLocalService = ddmTemplateLocalService;
 		_defaultDDMStructureHelper = defaultDDMStructureHelper;
@@ -328,6 +325,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 	@Override
 	public void initialize(long groupId) throws InitializationException {
+		_commerceReferencesHolder = _commerceReferencesHolderSupplier.get();
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Commerce references holder " + _commerceReferencesHolder);
+		}
+
 		long startTime = System.currentTimeMillis();
 
 		if (_log.isInfoEnabled()) {
@@ -359,6 +363,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_invoke(() -> _addDDMStructures(serviceContext));
 			_invoke(() -> _addFragmentEntries(serviceContext));
 			_invoke(() -> _addSAPEntries(serviceContext));
+			_invoke(() -> _addSiteConfiguration(serviceContext));
 			_invoke(() -> _addStyleBookEntries(serviceContext));
 			_invoke(
 				() -> _addTaxonomyVocabularies(
@@ -690,16 +695,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 			StringUtil.replaceLast(
 				resourcePath, ".json", ".model-resource-permissions.json"),
 			serviceContext);
-
-		Group group = _groupLocalService.getGroup(
-			serviceContext.getScopeGroupId());
-
-		group.setType(GroupConstants.TYPE_SITE_PRIVATE);
-		group.setManualMembership(true);
-		group.setMembershipRestriction(
-			GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION);
-
-		_groupLocalService.updateGroup(group);
 
 		Settings settings = _settingsFactory.getSettings(
 			new GroupServiceSettingsLocator(
@@ -1642,6 +1637,24 @@ public class BundleSiteInitializer implements SiteInitializer {
 		while (enumeration.hasMoreElements()) {
 			URL url = enumeration.nextElement();
 
+			// Begin LPS-146172
+
+			String fileName = url.getFile();
+
+			int index = fileName.lastIndexOf(CharPool.FORWARD_SLASH);
+
+			if ((index == -1) || (index >= (fileName.length() - 1))) {
+				continue;
+			}
+
+			fileName = fileName.substring(index + 1);
+
+			if (Validator.isNull(fileName)) {
+				continue;
+			}
+
+			// End LPS-146172
+
 			String urlPath = url.getPath();
 
 			if (StringUtil.endsWith(urlPath, "page-definition.json")) {
@@ -1682,13 +1695,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 				zipWriter.addEntry(
 					StringUtil.removeFirst(
-						urlPath, "/site-initializer/layout-page-templates/"),
+						urlPath, "/site-initializer/layout-page-templates"),
 					json);
 			}
 			else {
 				zipWriter.addEntry(
 					StringUtil.removeFirst(
-						urlPath, "/site-initializer/layout-page-templates/"),
+						urlPath, "/site-initializer/layout-page-templates"),
 					url.openStream());
 			}
 		}
@@ -2336,6 +2349,30 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
+	private void _addSiteConfiguration(ServiceContext serviceContext)
+		throws Exception {
+
+		String resourcePath = "site-initializer/site-configuration.json";
+
+		String json = _read(resourcePath);
+
+		if (json == null) {
+			return;
+		}
+
+		Group group = _groupLocalService.getGroup(
+			serviceContext.getScopeGroupId());
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+
+		group.setType(jsonObject.getInt("typeSite"));
+		group.setManualMembership(jsonObject.getBoolean("manualMembership"));
+		group.setMembershipRestriction(
+			jsonObject.getInt("membershipRestriction"));
+
+		_groupLocalService.updateGroup(group);
+	}
+
 	private void _addSiteNavigationMenu(
 			JSONObject jsonObject, ServiceContext serviceContext,
 			Map<String, SiteNavigationMenuItemSetting>
@@ -2970,7 +3007,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		CPInstance cpInstance =
 			_commerceReferencesHolder.cpInstanceLocalService.getCPInstance(
 				cpDefinition.getCPDefinitionId(),
-				cpInstancePropertiesJSONObject.getString("cpInstanceSKu"));
+				cpInstancePropertiesJSONObject.getString("cpInstanceSku"));
 
 		if (cpInstance == null) {
 			return;
@@ -3162,6 +3199,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final Bundle _bundle;
 	private final ClassLoader _classLoader;
 	private CommerceReferencesHolder _commerceReferencesHolder;
+	private final Supplier<CommerceReferencesHolder>
+		_commerceReferencesHolderSupplier;
 	private final DDMStructureLocalService _ddmStructureLocalService;
 	private final DDMTemplateLocalService _ddmTemplateLocalService;
 	private final DefaultDDMStructureHelper _defaultDDMStructureHelper;

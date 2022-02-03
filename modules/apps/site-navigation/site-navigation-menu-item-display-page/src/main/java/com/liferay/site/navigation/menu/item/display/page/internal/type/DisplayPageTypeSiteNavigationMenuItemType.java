@@ -15,6 +15,7 @@
 package com.liferay.site.navigation.menu.item.display.page.internal.type;
 
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
+import com.liferay.asset.display.page.util.AssetDisplayPageUtil;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.item.selector.ItemSelector;
@@ -24,6 +25,7 @@ import com.liferay.layout.display.page.LayoutDisplayPageMultiSelectionProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -44,9 +46,8 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.xml.Element;
-import com.liferay.site.navigation.constants.SiteNavigationWebKeys;
 import com.liferay.site.navigation.menu.item.display.page.internal.configuration.FFDisplayPageSiteNavigationMenuItemConfigurationUtil;
-import com.liferay.site.navigation.menu.item.display.page.internal.constants.SiteNavigationMenuItemTypeDisplayPageWebKeys;
+import com.liferay.site.navigation.menu.item.display.page.internal.display.context.DisplayPageTypeSiteNavigationMenuTypeDisplayContext;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemType;
 
@@ -260,6 +261,34 @@ public class DisplayPageTypeSiteNavigationMenuItemType
 	}
 
 	@Override
+	public String getStatusIcon(SiteNavigationMenuItem siteNavigationMenuItem) {
+		UnicodeProperties typeSettingsUnicodeProperties =
+			UnicodePropertiesBuilder.fastLoad(
+				siteNavigationMenuItem.getTypeSettings()
+			).build();
+
+		try {
+			if (!AssetDisplayPageUtil.hasAssetDisplayPage(
+					siteNavigationMenuItem.getGroupId(),
+					GetterUtil.getLong(
+						typeSettingsUnicodeProperties.get("classNameId")),
+					GetterUtil.getLong(
+						typeSettingsUnicodeProperties.get("classPK")),
+					GetterUtil.getLong(
+						typeSettingsUnicodeProperties.get("classTypeId")))) {
+
+				return "warning-full";
+			}
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException.getMessage(), portalException);
+		}
+
+		return SiteNavigationMenuItemType.super.getStatusIcon(
+			siteNavigationMenuItem);
+	}
+
+	@Override
 	public String getSubtitle(
 		SiteNavigationMenuItem siteNavigationMenuItem, Locale locale) {
 
@@ -426,15 +455,10 @@ public class DisplayPageTypeSiteNavigationMenuItemType
 		throws IOException {
 
 		httpServletRequest.setAttribute(
-			SiteNavigationMenuItemTypeDisplayPageWebKeys.
-				DISPLAY_PAGE_TYPE_CONTEXT,
-			_displayPageTypeContext);
-		httpServletRequest.setAttribute(
-			SiteNavigationMenuItemTypeDisplayPageWebKeys.ITEM_SELECTOR,
-			_itemSelector);
-		httpServletRequest.setAttribute(
-			SiteNavigationWebKeys.SITE_NAVIGATION_MENU_ITEM,
-			siteNavigationMenuItem);
+			DisplayPageTypeSiteNavigationMenuTypeDisplayContext.class.getName(),
+			new DisplayPageTypeSiteNavigationMenuTypeDisplayContext(
+				_displayPageTypeContext, httpServletRequest, _itemSelector,
+				siteNavigationMenuItem));
 
 		_jspRenderer.renderJSP(
 			_servletContext, httpServletRequest, httpServletResponse,

@@ -23,66 +23,274 @@ definition {
 	}
 
 	@description = "LPS-139472 - Verify that 'Allow Multiple Selections' option is not available for Select From List field when a form is mapped to an object"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test AllowMultipleSelectionsNotAvailable {
+		Picklist.addPicklistViaAPI(picklistName = "Picklist Test");
 
-		// TODO LPS-145730 AllowMultipleSelectionsNotAvailable pending implementation
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
+		ObjectAdmin.openObjectAdmin();
+
+		ObjectPortlet.selectCustomObject(label = "Custom Object");
+
+		ObjectAdmin.goToFieldsTab();
+
+		ObjectAdmin.addObjectFieldViaUI(
+			fieldLabel = "Field Picklist",
+			fieldPicklist = "Picklist Test",
+			fieldType = "Picklist");
+
+		Navigator.openURL();
+
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		FormsAdmin.addForm();
+
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		PopulateObjectFormsConfiguration.selectCustomObject(label = "Custom Object");
+
+		Form.gotoAddField(fieldType = "Select from List");
+
+		PopulateObjectFormsConfiguration.mapFormObjectField(
+			fieldLabelName = "Field Picklist",
+			formObjectField = "Choose an Option");
+
+		Form.gotoAdvancedTab();
+
+		AssertNotVisible(
+			key_toggleSwitch = "Allow Multiple Selections",
+			locator1 = "ToggleSwitch#ENABLE_TOGGLE_SWITCH_VIA_SPAN");
 	}
 
 	@description = "LPS-139464 - Verify that it is possible to delete a form mapped to an object after adding entries on it"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanDeleteFormMappedToObject {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145732 CanDeleteFormMappedToObject pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "String",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		PopulateObjectFormsConfiguration.selectCustomObject(label = "Custom Object");
+
+		Form.gotoAddField(fieldType = "Text");
+
+		PopulateObjectFormsConfiguration.mapFormField(fieldLabelName = "Custom Field");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormViewBuilder.editText(
+			fieldName = "Text",
+			fieldValue = "Entry Test");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		PopulateObjectFormsConfiguration.openForm();
+
+		FormsAdmin.deleteForm(formName = "Form 1");
+
+		AssertElementNotPresent(
+			key_formName = "Form 1",
+			locator1 = "FormsAdmin#FORMS_TABLE_NAME");
 	}
 
 	@description = "LPS-142659 - Verify if it's possible to map an Object field of Clob type and view its entries (Multiple Lines)"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanMapClobTypeAndViewEntriesMultipleLines {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145734 CanMapClobTypeAndViewEntriesMultipleLines pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "Clob",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		PopulateObjectFormsConfiguration.selectCustomObject(label = "Custom Object");
+
+		Form.gotoAddField(fieldType = "Text");
+
+		FormFields.selectTextFieldLineOption(textFieldLineOption = "Multiple Lines");
+
+		PopulateObjectFormsConfiguration.mapFormField(fieldLabelName = "Custom Field");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormViewBuilder.editClobText(fieldLong = "By building a vibrant business, making technology useful, and investing in communities, we make it possible for people to reach their full potential to serve others.");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "By building a vibrant business, making technology useful, and investing in communities, we make it possible for people to reach their full potential to serve others.");
 	}
 
 	@description = "LPS-142659 - Verify if it's possible to map an Object field of Clob type and view its entries (Single Line)"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanMapClobTypeAndViewEntriesSingleLine {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145733 CanMapClobTypeAndViewEntriesSingleLine pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "Clob",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		PopulateObjectFormsConfiguration.selectCustomObject(label = "Custom Object");
+
+		Form.gotoAddField(fieldType = "Text");
+
+		PopulateObjectFormsConfiguration.mapFormField(fieldLabelName = "Custom Field");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormViewBuilder.editText(
+			fieldName = "Text",
+			fieldValue = "By building a vibrant business, making technology useful, and investing in communities, we make it possible for people to reach their full potential to serve others.");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "By building a vibrant business, making technology useful, and investing in communities, we make it possible for people to reach their full potential to serve others.");
 	}
 
 	@description = "LPS-136456 - Verify that workflows cannot be added to forms that are mapped to an object"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CannotAddWorkflow {
+		FormsAdmin.addForm();
 
-		// TODO LPS-145724 CannotAddWorkflow pending implementation
+		PopulateObjectFormsConfiguration.openFormSettings();
 
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		Click(locator1 = "Modal#HEADER");
+
+		ObjectPortlet.assertFieldLabelName(fieldLabelName = "Select Object");
+
+		ObjectPortlet.assertFieldLabelNameNotPresent(fieldLabelName = "Select a Workflow");
 	}
 
 	@description = "LPS-138495 - Verify that Picklist entries cannot be edited in the Forms Sidebar"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CannotEditPicklistEntries {
+		Picklist.addPicklistViaAPI(picklistName = "Picklist Test");
 
-		// TODO LPS-145725 CannotEditPicklistEntries pending implementation
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
+		ObjectAdmin.openObjectAdmin();
+
+		ObjectPortlet.selectCustomObject(label = "Custom Object");
+
+		ObjectAdmin.goToFieldsTab();
+
+		ObjectAdmin.addObjectFieldViaUI(
+			fieldLabel = "Field Picklist",
+			fieldPicklist = "Picklist Test",
+			fieldType = "Picklist");
+
+		Navigator.openURL();
+
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		FormsAdmin.addForm();
+
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		PopulateObjectFormsConfiguration.selectCustomObject(label = "Custom Object");
+
+		Form.gotoAddField(fieldType = "Select from List");
+
+		PopulateObjectFormsConfiguration.mapFormObjectField(
+			fieldLabelName = "Field Picklist",
+			formObjectField = "Choose an Option");
+
+		Form.gotoBasicTab();
+
+		ObjectPortlet.assertEntryDetailsLabelNotPresent(entryLabel = "Create List");
 	}
 
 	@description = "LPS-137316 - Verify it is not possible to select an unpublished Object"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CannotSelectUnpublishedObject {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145729 CannotSelectUnpublishedObject pending implementation
+		FormsAdmin.addForm();
 
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObject(label = "Object");
+
+		PopulateObjectFormsConfiguration.viewDisplaySelectOptionNotPresent(label = "Custom Object");
 	}
 
 	@description = "LPS-135429 - It is possible to retrieve objects data from Data Providers and use in a Select from List field in Forms"
@@ -104,12 +312,25 @@ definition {
 	}
 
 	@description = "LPS-139692 - Verify that 'Select Object' field is required"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test SelectObjectFieldRequired {
+		FormsAdmin.addForm();
 
-		// TODO LPS-145728 SelectObjectFieldRequired pending implementation
+		Form.editName(formName = "Form 1");
 
+		Form.gotoAddField(fieldType = "Text");
+
+		PopulateObjectFormsConfiguration.openFormSettings();
+
+		PopulateObjectFormsConfiguration.selectObjectOnly(labelObject = "Object");
+
+		Button.clickDone();
+
+		PopulateObjectFormsConfiguration.publishFormObject();
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "You must define an object for the selected storage type.");
 	}
 
 }

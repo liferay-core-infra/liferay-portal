@@ -23,48 +23,160 @@ definition {
 	}
 
 	@description = "LPS-142659 - Verify that the user is able to add an entry of long text and view the entry"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanAddClobLongText {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145699 CanAddClobLongText pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "Clob",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
+			fieldName = "customObjectField",
+			objectName = "CustomObject",
+			value = "By building a vibrant business, making technology useful, and investing in communities, we make it possible for people to reach their full potential to serve others.");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "By building a vibrant business, making technology useful, and investing in communities, we make it possible for people to reach their full potential to serve others.");
 	}
 
 	@description = "LPS-142659 - Verify it is possible to edit a entry of Clob field and view the update on entry table"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanEditClobField {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145702 CanEditClobField pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "Clob",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
+			fieldName = "customObjectField",
+			objectName = "CustomObject",
+			value = "We make it possible for people to reach their full potential to serve others.");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "We make it possible for people to reach their full potential to serve others.");
+
+		ObjectPortlet.viewClobEntryDetails(clobEntry = "We make it possible for people to reach their full potential to serve others.");
+
+		ObjectAdmin.editClobEntryName(clobEntry = "All people are inherently valuable; who we are is as important as what we can do.");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "All people are inherently valuable; who we are is as important as what we can do.");
 	}
 
 	@description = "LPS-142659 - Verify that a Clob entry is correctly displayed on the auto-generated table on the Custom Object Portlet"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test ClobDisplayed {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145701 ClobDisplayed pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "Clob",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
+			fieldName = "customObjectField",
+			objectName = "CustomObject",
+			value = "We make it possible for people to reach their full potential to serve others.");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "We make it possible for people to reach their full potential to serve others.");
 	}
 
 	@description = "LPS-142659 - Text will be truncated on the Object portlet table view if it has more than 56 characters"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test ClobLongTextWillTruncate {
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
 
-		// TODO LPS-145700 ClobLongTextWillTruncate pending implementation
+		ObjectAdmin.addObjectFieldViaAPI(
+			fieldLabelName = "Custom Field",
+			fieldName = "customObjectField",
+			fieldType = "Clob",
+			isRequired = "false",
+			objectName = "CustomObject");
 
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
+			fieldName = "customObjectField",
+			objectName = "CustomObject",
+			value = "We make it possible for people to reach their full potential to serve others.");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		AssertElementPresent(
+			key_entry = "We make it possible for people to reach their full potential to serve others.",
+			locator1 = "ObjectPortlet#ENTRY_VALUE_WITH_ELLIPSIS");
 	}
 
 	@description = "LPS-136595 - Verify that a Picklist entry is correctly displayed on the auto-generated table on the Custom Object Portlet"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test PicklistDisplayed {
+		Picklist.addPicklistViaAPI(picklistName = "Picklist Test");
 
-		// TODO LPS-145746 PicklistDisplayed pending implementation
+		Picklist.addPicklistItemViaAPI(
+			itemKey = "entryTest",
+			itemName = "Entry Test",
+			picklistName = "Picklist Test");
 
+		ObjectAdmin.addObjectViaAPI(
+			labelName = "Custom Object",
+			objectName = "CustomObject",
+			pluralLabelName = "Custom Objects");
+
+		ObjectAdmin.openObjectAdmin();
+
+		ObjectPortlet.selectCustomObject(label = "Custom Object");
+
+		ObjectAdmin.goToFieldsTab();
+
+		ObjectAdmin.addObjectFieldViaUI(
+			fieldLabel = "Field Picklist",
+			fieldPicklist = "Picklist Test",
+			fieldType = "Picklist");
+
+		Navigator.openURL();
+
+		ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectAdmin.addObjectPicklistFieldEntryViaUI(picklistOption = "Entry Test");
+
+		ObjectAdmin.goToCustomObject(objectName = "CustomObject");
+
+		ObjectPortlet.viewEntry(entry = "Entry Test");
 	}
 
 }

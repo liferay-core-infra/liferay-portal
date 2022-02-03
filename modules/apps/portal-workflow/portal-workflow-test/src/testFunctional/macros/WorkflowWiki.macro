@@ -22,7 +22,8 @@ definition {
 
 	macro viewWikiPageStatusViaDetails {
 		AssertTextEquals(
-			locator1 = "AssetWorkflow#DETAILS_WORKFLOW_STATUS",
+			kfStatus = "${workflowStatus}",
+			locator1 = "AssetWorkflow#WORKFLOW_STATUS",
 			value1 = "${workflowStatus}");
 	}
 

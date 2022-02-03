@@ -19,7 +19,7 @@ import SubscriptionsNavbar from '../../components/SubscriptionsNavbar';
 import {useCustomerPortal} from '../../context';
 import {actionTypes} from '../../context/reducer';
 import {SUBSCRIPTIONS_STATUS} from '../../utils/constants';
-import {getWebContents} from '../../utils/webContentsGenerator';
+import {getWebContents} from '../../utils/getWebContents';
 import OverviewSkeleton from './Skeleton';
 
 const Overview = ({project, subscriptionGroups}) => {
@@ -34,73 +34,61 @@ const Overview = ({project, subscriptionGroups}) => {
 		SUBSCRIPTIONS_STATUS.future,
 	]);
 
+	const [
+		subscriptionGroupsWithSubscriptions,
+		setSubscriptionGroupsWithSubscriptions,
+	] = useState([]);
+
 	const parseAccountSubscriptionGroupERC = (subscriptionName) => {
 		return subscriptionName.toLowerCase().replace(' ', '-');
 	};
 
-	const getAccountSubscriptionFilterQueryString = (
-		previousValue,
-		currentValue,
-		currentIndex,
-		array
-	) => {
-		if (currentIndex === array.length - 1) {
-			return previousValue + ` subscriptionStatus eq '${currentValue}'`;
-		}
-
-		return (
-			previousValue +
-			` subscriptionStatus eq '${currentValue}' or accountSubscriptionGroupERC eq '${
-				project.accountKey
-			}_${parseAccountSubscriptionGroupERC(
-				selectedSubscriptionGroup
-			)}' and`
-		);
-	};
+	const subscriptionsCards = accountSubscriptions.filter(
+		(subscription) =>
+			subscription.accountSubscriptionGroupERC.replace(
+				`${project.accountKey}_`,
+				''
+			) === parseAccountSubscriptionGroupERC(selectedSubscriptionGroup) &&
+			selectedStatus.includes(subscription.subscriptionStatus)
+	);
 
 	useEffect(() => {
-		const getSubscriptions = async (
-			accountKey,
-			subscriptionGroup,
-			status
-		) => {
+		const getAllSubscriptions = async (accountKey) => {
 			const {data: dataAccountSubscriptions} = await client.query({
 				query: getAccountSubscriptions,
 				variables: {
-					filter: `accountSubscriptionGroupERC eq '${accountKey}_${parseAccountSubscriptionGroupERC(
-						subscriptionGroup
-					)}'${
-						status.length ===
-						Object.keys(SUBSCRIPTIONS_STATUS).length
-							? ''
-							: `${status.reduce(
-									getAccountSubscriptionFilterQueryString,
-									' and'
-							  )}`
-					}`,
+					filter: `accountKey eq '${accountKey}'`,
 				},
 			});
 
 			if (dataAccountSubscriptions) {
-				setAccountSubscriptions(
-					dataAccountSubscriptions?.c?.accountSubscriptions?.items
+				const dataAllSubscriptions =
+					dataAccountSubscriptions?.c?.accountSubscriptions?.items;
+
+				const accountSubscriptionGroups = subscriptionGroups.filter(
+					(subscriptionGroup) =>
+						dataAllSubscriptions.some(
+							(subscription) =>
+								subscription.accountSubscriptionGroupERC.replace(
+									`${accountKey}_`,
+									''
+								) ===
+								parseAccountSubscriptionGroupERC(
+									subscriptionGroup.name
+								)
+						)
+				);
+
+				setAccountSubscriptions(dataAllSubscriptions);
+
+				setSubscriptionGroupsWithSubscriptions(
+					accountSubscriptionGroups
 				);
 			}
 		};
 
-		if (selectedSubscriptionGroup && selectedStatus.length) {
-			getSubscriptions(
-				project.accountKey,
-				selectedSubscriptionGroup,
-				selectedStatus
-			);
-		}
-
-		if (!selectedStatus.length) {
-			setAccountSubscriptions([]);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [project, selectedStatus, selectedSubscriptionGroup]);
+		getAllSubscriptions(project.accountKey);
+	}, [project, subscriptionGroups]);
 
 	useEffect(() => {
 		dispatch({
@@ -117,41 +105,57 @@ const Overview = ({project, subscriptionGroups}) => {
 		<div className="d-flex flex-column mr-4">
 			<h3>Subscriptions</h3>
 
-			<div
-				className={classNames('align-items-center d-flex', {
-					'justify-content-between': subscriptionGroups.length < 5,
-					'justify-content-evenly': subscriptionGroups.length > 4,
-				})}
-			>
-				<SubscriptionsNavbar
-					selectedSubscriptionGroup={selectedSubscriptionGroup}
-					setSelectedSubscriptionGroup={setSelectedSubscriptionGroup}
-					subscriptionGroups={subscriptionGroups}
-				/>
-
-				<SubscriptionsFilterByStatus
-					selectedStatus={selectedStatus}
-					setSelectedStatus={setSelectedStatus}
-				/>
-			</div>
-
-			<div className="d-flex flex-wrap mt-4 overview-cards-subscription">
-				{accountSubscriptions.length ? (
-					accountSubscriptions.map((accountSubscription, index) => (
-						<CardSubscription
-							cardSubscriptionData={accountSubscription}
-							key={index}
+			{!!subscriptionGroupsWithSubscriptions.length && (
+				<>
+					<div
+						className={classNames('align-items-center d-flex', {
+							'justify-content-between':
+								subscriptionGroupsWithSubscriptions.length < 5,
+							'justify-content-evenly':
+								subscriptionGroupsWithSubscriptions.length > 4,
+						})}
+					>
+						<SubscriptionsNavbar
 							selectedSubscriptionGroup={
 								selectedSubscriptionGroup
 							}
+							setSelectedSubscriptionGroup={
+								setSelectedSubscriptionGroup
+							}
+							subscriptionGroups={
+								subscriptionGroupsWithSubscriptions
+							}
 						/>
-					))
-				) : (
-					<p className="mx-auto pt-5">
-						No subscriptions match these criteria.
-					</p>
-				)}
-			</div>
+
+						<SubscriptionsFilterByStatus
+							selectedStatus={selectedStatus}
+							setSelectedStatus={setSelectedStatus}
+						/>
+					</div>
+
+					<div className="cp-overview-cards-subscription d-flex flex-wrap mt-4">
+						{subscriptionsCards.length ? (
+							subscriptionsCards.map(
+								(accountSubscription, index) => (
+									<CardSubscription
+										cardSubscriptionData={
+											accountSubscription
+										}
+										key={index}
+										selectedSubscriptionGroup={
+											selectedSubscriptionGroup
+										}
+									/>
+								)
+							)
+						) : (
+							<p className="mx-auto pt-5">
+								No subscriptions match these criteria.
+							</p>
+						)}
+					</div>
+				</>
+			)}
 		</div>
 	);
 };

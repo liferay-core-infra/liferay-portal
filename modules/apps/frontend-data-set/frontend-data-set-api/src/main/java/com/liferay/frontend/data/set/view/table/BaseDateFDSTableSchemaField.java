@@ -31,9 +31,9 @@ public class BaseDateFDSTableSchemaField extends FDSTableSchemaField {
 
 	@Override
 	public JSONObject toJSONObject() {
-		JSONObject fdsTableSchemaFieldJSONObject = super.toJSONObject();
+		JSONObject jsonObject = super.toJSONObject();
 
-		return fdsTableSchemaFieldJSONObject.put("format", getFormat());
+		return jsonObject.put("format", getFormat());
 	}
 
 	private String _format;

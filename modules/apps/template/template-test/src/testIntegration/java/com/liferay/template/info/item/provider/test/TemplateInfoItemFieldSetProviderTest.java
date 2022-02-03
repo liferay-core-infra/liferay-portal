@@ -17,6 +17,8 @@ package com.liferay.template.info.item.provider.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.asset.test.util.AssetTestUtil;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.Value;
@@ -48,7 +50,9 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -59,6 +63,7 @@ import com.liferay.template.model.TemplateEntry;
 import com.liferay.template.test.util.TemplateTestUtil;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -126,9 +131,10 @@ public class TemplateInfoItemFieldSetProviderTest {
 	public void testGetInfoFieldSetByClassNameAndVariationKeyWhenTemplateEntryExists()
 		throws PortalException {
 
-		TemplateEntry articleTemplateEntry = TemplateTestUtil.addTemplateEntry(
-			JournalArticle.class.getName(),
-			_journalArticle.getDDMStructureKey(), _serviceContext);
+		TemplateEntry journalArticleTemplateEntry =
+			TemplateTestUtil.addTemplateEntry(
+				JournalArticle.class.getName(),
+				_journalArticle.getDDMStructureKey(), _serviceContext);
 
 		TemplateTestUtil.addTemplateEntry(
 			AssetCategory.class.getName(), StringPool.BLANK, _serviceContext);
@@ -147,7 +153,7 @@ public class TemplateInfoItemFieldSetProviderTest {
 		Assert.assertEquals(
 			infoFields.toString(),
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
-				articleTemplateEntry.getTemplateEntryId(),
+				journalArticleTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
 	}
 
@@ -219,11 +225,12 @@ public class TemplateInfoItemFieldSetProviderTest {
 
 		Value nameValue = nameDDMFormFieldValue.getValue();
 
-		TemplateEntry articleTemplateEntry = TemplateTestUtil.addTemplateEntry(
-			JournalArticle.class.getName(),
-			_journalArticle.getDDMStructureKey(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(),
-			JournalTestUtil.getSampleTemplateFTL(), _serviceContext);
+		TemplateEntry journalArticleTemplateEntry =
+			TemplateTestUtil.addTemplateEntry(
+				JournalArticle.class.getName(),
+				_journalArticle.getDDMStructureKey(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				JournalTestUtil.getSampleTemplateFTL(), _serviceContext);
 
 		TemplateTestUtil.addTemplateEntry(
 			AssetCategory.class.getName(), StringPool.BLANK, _serviceContext);
@@ -243,7 +250,7 @@ public class TemplateInfoItemFieldSetProviderTest {
 		Assert.assertEquals(
 			infoField.toString(),
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
-				articleTemplateEntry.getTemplateEntryId(),
+				journalArticleTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
 
 		Assert.assertEquals(
@@ -298,6 +305,135 @@ public class TemplateInfoItemFieldSetProviderTest {
 				_portal.getSiteDefaultLocale(_group.getGroupId())));
 	}
 
+	@Test
+	public void testGetInfoFieldValuesRenderingCategoriesInfoFieldType()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId());
+
+		AssetVocabulary assetVocabulary =
+			_assetVocabularyLocalService.addVocabulary(
+				TestPropsValues.getUserId(), _group.getGroupId(),
+				RandomTestUtil.randomString(), serviceContext);
+
+		AssetCategory assetCategory1 = _assetCategoryLocalService.addCategory(
+			TestPropsValues.getUserId(), _group.getGroupId(),
+			RandomTestUtil.randomString(), assetVocabulary.getVocabularyId(),
+			serviceContext);
+		AssetCategory assetCategory2 = _assetCategoryLocalService.addCategory(
+			TestPropsValues.getUserId(), _group.getGroupId(),
+			RandomTestUtil.randomString(), assetVocabulary.getVocabularyId(),
+			serviceContext);
+
+		serviceContext.setAssetCategoryIds(
+			new long[] {
+				assetCategory1.getCategoryId(), assetCategory2.getCategoryId()
+			});
+
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, serviceContext);
+
+		TemplateEntry journalArticleTemplateEntry =
+			TemplateTestUtil.addTemplateEntry(
+				JournalArticle.class.getName(),
+				journalArticle.getDDMStructureKey(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				TemplateTestUtil.getRepeatableFieldSampleScriptFTL(
+					"categories"),
+				_serviceContext);
+
+		List<InfoFieldValue<Object>> infoFieldValues =
+			_templateInfoItemFieldSetProvider.getInfoFieldValues(
+				JournalArticle.class.getName(),
+				journalArticle.getDDMStructureKey(), journalArticle);
+
+		Assert.assertEquals(
+			infoFieldValues.toString(), 1, infoFieldValues.size());
+
+		InfoFieldValue<Object> infoFieldValue = infoFieldValues.get(0);
+
+		InfoField infoField = infoFieldValue.getInfoField();
+
+		Assert.assertEquals(
+			infoField.toString(),
+			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
+				journalArticleTemplateEntry.getTemplateEntryId(),
+			infoField.getName());
+
+		Locale locale = _portal.getSiteDefaultLocale(_group.getGroupId());
+
+		_assertExpectedNames(
+			(String)infoFieldValue.getValue(locale),
+			assetCategory1.getTitle(locale), assetCategory2.getTitle(locale));
+	}
+
+	@Test
+	public void testGetInfoFieldValuesRenderingOtherListInfoFieldType()
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				_group.getGroupId(), TestPropsValues.getUserId());
+
+		String tagName1 = RandomTestUtil.randomString();
+		String tagName2 = RandomTestUtil.randomString();
+
+		serviceContext.setAssetTagNames(new String[] {tagName1, tagName2});
+
+		JournalArticle journalArticle = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, serviceContext);
+
+		TemplateEntry journalArticleTemplateEntry =
+			TemplateTestUtil.addTemplateEntry(
+				JournalArticle.class.getName(),
+				journalArticle.getDDMStructureKey(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				TemplateTestUtil.getRepeatableFieldSampleScriptFTL("tagNames"),
+				_serviceContext);
+
+		List<InfoFieldValue<Object>> infoFieldValues =
+			_templateInfoItemFieldSetProvider.getInfoFieldValues(
+				JournalArticle.class.getName(),
+				journalArticle.getDDMStructureKey(), journalArticle);
+
+		Assert.assertEquals(
+			infoFieldValues.toString(), 1, infoFieldValues.size());
+
+		InfoFieldValue<Object> infoFieldValue = infoFieldValues.get(0);
+
+		InfoField infoField = infoFieldValue.getInfoField();
+
+		Assert.assertEquals(
+			infoField.toString(),
+			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
+				journalArticleTemplateEntry.getTemplateEntryId(),
+			infoField.getName());
+
+		_assertExpectedNames(
+			(String)infoFieldValue.getValue(
+				_portal.getSiteDefaultLocale(_group.getGroupId())),
+			StringUtil.toLowerCase(tagName1), StringUtil.toLowerCase(tagName2));
+	}
+
+	private void _assertExpectedNames(
+		String currentNamesString, String... expectedNames) {
+
+		Assert.assertNotNull(currentNamesString);
+
+		String[] currentNames = currentNamesString.split(StringPool.COMMA);
+
+		Assert.assertEquals(
+			currentNames.toString(), expectedNames.length, currentNames.length);
+
+		for (String expectedName : expectedNames) {
+			Assert.assertTrue(ArrayUtil.contains(currentNames, expectedName));
+		}
+	}
+
 	private MockHttpServletRequest _getMockHttpServletRequest(
 			ThemeDisplay themeDisplay)
 		throws Exception {
@@ -336,7 +472,15 @@ public class TemplateInfoItemFieldSetProviderTest {
 	}
 
 	private AssetCategory _assetCategory;
+
+	@Inject
+	private AssetCategoryLocalService _assetCategoryLocalService;
+
 	private AssetVocabulary _assetVocabulary;
+
+	@Inject
+	private AssetVocabularyLocalService _assetVocabularyLocalService;
+
 	private Company _company;
 
 	@Inject

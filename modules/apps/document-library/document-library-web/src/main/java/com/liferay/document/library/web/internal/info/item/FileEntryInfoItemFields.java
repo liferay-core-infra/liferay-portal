@@ -77,7 +77,7 @@ public class FileEntryInfoItemFields {
 			InfoLocalizedValue.localize(
 				"com.liferay.asset.info.display.impl", "display-page-url")
 		).build();
-	public static final InfoField<URLInfoFieldType> downloadURL =
+	public static final InfoField<URLInfoFieldType> downloadURLInfoField =
 		InfoField.builder(
 		).infoFieldType(
 			URLInfoFieldType.INSTANCE
@@ -87,7 +87,7 @@ public class FileEntryInfoItemFields {
 			InfoLocalizedValue.localize(
 				FileEntryInfoItemFields.class, "download-url")
 		).build();
-	public static final InfoField<TextInfoFieldType> fileName =
+	public static final InfoField<TextInfoFieldType> fileNameInfoField =
 		InfoField.builder(
 		).infoFieldType(
 			TextInfoFieldType.INSTANCE
@@ -97,7 +97,7 @@ public class FileEntryInfoItemFields {
 			InfoLocalizedValue.localize(
 				FileEntryInfoItemFields.class, "file-name")
 		).build();
-	public static final InfoField<ImageInfoFieldType> fileURL =
+	public static final InfoField<ImageInfoFieldType> fileURLInfoField =
 		InfoField.builder(
 		).infoFieldType(
 			ImageInfoFieldType.INSTANCE
@@ -107,7 +107,7 @@ public class FileEntryInfoItemFields {
 			InfoLocalizedValue.localize(
 				FileEntryInfoItemFields.class, "file-url")
 		).build();
-	public static final InfoField<TextInfoFieldType> mimeType =
+	public static final InfoField<TextInfoFieldType> mimeTypeInfoField =
 		InfoField.builder(
 		).infoFieldType(
 			TextInfoFieldType.INSTANCE
@@ -127,7 +127,7 @@ public class FileEntryInfoItemFields {
 			InfoLocalizedValue.localize(
 				FileEntryInfoItemFields.class, "modified-date")
 		).build();
-	public static final InfoField<ImageInfoFieldType> previewImage =
+	public static final InfoField<ImageInfoFieldType> previewImageInfoField =
 		InfoField.builder(
 		).infoFieldType(
 			ImageInfoFieldType.INSTANCE
@@ -136,6 +136,16 @@ public class FileEntryInfoItemFields {
 		).labelInfoLocalizedValue(
 			InfoLocalizedValue.localize(
 				FileEntryInfoItemFields.class, "preview-image")
+		).build();
+	public static final InfoField<URLInfoFieldType> previewURLInfoField =
+		InfoField.builder(
+		).infoFieldType(
+			URLInfoFieldType.INSTANCE
+		).name(
+			"previewURL"
+		).labelInfoLocalizedValue(
+			InfoLocalizedValue.localize(
+				FileEntryInfoItemFields.class, "preview-url")
 		).build();
 	public static final InfoField<DateInfoFieldType> publishDateInfoField =
 		InfoField.builder(
@@ -147,14 +157,15 @@ public class FileEntryInfoItemFields {
 			InfoLocalizedValue.localize(
 				FileEntryInfoItemFields.class, "publish-date")
 		).build();
-	public static final InfoField<TextInfoFieldType> size = InfoField.builder(
-	).infoFieldType(
-		TextInfoFieldType.INSTANCE
-	).name(
-		"size"
-	).labelInfoLocalizedValue(
-		InfoLocalizedValue.localize(FileEntryInfoItemFields.class, "size")
-	).build();
+	public static final InfoField<TextInfoFieldType> sizeInfoField =
+		InfoField.builder(
+		).infoFieldType(
+			TextInfoFieldType.INSTANCE
+		).name(
+			"size"
+		).labelInfoLocalizedValue(
+			InfoLocalizedValue.localize(FileEntryInfoItemFields.class, "size")
+		).build();
 	public static final InfoField<TextInfoFieldType> titleInfoField =
 		InfoField.builder(
 		).infoFieldType(

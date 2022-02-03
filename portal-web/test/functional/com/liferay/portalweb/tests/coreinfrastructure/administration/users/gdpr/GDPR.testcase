@@ -1769,45 +1769,43 @@ definition {
 				Pagination.changePagination(itemsPerPage = "${listEntries}");
 
 				if ("${listEntries}" == "4") {
-					Pagination.viewResults(results = "Showing 1 to 4 of 8 entries.");
+					Pagination.viewResults(results = "Showing 1 to 4 of 10 entries.");
 
-					for (var listedEntries : list "Announcements,Blogs,Contacts Center,Documents and Media") {
+					for (var listedEntries : list "Announcements,Blogs,Bookmarks,Contacts Center") {
 						LexiconEntry.viewEntryName(rowEntry = "${listedEntries}");
 					}
 
-					for (var unlistedEntries : list "Forms,Web Content,Message Boards,Wiki") {
+					for (var unlistedEntries : list "Documents and Media,Forms,Web Content,Message Boards,com.liferay.portal.tools.service.builder.test.uad,Wiki") {
 						LexiconEntry.viewNoEntry(rowEntry = "${unlistedEntries}");
 					}
 
 					Click(locator1 = "Pagination#NEXT_LINK");
 
-					Pagination.viewResults(results = "Showing 5 to 8 of 8 entries.");
+					Pagination.viewResults(results = "Showing 5 to 8 of 10 entries.");
 
-					for (var listedEntries : list "Forms,Web Content,Message Boards,Wiki") {
+					for (var listedEntries : list "Documents and Media,Forms,Web Content,Message Boards") {
 						LexiconEntry.viewEntryName(rowEntry = "${listedEntries}");
 					}
 
-					for (var unlistedEntries : list "Announcements,Blogs,Contacts Center,Documents and Media") {
+					for (var unlistedEntries : list "Announcements,Blogs,Bookmarks,Contacts Center,com.liferay.portal.tools.service.builder.test.uad,Wiki") {
 						LexiconEntry.viewNoEntry(rowEntry = "${unlistedEntries}");
 					}
 				}
 				else if ("${listEntries}" == "8") {
-					if (!(
-
-					Pagination.viewResults(results = "Showing 1 to 8 of 8 entries.");)) {
+					if (IsElementPresent(locator1 = "Pagination#RESULTS", results = "Showing 8 to 10 of 10 entries.")) {
 						Click(locator1 = "Pagination#PREVIOUS_LINK");
 					}
 
-					Pagination.viewResults(results = "Showing 1 to 8 of 8 entries.");
+					Pagination.viewResults(results = "Showing 1 to 8 of 10 entries.");
 
-					for (var listedEntries : list "Announcements,Blogs,Contacts Center,Documents and Media,Forms,Web Content,Message Boards,Wiki") {
+					for (var listedEntries : list "Announcements,Blogs,Bookmarks,Contacts Center,Documents and Media,Forms,Web Content,Message Boards") {
 						LexiconEntry.viewEntryName(rowEntry = "${listedEntries}");
 					}
 				}
 				else {
-					Pagination.viewResults(results = "Showing 1 to 8 of 8 entries.");
+					Pagination.viewResults(results = "Showing 1 to 10 of 10 entries.");
 
-					for (var allEntries : list "Announcements,Blogs,Contacts Center,Documents and Media,Forms,Web Content,Message Boards,Wiki") {
+					for (var allEntries : list "Announcements,Blogs,Bookmarks,Contacts Center,Documents and Media,Forms,Web Content,Message Boards,com.liferay.portal.tools.service.builder.test.uad,Wiki") {
 						LexiconEntry.viewEntryName(rowEntry = "${allEntries}");
 					}
 				}

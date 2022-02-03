@@ -3,8 +3,6 @@
 	$product-card-min-width: 15rem;
 	$product-card-min-width-1024: 13.125rem;
 
-	min-width: $product-card-min-width;
-
 	a {
 		text-decoration: none;
 	}
@@ -49,5 +47,21 @@
 		object-fit: cover;
 		object-position: center;
 		width: 100%;
+	}
+}
+
+.products-comparison-table {
+	thead td {
+		padding: 0;
+	}
+
+	.card-item-first {
+		padding: 0.25rem;
+	}
+
+	.product-card {
+		border: none;
+		box-shadow: none;
+		margin: 0;
 	}
 }

@@ -389,7 +389,9 @@ definition {
 		}
 	}
 
-	@description = "LPS-117341 Create a label for one of the categories and add another one with the text "..." and tooltip or popover with all theF categories left"
+	@description = "LPS-131936 Given the Content Dashboard
+    When there is an asset with more than one category per vocabulary
+    Then the table will show a label with the first of the categories and another one with a + and the number of remaining categories"
 	@priority = "5"
 	test CheckForMoreCategories {
 		property portal.acceptance = "true";
@@ -422,9 +424,9 @@ definition {
 		task ("Nagigate to Content Dashboard and check if there's a label with '...' indicating 'more categories' ") {
 			ContentDashboard.goToContentDashboard();
 
-			AssertElementPresent(
-				locator1 = "ContentDashboard#AUDIENCE_LIST_DASHBOARD",
-				value = "...");
+			AssertTextPresent(
+				locator1 = "ContentDashboard#CATEGORY_OTHERS_LABEL",
+				value1 = "+ 2");
 		}
 	}
 
@@ -1318,76 +1320,6 @@ definition {
 			AssertElementPresent(
 				locator1 = "Button#PUBLISH",
 				value1 = "Publish");
-		}
-	}
-
-	@description = "LPS-136512 Given The Content Performance panel of a document is opened
-	When the user clicks on the times icon ( X )
-	Then the Content Performance panel is closed"
-	@priority = "3"
-	test CloseMetricsPanel {
-		task ("Connect to AC") {
-			ACUtils.launchAC();
-
-			ACSettings.takeTokenFromAnalyticsCloud();
-
-			ACUtils.launchDXP();
-
-			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Test Site Name");
-		}
-
-		task ("Add Display Page and mark it as default") {
-			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
-				contentType = "Document",
-				displayPageTemplateEntryName = "Display Page Name",
-				groupName = "Test Site Name",
-				subType = "Basic Document");
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
-
-			Button.clickPublish();
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
-		}
-
-		task ("Add a document") {
-			JSONDocument.addFileWithUploadedFile(
-				dmDocumentTitle = "DM Document Title",
-				groupName = "Test Site Name",
-				mimeType = "text/plain",
-				sourceFileName = "Document_1.txt");
-		}
-
-		task ("Go to Content Dashboard and click on View Metrics") {
-			ContentDashboard.goToContentDashboard();
-
-			MouseOver(
-				key_individualAttribute = "DM Document Title",
-				locator1 = "ACIndividualsDashboard#KNOWN_INDIVIDUAL_ATTRIBUTE");
-
-			Click(
-				keyButtonAction = "View Metrics",
-				locator1 = "ContentDashboard#QUICK_ACTION_BUTTON_MENU");
-		}
-
-		task ("Assert the Content Performance is present") {
-			AssertVisible(locator1 = "ContentDashboard#CONTENT_PERFORMANCE_TITLE_PANEL");
-		}
-
-		task ("Exit the Content Performance panel and assert is not visible anymore") {
-			Click(locator1 = "ContentDashboard#CLOSE_CONTENT_PERFORMANCE_PANEL");
-
-			AssertNotVisible(locator1 = "ContentDashboard#CONTENT_PERFORMANCE_TITLE_PANEL");
-		}
-
-		task ("Close AC connection") {
-			ACUtils.tearDownDXP();
-
-			ACUtils.tearDownAC();
 		}
 	}
 
@@ -2564,6 +2496,110 @@ definition {
 			Click.clickNoMouseOver(locator1 = "ContentDashboard#ROW_PANEL_WC");
 
 			Click(locator1 = "ContentDashboard#ICON_INFO_LISTED_MODIFIED_DATE");
+		}
+	}
+
+	@description = "LPS-134692 Given the info panel of an asset
+	When the user clicks on arrow next to the title of a section not collapsed
+	Then the section will be collapsed"
+	@priority = "3"
+	test InfoPanelCollapseSection {
+		task ("Adding vocabulary and category") {
+			JSONCategory.addVocabulary(
+				groupName = "Test Site Name",
+				title = "Vocabulary Name");
+
+			var categoryId = JSONCategory.addCategory(
+				groupName = "Test Site Name",
+				title = "Category Name",
+				vocabularyName = "Vocabulary Name");
+		}
+
+		task ("Adding Web Content") {
+			JSONWebcontent.addWebContent(
+				assetCategoryIds = "${categoryId}",
+				content = "WC WebContent Content",
+				groupName = "Test Site Name",
+				title = "WC WebContent Title");
+		}
+
+		task ("Go to the Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Open the info panel and collapse the Categorization section") {
+			ContentDashboard.openInfoPanelByDropdownMenu();
+
+			AssertElementPresent(
+				categoryName = "Category Name",
+				locator1 = "ContentDashboard#CATEGORY_LABEL_INFO_PANEL");
+
+			Click(
+				locator1 = "ContentDashboard#INFO_PANEL_SECTION_TITLE",
+				sectionName = "Categorization");
+
+			AssertNotVisible(
+				categoryName = "Category Name",
+				locator1 = "ContentDashboard#CATEGORY_LABEL_INFO_PANEL");
+		}
+	}
+
+	@description = "LPS-134692 Given the info panel of an asset
+	When the user clicks on arrow next to the title of a section collapsed
+	Then the section will be expanded"
+	@priority = "3"
+	test InfoPanelExpandSection {
+		task ("Adding vocabulary and category") {
+			JSONCategory.addVocabulary(
+				groupName = "Test Site Name",
+				title = "Vocabulary Name");
+
+			var categoryId = JSONCategory.addCategory(
+				groupName = "Test Site Name",
+				title = "Category Name",
+				vocabularyName = "Vocabulary Name");
+		}
+
+		task ("Adding Web Content") {
+			JSONWebcontent.addWebContent(
+				assetCategoryIds = "${categoryId}",
+				content = "WC WebContent Content",
+				groupName = "Test Site Name",
+				title = "WC WebContent Title");
+		}
+
+		task ("Go to the Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Open the info panel and expand the Categorization section") {
+			ContentDashboard.openInfoPanelByDropdownMenu();
+
+			AssertElementPresent(
+				categoryName = "Category Name",
+				locator1 = "ContentDashboard#CATEGORY_LABEL_INFO_PANEL");
+
+			Click(
+				locator1 = "ContentDashboard#INFO_PANEL_SECTION_TITLE",
+				sectionName = "Categorization");
+
+			AssertNotVisible(
+				categoryName = "Category Name",
+				locator1 = "ContentDashboard#CATEGORY_LABEL_INFO_PANEL");
+
+			Click(
+				locator1 = "ContentDashboard#INFO_PANEL_SECTION_TITLE",
+				sectionName = "Categorization");
+
+			AssertElementPresent(
+				categoryName = "Category Name",
+				locator1 = "ContentDashboard#CATEGORY_LABEL_INFO_PANEL");
 		}
 	}
 
@@ -3889,132 +3925,6 @@ definition {
 					fillColor = "FF5F5F",
 					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
 			}
-		}
-	}
-
-	@description = "LPS-136512 Given A document associated with a Display Page
-	When the user clicks on the option "View metrics" in the kebab menu
-	Then the Content Performance panel is displayed"
-	@priority = "4"
-	test ViewMetricsButtonKebabWhenDocumentHasDPT {
-		task ("Connect to AC") {
-			ACUtils.launchAC();
-
-			ACSettings.takeTokenFromAnalyticsCloud();
-
-			ACUtils.launchDXP();
-
-			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Test Site Name");
-		}
-
-		task ("Add Display Page and mark it as default") {
-			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
-				contentType = "Document",
-				displayPageTemplateEntryName = "Display Page Name",
-				groupName = "Test Site Name",
-				subType = "Basic Document");
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
-
-			Button.clickPublish();
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
-		}
-
-		task ("Add a document") {
-			JSONDocument.addFileWithUploadedFile(
-				dmDocumentTitle = "DM Document Title",
-				groupName = "Test Site Name",
-				mimeType = "text/plain",
-				sourceFileName = "Document_1.txt");
-		}
-
-		task ("Go to Content Dashboard and click on View Mtrics in the kebab menu") {
-			ContentDashboard.goToContentDashboard();
-
-			Click(locator1 = "Icon#VERTICAL_ELLIPSIS_BUTTON");
-
-			Click(
-				key_dropdownItem = "View Metrics",
-				locator1 = "ACUtils#DROPDOWN_ITEM");
-		}
-
-		task ("Assert the Content Performance is present") {
-			AssertVisible(locator1 = "ContentDashboard#CONTENT_PERFORMANCE_TITLE_PANEL");
-		}
-
-		task ("Close AC connection") {
-			ACUtils.tearDownDXP();
-
-			ACUtils.tearDownAC();
-		}
-	}
-
-	@description = "LPS-136512 Given A document associated with a Display Page
-	When the user clicks on the "Metrics" button in the hover action
-	Then the Content Performance panel is displayed"
-	@priority = "4"
-	test ViewMetricsButtonWhenDocumentHasDPT {
-		task ("Connect to AC") {
-			ACUtils.launchAC();
-
-			ACSettings.takeTokenFromAnalyticsCloud();
-
-			ACUtils.launchDXP();
-
-			var propertyName = ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Test Site Name");
-		}
-
-		task ("Add Display Page and mark it as default") {
-			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
-				contentType = "Document",
-				displayPageTemplateEntryName = "Display Page Name",
-				groupName = "Test Site Name",
-				subType = "Basic Document");
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
-
-			Button.clickPublish();
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
-		}
-
-		task ("Add a document") {
-			JSONDocument.addFileWithUploadedFile(
-				dmDocumentTitle = "DM Document Title",
-				groupName = "Test Site Name",
-				mimeType = "text/plain",
-				sourceFileName = "Document_1.txt");
-		}
-
-		task ("Go to Content Dashboard and click on View Mtrics") {
-			ContentDashboard.goToContentDashboard();
-
-			MouseOver(
-				key_individualAttribute = "DM Document Title",
-				locator1 = "ACIndividualsDashboard#KNOWN_INDIVIDUAL_ATTRIBUTE");
-
-			Click(
-				keyButtonAction = "View Metrics",
-				locator1 = "ContentDashboard#QUICK_ACTION_BUTTON_MENU");
-		}
-
-		task ("Assert the Content Performance is present") {
-			AssertVisible(locator1 = "ContentDashboard#CONTENT_PERFORMANCE_TITLE_PANEL");
-		}
-
-		task ("Close AC connection") {
-			ACUtils.tearDownDXP();
-
-			ACUtils.tearDownAC();
 		}
 	}
 

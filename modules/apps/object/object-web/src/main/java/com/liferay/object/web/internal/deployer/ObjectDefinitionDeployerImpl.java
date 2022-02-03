@@ -16,7 +16,7 @@ package com.liferay.object.web.internal.deployer;
 
 import com.liferay.application.list.PanelApp;
 import com.liferay.asset.display.page.portlet.AssetDisplayPageFriendlyURLProvider;
-import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.frontend.data.set.filter.FDSFilter;
 import com.liferay.frontend.data.set.view.FDSView;
 import com.liferay.frontend.data.set.view.table.FDSTableSchemaBuilderFactory;
@@ -29,7 +29,6 @@ import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.info.item.renderer.InfoItemRenderer;
 import com.liferay.info.item.renderer.InfoItemRendererTracker;
 import com.liferay.info.list.renderer.InfoListRenderer;
-import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorView;
 import com.liferay.item.selector.ItemSelectorViewDescriptorRenderer;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoItemItemSelectorCriterion;
@@ -44,8 +43,8 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
-import com.liferay.object.service.ObjectLayoutLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.object.web.internal.asset.model.ObjectEntryAssetRendererFactory;
 import com.liferay.object.web.internal.info.item.provider.ObjectEntryInfoItemCapabilitiesProvider;
 import com.liferay.object.web.internal.info.item.provider.ObjectEntryInfoItemDetailsProvider;
 import com.liferay.object.web.internal.info.item.provider.ObjectEntryInfoItemFieldValuesProvider;
@@ -56,6 +55,7 @@ import com.liferay.object.web.internal.info.list.renderer.ObjectEntryTableInfoLi
 import com.liferay.object.web.internal.item.selector.ObjectEntryItemSelectorView;
 import com.liferay.object.web.internal.layout.display.page.ObjectEntryLayoutDisplayPageProvider;
 import com.liferay.object.web.internal.object.entries.application.list.ObjectEntriesPanelApp;
+import com.liferay.object.web.internal.object.entries.display.context.ObjectEntryDisplayContextFactory;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.filter.ObjectEntryStatusCheckBoxFDSFilter;
 import com.liferay.object.web.internal.object.entries.frontend.data.set.view.table.ObjectEntriesTableFDSView;
 import com.liferay.object.web.internal.object.entries.portlet.ObjectEntriesPortlet;
@@ -101,6 +101,14 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		ObjectDefinition objectDefinition) {
 
 		List<ServiceRegistration<?>> serviceRegistrations = ListUtil.fromArray(
+			_bundleContext.registerService(
+				AssetRendererFactory.class,
+				new ObjectEntryAssetRendererFactory(
+					objectDefinition, _objectEntryDisplayContextFactory,
+					_objectEntryService, _servletContext),
+				HashMapDictionaryBuilder.<String, Object>put(
+					"javax.portlet.name", objectDefinition.getPortletId()
+				).build()),
 			_bundleContext.registerService(
 				FDSView.class,
 				new ObjectEntriesTableFDSView(
@@ -257,10 +265,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				MVCRenderCommand.class,
 				new EditObjectEntryMVCRenderCommand(
-					_ddmFormRenderer, _itemSelector, _listTypeEntryLocalService,
-					_objectDefinitionLocalService, _objectEntryService,
-					_objectFieldLocalService, _objectLayoutLocalService,
-					_objectRelationshipLocalService, _portal),
+					_objectEntryDisplayContextFactory, _portal),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"javax.portlet.name", objectDefinition.getPortletId()
 				).put(
@@ -325,9 +330,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private BundleContext _bundleContext;
 
 	@Reference
-	private DDMFormRenderer _ddmFormRenderer;
-
-	@Reference
 	private DisplayPageInfoItemCapability _displayPageInfoItemCapability;
 
 	@Reference
@@ -339,9 +341,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private InfoItemRendererTracker _infoItemRendererTracker;
-
-	@Reference
-	private ItemSelector _itemSelector;
 
 	@Reference
 	private ItemSelectorViewDescriptorRenderer<InfoItemItemSelectorCriterion>
@@ -357,6 +356,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
+	private ObjectEntryDisplayContextFactory _objectEntryDisplayContextFactory;
+
+	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;
 
 	@Reference
@@ -364,9 +366,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
-
-	@Reference
-	private ObjectLayoutLocalService _objectLayoutLocalService;
 
 	@Reference
 	private ObjectRelatedModelsProviderRegistry

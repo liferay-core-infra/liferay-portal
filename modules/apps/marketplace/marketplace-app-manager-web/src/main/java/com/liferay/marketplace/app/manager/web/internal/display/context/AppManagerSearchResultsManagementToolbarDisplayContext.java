@@ -56,6 +56,10 @@ public class AppManagerSearchResultsManagementToolbarDisplayContext
 			liferayPortletResponse
 		).setMVCPath(
 			"/view_search_results.jsp"
+		).setRedirect(
+			ParamUtil.getString(
+				httpServletRequest, "redirect",
+				String.valueOf(liferayPortletResponse.createRenderURL()))
 		).setKeywords(
 			() -> {
 				if (Validator.isNotNull(getKeywords())) {
@@ -71,12 +75,6 @@ public class AppManagerSearchResultsManagementToolbarDisplayContext
 		).setParameter(
 			"state", getState()
 		).buildPortletURL();
-
-		String redirect = ParamUtil.getString(
-			httpServletRequest, "redirect",
-			String.valueOf(liferayPortletResponse.createRenderURL()));
-
-		portletURL.setParameter("redirect", redirect);
 
 		if (_searchContainer != null) {
 			portletURL.setParameter(
@@ -103,23 +101,16 @@ public class AppManagerSearchResultsManagementToolbarDisplayContext
 		searchContainer.setOrderByCol(getOrderByCol());
 		searchContainer.setOrderByType(getOrderByType());
 
-		List<Object> results = MarketplaceAppManagerSearchUtil.getResults(
-			BundleManagerUtil.getBundles(), getKeywords(),
-			httpServletRequest.getLocale());
+		List<Object> results = ListUtil.sort(
+			MarketplaceAppManagerSearchUtil.getResults(
+				BundleManagerUtil.getBundles(), getKeywords(),
+				httpServletRequest.getLocale()),
+			new MarketplaceAppManagerComparator(getOrderByType()));
 
-		results = ListUtil.sort(
-			results, new MarketplaceAppManagerComparator(getOrderByType()));
-
-		int end = searchContainer.getEnd();
-
-		if (end > results.size()) {
-			end = results.size();
-		}
-
-		searchContainer.setResults(
-			results.subList(searchContainer.getStart(), end));
-
-		searchContainer.setTotal(results.size());
+		searchContainer.setResultsAndTotal(
+			() -> results.subList(
+				searchContainer.getStart(), searchContainer.getResultEnd()),
+			results.size());
 
 		_searchContainer = searchContainer;
 

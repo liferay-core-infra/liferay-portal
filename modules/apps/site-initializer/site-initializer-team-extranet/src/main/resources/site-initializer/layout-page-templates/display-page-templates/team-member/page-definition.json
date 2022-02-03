@@ -563,12 +563,31 @@
 															"id": "link",
 															"value": {
 																"fragmentLink": {
+																	"value": {
+																		"href": {
+																			"mapping": {
+																				"itemReference": {
+																					"className": "com.liferay.portal.kernel.model.Layout",
+																					"fields": [
+																						{
+																							"fieldName": "friendlyURL",
+																							"fieldValue": "/blog"
+																						},
+																						{
+																							"fieldName": "privatePage",
+																							"fieldValue": "false"
+																						}
+																					]
+																				}
+																			}
+																		}
+																	},
 																	"value_i18n": {
 																	}
 																},
 																"text": {
 																	"value_i18n": {
-																		"en_US": "All Articles"
+																		"en_US": "All articles"
 																	}
 																}
 															}

@@ -93,6 +93,9 @@ public interface OrderTypeResource {
 	public OrderType patchOrderType(Long id, OrderType orderType)
 		throws Exception;
 
+	public OrderType getTermOrderTypeOrderType(Long termOrderTypeId)
+		throws Exception;
+
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {
 	}

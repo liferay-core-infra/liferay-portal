@@ -15,6 +15,7 @@
 package com.liferay.poshi.core.elements;
 
 import com.liferay.poshi.core.script.PoshiScriptParserException;
+import com.liferay.poshi.core.script.PoshiScriptParserUtil;
 import com.liferay.poshi.core.script.UnbalancedCodeException;
 import com.liferay.poshi.core.util.Dom4JUtil;
 import com.liferay.poshi.core.util.FileUtil;
@@ -106,7 +107,7 @@ public abstract class PoshiNodeFactory {
 					document.getRootElement(), url);
 			}
 
-			if (_definitionPoshiElement.isBalancedPoshiScript(content, true)) {
+			if (PoshiScriptParserUtil.isBalancedPoshiScript(content, true)) {
 				return _definitionPoshiElement.clone(content, url);
 			}
 		}

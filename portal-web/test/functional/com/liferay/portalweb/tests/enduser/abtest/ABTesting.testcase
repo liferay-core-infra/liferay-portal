@@ -1213,6 +1213,54 @@ definition {
 		}
 	}
 
+	@description = "LPS-145992 Bug: Run A/B Test with Click Goal of a deleted button"
+	@priority = "4"
+	test DeleteButtonWarning {
+		task ("Edit the Content page to add a button fragment") {
+			ContentPages.gotoPageEditor();
+
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Button");
+
+			Button.clickPublish();
+
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Content Page",
+				siteName = "Test Site Name");
+		}
+
+		task ("Create AB test") {
+			ABTest.createABTest(
+				goal = "Click",
+				testTitle = "AB test title");
+		}
+
+		task ("Select the button as clickable element") {
+			ABTest.selectElementID();
+		}
+
+		task ("Go to edit page and remove the fragment created") {
+			ContentPages.gotoPageEditor();
+
+			PageEditor.removeFragment(fragmentName = "Button");
+
+			Button.clickPublish();
+		}
+
+		task ("Assert the warning alert") {
+			ABTest.openABTestPanel();
+
+			AssertTextEquals(
+				locator1 = "ABTest#ELEMENT_NEEDS_TO_BE_SELECTED_MESSAGE",
+				value1 = "An element needs to be selected.");
+		}
+
+		task ("Delete AB Test") {
+			ABTest.editOrDeleteABTest(value = "Delete");
+		}
+	}
+
 	@description = "LPS-104203: Validate if in the AB Test, when the user delete the clickable element that was set, the warning alert appears"
 	@priority = "4"
 	test DeleteClickableElementWarning {
@@ -1981,6 +2029,43 @@ definition {
 			ABTest.runTest();
 
 			ABTest.terminateTest();
+		}
+	}
+
+	@description = "LPS-146003 Bug: Can't edit variant using top toolbar edit button"
+	@priority = "4"
+	test EditVariantWithToolbarButton {
+		task ("Add a Heading fragment to content page") {
+			ContentPages.gotoPageEditor();
+
+			PageEditor.addFragment(
+				collectionName = "Basic Components",
+				fragmentName = "Heading");
+
+			Button.clickPublish();
+		}
+
+		task ("Create a new A/B test") {
+			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/content-page");
+
+			ABTest.createABTest(
+				goal = "Bounce Rate",
+				testTitle = "AB test title");
+		}
+
+		task ("Create a Variant for AB Test") {
+			ABTest.createVariant(variantName = "Variant name");
+		}
+
+		task ("Open editor with upper pencil icon") {
+			ContentPages.gotoPageEditor();
+
+			PageEditor.editFragmentText(
+				fragmentName = "Heading",
+				id = "element-text",
+				text = "New text");
+
+			Button.clickPublish();
 		}
 	}
 

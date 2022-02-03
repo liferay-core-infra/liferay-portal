@@ -32,13 +32,23 @@ definition {
 
 		LexiconCard.clickCard(card = "Raylife");
 
+		SelectFrame(
+			key_title = "Add Site",
+			locator1 = "IFrame#MODAL_ANY");
+
 		PortletEntry.inputName(name = "${siteName}");
 
-		Click(locator1 = "Modal#SAVE_BUTTON");
+		Click(locator1 = "Button#ADD");
 
-		while (IsElementPresent(locator1 = "Raylife#SAVE_LOADING_ANIMATION")) {
+		AssertElementPresent(locator1 = "Button#ADD_DISABLED");
+
+		while (IsElementPresent(locator1 = "Button#ADD_DISABLED")) {
 			Pause(locator1 = "1500");
 		}
+
+		WaitForElementPresent(
+			key_itemName = "Site Configuration",
+			locator1 = "ListGroupItem#ITEM_TEXT");
 
 		Click(
 			key_itemName = "Site Configuration",

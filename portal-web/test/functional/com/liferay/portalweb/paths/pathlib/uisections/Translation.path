@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <td>DROPDOWN_MENU_ITEM</td>
-	<td>//div[contains(@class,'dropdown-menu') and contains(@class,'show')]//*[contains(@class,'dropdown-item') and contains(.,'${key_locale}')]</td>
+	<td>//div[contains(@class,'dropdown-menu') and contains(@class,'show')]//li//button//span[text()='${key_locale}']</td>
 	<td></td>
 </tr>
 <tr>
@@ -124,6 +124,11 @@
 <tr>
 	<td>TRANSLATION_STATUS_TITLE</td>
 	<td>//div[contains(@id,'JournalPortlet')]//span[contains(text(),'${key_localizedLanguage}')]//span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TRANSLATION_STATUS_TITLE_PAGE</td>
+	<td>//div[contains(@class,'page-editor')]//span[contains(text(),'${key_localizedLanguage}')]//..//div</td>
 	<td></td>
 </tr>
 <tr>

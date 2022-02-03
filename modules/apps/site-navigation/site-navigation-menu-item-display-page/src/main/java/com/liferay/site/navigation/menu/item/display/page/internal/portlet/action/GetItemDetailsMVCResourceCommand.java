@@ -14,6 +14,7 @@
 
 package com.liferay.site.navigation.menu.item.display.page.internal.portlet.action;
 
+import com.liferay.asset.display.page.util.AssetDisplayPageUtil;
 import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.InfoItemClassDetails;
@@ -81,25 +82,30 @@ public class GetItemDetailsMVCResourceCommand extends BaseMVCResourceCommand {
 		long classPK = ParamUtil.getLong(resourceRequest, "classPK");
 		long classTypeId = ParamUtil.getLong(resourceRequest, "classTypeId");
 
-		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		String className = _portal.getClassName(classNameId);
 
-			String itemType = _getItemType(classNameId, themeDisplay);
+		try {
+			JSONObject jsonObject = JSONUtil.put(
+				"hasDisplayPage",
+				AssetDisplayPageUtil.hasAssetDisplayPage(
+					themeDisplay.getScopeGroupId(), classNameId, classPK,
+					classTypeId));
+
+			String itemType = _getItemType(className, themeDisplay);
 
 			if (Validator.isNotNull(itemType)) {
 				jsonObject.put("itemType", itemType);
 			}
 
 			String itemSubtype = _getItemSubtype(
-				classNameId, classPK, classTypeId, themeDisplay);
+				className, classPK, classTypeId, themeDisplay);
 
 			if (Validator.isNotNull(itemSubtype)) {
 				jsonObject.put("itemSubtype", itemSubtype);
 			}
 
 			jsonObject.put(
-				"data",
-				_getDetailsJSONArray(classNameId, classPK, themeDisplay));
+				"data", _getDetailsJSONArray(className, classPK, themeDisplay));
 
 			JSONPortletResponseUtil.writeJSON(
 				resourceRequest, resourceResponse, jsonObject);
@@ -118,14 +124,13 @@ public class GetItemDetailsMVCResourceCommand extends BaseMVCResourceCommand {
 	}
 
 	private JSONArray _getDetailsJSONArray(
-			long classNameId, long classPK, ThemeDisplay themeDisplay)
+			String className, long classPK, ThemeDisplay themeDisplay)
 		throws Exception {
 
 		LayoutDisplayPageInfoItemFieldValuesProvider
 			layoutDisplayPageInfoItemFieldValuesProvider =
 				_layoutDisplayPageInfoItemFieldValuesProviderTracker.
-					getLayoutDisplayPageInfoItemFieldValuesProvider(
-						_portal.getClassName(classNameId));
+					getLayoutDisplayPageInfoItemFieldValuesProvider(className);
 
 		if (layoutDisplayPageInfoItemFieldValuesProvider == null) {
 			return JSONFactoryUtil.createJSONArray();
@@ -155,10 +160,8 @@ public class GetItemDetailsMVCResourceCommand extends BaseMVCResourceCommand {
 	}
 
 	private String _getItemSubtype(
-		long classNameId, long classPK, long classTypeId,
+		String className, long classPK, long classTypeId,
 		ThemeDisplay themeDisplay) {
-
-		String className = _portal.getClassName(classNameId);
 
 		InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
 			_infoItemServiceTracker.getFirstInfoItemService(
@@ -196,11 +199,10 @@ public class GetItemDetailsMVCResourceCommand extends BaseMVCResourceCommand {
 		return StringPool.BLANK;
 	}
 
-	private String _getItemType(long classNameId, ThemeDisplay themeDisplay) {
+	private String _getItemType(String className, ThemeDisplay themeDisplay) {
 		InfoItemDetailsProvider<?> infoItemDetailsProvider =
 			_infoItemServiceTracker.getFirstInfoItemService(
-				InfoItemDetailsProvider.class,
-				_portal.getClassName(classNameId));
+				InfoItemDetailsProvider.class, className);
 
 		if (infoItemDetailsProvider == null) {
 			return StringPool.BLANK;

@@ -97,12 +97,12 @@
 </tr>
 <tr>
 	<td>BUTTON_MORE_INFO_PRODUCTS</td>
-	<td>//label[contains(., '${productName}')]/parent::div//span[contains(@class,'btn-more-info')]</td>
+	<td>//label[contains(., '${productName}')]/parent::div//span[contains(@class,'btn-info-panel')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>BUTTON_MORE_INFO_FORMS</td>
-	<td>//h6[contains(., '${title}')]/parent::label//span[contains(@class,'btn-more-info')]</td>
+	<td>//h6[contains(., '${title}')]/parent::label//span[contains(@class,'btn-info-panel')]</td>
 	<td></td>
 </tr>
 <tr>

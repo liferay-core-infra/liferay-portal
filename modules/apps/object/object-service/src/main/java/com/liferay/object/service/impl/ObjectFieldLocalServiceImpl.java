@@ -27,6 +27,8 @@ import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.base.ObjectFieldLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
 import com.liferay.object.service.persistence.ObjectLayoutColumnPersistence;
+import com.liferay.object.service.persistence.ObjectViewColumnPersistence;
+import com.liferay.object.service.persistence.ObjectViewPersistence;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -136,34 +138,30 @@ public class ObjectFieldLocalServiceImpl
 	public ObjectField deleteObjectField(ObjectField objectField)
 		throws PortalException {
 
-		ObjectDefinition objectDefinition =
-			_objectDefinitionPersistence.findByPrimaryKey(
-				objectField.getObjectDefinitionId());
-
-		if ((objectDefinition.isApproved() || objectDefinition.isSystem()) &&
-			!Objects.equals(
-				objectDefinition.getExtensionDBTableName(),
-				objectField.getDBTableName())) {
-
-			throw new RequiredObjectFieldException();
+		if (Validator.isNotNull(objectField.getRelationshipType())) {
+			throw new ObjectFieldRelationshipTypeException(
+				"Object field cannot be deleted because it has a " +
+					"relationship type");
 		}
 
-		objectField = objectFieldPersistence.remove(objectField);
+		return _deleteObjectField(objectField);
+	}
 
-		_objectLayoutColumnPersistence.removeByObjectFieldId(
-			objectField.getObjectFieldId());
+	@Indexable(type = IndexableType.DELETE)
+	@Override
+	public ObjectField deleteRelationshipTypeObjectField(long objectFieldId)
+		throws PortalException {
 
-		if (Objects.equals(
-				objectDefinition.getExtensionDBTableName(),
-				objectField.getDBTableName())) {
+		ObjectField objectField = objectFieldPersistence.findByPrimaryKey(
+			objectFieldId);
 
-			runSQL(
-				DynamicObjectDefinitionTable.getAlterTableDropColumnSQL(
-					objectField.getDBTableName(),
-					objectField.getDBColumnName()));
+		if (Validator.isNull(objectField.getRelationshipType())) {
+			throw new ObjectFieldRelationshipTypeException(
+				"Object field cannot be deleted because it does not have a " +
+					"relationship type");
 		}
 
-		return objectField;
+		return _deleteObjectField(objectField);
 	}
 
 	@Override
@@ -314,6 +312,39 @@ public class ObjectFieldLocalServiceImpl
 		return objectFieldPersistence.update(objectField);
 	}
 
+	private ObjectField _deleteObjectField(ObjectField objectField)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionPersistence.findByPrimaryKey(
+				objectField.getObjectDefinitionId());
+
+		if ((objectDefinition.isApproved() || objectDefinition.isSystem()) &&
+			!Objects.equals(
+				objectDefinition.getExtensionDBTableName(),
+				objectField.getDBTableName())) {
+
+			throw new RequiredObjectFieldException();
+		}
+
+		objectField = objectFieldPersistence.remove(objectField);
+
+		_objectLayoutColumnPersistence.removeByObjectFieldId(
+			objectField.getObjectFieldId());
+
+		if (Objects.equals(
+				objectDefinition.getExtensionDBTableName(),
+				objectField.getDBTableName())) {
+
+			runSQL(
+				DynamicObjectDefinitionTable.getAlterTableDropColumnSQL(
+					objectField.getDBTableName(),
+					objectField.getDBColumnName()));
+		}
+
+		return objectField;
+	}
+
 	private void _validateBusinessType(String businessType)
 		throws PortalException {
 
@@ -408,6 +439,12 @@ public class ObjectFieldLocalServiceImpl
 
 	@Reference
 	private ObjectLayoutColumnPersistence _objectLayoutColumnPersistence;
+
+	@Reference
+	private ObjectViewColumnPersistence _objectViewColumnPersistence;
+
+	@Reference
+	private ObjectViewPersistence _objectViewPersistence;
 
 	private final Set<String> _reservedNames = SetUtil.fromArray(
 		"companyid", "createdate", "groupid", "id", "lastpublishdate",

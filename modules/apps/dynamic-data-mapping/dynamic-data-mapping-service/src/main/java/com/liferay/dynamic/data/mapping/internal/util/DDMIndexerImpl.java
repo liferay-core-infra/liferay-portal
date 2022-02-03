@@ -533,8 +533,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 			String indexType, Locale locale)
 		throws Exception {
 
-		BooleanQuery booleanQuery = new BooleanQueryImpl();
-
 		boolean localizable = false;
 
 		if (ddmStructure.hasFieldByFieldReference(fieldReference)) {
@@ -548,29 +546,30 @@ public class DDMIndexerImpl implements DDMIndexer {
 					fieldReference, "localizable"));
 		}
 
-		if (ddmStructureFieldValue instanceof String[]) {
-			String[] ddmStructureFieldValueArray =
-				(String[])ddmStructureFieldValue;
-
-			for (String ddmStructureFieldValueString :
-					ddmStructureFieldValueArray) {
-
-				_addFieldValueRequiredTerm(
-					booleanQuery, ddmStructureFieldName,
-					ddmStructureFieldValueString, indexType, locale,
-					localizable);
-			}
+		if (!localizable) {
+			locale = null;
 		}
-		else {
-			_addFieldValueRequiredTerm(
-				booleanQuery, ddmStructureFieldName,
-				String.valueOf(ddmStructureFieldValue), indexType, locale,
-				localizable);
-		}
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
 
 		if (isLegacyDDMIndexFieldsEnabled()) {
+			_addFieldValueRequiredTerm(
+				booleanQuery, ddmStructureFieldName, ddmStructureFieldValue);
+
 			return new QueryFilter(booleanQuery);
 		}
+
+		booleanQuery.addRequiredTerm(
+			StringBundler.concat(
+				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
+			ddmStructureFieldName);
+
+		_addFieldValueRequiredTerm(
+			booleanQuery,
+			StringBundler.concat(
+				DDM_FIELD_ARRAY, StringPool.PERIOD,
+				getValueFieldName(indexType, locale)),
+			ddmStructureFieldValue);
 
 		return new QueryFilter(new NestedQuery(DDM_FIELD_ARRAY, booleanQuery));
 	}
@@ -629,32 +628,23 @@ public class DDMIndexerImpl implements DDMIndexer {
 	protected Sorts sorts;
 
 	private void _addFieldValueRequiredTerm(
-		BooleanQuery booleanQuery, String ddmStructureFieldName,
-		String ddmStructureFieldValue, String indexType, Locale locale,
-		boolean localizable) {
+		BooleanQuery booleanQuery, String fieldName, Serializable fieldValue) {
 
-		if (isLegacyDDMIndexFieldsEnabled()) {
+		if (fieldValue instanceof String[]) {
+			String[] fieldValueArray = (String[])fieldValue;
+
+			for (String fieldValueString : fieldValueArray) {
+				booleanQuery.addRequiredTerm(
+					fieldName,
+					StringPool.QUOTE + fieldValueString + StringPool.QUOTE);
+			}
+		}
+		else {
 			booleanQuery.addRequiredTerm(
-				ddmStructureFieldName,
-				StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
-
-			return;
+				fieldName,
+				StringPool.QUOTE + String.valueOf(fieldValue) +
+					StringPool.QUOTE);
 		}
-
-		booleanQuery.addRequiredTerm(
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD, DDM_FIELD_NAME),
-			ddmStructureFieldName);
-
-		if (!localizable) {
-			locale = null;
-		}
-
-		booleanQuery.addRequiredTerm(
-			StringBundler.concat(
-				DDM_FIELD_ARRAY, StringPool.PERIOD,
-				getValueFieldName(indexType, locale)),
-			StringPool.QUOTE + ddmStructureFieldValue + StringPool.QUOTE);
 	}
 
 	private void _addToDocument(

@@ -18,6 +18,7 @@ import com.liferay.fragment.model.FragmentCollection;
 import com.liferay.item.selector.ItemSelectorViewDescriptor;
 import com.liferay.portal.kernel.json.JSONUtil;
 
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -43,6 +44,11 @@ public class FragmentCollectionItemDescriptor
 	}
 
 	@Override
+	public Date getModifiedDate() {
+		return _fragmentCollection.getModifiedDate();
+	}
+
+	@Override
 	public String getPayload() {
 		return JSONUtil.put(
 			"fragmentCollectionKey",
@@ -62,6 +68,21 @@ public class FragmentCollectionItemDescriptor
 	@Override
 	public String getTitle(Locale locale) {
 		return _fragmentCollection.getName();
+	}
+
+	@Override
+	public long getUserId() {
+		return _fragmentCollection.getUserId();
+	}
+
+	@Override
+	public String getUserName() {
+		return _fragmentCollection.getUserName();
+	}
+
+	@Override
+	public boolean isCompact() {
+		return true;
 	}
 
 	private final FragmentCollection _fragmentCollection;

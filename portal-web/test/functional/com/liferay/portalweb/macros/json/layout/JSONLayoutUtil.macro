@@ -71,6 +71,9 @@ definition {
 		else if ("${widgetName}" == "Contacts Center") {
 			var portletId = "com_liferay_contacts_web_portlet_ContactsCenterPortlet";
 		}
+		else if ("${widgetName}" == "CSS Cadmin Sample") {
+			var portletId = "com_liferay_frontend_css_cadmin_sample_web_internal_portlet_CadminSampleWebPortlet";
+		}
 		else if ("${widgetName}" == "Custom Filter") {
 			var portletId = "com_liferay_portal_search_web_internal_custom_filter_portlet_CustomFilterPortlet";
 		}
@@ -134,7 +137,7 @@ definition {
 		else if ("${widgetName}" == "My Sites") {
 			var portletId = "com_liferay_site_my_sites_web_portlet_MySitesPortlet";
 		}
-		else if ("${widgetName}" == "Menu Display Widget") {
+		else if ("${widgetName}" == "Menu Display") {
 			var portletId = "com_liferay_site_navigation_menu_web_portlet_SiteNavigationMenuPortlet";
 		}
 		else if ("${widgetName}" == "Nested Applications") {

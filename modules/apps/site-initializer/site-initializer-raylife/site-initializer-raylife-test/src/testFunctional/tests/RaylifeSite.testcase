@@ -36,23 +36,31 @@ definition {
 
 		LexiconCard.clickCard(card = "Raylife");
 
+		SelectFrame(
+			key_title = "Add Site",
+			locator1 = "IFrame#MODAL_ANY");
+
 		PortletEntry.inputName(name = "Raylife");
 
-		Modal.save();
+		Click(locator1 = "Button#ADD");
 
-		while (IsElementNotPresent(locator1 = "Raylife#SITE_TITLE", siteTitle = "Raylife")) {
-			WaitForPageLoad();
+		AssertElementPresent(locator1 = "Button#ADD_DISABLED");
+
+		while (IsElementPresent(locator1 = "Button#ADD_DISABLED")) {
+			Pause(locator1 = "1500");
 		}
 
-		Click(locator1 = "ProductMenu#TOGGLE");
-
 		WaitForElementPresent(
-			locator1 = "Raylife#SITE_TITLE",
-			siteTitle = "Raylife");
+			key_itemName = "Site Configuration",
+			locator1 = "ListGroupItem#ITEM_TEXT");
 
-		AssertElementPresent(
-			locator1 = "Raylife#SITE_TITLE",
-			siteTitle = "Raylife");
+		Click(
+			key_itemName = "Site Configuration",
+			locator1 = "ListGroupItem#ITEM_TEXT");
+
+		AssertTextEquals(
+			locator1 = "SitesEditSite#DETAILS_NAME",
+			value1 = "Raylife");
 	}
 
 	@description = "LPS-142178 - Verify if when Raylife is created, a Catalog in Commerce will be created for it as well."

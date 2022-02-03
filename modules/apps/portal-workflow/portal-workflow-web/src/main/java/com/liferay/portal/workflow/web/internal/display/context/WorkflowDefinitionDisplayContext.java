@@ -168,12 +168,11 @@ public class WorkflowDefinitionDisplayContext {
 		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(
 			workflowDefinition.getTitle());
 
-		String newTitle = LanguageUtil.format(
-			getResourceBundle(), "copy-of-x",
-			workflowDefinition.getTitle(defaultLanguageId));
-
 		return LocalizationUtil.updateLocalization(
-			workflowDefinition.getTitle(), "title", newTitle,
+			workflowDefinition.getTitle(), "title",
+			LanguageUtil.format(
+				getResourceBundle(), "copy-of-x",
+				workflowDefinition.getTitle(defaultLanguageId)),
 			defaultLanguageId);
 	}
 
@@ -386,18 +385,24 @@ public class WorkflowDefinitionDisplayContext {
 				searchTerms.getKeywords(), status, false);
 		}
 
-		_workflowDefinitionSearch.setTotal(workflowDefinitions.size());
+		List<WorkflowDefinition> filteredWorkflowDefinitions =
+			workflowDefinitions;
 
-		if (workflowDefinitions.size() >
-				(_workflowDefinitionSearch.getEnd() -
-					_workflowDefinitionSearch.getStart())) {
+		_workflowDefinitionSearch.setResultsAndTotal(
+			() -> {
+				if (filteredWorkflowDefinitions.size() >
+						(_workflowDefinitionSearch.getEnd() -
+							_workflowDefinitionSearch.getStart())) {
 
-			workflowDefinitions = ListUtil.subList(
-				workflowDefinitions, _workflowDefinitionSearch.getStart(),
-				_workflowDefinitionSearch.getEnd());
-		}
+					return ListUtil.subList(
+						filteredWorkflowDefinitions,
+						_workflowDefinitionSearch.getStart(),
+						_workflowDefinitionSearch.getEnd());
+				}
 
-		_workflowDefinitionSearch.setResults(workflowDefinitions);
+				return filteredWorkflowDefinitions;
+			},
+			filteredWorkflowDefinitions.size());
 
 		return _workflowDefinitionSearch;
 	}
@@ -606,12 +611,10 @@ public class WorkflowDefinitionDisplayContext {
 		return dropdownItem -> {
 			dropdownItem.setActive(
 				Objects.equals(currentNavigation, navigation));
-
 			dropdownItem.setHref(
 				_getPortletURL(null), "definitionsNavigation",
 				definitionsNavigation, "mvcPath", "/view.jsp", "tab",
 				WorkflowWebKeys.WORKFLOW_TAB_DEFINITION);
-
 			dropdownItem.setLabel(
 				LanguageUtil.get(
 					_workflowDefinitionRequestHelper.getRequest(), navigation));

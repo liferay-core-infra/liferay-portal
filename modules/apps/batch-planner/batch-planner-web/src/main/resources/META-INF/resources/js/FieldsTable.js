@@ -12,6 +12,7 @@
  * details.
  */
 
+import ClayAlert from '@clayui/alert';
 import {ClayCheckbox} from '@clayui/form';
 import ClayTable from '@clayui/table';
 import React, {useEffect, useRef, useState} from 'react';
@@ -85,8 +86,20 @@ function FieldsTable({portletNamespace}) {
 	return (
 		<div className="card d-flex flex-column">
 			<h4 className="card-header py-3">
-				{Liferay.Language.get('entity-attributes')}
+				{Liferay.Language.get('field-mapping')}
 			</h4>
+
+			<ClayAlert
+				displayType="info"
+				title={`${Liferay.Language.get('info')}:`}
+				variant="inline"
+			>
+				<span>
+					{Liferay.Language.get(
+						'check-out-fields-that-would-be-exported'
+					)}
+				</span>
+			</ClayAlert>
 
 			<div className="card-body p-0">
 				<ClayTable borderless hover={false} responsive={false}>

@@ -192,13 +192,14 @@ public class FileEntryInfoItemFieldValuesProvider
 
 			fileEntryFieldValues.add(
 				new InfoFieldValue<>(
-					FileEntryInfoItemFields.fileName, fileEntry.getFileName()));
+					FileEntryInfoItemFields.fileNameInfoField,
+					fileEntry.getFileName()));
 
 			String mimeType = fileEntry.getMimeType();
 
 			fileEntryFieldValues.add(
 				new InfoFieldValue<>(
-					FileEntryInfoItemFields.mimeType, mimeType));
+					FileEntryInfoItemFields.mimeTypeInfoField, mimeType));
 
 			if (mimeType.startsWith("image")) {
 				WebImage fileURLWebImage = new WebImage(
@@ -214,7 +215,8 @@ public class FileEntryInfoItemFieldValuesProvider
 
 				fileEntryFieldValues.add(
 					new InfoFieldValue<>(
-						FileEntryInfoItemFields.fileURL, fileURLWebImage));
+						FileEntryInfoItemFields.fileURLInfoField,
+						fileURLWebImage));
 			}
 
 			fileEntryFieldValues.add(
@@ -231,7 +233,8 @@ public class FileEntryInfoItemFieldValuesProvider
 					fileEntry.getVersion()));
 			fileEntryFieldValues.add(
 				new InfoFieldValue<>(
-					FileEntryInfoItemFields.size, fileEntry.getSize()));
+					FileEntryInfoItemFields.sizeInfoField,
+					fileEntry.getSize()));
 			fileEntryFieldValues.add(
 				new InfoFieldValue<>(
 					FileEntryInfoItemFields.createDateInfoField,
@@ -273,7 +276,19 @@ public class FileEntryInfoItemFieldValuesProvider
 			if (Validator.isNotNull(downloadURL)) {
 				fileEntryFieldValues.add(
 					new InfoFieldValue<>(
-						FileEntryInfoItemFields.downloadURL, downloadURL));
+						FileEntryInfoItemFields.downloadURLInfoField,
+						downloadURL));
+			}
+
+			String previewURL = _dlURLHelper.getPreviewURL(
+				fileEntry, fileEntry.getFileVersion(), themeDisplay,
+				StringPool.BLANK, false, true);
+
+			if (Validator.isNotNull(previewURL)) {
+				fileEntryFieldValues.add(
+					new InfoFieldValue<>(
+						FileEntryInfoItemFields.previewURLInfoField,
+						previewURL));
 			}
 
 			WebImage imagePreviewURLWebImage = new WebImage(
@@ -286,7 +301,7 @@ public class FileEntryInfoItemFieldValuesProvider
 
 			fileEntryFieldValues.add(
 				new InfoFieldValue<>(
-					FileEntryInfoItemFields.previewImage,
+					FileEntryInfoItemFields.previewImageInfoField,
 					imagePreviewURLWebImage));
 
 			if (themeDisplay != null) {

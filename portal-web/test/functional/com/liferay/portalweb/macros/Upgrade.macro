@@ -4282,7 +4282,7 @@ definition {
 
 		AssertTextNotPresent(value1 = "The requested resource could not be found.");
 
-		DMDocument.assertFileNameFromTempFolder(downloadedFileName = "DM Document Video.mp4");
+		DMDocument.assertFileNameFromTempFolder(fileName = "DM Document Video.mp4");
 
 		Navigator.gotoPage(pageName = "Documents");
 
@@ -4306,7 +4306,7 @@ definition {
 
 		AssertTextNotPresent(value1 = "The requested resource could not be found.");
 
-		DMDocument.assertFileNameFromTempFolder(downloadedFileName = "DM Document JPG");
+		DMDocument.assertFileNameFromTempFolder(fileName = "DM Document JPG");
 
 		Navigator.gotoPage(pageName = "Documents");
 
@@ -6006,18 +6006,23 @@ definition {
 			locator1 = "TextInput#TITLE",
 			value1 = "Image Web Content");
 
-		var imageFieldValue = selenium.getElementValue("//label[normalize-space(text())='Image']/following-sibling::div//div[contains(@class,'input-group')]//input[contains(@type,'text')]");
+		var imageFieldValue = selenium.getElementValue("//label[contains(@class,'ddm-label')][normalize-space(text())='Image']/following-sibling::div//div[contains(@class,'input-group')]//input[contains(@type,'text')]");
 
 		TestUtils.assertNotEquals(
 			actual = "${imageFieldValue}",
 			expected = "");
+
+		AssertElementPresent(
+			key_fieldFieldLabel = "Image",
+			key_image = "/documents/",
+			locator1 = "WCEditWebContent#IMAGE_PICKER_PREVIEW");
 
 		Click(
 			fieldLabel = "Image",
 			locator1 = "Button#BUTTON_LABEL",
 			text = "Clear");
 
-		AssertElementPresent(
+		AssertElementNotPresent(
 			key_fieldFieldLabel = "Image",
 			key_image = "/documents/",
 			locator1 = "WCEditWebContent#IMAGE_PICKER_PREVIEW");

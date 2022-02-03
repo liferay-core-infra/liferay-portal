@@ -18,14 +18,15 @@ import {
 	getKoroneikiAccounts,
 	getUserAccount,
 } from '../../../common/services/liferay/graphql/queries';
+import {searchParams} from '../../../common/services/liferay/searchParams';
 import {
-	PARAMS_KEYS,
-	SearchParams,
-} from '../../../common/services/liferay/search-params';
-import {ROLES_PERMISSIONS, ROUTES} from '../../../common/utils/constants';
+	ROLE_TYPES,
+	ROUTE_TYPES,
+	SEARCH_PARAMS_KEYS,
+} from '../../../common/utils/constants';
 import {isValidPage} from '../../../common/utils/page.validation';
-import {PRODUCTS} from '../../customer-portal/utils/constants';
-import {steps} from '../utils/constants';
+import {PRODUCT_TYPES} from '../../customer-portal/utils/constants';
+import {ONBOARDING_STEP_TYPES} from '../utils/constants';
 import reducer, {actionTypes} from './reducer';
 
 const AppContext = createContext();
@@ -35,7 +36,7 @@ const AppContextProvider = ({assetsPath, children}) => {
 		assetsPath,
 		koroneikiAccount: {},
 		project: undefined,
-		step: steps.welcome,
+		step: ONBOARDING_STEP_TYPES.welcome,
 		subscriptionGroups: undefined,
 		userAccount: undefined,
 	});
@@ -57,8 +58,7 @@ const AppContextProvider = ({assetsPath, children}) => {
 							projectExternalReferenceCode
 					)
 					?.roleBriefs?.find(
-						({name}) =>
-							name === ROLES_PERMISSIONS.ACCOUNT_ADMINISTRATOR
+						({name}) => name === ROLE_TYPES.admin.key
 					);
 
 				const userAccount = {
@@ -99,7 +99,7 @@ const AppContextProvider = ({assetsPath, children}) => {
 			const {data} = await client.query({
 				query: getAccountSubscriptionGroups,
 				variables: {
-					filter: `(accountKey eq '${accountKey}') and (name eq '${PRODUCTS.dxp_cloud}')`,
+					filter: `(accountKey eq '${accountKey}') and (name eq '${PRODUCT_TYPES.dxpCloud}')`,
 				},
 			});
 
@@ -113,8 +113,8 @@ const AppContextProvider = ({assetsPath, children}) => {
 		};
 
 		const fetchData = async () => {
-			const projectExternalReferenceCode = SearchParams.get(
-				PARAMS_KEYS.PROJECT_APPLICATION_EXTERNAL_REFERENCE_CODE
+			const projectExternalReferenceCode = searchParams.get(
+				SEARCH_PARAMS_KEYS.accountKey
 			);
 
 			const user = await getUser(projectExternalReferenceCode);
@@ -126,7 +126,7 @@ const AppContextProvider = ({assetsPath, children}) => {
 			const isValid = await isValidPage(
 				user,
 				projectExternalReferenceCode,
-				ROUTES.ONBOARDING
+				ROUTE_TYPES.onboarding
 			);
 
 			if (user && isValid) {
@@ -146,7 +146,7 @@ const AppContextProvider = ({assetsPath, children}) => {
 							accountFlag: {
 								accountKey: projectExternalReferenceCode,
 								finished: true,
-								name: ROUTES.ONBOARDING,
+								name: ROUTE_TYPES.onboarding,
 							},
 						},
 					});

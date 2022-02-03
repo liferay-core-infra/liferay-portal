@@ -13,5 +13,5 @@
  */
 
 module.exports = {
-	ignorePatterns: ['types/*.d.ts'],
+	ignorePatterns: ['types/**/*.d.ts'],
 };

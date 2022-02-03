@@ -253,16 +253,24 @@ public class DLAdminDisplayContext {
 			return _repositoryId;
 		}
 
+		long repositoryId = 0;
+
 		Folder folder = getFolder();
 
 		if (folder != null) {
-			_repositoryId = folder.getRepositoryId();
+			repositoryId = folder.getRepositoryId();
 		}
 		else {
-			_repositoryId = ParamUtil.getLong(
+			repositoryId = _dlPortletInstanceSettings.getSelectedRepositoryId();
+		}
+
+		if (repositoryId == 0) {
+			repositoryId = ParamUtil.getLong(
 				_httpServletRequest, "repositoryId",
 				_themeDisplay.getScopeGroupId());
 		}
+
+		_repositoryId = repositoryId;
 
 		return _repositoryId;
 	}

@@ -627,6 +627,7 @@ definition {
 	}
 
 	@description = "LPS-142554 - Verify error message 'Must be equal or greater than 0.' in the 'How many stories is this building?' field"
+	@ignore = "true"
 	@priority = "4"
 	test StoriesNotBelowZero {
 		ApplicationsMenu.gotoSite(key_site = "Raylife");

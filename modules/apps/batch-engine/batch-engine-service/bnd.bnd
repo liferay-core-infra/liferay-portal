@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Batch Engine Service
 Bundle-SymbolicName: com.liferay.batch.engine.service
-Bundle-Version: 4.0.21
+Bundle-Version: 4.0.22
 Import-Package:\
 	!com.graphbuilder.*,\
 	\
@@ -28,6 +28,6 @@ Import-Package:\
 	org.tukaani.*;resolution:=optional,\
 	\
 	*
-Liferay-Require-SchemaVersion: 4.4.0
+Liferay-Require-SchemaVersion: 4.5.0
 Liferay-Service: true
 -dsannotations-options: inherit

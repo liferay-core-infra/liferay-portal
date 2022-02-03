@@ -434,10 +434,6 @@ definition {
 			PortletEntry.publish();
 		}
 
-		task ("Assert there is no error in the console") {
-			AssertConsoleTextNotPresent(value1 = "error");
-		}
-
 		task ("View the default language of web content is es-ES") {
 			WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
 
@@ -461,6 +457,13 @@ definition {
 				content = "Web Content Content",
 				groupName = "Test Site Name",
 				title = "Web Content Title");
+		}
+
+		task ("Add a Web Content Display widget to page") {
+			JSONLayout.addWidgetToPublicLayout(
+				groupName = "Test Site Name",
+				layoutName = "Test Page Name",
+				widgetName = "Web Content Display");
 		}
 
 		task ("Select the web content in Web Content Display") {

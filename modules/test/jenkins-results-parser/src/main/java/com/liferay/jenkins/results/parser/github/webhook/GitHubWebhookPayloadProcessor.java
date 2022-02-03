@@ -786,7 +786,9 @@ public class GitHubWebhookPayloadProcessor {
 		List<String> ciEnabledBranchNames = _getCIEnabledBranchNames(
 			repositoryName);
 
-		if (!ciEnabledBranchNames.contains(branchName)) {
+		if (!_acRepositories.contains(repositoryName) &&
+			!ciEnabledBranchNames.contains(branchName)) {
+
 			StringBuilder sb = new StringBuilder(4);
 
 			sb.append("Closing pull request because pulls for reference ");
@@ -2404,6 +2406,8 @@ public class GitHubWebhookPayloadProcessor {
 	private static final Log _log = LogFactory.getLog(
 		GitHubWebhookPayloadProcessor.class);
 
+	private static final List<String> _acRepositories = Arrays.asList(
+		"com-liferay-osb-asah-private", "com-liferay-osb-faro-private");
 	private static final Pattern _buildURLPattern = Pattern.compile(
 		"Build[\\w\\s]*started.*Job Link: <a href=\"(?<buildURL>[^\"]+)\"");
 	private static final List<String> _gauntletUsernames = Arrays.asList(

@@ -24,6 +24,124 @@ definition {
 		}
 	}
 
+	@ignore = "true"
+	@priority = "4"
+	test CanModuleBeShutdownDuringReplicateSession {
+		property cluster.session.replicated = "true";
+		property custom.properties = "portlet.session.replicate.enabled=true";
+		property test.name.skip.portal.instance = "ClusteringCache#CanModuleBeShutdownDuringReplicateSession";
+
+		Clustering.deployClusteringModule(nodePort = "8080");
+
+		ProductMenu.gotoPortlet(
+			category = "Site Builder",
+			portlet = "Pages");
+
+		PagesAdmin.addPublicPage(pageName = "Session Replication Test");
+
+		Navigator.gotoPage(pageName = "Session Replication Test");
+
+		Portlet.addPG(portletName = "ClusterSampleSessionReplication");
+
+		AssertElementPresent(locator1 = "ClusterSamplePortlet#NO_SESSION_DATA_MESSAGE");
+
+		Clustering.deployClusteringModule(nodePort = "9080");
+
+		Navigator.gotoPage(pageName = "Session Replication Test");
+
+		AssertElementPresent(locator1 = "ClusterSamplePortlet#STORED_DATA");
+
+		var sessionData = selenium.getText("ClusterSamplePortlet#STORED_DATA");
+
+		echo("${sessionData}");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "System",
+			panel = "Control Panel",
+			portlet = "Gogo Shell");
+
+		GogoShell.executeCommand(commandName = "lb | grep 'Portal Cluster Multiple Sample Web'");
+
+		var moduleID = GogoShell.getModuleID(moduleName = "'Portal Cluster Multiple Sample Web'");
+
+		GogoShell.stopModule(moduleID = "${moduleID}");
+
+		GogoShell.viewModuleStatus(
+			moduleName = "'Portal Cluster Multiple Sample Web'",
+			moduleStatus = "Resolved");
+
+		Navigator.gotoSpecificURLPage(
+			pageName = "Session Replication Test",
+			url = "http://localhost:9080");
+
+		AssertTextEquals(
+			locator1 = "ClusterSamplePortlet#STORED_DATA",
+			value1 = "${sessionData}");
+
+		for (var serverPort : list "8080,9080") {
+			Clustering.viewNoSessionReplicateLogErrorOnSpecificNode(
+				exceptionText = "Unable to deserialize object",
+				nodePort = "${serverPort}");
+		}
+	}
+
+	@priority = "4"
+	test CanSessionReplicateBetweenNodes {
+		property cluster.session.replicated = "true";
+		property custom.properties = "portlet.session.replicate.enabled=true";
+		property test.name.skip.portal.instance = "ClusteringCache#CanSessionReplicateBetweenNodes";
+
+		Navigator.openNodePort(nodePort = "9080");
+
+		for (var serverPort : list "8080,9080") {
+			Clustering.viewNoSessionReplicateLogErrorOnSpecificNode(
+				exceptionText = "Unable to receive message through TCP channel",
+				nodePort = "${serverPort}");
+		}
+
+		Clustering.deployClusteringModule(nodePort = "8080");
+
+		Navigator.openNodePort(nodePort = "8080");
+
+		ProductMenu.gotoPortlet(
+			category = "Site Builder",
+			portlet = "Pages");
+
+		PagesAdmin.addPublicPage(pageName = "Session Replication Test");
+
+		Navigator.gotoPage(pageName = "Session Replication Test");
+
+		Portlet.addPG(portletName = "ClusterSampleSessionReplication");
+
+		AssertElementPresent(locator1 = "ClusterSamplePortlet#NO_SESSION_DATA_MESSAGE");
+
+		Clustering.deployClusteringModule(nodePort = "9080");
+
+		Navigator.openNodePort(nodePort = "8080");
+
+		Navigator.gotoPage(pageName = "Session Replication Test");
+
+		AssertElementPresent(locator1 = "ClusterSamplePortlet#STORED_DATA");
+
+		var sessionData = selenium.getText("ClusterSamplePortlet#STORED_DATA");
+
+		echo("${sessionData}");
+
+		Navigator.gotoSpecificURLPage(
+			pageName = "Session Replication Test",
+			url = "http://localhost:9080");
+
+		AssertTextEquals(
+			locator1 = "ClusterSamplePortlet#STORED_DATA",
+			value1 = "${sessionData}");
+
+		for (var serverPort : list "8080,9080") {
+			Clustering.viewNoSessionReplicateLogErrorOnSpecificNode(
+				exceptionText = "Unable to receive message through TCP channel",
+				nodePort = "${serverPort}");
+		}
+	}
+
 	@priority = "4"
 	test DoNotReplicatePut {
 		property custom.properties = "ehcache.replicator.properties.test.cache=replicatePuts=false";

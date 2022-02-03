@@ -550,7 +550,13 @@ public class PortalRequestProcessor {
 							httpServletRequest.getParameterMap()));
 				}
 
-				httpSession.setAttribute(WebKeys.LAST_PATH, lastPath);
+				String lastPathPath = lastPath.getPath();
+
+				// Ignore files that end with .map. See LPS-141963.
+
+				if (!lastPathPath.endsWith(".map")) {
+					httpSession.setAttribute(WebKeys.LAST_PATH, lastPath);
+				}
 			}
 		}
 

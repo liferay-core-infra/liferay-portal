@@ -26,6 +26,9 @@ import com.liferay.portal.convert.ConvertProcess;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.SingleVMPool;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
@@ -53,6 +56,8 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.portlet.LiferayActionResponse;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -85,6 +90,8 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.InstancePool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.MethodHandler;
+import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -101,7 +108,9 @@ import com.liferay.portal.util.MaintenanceUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.ShutdownUtil;
 
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -128,9 +137,10 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.name=" + PortletKeys.SERVER_ADMIN,
 		"mvc.command.name=/server_admin/edit_server"
 	},
-	service = MVCActionCommand.class
+	service = {IdentifiableOSGiService.class, MVCActionCommand.class}
 )
-public class EditServerMVCActionCommand extends BaseMVCActionCommand {
+public class EditServerMVCActionCommand
+	extends BaseMVCActionCommand implements IdentifiableOSGiService {
 
 	@Override
 	public void doProcessAction(
@@ -160,7 +170,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
 		if (cmd.equals("addLogLevel")) {
-			_addLogLevel(actionRequest);
+			_updateLogLevels(
+				Collections.singletonMap(
+					ParamUtil.getString(actionRequest, "loggerName"),
+					ParamUtil.getString(actionRequest, "priority")));
 		}
 		else if (cmd.equals("cacheDb")) {
 			_cacheDb();
@@ -220,11 +233,34 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		sendRedirect(actionRequest, actionResponse, redirect);
 	}
 
-	private void _addLogLevel(ActionRequest actionRequest) throws Exception {
-		String loggerName = ParamUtil.getString(actionRequest, "loggerName");
-		String priority = ParamUtil.getString(actionRequest, "priority");
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return EditServerMVCActionCommand.class.getName();
+	}
 
-		Log4JUtil.setLevel(loggerName, priority, true);
+	private static void _resetLogLevels(
+		Map<String, String> logLevels, Map<String, String> customLogSettings) {
+
+		for (Map.Entry<String, String> logLevel : logLevels.entrySet()) {
+			Log4JUtil.setLevel(
+				logLevel.getKey(), logLevel.getValue(),
+				customLogSettings.containsKey(logLevel.getKey()));
+		}
+	}
+
+	private static void _updateLogLevels(
+		Map<String, String> logLevels, String osgiServiceIdentifier) {
+
+		EditServerMVCActionCommand editServerMVCActionCommand =
+			(EditServerMVCActionCommand)
+				IdentifiableOSGiServiceUtil.getIdentifiableOSGiService(
+					osgiServiceIdentifier);
+
+		if (editServerMVCActionCommand == null) {
+			return;
+		}
+
+		editServerMVCActionCommand._updateLogLevels(logLevels);
 	}
 
 	private void _cacheDb() throws Exception {
@@ -630,22 +666,52 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		ImageMagickUtil.reset();
 	}
 
-	private void _updateLogLevels(ActionRequest actionRequest)
-		throws Exception {
-
+	private void _updateLogLevels(ActionRequest actionRequest) {
 		Enumeration<String> enumeration = actionRequest.getParameterNames();
+
+		Map<String, String> logLevels = new HashMap<>();
 
 		while (enumeration.hasMoreElements()) {
 			String name = enumeration.nextElement();
 
 			if (name.startsWith("logLevel")) {
-				String loggerName = name.substring(8);
-
-				String priority = ParamUtil.getString(
-					actionRequest, name, Level.INFO.toString());
-
-				Log4JUtil.setLevel(loggerName, priority, true);
+				logLevels.put(
+					name.substring(8),
+					ParamUtil.getString(
+						actionRequest, name, Level.INFO.toString()));
 			}
+		}
+
+		_updateLogLevels(logLevels);
+	}
+
+	private void _updateLogLevels(Map<String, String> logLevels) {
+		for (Map.Entry<String, String> logLevelEntry : logLevels.entrySet()) {
+			Log4JUtil.setLevel(
+				logLevelEntry.getKey(), logLevelEntry.getValue(), true);
+		}
+
+		if (!_clusterExecutor.isEnabled()) {
+			return;
+		}
+
+		if (_clusterMasterExecutor.isMaster()) {
+			ClusterRequest clusterRequest =
+				ClusterRequest.createMulticastRequest(
+					new MethodHandler(
+						_resetLogLevelsMethodKey, Log4JUtil.getPriorities(),
+						Log4JUtil.getCustomLogSettings()),
+					true);
+
+			clusterRequest.setFireAndForget(true);
+
+			_clusterExecutor.execute(clusterRequest);
+		}
+		else {
+			_clusterMasterExecutor.executeOnMaster(
+				new MethodHandler(
+					_updateLogLevelsMethodKey, logLevels,
+					getOSGiServiceIdentifier()));
 		}
 	}
 
@@ -752,6 +818,19 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditServerMVCActionCommand.class);
+
+	private static final MethodKey _resetLogLevelsMethodKey = new MethodKey(
+		EditServerMVCActionCommand.class, "_resetLogLevels", Map.class,
+		Map.class);
+	private static final MethodKey _updateLogLevelsMethodKey = new MethodKey(
+		EditServerMVCActionCommand.class, "_updateLogLevels", Map.class,
+		String.class);
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private DirectServletRegistry _directServletRegistry;

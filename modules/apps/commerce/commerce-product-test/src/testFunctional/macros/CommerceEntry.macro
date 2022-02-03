@@ -541,7 +541,7 @@ definition {
 		if (!(isSet(pageType))) {
 			AssertTextEquals(
 				locator1 = "CommerceEntry#DISPLAY_PAGE_ANY",
-				value1 = "${$pageName}");
+				value1 = "${pageName}");
 		}
 
 		if ("${pageType}" == "Public") {
@@ -555,12 +555,6 @@ definition {
 				locator1 = "CommerceEntry#DISPLAY_PAGE_ANY",
 				value1 = "Private Pages > ${pageName}");
 		}
-	}
-
-	macro assertDefaultProductDisplayPage {
-		AssertElementPresent(
-			key_displayPage = "${pageName}",
-			locator1 = "CommerceEntry#DEFAULT_PRODUCT_DISPLAY_PAGE");
 	}
 
 	macro changePinColor {

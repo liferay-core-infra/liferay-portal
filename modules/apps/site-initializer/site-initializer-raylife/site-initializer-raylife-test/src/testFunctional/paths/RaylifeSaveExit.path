@@ -22,7 +22,7 @@
 </tr>
 <tr>
 	<td>MODAL_PROGRESS_SAVED</td>
-	<td>//div[contains(@class,'d-block')]/parent::div//div[contains(@class, 'modal-content-body')]</td>
+	<td>//div[contains(@class, 'modal-content-body')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,7 +37,7 @@
 </tr>
 <tr>
 	<td>MODAL_CLOSE_ICON</td>
-	<td>//div[contains(@id,'modal-backdrop')]//div[contains(@class, 'close-modal')]</td>
+	<td>//div[contains(@class, 'close-modal')]</td>
 	<td></td>
 </tr>
 <tr>

@@ -256,15 +256,15 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 		_updateCommercePriceEntry(
 			cpInstance, CommercePriceListConstants.TYPE_PRICE_LIST, price,
-			promoPrice, serviceContext);
+			serviceContext);
 		_updateCommercePriceEntry(
-			cpInstance, CommercePriceListConstants.TYPE_PROMOTION, price,
-			promoPrice, serviceContext);
+			cpInstance, CommercePriceListConstants.TYPE_PROMOTION, promoPrice,
+			serviceContext);
 	}
 
 	private void _updateCommercePriceEntry(
 			CPInstance cpInstance, String type, BigDecimal price,
-			BigDecimal promoPrice, ServiceContext serviceContext)
+			ServiceContext serviceContext)
 		throws Exception {
 
 		CommercePriceList commercePriceList =
@@ -284,12 +284,12 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 			_commercePriceEntryLocalService.addCommercePriceEntry(
 				cpDefinition.getCProductId(), cpInstance.getCPInstanceUuid(),
-				commercePriceList.getCommercePriceListId(), price, promoPrice,
+				commercePriceList.getCommercePriceListId(), price, null,
 				serviceContext);
 		}
 		else {
 			_commercePriceEntryLocalService.updateCommercePriceEntry(
-				commercePriceEntry.getCommercePriceEntryId(), price, promoPrice,
+				commercePriceEntry.getCommercePriceEntryId(), price, null,
 				serviceContext);
 		}
 	}
@@ -377,7 +377,7 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 
 			Date discontinuedDate = ParamUtil.getDate(
 				actionRequest, "discontinuedDate",
-				DateFormatFactoryUtil.getSimpleDateFormat("MM/dd/yyyy"));
+				DateFormatFactoryUtil.getSimpleDateFormat("MM/dd/yyyy"), null);
 
 			if (discontinuedDate != null) {
 				Calendar calendar = CalendarFactoryUtil.getCalendar(
@@ -386,14 +386,6 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 				discontinuedDateDay = calendar.get(Calendar.DAY_OF_MONTH);
 				discontinuedDateMonth = calendar.get(Calendar.MONTH);
 				discontinuedDateYear = calendar.get(Calendar.YEAR);
-			}
-			else {
-				discontinuedDateMonth = ParamUtil.getInteger(
-					actionRequest, "discontinuedDateMonth");
-				discontinuedDateDay = ParamUtil.getInteger(
-					actionRequest, "discontinuedDateDay");
-				discontinuedDateYear = ParamUtil.getInteger(
-					actionRequest, "discontinuedDateYear");
 			}
 		}
 

@@ -25,6 +25,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Collections;
@@ -66,6 +69,11 @@ public class FragmentCollectionContributorItemSelectorViewDescriptor
 	}
 
 	@Override
+	public String[] getOrderByKeys() {
+		return new String[] {"name"};
+	}
+
+	@Override
 	public SearchContainer<FragmentCollectionContributor> getSearchContainer()
 		throws PortalException {
 
@@ -74,14 +82,50 @@ public class FragmentCollectionContributorItemSelectorViewDescriptor
 				_getPortletRequest(), _portletURL, null,
 				"there-are-no-items-to-display");
 
-		List<FragmentCollectionContributor> fragmentCollectionContributors =
-			_getFragmentCollectionContributors();
+		searchContainer.setOrderByCol(
+			ParamUtil.getString(_httpServletRequest, "orderByCol", "name"));
 
-		searchContainer.setResultsAndTotal(
-			() -> ListUtil.subList(
-				fragmentCollectionContributors, searchContainer.getStart(),
-				searchContainer.getEnd()),
-			fragmentCollectionContributors.size());
+		boolean orderByAsc = true;
+
+		String orderByType = ParamUtil.getString(
+			_httpServletRequest, "orderByType", "asc");
+
+		if (orderByType.equals("desc")) {
+			orderByAsc = false;
+		}
+
+		searchContainer.setOrderByType(orderByType);
+
+		List<FragmentCollectionContributor> fragmentCollectionContributors =
+			_getFragmentCollectionContributors(orderByAsc);
+
+		String keywords = ParamUtil.getString(_httpServletRequest, "keywords");
+
+		if (Validator.isNull(keywords)) {
+			searchContainer.setResultsAndTotal(
+				() -> ListUtil.subList(
+					fragmentCollectionContributors, searchContainer.getStart(),
+					searchContainer.getEnd()),
+				fragmentCollectionContributors.size());
+		}
+		else {
+			List<FragmentCollectionContributor>
+				filteredFragmentCollectionContributors = ListUtil.filter(
+					fragmentCollectionContributors,
+					fragmentCollectionContributor -> {
+						String lowerCaseName = StringUtil.toLowerCase(
+							fragmentCollectionContributor.getName());
+
+						return lowerCaseName.contains(
+							StringUtil.toLowerCase(keywords));
+					});
+
+			searchContainer.setResultsAndTotal(
+				() -> ListUtil.subList(
+					filteredFragmentCollectionContributors,
+					searchContainer.getStart(), searchContainer.getEnd()),
+				filteredFragmentCollectionContributors.size());
+		}
 
 		return searchContainer;
 	}
@@ -93,11 +137,15 @@ public class FragmentCollectionContributorItemSelectorViewDescriptor
 
 	@Override
 	public boolean isShowManagementToolbar() {
-		return false;
+		return true;
+	}
+
+	public boolean isShowSearch() {
+		return true;
 	}
 
 	private List<FragmentCollectionContributor>
-		_getFragmentCollectionContributors() {
+		_getFragmentCollectionContributors(boolean orderByAsc) {
 
 		if (_fragmentCollectionContributorTracker == null) {
 			return Collections.emptyList();
@@ -114,7 +162,7 @@ public class FragmentCollectionContributorItemSelectorViewDescriptor
 		Collections.sort(
 			fragmentCollectionContributors,
 			new FragmentCollectionContributorNameComparator(
-				themeDisplay.getLocale()));
+				themeDisplay.getLocale(), orderByAsc));
 
 		return fragmentCollectionContributors;
 	}

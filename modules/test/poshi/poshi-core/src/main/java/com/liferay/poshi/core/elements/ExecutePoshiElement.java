@@ -16,6 +16,7 @@ package com.liferay.poshi.core.elements;
 
 import com.liferay.poshi.core.PoshiContext;
 import com.liferay.poshi.core.script.PoshiScriptParserException;
+import com.liferay.poshi.core.script.PoshiScriptParserUtil;
 import com.liferay.poshi.core.util.CharPool;
 import com.liferay.poshi.core.util.ListUtil;
 import com.liferay.poshi.core.util.NaturalOrderStringComparator;
@@ -76,15 +77,16 @@ public class ExecutePoshiElement extends PoshiElement {
 
 			addAttribute("selenium", getCommandName(poshiScript));
 
-			List<String> methodParameters = getMethodParameters(
-				poshiScriptParentheticalContent);
+			List<String> methodParameterValues =
+				PoshiScriptParserUtil.getMethodParameterValues(
+					poshiScriptParentheticalContent);
 
-			for (int i = 0; i < methodParameters.size(); i++) {
-				String methodParameter = methodParameters.get(i);
+			for (int i = 0; i < methodParameterValues.size(); i++) {
+				String methodParameterValue = methodParameterValues.get(i);
 
-				String value = getDoubleQuotedContent(methodParameter);
-
-				addAttribute("argument" + (i + 1), value);
+				addAttribute(
+					"argument" + (i + 1),
+					getDoubleQuotedContent(methodParameterValue));
 			}
 
 			return;
@@ -140,30 +142,30 @@ public class ExecutePoshiElement extends PoshiElement {
 			addAttribute("class", getClassName(poshiScript));
 			addAttribute("method", getCommandName(poshiScript));
 
-			List<String> methodParameters = getMethodParameters(
-				poshiScriptParentheticalContent);
+			for (String methodParameterValue :
+					PoshiScriptParserUtil.getMethodParameterValues(
+						poshiScriptParentheticalContent)) {
 
-			for (String methodParameter : methodParameters) {
-				add(PoshiNodeFactory.newPoshiNode(this, methodParameter));
+				add(PoshiNodeFactory.newPoshiNode(this, methodParameterValue));
 			}
 
 			return;
 		}
 
-		for (String parameter :
-				getMethodParameters(
+		for (String methodParameterValue :
+				PoshiScriptParserUtil.getMethodParameterValues(
 					poshiScriptParentheticalContent,
 					_executeParameterPattern)) {
 
-			parameter = parameter.trim();
+			methodParameterValue = methodParameterValue.trim();
 
 			boolean functionAttributeAdded = false;
 
 			for (String functionAttributeName : _functionAttributeNames) {
-				String name = getNameFromAssignment(parameter);
+				String name = getNameFromAssignment(methodParameterValue);
 
 				if (name.equals(functionAttributeName)) {
-					String value = getValueFromAssignment(parameter);
+					String value = getValueFromAssignment(methodParameterValue);
 
 					Matcher matcher = quotedPattern.matcher(value);
 
@@ -174,7 +176,7 @@ public class ExecutePoshiElement extends PoshiElement {
 						sb.append("match: (locator|value)(1|2) = \".*\"");
 
 						throw new PoshiScriptParserException(
-							sb.toString(), parameter,
+							sb.toString(), methodParameterValue,
 							(PoshiElement)getParent());
 					}
 
@@ -182,7 +184,9 @@ public class ExecutePoshiElement extends PoshiElement {
 
 					value = StringEscapeUtils.unescapeXml(value);
 
-					add(new PoshiElementAttribute(name, value, parameter));
+					add(
+						new PoshiElementAttribute(
+							name, value, methodParameterValue));
 
 					functionAttributeAdded = true;
 
@@ -194,7 +198,7 @@ public class ExecutePoshiElement extends PoshiElement {
 				continue;
 			}
 
-			add(PoshiNodeFactory.newPoshiNode(this, parameter));
+			add(PoshiNodeFactory.newPoshiNode(this, methodParameterValue));
 		}
 	}
 
@@ -401,7 +405,8 @@ public class ExecutePoshiElement extends PoshiElement {
 			!isValidPoshiScriptStatement(
 				_utilityInvocationStatementPattern, poshiScript)) {
 
-			return isBalancedPoshiScript(getParentheticalContent(poshiScript));
+			return PoshiScriptParserUtil.isBalancedPoshiScript(
+				getParentheticalContent(poshiScript));
 		}
 
 		return false;

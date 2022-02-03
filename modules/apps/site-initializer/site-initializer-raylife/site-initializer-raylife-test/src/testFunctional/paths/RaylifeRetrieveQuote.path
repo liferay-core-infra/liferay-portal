@@ -42,7 +42,7 @@
 </tr>
 <tr>
 	<td>ERROR_MESSAGE_RETRIEVE_QUOTE</td>
-	<td>//span[contains(@class, 'form-feedback-item px-2')]</td>
+	<td>//span[contains(@class, 'form-feedback-item')]</td>
 	<td></td>
 </tr>
 <tr>

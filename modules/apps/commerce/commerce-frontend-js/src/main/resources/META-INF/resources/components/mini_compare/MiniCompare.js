@@ -12,7 +12,7 @@
  * details.
  */
 
-import {ClayButtonWithIcon} from '@clayui/button';
+import ClayIcon from '@clayui/icon';
 import ClaySticker from '@clayui/sticker';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -62,13 +62,9 @@ function Item(props) {
 				/>
 			</ClaySticker>
 
-			<ClayButtonWithIcon
-				className="mini-compare-delete"
-				displayType="unstyled"
-				onClick={props.onDelete}
-				small
-				symbol="times"
-			/>
+			<button className="mini-compare-delete" onClick={props.onDelete}>
+				<ClayIcon symbol="times" />
+			</button>
 		</div>
 	);
 }
@@ -112,7 +108,7 @@ function MiniCompare(props) {
 
 	useEffect(() => {
 		Liferay.fire(PRODUCT_COMPARISON_TOGGLED, {
-			disabled: items.length > props.itemsLimit,
+			disabled: items.length >= props.itemsLimit,
 		});
 	}, [items, props.itemsLimit]);
 

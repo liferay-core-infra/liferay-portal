@@ -15,17 +15,16 @@ import ClayModal, {useModal} from '@clayui/modal';
 import classNames from 'classnames';
 import React, {useEffect, useState} from 'react';
 import client from '../../../../apolloClient';
-import BaseButton from '../../../../common/components/BaseButton';
-import SetupDXPCloud from '../../../../common/components/onboarding/SetupDXPCloud';
+import {Button} from '../../../../common/components';
+import SetupDXPCloud from '../../../../common/containers/setup-forms/SetupDXPCloudForm';
 import {
 	getAccountSubscriptionGroups,
 	getAccountSubscriptionsTerms,
 } from '../../../../common/services/liferay/graphql/queries';
-import {getCurrentEndDate} from '../../../../common/utils/';
-import {ACTIVATION_STATUS_DXP_CLOUD} from '../../../../common/utils/constants';
+import getCurrentEndDate from '../../../../common/utils/getCurrentEndDate';
 import {useCustomerPortal} from '../../context';
 import {actionTypes} from '../../context/reducer';
-import {status} from '../../utils/constants';
+import {STATUS_TAG_TYPES, STATUS_TAG_TYPE_NAMES} from '../../utils/constants';
 import StatusTag from '../StatusTag';
 
 const SetupDXPCloudModal = ({
@@ -90,7 +89,7 @@ const ActivationStatus = ({
 	};
 
 	const currentActivationStatus = {
-		[ACTIVATION_STATUS_DXP_CLOUD.active]: {
+		[STATUS_TAG_TYPE_NAMES.active]: {
 			buttonLink: (
 				<a
 					className="font-weight-semi-bold m-0 p-0 text-brand-primary text-paragraph"
@@ -102,27 +101,27 @@ const ActivationStatus = ({
 					<ClayIcon className="ml-1" symbol="order-arrow-right" />
 				</a>
 			),
-			id: status.active,
+			id: STATUS_TAG_TYPES.active,
 			subtitle:
 				'Your DXP Cloud environments are ready. Go to the Product Console to view DXP Cloud details.',
 		},
-		[ACTIVATION_STATUS_DXP_CLOUD.inProgress]: {
-			id: status.inProgress,
+		[STATUS_TAG_TYPE_NAMES.inProgress]: {
+			id: STATUS_TAG_TYPES.inProgress,
 			subtitle:
 				'Your DXP Cloud environments are being set up and will be available soon.',
 		},
-		[ACTIVATION_STATUS_DXP_CLOUD.notActivated]: {
+		[STATUS_TAG_TYPE_NAMES.notActivated]: {
 			buttonLink: userAccount.isAdmin && (
-				<BaseButton
+				<Button
 					appendIcon="order-arrow-right"
 					className="btn btn-link font-weight-semi-bold p-0 text-brand-primary text-paragraph"
 					displayType="link"
 					onClick={() => setVisible(true)}
 				>
 					Finish Activation
-				</BaseButton>
+				</Button>
 			),
-			id: status.notActivated,
+			id: STATUS_TAG_TYPES.notActivated,
 			subtitle:
 				'Almost there! Setup DXP Cloud by finishing the activation form.',
 		},
@@ -130,7 +129,8 @@ const ActivationStatus = ({
 
 	const activationStatus =
 		currentActivationStatus[
-			subscriptionGroupActivationStatus || 'Not Activated'
+			subscriptionGroupActivationStatus ||
+				STATUS_TAG_TYPE_NAMES.notActivated
 		];
 
 	useEffect(() => {
@@ -185,19 +185,19 @@ const ActivationStatus = ({
 				</p>
 
 				<div>
-					<ClayCard className="activation-status-container border border-light m-0 rounded shadow-none">
+					<ClayCard className="border border-light cp-activation-status-container m-0 rounded shadow-none">
 						<ClayCard.Body className="px-4 py-3">
 							<div className="align-items-center d-flex position-relative">
 								<img
 									className={classNames(
-										'ml-2 mr-4 img-activation-status',
+										'ml-2 mr-4 cp-img-activation-status',
 										{
 											'in-progress':
 												subscriptionGroupActivationStatus ===
-												ACTIVATION_STATUS_DXP_CLOUD.inProgress,
+												STATUS_TAG_TYPE_NAMES.inProgress,
 											'not-active':
 												subscriptionGroupActivationStatus ===
-													ACTIVATION_STATUS_DXP_CLOUD.notActivated ||
+													STATUS_TAG_TYPE_NAMES.notActivated ||
 												!subscriptionGroupActivationStatus,
 										}
 									)}
@@ -224,7 +224,7 @@ const ActivationStatus = ({
 
 								<div className="d-flex justify-content-between ml-auto">
 									<ClayCard.Description
-										className="label-activation-status position-absolute"
+										className="cp-label-activation-status position-absolute"
 										displayType="text"
 										tag="div"
 										title={null}

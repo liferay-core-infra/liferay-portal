@@ -15,6 +15,7 @@
 package com.liferay.poshi.core.elements;
 
 import com.liferay.poshi.core.script.PoshiScriptParserException;
+import com.liferay.poshi.core.script.PoshiScriptParserUtil;
 import com.liferay.poshi.core.util.Dom4JUtil;
 import com.liferay.poshi.core.util.StringUtil;
 import com.liferay.poshi.core.util.Validator;
@@ -416,34 +417,46 @@ public class VarPoshiElement extends PoshiElement {
 
 		parametersString = parametersString.trim();
 
-		List<String> parameters = getMethodParameters(parametersString);
+		List<String> methodParameterValues =
+			PoshiScriptParserUtil.getMethodParameterValues(parametersString);
 
-		for (String parameter : parameters) {
-			parameter = parameter.trim();
+		for (String methodParameterValue : methodParameterValues) {
+			methodParameterValue = methodParameterValue.trim();
 
-			if (parameter.endsWith("'") && parameter.startsWith("'")) {
-				parameter = getSingleQuotedContent(parameter);
+			if (methodParameterValue.endsWith("'") &&
+				methodParameterValue.startsWith("'")) {
 
-				parameter = StringUtil.replace(parameter, "\\\'", "'");
-				parameter = StringUtil.replace(parameter, "&quot;", "\"");
+				methodParameterValue = getSingleQuotedContent(
+					methodParameterValue);
 
-				parameter = StringUtil.replace(parameter, "\"", "\\\"");
+				methodParameterValue = StringUtil.replace(
+					methodParameterValue, "\\\'", "'");
+				methodParameterValue = StringUtil.replace(
+					methodParameterValue, "&quot;", "\"");
 
-				parameter = doubleQuoteContent(parameter);
+				methodParameterValue = StringUtil.replace(
+					methodParameterValue, "\"", "\\\"");
+
+				methodParameterValue = doubleQuoteContent(methodParameterValue);
 			}
-			else if (parameter.endsWith("\"") && parameter.startsWith("\"")) {
-				parameter = getDoubleQuotedContent(parameter);
+			else if (methodParameterValue.endsWith("\"") &&
+					 methodParameterValue.startsWith("\"")) {
 
-				parameter = StringUtil.replace(parameter, "'", "\\\'");
-				parameter = StringUtil.replace(parameter, "\\\"", "\"");
+				methodParameterValue = getDoubleQuotedContent(
+					methodParameterValue);
 
-				parameter = singleQuoteContent(parameter);
+				methodParameterValue = StringUtil.replace(
+					methodParameterValue, "'", "\\\'");
+				methodParameterValue = StringUtil.replace(
+					methodParameterValue, "\\\"", "\"");
+
+				methodParameterValue = singleQuoteContent(methodParameterValue);
 			}
 			else {
-				parameter = parameter.trim();
+				methodParameterValue = methodParameterValue.trim();
 			}
 
-			sb.append(parameter);
+			sb.append(methodParameterValue);
 
 			sb.append(", ");
 		}

@@ -22,8 +22,9 @@ import com.liferay.fragment.util.comparator.FragmentCollectionNameComparator;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorViewDescriptor;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -39,10 +40,12 @@ public class FragmentCollectionItemSelectorViewDescriptor
 	public FragmentCollectionItemSelectorViewDescriptor(
 		FragmentCollectionItemSelectorCriterion
 			fragmentCollectionItemSelectorCriterion,
-		HttpServletRequest httpServletRequest, PortletURL portletURL) {
+		long groupId, HttpServletRequest httpServletRequest,
+		PortletURL portletURL) {
 
 		_fragmentCollectionItemSelectorCriterion =
 			fragmentCollectionItemSelectorCriterion;
+		_groupId = groupId;
 		_httpServletRequest = httpServletRequest;
 		_portletURL = portletURL;
 	}
@@ -60,24 +63,53 @@ public class FragmentCollectionItemSelectorViewDescriptor
 	}
 
 	@Override
-	public SearchContainer<FragmentCollection> getSearchContainer()
-		throws PortalException {
+	public String[] getOrderByKeys() {
+		return new String[] {"name"};
+	}
 
+	@Override
+	public SearchContainer<FragmentCollection> getSearchContainer() {
 		SearchContainer<FragmentCollection> searchContainer =
 			new SearchContainer<>(
 				_getPortletRequest(), _portletURL, null,
 				"there-are-no-items-to-display");
 
-		FragmentCollectionNameComparator fragmentCollectionNameComparator =
-			new FragmentCollectionNameComparator(true);
+		searchContainer.setOrderByCol(
+			ParamUtil.getString(_httpServletRequest, "orderByCol", "name"));
 
-		searchContainer.setResultsAndTotal(
-			() -> FragmentCollectionServiceUtil.getFragmentCollections(
-				_fragmentCollectionItemSelectorCriterion.getGroupId(),
-				searchContainer.getStart(), searchContainer.getEnd(),
-				fragmentCollectionNameComparator),
-			FragmentCollectionServiceUtil.getFragmentCollectionsCount(
-				_fragmentCollectionItemSelectorCriterion.getGroupId()));
+		boolean orderByAsc = true;
+
+		String orderByType = ParamUtil.getString(
+			_httpServletRequest, "orderByType", "asc");
+
+		if (orderByType.equals("desc")) {
+			orderByAsc = false;
+		}
+
+		searchContainer.setOrderByType(orderByType);
+
+		FragmentCollectionNameComparator fragmentCollectionNameComparator =
+			new FragmentCollectionNameComparator(orderByAsc);
+
+		String keywords = ParamUtil.getString(_httpServletRequest, "keywords");
+
+		if (Validator.isNull(keywords)) {
+			searchContainer.setResultsAndTotal(
+				() -> FragmentCollectionServiceUtil.getFragmentCollections(
+					_fragmentCollectionItemSelectorCriterion.getGroupId(),
+					searchContainer.getStart(), searchContainer.getEnd(),
+					fragmentCollectionNameComparator),
+				FragmentCollectionServiceUtil.getFragmentCollectionsCount(
+					_fragmentCollectionItemSelectorCriterion.getGroupId()));
+		}
+		else {
+			searchContainer.setResultsAndTotal(
+				() -> FragmentCollectionServiceUtil.getFragmentCollections(
+					new long[] {_groupId}, keywords, searchContainer.getStart(),
+					searchContainer.getEnd(), fragmentCollectionNameComparator),
+				FragmentCollectionServiceUtil.getFragmentCollectionsCount(
+					_groupId, keywords));
+		}
 
 		return searchContainer;
 	}
@@ -89,7 +121,12 @@ public class FragmentCollectionItemSelectorViewDescriptor
 
 	@Override
 	public boolean isShowManagementToolbar() {
-		return false;
+		return true;
+	}
+
+	@Override
+	public boolean isShowSearch() {
+		return true;
 	}
 
 	private PortletRequest _getPortletRequest() {
@@ -99,6 +136,7 @@ public class FragmentCollectionItemSelectorViewDescriptor
 
 	private final FragmentCollectionItemSelectorCriterion
 		_fragmentCollectionItemSelectorCriterion;
+	private final long _groupId;
 	private final HttpServletRequest _httpServletRequest;
 	private final PortletURL _portletURL;
 

@@ -192,21 +192,20 @@ public class RedirectNotFoundEntriesDisplayContext {
 	}
 
 	private Sort _getSorts() {
-		boolean orderByAsc = StringUtil.equals(
-			_redirectNotFoundEntrySearch.getOrderByType(), "asc");
-
 		if (Objects.equals(
 				_redirectNotFoundEntrySearch.getOrderByCol(),
 				"modified-date")) {
 
 			return new Sort(
 				Field.getSortableFieldName(Field.MODIFIED_DATE), Sort.LONG_TYPE,
-				orderByAsc);
+				StringUtil.equals(
+					_redirectNotFoundEntrySearch.getOrderByType(), "asc"));
 		}
 
 		return new Sort(
 			Field.getSortableFieldName("requestCount"), Sort.LONG_TYPE,
-			orderByAsc);
+			StringUtil.equals(
+				_redirectNotFoundEntrySearch.getOrderByType(), "asc"));
 	}
 
 	private void _populateWithSearchIndex(
@@ -235,16 +234,15 @@ public class RedirectNotFoundEntriesDisplayContext {
 
 		Stream<SearchResult> stream = searchResults.stream();
 
-		redirectNotFoundEntrySearch.setResults(
-			stream.map(
+		redirectNotFoundEntrySearch.setResultsAndTotal(
+			() -> stream.map(
 				SearchResult::getClassPK
 			).map(
 				_redirectNotFoundEntryLocalService::fetchRedirectNotFoundEntry
 			).collect(
 				Collectors.toList()
-			));
-
-		redirectNotFoundEntrySearch.setTotal(hits.getLength());
+			),
+			hits.getLength());
 	}
 
 	private final HttpServletRequest _httpServletRequest;

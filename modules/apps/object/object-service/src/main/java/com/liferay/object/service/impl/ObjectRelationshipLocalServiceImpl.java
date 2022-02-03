@@ -23,6 +23,7 @@ import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.base.ObjectRelationshipLocalServiceBaseImpl;
@@ -52,6 +53,9 @@ import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marco Leo
@@ -165,7 +169,7 @@ public class ObjectRelationshipLocalServiceImpl
 				objectRelationship.getType(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
-			_objectFieldLocalService.deleteObjectField(
+			_objectFieldLocalService.deleteRelationshipTypeObjectField(
 				objectRelationship.getObjectFieldId2());
 		}
 		else if (Objects.equals(
@@ -349,6 +353,11 @@ public class ObjectRelationshipLocalServiceImpl
 			runSQL(
 				DynamicObjectDefinitionTable.getAlterTableAddColumnSQL(
 					dbTableName, objectField.getDBColumnName(), "Long"));
+
+			if (_objectDefinitionLocalService != null) {
+				_objectDefinitionLocalService.deployObjectDefinition(
+					objectDefinition2);
+			}
 		}
 
 		return objectField;
@@ -482,6 +491,18 @@ public class ObjectRelationshipLocalServiceImpl
 			throw new ObjectRelationshipTypeException("Invalid type " + type);
 		}
 
+		ObjectDefinition objectDefinition =
+			_objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId1);
+
+		if (objectDefinition.isSystem() &&
+			!Objects.equals(
+				type, ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+
+			throw new ObjectRelationshipTypeException(
+				"Invalid type for system object definition " +
+					objectDefinitionId1);
+		}
+
 		if (Objects.equals(
 				type, ObjectRelationshipConstants.TYPE_MANY_TO_MANY) ||
 			Objects.equals(type, ObjectRelationshipConstants.TYPE_ONE_TO_ONE)) {
@@ -495,6 +516,13 @@ public class ObjectRelationshipLocalServiceImpl
 			}
 		}
 	}
+
+	@Reference(
+		cardinality = ReferenceCardinality.OPTIONAL,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY
+	)
+	private volatile ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;

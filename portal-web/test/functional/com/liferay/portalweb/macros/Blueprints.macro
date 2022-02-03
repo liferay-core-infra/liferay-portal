@@ -1,7 +1,7 @@
 definition {
 
 	macro addElement {
-		AssertElementPresent.assertVisible(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_HEADER");
+		AssertVisible(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_HEADER");
 
 		if (IsElementPresent(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_SEARCH_CLEAR")) {
 			Click.clickNoMouseOver(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_SEARCH_CLEAR");
@@ -101,10 +101,6 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro deleteElement {
-		Blueprints.deleteEntry(title = "${element}");
-	}
-
 	macro deleteEntry {
 		Blueprints.gotoEntryMenuItem(
 			menuItem = "Delete",
@@ -171,9 +167,11 @@ definition {
 	}
 
 	macro openEntryMenu {
-		Click.waitForMenuToggleJSClick(
-			locator1 = "Blueprints#BLUEPRINTS_ADMIN_ENTRY_VERTICAL_ELLIPSIS",
-			title = "${title}");
+		if (IsElementNotPresent(locator1 = "Blueprints#BLUEPRINTS_ADMIN_ENTRY_OPEN_DROPDOWN_MENU")) {
+			Click.waitForMenuToggleJSClick(
+				locator1 = "Blueprints#BLUEPRINTS_ADMIN_ENTRY_VERTICAL_ELLIPSIS",
+				title = "${title}");
+		}
 	}
 
 	macro searchBlueprintsPreview {

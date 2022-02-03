@@ -36,7 +36,7 @@ definition {
 		PortletEntry.save();
 
 		AssertTextEquals(
-			blueprintTitle = "Test Blueprint",
+			entryTitle = "Test Blueprint",
 			locator1 = "Blueprints#BLUEPRINTS_ADMIN_ENTRY_DESCRIPTION",
 			value1 = "Test Description");
 	}
@@ -262,6 +262,13 @@ definition {
 			locator1 = "Blueprints#BLUEPRINTS_ADDED_ELEMENT_INPUT_FIELD",
 			value1 = "1000");
 
+		Blueprints.searchBlueprintsPreview(searchTerm = "red apple");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Blueprints#BLUEPRINTS_EDIT_PAGE_PREVIEW_SEARCH_RESULT_SPECIFIC_RANKING",
+			resultRanking = "1",
+			value1 = "reddish apple");
+
 		PortletEntry.save();
 
 		Search.openSearchPage();
@@ -352,7 +359,7 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Configuration");
 
-		var aggregationConfigurationJson = '''{"cardinality-test":{}}''';
+		var aggregationConfigurationJson = '''{"aggs":{}}''';
 
 		Type.typeCodeMirrorEditorNoError(
 			configurationField = "Aggregation Configuration",
@@ -377,7 +384,7 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Configuration");
 
-		AssertTextNotPresent(value1 = "cardinality-test");
+		AssertTextNotPresent(value1 = "aggs");
 	}
 
 	test CancelChangesToQuerySettings {
@@ -452,6 +459,31 @@ definition {
 		Blueprints.createElement(title = "Test Element");
 
 		Blueprints.viewEntryTitle(title = "Test Element");
+	}
+
+	test CreateElementWithDescription {
+		Blueprints.openBlueprintsAdmin();
+
+		Navigator.gotoNavItem(navItem = "Elements");
+
+		Click(locator1 = "Button#PLUS");
+
+		PortletEntry.inputTitle(title = "Test Element");
+
+		PortletEntry.inputDescription(description = "Test Element Description");
+
+		Button.click(button = "Create");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Blueprints#CODE_MIRROR_EDITOR",
+			value1 = "Test Element Description");
+
+		PortletEntry.save();
+
+		AssertTextEquals(
+			entryTitle = "Test Element",
+			locator1 = "Blueprints#BLUEPRINTS_ADMIN_ENTRY_DESCRIPTION",
+			value1 = "Test Element Description");
 	}
 
 	test DefineBlueprintsRolePermissions {
@@ -609,7 +641,7 @@ definition {
 
 		PortletEntry.save();
 
-		Blueprints.deleteElement(element = "Edited Element");
+		Blueprints.deleteEntry(title = "Edited Element");
 
 		Blueprints.viewNoEntry(element = "Edited Element");
 	}
@@ -631,7 +663,7 @@ definition {
 
 		Blueprints.createElement(title = "Test Element");
 
-		Blueprints.deleteElement(element = "Test Element");
+		Blueprints.deleteEntry(title = "Test Element");
 
 		Blueprints.viewNoEntry(title = "Test Element");
 	}
@@ -718,7 +750,7 @@ definition {
 		PortletEntry.save();
 
 		AssertTextEquals(
-			blueprintTitle = "Test Blueprint",
+			entryTitle = "Test Blueprint",
 			locator1 = "Blueprints#BLUEPRINTS_ADMIN_ENTRY_DESCRIPTION",
 			value1 = "Edited Description");
 	}
@@ -743,6 +775,162 @@ definition {
 		Blueprints.viewEntryTitle(title = "Edited Blueprint");
 
 		Blueprints.viewNoEntry(title = "Test Blueprint");
+	}
+
+	test ExportImportBlueprint {
+		Blueprints.openBlueprintsAdmin();
+
+		Blueprints.createBlueprint(title = "Test Blueprint");
+
+		Blueprints.addElement(element = "Boost Tags Match");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		Check.checkNotVisible(
+			locator1 = "Radio#ANY",
+			radioLabel = "Selected Types");
+
+		Button.click(button = "Select Asset Types");
+
+		Check.checkNotVisible(
+			assetType = "Blogs Entry",
+			locator1 = "Blueprints#BLUEPRINTS_SEARCHABLE_ASSET_TYPE_CHECKBOX");
+
+		Button.clickDone();
+
+		Uncheck.uncheckToggleSwitch(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
+
+		Check.checkNotVisible(
+			locator1 = "Radio#ANY",
+			radioLabel = "Customize");
+
+		Button.click(button = "Customize Contributors");
+
+		Uncheck.uncheckToggleSwitch(
+			contributorClass = "AccountEntryKeywordQueryContributor",
+			locator1 = "Blueprints#BLUEPRINTS_CLAUSE_CONTRIBUTOR_ON_OFF_TOGGLE");
+
+		Navigator.gotoNavTab(navTab = "Configuration");
+
+		var aggregationConfigurationJson = '''{"aggs":{}}''';
+
+		Type.typeCodeMirrorEditorNoError(
+			configurationField = "Aggregation Configuration",
+			locator1 = "Blueprints#BLUEPRINTS_CONFIGURATION_EDITOR",
+			value1 = "${aggregationConfigurationJson}");
+
+		PortletEntry.save();
+
+		Blueprints.gotoEntryMenuItem(
+			menuItem = "Export",
+			title = "Test Blueprint");
+
+		Blueprints.deleteEntry(title = "Test Blueprint");
+
+		Click(locator1 = "Portlet#OPTIONS_ICON");
+
+		MenuItem.click(menuItem = "Import");
+
+		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+		UploadTempFile.uploadTempFileHiddenNoMouseOver(
+			locator1 = "TextInput#FILE",
+			value1 = "Test Blueprint.json");
+
+		Click(
+			key_text = "Import",
+			locator1 = "Button#ANY");
+
+		Blueprints.editBlueprint(title = "Test Blueprint");
+
+		AssertElementPresent(
+			element = "Boost Tags Match",
+			locator1 = "Blueprints#BLUEPRINTS_ADDED_ELEMENT");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		AssertElementPresent(
+			assetType = "Blogs Entry",
+			locator1 = "Blueprints#BLUEPRINTS_SEARCHABLE_ASSET_TYPE_SELECTED");
+
+		AssertNotChecked.assertNotCheckedNotVisible(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
+
+		Button.click(button = "Customize Contributors");
+
+		AssertNotChecked.assertNotCheckedNotVisible(
+			contributorClass = "AccountEntryKeywordQueryContributor",
+			locator1 = "Blueprints#BLUEPRINTS_CLAUSE_CONTRIBUTOR_ON_OFF_TOGGLE");
+
+		Navigator.gotoNavTab(navTab = "Configuration");
+
+		AssertTextPresent(value1 = "aggs");
+	}
+
+	test ExportImportElement {
+		Blueprints.openBlueprintsAdmin();
+
+		var elementSourceJson = '''
+{
+	"description_i18n": {
+		"en_US": "Import Element"
+	},
+	"elementDefinition": {
+		"configuration": {},
+		"uiConfiguration": {}
+	},
+	"title_i18n": {
+		"en_US": "Test Element"
+	}
+}
+			''';
+
+		Blueprints.createElement(
+			elementSourceJson = "${elementSourceJson}",
+			title = "Test Element");
+
+		Blueprints.gotoEntryMenuItem(
+			menuItem = "Export",
+			title = "Test Element");
+
+		Blueprints.deleteEntry(title = "Test Element");
+
+		Click(locator1 = "Portlet#OPTIONS_ICON");
+
+		MenuItem.click(menuItem = "Import");
+
+		SelectFrame(locator1 = "IFrame#MODAL_BODY");
+
+		UploadTempFile.uploadTempFileHiddenNoMouseOver(
+			locator1 = "TextInput#FILE",
+			value1 = "Test Element.json");
+
+		Click(
+			key_text = "Import",
+			locator1 = "Button#ANY");
+
+		Blueprints.editElement(element = "Test Element");
+
+		AssertTextPresent(value1 = "Import Element");
+	}
+
+	test HideAndShowAddElementsSidebar {
+		Blueprints.openBlueprintsAdmin();
+
+		Blueprints.createBlueprint(title = "Test Blueprint");
+
+		AssertVisible(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_HEADER");
+
+		Click(
+			ariaLabel = "Add Query Element",
+			locator1 = "Button#ANY_WITH_ARIA_LABEL");
+
+		AssertNotVisible(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_HEADER");
+
+		Click(
+			ariaLabel = "Add Query Element",
+			locator1 = "Button#ANY_WITH_ARIA_LABEL");
+
+		AssertVisible(locator1 = "Blueprints#BLUEPRINTS_ADD_ELEMENTS_SIDEBAR_HEADER");
 	}
 
 	test HideWebContentViaCustomElement {
@@ -842,6 +1030,36 @@ definition {
 		SearchResultPortlet.viewSearchResultNotPresent(
 			searchAssetTitle = "Hide This Content",
 			searchAssetType = "Web Content Article");
+	}
+
+	test ModifyIndexerClausesToggle {
+		Blueprints.openBlueprintsAdmin();
+
+		Blueprints.createBlueprint(title = "Test Blueprint");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		AssertChecked.assertCheckedNotVisible(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
+
+		Uncheck.uncheckToggleSwitch(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
+
+		PortletEntry.save();
+
+		Blueprints.editBlueprint(title = "Test Blueprint");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		AssertNotChecked.assertNotCheckedNotVisible(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
+
+		Check.checkToggleSwitch(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
+
+		PortletEntry.save();
+
+		Blueprints.editBlueprint(title = "Test Blueprint");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		AssertChecked.assertCheckedNotVisible(locator1 = "Blueprints#BLUEPRINTS_SEARCH_FRAMEWORK_INDEXER_CLAUSES_ON_OFF_TOGGLE");
 	}
 
 	test NavigateToEditPageViaMenu {
@@ -1286,6 +1504,55 @@ definition {
 		AssertElementPresent(locator1 = "Blueprints#BLUEPRINTS_EDIT_PAGE_PREVIEW_SEARCH_RESULT_EMPTY");
 	}
 
+	test SearchWithSelectedAssetType {
+		JSONWebcontent.addWebContent(
+			content = "",
+			groupName = "Guest",
+			title = "red apple");
+
+		JSONBlog.addEntry(
+			entryContent = "",
+			entryTitle = "green apple");
+
+		Blueprints.openBlueprintsAdmin();
+
+		Blueprints.createBlueprint(title = "Test Blueprint");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		Check.checkNotVisible(
+			locator1 = "Radio#ANY",
+			radioLabel = "Selected Types");
+
+		Button.click(button = "Select Asset Types");
+
+		Check.checkNotVisible(
+			assetType = "Web Content Article",
+			locator1 = "Blueprints#BLUEPRINTS_SEARCHABLE_ASSET_TYPE_CHECKBOX");
+
+		Button.clickDone();
+
+		PortletEntry.save();
+
+		Blueprints.editBlueprint(title = "Test Blueprint");
+
+		Navigator.gotoNavNested(navNested = "Query Settings");
+
+		AssertElementPresent(
+			assetType = "Web Content Article",
+			locator1 = "Blueprints#BLUEPRINTS_SEARCHABLE_ASSET_TYPE_SELECTED");
+
+		Blueprints.searchBlueprintsPreview(searchTerm = "apple");
+
+		AssertElementPresent(
+			locator1 = "Blueprints#BLUEPRINTS_EDIT_PAGE_PREVIEW_SEARCH_RESULT_TITLE",
+			resultTitle = "red apple");
+
+		AssertElementNotPresent(
+			locator1 = "Blueprints#BLUEPRINTS_EDIT_PAGE_PREVIEW_SEARCH_RESULT_TITLE",
+			resultTitle = "green apple");
+	}
+
 	@description = "This is a use case for LPS-145977."
 	test SearchWithUsersLanguageOption {
 		JSONWebcontent.addWebContent(
@@ -1338,12 +1605,18 @@ definition {
 			groupName = "Guest",
 			titleMap = "en_US:Title,pt_BR:Título");
 
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Language Selector Page");
+
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Guest",
-			layoutName = "Search",
+			layoutName = "Language Selector Page",
 			widgetName = "Language Selector");
 
-		Search.openSearchPage();
+		Navigator.openSitePage(
+			pageName = "Language Selector Page",
+			siteName = "Guest");
 
 		LanguagePortlet.selectLanguagePG(
 			locale = "pt_BR",
@@ -1438,6 +1711,62 @@ definition {
 		AssertNotChecked.assertNotCheckedNotVisible(
 			contributorClass = "AccountEntryKeywordQueryContributor",
 			locator1 = "Blueprints#BLUEPRINTS_CLAUSE_CONTRIBUTOR_ON_OFF_TOGGLE");
+	}
+
+	test ViewCollapsibleAddedElements {
+		Blueprints.openBlueprintsAdmin();
+
+		Blueprints.createBlueprint(title = "Test Blueprint");
+
+		Blueprints.addElement(element = "Boost Proximity");
+
+		Click(
+			ariaLabel = "Collapse",
+			locator1 = "Button#ANY_WITH_ARIA_LABEL");
+
+		AssertElementNotPresent(
+			elementName = "Boost Proximity",
+			fieldName = "Field",
+			locator1 = "Blueprints#BLUEPRINTS_ADDED_ELEMENT_FIELD_LABEL");
+
+		Click(
+			ariaLabel = "Expand",
+			locator1 = "Button#ANY_WITH_ARIA_LABEL");
+
+		AssertElementPresent(
+			elementName = "Boost Proximity",
+			fieldName = "Field",
+			locator1 = "Blueprints#BLUEPRINTS_ADDED_ELEMENT_FIELD_LABEL");
+
+		Blueprints.addElement(element = "Boost Asset Type");
+
+		Blueprints.addElement(element = "Boost Freshness");
+
+		Click(
+			key_text = "Collapse All",
+			locator1 = "Button#ANY");
+
+		AssertElementNotPresent(
+			elementName = "",
+			fieldName = "Boost",
+			locator1 = "Blueprints#BLUEPRINTS_ADDED_ELEMENT_FIELD_LABEL");
+
+		AssertElementNotPresent(
+			ariaLabel = "Collapse",
+			locator1 = "Button#ANY_WITH_ARIA_LABEL");
+
+		Click(
+			key_text = "Expand All",
+			locator1 = "Button#ANY");
+
+		AssertElementPresent(
+			elementName = "",
+			fieldName = "Boost",
+			locator1 = "Blueprints#BLUEPRINTS_ADDED_ELEMENT_FIELD_LABEL");
+
+		AssertElementNotPresent(
+			ariaLabel = "Expand",
+			locator1 = "Button#ANY_WITH_ARIA_LABEL");
 	}
 
 	test ViewDefaultElement {

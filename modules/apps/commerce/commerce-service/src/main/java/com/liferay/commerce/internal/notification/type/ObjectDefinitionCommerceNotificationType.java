@@ -61,7 +61,7 @@ public class ObjectDefinitionCommerceNotificationType
 
 	@Override
 	public String getLabel(Locale locale) {
-		return _label + " # " + LanguageUtil.get(locale, _action);
+		return _label + " " + LanguageUtil.get(locale, _action);
 	}
 
 	private final String _action;

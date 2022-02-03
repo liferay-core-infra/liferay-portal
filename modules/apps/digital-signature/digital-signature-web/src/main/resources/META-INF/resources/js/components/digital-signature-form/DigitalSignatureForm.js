@@ -201,7 +201,8 @@ const DigitalSignatureForm = ({fileEntries = [], history}) => {
 							disabled={
 								!isValid ||
 								isSubmitting ||
-								!values.fileEntries.length
+								!values.fileEntries.length ||
+								values.fileEntries.length > 10
 							}
 							type="submit"
 						>

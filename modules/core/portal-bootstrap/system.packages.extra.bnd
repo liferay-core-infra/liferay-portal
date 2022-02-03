@@ -110,8 +110,6 @@ Export-Package:\
 	\
 	com.sun.security.auth.module,\
 	\
-	com.thoughtworks.xstream.*;version='1.4.17',\
-	\
 	java_cup.runtime.*;version='2.7.1',\
 	\
 	javax.jws;version='1.1',\
@@ -356,7 +354,6 @@ Provide-Capability:\
 	@../../../lib/portal/xercesImpl.jar,\
 	@../../../lib/portal/xml-apis.jar,\
 	@../../../lib/portal/xmlsec.jar,\
-	@../../../lib/portal/xstream.jar,\
 	@../../../portal-impl/portal-impl.jar,\
 	@../../../portal-kernel/portal-kernel.jar,\
 	@lib/biz.aQute.bnd.annotation.jar!/aQute/bnd/annotation/metatype/*,\

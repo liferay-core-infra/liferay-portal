@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -13536,9 +13535,9 @@ public class MBThreadPersistenceImpl
 
 			try {
 				mbThread.setTitle(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, MBThread.class.getName(),
-						threadId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
+						threadId, ContentTypes.TEXT_PLAIN, new String[]{Sanitizer.MODE_ALL},
 						mbThread.getTitle(), null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -14477,5 +14476,8 @@ public class MBThreadPersistenceImpl
 
 	@Reference
 	private MBThreadModelArgumentsResolver _mbThreadModelArgumentsResolver;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -21983,21 +21982,24 @@ public class BlogsEntryPersistenceImpl
 
 			try {
 				blogsEntry.setTitle(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, BlogsEntry.class.getName(),
-						entryId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
+						entryId, ContentTypes.TEXT_PLAIN, new String[]{
+							Sanitizer.MODE_ALL},
 						blogsEntry.getTitle(), null));
 
 				blogsEntry.setContent(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, BlogsEntry.class.getName(),
-						entryId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+						entryId, ContentTypes.TEXT_HTML, new String[]{
+							Sanitizer.MODE_ALL},
 						blogsEntry.getContent(), null));
 
 				blogsEntry.setCoverImageCaption(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, BlogsEntry.class.getName(),
-						entryId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+						entryId, ContentTypes.TEXT_HTML, new String[]{
+							Sanitizer.MODE_ALL},
 						blogsEntry.getCoverImageCaption(), null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -23158,5 +23160,8 @@ public class BlogsEntryPersistenceImpl
 
 	@Reference
 	private BlogsEntryModelArgumentsResolver _blogsEntryModelArgumentsResolver;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

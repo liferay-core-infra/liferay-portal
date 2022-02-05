@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -6048,10 +6047,10 @@ public class SXPElementPersistenceImpl
 
 			try {
 				sxpElement.setTitle(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, SXPElement.class.getName(),
 						sxpElementId, ContentTypes.TEXT_PLAIN,
-						Sanitizer.MODE_ALL, sxpElement.getTitle(), null));
+						new String[]{Sanitizer.MODE_ALL}, sxpElement.getTitle(), null));
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -6591,6 +6590,9 @@ public class SXPElementPersistenceImpl
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 	@Reference
 	private SXPElementModelArgumentsResolver _sxpElementModelArgumentsResolver;

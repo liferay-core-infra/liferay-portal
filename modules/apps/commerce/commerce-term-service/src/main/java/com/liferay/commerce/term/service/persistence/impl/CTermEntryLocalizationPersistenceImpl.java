@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
@@ -1166,11 +1165,11 @@ public class CTermEntryLocalizationPersistenceImpl
 
 			try {
 				cTermEntryLocalization.setDescription(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId,
 						CTermEntryLocalization.class.getName(),
 						cTermEntryLocalizationId, ContentTypes.TEXT_HTML,
-						Sanitizer.MODE_ALL,
+						new String[]{Sanitizer.MODE_ALL},
 						cTermEntryLocalization.getDescription(), null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -1608,5 +1607,8 @@ public class CTermEntryLocalizationPersistenceImpl
 	@Reference
 	private CTermEntryLocalizationModelArgumentsResolver
 		_cTermEntryLocalizationModelArgumentsResolver;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

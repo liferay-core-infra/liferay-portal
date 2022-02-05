@@ -144,7 +144,7 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
+import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -7597,10 +7597,11 @@ public class JournalArticleLocalServiceImpl
 							contentType = ContentTypes.TEXT_HTML;
 						}
 
-						dynamicContent = SanitizerUtil.sanitize(
+						dynamicContent = _sanitizer.sanitize(
 							user.getCompanyId(), groupId, user.getUserId(),
 							JournalArticle.class.getName(), 0, contentType,
-							dynamicContent);
+							new String[] {Sanitizer.MODE_ALL}, dynamicContent,
+							null);
 
 						dynamicContentElement.clearContent();
 
@@ -8331,9 +8332,10 @@ public class JournalArticleLocalServiceImpl
 		}
 
 		for (Map.Entry<Locale, String> entry : descriptionMap.entrySet()) {
-			String description = SanitizerUtil.sanitize(
+			String description = _sanitizer.sanitize(
 				companyId, groupId, userId, JournalArticle.class.getName(),
-				classPK, ContentTypes.TEXT_HTML, entry.getValue());
+				classPK, ContentTypes.TEXT_HTML,
+				new String[] {Sanitizer.MODE_ALL}, entry.getValue(), null);
 
 			descriptionMap.put(entry.getKey(), description);
 		}
@@ -9362,6 +9364,9 @@ public class JournalArticleLocalServiceImpl
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 	@Reference
 	private SubscriptionLocalService _subscriptionLocalService;

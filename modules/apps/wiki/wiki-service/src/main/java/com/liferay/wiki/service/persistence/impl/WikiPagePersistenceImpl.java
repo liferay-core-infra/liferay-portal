@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -88,7 +87,8 @@ import org.osgi.service.component.annotations.Reference;
  * @generated
  */
 @Component(service = {WikiPagePersistence.class, BasePersistence.class})
-public class WikiPagePersistenceImpl
+public class
+WikiPagePersistenceImpl
 	extends BasePersistenceImpl<WikiPage> implements WikiPagePersistence {
 
 	/*
@@ -23806,9 +23806,9 @@ public class WikiPagePersistenceImpl
 
 			try {
 				wikiPage.setTitle(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, WikiPage.class.getName(),
-						pageId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
+						pageId, ContentTypes.TEXT_PLAIN, new String[]{Sanitizer.MODE_ALL},
 						wikiPage.getTitle(), null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -25014,6 +25014,9 @@ public class WikiPagePersistenceImpl
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 	@Reference
 	private WikiPageModelArgumentsResolver _wikiPageModelArgumentsResolver;

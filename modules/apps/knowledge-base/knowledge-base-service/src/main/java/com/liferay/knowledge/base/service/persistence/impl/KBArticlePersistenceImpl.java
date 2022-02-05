@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -35074,9 +35073,9 @@ public class KBArticlePersistenceImpl
 
 			try {
 				kbArticle.setContent(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, KBArticle.class.getName(),
-						kbArticleId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
+						kbArticleId, ContentTypes.TEXT_HTML, new String[]{Sanitizer.MODE_ALL},
 						kbArticle.getContent(), null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -36314,5 +36313,8 @@ public class KBArticlePersistenceImpl
 
 	@Reference
 	private KBArticleModelArgumentsResolver _kbArticleModelArgumentsResolver;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

@@ -71,7 +71,6 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -152,11 +151,11 @@ public class CalendarBookingLocalServiceImpl
 		long calendarBookingId = counterLocalService.increment();
 
 		for (Map.Entry<Locale, String> entry : descriptionMap.entrySet()) {
-			String sanitizedDescription = SanitizerUtil.sanitize(
+			String sanitizedDescription = _sanitizer.sanitize(
 				calendar.getCompanyId(), calendar.getGroupId(), userId,
 				CalendarBooking.class.getName(), calendarBookingId,
-				ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL, entry.getValue(),
-				null);
+				ContentTypes.TEXT_HTML, new String[] {Sanitizer.MODE_ALL},
+				entry.getValue(), null);
 
 			descriptionMap.put(entry.getKey(), sanitizedDescription);
 		}
@@ -1198,11 +1197,11 @@ public class CalendarBookingLocalServiceImpl
 		}
 
 		for (Map.Entry<Locale, String> entry : descriptionMap.entrySet()) {
-			String sanitizedDescription = SanitizerUtil.sanitize(
+			String sanitizedDescription = _sanitizer.sanitize(
 				calendar.getCompanyId(), calendar.getGroupId(), userId,
 				CalendarBooking.class.getName(), calendarBookingId,
-				ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL, entry.getValue(),
-				null);
+				ContentTypes.TEXT_HTML, new String[] {Sanitizer.MODE_ALL},
+				entry.getValue(), null);
 
 			descriptionMap.put(entry.getKey(), sanitizedDescription);
 		}
@@ -2728,6 +2727,9 @@ public class CalendarBookingLocalServiceImpl
 
 	@Reference
 	private RatingsStatsLocalService _ratingsStatsLocalService;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 	@Reference
 	private SocialActivityCounterLocalService

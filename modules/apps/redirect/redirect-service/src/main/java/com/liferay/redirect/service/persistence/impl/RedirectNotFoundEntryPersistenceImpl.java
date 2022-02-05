@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -1153,11 +1152,11 @@ public class RedirectNotFoundEntryPersistenceImpl
 
 			try {
 				redirectNotFoundEntry.setUrl(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId,
 						RedirectNotFoundEntry.class.getName(),
 						redirectNotFoundEntryId, ContentTypes.TEXT_PLAIN,
-						Sanitizer.MODE_ALL, redirectNotFoundEntry.getUrl(),
+						new String[]{Sanitizer.MODE_ALL}, redirectNotFoundEntry.getUrl(),
 						null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -1593,5 +1592,8 @@ public class RedirectNotFoundEntryPersistenceImpl
 	@Reference
 	private RedirectNotFoundEntryModelArgumentsResolver
 		_redirectNotFoundEntryModelArgumentsResolver;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

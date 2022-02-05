@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -257,11 +256,11 @@ public class DDMFormValuesInfoFieldValuesProviderImpl
 					JSONFactoryUtil.createJSONObject(valueString));
 			}
 
-			return SanitizerUtil.sanitize(
+			return _sanitizer.sanitize(
 				groupedModel.getCompanyId(), groupedModel.getGroupId(),
 				groupedModel.getUserId(), groupedModel.getModelClassName(),
 				(long)groupedModel.getPrimaryKeyObj(), ContentTypes.TEXT_HTML,
-				Sanitizer.MODE_ALL, valueString, null);
+				new String[] {Sanitizer.MODE_ALL}, valueString, null);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -286,5 +285,8 @@ public class DDMFormValuesInfoFieldValuesProviderImpl
 
 	@Reference
 	private DLURLHelper _dlURLHelper;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

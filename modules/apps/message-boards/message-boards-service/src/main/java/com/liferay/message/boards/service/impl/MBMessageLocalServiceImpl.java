@@ -89,7 +89,6 @@ import com.liferay.portal.kernel.portletfilerepository.PortletFileRepository;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
@@ -437,9 +436,10 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		body = getBody(subject, body, format);
 
-		body = SanitizerUtil.sanitize(
+		body = _sanitizer.sanitize(
 			user.getCompanyId(), groupId, userId, MBMessage.class.getName(),
-			messageId, "text/" + format, Sanitizer.MODE_ALL, body,
+			messageId, "text/" + format, new String[] {Sanitizer.MODE_ALL},
+			body,
 			HashMapBuilder.<String, Object>put(
 				"discussion",
 				() -> {
@@ -2715,10 +2715,10 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		body = getBody(subject, body, message.getFormat());
 
-		body = SanitizerUtil.sanitize(
+		body = _sanitizer.sanitize(
 			message.getCompanyId(), message.getGroupId(), userId,
 			MBMessage.class.getName(), messageId, "text/" + message.getFormat(),
-			Sanitizer.MODE_ALL, body,
+			new String[] {Sanitizer.MODE_ALL}, body,
 			HashMapBuilder.<String, Object>put(
 				"discussion", message.isDiscussion()
 			).build());
@@ -2951,6 +2951,9 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 	@Reference
 	private SubscriptionLocalService _subscriptionLocalService;

@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -21726,9 +21725,9 @@ public class MBMessagePersistenceImpl
 
 			try {
 				mbMessage.setSubject(
-					SanitizerUtil.sanitize(
+					_sanitizer.sanitize(
 						companyId, groupId, userId, MBMessage.class.getName(),
-						messageId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
+						messageId, ContentTypes.TEXT_PLAIN, new String[]{Sanitizer.MODE_ALL},
 						mbMessage.getSubject(), null));
 			}
 			catch (SanitizerException sanitizerException) {
@@ -23029,5 +23028,8 @@ public class MBMessagePersistenceImpl
 
 	@Reference
 	private MBMessageModelArgumentsResolver _mbMessageModelArgumentsResolver;
+
+	@Reference
+	private Sanitizer _sanitizer;
 
 }

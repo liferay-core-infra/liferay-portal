@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocalManager;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.LockManager;
 import com.liferay.portal.kernel.messaging.Destination;
@@ -638,11 +639,16 @@ public class BackgroundTaskManagerImpl implements BackgroundTaskManager {
 		backgroundTaskStatusDestination.register(
 			removeOnCompletionBackgroundTaskStatusMessageListener);
 
-		if (!_clusterMasterExecutor.isEnabled() ||
-			_clusterMasterExecutor.isMaster()) {
+		DependencyManagerSyncUtil.registerSyncCallable(
+			() -> {
+				if (!_clusterMasterExecutor.isEnabled() ||
+					_clusterMasterExecutor.isMaster()) {
 
-			cleanUpBackgroundTasks();
-		}
+					cleanUpBackgroundTasks();
+				}
+
+				return null;
+			});
 	}
 
 	@Deactivate

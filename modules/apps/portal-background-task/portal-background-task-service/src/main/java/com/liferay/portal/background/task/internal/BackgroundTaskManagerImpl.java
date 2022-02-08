@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSyncUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.LockManager;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
@@ -644,6 +646,10 @@ public class BackgroundTaskManagerImpl implements BackgroundTaskManager {
 				if (!_clusterMasterExecutor.isEnabled() ||
 					_clusterMasterExecutor.isMaster()) {
 
+					if (_log.isDebugEnabled()) {
+						_log.debug("Cleaning up background tasks");
+					}
+
 					cleanUpBackgroundTasks();
 				}
 
@@ -744,6 +750,9 @@ public class BackgroundTaskManagerImpl implements BackgroundTaskManager {
 		throw new IllegalArgumentException(
 			"Invalid class " + ClassUtil.getClassName(orderByComparator));
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BackgroundTaskManagerImpl.class);
 
 	@Reference
 	private BackgroundTaskExecutorRegistry _backgroundTaskExecutorRegistry;

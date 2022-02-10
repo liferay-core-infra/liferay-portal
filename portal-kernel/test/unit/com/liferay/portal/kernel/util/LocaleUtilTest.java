@@ -119,4 +119,19 @@ public class LocaleUtilTest extends PowerMockito {
 		Assert.assertNull(LocaleUtil.fromLanguageId("de_DE", true, false));
 	}
 
+	@Test
+	public void testFromLanguageIdLocaleIsCreatedAndRetrievableWhenNoValidationDone() {
+		mockStatic(LanguageUtil.class);
+
+		when(
+			LanguageUtil.isAvailableLocale(Locale.ITALY)
+		).thenReturn(
+			false
+		);
+
+		Assert.assertTrue(
+			LocaleUtil.fromLanguageId("it_IT", true, false) ==
+				LocaleUtil.fromLanguageId("it_IT", true, false));
+	}
+
 }

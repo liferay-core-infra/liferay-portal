@@ -127,4 +127,23 @@ public class LocaleUtilTest {
 		Assert.assertNull(LocaleUtil.fromLanguageId("de_DE", true, false));
 	}
 
+	@Test
+	public void testFromLanguageIdLocaleIsCreatedAndRetrievableWhenNoValidationDone() {
+		LanguageUtil languageUtil = new LanguageUtil();
+
+		Language language = Mockito.mock(Language.class);
+
+		languageUtil.setLanguage(language);
+
+		Mockito.when(
+			language.isAvailableLocale(Locale.ITALY)
+		).thenReturn(
+			false
+		);
+
+		Assert.assertSame(
+			LocaleUtil.fromLanguageId("it_IT", false),
+			LocaleUtil.fromLanguageId("it_IT", false));
+	}
+
 }

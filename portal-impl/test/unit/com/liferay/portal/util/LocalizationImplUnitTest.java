@@ -162,12 +162,15 @@ public class LocalizationImplUnitTest {
 
 		if (expectedResult) {
 			Assert.assertTrue(
+				expectedLanguageId + " differs from " + defaultImportLocale,
 				LocaleUtil.equals(
 					LocaleUtil.fromLanguageId(expectedLanguageId),
 					defaultImportLocale));
 		}
 		else {
 			Assert.assertFalse(
+				expectedLanguageId + " should differ from " +
+					defaultImportLocale,
 				LocaleUtil.equals(
 					LocaleUtil.fromLanguageId(expectedLanguageId),
 					defaultImportLocale));

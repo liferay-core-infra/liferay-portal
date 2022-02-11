@@ -151,7 +151,7 @@ public class LocalizationImplUnitTest {
 
 		localizationUtil.setLocalization(new LocalizationImpl());
 
-		Locale contentDefaultLocale = LocaleUtil.fromLanguageId("es_ES");
+		Locale contentDefaultLocale = LocaleUtil.fromLanguageId("es_ES", false);
 
 		Locale[] contentAvailableLocales = _getContentAvailableLocales(
 			"es_ES,en_US,de_DE");

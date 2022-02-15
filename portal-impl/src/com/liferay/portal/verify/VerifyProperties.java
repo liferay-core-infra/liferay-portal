@@ -1571,6 +1571,7 @@ public class VerifyProperties extends VerifyProcess {
 		"auto.deploy.websphere.wsadmin.properties.file.name",
 		"auto.deploy.wildfly.dest.dir", "auto.deploy.wildfly.prefix",
 		"blogs.image.small.max.size", "breadcrumb.display.style.options",
+		"browser.compatibility.ie.versions",
 		"buffered.increment.parallel.queue.size",
 		"buffered.increment.serial.queue.size",
 		"cache.clear.on.context.initialization", "captcha.max.challenges",

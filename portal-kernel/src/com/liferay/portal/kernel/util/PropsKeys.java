@@ -3216,8 +3216,6 @@ public interface PropsKeys {
 	public static final String USERS_FULL_NAME_VALIDATOR =
 		"users.full.name.validator";
 
-	public static final String USERS_LIST_VIEWS = "users.list.views";
-
 	public static final String USERS_PROFILE_FRIENDLY_URL =
 		"users.profile.friendly.url";
 

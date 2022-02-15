@@ -2671,9 +2671,6 @@ public interface PropsKeys {
 
 	public static final String SCHEMA_RUN_ENABLED = "schema.run.enabled";
 
-	public static final String SCRIPTING_JRUBY_COMPILE_MODE =
-		"scripting.jruby.compile.mode";
-
 	public static final String SCRIPTING_JRUBY_COMPILE_THRESHOLD =
 		"scripting.jruby.compile.threshold";
 

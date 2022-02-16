@@ -575,7 +575,11 @@ public class CompanySampleDataGenerationTest {
 				"Asset Library Connected Site Member", "Asset Library Member"));
 
 		List<Role> roles = _roleLocalService.getRoles(
-			companyId, new int[] {1, 2, 3, 5});
+			companyId,
+			new int[] {
+				RoleConstants.TYPE_REGULAR, RoleConstants.TYPE_SITE,
+				RoleConstants.TYPE_ORGANIZATION, RoleConstants.TYPE_DEPOT
+			});
 
 		for (Role role : roles) {
 			if (!unexpectedRoleNames.contains(role.getName())) {

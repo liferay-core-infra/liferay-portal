@@ -27,6 +27,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.increment.BufferedIncrementThreadLocal;
 import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.model.ClassName;
@@ -269,7 +270,7 @@ public class CompanySampleDataGenerationTest {
 		throws Exception {
 
 		List<ClassName> classNames = _classNameLocalService.getClassNames(
-			-1, -1);
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (ClassName className : classNames) {
 			classNameTableBufferedWriter.append(

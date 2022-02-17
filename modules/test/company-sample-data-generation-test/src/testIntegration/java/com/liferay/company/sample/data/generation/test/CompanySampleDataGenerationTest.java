@@ -17,6 +17,7 @@ package com.liferay.company.sample.data.generation.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
+import com.liferay.commerce.product.constants.CommerceCatalogConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
@@ -287,7 +288,9 @@ public class CompanySampleDataGenerationTest {
 		throws Exception {
 
 		CommerceCurrency commerceCurrency =
-			_commerceCurrencyLocalService.getCommerceCurrency(companyId, "USD");
+			_commerceCurrencyLocalService.getCommerceCurrency(
+				companyId,
+				CommerceCatalogConstants.MASTER_COMMERCE_DEFAULT_CURRENCY);
 
 		commerceCurrencyTableBufferedWriter.append(String.valueOf(companyId));
 		commerceCurrencyTableBufferedWriter.append(StringPool.COMMA);

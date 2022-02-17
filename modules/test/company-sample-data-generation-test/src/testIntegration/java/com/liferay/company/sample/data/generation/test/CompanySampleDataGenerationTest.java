@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
 import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
@@ -538,7 +539,7 @@ public class CompanySampleDataGenerationTest {
 		throws Exception {
 
 		Set<String> expectedGroupKeyNames = new HashSet<>(
-			Arrays.asList("Guest", String.valueOf(companyId)));
+			Arrays.asList(GroupConstants.GUEST, String.valueOf(companyId)));
 
 		List<Group> groups = _groupLocalService.getCompanyGroups(
 			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -554,7 +555,7 @@ public class CompanySampleDataGenerationTest {
 				groupTableBufferedWriter.append(StringPool.COMMA);
 
 				if (groupKey.equals(String.valueOf(companyId))) {
-					groupTableBufferedWriter.append("Global");
+					groupTableBufferedWriter.append(GroupConstants.GLOBAL);
 				}
 				else {
 					groupTableBufferedWriter.append(groupKey);

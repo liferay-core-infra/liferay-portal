@@ -541,7 +541,7 @@ public class CompanySampleDataGenerationTest {
 			Arrays.asList("Guest", String.valueOf(companyId)));
 
 		List<Group> groups = _groupLocalService.getCompanyGroups(
-			companyId, -1, -1);
+			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		for (Group group : groups) {
 			String groupKey = group.getGroupKey();

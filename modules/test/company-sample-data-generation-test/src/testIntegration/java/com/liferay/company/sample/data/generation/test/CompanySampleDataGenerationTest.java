@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.product.constants.CommerceCatalogConstants;
+import com.liferay.depot.constants.DepotRolesConstants;
 import com.liferay.dynamic.data.mapping.constants.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
@@ -579,7 +580,8 @@ public class CompanySampleDataGenerationTest {
 			Arrays.asList(
 				RoleConstants.ANALYTICS_ADMINISTRATOR,
 				RoleConstants.PUBLICATIONS_USER,
-				"Asset Library Connected Site Member", "Asset Library Member"));
+				DepotRolesConstants.ASSET_LIBRARY_CONNECTED_SITE_MEMBER,
+				DepotRolesConstants.ASSET_LIBRARY_MEMBER));
 
 		List<Role> roles = _roleLocalService.getRoles(
 			companyId,

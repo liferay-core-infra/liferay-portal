@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.product.constants.CommerceCatalogConstants;
+import com.liferay.dynamic.data.mapping.constants.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
@@ -490,7 +491,8 @@ public class CompanySampleDataGenerationTest {
 			if (structureKey.equals("BASIC-WEB-CONTENT")) {
 				DDMStructureVersion ddmStructureVersion =
 					_dDMStructureVersionLocalService.getStructureVersion(
-						ddmStructure.getStructureId(), "1.0");
+						ddmStructure.getStructureId(),
+						DDMStructureConstants.VERSION_DEFAULT);
 
 				ddmStructureVersionTableBufferedWriter.append(
 					String.valueOf(companyId));

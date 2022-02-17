@@ -577,7 +577,8 @@ public class CompanySampleDataGenerationTest {
 
 		Set<String> unexpectedRoleNames = new HashSet<>(
 			Arrays.asList(
-				"Analytics Administrator", "Publications User",
+				RoleConstants.ANALYTICS_ADMINISTRATOR,
+				RoleConstants.PUBLICATIONS_USER,
 				"Asset Library Connected Site Member", "Asset Library Member"));
 
 		List<Role> roles = _roleLocalService.getRoles(

@@ -146,6 +146,8 @@ public class LocaleUtilTest extends PowerMockito {
 			false
 		);
 
+		Assert.assertNotNull(LocaleUtil.fromLanguageId("it_IT", false, false));
+
 		Assert.assertSame(
 			LocaleUtil.fromLanguageId("it_IT", false, false),
 			LocaleUtil.fromLanguageId("it_IT", false, false));

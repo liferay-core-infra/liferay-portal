@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<Configuration strict="true">
+	<Appenders>
+		<Appender name="CONSOLE_TEST" type="Console">
+			<Layout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%t][%c{1}:%L] %m%n %X" type="PatternLayout" />
+		</Appender>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="com.liferay.portal.log4j.test.PortalLog4jLogContextTest">
+			<AppenderRef ref="CONSOLE_TEST" />
+		</Logger>
+	</Loggers>
+</Configuration>

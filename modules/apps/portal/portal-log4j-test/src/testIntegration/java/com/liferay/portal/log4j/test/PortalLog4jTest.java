@@ -187,16 +187,12 @@ public class PortalLog4jTest {
 				},
 				new HashMapDictionary());
 
-		String logContextMessage = StringBundler.concat(
-			StringPool.OPEN_CURLY_BRACE, logContextName, "{\"", key1, "\":\"",
-			value1, "\",\"", key2, "\":\"", value2, "\"}}");
-
-		_testLogOutput("DEBUG", logContextMessage);
-		_testLogOutput("ERROR", logContextMessage);
-		_testLogOutput("FATAL", logContextMessage);
-		_testLogOutput("INFO", logContextMessage);
-		_testLogOutput("TRACE", logContextMessage);
-		_testLogOutput("WARN", logContextMessage);
+		_testLogOutput("DEBUG", null);
+		_testLogOutput("ERROR", null);
+		_testLogOutput("FATAL", null);
+		_testLogOutput("INFO", null);
+		_testLogOutput("TRACE", null);
+		_testLogOutput("WARN", null);
 
 		serviceRegistration.unregister();
 	}

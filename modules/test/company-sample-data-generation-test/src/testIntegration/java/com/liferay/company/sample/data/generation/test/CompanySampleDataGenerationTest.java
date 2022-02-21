@@ -243,14 +243,24 @@ public class CompanySampleDataGenerationTest {
 		}
 	}
 
-	private void _exportCompanyData(String hostName) throws Exception {
-		Path companyCSVFilePath = _outputDirPath.resolve(_COMPANY_CSV);
+	private void _exportByCompany(Company company) throws Exception {
+		CompanyThreadLocal.setCompanyId(company.getCompanyId());
 
-		try (BufferedWriter companyBufferedWriter = new BufferedWriter(
-				new FileWriter(companyCSVFilePath.toFile(), true))) {
+		_exportCompanyTableData(company);
+	}
 
-			companyBufferedWriter.append(hostName);
-			companyBufferedWriter.newLine();
+	private void _exportCompanyTableData(Company company) throws Exception {
+		Path companyTableCSVFilePath = _outputDirPath.resolve(
+			_COMPANY_TABLE_CSV);
+
+		try (BufferedWriter companyTableBufferedWriter = new BufferedWriter(
+				new FileWriter(companyTableCSVFilePath.toFile(), true))) {
+
+			companyTableBufferedWriter.append(
+				String.valueOf(company.getCompanyId()));
+			companyTableBufferedWriter.append(StringPool.COMMA);
+			companyTableBufferedWriter.append(company.getWebId());
+			companyTableBufferedWriter.newLine();
 		}
 	}
 
@@ -272,20 +282,28 @@ public class CompanySampleDataGenerationTest {
 
 		outputDirFile.mkdir();
 
+		long oldCompanyId = CompanyThreadLocal.getCompanyId();
+
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				outputDirFile.getAbsolutePath())) {
+
+			_exportByCompany(
+				_companyLocalService.getCompanyByWebId(_DEFAULT_COMPANY_WEBID));
 
 			List<String> keys = new ArrayList<>(_csvMap.keySet());
 
 			Collections.sort(keys);
 
 			for (String key : keys) {
-				_exportCompanyData(key);
+				_exportByCompany(_companyLocalService.getCompanyByWebId(key));
 
 				_exportHost(key);
 
 				_exportUserData(key);
 			}
+		}
+		finally {
+			CompanyThreadLocal.setCompanyId(oldCompanyId);
 		}
 	}
 
@@ -342,7 +360,9 @@ public class CompanySampleDataGenerationTest {
 	private static final int _COMPANY_COUNT = GetterUtil.get(
 		PropsUtil.get("sample.data.company.count"), 2);
 
-	private static final String _COMPANY_CSV = "company.csv";
+	private static final String _COMPANY_TABLE_CSV = "companyTable.csv";
+
+	private static final String _DEFAULT_COMPANY_WEBID = "liferay.com";
 
 	private static final String _HOST_CSV = "host.csv";
 

@@ -278,7 +278,8 @@ public class CompanySampleDataGenerationTest {
 				companyBufferedWriter.append(key);
 				companyBufferedWriter.newLine();
 
-				hostBufferedWriter.append("127.0.0.1 ");
+				hostBufferedWriter.append(_PORTAL_SERVER_IP_ADDRESS);
+				hostBufferedWriter.append(StringPool.SPACE);
 				hostBufferedWriter.append(key);
 				hostBufferedWriter.newLine();
 
@@ -320,6 +321,9 @@ public class CompanySampleDataGenerationTest {
 
 	private static final int _COMPANY_COUNT = GetterUtil.get(
 		PropsUtil.get("sample.data.company.count"), 2);
+
+	private static final String _PORTAL_SERVER_IP_ADDRESS = GetterUtil.get(
+		PropsUtil.get("sample.data.portal.server.ip.address"), "127.0.0.1");
 
 	private static final int _USER_PER_COMPANY_COUNT = GetterUtil.get(
 		PropsUtil.get("sample.data.user.per.company.count"), 2);

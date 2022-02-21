@@ -264,11 +264,11 @@ public class CompanySampleDataGenerationTest {
 		try (LoggingTimer loggingTimer = new LoggingTimer(
 				outputDirFile.getAbsolutePath());
 			BufferedWriter companyBufferedWriter = Files.newBufferedWriter(
-				outputDirPath.resolve("company.csv"));
+				outputDirPath.resolve(_COMPANY_CSV));
 			BufferedWriter hostBufferedWriter = Files.newBufferedWriter(
-				outputDirPath.resolve("host.csv"));
+				outputDirPath.resolve(_HOST_CSV));
 			BufferedWriter userBufferedWriter = Files.newBufferedWriter(
-				outputDirPath.resolve("user.csv"))) {
+				outputDirPath.resolve(_USER_CSV))) {
 
 			List<String> keys = new ArrayList<>(_csvMap.keySet());
 
@@ -322,8 +322,14 @@ public class CompanySampleDataGenerationTest {
 	private static final int _COMPANY_COUNT = GetterUtil.get(
 		PropsUtil.get("sample.data.company.count"), 2);
 
+	private static final String _COMPANY_CSV = "company.csv";
+
+	private static final String _HOST_CSV = "host.csv";
+
 	private static final String _PORTAL_SERVER_IP_ADDRESS = GetterUtil.get(
 		PropsUtil.get("sample.data.portal.server.ip.address"), "127.0.0.1");
+
+	private static final String _USER_CSV = "user.csv";
 
 	private static final int _USER_PER_COMPANY_COUNT = GetterUtil.get(
 		PropsUtil.get("sample.data.user.per.company.count"), 2);

@@ -32,6 +32,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.increment.BufferedIncrementThreadLocal;
 import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
+import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -67,6 +68,7 @@ import java.io.FileWriter;
 
 import java.net.InetSocketAddress;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -280,6 +282,24 @@ public class CompanySampleDataGenerationTest {
 		_exportRoleTableData(company.getCompanyId());
 	}
 
+	private void _exportClassNameTableData() throws Exception {
+		List<ClassName> classNames = _classNameLocalService.getClassNames(
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		try (BufferedWriter classNameTableBufferedWriter =
+				Files.newBufferedWriter(
+					_outputDirPath.resolve(_CLASS_NAME_TABLE_CSV))) {
+
+			for (ClassName className : classNames) {
+				classNameTableBufferedWriter.append(
+					String.valueOf(className.getClassNameId()));
+				classNameTableBufferedWriter.append(StringPool.COMMA);
+				classNameTableBufferedWriter.append(className.getValue());
+				classNameTableBufferedWriter.newLine();
+			}
+		}
+	}
+
 	private void _exportCommerceCurrencyTableData(long companyId)
 		throws Exception {
 
@@ -357,6 +377,8 @@ public class CompanySampleDataGenerationTest {
 
 				_exportUserData(key);
 			}
+
+			_exportClassNameTableData();
 		}
 		finally {
 			CompanyThreadLocal.setCompanyId(oldCompanyId);
@@ -555,6 +577,8 @@ public class CompanySampleDataGenerationTest {
 
 		return serviceContext;
 	}
+
+	private static final String _CLASS_NAME_TABLE_CSV = "classNameTable.csv";
 
 	private static final String _COMMERCE_CURRENCY_TABLE_CSV =
 		"commerceCurrencyTable.csv";

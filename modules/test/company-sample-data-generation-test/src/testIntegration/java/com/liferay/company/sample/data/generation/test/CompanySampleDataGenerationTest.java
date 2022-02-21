@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DataGuard;
-import com.liferay.portal.kernel.util.CSVUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -276,11 +275,11 @@ public class CompanySampleDataGenerationTest {
 			Collections.sort(keys);
 
 			for (String key : keys) {
-				companyBufferedWriter.append(CSVUtil.encode(key));
+				companyBufferedWriter.append(key);
 				companyBufferedWriter.newLine();
 
 				hostBufferedWriter.append("127.0.0.1 ");
-				hostBufferedWriter.append(CSVUtil.encode(key));
+				hostBufferedWriter.append(key);
 				hostBufferedWriter.newLine();
 
 				List<String> screenNames = _csvMap.get(key);
@@ -288,9 +287,9 @@ public class CompanySampleDataGenerationTest {
 				Collections.sort(screenNames);
 
 				for (String screenName : screenNames) {
-					userBufferedWriter.append(CSVUtil.encode(key));
+					userBufferedWriter.append(key);
 					userBufferedWriter.append(StringPool.COMMA);
-					userBufferedWriter.append(CSVUtil.encode(screenName));
+					userBufferedWriter.append(screenName);
 					userBufferedWriter.newLine();
 				}
 			}

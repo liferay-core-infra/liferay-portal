@@ -29,6 +29,7 @@ import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.increment.BufferedIncrementThreadLocal;
 import com.liferay.portal.kernel.messaging.proxy.ProxyModeThreadLocal;
@@ -71,6 +72,10 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -340,6 +345,31 @@ public class CompanySampleDataGenerationTest {
 		}
 	}
 
+	private void _exportCounterTableData() throws Exception {
+		try (Connection connection = DataAccess.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select name, currentId from Counter")) {
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				try (BufferedWriter counterTableBufferedWriter =
+						Files.newBufferedWriter(
+							_outputDirPath.resolve(_COUNTER_TABLE_CSV))) {
+
+					while (resultSet.next()) {
+						String name = resultSet.getString("name");
+						long currentId = resultSet.getLong("currentId");
+
+						counterTableBufferedWriter.append(name);
+						counterTableBufferedWriter.append(StringPool.COMMA);
+						counterTableBufferedWriter.append(
+							String.valueOf(currentId));
+						counterTableBufferedWriter.newLine();
+					}
+				}
+			}
+		}
+	}
+
 	private void _exportCSVs() throws Exception {
 		String outputDir = PropsUtil.get("sample.data.output.dir");
 
@@ -379,6 +409,8 @@ public class CompanySampleDataGenerationTest {
 			}
 
 			_exportClassNameTableData();
+
+			_exportCounterTableData();
 		}
 		finally {
 			CompanyThreadLocal.setCompanyId(oldCompanyId);
@@ -587,6 +619,8 @@ public class CompanySampleDataGenerationTest {
 		PropsUtil.get("sample.data.company.count"), 2);
 
 	private static final String _COMPANY_TABLE_CSV = "companyTable.csv";
+
+	private static final String _COUNTER_TABLE_CSV = "counterTable.csv";
 
 	private static final String _DDM_STRUCTURE_VERSION_TABLE_CSV =
 		"ddmStructureVersionTable.csv";

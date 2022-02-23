@@ -140,7 +140,7 @@ public class JSLoaderTopHeadDynamicInclude extends BaseDynamicInclude {
 			return url + StringPool.AMPERSAND;
 		}
 
-		return themeDisplay.getCDNBaseURL();
+		return themeDisplay.getCDNBaseURL() + themeDisplay.getPathContext();
 	}
 
 	@Reference

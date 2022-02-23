@@ -37,6 +37,7 @@ const userName = fragmentElement.querySelector(
 				userIconWrapper.innerHTML = `<svg class="lexicon-icon lexicon-icon-user" focusable="false" role="presentation">
 			<use xlink:href="${
 				Liferay.ThemeDisplay.getCDNBaseURL() +
+				Liferay.ThemeDisplay.getPathContext() +
 				'/o/admin-theme/images/clay/icons.svg'
 			}#user" />
 		</svg>`;

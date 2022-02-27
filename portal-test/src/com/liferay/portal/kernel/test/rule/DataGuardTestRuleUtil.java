@@ -195,7 +195,7 @@ public class DataGuardTestRuleUtil {
 
 			List<BaseModel<?>> currentBaseModels = entry.getValue();
 
-			List<BaseModel<?>> previsoutBaseModels = previousDataMap.remove(
+			List<BaseModel<?>> previsoutBaseModels = previousDataMap.get(
 				className);
 
 			List<BaseModel<?>> leftoverBaseModels = new ArrayList<>(

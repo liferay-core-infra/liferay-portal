@@ -30,6 +30,8 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -44,6 +46,7 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -54,6 +57,7 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +100,9 @@ public class DataGuardTestRuleUtil {
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
+
+		_orphanDetection(
+			testClassName, dataBag._dataMap, dataMap, dataBag._records);
 	}
 
 	public static void afterMethod(DataBag dataBag, String testClassName)
@@ -113,6 +120,9 @@ public class DataGuardTestRuleUtil {
 		_autoDeleteAndAssert(
 			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
+
+		_orphanDetection(
+			testClassName, dataBag._dataMap, dataMap, dataBag._records);
 	}
 
 	public static DataBag beforeClass() {
@@ -493,6 +503,112 @@ public class DataGuardTestRuleUtil {
 
 			bundleContext.ungetService(serviceReference);
 		};
+	}
+
+	private static void _orphanDetection(
+			String testClassName,
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, List<BaseModel<?>>> dataMap,
+			Map<String, Map<Serializable, String>> records)
+		throws Throwable {
+
+		List<BaseModel<?>> resourcePermissions = dataMap.get(
+			ResourcePermission.class.getName());
+
+		List<BaseModel<?>> createdResourcePermissions = new ArrayList<>(
+			resourcePermissions);
+
+		List<BaseModel<?>> previousResourcePermissions = previousDataMap.get(
+			ResourcePermission.class.getName());
+
+		if (previousResourcePermissions != null) {
+			createdResourcePermissions.removeAll(previousResourcePermissions);
+		}
+
+		List<ResourcePermission> orphanResourcePermissions = new ArrayList<>();
+
+		for (BaseModel<?> createdResourcePermission :
+				createdResourcePermissions) {
+
+			ResourcePermission resourcePermission =
+				(ResourcePermission)createdResourcePermission;
+
+			if (resourcePermission.getScope() !=
+					ResourceConstants.SCOPE_INDIVIDUAL) {
+
+				continue;
+			}
+
+			if (_orphanObject(
+					dataMap, resourcePermission.getName(),
+					resourcePermission.getPrimKeyId())) {
+
+				orphanResourcePermissions.add(resourcePermission);
+			}
+		}
+
+		if (orphanResourcePermissions.isEmpty()) {
+			return;
+		}
+
+		StringBundler sb = new StringBundler();
+
+		sb.append(testClassName);
+		sb.append(" caused orphan ResourcePermission with data : [\n");
+
+		Map<Serializable, String> resourcePermissionRecords =
+			records.getOrDefault(
+				ResourcePermission.class.getName(), Collections.emptyMap());
+
+		for (ResourcePermission resourcePermission :
+				orphanResourcePermissions) {
+
+			sb.append(StringPool.TAB);
+			sb.append(resourcePermission);
+
+			String backtraceInfo = resourcePermissionRecords.get(
+				resourcePermission.getPrimaryKeyObj());
+
+			if (backtraceInfo == null) {
+				sb.append(" with no backtrace info,\n");
+			}
+			else {
+				sb.append(" with backtrace info,\n");
+				sb.append(StringPool.TAB);
+				sb.append(StringPool.TAB);
+				sb.append(backtraceInfo);
+				sb.append(",\n");
+			}
+		}
+
+		sb.setStringAt("\n]\n", sb.index() - 1);
+
+		Assert.assertTrue(sb.toString(), sb.index() == 0);
+	}
+
+	private static boolean _orphanObject(
+		Map<String, List<BaseModel<?>>> dataMap, String relatedClassName,
+		long relatedPrimaryKey) {
+
+		if ((relatedPrimaryKey == 0) || Validator.isNull(relatedClassName)) {
+			return false;
+		}
+
+		List<BaseModel<?>> relatedBaseModels = dataMap.get(relatedClassName);
+
+		if (relatedBaseModels == null) {
+			return true;
+		}
+
+		for (BaseModel<?> relatedBaseModel : relatedBaseModels) {
+			long primaryKey = (long)relatedBaseModel.getPrimaryKeyObj();
+
+			if (relatedPrimaryKey == primaryKey) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	private static Closeable _removeSessionFactoryVerifier(

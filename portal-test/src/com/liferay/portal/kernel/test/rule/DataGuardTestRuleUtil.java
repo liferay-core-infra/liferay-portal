@@ -91,8 +91,10 @@ public class DataGuardTestRuleUtil {
 
 		_recordsThreadLocal.remove();
 
+		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+
 		_autoDeleteAndAssert(
-			testClassName, dataBag._dataMap, dataBag._portlets,
+			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
 	}
 
@@ -106,8 +108,10 @@ public class DataGuardTestRuleUtil {
 			DataBag dataBag, String testClassName, boolean autoDelete)
 		throws Throwable {
 
+		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
+
 		_autoDeleteAndAssert(
-			testClassName, dataBag._dataMap, dataBag._portlets,
+			testClassName, dataBag._dataMap, dataBag._portlets, dataMap,
 			dataBag._records, autoDelete);
 	}
 
@@ -160,6 +164,7 @@ public class DataGuardTestRuleUtil {
 			String testClassName,
 			Map<String, List<BaseModel<?>>> previousDataMap,
 			List<Portlet> previousPortlets,
+			Map<String, List<BaseModel<?>>> dataMap,
 			Map<String, Map<Serializable, String>> records, boolean autoDelete)
 		throws Throwable {
 
@@ -170,12 +175,10 @@ public class DataGuardTestRuleUtil {
 		}
 
 		if (autoDelete) {
-			_autoDeleteLeftovers(previousDataMap);
+			dataMap = _autoDeleteLeftovers(previousDataMap, dataMap);
 		}
 
 		StringBundler sb = new StringBundler();
-
-		Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
 		for (Map.Entry<String, List<BaseModel<?>>> entry : dataMap.entrySet()) {
 			String className = entry.getKey();
@@ -230,8 +233,9 @@ public class DataGuardTestRuleUtil {
 		Assert.assertTrue(sb.toString(), sb.index() == 0);
 	}
 
-	private static void _autoDeleteLeftovers(
-			Map<String, List<BaseModel<?>>> previousDataMap)
+	private static Map<String, List<BaseModel<?>>> _autoDeleteLeftovers(
+			Map<String, List<BaseModel<?>>> previousDataMap,
+			Map<String, List<BaseModel<?>>> dataMap)
 		throws Throwable {
 
 		Map<String, PersistedModelLocalService> persistedModelLocalServices =
@@ -239,8 +243,6 @@ public class DataGuardTestRuleUtil {
 
 		while (true) {
 			boolean deleted = false;
-
-			Map<String, List<BaseModel<?>>> dataMap = _captureDataMap();
 
 			for (Map.Entry<String, List<BaseModel<?>>> entry :
 					dataMap.entrySet()) {
@@ -282,7 +284,11 @@ public class DataGuardTestRuleUtil {
 			if (!deleted) {
 				break;
 			}
+
+			dataMap = _captureDataMap();
 		}
+
+		return dataMap;
 	}
 
 	private static Map<String, List<BaseModel<?>>> _captureDataMap() {

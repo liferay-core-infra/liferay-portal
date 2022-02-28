@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
@@ -605,6 +606,15 @@ public class DataGuardTestRuleUtil {
 
 			if (relatedPrimaryKey == primaryKey) {
 				return false;
+			}
+
+			if (relatedBaseModel instanceof ResourcedModel) {
+				ResourcedModel resourcedModel =
+					(ResourcedModel)relatedBaseModel;
+
+				if (relatedPrimaryKey == resourcedModel.getResourcePrimKey()) {
+					return false;
+				}
 			}
 		}
 

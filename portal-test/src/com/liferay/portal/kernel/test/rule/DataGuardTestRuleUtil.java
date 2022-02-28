@@ -47,7 +47,6 @@ import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -526,6 +525,9 @@ public class DataGuardTestRuleUtil {
 			createdResourcePermissions.removeAll(previousResourcePermissions);
 		}
 
+		Map<String, PersistedModelLocalService> persistedModelLocalServices =
+			_getPersistedModelLocalServices();
+
 		List<ResourcePermission> orphanResourcePermissions = new ArrayList<>();
 
 		for (BaseModel<?> createdResourcePermission :
@@ -541,7 +543,8 @@ public class DataGuardTestRuleUtil {
 			}
 
 			if (_orphanObject(
-					dataMap, resourcePermission.getName(),
+					persistedModelLocalServices, dataMap,
+					resourcePermission.getName(),
 					resourcePermission.getPrimKeyId())) {
 
 				orphanResourcePermissions.add(resourcePermission);
@@ -588,10 +591,13 @@ public class DataGuardTestRuleUtil {
 	}
 
 	private static boolean _orphanObject(
+		Map<String, PersistedModelLocalService> persistedModelLocalServices,
 		Map<String, List<BaseModel<?>>> dataMap, String relatedClassName,
 		long relatedPrimaryKey) {
 
-		if ((relatedPrimaryKey == 0) || Validator.isNull(relatedClassName)) {
+		if ((relatedPrimaryKey == 0) ||
+			(persistedModelLocalServices.get(relatedClassName) == null)) {
+
 			return false;
 		}
 

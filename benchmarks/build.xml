@@ -5,7 +5,7 @@
 
 	<property name="build.dir" value="build" />
 
-	<target name="build-sample-sql">
+	<target depends="clean" name="build-sample-sql">
 		<property name="sample.sql.output.dir" value="${basedir}/${build.dir}" />
 
 		<gradle-execute dir="../modules/util/portal-tools-sample-sql-builder" task="jar" />
@@ -32,8 +32,8 @@
 	<target name="clean">
 		<delete includeemptydirs="true">
 			<fileset
-				dir="."
-				includes="*.sql,benchmarks-actual.properties, liferay/**, ${build.dir}/**"
+				dir="${basedir}"
+				includes="benchmarks-actual.properties, liferay/**, ${build.dir}/**"
 			/>
 		</delete>
 	</target>

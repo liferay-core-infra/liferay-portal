@@ -7793,6 +7793,10 @@ war.path=${app.server.portal.dir}/</echo>
 		</sequential>
 	</macrodef>
 
+	<target name="build-service">
+		<gradle-execute dir="${project.dir}/${gradle.file.path}" task="buildService" />
+	</target>
+
 	<target name="build-sql-file">
 		<get-testcase-property property.name="portal.version" />
 
@@ -14733,6 +14737,14 @@ url=${short.hostname}:8080</echo>
 			dest="${selenium.output.dir.name}"
 			src="${selenium.output.dir.name}/${fileName}"
 		/>
+	</target>
+
+	<target name="update-dependency-injector">
+		<replace
+			file="${project.dir}/${gradle.file.path}/service.xml"
+			token="dependency-injector=&quot;spring&quot;"
+			value="dependency-injector=&quot;ds&quot;"
+		/> 
 	</target>
 
 	<target name="update-osgi-module-configuration">

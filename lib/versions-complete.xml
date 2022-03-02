@@ -7779,18 +7779,6 @@
 					</license>
 				</licenses>
 			</library>
-			<library>
-				<file-name>lib/portal/xz.jar</file-name>
-				<version>1.8</version>
-				<project-name>XZ</project-name>
-				<project-url>http://tukaani.org/xz/java.html</project-url>
-				<licenses>
-					<license>
-						<license-name>Public Domain</license-name>
-						<license-url>http://en.wikipedia.org/wiki/Public_domain</license-url>
-					</license>
-				</licenses>
-			</library>
 		</libraries>
 	</version>
 </versions>

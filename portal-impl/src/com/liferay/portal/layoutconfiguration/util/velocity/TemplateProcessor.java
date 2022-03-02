@@ -168,6 +168,9 @@ public class TemplateProcessor implements ColumnProcessor {
 		Portlet portlet = PortletLocalServiceUtil.getPortletById(
 			themeDisplay.getCompanyId(), portletId);
 
+		PortletInstanceSettingsLocator settingsLocator =
+			new PortletInstanceSettingsLocator(layout, portletId);
+
 		if (layout.isTypePortlet()) {
 			LayoutTypePortlet layoutTypePortlet =
 				(LayoutTypePortlet)layout.getLayoutType();
@@ -178,7 +181,7 @@ public class TemplateProcessor implements ColumnProcessor {
 				String defaultPreferences = portlet.getDefaultPreferences();
 
 				Settings currentSettings = SettingsFactoryUtil.getSettings(
-					new PortletInstanceSettingsLocator(layout, portletId));
+					settingsLocator);
 
 				ModifiableSettings currentModifiableSettings =
 					currentSettings.getModifiableSettings();
@@ -218,7 +221,7 @@ public class TemplateProcessor implements ColumnProcessor {
 				}
 
 				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
-					layout.getCompanyId(), layout.getGroupId(),
+					layout.getCompanyId(), settingsLocator.getOwnerId(),
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, layout.getPlid(),
 					portletId, defaultPreferences);
 			}
@@ -226,7 +229,7 @@ public class TemplateProcessor implements ColumnProcessor {
 
 		if (defaultSettingsMap != null) {
 			Settings settings = SettingsFactoryUtil.getSettings(
-				new PortletInstanceSettingsLocator(layout, portletId));
+				settingsLocator);
 
 			ModifiableSettings modifiableSettings =
 				settings.getModifiableSettings();

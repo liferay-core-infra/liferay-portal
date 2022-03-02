@@ -15,17 +15,22 @@
 package com.liferay.portal.kernel.test.rule;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PersistedModel;
+import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcedModel;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistryUtil;
+import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.lang.reflect.Field;
@@ -246,6 +251,8 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 
 					persistedModelLocalService.deletePersistedModel(
 						persistedModel);
+
+					_deleteResourcePermissions(persistedModel);
 				}
 			}
 			else if (Collection.class.isAssignableFrom(objectClass)) {
@@ -255,11 +262,15 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 				for (PersistedModel persistedModel : collection) {
 					persistedModelLocalService.deletePersistedModel(
 						persistedModel);
+
+					_deleteResourcePermissions(persistedModel);
 				}
 			}
 			else {
 				persistedModelLocalService.deletePersistedModel(
 					(PersistedModel)object);
+
+				_deleteResourcePermissions((PersistedModel)object);
 			}
 
 			field.set(instance, null);
@@ -290,6 +301,36 @@ public class DeleteAfterTestRunMethodTestRule extends MethodTestRule<Void> {
 	}
 
 	private DeleteAfterTestRunMethodTestRule() {
+	}
+
+	private void _deleteResourcePermissions(PersistedModel persistedModel)
+		throws Exception {
+
+		if (!(persistedModel instanceof BaseModel) ||
+			!(persistedModel instanceof ShardedModel)) {
+
+			return;
+		}
+
+		BaseModel<?> baseModel = (BaseModel)persistedModel;
+
+		ShardedModel shardedModel = (ShardedModel)baseModel;
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(baseModel.getPrimaryKeyObj()));
+
+		if (!(persistedModel instanceof ResourcedModel)) {
+			return;
+		}
+
+		ResourcedModel resourcedModel = (ResourcedModel)baseModel;
+
+		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
+			shardedModel.getCompanyId(), baseModel.getModelClassName(),
+			ResourceConstants.SCOPE_INDIVIDUAL,
+			String.valueOf(resourcedModel.getResourcePrimKey()));
 	}
 
 	private static final Set<Class<?>> _orderedClasses = new LinkedHashSet<>(

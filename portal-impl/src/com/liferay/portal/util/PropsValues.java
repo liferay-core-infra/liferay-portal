@@ -181,14 +181,6 @@ public class PropsValues {
 	public static final String AUTH_LOGIN_PORTLET_NAME = PropsUtil.get(
 		PropsKeys.AUTH_LOGIN_PORTLET_NAME);
 
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final boolean AUTH_LOGIN_PROMPT_ENABLED =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.AUTH_LOGIN_PROMPT_ENABLED));
-
 	public static final String AUTH_LOGIN_SITE_URL = PropsUtil.get(
 		PropsKeys.AUTH_LOGIN_SITE_URL);
 
@@ -479,66 +471,6 @@ public class PropsValues {
 	public static final long DATA_LIMIT_DL_STORAGE_MAX_SIZE =
 		GetterUtil.getLong(
 			PropsUtil.get(PropsKeys.DATA_LIMIT_DL_STORAGE_MAX_SIZE));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_DL_STORAGE_SIZE =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_DL_STORAGE_SIZE));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_JOURNAL_ARTICLE_COUNT =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_JOURNAL_ARTICLE_COUNT));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_JOURNAL_FOLDER_COUNT =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_JOURNAL_FOLDER_COUNT));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_ORGANIZATION_COUNT =
-		GetterUtil.getLong(
-			PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_ORGANIZATION_COUNT));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_ROLE_COUNT = GetterUtil.getLong(
-		PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_ROLE_COUNT));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_SITE_COUNT = GetterUtil.getLong(
-		PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_SITE_COUNT));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_TEAM_COUNT = GetterUtil.getLong(
-		PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_TEAM_COUNT));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final long DATA_LIMIT_MAX_USER_COUNT = GetterUtil.getLong(
-		PropsUtil.get(PropsKeys.DATA_LIMIT_MAX_USER_COUNT));
 
 	public static final long DATA_LIMIT_SITE_MAX_COUNT = GetterUtil.getLong(
 		PropsUtil.get(PropsKeys.DATA_LIMIT_SITE_MAX_COUNT));
@@ -1968,14 +1900,6 @@ public class PropsValues {
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.PORTAL_JAAS_PLAIN_PASSWORD));
 
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
-	 */
-	@Deprecated
-	public static final boolean PORTAL_JAAS_STRICT_PASSWORD =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.PORTAL_JAAS_STRICT_PASSWORD));
-
 	public static final String PORTAL_PROXY_PATH = PropsUtil.get(
 		PropsKeys.PORTAL_PROXY_PATH);
 
@@ -2105,27 +2029,6 @@ public class PropsValues {
 
 	public static final int RECENT_GROUPS_MAX_ELEMENTS = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.RECENT_GROUPS_MAX_ELEMENTS));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String[] REDIRECT_URL_DOMAINS_ALLOWED =
-		PropsUtil.getArray(PropsKeys.REDIRECT_URL_DOMAINS_ALLOWED);
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String[] REDIRECT_URL_IPS_ALLOWED = PropsUtil.getArray(
-		PropsKeys.REDIRECT_URL_IPS_ALLOWED);
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String REDIRECT_URL_SECURITY_MODE = PropsUtil.get(
-		PropsKeys.REDIRECT_URL_SECURITY_MODE);
 
 	public static final boolean REQUEST_HEADER_AUTH_IMPORT_FROM_LDAP =
 		GetterUtil.getBoolean(
@@ -2273,13 +2176,6 @@ public class PropsValues {
 			PropsUtil.get(
 				PropsKeys.SESSION_COOKIE_USE_FULL_HOSTNAME,
 				new Filter(ServerDetector.getServerId())));
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final boolean SESSION_DISABLED = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.SESSION_DISABLED));
 
 	public static final boolean SESSION_ENABLE_PERSISTENT_COOKIES =
 		GetterUtil.getBoolean(

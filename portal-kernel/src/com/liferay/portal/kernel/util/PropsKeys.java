@@ -192,13 +192,6 @@ public interface PropsKeys {
 	public static final String AUTH_LOGIN_PORTLET_NAME =
 		"auth.login.portlet.name";
 
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String AUTH_LOGIN_PROMPT_ENABLED =
-		"auth.login.prompt.enabled";
-
 	public static final String AUTH_LOGIN_SITE_URL = "auth.login.site.url";
 
 	public static final String AUTH_LOGIN_URL = "auth.login.url";
@@ -601,27 +594,6 @@ public interface PropsKeys {
 	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
 	 */
 	@Deprecated
-	public static final String DATA_LIMIT_MAX_DL_STORAGE_SIZE =
-		"data.limit.max.dl.storage.size";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_JOURNAL_ARTICLE_COUNT =
-		"data.limit.max.journal.article.count";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_JOURNAL_FOLDER_COUNT =
-		"data.limit.max.journal.folder.count";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
 	public static final String DATA_LIMIT_MAX_MAIL_MESSAGE_COUNT =
 		"data.limit.max.mail.message.count";
 
@@ -631,41 +603,6 @@ public interface PropsKeys {
 	@Deprecated
 	public static final String DATA_LIMIT_MAX_MAIL_MESSAGE_PERIOD =
 		"data.limit.max.mail.message.period";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_ORGANIZATION_COUNT =
-		"data.limit.max.organization.count";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_ROLE_COUNT =
-		"data.limit.max.role.count";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_SITE_COUNT =
-		"data.limit.max.site.count";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_TEAM_COUNT =
-		"data.limit.max.team.count";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String DATA_LIMIT_MAX_USER_COUNT =
-		"data.limit.max.user.count";
 
 	public static final String DATA_LIMIT_SITE_MAX_COUNT =
 		"data.limit.site.max.count";
@@ -2397,13 +2334,6 @@ public interface PropsKeys {
 	public static final String PORTAL_JAAS_PLAIN_PASSWORD =
 		"portal.jaas.plain.password";
 
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
-	 */
-	@Deprecated
-	public static final String PORTAL_JAAS_STRICT_PASSWORD =
-		"portal.jaas.strict.password";
-
 	public static final String PORTAL_PROXY_PATH = "portal.proxy.path";
 
 	public static final String
@@ -2512,27 +2442,6 @@ public interface PropsKeys {
 
 	public static final String RECENT_GROUPS_MAX_ELEMENTS =
 		"recent.groups.max.elements";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String REDIRECT_URL_DOMAINS_ALLOWED =
-		"redirect.url.domains.allowed";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String REDIRECT_URL_IPS_ALLOWED =
-		"redirect.url.ips.allowed";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x)
-	 */
-	@Deprecated
-	public static final String REDIRECT_URL_SECURITY_MODE =
-		"redirect.url.security.mode";
 
 	public static final String RELEASE_INFO_BUILD_NUMBER =
 		"release.info.build.number";
@@ -2693,12 +2602,6 @@ public interface PropsKeys {
 
 	public static final String SESSION_COOKIE_USE_FULL_HOSTNAME =
 		"session.cookie.use.full.hostname";
-
-	/**
-	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
-	 */
-	@Deprecated
-	public static final String SESSION_DISABLED = "session.disabled";
 
 	public static final String SESSION_ENABLE_PERSISTENT_COOKIES =
 		"session.enable.persistent.cookies";

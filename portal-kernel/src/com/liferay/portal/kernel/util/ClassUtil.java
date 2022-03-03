@@ -155,10 +155,6 @@ public class ClassUtil {
 
 		int pos = path.lastIndexOf("!/");
 
-		if (pos == -1) {
-			pos = path.lastIndexOf(".jar/");
-		}
-
 		pos = path.lastIndexOf(CharPool.SLASH, pos);
 
 		return path.substring(0, pos + 1);

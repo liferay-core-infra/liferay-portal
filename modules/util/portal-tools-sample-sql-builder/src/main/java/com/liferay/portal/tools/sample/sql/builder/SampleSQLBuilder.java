@@ -29,19 +29,26 @@ import com.liferay.portal.tools.ToolDependencies;
 import com.liferay.portal.tools.sample.sql.builder.io.CharPipe;
 import com.liferay.portal.tools.sample.sql.builder.io.UnsyncTeeWriter;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+
+import java.net.URL;
 
 import java.nio.channels.FileChannel;
 
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +61,10 @@ public class SampleSQLBuilder {
 
 	public SampleSQLBuilder() {
 		ToolDependencies.wireBasic();
+
+		Class<?> clazz = getClass();
+
+		_classLoader = clazz.getClassLoader();
 
 		// Generic
 
@@ -248,6 +259,25 @@ public class SampleSQLBuilder {
 								BenchmarksPropsValues.OUTPUT_DIR,
 								"sample.sql")))) {
 
+					for (String sqlFileName : _createSQLStatementTemplateList) {
+						if (sqlFileName.contains(_CORE_SQL_FILE_DIR)) {
+							_mergeCreateSQLTemplate(
+								_classLoader.getResourceAsStream(sqlFileName),
+								sampleSQLWriter);
+						}
+						else {
+							Enumeration<URL> enumeration =
+								_classLoader.getResources(sqlFileName);
+
+							while (enumeration.hasMoreElements()) {
+								URL url = enumeration.nextElement();
+
+								_mergeCreateSQLTemplate(
+									url.openStream(), sampleSQLWriter);
+							}
+						}
+					}
+
 					FreeMarkerUtil.process(
 						BenchmarksPropsValues.SCRIPT,
 						HashMapBuilder.<String, Object>put(
@@ -330,10 +360,51 @@ public class SampleSQLBuilder {
 		insertSQLWriter.write(insertSQL);
 	}
 
+	private void _mergeCreateSQLTemplate(InputStream inputStream, Writer writer)
+		throws Exception {
+
+		try (BufferedReader reader = new BufferedReader(
+				new InputStreamReader(inputStream))) {
+
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				writer.append(line);
+				writer.append(System.lineSeparator());
+			}
+		}
+	}
+
+	private static final String _CORE_COMMON_SQL_FILE_NAME =
+		"com/liferay/portal/tools/sql/dependencies/portal-data-common.sql";
+
+	private static final String _CORE_CUNTER_SQL_FILE_NAME =
+		"com/liferay/portal/tools/sql/dependencies/portal-data-counter.sql";
+
+	private static final String _CORE_INDEX_SQL_FILE_NAME =
+		"com/liferay/portal/tools/sql/dependencies/indexes.sql";
+
+	private static final String _CORE_SQL_FILE_DIR =
+		"com/liferay/portal/tools/sql/dependencies/";
+
+	private static final String _CORE_SQL_FILE_NAME =
+		"com/liferay/portal/tools/sql/dependencies/portal-tables.sql";
+
+	private static final String _MODULE_INDEX_SQL_FILE_NAME =
+		"META-INF/sql/indexes.sql";
+
+	private static final String _MODULE_TABLE_SQL_FILE_NAME =
+		"META-INF/sql/tables.sql";
+
 	private static final int _PIPE_BUFFER_SIZE = 16 * 1024 * 1024;
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
 
+	private final ClassLoader _classLoader;
+	private final List<String> _createSQLStatementTemplateList = Arrays.asList(
+		_CORE_SQL_FILE_NAME, _CORE_COMMON_SQL_FILE_NAME,
+		_CORE_CUNTER_SQL_FILE_NAME, _CORE_INDEX_SQL_FILE_NAME,
+		_MODULE_TABLE_SQL_FILE_NAME, _MODULE_INDEX_SQL_FILE_NAME);
 	private volatile Throwable _freeMarkerThrowable;
 
 }

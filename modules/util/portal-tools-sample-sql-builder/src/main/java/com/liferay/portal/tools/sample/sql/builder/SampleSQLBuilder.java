@@ -99,7 +99,7 @@ public class SampleSQLBuilder {
 			else {
 				File outputDir = new File(
 					BenchmarksPropsValues.OUTPUT_DIR,
-					SampleSQLBuilderConstants.OUTPUT_FOLDER_NAME);
+					SampleSQLBuilderConstants.SQL_FILES_FOLDER_NAME);
 
 				FileUtil.deltree(outputDir);
 

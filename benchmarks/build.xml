@@ -39,7 +39,7 @@ Use ${sample.sql.output.dir}/sample-${sample.sql.db.type}.sql to insert into dat
 			<else>
 				<echo>
 Sample SQL Build Successful
-Use sql files in ${sample.sql.output.dir}/output to insert into database.</echo>
+Use sql files in ${sample.sql.output.dir}/sqlfiles to insert into database.</echo>
 			</else>
 		</if>
 	</target>

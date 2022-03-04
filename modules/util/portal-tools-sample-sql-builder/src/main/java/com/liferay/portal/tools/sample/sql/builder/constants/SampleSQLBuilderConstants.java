@@ -62,7 +62,7 @@ public class SampleSQLBuilderConstants {
 	public static final String MODULE_TABLE_SQL_FILE_NAME =
 		"META-INF/sql/tables.sql";
 
-	public static final String OUTPUT_FOLDER_NAME = "output";
+	public static final String SQL_FILES_FOLDER_NAME = "sqlfiles";
 
 	public static final String SQL_END_FLAG = ");";
 

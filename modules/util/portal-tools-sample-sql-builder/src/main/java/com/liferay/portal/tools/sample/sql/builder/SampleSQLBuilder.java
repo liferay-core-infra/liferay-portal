@@ -132,10 +132,11 @@ public class SampleSQLBuilder {
 
 			sb.append("insert into ");
 			sb.append(insertSQL.substring(0, index));
-			sb.append("\n");
+			sb.append(StringPool.NEW_LINE);
 		}
 		else {
-			sb.append(",\n");
+			sb.append(StringPool.COMMA);
+			sb.append(StringPool.NEW_LINE);
 		}
 
 		String values = insertSQL.substring(index, insertSQL.length() - 1);
@@ -143,7 +144,8 @@ public class SampleSQLBuilder {
 		sb.append(values);
 
 		if (sb.index() >= BenchmarksPropsValues.OPTIMIZE_BUFFER_SIZE) {
-			sb.append(";\n");
+			sb.append(StringPool.SEMICOLON);
+			sb.append(StringPool.NEW_LINE);
 
 			insertSQL = db.buildSQL(sb.toString());
 
@@ -211,7 +213,7 @@ public class SampleSQLBuilder {
 						compressSQL(
 							db, dir, sqlWriters, insertSQLs, s.substring(12));
 					}
-					else if (!s.contains("##")) {
+					else if (!s.contains(StringPool.POUND)) {
 						counterSQLs.add(s);
 					}
 				}
@@ -234,7 +236,8 @@ public class SampleSQLBuilder {
 			}
 
 			try (Writer sqlWriter = sqlWriters.remove(tableName)) {
-				sqlWriter.write(";\n");
+				sqlWriter.write(StringPool.SEMICOLON);
+				sqlWriter.write(StringPool.NEW_LINE);
 			}
 		}
 

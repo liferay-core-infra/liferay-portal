@@ -187,7 +187,7 @@ public class SampleSQLBuilder {
 
 		Map<String, Writer> sqlWriters = new HashMap<>();
 		Map<String, StringBundler> insertSQLs = new HashMap<>();
-		List<String> miscSQLs = new ArrayList<>();
+		List<String> counterSQLs = new ArrayList<>();
 
 		try (UnsyncBufferedReader unsyncBufferedReader =
 				new UnsyncBufferedReader(reader)) {
@@ -212,7 +212,7 @@ public class SampleSQLBuilder {
 							db, dir, sqlWriters, insertSQLs, s.substring(12));
 					}
 					else if (!s.contains("##")) {
-						miscSQLs.add(s);
+						counterSQLs.add(s);
 					}
 				}
 			}
@@ -238,13 +238,15 @@ public class SampleSQLBuilder {
 			}
 		}
 
-		try (Writer miscSQLWriter = new FileWriter(new File(dir, "misc.sql"))) {
-			for (String miscSQL : miscSQLs) {
-				miscSQL = db.buildSQL(miscSQL);
+		try (Writer counterSQLWriter = new FileWriter(
+				new File(dir, "Counter.sql"), true)) {
 
-				miscSQLWriter.write(miscSQL);
+			for (String counterSQL : counterSQLs) {
+				counterSQL = db.buildSQL(counterSQL);
 
-				miscSQLWriter.write(StringPool.NEW_LINE);
+				counterSQLWriter.write(counterSQL);
+
+				counterSQLWriter.write(StringPool.NEW_LINE);
 			}
 		}
 	}
@@ -321,13 +323,13 @@ public class SampleSQLBuilder {
 		try (FileChannel outputFileChannel =
 				outputSQLFileOutputStream.getChannel()) {
 
-			File miscSQLFile = null;
+			File counterSQLFile = null;
 
 			for (File inputFile : inputDir.listFiles()) {
 				String inputFileName = inputFile.getName();
 
-				if (inputFileName.equals("misc.sql")) {
-					miscSQLFile = inputFile;
+				if (inputFileName.equals("Counter.sql")) {
+					counterSQLFile = inputFile;
 
 					continue;
 				}
@@ -335,8 +337,8 @@ public class SampleSQLBuilder {
 				mergeSQL(inputFile, outputFileChannel);
 			}
 
-			if (miscSQLFile != null) {
-				mergeSQL(miscSQLFile, outputFileChannel);
+			if (counterSQLFile != null) {
+				mergeSQL(counterSQLFile, outputFileChannel);
 			}
 		}
 	}

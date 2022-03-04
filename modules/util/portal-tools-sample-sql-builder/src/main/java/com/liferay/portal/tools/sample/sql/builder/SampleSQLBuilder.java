@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.tools.ToolDependencies;
+import com.liferay.portal.tools.sample.sql.builder.constants.SampleSQLBuilderConstants;
 import com.liferay.portal.tools.sample.sql.builder.io.CharPipe;
 import com.liferay.portal.tools.sample.sql.builder.io.UnsyncTeeWriter;
 
@@ -68,7 +69,9 @@ public class SampleSQLBuilder {
 
 		// Generic
 
-		File tempDir = new File(BenchmarksPropsValues.OUTPUT_DIR, "temp");
+		File tempDir = new File(
+			BenchmarksPropsValues.OUTPUT_DIR,
+			SampleSQLBuilderConstants.COMPRESS_SQL_TEMP_FOLDER_NAME);
 
 		tempDir.mkdirs();
 
@@ -85,7 +88,9 @@ public class SampleSQLBuilder {
 			if (BenchmarksPropsValues.OUTPUT_MERGE) {
 				File sqlFile = new File(
 					BenchmarksPropsValues.OUTPUT_DIR,
-					"sample-" + BenchmarksPropsValues.DB_TYPE + ".sql");
+					SampleSQLBuilderConstants.MERGE_SQL_FILE_NAME_PREFIX +
+						BenchmarksPropsValues.DB_TYPE +
+							SampleSQLBuilderConstants.SQL_FILE_SUFFIX);
 
 				FileUtil.delete(sqlFile);
 
@@ -93,7 +98,8 @@ public class SampleSQLBuilder {
 			}
 			else {
 				File outputDir = new File(
-					BenchmarksPropsValues.OUTPUT_DIR, "output");
+					BenchmarksPropsValues.OUTPUT_DIR,
+					SampleSQLBuilderConstants.OUTPUT_FOLDER_NAME);
 
 				FileUtil.deltree(outputDir);
 
@@ -121,7 +127,8 @@ public class SampleSQLBuilder {
 
 		String tableName = insertSQL.substring(0, insertSQL.indexOf(' '));
 
-		int index = insertSQL.indexOf(" values ") + 8;
+		int index =
+			insertSQL.indexOf(SampleSQLBuilderConstants.INSERT_SQL_FLAG) + 8;
 
 		StringBundler sb = sqls.get(tableName);
 
@@ -130,7 +137,7 @@ public class SampleSQLBuilder {
 
 			sqls.put(tableName, sb);
 
-			sb.append("insert into ");
+			sb.append(SampleSQLBuilderConstants.INSERT_SQL_PREFIX);
 			sb.append(insertSQL.substring(0, index));
 			sb.append(StringPool.NEW_LINE);
 		}
@@ -162,12 +169,15 @@ public class SampleSQLBuilder {
 
 		String tableName;
 
-		if (createSQL.startsWith("create table ")) {
+		if (createSQL.startsWith(
+				SampleSQLBuilderConstants.CREATE_TABLE_SQL_PREFIX)) {
+
 			tableName = createSQL.substring(
 				13, createSQL.indexOf(StringPool.OPEN_PARENTHESIS) - 1);
 		}
 		else {
-			int index = createSQL.indexOf(" on ");
+			int index = createSQL.indexOf(
+				SampleSQLBuilderConstants.INDEX_SQL_FLAG);
 
 			tableName = createSQL.substring(
 				index + 4, createSQL.indexOf(StringPool.OPEN_PARENTHESIS) - 1);
@@ -202,12 +212,16 @@ public class SampleSQLBuilder {
 				s = s.trim();
 
 				if (s.length() > 0) {
-					if (s.startsWith("create")) {
+					if (s.startsWith(
+							SampleSQLBuilderConstants.CREATE_SQL_PREFIX)) {
+
 						compressSQL(
 							db, dir, sqlWriters,
 							_mergeSingleSQLTemplate(s, unsyncBufferedReader));
 					}
-					else if (s.startsWith("insert into ")) {
+					else if (s.startsWith(
+								SampleSQLBuilderConstants.INSERT_SQL_PREFIX)) {
+
 						s = _mergeSingleSQLTemplate(s, unsyncBufferedReader);
 
 						compressSQL(
@@ -242,7 +256,8 @@ public class SampleSQLBuilder {
 		}
 
 		try (Writer counterSQLWriter = new FileWriter(
-				new File(dir, "Counter.sql"), true)) {
+				new File(dir, SampleSQLBuilderConstants.COUNTER_SQL_FILE_NAME),
+				true)) {
 
 			for (String counterSQL : counterSQLs) {
 				counterSQL = db.buildSQL(counterSQL);
@@ -274,10 +289,13 @@ public class SampleSQLBuilder {
 						createFileWriter(
 							new File(
 								BenchmarksPropsValues.OUTPUT_DIR,
-								"sample.sql")))) {
+								SampleSQLBuilderConstants.
+									SQL_TEMPLATE_FILE_NAME)))) {
 
 					for (String sqlFileName : _createSQLStatementTemplateList) {
-						if (sqlFileName.contains(_CORE_SQL_FILE_DIR)) {
+						if (sqlFileName.contains(
+								SampleSQLBuilderConstants.CORE_SQL_FILE_DIR)) {
+
 							_mergeCreateSQLTemplate(
 								_classLoader.getResourceAsStream(sqlFileName),
 								sampleSQLWriter);
@@ -298,9 +316,13 @@ public class SampleSQLBuilder {
 					FreeMarkerUtil.process(
 						BenchmarksPropsValues.SCRIPT,
 						HashMapBuilder.<String, Object>put(
-							"csvFileWriter", csvFileWriter
+							SampleSQLBuilderConstants.
+								FTL_CONTEXT_CSV_WRITER_REFERENCE_NAME,
+							csvFileWriter
 						).put(
-							"dataFactory", new DataFactory()
+							SampleSQLBuilderConstants.
+								FTL_CONTEXT_DATAFACTORY_REFERENCE_NAME,
+							new DataFactory()
 						).build(),
 						sampleSQLWriter);
 				}
@@ -331,7 +353,9 @@ public class SampleSQLBuilder {
 			for (File inputFile : inputDir.listFiles()) {
 				String inputFileName = inputFile.getName();
 
-				if (inputFileName.equals("Counter.sql")) {
+				if (inputFileName.equals(
+						SampleSQLBuilderConstants.COUNTER_SQL_FILE_NAME)) {
+
 					counterSQLFile = inputFile;
 
 					continue;
@@ -367,7 +391,8 @@ public class SampleSQLBuilder {
 		Writer sqlWriter = sqlWriters.get(tableName);
 
 		if (sqlWriter == null) {
-			File file = new File(dir, tableName + ".sql");
+			File file = new File(
+				dir, tableName + SampleSQLBuilderConstants.SQL_FILE_SUFFIX);
 
 			sqlWriter = createFileWriter(file);
 
@@ -398,10 +423,10 @@ public class SampleSQLBuilder {
 			String line, UnsyncBufferedReader unsyncBufferedReader)
 		throws Exception {
 
-		if (!line.endsWith(");")) {
+		if (!line.endsWith(SampleSQLBuilderConstants.SQL_END_FLAG)) {
 			StringBundler sb = new StringBundler();
 
-			while (!line.endsWith(");")) {
+			while (!line.endsWith(SampleSQLBuilderConstants.SQL_END_FLAG)) {
 				sb.append(line);
 				sb.append(StringPool.NEW_LINE);
 
@@ -416,36 +441,18 @@ public class SampleSQLBuilder {
 		return line;
 	}
 
-	private static final String _CORE_COMMON_SQL_FILE_NAME =
-		"com/liferay/portal/tools/sql/dependencies/portal-data-common.sql";
-
-	private static final String _CORE_CUNTER_SQL_FILE_NAME =
-		"com/liferay/portal/tools/sql/dependencies/portal-data-counter.sql";
-
-	private static final String _CORE_INDEX_SQL_FILE_NAME =
-		"com/liferay/portal/tools/sql/dependencies/indexes.sql";
-
-	private static final String _CORE_SQL_FILE_DIR =
-		"com/liferay/portal/tools/sql/dependencies/";
-
-	private static final String _CORE_SQL_FILE_NAME =
-		"com/liferay/portal/tools/sql/dependencies/portal-tables.sql";
-
-	private static final String _MODULE_INDEX_SQL_FILE_NAME =
-		"META-INF/sql/indexes.sql";
-
-	private static final String _MODULE_TABLE_SQL_FILE_NAME =
-		"META-INF/sql/tables.sql";
-
 	private static final int _PIPE_BUFFER_SIZE = 16 * 1024 * 1024;
 
 	private static final int _WRITER_BUFFER_SIZE = 16 * 1024;
 
 	private final ClassLoader _classLoader;
 	private final List<String> _createSQLStatementTemplateList = Arrays.asList(
-		_CORE_SQL_FILE_NAME, _CORE_COMMON_SQL_FILE_NAME,
-		_CORE_CUNTER_SQL_FILE_NAME, _CORE_INDEX_SQL_FILE_NAME,
-		_MODULE_TABLE_SQL_FILE_NAME, _MODULE_INDEX_SQL_FILE_NAME);
+		SampleSQLBuilderConstants.CORE_SQL_FILE_NAME,
+		SampleSQLBuilderConstants.CORE_COMMON_SQL_FILE_NAME,
+		SampleSQLBuilderConstants.CORE_CUNTER_SQL_FILE_NAME,
+		SampleSQLBuilderConstants.CORE_INDEX_SQL_FILE_NAME,
+		SampleSQLBuilderConstants.MODULE_TABLE_SQL_FILE_NAME,
+		SampleSQLBuilderConstants.MODULE_INDEX_SQL_FILE_NAME);
 	private volatile Throwable _freeMarkerThrowable;
 
 }

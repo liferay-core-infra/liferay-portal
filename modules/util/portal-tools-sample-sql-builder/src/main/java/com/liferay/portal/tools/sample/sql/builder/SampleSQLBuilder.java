@@ -154,6 +154,29 @@ public class SampleSQLBuilder {
 		}
 	}
 
+	protected void compressSQL(
+			DB db, File directory, Map<String, Writer> sqlWriters,
+			String createSQL)
+		throws IOException, SQLException {
+
+		String tableName;
+
+		if (createSQL.startsWith("create table ")) {
+			tableName = createSQL.substring(
+				13, createSQL.indexOf(StringPool.OPEN_PARENTHESIS) - 1);
+		}
+		else {
+			int index = createSQL.indexOf(" on ");
+
+			tableName = createSQL.substring(
+				index + 4, createSQL.indexOf(StringPool.OPEN_PARENTHESIS) - 1);
+		}
+
+		createSQL = db.buildSQL(createSQL) + StringPool.NEW_LINE;
+
+		writeToInsertSQLFile(directory, tableName, sqlWriters, createSQL);
+	}
+
 	protected void compressSQL(Reader reader, File dir) throws Exception {
 		DB db = DBManagerUtil.getDB(BenchmarksPropsValues.DB_TYPE, null);
 
@@ -178,7 +201,25 @@ public class SampleSQLBuilder {
 				s = s.trim();
 
 				if (s.length() > 0) {
-					if (s.startsWith("insert into ")) {
+					if (s.startsWith("create")) {
+						if (!s.endsWith(");")) {
+							StringBundler sb = new StringBundler();
+
+							while (!s.endsWith(");")) {
+								sb.append(s);
+								sb.append(StringPool.NEW_LINE);
+
+								s = unsyncBufferedReader.readLine();
+							}
+
+							sb.append(s);
+
+							s = sb.toString();
+						}
+
+						compressSQL(db, dir, insertSQLWriters, s);
+					}
+					else if (s.startsWith("insert into ")) {
 						if (!s.endsWith(");")) {
 							StringBundler sb = new StringBundler();
 
@@ -198,7 +239,7 @@ public class SampleSQLBuilder {
 							db, dir, insertSQLWriters, insertSQLs,
 							s.substring(12));
 					}
-					else {
+					else if (!s.contains("##")) {
 						miscSQLs.add(s);
 					}
 				}
@@ -358,6 +399,8 @@ public class SampleSQLBuilder {
 		}
 
 		insertSQLWriter.write(insertSQL);
+
+		insertSQLWriter.flush();
 	}
 
 	private void _mergeCreateSQLTemplate(InputStream inputStream, Writer writer)

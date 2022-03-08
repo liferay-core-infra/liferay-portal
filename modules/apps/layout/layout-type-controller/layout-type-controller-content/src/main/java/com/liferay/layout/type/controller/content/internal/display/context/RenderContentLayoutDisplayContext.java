@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletJSONUtil;
@@ -65,7 +66,8 @@ public class RenderContentLayoutDisplayContext {
 
 			try {
 				PortletJSONUtil.populatePortletJSONObject(
-					_httpServletRequest, StringPool.BLANK, portlet, jsonObject);
+					_httpServletRequest, StringPool.BLANK, portlet,
+					_getAllPortlets(), jsonObject);
 
 				PortletJSONUtil.writeFooterPaths(
 					pipingServletResponse, jsonObject);
@@ -92,7 +94,8 @@ public class RenderContentLayoutDisplayContext {
 
 			try {
 				PortletJSONUtil.populatePortletJSONObject(
-					_httpServletRequest, StringPool.BLANK, portlet, jsonObject);
+					_httpServletRequest, StringPool.BLANK, portlet,
+					_getAllPortlets(), jsonObject);
 
 				PortletJSONUtil.writeHeaderPaths(
 					pipingServletResponse, jsonObject);
@@ -106,6 +109,19 @@ public class RenderContentLayoutDisplayContext {
 		}
 
 		return unsyncStringWriter.toString();
+	}
+
+	private List<Portlet> _getAllPortlets() {
+		if (_allPortlets != null) {
+			return _allPortlets;
+		}
+
+		LayoutTypePortlet layoutTypePortlet =
+			_themeDisplay.getLayoutTypePortlet();
+
+		_allPortlets = layoutTypePortlet.getAllPortlets();
+
+		return _allPortlets;
 	}
 
 	private List<Portlet> _getPortlets() {
@@ -144,6 +160,7 @@ public class RenderContentLayoutDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		RenderContentLayoutDisplayContext.class);
 
+	private List<Portlet> _allPortlets;
 	private final HttpServletRequest _httpServletRequest;
 	private final HttpServletResponse _httpServletResponse;
 	private List<Portlet> _portlets;

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -157,8 +158,8 @@ public class ClassUtilTest {
 		URL url = classLoader.getResource(className);
 
 		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, UnsafeFunction.class}, url, null);
 
 		Path path = Paths.get(uri);
 
@@ -242,10 +243,11 @@ public class ClassUtilTest {
 
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, UnsafeFunction.class},
 				new URL(
 					"jar:file:/opt/liferay/tomcat/lib/servlet-api.jar" +
-						"!/javax/servlet/Servlet.class"));
+						"!/javax/servlet/Servlet.class"),
+				null);
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -265,10 +267,11 @@ public class ClassUtilTest {
 		try {
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, UnsafeFunction.class},
 				new URL(
 					"jar:file:/[opt/liferay/tomcat/lib/servlet-api.jar" +
-						"!/javax/servlet/Servlet.class"));
+						"!/javax/servlet/Servlet.class"),
+				null);
 
 			Assert.fail(
 				"SystemException caused by URISyntaxException should be " +
@@ -288,12 +291,13 @@ public class ClassUtilTest {
 		try {
 			ReflectionTestUtil.invoke(
 				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				new Class<?>[] {URL.class, UnsafeFunction.class},
 				new URL(
 					"jar", null, -1,
 					"unknown:/opt/liferay/tomcat/lib/servlet-api.jar!/javax" +
 						"/servlet/Servlet.class",
-					null));
+					null),
+				null);
 
 			Assert.fail(
 				"SystemException caused by MalformedURLException should be " +
@@ -423,8 +427,8 @@ public class ClassUtilTest {
 
 	private void _testGetPathURIFromURL(URL url, String expectedPath) {
 		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, UnsafeFunction.class}, url, null);
 
 		Assert.assertEquals(expectedPath, uri.getPath());
 	}

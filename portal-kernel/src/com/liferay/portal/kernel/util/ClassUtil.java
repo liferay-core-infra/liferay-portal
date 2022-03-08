@@ -156,6 +156,10 @@ public class ClassUtil {
 		int pos = path.lastIndexOf(".jar!");
 
 		if (pos == -1) {
+			pos = path.lastIndexOf("!/");
+		}
+
+		if (pos == -1) {
 			pos = path.lastIndexOf(".jar/");
 		}
 

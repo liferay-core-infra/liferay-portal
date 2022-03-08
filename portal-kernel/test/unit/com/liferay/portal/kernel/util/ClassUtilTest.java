@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
+import java.lang.reflect.Method;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -147,6 +149,39 @@ public class ClassUtilTest {
 		Assert.assertEquals(
 			"java.lang.Object", ClassUtil.getClassName(new Object()));
 		Assert.assertNull(ClassUtil.getClassName(null));
+	}
+
+	@Test
+	public void testGetParentDir() {
+		ClassLoader classLoader = ClassUtilTest.class.getClassLoader();
+
+		String className = "java/lang/String.class";
+
+		URL url = classLoader.getResource(className);
+
+		URI uri = ReflectionTestUtil.invoke(
+			ClassUtil.class, "_getPathURIFromURL",
+			new Class<?>[] {URL.class, UnsafeFunction.class}, url, null);
+
+		Path path = Paths.get(uri);
+
+		String expectedParentDir = StringUtil.replace(
+			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
+
+		int pos = expectedParentDir.indexOf(className);
+
+		expectedParentDir = expectedParentDir.substring(0, pos);
+
+		pos = expectedParentDir.lastIndexOf("!/");
+
+		expectedParentDir = expectedParentDir.substring(0, pos);
+
+		pos = expectedParentDir.lastIndexOf(CharPool.SLASH);
+
+		expectedParentDir = expectedParentDir.substring(0, pos + 1);
+
+		Assert.assertEquals(
+			expectedParentDir, ClassUtil.getParentDir(String.class));
 	}
 
 	@Test
@@ -310,6 +345,61 @@ public class ClassUtilTest {
 
 			Assert.assertSame(
 				MalformedURLException.class, throwable.getClass());
+		}
+	}
+
+	@Test
+	public void testGetPathURIFromURLWithUnsafeFuction() {
+		UnsafeFunction<URL, URL, Exception> urlUnsafeFunction = url -> new URL(
+			"bundleresource", null, -1, "file:/appliedUrlPath");
+
+		try {
+			URI uri = ReflectionTestUtil.invoke(
+				ClassUtil.class, "_getPathURIFromURL",
+				new Class<?>[] {URL.class, UnsafeFunction.class},
+				new URL("bundleresource", null, -1, "unrelatedPath", null),
+				urlUnsafeFunction);
+
+			Assert.assertEquals("file:/appliedUrlPath", uri.toString());
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testGetPathURIFromURLWithURLMapperLocalURLNotFound()
+		throws MalformedURLException {
+
+		UnsafeFunction<URL, URL, Exception> urlUnsafeFunction = url -> {
+			URLConnection urlConnection = url.openConnection();
+
+			Class<?> urlConnectionClass = urlConnection.getClass();
+
+			Method getLocalURLMethod = urlConnectionClass.getDeclaredMethod(
+				"getLocalURL");
+
+			getLocalURLMethod.setAccessible(true);
+
+			return (URL)getLocalURLMethod.invoke(urlConnection);
+		};
+
+		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
+				ClassUtil.class.getName(), Level.SEVERE)) {
+
+			ReflectionTestUtil.invoke(
+				ClassUtil.class, "_getPathURIFromURL",
+				new Class<?>[] {URL.class, UnsafeFunction.class},
+				new URL("bundleresource", null, -1, "unknownBundle", null),
+				urlUnsafeFunction);
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertEquals(
+				"Unable to resolve local URL from bundle",
+				logEntry.getMessage());
 		}
 	}
 

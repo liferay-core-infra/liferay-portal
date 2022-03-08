@@ -153,11 +153,7 @@ public class ClassUtil {
 			currentThread.getContextClassLoader(), clazz.getName(),
 			urlUnsafeFunction);
 
-		int pos = path.lastIndexOf(".jar!");
-
-		if (pos == -1) {
-			pos = path.lastIndexOf("!/");
-		}
+		int pos = path.lastIndexOf("!/");
 
 		if (pos == -1) {
 			pos = path.lastIndexOf(".jar/");

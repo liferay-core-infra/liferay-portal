@@ -289,6 +289,10 @@ public class ClassUtil {
 
 		String path = url.getPath();
 
+		if (path.startsWith("file:")) {
+			path = path.substring(5);
+		}
+
 		if (!path.startsWith(StringPool.SLASH)) {
 			path = StringPool.SLASH + path;
 		}

@@ -120,6 +120,47 @@ public class PortalClassPathUtilTest {
 	}
 
 	@Test
+	public void testCreateProcessConfig() {
+		ProcessConfig portalProcessConfig =
+			PortalClassPathUtil.getPortalProcessConfig();
+
+		ProcessConfig testProcessConfig =
+			PortalClassPathUtil.createProcessConfig(
+				PortalClassPathUtilTest.class);
+
+		String bootstrapClassPath = testProcessConfig.getBootstrapClassPath();
+
+		Assert.assertEquals(
+			bootstrapClassPath, testProcessConfig.getRuntimeClassPath());
+
+		List<String> bootstrapClassPathEntries = StringUtil.split(
+			bootstrapClassPath, File.pathSeparatorChar);
+
+		bootstrapClassPathEntries.removeAll(
+			StringUtil.split(
+				portalProcessConfig.getBootstrapClassPath(),
+				File.pathSeparatorChar));
+
+		Assert.assertEquals(
+			bootstrapClassPathEntries.toString(), 1,
+			bootstrapClassPathEntries.size());
+
+		for (String bootstrapClassPathEntry : bootstrapClassPathEntries) {
+			Assert.assertTrue(
+				"The unique items in the test bootstrap class path should be " +
+					"in osgi/state",
+				bootstrapClassPathEntry.contains("osgi/state"));
+
+			File file = new File(bootstrapClassPathEntry);
+
+			Assert.assertTrue(
+				"The unique items in the test bootstrap class path should " +
+					"exist",
+				file.isFile());
+		}
+	}
+
+	@Test
 	public void testGetPortalProcessConfig() {
 		ProcessConfig processConfig =
 			PortalClassPathUtil.getPortalProcessConfig();

@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -851,7 +851,7 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		kaleoTaskInstanceToken.setModifiedDate(new Date());
 
 		if (dueDate != null) {
-			Calendar cal = CalendarFactoryUtil.getCalendar(
+			Calendar cal = _calendarFactory.getCalendar(
 				LocaleUtil.getDefault());
 
 			cal.setTime(dueDate);
@@ -1093,6 +1093,9 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		).put(
 			KaleoTaskInstanceTokenField.DUE_DATE, Sort.LONG_TYPE
 		).build();
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private KaleoTaskAssignmentInstanceLocalService

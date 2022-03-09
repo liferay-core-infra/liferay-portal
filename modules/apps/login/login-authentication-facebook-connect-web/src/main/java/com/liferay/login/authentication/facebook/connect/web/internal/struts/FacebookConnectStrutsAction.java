@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -450,7 +450,7 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 
 		Contact contact = user.getContact();
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = _calendarFactory.getCalendar();
 
 		birthdayCal.setTime(contact.getBirthday());
 
@@ -489,6 +489,9 @@ public class FacebookConnectStrutsAction implements StrutsAction {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FacebookConnectStrutsAction.class);
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

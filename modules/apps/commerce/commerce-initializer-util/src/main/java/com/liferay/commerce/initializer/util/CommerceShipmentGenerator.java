@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -79,7 +79,7 @@ public class CommerceShipmentGenerator {
 			date = new Date();
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = _calendarFactory.getCalendar();
 
 		calendar.setTime(date);
 
@@ -318,6 +318,9 @@ public class CommerceShipmentGenerator {
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;

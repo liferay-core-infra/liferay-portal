@@ -73,7 +73,7 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -355,7 +355,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 		content = _getNormalizedContent(
 			content, classLoader, dependenciesFilePath, serviceContext);
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = _calendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		int displayDateMonth = displayCalendar.get(Calendar.MONTH);
@@ -1016,6 +1016,9 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private DDM _ddm;

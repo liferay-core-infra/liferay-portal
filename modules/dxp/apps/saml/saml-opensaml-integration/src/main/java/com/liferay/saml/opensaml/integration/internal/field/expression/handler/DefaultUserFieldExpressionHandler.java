@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -246,7 +246,7 @@ public class DefaultUserFieldExpressionHandler
 		}
 
 		Contact contact = newUser.getContact();
-		Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCalendar = _calendarFactory.getCalendar();
 
 		birthdayCalendar.setTime(contact.getBirthday());
 
@@ -285,6 +285,9 @@ public class DefaultUserFieldExpressionHandler
 
 	private final Set<String> _authFieldExpressions = new HashSet<>(
 		Arrays.asList("emailAddress", "screenName", "uuid"));
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private LDAPUserImporter _ldapUserImporter;

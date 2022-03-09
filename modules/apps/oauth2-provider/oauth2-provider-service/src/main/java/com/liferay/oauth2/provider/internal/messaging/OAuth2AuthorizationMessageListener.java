@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.Trigger;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -55,7 +55,7 @@ public class OAuth2AuthorizationMessageListener extends BaseMessageListener {
 
 		String className = clazz.getName();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar();
+		Calendar calendar = _calendarFactory.getCalendar();
 
 		Trigger trigger = _triggerFactory.createTrigger(
 			className, className, calendar.getTime(), null,
@@ -78,6 +78,9 @@ public class OAuth2AuthorizationMessageListener extends BaseMessageListener {
 	protected void doReceive(Message message) throws Exception {
 		_oAuth2AuthorizationLocalService.deleteExpiredOAuth2Authorizations();
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private OAuth2AuthorizationLocalService _oAuth2AuthorizationLocalService;

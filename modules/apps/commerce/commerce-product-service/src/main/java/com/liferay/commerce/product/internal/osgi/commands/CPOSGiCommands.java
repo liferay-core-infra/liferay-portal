@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.Calendar;
@@ -70,7 +70,7 @@ public class CPOSGiCommands {
 		serviceContext.setTimeZone(user.getTimeZone());
 		serviceContext.setUserId(user.getUserId());
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = _calendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		displayCalendar.add(Calendar.YEAR, -1);
@@ -103,6 +103,9 @@ public class CPOSGiCommands {
 				serviceContext);
 		}
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceCatalogLocalService _commerceCatalogLocalService;

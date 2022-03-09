@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.service.ListTypeService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.persistence.ContactPersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -229,7 +229,7 @@ public class DefaultLDAPToPortalConverter implements LDAPToPortalConverter {
 				_log.debug(parseException);
 			}
 
-			Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar(
+			Calendar birthdayCalendar = _calendarFactory.getCalendar(
 				1970, Calendar.JANUARY, 1);
 
 			contact.setBirthday(birthdayCalendar.getTime());
@@ -398,6 +398,9 @@ public class DefaultLDAPToPortalConverter implements LDAPToPortalConverter {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultLDAPToPortalConverter.class);
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

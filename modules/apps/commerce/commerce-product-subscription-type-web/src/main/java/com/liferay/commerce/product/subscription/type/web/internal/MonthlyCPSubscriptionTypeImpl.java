@@ -18,7 +18,7 @@ import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.commerce.product.subscription.type.web.internal.constants.CPSubscriptionTypeConstants;
 import com.liferay.commerce.product.util.CPSubscriptionType;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alessio Antonio Rendina
@@ -58,7 +59,7 @@ public class MonthlyCPSubscriptionTypeImpl implements CPSubscriptionType {
 		UnicodeProperties subscriptionTypeSettingsUnicodeProperties,
 		Date lastIterationDate) {
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar calendar = _calendarFactory.getCalendar(timeZone);
 
 		if (lastIterationDate == null) {
 			lastIterationDate = getSubscriptionStartDate(
@@ -106,7 +107,7 @@ public class MonthlyCPSubscriptionTypeImpl implements CPSubscriptionType {
 			return date;
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(
+		Calendar calendar = _calendarFactory.getCalendar(
 			date.getTime(), timeZone);
 
 		int dayOfMonthActualMaximum = calendar.getActualMaximum(
@@ -141,5 +142,8 @@ public class MonthlyCPSubscriptionTypeImpl implements CPSubscriptionType {
 
 		return calendar.getTime();
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 }

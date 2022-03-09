@@ -175,7 +175,7 @@ import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLoca
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -736,7 +736,7 @@ public class JournalArticleLocalServiceImpl
 
 		User user = _userLocalService.getUser(userId);
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = _calendarFactory.getCalendar(user.getTimeZone());
 
 		int displayDateMonth = calendar.get(Calendar.MONTH);
 		int displayDateDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -5982,7 +5982,7 @@ public class JournalArticleLocalServiceImpl
 		int displayDateMinute = 0;
 
 		if (displayDate != null) {
-			Calendar displayCal = CalendarFactoryUtil.getCalendar(
+			Calendar displayCal = _calendarFactory.getCalendar(
 				user.getTimeZone());
 
 			displayCal.setTime(displayDate);
@@ -6008,7 +6008,7 @@ public class JournalArticleLocalServiceImpl
 		boolean neverExpire = true;
 
 		if (expirationDate != null) {
-			Calendar expirationCal = CalendarFactoryUtil.getCalendar(
+			Calendar expirationCal = _calendarFactory.getCalendar(
 				user.getTimeZone());
 
 			expirationCal.setTime(expirationDate);
@@ -6036,7 +6036,7 @@ public class JournalArticleLocalServiceImpl
 		boolean neverReview = true;
 
 		if (reviewDate != null) {
-			Calendar reviewCal = CalendarFactoryUtil.getCalendar(
+			Calendar reviewCal = _calendarFactory.getCalendar(
 				user.getTimeZone());
 
 			reviewCal.setTime(reviewDate);
@@ -9261,6 +9261,9 @@ public class JournalArticleLocalServiceImpl
 
 	@Reference
 	private AttachmentContentUpdater _attachmentContentUpdater;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

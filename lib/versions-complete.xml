@@ -4268,6 +4268,17 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.portal.tika.jar!istack-commons-runtime.jar</file-name>
+				<version>3.0.7</version>
+				<project-name>istack common utility code runtime</project-name>
+				<project-url>http://www.oracle.com/</project-url>
+				<licenses>
+					<license>
+						<license-name>https://glassfish.java.net/public/CDDL+GPL_1_1.html, https://glassfish.java.net/public/CDDL+GPL_1_1.html</license-name>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.portal.tika.jar!java-libpst.jar</file-name>
 				<version>0.8.1</version>
 				<project-name>java-libpst</project-name>

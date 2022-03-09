@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -140,7 +141,17 @@ public class ClassUtil {
 	}
 
 	public static String getParentDir(Class<?> clazz) {
-		String path = getParentPath(clazz.getClassLoader(), clazz.getName());
+		return getParentDir(clazz, null);
+	}
+
+	public static String getParentDir(
+		Class<?> clazz, UnsafeFunction<URL, URL, Exception> urlUnsafeFunction) {
+
+		Thread currentThread = Thread.currentThread();
+
+		String path = getParentPath(
+			currentThread.getContextClassLoader(), clazz.getName(),
+			urlUnsafeFunction);
 
 		int pos = path.lastIndexOf(".jar!");
 
@@ -155,6 +166,13 @@ public class ClassUtil {
 
 	public static String getParentPath(
 		ClassLoader classLoader, String className) {
+
+		return getParentPath(classLoader, className, null);
+	}
+
+	public static String getParentPath(
+		ClassLoader classLoader, String className,
+		UnsafeFunction<URL, URL, Exception> urlUnsafeFunction) {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Class name " + className);
@@ -171,7 +189,7 @@ public class ClassUtil {
 
 		URL url = classLoader.getResource(className);
 
-		Path path = Paths.get(_getPathURIFromURL(url));
+		Path path = Paths.get(_getPathURIFromURL(url, urlUnsafeFunction));
 
 		String parentPath = StringUtil.replace(
 			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
@@ -245,7 +263,9 @@ public class ClassUtil {
 		return false;
 	}
 
-	private static URI _getPathURIFromURL(URL url) {
+	private static URI _getPathURIFromURL(
+		URL url, UnsafeFunction<URL, URL, Exception> urlUnsafeFunction) {
+
 		String urlProtocol = url.getProtocol();
 
 		if (urlProtocol.equals("jar") || urlProtocol.equals("wsjar")) {
@@ -254,6 +274,16 @@ public class ClassUtil {
 			}
 			catch (MalformedURLException malformedURLException) {
 				throw new SystemException(malformedURLException);
+			}
+		}
+
+		if (urlUnsafeFunction != null) {
+			try {
+				url = urlUnsafeFunction.apply(url);
+			}
+			catch (Exception exception) {
+				_log.error(
+					"Unable to resolve local URL from bundle", exception);
 			}
 		}
 

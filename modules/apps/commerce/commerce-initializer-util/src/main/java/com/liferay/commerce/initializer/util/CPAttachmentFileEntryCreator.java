@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.repository.RepositoryProvider;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -140,7 +140,7 @@ public class CPAttachmentFileEntryCreator {
 			inputStream.close();
 		}
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = _calendarFactory.getCalendar(
 			user.getTimeZone());
 
 		displayCalendar.add(Calendar.YEAR, -1);
@@ -156,7 +156,7 @@ public class CPAttachmentFileEntryCreator {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = _calendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);
@@ -187,6 +187,9 @@ public class CPAttachmentFileEntryCreator {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPAttachmentFileEntryCreator.class);
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CPAttachmentFileEntryLocalService

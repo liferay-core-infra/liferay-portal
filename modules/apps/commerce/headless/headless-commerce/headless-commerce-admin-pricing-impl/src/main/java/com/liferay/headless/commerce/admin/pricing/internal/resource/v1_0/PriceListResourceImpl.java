@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
@@ -223,12 +223,12 @@ public class PriceListResourceImpl
 		ServiceContext serviceContext =
 			_serviceContextHelper.getServiceContext();
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = _calendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = _calendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);
@@ -353,12 +353,12 @@ public class PriceListResourceImpl
 		ServiceContext serviceContext = _serviceContextHelper.getServiceContext(
 			commercePriceList.getGroupId());
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = _calendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		DateConfig displayDateConfig = new DateConfig(displayCalendar);
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = _calendarFactory.getCalendar(
 			serviceContext.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);
@@ -396,6 +396,9 @@ public class PriceListResourceImpl
 	}
 
 	private static final EntityModel _entityModel = new PriceListEntityModel();
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceAccountGroupService _commerceAccountGroupService;

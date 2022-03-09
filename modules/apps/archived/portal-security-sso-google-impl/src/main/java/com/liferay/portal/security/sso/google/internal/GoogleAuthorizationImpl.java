@@ -43,7 +43,7 @@ import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -353,7 +353,7 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 
 		Contact contact = user.getContact();
 
-		Calendar birthdayCal = CalendarFactoryUtil.getCalendar();
+		Calendar birthdayCal = _calendarFactory.getCalendar();
 
 		birthdayCal.setTime(contact.getBirthday());
 
@@ -406,6 +406,9 @@ public class GoogleAuthorizationImpl implements GoogleAuthorization {
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

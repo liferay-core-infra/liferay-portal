@@ -71,7 +71,7 @@ import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.social.SocialActivityManagerUtil;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.systemevent.SystemEventHierarchyEntryThreadLocal;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -1515,7 +1515,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 	public List<WikiPage> getRecentChanges(
 		long groupId, long nodeId, int start, int end) {
 
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = _calendarFactory.getCalendar();
 
 		cal.add(Calendar.WEEK_OF_YEAR, -1);
 
@@ -1526,7 +1526,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 	@Override
 	public int getRecentChangesCount(long groupId, long nodeId) {
-		Calendar cal = CalendarFactoryUtil.getCalendar();
+		Calendar cal = _calendarFactory.getCalendar();
 
 		cal.add(Calendar.WEEK_OF_YEAR, -1);
 
@@ -3447,6 +3447,9 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommentManager _commentManager;

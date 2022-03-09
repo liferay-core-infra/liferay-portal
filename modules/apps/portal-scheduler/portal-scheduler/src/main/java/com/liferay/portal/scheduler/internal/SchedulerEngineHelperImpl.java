@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerEventMessageListener;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerEventMessageListenerWrapper;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -176,7 +176,7 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 		Calendar recurrenceCalendar = null;
 
 		if (timeZoneSensitive) {
-			recurrenceCalendar = CalendarFactoryUtil.getCalendar();
+			recurrenceCalendar = _calendarFactory.getCalendar();
 
 			recurrenceCalendar.setTime(calendar.getTime());
 		}
@@ -904,6 +904,10 @@ public class SchedulerEngineHelperImpl implements SchedulerEngineHelper {
 	private volatile AuditRouter _auditRouter;
 
 	private volatile BundleContext _bundleContext;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
+
 	private DestinationFactory _destinationFactory;
 	private final Set<ServiceRegistration<Destination>>
 		_destinationServiceRegistrations = new HashSet<>();

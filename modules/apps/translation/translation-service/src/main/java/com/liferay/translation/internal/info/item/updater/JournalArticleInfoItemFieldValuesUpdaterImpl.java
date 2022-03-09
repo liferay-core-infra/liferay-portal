@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -239,7 +239,7 @@ public class JournalArticleInfoItemFieldValuesUpdaterImpl
 
 		int[] dateArray = new int[5];
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(user.getTimeZone());
+		Calendar calendar = _calendarFactory.getCalendar(user.getTimeZone());
 
 		calendar.setTime(date);
 
@@ -411,6 +411,9 @@ public class JournalArticleInfoItemFieldValuesUpdaterImpl
 
 	@Reference
 	private AssetLinkLocalService _assetLinkLocalService;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;

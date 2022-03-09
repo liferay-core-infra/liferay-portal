@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.facet.util.FacetFactory;
 import com.liferay.portal.kernel.util.CalendarFactory;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -169,23 +168,14 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 		return modifiedFacetFactory;
 	}
 
+	@Reference
 	protected CalendarFactory calendarFactory;
+
 	protected DateFormatFactory dateFormatFactory;
 	protected JSONFactory jsonFactory;
 
 	@Reference
 	protected ModifiedFacetFactory modifiedFacetFactory;
-
-	private CalendarFactory _getCalendarFactory() {
-
-		// See LPS-72507 and LPS-76500
-
-		if (calendarFactory != null) {
-			return calendarFactory;
-		}
-
-		return CalendarFactoryUtil.getCalendarFactory();
-	}
 
 	private DateFormatFactory _getDateFormatFactory() {
 
@@ -212,8 +202,6 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 	private JSONArray _replaceAliases(JSONArray rangesJSONArray) {
 		DateRangeFactory dateRangeFactory = new DateRangeFactory(
 			_getDateFormatFactory());
-
-		CalendarFactory calendarFactory = _getCalendarFactory();
 
 		return dateRangeFactory.replaceAliases(
 			rangesJSONArray, calendarFactory.getCalendar(), _getJSONFactory());

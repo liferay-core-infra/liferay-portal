@@ -218,10 +218,9 @@
 			<bean class="com.liferay.portal.upgrade.util.MemoryValueMapperFactoryImpl" />
 		</property>
 	</bean>
+	<bean class="com.liferay.portal.util.CalendarFactoryImpl" id="com.liferay.portal.kernel.util.CalendarFactory" />
 	<bean class="com.liferay.portal.kernel.util.CalendarFactoryUtil" id="com.liferay.portal.kernel.util.CalendarFactoryUtil">
-		<property name="calendarFactory">
-			<bean class="com.liferay.portal.util.CalendarFactoryImpl" />
-		</property>
+		<property name="calendarFactory" ref="com.liferay.portal.kernel.util.CalendarFactory" />
 	</bean>
 	<bean class="com.liferay.portal.kernel.util.ColorSchemeFactoryUtil" id="com.liferay.portal.kernel.util.ColorSchemeFactoryUtil">
 		<property name="colorSchemeFactory">

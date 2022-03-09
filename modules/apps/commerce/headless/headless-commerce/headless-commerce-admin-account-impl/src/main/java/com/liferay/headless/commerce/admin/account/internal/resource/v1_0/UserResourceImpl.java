@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -91,7 +91,7 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 		else {
 			Date birthday = invitedUser.getBirthday();
 
-			Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar(
+			Calendar birthdayCalendar = _calendarFactory.getCalendar(
 				birthday.getTime(), invitedUser.getTimeZone());
 
 			invitedUser = _userService.updateUser(
@@ -151,6 +151,9 @@ public class UserResourceImpl extends BaseUserResourceImpl {
 				invitedUser.getUserId(),
 				contextAcceptLanguage.getPreferredLocale()));
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceAccountService _commerceAccountService;

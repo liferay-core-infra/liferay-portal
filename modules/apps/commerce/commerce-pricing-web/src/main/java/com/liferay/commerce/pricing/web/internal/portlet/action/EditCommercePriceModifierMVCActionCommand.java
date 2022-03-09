@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -135,7 +135,7 @@ public class EditCommercePriceModifierMVCActionCommand
 
 		Date date = new Date();
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(date.getTime());
+		Calendar calendar = _calendarFactory.getCalendar(date.getTime());
 
 		int displayDateMonth = ParamUtil.getInteger(
 			actionRequest, "displayDateMonth", calendar.get(Calendar.MONTH));
@@ -199,6 +199,9 @@ public class EditCommercePriceModifierMVCActionCommand
 			expirationDateDay, expirationDateYear, expirationDateHour,
 			expirationDateMinute, neverExpire, serviceContext);
 	}
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommercePriceModifierService _commercePriceModifierService;

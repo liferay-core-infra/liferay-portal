@@ -55,7 +55,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
@@ -328,7 +328,7 @@ public class OrderResourceImpl
 		// Order date
 
 		if (order.getOrderDate() != null) {
-			Calendar orderDateCalendar = CalendarFactoryUtil.getCalendar(
+			Calendar orderDateCalendar = _calendarFactory.getCalendar(
 				serviceContext.getTimeZone());
 
 			orderDateCalendar.setTime(order.getOrderDate());
@@ -345,7 +345,7 @@ public class OrderResourceImpl
 
 		if (order.getRequestedDeliveryDate() != null) {
 			Calendar requestedDeliveryDateCalendar =
-				CalendarFactoryUtil.getCalendar(serviceContext.getTimeZone());
+				_calendarFactory.getCalendar(serviceContext.getTimeZone());
 
 			requestedDeliveryDateCalendar.setTime(
 				order.getRequestedDeliveryDate());
@@ -640,7 +640,7 @@ public class OrderResourceImpl
 					commerceOrder.getGroupId());
 
 			Calendar requestedDeliveryDateCalendar =
-				CalendarFactoryUtil.getCalendar(serviceContext.getTimeZone());
+				_calendarFactory.getCalendar(serviceContext.getTimeZone());
 
 			requestedDeliveryDateCalendar.setTime(
 				order.getRequestedDeliveryDate());
@@ -695,6 +695,9 @@ public class OrderResourceImpl
 	}
 
 	private static final EntityModel _entityModel = new OrderEntityModel();
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceAccountService _commerceAccountService;

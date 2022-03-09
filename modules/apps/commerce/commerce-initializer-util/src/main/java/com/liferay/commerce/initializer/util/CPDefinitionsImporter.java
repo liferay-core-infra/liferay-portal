@@ -73,7 +73,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -204,7 +204,7 @@ public class CPDefinitionsImporter {
 
 		User user = _userLocalService.getUser(serviceContext.getUserId());
 
-		Calendar displayCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar displayCalendar = _calendarFactory.getCalendar(
 			user.getTimeZone());
 
 		displayCalendar.add(Calendar.YEAR, -1);
@@ -220,7 +220,7 @@ public class CPDefinitionsImporter {
 			displayDateHour += 12;
 		}
 
-		Calendar expirationCalendar = CalendarFactoryUtil.getCalendar(
+		Calendar expirationCalendar = _calendarFactory.getCalendar(
 			user.getTimeZone());
 
 		expirationCalendar.add(Calendar.MONTH, 1);
@@ -977,6 +977,9 @@ public class CPDefinitionsImporter {
 
 	@Reference
 	private AssetTagsImporter _assetTagsImporter;
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceAccountGroupLocalService _commerceAccountGroupLocalService;

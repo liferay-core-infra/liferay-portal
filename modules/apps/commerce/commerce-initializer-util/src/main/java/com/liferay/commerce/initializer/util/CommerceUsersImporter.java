@@ -42,7 +42,7 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserIdMapperLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.CalendarFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -298,7 +298,7 @@ public class CommerceUsersImporter {
 			male = gender.equals("male");
 		}
 
-		Calendar calendar = CalendarFactoryUtil.getCalendar(timeZone);
+		Calendar calendar = _calendarFactory.getCalendar(timeZone);
 
 		int birthdayMonth = calendar.get(
 			jsonObject.getInt("birthdayMonth", Calendar.MONTH));
@@ -468,6 +468,9 @@ public class CommerceUsersImporter {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceUsersImporter.class);
+
+	@Reference
+	private CalendarFactory _calendarFactory;
 
 	@Reference
 	private CommerceAccountLocalService _commerceAccountLocalService;

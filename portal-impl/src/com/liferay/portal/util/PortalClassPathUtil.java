@@ -16,7 +16,6 @@ package com.liferay.portal.util;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.process.ProcessConfig;
-import com.liferay.petra.process.ProcessLog;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
@@ -76,62 +75,6 @@ public class PortalClassPathUtil {
 			AggregateClassLoader.getAggregateClassLoader(
 				PortalClassLoaderUtil.getClassLoader(),
 				seedClass.getClassLoader()));
-
-		return builder.build();
-	}
-
-	public static ProcessConfig createProcessConfig(Class<?>... classes) {
-		ProcessConfig.Builder builder = new ProcessConfig.Builder();
-
-		builder.setArguments(_processArgs);
-
-		File[] files = _listClassPathFiles(classes);
-
-		if (files.length == 0) {
-			throw new IllegalStateException(
-				"Class path files could not be loaded");
-		}
-
-		StringBundler sb = new StringBundler((files.length * 2) + 1);
-
-		for (File file : files) {
-			sb.append(file.getAbsolutePath());
-			sb.append(File.pathSeparator);
-		}
-
-		sb.append(_portalProcessConfig.getBootstrapClassPath());
-
-		String classpath = sb.toString();
-
-		builder.setBootstrapClassPath(classpath);
-
-		builder.setProcessLogConsumer(
-			processLog -> {
-				if (ProcessLog.Level.DEBUG == processLog.getLevel()) {
-					if (_log.isDebugEnabled()) {
-						_log.debug(
-							processLog.getMessage(), processLog.getThrowable());
-					}
-				}
-				else if (ProcessLog.Level.INFO == processLog.getLevel()) {
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							processLog.getMessage(), processLog.getThrowable());
-					}
-				}
-				else if (ProcessLog.Level.WARN == processLog.getLevel()) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							processLog.getMessage(), processLog.getThrowable());
-					}
-				}
-				else {
-					_log.error(
-						processLog.getMessage(), processLog.getThrowable());
-				}
-			});
-		builder.setReactClassLoader(PortalClassLoaderUtil.getClassLoader());
-		builder.setRuntimeClassPath(classpath);
 
 		return builder.build();
 	}

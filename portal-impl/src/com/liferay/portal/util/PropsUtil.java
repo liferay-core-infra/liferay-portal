@@ -33,12 +33,16 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+
+import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -382,8 +386,30 @@ public class PropsUtil {
 				throw new SystemException(malformedURLException);
 			}
 		}
+		else if (urlProtocol.equals("bundle") ||
+				 urlProtocol.equals("bundleresource")) {
 
-		String path = url.getPath();
+			try {
+				URLConnection urlConnection = url.openConnection();
+
+				Class<?> urlConnectionClass = urlConnection.getClass();
+
+				Method getLocalURLMethod = urlConnectionClass.getDeclaredMethod(
+					"getLocalURL");
+
+				getLocalURLMethod.setAccessible(true);
+
+				url = (URL)getLocalURLMethod.invoke(urlConnection);
+			}
+			catch (Exception exception) {
+				_log.error(
+					"Unable to resolve local URL from bundle", exception);
+
+				return null;
+			}
+		}
+
+		String path = URLCodec.decodeURL(url.getPath());
 
 		if (!path.startsWith(StringPool.SLASH)) {
 			path = StringPool.SLASH + path;

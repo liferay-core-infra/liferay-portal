@@ -92,21 +92,8 @@ public class PortalClassPathUtil {
 			classLoader = currentThread.getContextClassLoader();
 		}
 
-		Class<?> shieldedContainerInitializerClass = null;
-
-		try {
-			shieldedContainerInitializerClass = classLoader.loadClass(
-				"com.liferay.shielded.container.ShieldedContainerInitializer");
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			_log.error(
-				"Unable to load ShieldedContainerInitializer class",
-				classNotFoundException);
-		}
-
 		File[] files = _listClassPathFiles(
-			ServletException.class, CentralizedThreadLocal.class,
-			shieldedContainerInitializerClass);
+			ServletException.class, CentralizedThreadLocal.class);
 
 		if (files.length == 0) {
 			throw new IllegalStateException(

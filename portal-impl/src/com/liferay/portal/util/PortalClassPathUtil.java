@@ -14,12 +14,12 @@
 
 package com.liferay.portal.util;
 
-import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.process.ProcessConfig;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -35,7 +35,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 /**
  * @author Shuyang Zhou
@@ -56,7 +55,8 @@ public class PortalClassPathUtil {
 		}
 
 		File[] files = _listClassPathFiles(
-			ServletException.class, CentralizedThreadLocal.class);
+			PropsUtil.get(PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR),
+			PropsUtil.get(PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR));
 
 		if (files.length == 0) {
 			throw new IllegalStateException(
@@ -132,9 +132,8 @@ public class PortalClassPathUtil {
 		return false;
 	}
 
-	private static File[] _listClassPathFiles(Class<?> clazz) {
-		File dir = new File(
-			PropsUtil.getLibDir(clazz.getClassLoader(), clazz.getName()));
+	private static File[] _listClassPathFiles(String path) {
+		File dir = new File(path);
 
 		if (!dir.isDirectory()) {
 			_log.error(dir.toString() + " is not a directory");
@@ -163,11 +162,11 @@ public class PortalClassPathUtil {
 			});
 	}
 
-	private static File[] _listClassPathFiles(Class<?>... classes) {
+	private static File[] _listClassPathFiles(String... paths) {
 		Set<File> filesSet = new HashSet<>();
 
-		for (Class<?> clazz : classes) {
-			File[] files = _listClassPathFiles(clazz);
+		for (String path : paths) {
+			File[] files = _listClassPathFiles(path);
 
 			if (files != null) {
 				Collections.addAll(filesSet, files);

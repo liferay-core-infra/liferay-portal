@@ -6,6 +6,7 @@ dependencies {
 	compileInclude group: "org.apache.httpcomponents", name: "httpclient", version: "4.5.13"
 	compileInclude group: "org.apache.httpcomponents", name: "httpcore", version: "4.4.14"
 	compileInclude group: "org.apache.httpcomponents", name: "httpcore-nio", version: "4.4.14"
+	compileInclude project(":apps:json-web-service-client:json-web-service-client-api")
 
 	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.12.4"
 	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.12.4"

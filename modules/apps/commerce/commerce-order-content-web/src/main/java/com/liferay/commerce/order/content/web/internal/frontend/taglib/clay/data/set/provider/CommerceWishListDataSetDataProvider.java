@@ -24,7 +24,7 @@ import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvide
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -59,7 +59,7 @@ public class CommerceWishListDataSetDataProvider
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Format dateFormat = FastDateFormatFactoryUtil.getDate(
+		Format dateFormat = _fastDateFormatFactory.getDate(
 			DateFormat.MEDIUM, themeDisplay.getLocale(),
 			themeDisplay.getTimeZone());
 
@@ -95,5 +95,8 @@ public class CommerceWishListDataSetDataProvider
 
 	@Reference
 	private CommerceWishListService _commerceWishListService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

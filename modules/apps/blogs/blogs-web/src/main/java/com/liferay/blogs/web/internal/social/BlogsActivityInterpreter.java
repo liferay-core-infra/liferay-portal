@@ -22,7 +22,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.social.kernel.model.BaseSocialActivityInterpreter;
@@ -79,10 +79,9 @@ public class BlogsActivityInterpreter extends BaseSocialActivityInterpreter {
 
 			link = null;
 
-			Format dateFormatDate =
-				FastDateFormatFactoryUtil.getSimpleDateFormat(
-					"MMMM d", serviceContext.getLocale(),
-					serviceContext.getTimeZone());
+			Format dateFormatDate = _fastDateFormatFactory.getSimpleDateFormat(
+				"MMMM d", serviceContext.getLocale(),
+				serviceContext.getTimeZone());
 
 			displayDate = dateFormatDate.format(entry.getDisplayDate());
 		}
@@ -177,5 +176,8 @@ public class BlogsActivityInterpreter extends BaseSocialActivityInterpreter {
 	@Reference(target = "(model.class.name=com.liferay.blogs.model.BlogsEntry)")
 	private ModelResourcePermission<BlogsEntry>
 		_blogsEntryModelResourcePermission;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

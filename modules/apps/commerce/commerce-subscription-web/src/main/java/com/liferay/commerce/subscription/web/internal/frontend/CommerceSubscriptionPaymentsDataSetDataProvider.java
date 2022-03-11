@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -77,7 +77,7 @@ public class CommerceSubscriptionPaymentsDataSetDataProvider
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Format dateTimeFormat = FastDateFormatFactoryUtil.getDateTime(
+		Format dateTimeFormat = _fastDateFormatFactory.getDateTime(
 			DateFormat.MEDIUM, DateFormat.MEDIUM, themeDisplay.getLocale(),
 			themeDisplay.getTimeZone());
 
@@ -156,5 +156,8 @@ public class CommerceSubscriptionPaymentsDataSetDataProvider
 	@Reference
 	private CommerceSubscriptionEntryLocalService
 		_commerceSubscriptionEntryLocalService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

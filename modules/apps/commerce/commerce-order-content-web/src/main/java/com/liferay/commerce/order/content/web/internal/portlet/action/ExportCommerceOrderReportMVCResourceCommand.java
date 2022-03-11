@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -181,7 +181,7 @@ public class ExportCommerceOrderReportMVCResourceCommand
 					return null;
 				}
 
-				Format format = FastDateFormatFactoryUtil.getDate(
+				Format format = _fastDateFormatFactory.getDate(
 					themeDisplay.getLocale(), themeDisplay.getTimeZone());
 
 				return format.format(commerceOrder.getRequestedDeliveryDate());
@@ -467,6 +467,9 @@ public class ExportCommerceOrderReportMVCResourceCommand
 
 	@Reference
 	private DLAppLocalService _dlAppLocalService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private Portal _portal;

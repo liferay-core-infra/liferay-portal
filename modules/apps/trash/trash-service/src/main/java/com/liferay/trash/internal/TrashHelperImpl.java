@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.trash.TrashHandlerRegistryUtil;
 import com.liferay.portal.kernel.trash.TrashRenderer;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -94,7 +94,7 @@ public class TrashHelperImpl implements TrashHelper {
 
 		sb.append(StringPool.OPEN_PARENTHESIS);
 
-		Format format = FastDateFormatFactoryUtil.getDateTime(
+		Format format = _fastDateFormatFactory.getDateTime(
 			themeDisplay.getLocale(), themeDisplay.getTimeZone());
 
 		sb.append(
@@ -262,6 +262,9 @@ public class TrashHelperImpl implements TrashHelper {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TrashHelperImpl.class);
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

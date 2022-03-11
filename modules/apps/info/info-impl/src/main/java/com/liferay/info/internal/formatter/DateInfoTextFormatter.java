@@ -15,7 +15,7 @@
 package com.liferay.info.internal.formatter;
 
 import com.liferay.info.formatter.InfoTextFormatter;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 
 import java.text.Format;
 
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jorge Ferrer
@@ -32,10 +33,12 @@ public class DateInfoTextFormatter implements InfoTextFormatter<Date> {
 
 	@Override
 	public String format(Date date, Locale locale) {
-		Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(
-			locale);
+		Format dateFormatDateTime = _fastDateFormatFactory.getDateTime(locale);
 
 		return dateFormatDateTime.format(date);
 	}
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

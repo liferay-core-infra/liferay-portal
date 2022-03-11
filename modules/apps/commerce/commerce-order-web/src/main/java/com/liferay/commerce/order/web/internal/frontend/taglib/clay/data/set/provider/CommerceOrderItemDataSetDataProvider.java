@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -187,7 +187,7 @@ public class CommerceOrderItemDataSetDataProvider
 		List<OrderItem> orderItems = new ArrayList<>();
 
 		for (CommerceOrderItem commerceOrderItem : commerceOrderItems) {
-			Format dateTimeFormat = FastDateFormatFactoryUtil.getDate(
+			Format dateTimeFormat = _fastDateFormatFactory.getDate(
 				locale, themeDisplay.getTimeZone());
 
 			CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
@@ -459,5 +459,8 @@ public class CommerceOrderItemDataSetDataProvider
 
 	@Reference
 	private CPSubscriptionTypeRegistry _cpSubscriptionTypeRegistry;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

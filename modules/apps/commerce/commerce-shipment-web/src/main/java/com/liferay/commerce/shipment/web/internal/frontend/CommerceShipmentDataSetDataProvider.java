@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -107,11 +107,11 @@ public class CommerceShipmentDataSetDataProvider
 
 		User user = _portal.getUser(httpServletRequest);
 
-		Format dateTimeFormat = FastDateFormatFactoryUtil.getDateTime(
+		Format dateTimeFormat = _fastDateFormatFactory.getDateTime(
 			DateFormat.MEDIUM, DateFormat.MEDIUM,
 			_portal.getLocale(httpServletRequest), user.getTimeZone());
 
-		Format dateFormat = FastDateFormatFactoryUtil.getDate(
+		Format dateFormat = _fastDateFormatFactory.getDate(
 			DateFormat.MEDIUM, _portal.getLocale(httpServletRequest),
 			user.getTimeZone());
 
@@ -253,6 +253,9 @@ public class CommerceShipmentDataSetDataProvider
 
 	@Reference
 	private CommerceShipmentService _commerceShipmentService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private Portal _portal;

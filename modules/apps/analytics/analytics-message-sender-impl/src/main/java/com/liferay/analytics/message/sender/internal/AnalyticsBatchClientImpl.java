@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
@@ -46,6 +46,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Riccardo Ferrari
@@ -79,9 +80,13 @@ public class AnalyticsBatchClientImpl
 
 			_setDefaultRequestHeaders(companyId, httpGet);
 
+			Format modifiedSinceHeaderDateFormatter =
+				_fastDateFormatFactory.getSimpleDateFormat(
+					"EEE, dd MMM yyyy HH:mm:ss zzz");
+
 			httpGet.setHeader(
 				"If-Modified-Since",
-				_modifiedSinceHeaderDateFormatter.format(
+				modifiedSinceHeaderDateFormatter.format(
 					resourceLastModifiedDate));
 
 			CloseableHttpResponse closeableHttpResponse =
@@ -198,8 +203,7 @@ public class AnalyticsBatchClientImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnalyticsBatchClientImpl.class);
 
-	private static final Format _modifiedSinceHeaderDateFormatter =
-		FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"EEE, dd MMM yyyy HH:mm:ss zzz");
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

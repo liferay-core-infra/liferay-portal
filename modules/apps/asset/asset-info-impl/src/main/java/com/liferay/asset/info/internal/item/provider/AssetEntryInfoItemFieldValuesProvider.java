@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.template.info.item.provider.TemplateInfoItemFieldSetProvider;
@@ -117,8 +117,7 @@ public class AssetEntryInfoItemFieldValuesProvider
 
 		Locale locale = LocaleThreadLocal.getThemeDisplayLocale();
 
-		Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(
-			locale);
+		Format dateFormatDateTime = _fastDateFormatFactory.getDateTime(locale);
 
 		return dateFormatDateTime.format(date);
 	}
@@ -193,6 +192,9 @@ public class AssetEntryInfoItemFieldValuesProvider
 	@Reference
 	private AssetEntryInfoItemFieldSetProvider
 		_assetEntryInfoItemFieldSetProvider;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private Portal _portal;

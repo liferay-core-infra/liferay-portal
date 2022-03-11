@@ -28,7 +28,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -127,7 +127,7 @@ public class CalendarBookingCTDisplayRenderer
 			timeZone = TimeZone.getTimeZone(StringPool.UTC);
 		}
 
-		Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(
+		Format dateFormatDateTime = _fastDateFormatFactory.getDateTime(
 			displayBuilder.getLocale(), timeZone);
 
 		displayBuilder.display(
@@ -197,6 +197,9 @@ public class CalendarBookingCTDisplayRenderer
 			}
 		);
 	}
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -245,8 +245,11 @@ public class AnalyticsBatchExportImportManagerImpl
 		Http.Options options = _getOptions(companyId);
 
 		if (resourceLastModifiedDate != null) {
+			Format format = _fastDateFormatFactory.getSimpleDateFormat(
+				"EEE, dd MMM yyyy HH:mm:ss zzz");
+
 			options.addHeader(
-				"If-Modified-Since", _format.format(resourceLastModifiedDate));
+				"If-Modified-Since", format.format(resourceLastModifiedDate));
 		}
 
 		AnalyticsConfiguration analyticsConfiguration =
@@ -450,10 +453,6 @@ public class AnalyticsBatchExportImportManagerImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnalyticsBatchExportImportManagerImpl.class);
 
-	private static final Format _format =
-		FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"EEE, dd MMM yyyy HH:mm:ss zzz");
-
 	@Reference
 	private AnalyticsConfigurationTracker _analyticsConfigurationTracker;
 
@@ -479,6 +478,9 @@ public class AnalyticsBatchExportImportManagerImpl
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private Http _http;

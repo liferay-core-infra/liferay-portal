@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -177,7 +177,7 @@ public class JournalArticleModelPreFilterContributor
 
 		dateRangeFilterBuilder.setFormat(formatPattern);
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format dateFormat = _fastDateFormatFactory.getSimpleDateFormat(
 			formatPattern);
 
 		dateRangeFilterBuilder.setFrom(dateFormat.format(new Date()));
@@ -193,6 +193,9 @@ public class JournalArticleModelPreFilterContributor
 
 	@Reference
 	private DDMIndexer _ddmIndexer;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private FilterBuilders _filterBuilders;

@@ -25,7 +25,7 @@ import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvide
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -65,7 +65,7 @@ public class CommerceInventoryReplenishmentDataSetDataProvider
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Format dateTimeFormat = FastDateFormatFactoryUtil.getDate(
+		Format dateTimeFormat = _fastDateFormatFactory.getDate(
 			DateFormat.MEDIUM, themeDisplay.getLocale(),
 			themeDisplay.getTimeZone());
 
@@ -116,6 +116,9 @@ public class CommerceInventoryReplenishmentDataSetDataProvider
 	@Reference
 	private CommerceInventoryReplenishmentItemService
 		_commerceInventoryReplenishmentItemService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private Portal _portal;

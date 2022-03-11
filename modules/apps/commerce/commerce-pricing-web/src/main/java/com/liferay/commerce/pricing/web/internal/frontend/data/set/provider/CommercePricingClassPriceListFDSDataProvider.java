@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -68,7 +68,7 @@ public class CommercePricingClassPriceListFDSDataProvider
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Format dateTimeFormat = FastDateFormatFactoryUtil.getDateTime(
+		Format dateTimeFormat = _fastDateFormatFactory.getDateTime(
 			DateFormat.MEDIUM, DateFormat.MEDIUM, themeDisplay.getLocale(),
 			themeDisplay.getTimeZone());
 
@@ -146,5 +146,8 @@ public class CommercePricingClassPriceListFDSDataProvider
 
 	@Reference
 	private CommercePriceListService _commercePriceListService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.filter;
 
 import com.liferay.portal.kernel.search.filter.DateRangeTermFilter;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 
 import java.text.Format;
 import java.text.ParseException;
@@ -25,6 +25,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -38,7 +39,7 @@ public class DateRangeTermFilterTranslatorImpl
 		RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
 			dateRangeTermFilter.getField());
 
-		Format format = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format format = _fastDateFormatFactory.getSimpleDateFormat(
 			dateRangeTermFilter.getDateFormat(),
 			dateRangeTermFilter.getTimeZone());
 
@@ -59,5 +60,8 @@ public class DateRangeTermFilterTranslatorImpl
 
 		return rangeQueryBuilder;
 	}
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.search.filter.DateRangeFilterBuilder;
@@ -64,7 +64,7 @@ public class RedirectNotFoundEntryModelPreFilterContributor
 
 			dateRangeFilterBuilder.setFieldName(Field.MODIFIED_DATE);
 
-			Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			Format dateFormat = _fastDateFormatFactory.getSimpleDateFormat(
 				PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
 
 			dateRangeFilterBuilder.setFrom(dateFormat.format(minModifiedDate));
@@ -73,6 +73,9 @@ public class RedirectNotFoundEntryModelPreFilterContributor
 				dateRangeFilterBuilder.build(), BooleanClauseOccur.MUST);
 		}
 	}
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 	@Reference
 	private FilterBuilders _filterBuilders;

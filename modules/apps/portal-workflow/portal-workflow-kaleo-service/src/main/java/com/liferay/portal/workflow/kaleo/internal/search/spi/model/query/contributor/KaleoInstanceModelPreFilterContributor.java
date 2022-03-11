@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -198,7 +198,7 @@ public class KaleoInstanceModelPreFilterContributor
 		String formatPattern = PropsUtil.get(
 			PropsKeys.INDEX_DATE_FORMAT_PATTERN);
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format dateFormat = fastDateFormatFactory.getSimpleDateFormat(
 			formatPattern);
 
 		DateRangeFilterBuilder dueDateRangeFilterBuilder =
@@ -287,6 +287,9 @@ public class KaleoInstanceModelPreFilterContributor
 
 		booleanFilter.addRequiredTerm(Field.USER_ID, userId);
 	}
+
+	@Reference
+	protected FastDateFormatFactory fastDateFormatFactory;
 
 	@Reference
 	protected FilterBuilders filterBuilders;

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -90,7 +90,7 @@ public class GetCTCommentsMVCResourceCommand extends BaseMVCResourceCommand {
 			ctEntryId, Collections.emptyList());
 
 		for (CTComment ctComment : ctComments) {
-			Format format = FastDateFormatFactoryUtil.getDateTime(
+			Format format = fastDateFormatFactory.getDateTime(
 				themeDisplay.getLocale(), themeDisplay.getTimeZone());
 
 			Date createDate = ctComment.getCreateDate();
@@ -142,6 +142,9 @@ public class GetCTCommentsMVCResourceCommand extends BaseMVCResourceCommand {
 
 	@Reference
 	protected CTCommentLocalService ctCommentLocalService;
+
+	@Reference
+	protected FastDateFormatFactory fastDateFormatFactory;
 
 	@Reference
 	protected Language language;

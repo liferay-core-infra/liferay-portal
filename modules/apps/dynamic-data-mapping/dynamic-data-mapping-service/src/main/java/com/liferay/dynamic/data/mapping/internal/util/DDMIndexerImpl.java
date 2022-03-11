@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.generic.NestedQuery;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -353,7 +353,7 @@ public class DDMIndexerImpl implements DDMIndexer {
 	public String extractIndexableAttributes(
 		DDMStructure ddmStructure, DDMFormValues ddmFormValues, Locale locale) {
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format dateFormat = _fastDateFormatFactory.getSimpleDateFormat(
 			PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
 
 		StringBundler sb = new StringBundler();
@@ -844,5 +844,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 	private DDMFormValuesToFieldsConverter _ddmFormValuesToFieldsConverter;
 	private volatile DDMIndexerConfiguration _ddmIndexerConfiguration;
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

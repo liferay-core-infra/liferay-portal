@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -329,7 +329,7 @@ public class KaleoTaskInstanceTokenModelPreFilterContributor
 		String formatPattern = PropsUtil.get(
 			PropsKeys.INDEX_DATE_FORMAT_PATTERN);
 
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		Format dateFormat = _fastDateFormatFactory.getSimpleDateFormat(
 			formatPattern);
 
 		DateRangeFilterBuilder dueDateRangeFilterBuilder =
@@ -735,5 +735,8 @@ public class KaleoTaskInstanceTokenModelPreFilterContributor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoTaskInstanceTokenModelPreFilterContributor.class);
+
+	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
 
 }

@@ -41,8 +41,8 @@ import com.liferay.portal.kernel.util.CalendarUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -251,22 +251,21 @@ public class NotificationTemplateContextFactory {
 		String portalURL = _getPortalURL(
 			group.getCompanyId(), group.getGroupId());
 
-		String layoutActualURL = PortalUtil.getLayoutActualURL(layout);
+		String layoutActualURL = _portal.getLayoutActualURL(layout);
 
 		String url = portalURL + layoutActualURL;
 
-		String namespace = PortalUtil.getPortletNamespace(
+		String namespace = _portal.getPortletNamespace(
 			CalendarPortletKeys.CALENDAR);
 
-		url = HttpUtil.addParameter(
+		url = _http.addParameter(
 			url, namespace + "mvcPath", "/view_calendar_booking.jsp");
 
-		url = HttpUtil.addParameter(
-			url, "p_p_id", CalendarPortletKeys.CALENDAR);
-		url = HttpUtil.addParameter(url, "p_p_lifecycle", "0");
-		url = HttpUtil.addParameter(
+		url = _http.addParameter(url, "p_p_id", CalendarPortletKeys.CALENDAR);
+		url = _http.addParameter(url, "p_p_lifecycle", "0");
+		url = _http.addParameter(
 			url, "p_p_state", WindowState.MAXIMIZED.toString());
-		url = HttpUtil.addParameter(
+		url = _http.addParameter(
 			url, namespace + "calendarBookingId", calendarBookingId);
 
 		return url;
@@ -305,4 +304,8 @@ public class NotificationTemplateContextFactory {
 	private static GroupLocalService _groupLocalService;
 	private static LayoutLocalService _layoutLocalService;
 
-}
+	@Reference
+	private Http _http;
+
+	@Reference
+	private Portal _portal;}

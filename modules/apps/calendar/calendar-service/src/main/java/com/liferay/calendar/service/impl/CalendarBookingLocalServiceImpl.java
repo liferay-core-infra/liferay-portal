@@ -2624,7 +2624,7 @@ public class CalendarBookingLocalServiceImpl
 				new NotificationRecipient(recipientUser);
 
 			NotificationTemplateContext notificationTemplateContext =
-				NotificationTemplateContextFactory.getInstance(
+				_notificationTemplateContextFactory.getInstance(
 					notificationType, notificationTemplateType, calendarBooking,
 					recipientUser, serviceContext);
 
@@ -2646,7 +2646,7 @@ public class CalendarBookingLocalServiceImpl
 				}
 
 				NotificationTemplateContext notificationTemplateContext =
-					NotificationTemplateContextFactory.getInstance(
+					_notificationTemplateContextFactory.getInstance(
 						notificationType, notificationTemplateType,
 						calendarBooking, user, serviceContext);
 
@@ -2701,7 +2701,7 @@ public class CalendarBookingLocalServiceImpl
 					notificationType.toString());
 
 			NotificationTemplateContext notificationTemplateContext =
-				NotificationTemplateContextFactory.getInstance(
+				_notificationTemplateContextFactory.getInstance(
 					notificationType, NotificationTemplateType.REMINDER,
 					calendarBooking, user);
 
@@ -2729,6 +2729,10 @@ public class CalendarBookingLocalServiceImpl
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private NotificationTemplateContextFactory
+		_notificationTemplateContextFactory;
 
 	@Reference
 	private RatingsStatsLocalService _ratingsStatsLocalService;

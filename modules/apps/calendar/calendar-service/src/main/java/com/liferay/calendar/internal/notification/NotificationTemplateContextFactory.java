@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.CalendarUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactory;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
@@ -64,7 +64,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = {})
 public class NotificationTemplateContextFactory {
 
-	public static NotificationTemplateContext getInstance(
+	public NotificationTemplateContext getInstance(
 			NotificationType notificationType,
 			NotificationTemplateType notificationTemplateType,
 			CalendarBooking calendarBooking, User user)
@@ -179,7 +179,7 @@ public class NotificationTemplateContextFactory {
 		return notificationTemplateContext;
 	}
 
-	public static NotificationTemplateContext getInstance(
+	public NotificationTemplateContext getInstance(
 			NotificationType notificationType,
 			NotificationTemplateType notificationTemplateType,
 			CalendarBooking calendarBooking, User user,
@@ -238,8 +238,7 @@ public class NotificationTemplateContextFactory {
 		_layoutLocalService = layoutLocalService;
 	}
 
-	private static String _getCalendarBookingURL(
-			User user, long calendarBookingId)
+	private String _getCalendarBookingURL(User user, long calendarBookingId)
 		throws Exception {
 
 		Group group = _groupLocalService.getGroup(
@@ -271,7 +270,7 @@ public class NotificationTemplateContextFactory {
 		return url;
 	}
 
-	private static String _getPortalURL(long companyId, long groupId)
+	private String _getPortalURL(long companyId, long groupId)
 		throws PortalException {
 
 		Company company = _companyLocalService.getCompany(companyId);
@@ -279,7 +278,7 @@ public class NotificationTemplateContextFactory {
 		return company.getPortalURL(groupId);
 	}
 
-	private static Format _getUserDateTimeFormat(
+	private Format _getUserDateTimeFormat(
 		CalendarBooking calendarBooking, User user) {
 
 		TimeZone userTimeZone = user.getTimeZone();
@@ -288,11 +287,11 @@ public class NotificationTemplateContextFactory {
 			userTimeZone = TimeZone.getTimeZone(StringPool.UTC);
 		}
 
-		return FastDateFormatFactoryUtil.getDateTime(
+		return _fastDateFormatFactory.getDateTime(
 			user.getLocale(), userTimeZone);
 	}
 
-	private static String _getUserTimezoneDisplayName(User user) {
+	private String _getUserTimezoneDisplayName(User user) {
 		TimeZone userTimeZone = user.getTimeZone();
 
 		return userTimeZone.getDisplayName(
@@ -305,7 +304,12 @@ public class NotificationTemplateContextFactory {
 	private static LayoutLocalService _layoutLocalService;
 
 	@Reference
+	private FastDateFormatFactory _fastDateFormatFactory;
+
+	@Reference
 	private Http _http;
 
 	@Reference
-	private Portal _portal;}
+	private Portal _portal;
+
+}

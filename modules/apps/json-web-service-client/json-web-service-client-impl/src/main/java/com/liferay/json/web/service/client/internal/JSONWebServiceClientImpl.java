@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Igor Beslic
  */
 @Component(
-	factory = "com.liferay.petra.json.web.service.client.JSONWebServiceClient",
+	factory = "com.liferay.json.web.service.client.JSONWebServiceClient",
 	service = {}
 )
 public class JSONWebServiceClientImpl extends BaseJSONWebServiceClientImpl {

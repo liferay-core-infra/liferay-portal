@@ -18,7 +18,7 @@ import com.liferay.analytics.client.IdentityClient;
 import com.liferay.analytics.client.osgi.internal.configuration.IdentifyClientConfiguration;
 import com.liferay.analytics.data.binding.JSONObjectMapper;
 import com.liferay.analytics.model.IdentityContextMessage;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
+import com.liferay.json.web.service.client.JSONWebServiceClient;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -92,7 +92,7 @@ public class IdentityClientImpl implements IdentityClient {
 		IdentityClientImpl.class);
 
 	@Reference(
-		target = "(component.factory=com.liferay.petra.json.web.service.client.JSONWebServiceClient)"
+		target = "(component.factory=com.liferay.json.web.service.client.JSONWebServiceClient)"
 	)
 	private ComponentFactory _componentFactory;
 

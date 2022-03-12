@@ -28,9 +28,9 @@ import com.liferay.dynamic.data.mapping.data.provider.configuration.DDMDataProvi
 import com.liferay.dynamic.data.mapping.data.provider.settings.DDMDataProviderSettingsProvider;
 import com.liferay.dynamic.data.mapping.model.DDMDataProviderInstance;
 import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceService;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
+import com.liferay.json.web.service.client.JSONWebServiceClient;
+import com.liferay.json.web.service.client.JSONWebServiceClientFactory;
+import com.liferay.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;

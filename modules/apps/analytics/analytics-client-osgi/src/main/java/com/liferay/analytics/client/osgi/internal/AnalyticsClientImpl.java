@@ -20,7 +20,7 @@ import com.liferay.analytics.client.osgi.internal.configuration.AnalyticsClientC
 import com.liferay.analytics.data.binding.JSONObjectMapper;
 import com.liferay.analytics.model.AnalyticsEventsMessage;
 import com.liferay.analytics.model.IdentityContextMessage;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
+import com.liferay.json.web.service.client.JSONWebServiceClient;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -175,7 +175,7 @@ public class AnalyticsClientImpl implements AnalyticsClient {
 	private volatile AnalyticsClientConfiguration _analyticsClientConfiguration;
 
 	@Reference(
-		target = "(component.factory=com.liferay.petra.json.web.service.client.JSONWebServiceClient)"
+		target = "(component.factory=com.liferay.json.web.service.client.JSONWebServiceClient)"
 	)
 	private ComponentFactory _componentFactory;
 

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client;
+package com.liferay.json.web.service.client;
 
 /**
  * @author Ivica Cardic

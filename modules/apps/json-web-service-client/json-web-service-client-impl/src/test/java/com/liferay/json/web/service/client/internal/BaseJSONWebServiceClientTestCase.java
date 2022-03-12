@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client.internal;
+package com.liferay.json.web.service.client.internal;
 
 import com.liferay.petra.json.web.service.client.server.simulator.HTTPServerSimulator;
 import com.liferay.petra.json.web.service.client.server.simulator.constants.SimulatorConstants;
@@ -31,7 +31,7 @@ import org.apache.http.message.BasicNameValuePair;
 public abstract class BaseJSONWebServiceClientTestCase {
 
 	protected Map<String, Object> getBaseProperties() {
-		Map<String, Object> properties = new HashMap<String, Object>();
+		Map<String, Object> properties = new HashMap<>();
 
 		properties.put("hostName", HTTPServerSimulator.HOST_ADDRESS);
 		properties.put("hostPort", HTTPServerSimulator.HOST_PORT);

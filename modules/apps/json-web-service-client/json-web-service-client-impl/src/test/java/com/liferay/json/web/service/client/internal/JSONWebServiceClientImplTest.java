@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client.internal;
+package com.liferay.json.web.service.client.internal;
 
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 

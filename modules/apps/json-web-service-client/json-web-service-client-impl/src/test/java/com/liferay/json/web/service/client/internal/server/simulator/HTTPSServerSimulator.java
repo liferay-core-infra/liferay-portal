@@ -14,7 +14,7 @@
 
 package com.liferay.json.web.service.client.internal.server.simulator;
 
-import com.liferay.petra.json.web.service.client.keystore.KeyStoreLoader;
+import com.liferay.json.web.service.client.internal.keystore.KeyStoreLoader;
 
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsServer;

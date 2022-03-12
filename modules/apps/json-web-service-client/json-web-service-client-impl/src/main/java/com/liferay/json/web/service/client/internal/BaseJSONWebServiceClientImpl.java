@@ -20,10 +20,10 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
-import com.liferay.petra.json.web.service.client.internal.AsyncHttpClient;
-import com.liferay.petra.json.web.service.client.internal.IdleConnectionMonitorThread;
-import com.liferay.petra.json.web.service.client.internal.JSONWebServiceClientImpl;
-import com.liferay.petra.json.web.service.client.internal.X509TrustManagerImpl;
+import com.liferay.json.web.service.client.JSONWebServiceClient;
+import com.liferay.json.web.service.client.JSONWebServiceInvocationException;
+import com.liferay.json.web.service.client.JSONWebServiceSerializeException;
+import com.liferay.json.web.service.client.JSONWebServiceTransportException;
 
 import java.io.IOException;
 

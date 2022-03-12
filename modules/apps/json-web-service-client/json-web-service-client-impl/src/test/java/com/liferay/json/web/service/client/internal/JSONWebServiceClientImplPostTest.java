@@ -14,11 +14,11 @@
 
 package com.liferay.json.web.service.client.internal;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.petra.json.web.service.client.model.ResponseBody;
-import com.liferay.petra.json.web.service.client.server.simulator.HTTPServerSimulator;
-import com.liferay.petra.json.web.service.client.server.simulator.constants.SimulatorConstants;
+import com.liferay.json.web.service.client.JSONWebServiceInvocationException;
+import com.liferay.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.json.web.service.client.internal.model.ResponseBody;
+import com.liferay.json.web.service.client.internal.server.simulator.HTTPServerSimulator;
+import com.liferay.json.web.service.client.internal.server.simulator.constants.SimulatorConstants;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Collections;

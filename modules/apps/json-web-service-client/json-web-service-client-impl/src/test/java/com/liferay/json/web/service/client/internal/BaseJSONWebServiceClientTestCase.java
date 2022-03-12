@@ -14,8 +14,8 @@
 
 package com.liferay.json.web.service.client.internal;
 
-import com.liferay.petra.json.web.service.client.server.simulator.HTTPServerSimulator;
-import com.liferay.petra.json.web.service.client.server.simulator.constants.SimulatorConstants;
+import com.liferay.json.web.service.client.internal.server.simulator.HTTPServerSimulator;
+import com.liferay.json.web.service.client.internal.server.simulator.constants.SimulatorConstants;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.HashMap;

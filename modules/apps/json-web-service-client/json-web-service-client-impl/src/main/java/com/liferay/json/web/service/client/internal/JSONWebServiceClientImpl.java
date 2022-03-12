@@ -14,8 +14,7 @@
 
 package com.liferay.json.web.service.client.internal;
 
-import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.json.web.service.client.JSONWebServiceTransportException;
 
 import java.security.KeyStore;
 

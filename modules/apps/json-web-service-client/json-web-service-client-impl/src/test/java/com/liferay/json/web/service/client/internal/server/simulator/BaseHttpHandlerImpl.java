@@ -15,6 +15,7 @@
 package com.liferay.json.web.service.client.internal.server.simulator;
 
 import com.liferay.json.web.service.client.internal.server.simulator.constants.SimulatorConstants;
+import com.liferay.portal.kernel.util.GetterUtil;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -49,7 +50,7 @@ public class BaseHttpHandlerImpl implements HttpHandler {
 				SimulatorConstants.HTTP_PARAMETER_RESPOND_WITH_STATUS,
 				parameters)) {
 
-			responseHTTPStatus = Integer.parseInt(
+			responseHTTPStatus = GetterUtil.getInteger(
 				_getFirstValue(
 					SimulatorConstants.HTTP_PARAMETER_RESPOND_WITH_STATUS,
 					parameters));

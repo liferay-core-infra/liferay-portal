@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client.internal;
+package com.liferay.json.web.service.client.internal;
 
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -118,7 +118,7 @@ public class JSONWebServiceClientImpl extends BaseJSONWebServiceClientImpl {
 			return;
 		}
 
-		Map<String, String> headers = new HashMap<String, String>();
+		Map<String, String> headers = new HashMap<>();
 
 		for (String header : headersString.split(";")) {
 			String[] headerParts = header.split("=");

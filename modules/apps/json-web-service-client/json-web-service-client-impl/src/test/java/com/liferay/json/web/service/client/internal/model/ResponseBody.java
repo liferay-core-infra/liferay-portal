@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client.model;
+package com.liferay.json.web.service.client.internal.model;
 
 /**
  * @author Igor Beslic

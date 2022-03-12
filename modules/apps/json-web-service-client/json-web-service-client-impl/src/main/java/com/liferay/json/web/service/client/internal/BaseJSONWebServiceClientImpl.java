@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.web.service.client;
+package com.liferay.json.web.service.client.internal;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
@@ -218,7 +218,7 @@ public abstract class BaseJSONWebServiceClientImpl
 		throws JSONWebServiceInvocationException,
 			   JSONWebServiceTransportException {
 
-		Map<String, String> parameters = new HashMap<String, String>();
+		Map<String, String> parameters = new HashMap<>();
 
 		for (int i = 0; i < parametersArray.length; i += 2) {
 			parameters.put(parametersArray[i], parametersArray[i + 1]);
@@ -290,7 +290,7 @@ public abstract class BaseJSONWebServiceClientImpl
 		try {
 			TypeFactory typeFactory = _objectMapper.getTypeFactory();
 
-			List<V> list = new ArrayList<V>();
+			List<V> list = new ArrayList<>();
 
 			JavaType javaType = typeFactory.constructCollectionType(
 				list.getClass(), clazz);
@@ -1152,7 +1152,7 @@ public abstract class BaseJSONWebServiceClientImpl
 				"Expected even number of variable arguments");
 		}
 
-		List<NameValuePair> nameValuePairs = new LinkedList<NameValuePair>();
+		List<NameValuePair> nameValuePairs = new LinkedList<>();
 
 		for (int i = 0; i < keyValuesArray.length; i += 2) {
 			nameValuePairs.add(

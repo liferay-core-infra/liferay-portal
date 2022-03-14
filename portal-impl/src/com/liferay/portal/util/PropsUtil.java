@@ -39,8 +39,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -409,24 +407,19 @@ public class PropsUtil {
 			}
 		}
 
-		String path = URLCodec.decodeURL(url.getPath());
+		String decodedPath = URLCodec.decodeURL(url.getPath());
 
-		if (!path.startsWith(StringPool.SLASH)) {
-			path = StringPool.SLASH + path;
+		if (!decodedPath.startsWith(StringPool.SLASH)) {
+			decodedPath = StringPool.SLASH + decodedPath;
 		}
 
-		try {
-			URI uri = new URI("file:" + path);
+		Path path = Paths.get(decodedPath);
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("URI " + uri);
-			}
+		if (_log.isDebugEnabled()) {
+			_log.debug("Path " + path);
+		}
 
-			return Paths.get(uri);
-		}
-		catch (URISyntaxException uriSyntaxException) {
-			throw new SystemException(uriSyntaxException);
-		}
+		return path;
 	}
 
 	private static final String _CLASS_EXTENSION = ".class";

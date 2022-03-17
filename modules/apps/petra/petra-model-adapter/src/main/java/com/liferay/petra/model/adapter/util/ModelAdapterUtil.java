@@ -14,19 +14,15 @@
 
 package com.liferay.petra.model.adapter.util;
 
-import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.util.ComparatorAdapter;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorAdapter;
 import com.liferay.portal.kernel.util.ProxyUtil;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -55,34 +51,6 @@ public class ModelAdapterUtil {
 			new DelegateInvocationHandler(delegateObject));
 	}
 
-	public static <T> T[] adapt(Class<T> clazz, Object[] delegateObjects) {
-		T[] adaptedObjects = (T[])Array.newInstance(
-			clazz, delegateObjects.length);
-
-		for (int i = 0; i < delegateObjects.length; i++) {
-			adaptedObjects[i] = adapt(clazz, delegateObjects[i]);
-		}
-
-		return adaptedObjects;
-	}
-
-	public static <T, V> Comparator<T> adapt(
-		Class<V> clazz, Comparator<V> comparator) {
-
-		if (comparator == null) {
-			return null;
-		}
-
-		return new ComparatorAdapter<T, V>(comparator) {
-
-			@Override
-			public V adapt(T t) {
-				return ModelAdapterUtil.adapt(clazz, t);
-			}
-
-		};
-	}
-
 	public static <T, V> OrderByComparator<T> adapt(
 		Class<V> clazz, OrderByComparator<V> orderByComparator) {
 
@@ -98,24 +66,6 @@ public class ModelAdapterUtil {
 			}
 
 		};
-	}
-
-	public static <T, V> QueryDefinition<T> adapt(
-		Class<V> clazz, QueryDefinition<V> queryDefinition) {
-
-		if (queryDefinition == null) {
-			return null;
-		}
-
-		QueryDefinition<T> adaptedQueryDefinition = new QueryDefinition<>(
-			queryDefinition.getStatus(), queryDefinition.isExcludeStatus(),
-			queryDefinition.getOwnerUserId(), queryDefinition.isIncludeOwner(),
-			queryDefinition.getStart(), queryDefinition.getEnd(),
-			adapt(clazz, queryDefinition.getOrderByComparator()));
-
-		adaptedQueryDefinition.setAttributes(queryDefinition.getAttributes());
-
-		return adaptedQueryDefinition;
 	}
 
 	public static <T> T adapt(

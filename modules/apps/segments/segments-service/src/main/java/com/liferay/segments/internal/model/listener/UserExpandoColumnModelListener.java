@@ -179,7 +179,7 @@ public class UserExpandoColumnModelListener
 				expandoColumn);
 
 		String encodedIndexedFieldName = _expandoBridgeIndexer.encodeFieldName(
-			expandoColumn.getName(), indexType);
+			expandoColumn.getName(), expandoColumn.getType(), indexType);
 
 		EntityField entityField = null;
 
@@ -201,8 +201,7 @@ public class UserExpandoColumnModelListener
 					 ExpandoColumnConstants.FLOAT_ARRAY)) {
 
 			entityField = new DoubleEntityField(
-				encodedName,
-				locale -> encodedIndexedFieldName + "_Number_sortable");
+				encodedName, locale -> encodedIndexedFieldName);
 		}
 		else if ((expandoColumn.getType() == ExpandoColumnConstants.INTEGER) ||
 				 (expandoColumn.getType() ==
@@ -215,8 +214,7 @@ public class UserExpandoColumnModelListener
 					 ExpandoColumnConstants.SHORT_ARRAY)) {
 
 			entityField = new IntegerEntityField(
-				encodedName,
-				locale -> encodedIndexedFieldName + "_Number_sortable");
+				encodedName, locale -> encodedIndexedFieldName);
 		}
 		else if (expandoColumn.getType() ==
 					ExpandoColumnConstants.STRING_LOCALIZED) {

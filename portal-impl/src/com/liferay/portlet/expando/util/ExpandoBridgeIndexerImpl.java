@@ -41,6 +41,8 @@ import com.liferay.portlet.expando.model.impl.ExpandoValueImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
+
 /**
  * @author Raymond Augé
  */
@@ -130,15 +132,9 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 		}
 		else if (type == ExpandoColumnConstants.DOUBLE_ARRAY) {
 			if (!defaultValue) {
-				double[] doubleValues = expandoValue.getDoubleArray();
-
-				Double[] doubleArray = new Double[doubleValues.length];
-
-				for (int i = 0; i < doubleArray.length; i++) {
-					doubleArray[i] = new Double(doubleValues[i]);
-				}
-
-				document.addNumberSortable(fieldName, doubleArray);
+				document.addNumberSortable(
+					fieldName,
+					ArrayUtils.toObject(expandoValue.getDoubleArray()));
 			}
 			else {
 				document.addNumberSortable(fieldName, new Double[0]);
@@ -149,15 +145,9 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 		}
 		else if (type == ExpandoColumnConstants.FLOAT_ARRAY) {
 			if (!defaultValue) {
-				float[] floatValues = expandoValue.getFloatArray();
-
-				Float[] floatArray = new Float[floatValues.length];
-
-				for (int i = 0; i < floatArray.length; i++) {
-					floatArray[i] = new Float(floatValues[i]);
-				}
-
-				document.addNumberSortable(fieldName, floatArray);
+				document.addNumberSortable(
+					fieldName,
+					ArrayUtils.toObject(expandoValue.getFloatArray()));
 			}
 			else {
 				document.addNumberSortable(fieldName, new Float[0]);
@@ -177,18 +167,12 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 		}
 		else if (type == ExpandoColumnConstants.INTEGER_ARRAY) {
 			if (!defaultValue) {
-				int[] intergerValues = expandoValue.getIntegerArray();
-
-				Integer[] integerArray = new Integer[intergerValues.length];
-
-				for (int i = 0; i < integerArray.length; i++) {
-					integerArray[i] = new Integer(intergerValues[i]);
-				}
-
-				document.addNumberSortable(fieldName, integerArray);
+				document.addNumberSortable(
+					fieldName,
+					ArrayUtils.toObject(expandoValue.getIntegerArray()));
 			}
 			else {
-				document.addNumberSortable(fieldName, new Float[0]);
+				document.addNumberSortable(fieldName, new Integer[0]);
 			}
 		}
 		else if (type == ExpandoColumnConstants.LONG) {
@@ -196,7 +180,8 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 		}
 		else if (type == ExpandoColumnConstants.LONG_ARRAY) {
 			if (!defaultValue) {
-				document.addNumberSortable(fieldName,
+				document.addNumberSortable(
+					fieldName,
 					ArrayUtil.toLongArray(expandoValue.getLongArray()));
 			}
 			else {
@@ -204,8 +189,9 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 			}
 		}
 		else if (type == ExpandoColumnConstants.NUMBER) {
-			document.addNumberSortable(
-				fieldName, expandoValue.getNumber().longValue());
+			Number number = expandoValue.getNumber();
+
+			document.addNumberSortable(fieldName, number.longValue());
 		}
 		else if (type == ExpandoColumnConstants.NUMBER_ARRAY) {
 			if (!defaultValue) {
@@ -218,23 +204,24 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 			}
 		}
 		else if (type == ExpandoColumnConstants.SHORT) {
-			document.addNumberSortable(fieldName,
-				new Long(expandoValue.getShort()));
+			document.addNumberSortable(
+				fieldName, Integer.valueOf(expandoValue.getShort()));
 		}
 		else if (type == ExpandoColumnConstants.SHORT_ARRAY) {
 			if (!defaultValue) {
-				short[] shortValues = expandoValue.getShortArray();
+				Short[] shortArray = ArrayUtils.toObject(
+					expandoValue.getShortArray());
 
-				Long[] longArray = new Long[shortValues.length];
+				Integer[] integerArray = new Integer[shortArray.length];
 
-				for (int i = 0; i < longArray.length; i++) {
-					longArray[i] = new Long(shortValues[i]);
+				for (int i = 0; i < integerArray.length; i++) {
+					integerArray[i] = Integer.valueOf(shortArray[i]);
 				}
 
-				document.addNumberSortable(fieldName, longArray);
+				document.addNumberSortable(fieldName, integerArray);
 			}
 			else {
-				document.addNumberSortable(fieldName, new Long[0]);
+				document.addNumberSortable(fieldName, new Integer[0]);
 			}
 		}
 		else if (type == ExpandoColumnConstants.STRING) {

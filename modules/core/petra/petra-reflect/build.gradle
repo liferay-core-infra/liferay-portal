@@ -1,3 +1,7 @@
 dependencies {
+	compileOnly project(":core:petra:petra-concurrent")
+	compileOnly project(":core:petra:petra-lang")
+	compileOnly project(":core:petra:petra-memory")
+
 	testCompile project(":core:petra:petra-string")
 }

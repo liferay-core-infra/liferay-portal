@@ -64,7 +64,14 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 
 	@Override
 	public String encodeFieldName(String columnName, int indexType) {
-		StringBundler sb = new StringBundler(6);
+		return encodeFieldName(columnName, 0, indexType);
+	}
+
+	@Override
+	public String encodeFieldName(
+		String columnName, int columnType, int indexType) {
+
+		StringBundler sb = new StringBundler(7);
 
 		sb.append(FIELD_NAMESPACE);
 		sb.append(StringPool.DOUBLE_UNDERLINE);
@@ -77,6 +84,20 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 			StringUtil.toLowerCase(ExpandoTableConstants.DEFAULT_TABLE_NAME));
 		sb.append(StringPool.DOUBLE_UNDERLINE);
 		sb.append(columnName);
+
+		if ((columnType == ExpandoColumnConstants.DOUBLE) ||
+			(columnType == ExpandoColumnConstants.DOUBLE_ARRAY) ||
+			(columnType == ExpandoColumnConstants.FLOAT) ||
+			(columnType == ExpandoColumnConstants.FLOAT_ARRAY) ||
+			(columnType == ExpandoColumnConstants.INTEGER) ||
+			(columnType == ExpandoColumnConstants.INTEGER_ARRAY) ||
+			(columnType == ExpandoColumnConstants.LONG) ||
+			(columnType == ExpandoColumnConstants.LONG_ARRAY) ||
+			(columnType == ExpandoColumnConstants.SHORT) ||
+			(columnType == ExpandoColumnConstants.SHORT_ARRAY)) {
+
+			sb.append("_Number_sortable");
+		}
 
 		return sb.toString();
 	}

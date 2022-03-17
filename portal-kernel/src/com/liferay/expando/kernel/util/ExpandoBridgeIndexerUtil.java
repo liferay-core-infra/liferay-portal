@@ -32,6 +32,13 @@ public class ExpandoBridgeIndexerUtil {
 		return _expandoBridgeIndexer.encodeFieldName(columnName, indexType);
 	}
 
+	public static String encodeFieldName(
+		String columnName, int columnType, int indexType) {
+
+		return _expandoBridgeIndexer.encodeFieldName(
+			columnName, columnType, indexType);
+	}
+
 	public static ExpandoBridgeIndexer getExpandoBridgeIndexer() {
 		return _expandoBridgeIndexer;
 	}

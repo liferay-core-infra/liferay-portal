@@ -441,6 +441,17 @@ public class Sidecar {
 						methodVisitor.visitInsn(Opcodes.RETURN);
 					},
 					classLoader));
+
+			modifiedClasses.put(
+				"org.elasticsearch.bootstrap.Spawner",
+				ClassModificationUtil.getModifiedClassBytes(
+					"org.elasticsearch.bootstrap.Spawner",
+					"spawnNativeControllers",
+					methodVisitor -> {
+						methodVisitor.visitCode();
+						methodVisitor.visitInsn(Opcodes.RETURN);
+					},
+					classLoader));
 		}
 		catch (Exception exception) {
 			_log.error("Unable to modify classes", exception);

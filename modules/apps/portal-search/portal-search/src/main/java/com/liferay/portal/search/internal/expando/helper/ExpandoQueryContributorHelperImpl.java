@@ -116,10 +116,10 @@ public class ExpandoQueryContributorHelperImpl
 			return;
 		}
 
-		String fieldName = _getExpandoFieldName(
+		String encodedIndexedFieldName = _getExpandoEncodedIndexedFieldName(
 			attributeName, expandoBridge, searchContext.getLocale());
 
-		if (fieldName.endsWith("_geolocation")) {
+		if (encodedIndexedFieldName.endsWith("_geolocation")) {
 			return;
 		}
 
@@ -130,10 +130,10 @@ public class ExpandoQueryContributorHelperImpl
 		}
 
 		if (searchContext.isAndSearch()) {
-			booleanQuery.addRequiredTerm(fieldName, keywords, like);
+			booleanQuery.addRequiredTerm(encodedIndexedFieldName, keywords, like);
 		}
 		else {
-			_addTerm(booleanQuery, fieldName, keywords, like);
+			_addTerm(booleanQuery, encodedIndexedFieldName, keywords, like);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class ExpandoQueryContributorHelperImpl
 		}
 	}
 
-	private String _getExpandoFieldName(
+	private String _getExpandoEncodedIndexedFieldName(
 		String attributeName, ExpandoBridge expandoBridge, Locale locale) {
 
 		ExpandoColumn expandoColumn =
@@ -165,20 +165,20 @@ public class ExpandoQueryContributorHelperImpl
 		int indexType = GetterUtil.getInteger(
 			unicodeProperties.getProperty(ExpandoColumnConstants.INDEX_TYPE));
 
-		String fieldName = _expandoBridgeIndexer.encodeIndexedFieldName(
+		String encodedIndexedFieldName = _expandoBridgeIndexer.encodeIndexedFieldName(
 			attributeName, expandoColumn.getType(), indexType);
 
 		if (expandoColumn.getType() ==
 				ExpandoColumnConstants.STRING_LOCALIZED) {
 
-			fieldName = _getLocalizedName(fieldName, locale);
+			encodedIndexedFieldName = _getLocalizedName(encodedIndexedFieldName, locale);
 		}
 
 		if (expandoColumn.getType() == ExpandoColumnConstants.GEOLOCATION) {
-			fieldName = fieldName.concat("_geolocation");
+			encodedIndexedFieldName = encodedIndexedFieldName.concat("_geolocation");
 		}
 
-		return fieldName;
+		return encodedIndexedFieldName;
 	}
 
 	private Localization _getLocalization() {

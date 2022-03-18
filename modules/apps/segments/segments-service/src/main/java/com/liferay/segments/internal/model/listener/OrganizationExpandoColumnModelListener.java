@@ -172,8 +172,9 @@ public class OrganizationExpandoColumnModelListener
 
 		String encodedName = _encodeName(expandoColumn);
 
-		String encodedIndexedFieldName = _expandoBridgeIndexer.encodeFieldName(
-			expandoColumn.getName(), expandoColumn.getType(), indexType);
+		String encodedIndexedFieldName =
+			_expandoBridgeIndexer.encodeIndexedFieldName(
+				expandoColumn.getName(), expandoColumn.getType(), indexType);
 
 		EntityField entityField = null;
 

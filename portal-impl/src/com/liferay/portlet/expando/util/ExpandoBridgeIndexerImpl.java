@@ -64,11 +64,11 @@ public class ExpandoBridgeIndexerImpl implements ExpandoBridgeIndexer {
 
 	@Override
 	public String encodeFieldName(String columnName, int indexType) {
-		return encodeFieldName(columnName, 0, indexType);
+		return encodeIndexedFieldName(columnName, 0, indexType);
 	}
 
 	@Override
-	public String encodeFieldName(
+	public String encodeIndexedFieldName(
 		String columnName, int columnType, int indexType) {
 
 		StringBundler sb = new StringBundler(7);

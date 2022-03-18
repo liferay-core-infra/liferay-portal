@@ -32,10 +32,10 @@ public class ExpandoBridgeIndexerUtil {
 		return _expandoBridgeIndexer.encodeFieldName(columnName, indexType);
 	}
 
-	public static String encodeFieldName(
+	public static String encodeIndexedFieldName(
 		String columnName, int columnType, int indexType) {
 
-		return _expandoBridgeIndexer.encodeFieldName(
+		return _expandoBridgeIndexer.encodeIndexedFieldName(
 			columnName, columnType, indexType);
 	}
 

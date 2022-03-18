@@ -165,7 +165,7 @@ public class ExpandoQueryContributorHelperImpl
 		int indexType = GetterUtil.getInteger(
 			unicodeProperties.getProperty(ExpandoColumnConstants.INDEX_TYPE));
 
-		String fieldName = _expandoBridgeIndexer.encodeFieldName(
+		String fieldName = _expandoBridgeIndexer.encodeIndexedFieldName(
 			attributeName, expandoColumn.getType(), indexType);
 
 		if (expandoColumn.getType() ==

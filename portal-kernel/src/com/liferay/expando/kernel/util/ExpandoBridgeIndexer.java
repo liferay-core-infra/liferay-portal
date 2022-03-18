@@ -29,7 +29,7 @@ public interface ExpandoBridgeIndexer {
 
 	public String encodeFieldName(String columnName, int indexType);
 
-	public String encodeFieldName(
+	public String encodeIndexedFieldName(
 		String columnName, int columnType, int indexType);
 
 }

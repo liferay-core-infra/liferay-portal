@@ -16,8 +16,6 @@ package com.liferay.petra.model.adapter.util;
 
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.model.ModelWrapper;
-import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.OrderByComparatorAdapter;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -49,23 +47,6 @@ public class ModelAdapterUtil {
 		return (T)ProxyUtil.newProxyInstance(
 			clazz.getClassLoader(), new Class<?>[] {clazz, ModelWrapper.class},
 			new DelegateInvocationHandler(delegateObject));
-	}
-
-	public static <T, V> OrderByComparator<T> adapt(
-		Class<V> clazz, OrderByComparator<V> orderByComparator) {
-
-		if (orderByComparator == null) {
-			return null;
-		}
-
-		return new OrderByComparatorAdapter<T, V>(orderByComparator) {
-
-			@Override
-			public V adapt(T t) {
-				return ModelAdapterUtil.adapt(clazz, t);
-			}
-
-		};
 	}
 
 	public static <T> T adapt(

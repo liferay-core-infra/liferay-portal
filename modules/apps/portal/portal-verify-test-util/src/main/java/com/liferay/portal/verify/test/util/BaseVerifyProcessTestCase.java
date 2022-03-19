@@ -14,9 +14,9 @@
 
 package com.liferay.portal.verify.test.util;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.verify.VerifyException;
 import com.liferay.portal.verify.VerifyProcess;
@@ -48,7 +48,7 @@ public abstract class BaseVerifyProcessTestCase {
 		_dataSource = _infrastructureUtil.getDataSource();
 
 		_infrastructureUtil.setDataSource(
-			(DataSource)ProxyUtil.newProxyInstance(
+			(DataSource) ProxyUtil.newProxyInstance(
 				ClassLoader.getSystemClassLoader(),
 				new Class<?>[] {DataSource.class},
 				new DataSourceInvocationHandler(_dataSource)));

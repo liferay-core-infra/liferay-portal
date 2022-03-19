@@ -1,4 +1,6 @@
 dependencies {
+	compileOnly project(":core:petra:petra-reflect")
+
 	testIntegrationCompile group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
 }

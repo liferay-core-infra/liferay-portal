@@ -14,10 +14,10 @@
 
 package com.liferay.petra.model.adapter.util;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorAdapter;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

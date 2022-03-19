@@ -14,7 +14,7 @@
 
 package com.liferay.document.library.workflow;
 
-import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 

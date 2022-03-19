@@ -15,12 +15,12 @@
 package com.liferay.portal.spring.extender.internal.bean;
 
 import com.liferay.petra.reflect.AnnotationLocator;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.lang.reflect.InvocationHandler;

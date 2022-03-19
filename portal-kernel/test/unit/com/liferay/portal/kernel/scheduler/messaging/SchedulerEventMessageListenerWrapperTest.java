@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.scheduler.messaging;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.FutureTask;

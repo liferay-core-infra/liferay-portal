@@ -14,9 +14,9 @@
 
 package com.liferay.portal.kernel.model;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.ParameterizedType;

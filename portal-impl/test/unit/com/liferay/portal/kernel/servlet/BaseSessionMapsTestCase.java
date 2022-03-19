@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.servlet;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.util.PortalImpl;
 import com.liferay.util.SerializableUtil;
 

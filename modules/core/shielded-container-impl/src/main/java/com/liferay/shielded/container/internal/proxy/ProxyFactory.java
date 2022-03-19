@@ -25,7 +25,7 @@ public class ProxyFactory {
 	public ProxyFactory(ClassLoader classLoader) {
 		try {
 			Class<?> proxyUtilClass = classLoader.loadClass(
-				"com.liferay.portal.kernel.util.ProxyUtil");
+				"com.liferay.petra.reflect.ProxyUtil");
 
 			_newProxyInstanceMethod = proxyUtilClass.getMethod(
 				"newProxyInstance", ClassLoader.class, Class[].class,

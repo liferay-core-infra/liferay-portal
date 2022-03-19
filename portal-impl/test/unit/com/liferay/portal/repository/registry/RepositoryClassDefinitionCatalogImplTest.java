@@ -14,11 +14,11 @@
 
 package com.liferay.portal.repository.registry;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.repository.RepositoryConfigurationBuilder;
 import com.liferay.portal.kernel.repository.registry.RepositoryDefiner;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 

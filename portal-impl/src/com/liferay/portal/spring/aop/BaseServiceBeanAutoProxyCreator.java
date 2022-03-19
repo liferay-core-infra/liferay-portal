@@ -15,8 +15,8 @@
 package com.liferay.portal.spring.aop;
 
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.beans.PropertyDescriptor;
 

@@ -14,13 +14,13 @@
 
 package com.liferay.portal.template.freemarker.internal;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.SwappableSecurityManager;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.ReflectionUtilTestUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import freemarker.ext.beans.EnumerationModel;

@@ -14,10 +14,10 @@
 
 package com.liferay.portal.upload;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.InputStream;

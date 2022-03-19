@@ -15,11 +15,11 @@
 package com.liferay.portal.workflow.kaleo.runtime.internal.transaction;
 
 import com.liferay.petra.reflect.AnnotationLocator;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.transaction.Transactional;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

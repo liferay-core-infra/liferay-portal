@@ -1,4 +1,6 @@
 dependencies {
+	compileOnly project(":core:petra:petra-reflect")
+
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	testIntegrationCompile group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	testIntegrationCompile project(":apps:asset:asset-display-page-api")

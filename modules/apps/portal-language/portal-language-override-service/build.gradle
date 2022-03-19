@@ -13,6 +13,7 @@ dependencies {
 	compileOnly project(":apps:portal-language:portal-language-override-api")
 	compileOnly project(":apps:portal:portal-aop-api")
 	compileOnly project(":core:petra:petra-lang")
+	compileOnly project(":core:petra:petra-reflect")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
 }

@@ -14,9 +14,9 @@
 
 package com.liferay.portal.spring.aop;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.spring.aop.InvocationHandlerFactory;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 

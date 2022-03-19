@@ -14,9 +14,9 @@
 
 package com.liferay.portal.cache.internal.dao.orm;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

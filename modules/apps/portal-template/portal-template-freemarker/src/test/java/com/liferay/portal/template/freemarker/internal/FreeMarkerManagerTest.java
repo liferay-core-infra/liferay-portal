@@ -14,9 +14,9 @@
 
 package com.liferay.portal.template.freemarker.internal;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.template.freemarker.configuration.FreeMarkerEngineConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;

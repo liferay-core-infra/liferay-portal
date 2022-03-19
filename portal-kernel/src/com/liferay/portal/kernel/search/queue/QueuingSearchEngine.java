@@ -14,11 +14,11 @@
 
 package com.liferay.portal.kernel.search.queue;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.search.BaseSearchEngine;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.IndexWriter;
 import com.liferay.portal.kernel.search.dummy.DummyIndexSearcher;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.QueuingInvocationHandler;
 
 import java.lang.reflect.InvocationHandler;

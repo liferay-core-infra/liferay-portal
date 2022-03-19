@@ -14,11 +14,11 @@
 
 package com.liferay.portal.spring.transaction;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.internal.spring.transaction.ReadOnlyTransactionThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.transaction.TransactionLifecycleManager;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;

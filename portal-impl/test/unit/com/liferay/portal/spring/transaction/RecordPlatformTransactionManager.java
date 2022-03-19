@@ -14,7 +14,7 @@
 
 package com.liferay.portal.spring.transaction;
 
-import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

@@ -14,8 +14,8 @@
 
 package com.liferay.portal.dao.jdbc.spring;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

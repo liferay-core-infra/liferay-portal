@@ -1,4 +1,6 @@
 dependencies {
+	compileOnly project(":core:petra:petra-reflect")
+
 	testIntegrationCompile group: "com.liferay", name: "org.hibernate.core", version: "3.6.10.LIFERAY-PATCHED-6"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	testIntegrationCompile project(":apps:change-tracking:change-tracking-test-util")

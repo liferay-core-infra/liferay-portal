@@ -40,6 +40,7 @@ dependencies {
 	compileOnly group: "org.apache.ant", name: "ant", transitive: false, version: "1.10.11"
 	compileOnly group: "org.apache.maven", name: "maven-plugin-api", transitive: false, version: "3.0.4"
 	compileOnly group: "xerces", name: "xercesImpl", transitive: false, version: "2.12.1"
+	compileOnly project(":core:petra:petra-reflect")
 
 	xmltask group: "com.oopsconsultancy", name: "xmltask", version: "1.16"
 }

@@ -14,12 +14,12 @@
 
 package com.liferay.portal.bean;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.BeanLocatorException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

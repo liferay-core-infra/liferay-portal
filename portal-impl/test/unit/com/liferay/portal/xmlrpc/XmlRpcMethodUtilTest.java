@@ -14,8 +14,8 @@
 
 package com.liferay.portal.xmlrpc;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.xmlrpc.Method;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 

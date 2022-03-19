@@ -16,8 +16,8 @@ package com.liferay.portal.kernel.lar;
 
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.util.List;
 import java.util.Objects;

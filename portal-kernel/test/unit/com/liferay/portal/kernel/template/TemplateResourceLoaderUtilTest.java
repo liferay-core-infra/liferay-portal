@@ -14,9 +14,9 @@
 
 package com.liferay.portal.kernel.template;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.util.Objects;
 import java.util.Set;

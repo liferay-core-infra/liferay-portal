@@ -14,11 +14,11 @@
 
 package com.liferay.portal.configuration.metatype.util;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;

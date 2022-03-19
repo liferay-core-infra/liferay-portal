@@ -14,9 +14,9 @@
 
 package com.liferay.portlet.social.service.impl;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.social.kernel.model.SocialActivityInterpreter;
 

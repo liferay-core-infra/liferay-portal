@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.security.auth.AuthFailure;
 import com.liferay.portal.kernel.security.auth.Authenticator;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.security.auth.AuthPipeline;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 

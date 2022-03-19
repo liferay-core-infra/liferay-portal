@@ -16,12 +16,12 @@ package com.liferay.portal.configuration.module.configuration.internal;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.configuration.persistence.ConfigurationOverridePropertiesUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.settings.LocalizedValuesMap;
 import com.liferay.portal.kernel.settings.TypedSettings;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;

@@ -15,9 +15,9 @@
 package com.liferay.portal.osgi.web.wab.extender.internal.adapter;
 
 import com.liferay.petra.io.BigEndianCodec;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.FilterDefinition;

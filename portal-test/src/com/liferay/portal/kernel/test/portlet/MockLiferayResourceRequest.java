@@ -14,11 +14,11 @@
 
 package com.liferay.portal.kernel.test.portlet;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.portlet.LiferayResourceRequest;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portletmvc4spring.test.mock.web.portlet.MockResourceRequest;
 
 import java.io.IOException;

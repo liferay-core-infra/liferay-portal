@@ -14,8 +14,8 @@
 
 package com.liferay.portal.kernel.messaging.proxy;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.spring.aop.InvocationHandlerFactory;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

@@ -14,9 +14,9 @@
 
 package com.liferay.portal.security.audit.storage.internal;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.BaseModel;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.security.audit.AuditEvent;
 
 import java.lang.reflect.Method;

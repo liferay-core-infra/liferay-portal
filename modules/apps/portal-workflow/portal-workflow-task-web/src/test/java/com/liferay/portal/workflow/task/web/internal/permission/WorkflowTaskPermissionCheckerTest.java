@@ -15,6 +15,7 @@
 package com.liferay.portal.workflow.task.web.internal.permission;
 
 import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.service.UserNotificationEventLocalServiceWrappe
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
-import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;

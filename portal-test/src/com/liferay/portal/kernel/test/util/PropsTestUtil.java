@@ -14,9 +14,9 @@
 
 package com.liferay.portal.kernel.test.util;
 
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.ProxyUtil;
 
 import java.lang.reflect.Method;
 

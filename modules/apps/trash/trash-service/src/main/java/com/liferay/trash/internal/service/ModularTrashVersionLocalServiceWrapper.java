@@ -165,7 +165,7 @@ public class ModularTrashVersionLocalServiceWrapper
 	@Override
 	public List<TrashVersion> getTrashVersions(int start, int end) {
 		return ModelAdapterUtil.adapt(
-			TrashVersion.class,
+			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.getTrashVersions(start, end));
 	}
 
@@ -177,13 +177,14 @@ public class ModularTrashVersionLocalServiceWrapper
 	@Override
 	public List<TrashVersion> getVersions(long entryId) {
 		return ModelAdapterUtil.adapt(
-			TrashVersion.class, _trashVersionLocalService.getVersions(entryId));
+			_trashVersionModuleToKernelProxyProviderFunction,
+			_trashVersionLocalService.getVersions(entryId));
 	}
 
 	@Override
 	public List<TrashVersion> getVersions(long entryId, String className) {
 		return ModelAdapterUtil.adapt(
-			TrashVersion.class,
+			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.getVersions(entryId, className));
 	}
 

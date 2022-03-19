@@ -142,7 +142,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		long companyId, long userId, String className, long[] classPKs) {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getSubscriptions(
 				companyId, userId, className, classPKs));
 	}
@@ -152,7 +152,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		long companyId, String className, long classPK) {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getSubscriptions(
 				companyId, className, classPK));
 	}
@@ -189,7 +189,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		}
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getUserSubscriptions(
 				userId, start, end, subscriptionOrderByComparatorAdapter));
 	}
@@ -199,7 +199,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		long userId, String className) {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getUserSubscriptions(userId, className));
 	}
 

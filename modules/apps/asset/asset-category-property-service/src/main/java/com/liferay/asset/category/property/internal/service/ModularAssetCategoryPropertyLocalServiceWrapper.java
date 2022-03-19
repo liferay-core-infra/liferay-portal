@@ -73,14 +73,14 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 	@Override
 	public List<AssetCategoryProperty> getCategoryProperties() {
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.getCategoryProperties());
 	}
 
 	@Override
 	public List<AssetCategoryProperty> getCategoryProperties(long entryId) {
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.getCategoryProperties(entryId));
 	}
 
@@ -110,7 +110,7 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 		long groupId, String key) {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.getCategoryPropertyValues(
 				groupId, key));
 	}

@@ -208,13 +208,14 @@ public class ModularTrashEntryLocalServiceWrapper
 	@Override
 	public List<TrashEntry> getEntries(long groupId) {
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class, _trashEntryLocalService.getEntries(groupId));
+			_trashEntryModuleToKernelProxyProviderFunction,
+			_trashEntryLocalService.getEntries(groupId));
 	}
 
 	@Override
 	public List<TrashEntry> getEntries(long groupId, int start, int end) {
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(groupId, start, end));
 	}
 
@@ -224,7 +225,7 @@ public class ModularTrashEntryLocalServiceWrapper
 		OrderByComparator<TrashEntry> orderByComparator) {
 
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(
 				groupId, start, end,
 				new TrashEntryOrderByComparatorAdapter(orderByComparator)));
@@ -233,7 +234,7 @@ public class ModularTrashEntryLocalServiceWrapper
 	@Override
 	public List<TrashEntry> getEntries(long groupId, String className) {
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(groupId, className));
 	}
 
@@ -266,7 +267,7 @@ public class ModularTrashEntryLocalServiceWrapper
 	@Override
 	public List<TrashEntry> getTrashEntries(int start, int end) {
 		return ModelAdapterUtil.adapt(
-			TrashEntry.class,
+			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getTrashEntries(start, end));
 	}
 
@@ -302,7 +303,8 @@ public class ModularTrashEntryLocalServiceWrapper
 
 		return new BaseModelSearchResult<>(
 			ModelAdapterUtil.adapt(
-				TrashEntry.class, baseModelSearchResult.getBaseModels()),
+				_trashEntryModuleToKernelProxyProviderFunction,
+				baseModelSearchResult.getBaseModels()),
 			baseModelSearchResult.getLength());
 	}
 

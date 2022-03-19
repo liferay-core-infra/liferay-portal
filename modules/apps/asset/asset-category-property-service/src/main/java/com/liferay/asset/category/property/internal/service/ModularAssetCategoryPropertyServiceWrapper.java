@@ -60,7 +60,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 	@Override
 	public List<AssetCategoryProperty> getCategoryProperties(long entryId) {
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.getCategoryProperties(entryId));
 	}
 
@@ -69,7 +69,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 		long companyId, String key) {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.getCategoryPropertyValues(
 				companyId, key));
 	}

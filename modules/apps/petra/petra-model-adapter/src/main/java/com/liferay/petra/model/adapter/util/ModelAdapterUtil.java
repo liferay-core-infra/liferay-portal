@@ -29,11 +29,14 @@ import java.util.function.Function;
  */
 public class ModelAdapterUtil {
 
-	public static <T> List<T> adapt(Class<T> clazz, List<?> delegateObjects) {
+	public static <T> List<T> adapt(
+		Function<InvocationHandler, T> proxyProviderFunction,
+		List<?> delegateObjects) {
+
 		List<T> adaptedObjects = new ArrayList<>(delegateObjects.size());
 
 		for (Object delegateObject : delegateObjects) {
-			adaptedObjects.add(adapt(clazz, delegateObject));
+			adaptedObjects.add(adapt(proxyProviderFunction, delegateObject));
 		}
 
 		return adaptedObjects;

@@ -15,7 +15,6 @@
 package com.liferay.petra.model.adapter.util;
 
 import com.liferay.petra.reflect.ProxyUtil;
-import com.liferay.portal.kernel.model.ModelWrapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -44,16 +43,6 @@ public class ModelAdapterUtil {
 		}
 
 		return adaptedObjects;
-	}
-
-	public static <T> T adapt(Class<T> clazz, Object delegateObject) {
-		if (delegateObject == null) {
-			return null;
-		}
-
-		return (T)ProxyUtil.newProxyInstance(
-			clazz.getClassLoader(), new Class<?>[] {clazz, ModelWrapper.class},
-			new DelegateInvocationHandler(delegateObject));
 	}
 
 	public static <T> T adapt(

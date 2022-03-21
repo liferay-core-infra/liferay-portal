@@ -55,7 +55,7 @@ public class PortletDisplayTemplateManagerImpl
 		}
 
 		return ModelAdapterUtil.adapt(
-			_ddmTemplateProxyProviderFunction, ddmTemplate);
+			_ddmTemplateModuleToKernelProxyProviderFunction, ddmTemplate);
 	}
 
 	@Override
@@ -80,8 +80,7 @@ public class PortletDisplayTemplateManagerImpl
 		return _portletDisplayTemplate.renderDDMTemplate(
 			httpServletRequest, httpServletResponse,
 			ModelAdapterUtil.adapt(
-				com.liferay.dynamic.data.mapping.model.DDMTemplate.class,
-				ddmTemplate),
+				_ddmTemplateKernelToModuleProxyProviderFunction, ddmTemplate),
 			entries, contextObjects);
 	}
 
@@ -104,9 +103,16 @@ public class PortletDisplayTemplateManagerImpl
 		_portletDisplayTemplate = portletDisplayTemplate;
 	}
 
+	private static final Function
+		<InvocationHandler, com.liferay.dynamic.data.mapping.model.DDMTemplate>
+			_ddmTemplateKernelToModuleProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					com.liferay.dynamic.data.mapping.model.DDMTemplate.class,
+					ModelWrapper.class);
 	private static final Function<InvocationHandler, DDMTemplate>
-		_ddmTemplateProxyProviderFunction = ProxyUtil.getProxyProviderFunction(
-			DDMTemplate.class, ModelWrapper.class);
+		_ddmTemplateModuleToKernelProxyProviderFunction =
+			ProxyUtil.getProxyProviderFunction(
+				DDMTemplate.class, ModelWrapper.class);
 
 	private PortletDisplayTemplate _portletDisplayTemplate;
 

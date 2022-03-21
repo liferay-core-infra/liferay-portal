@@ -18,10 +18,15 @@ import com.liferay.asset.category.property.service.AssetCategoryPropertyService;
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyServiceWrapper;
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.List;
+import java.util.function.Function;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -39,7 +44,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.addCategoryProperty(
 				entryId, key, value));
 	}
@@ -80,7 +85,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.updateCategoryProperty(
 				userId, categoryPropertyId, key, value));
 	}
@@ -91,10 +96,15 @@ public class ModularAssetCategoryPropertyServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.updateCategoryProperty(
 				categoryPropertyId, key, value));
 	}
+
+	private static final Function<InvocationHandler, AssetCategoryProperty>
+		_assetCategoryPropertyModuleToKernelProxyProviderFunction =
+			ProxyUtil.getProxyProviderFunction(
+				AssetCategoryProperty.class, ModelWrapper.class);
 
 	@Reference
 	private AssetCategoryPropertyService _assetCategoryPropertyService;

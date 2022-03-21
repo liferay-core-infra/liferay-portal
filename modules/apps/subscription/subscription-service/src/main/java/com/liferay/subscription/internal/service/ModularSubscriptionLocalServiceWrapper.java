@@ -15,7 +15,9 @@
 package com.liferay.subscription.internal.service;
 
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.SubscriptionLocalServiceWrapper;
@@ -23,7 +25,10 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorAdapter;
 import com.liferay.subscription.service.SubscriptionLocalService;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.List;
+import java.util.function.Function;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,7 +46,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.addSubscription(
 				userId, groupId, className, classPK));
 	}
@@ -53,7 +58,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.addSubscription(
 				userId, groupId, className, classPK, frequency));
 	}
@@ -63,7 +68,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.deleteSubscription(subscriptionId));
 	}
 
@@ -80,7 +85,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.deleteSubscription(
 				subscription.getSubscriptionId()));
 	}
@@ -111,7 +116,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		long companyId, long userId, String className, long classPK) {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.fetchSubscription(
 				companyId, userId, className, classPK));
 	}
@@ -127,7 +132,7 @@ public class ModularSubscriptionLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			Subscription.class,
+			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getSubscription(
 				companyId, userId, className, classPK));
 	}
@@ -172,9 +177,12 @@ public class ModularSubscriptionLocalServiceWrapper
 
 					@Override
 					public Subscription adapt(
-						com.liferay.subscription.model.Subscription subscription) {
+						com.liferay.subscription.model.Subscription
+							subscription) {
 
-						return ModelAdapterUtil.adapt(Subscription.class, subscription);
+						return ModelAdapterUtil.adapt(
+							_subscriptionModuleToKernelProxyProviderFunction,
+							subscription);
 					}
 
 				};
@@ -215,6 +223,11 @@ public class ModularSubscriptionLocalServiceWrapper
 		return _subscriptionLocalService.isSubscribed(
 			companyId, userId, className, classPKs);
 	}
+
+	private static final Function<InvocationHandler, Subscription>
+		_subscriptionModuleToKernelProxyProviderFunction =
+			ProxyUtil.getProxyProviderFunction(
+				Subscription.class, ModelWrapper.class);
 
 	@Reference
 	private SubscriptionLocalService _subscriptionLocalService;

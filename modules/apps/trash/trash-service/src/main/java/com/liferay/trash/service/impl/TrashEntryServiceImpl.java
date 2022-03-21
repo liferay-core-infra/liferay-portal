@@ -15,6 +15,7 @@
 package com.liferay.trash.service.impl;
 
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -23,6 +24,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.TrashPermissionException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -42,8 +44,11 @@ import com.liferay.trash.model.TrashEntryList;
 import com.liferay.trash.model.impl.TrashEntryImpl;
 import com.liferay.trash.service.base.TrashEntryServiceBaseImpl;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -376,13 +381,13 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 		}
 
 		TrashEntry trashEntry = ModelAdapterUtil.adapt(
-			TrashEntry.class, trashHandler.getTrashEntry(classPK));
+			_trashEntryKernelToModuleProxyProviderFunction,
+			trashHandler.getTrashEntry(classPK));
 
 		if (trashEntry.isTrashEntry(className, classPK)) {
 			trashHandler.checkRestorableEntry(
 				ModelAdapterUtil.adapt(
-					com.liferay.trash.kernel.model.TrashEntry.class,
-					trashEntry),
+					_trashEntryModuleToKernelProxyProviderFunction, trashEntry),
 				destinationContainerModelId, StringPool.BLANK);
 		}
 		else {
@@ -471,7 +476,7 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 
 			trashHandler.checkRestorableEntry(
 				ModelAdapterUtil.adapt(
-					com.liferay.trash.kernel.model.TrashEntry.class, entry),
+					_trashEntryModuleToKernelProxyProviderFunction, entry),
 				TrashEntryConstants.DEFAULT_CONTAINER_ID, null);
 		}
 		else if (name != null) {
@@ -485,7 +490,7 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 
 			trashHandler.checkRestorableEntry(
 				ModelAdapterUtil.adapt(
-					com.liferay.trash.kernel.model.TrashEntry.class, entry),
+					_trashEntryModuleToKernelProxyProviderFunction, entry),
 				TrashEntryConstants.DEFAULT_CONTAINER_ID, name);
 
 			trashHandler.updateTitle(entry.getClassPK(), name);
@@ -564,6 +569,17 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TrashEntryServiceImpl.class);
+
+	private static final Function<InvocationHandler, TrashEntry>
+		_trashEntryKernelToModuleProxyProviderFunction =
+			ProxyUtil.getProxyProviderFunction(
+				TrashEntry.class, ModelWrapper.class);
+	private static final Function
+		<InvocationHandler, com.liferay.trash.kernel.model.TrashEntry>
+			_trashEntryModuleToKernelProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					com.liferay.trash.kernel.model.TrashEntry.class,
+					ModelWrapper.class);
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

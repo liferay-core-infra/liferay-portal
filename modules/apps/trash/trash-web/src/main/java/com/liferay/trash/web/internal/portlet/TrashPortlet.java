@@ -16,7 +16,9 @@ package com.liferay.trash.web.internal.portlet;
 
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.TrashPermissionException;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -42,8 +44,11 @@ import com.liferay.trash.web.internal.util.TrashUndoUtil;
 
 import java.io.IOException;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -328,8 +333,7 @@ public class TrashPortlet extends MVCPortlet {
 
 		try {
 			trashHandler.checkRestorableEntry(
-				ModelAdapterUtil.adapt(
-					com.liferay.trash.kernel.model.TrashEntry.class, entry),
+				ModelAdapterUtil.adapt(_trashEntryProxyProviderFunction, entry),
 				TrashEntryConstants.DEFAULT_CONTAINER_ID, newName);
 		}
 		catch (RestoreEntryException restoreEntryException) {
@@ -361,6 +365,13 @@ public class TrashPortlet extends MVCPortlet {
 				restoreEntryException.getCause());
 		}
 	}
+
+	private static final Function
+		<InvocationHandler, com.liferay.trash.kernel.model.TrashEntry>
+			_trashEntryProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					com.liferay.trash.kernel.model.TrashEntry.class,
+					ModelWrapper.class);
 
 	@Reference
 	private Portal _portal;

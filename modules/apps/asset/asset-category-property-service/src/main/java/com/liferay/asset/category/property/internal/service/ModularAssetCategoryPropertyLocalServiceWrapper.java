@@ -18,10 +18,15 @@ import com.liferay.asset.category.property.service.AssetCategoryPropertyLocalSer
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyLocalServiceWrapper;
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
+import java.lang.reflect.InvocationHandler;
+
 import java.util.List;
+import java.util.function.Function;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -39,7 +44,7 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.addCategoryProperty(
 				userId, categoryId, key, value));
 	}
@@ -53,8 +58,7 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 	public void deleteCategoryProperty(AssetCategoryProperty categoryProperty) {
 		_assetCategoryPropertyLocalService.deleteCategoryProperty(
 			ModelAdapterUtil.adapt(
-				com.liferay.asset.category.property.model.AssetCategoryProperty.
-					class,
+				_assetCategoryPropertyKernelToModuleProxyProviderFunction,
 				categoryProperty));
 	}
 
@@ -85,7 +89,7 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.getCategoryProperty(
 				categoryPropertyId));
 	}
@@ -96,7 +100,7 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.getCategoryProperty(
 				categoryId, key));
 	}
@@ -122,7 +126,7 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.updateCategoryProperty(
 				userId, categoryPropertyId, key, value));
 	}
@@ -133,10 +137,23 @@ public class ModularAssetCategoryPropertyLocalServiceWrapper
 		throws PortalException {
 
 		return ModelAdapterUtil.adapt(
-			AssetCategoryProperty.class,
+			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyLocalService.updateCategoryProperty(
 				categoryPropertyId, key, value));
 	}
+
+	private static final Function
+		<InvocationHandler,
+		 com.liferay.asset.category.property.model.AssetCategoryProperty>
+			_assetCategoryPropertyKernelToModuleProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					com.liferay.asset.category.property.model.
+						AssetCategoryProperty.class,
+					ModelWrapper.class);
+	private static final Function<InvocationHandler, AssetCategoryProperty>
+		_assetCategoryPropertyModuleToKernelProxyProviderFunction =
+			ProxyUtil.getProxyProviderFunction(
+				AssetCategoryProperty.class, ModelWrapper.class);
 
 	@Reference
 	private AssetCategoryPropertyLocalService

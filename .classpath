@@ -78,6 +78,8 @@
 	<classpathentry kind="lib" path="lib/development/jbi_rt.jar"/>
 	<classpathentry kind="lib" path="lib/development/jhighlight.jar"/>
 	<classpathentry kind="lib" path="lib/development/jndi.jar"/>
+	<classpathentry kind="lib" path="lib/development/jna-platform.jar"/>
+	<classpathentry kind="lib" path="lib/development/jna.jar"/>
 	<classpathentry kind="lib" path="lib/development/jsch.jar"/>
 	<classpathentry kind="lib" path="lib/development/jserrorcollector.jar"/>
 	<classpathentry kind="lib" path="lib/development/jsonassert.jar"/>
@@ -96,6 +98,7 @@
 	<classpathentry kind="lib" path="lib/development/osgi-service-cm.jar"/>
 	<classpathentry kind="lib" path="lib/development/osgi-service-component.jar"/>
 	<classpathentry kind="lib" path="lib/development/osgi-service-log.jar"/>
+	<classpathentry kind="lib" path="lib/development/oshi-core.jar"/>
 	<classpathentry kind="lib" path="lib/development/p6spy.jar"/>
 	<classpathentry kind="lib" path="lib/development/portletmvc4spring-test.jar"/>
 	<classpathentry kind="lib" path="lib/development/postgresql.jar"/>
@@ -110,7 +113,6 @@
 	<classpathentry kind="lib" path="lib/development/saxpath.jar"/>
 	<classpathentry kind="lib" path="lib/development/sdk-addon-api-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/development/servlet-api.jar"/>
-	<classpathentry kind="lib" path="lib/development/slf4j-simple.jar"/>
 	<classpathentry kind="lib" path="lib/development/sling-commons-osgi.jar"/>
 	<classpathentry kind="lib" path="lib/development/sling-testing-osgi-mock-core.jar"/>
 	<classpathentry kind="lib" path="lib/development/smtp.jar"/>

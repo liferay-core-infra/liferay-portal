@@ -37,6 +37,8 @@
 /development/jaxb-api.jar
 /development/jbi_rt.jar
 /development/jhighlight.jar
+/development/jna-platform.jar
+/development/jna.jar
 /development/jndi.jar
 /development/jsch.jar
 /development/jserrorcollector.jar
@@ -59,6 +61,7 @@
 /development/osgi-service-cm.jar
 /development/osgi-service-component.jar
 /development/osgi-service-log.jar
+/development/oshi-core.jar
 /development/p6spy.jar
 /development/portletmvc4spring-test.jar
 /development/postgresql.jar
@@ -73,7 +76,6 @@
 /development/saxpath.jar
 /development/sdk-addon-api-0.2.jar
 /development/servlet-api.jar
-/development/slf4j-simple.jar
 /development/sling-commons-osgi.jar
 /development/sling-testing-osgi-mock-core.jar
 /development/smtp.jar

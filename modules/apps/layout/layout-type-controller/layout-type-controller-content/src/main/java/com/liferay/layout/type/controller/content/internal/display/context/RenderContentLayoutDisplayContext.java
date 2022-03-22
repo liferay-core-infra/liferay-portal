@@ -31,8 +31,10 @@ import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,11 +63,8 @@ public class RenderContentLayoutDisplayContext {
 			_httpServletResponse, unsyncStringWriter);
 
 		for (Portlet portlet : _getPortlets()) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 			try {
-				PortletJSONUtil.populatePortletJSONObject(
-					_httpServletRequest, StringPool.BLANK, portlet, jsonObject);
+				JSONObject jsonObject = _populatePortletJSONObject(portlet);
 
 				PortletJSONUtil.writeFooterPaths(
 					pipingServletResponse, jsonObject);
@@ -88,11 +87,8 @@ public class RenderContentLayoutDisplayContext {
 			_httpServletResponse, unsyncStringWriter);
 
 		for (Portlet portlet : _getPortlets()) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 			try {
-				PortletJSONUtil.populatePortletJSONObject(
-					_httpServletRequest, StringPool.BLANK, portlet, jsonObject);
+				JSONObject jsonObject = _populatePortletJSONObject(portlet);
 
 				PortletJSONUtil.writeHeaderPaths(
 					pipingServletResponse, jsonObject);
@@ -141,11 +137,34 @@ public class RenderContentLayoutDisplayContext {
 		return _portlets;
 	}
 
+	private JSONObject _populatePortletJSONObject(Portlet portlet)
+		throws Exception {
+
+		String portletId = portlet.getPortletId();
+
+		JSONObject portletIdJSONObject = _portletIdJSONObjects.get(portletId);
+
+		if (portletIdJSONObject == null) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			PortletJSONUtil.populatePortletJSONObject(
+				_httpServletRequest, StringPool.BLANK, portlet, jsonObject);
+
+			_portletIdJSONObjects.put(portletId, jsonObject);
+
+			return jsonObject;
+		}
+
+		return portletIdJSONObject;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		RenderContentLayoutDisplayContext.class);
 
 	private final HttpServletRequest _httpServletRequest;
 	private final HttpServletResponse _httpServletResponse;
+	private final Map<String, JSONObject> _portletIdJSONObjects =
+		new HashMap<>();
 	private List<Portlet> _portlets;
 	private final ThemeDisplay _themeDisplay;
 

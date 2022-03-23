@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.zip;
 
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.FileUtil;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,15 +35,31 @@ public interface ZipWriter {
 	public void addEntry(String name, InputStream inputStream)
 		throws IOException;
 
-	public void addEntry(String name, String s) throws IOException;
+	public default void addEntry(String name, String s) throws IOException {
+		if (s == null) {
+			return;
+		}
 
-	public void addEntry(String name, StringBuilder sb) throws IOException;
+		addEntry(name, s.getBytes(StringPool.UTF8));
+	}
+
+	public default void addEntry(String name, StringBuilder sb)
+		throws IOException {
+
+		if (sb == null) {
+			return;
+		}
+
+		addEntry(name, sb.toString());
+	}
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
 	 */
 	@Deprecated
-	public byte[] finish() throws IOException;
+	public default byte[] finish() throws IOException {
+		return FileUtil.getBytes(getFile());
+	}
 
 	public File getFile();
 
@@ -48,12 +67,17 @@ public interface ZipWriter {
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
 	 */
 	@Deprecated
-	public String getPath();
+	public default String getPath() {
+		File file = getFile();
+
+		return file.getPath();
+	}
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
 	 */
 	@Deprecated
-	public void umount();
+	public default void umount() {
+	}
 
 }

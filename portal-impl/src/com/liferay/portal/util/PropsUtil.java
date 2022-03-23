@@ -21,19 +21,27 @@ import com.liferay.portal.configuration.ConfigurationImpl;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -327,20 +335,77 @@ public class PropsUtil {
 		return defaultLiferayHome;
 	}
 
-	private static String _getLibDir(Class<?> clazz) {
-		String path = ClassUtil.getParentPath(
-			clazz.getClassLoader(), clazz.getName());
+	private static String _getLibDir(
+		ClassLoader classLoader, String className) {
 
-		int pos = path.lastIndexOf(".jar!");
-
-		if (pos == -1) {
-			pos = path.lastIndexOf(".jar/");
+		if (_log.isDebugEnabled()) {
+			_log.debug("Class name " + className);
 		}
 
-		pos = path.lastIndexOf(CharPool.SLASH, pos);
+		if (!className.endsWith(_CLASS_EXTENSION)) {
+			className += _CLASS_EXTENSION;
+		}
 
-		return path.substring(0, pos + 1);
+		className = StringUtil.replace(
+			className, CharPool.PERIOD, CharPool.SLASH);
+
+		className = StringUtil.replace(className, "/class", _CLASS_EXTENSION);
+
+		URL url = classLoader.getResource(className);
+
+		Path path = _getPathFromURL(url);
+
+		String parentPath = StringUtil.replace(
+			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
+
+		int pos = parentPath.indexOf(className);
+
+		parentPath = parentPath.substring(0, pos);
+
+		pos = parentPath.lastIndexOf(".jar!");
+
+		if (pos == -1) {
+			pos = parentPath.lastIndexOf(".jar/");
+		}
+
+		pos = parentPath.lastIndexOf(CharPool.SLASH, pos);
+
+		return parentPath.substring(0, pos + 1);
 	}
+
+	private static Path _getPathFromURL(URL url) {
+		String urlProtocol = url.getProtocol();
+
+		if (urlProtocol.equals("jar") || urlProtocol.equals("wsjar")) {
+			try {
+				url = new URL(url.getPath());
+			}
+			catch (MalformedURLException malformedURLException) {
+				throw new SystemException(malformedURLException);
+			}
+		}
+
+		String path = url.getPath();
+
+		if (!path.startsWith(StringPool.SLASH)) {
+			path = StringPool.SLASH + path;
+		}
+
+		try {
+			URI uri = new URI("file:" + path);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("URI " + uri);
+			}
+
+			return Paths.get(uri);
+		}
+		catch (URISyntaxException uriSyntaxException) {
+			throw new SystemException(uriSyntaxException);
+		}
+	}
+
+	private static final String _CLASS_EXTENSION = ".class";
 
 	private static final Log _log = LogFactoryUtil.getLog(PropsUtil.class);
 
@@ -356,7 +421,8 @@ public class PropsUtil {
 
 		// Global shared lib directory
 
-		String globalSharedLibDir = _getLibDir(Servlet.class);
+		String globalSharedLibDir = _getLibDir(
+			Servlet.class.getClassLoader(), Servlet.class.getName());
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Global shared lib directory " + globalSharedLibDir);
@@ -367,7 +433,8 @@ public class PropsUtil {
 
 		// Portal shielded container lib directory
 
-		String portalShieldedContainerLibDir = _getLibDir(PropsUtil.class);
+		String portalShieldedContainerLibDir = _getLibDir(
+			PropsUtil.class.getClassLoader(), PropsUtil.class.getName());
 
 		String portalShieldedContainerLibDirProperty = System.getProperty(
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.zip;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.zip.ZipWriter;
 import com.liferay.portal.kernel.zip.ZipWriterFactory;
 
@@ -26,12 +27,24 @@ public class ZipWriterFactoryImpl implements ZipWriterFactory {
 
 	@Override
 	public ZipWriter getZipWriter() {
-		return new ZipWriterImpl();
+		ZipWriter zipWriter = new ZipWriterImpl();
+
+		if (ExportImportThreadLocal.isExportInProcess()) {
+			zipWriter = new LarZipWriterWrapper(zipWriter);
+		}
+
+		return zipWriter;
 	}
 
 	@Override
 	public ZipWriter getZipWriter(File file) {
-		return new ZipWriterImpl(file);
+		ZipWriter zipWriter = new ZipWriterImpl(file);
+
+		if (ExportImportThreadLocal.isExportInProcess()) {
+			zipWriter = new LarZipWriterWrapper(zipWriter);
+		}
+
+		return zipWriter;
 	}
 
 }

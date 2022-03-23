@@ -18,7 +18,6 @@ import com.liferay.petra.memory.DeleteFileFinalizeAction;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.kernel.zip.ZipWriter;
@@ -32,17 +31,13 @@ import java.net.URI;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 
 import java.util.Collections;
 
 /**
  * @author Raymond Augé
  */
-public class ZipWriterImpl implements ZipWriter {
+public class ZipWriterImpl extends BaseZipWriter implements ZipWriter {
 
 	public ZipWriterImpl() {
 		this(
@@ -80,17 +75,7 @@ public class ZipWriterImpl implements ZipWriter {
 		try (FileSystem fileSystem = FileSystems.newFileSystem(
 				_uri, Collections.emptyMap())) {
 
-			Path path = fileSystem.getPath(name);
-
-			Path parentPath = path.getParent();
-
-			if (parentPath != null) {
-				Files.createDirectories(parentPath);
-			}
-
-			Files.write(
-				path, bytes, StandardOpenOption.CREATE,
-				StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+			addEntry(fileSystem.getPath(name), bytes);
 		}
 	}
 
@@ -105,65 +90,13 @@ public class ZipWriterImpl implements ZipWriter {
 		try (FileSystem fileSystem = FileSystems.newFileSystem(
 				_uri, Collections.emptyMap())) {
 
-			Path path = fileSystem.getPath(name);
-
-			Path parentPath = path.getParent();
-
-			if (parentPath != null) {
-				Files.createDirectories(parentPath);
-			}
-
-			Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+			addEntry(fileSystem.getPath(name), inputStream);
 		}
-	}
-
-	@Override
-	public void addEntry(String name, String s) throws IOException {
-		if (s == null) {
-			return;
-		}
-
-		addEntry(name, s.getBytes(StringPool.UTF8));
-	}
-
-	@Override
-	public void addEntry(String name, StringBuilder sb) throws IOException {
-		if (sb == null) {
-			return;
-		}
-
-		addEntry(name, sb.toString());
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
-	 */
-	@Deprecated
-	@Override
-	public byte[] finish() throws IOException {
-		return FileUtil.getBytes(getFile());
 	}
 
 	@Override
 	public File getFile() {
 		return _file;
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
-	 */
-	@Deprecated
-	@Override
-	public String getPath() {
-		return _file.getPath();
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getFile()}
-	 */
-	@Deprecated
-	@Override
-	public void umount() {
 	}
 
 	private final File _file;

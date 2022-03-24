@@ -30,9 +30,17 @@ FolderActionDisplayContext folderActionDisplayContext = new FolderActionDisplayC
 	>
 		<c:if test="<%= folderActionDisplayContext.isDownloadFolderActionVisible() %>">
 			<liferay-ui:icon
-				message="download"
+				message='<%= LanguageUtil.format(locale, "download-as-x", ".zip") %>'
 				method="get"
-				url="<%= folderActionDisplayContext.getDownloadFolderURL() %>"
+				url="<%= folderActionDisplayContext.getDownloadFolderURL(ZipWriterFactory.FORMAT_ZIP) %>"
+			/>
+		</c:if>
+
+		<c:if test="<%= folderActionDisplayContext.isDownloadFolderActionVisible() %>">
+			<liferay-ui:icon
+				message='<%= LanguageUtil.format(locale, "download-as-x", ".7z") %>'
+				method="get"
+				url="<%= folderActionDisplayContext.getDownloadFolderURL(ZipWriterFactory.FORMAT_7ZIP) %>"
 			/>
 		</c:if>
 

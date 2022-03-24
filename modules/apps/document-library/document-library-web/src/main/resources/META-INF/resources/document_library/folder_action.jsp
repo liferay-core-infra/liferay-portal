@@ -36,6 +36,14 @@ FolderActionDisplayContext folderActionDisplayContext = new FolderActionDisplayC
 			/>
 		</c:if>
 
+		<c:if test="<%= folderActionDisplayContext.isDownloadFolderActionVisible() %>">
+			<liferay-ui:icon
+				message='<%= LanguageUtil.format(locale, "download-as-x", ".7z") %>'
+				method="get"
+				url="<%= folderActionDisplayContext.getDownloadFolderSevenZipURL() %>"
+			/>
+		</c:if>
+
 		<c:if test="<%= folderActionDisplayContext.isEditFolderActionVisible() %>">
 			<liferay-ui:icon
 				message="edit"

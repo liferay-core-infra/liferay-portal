@@ -207,18 +207,12 @@ public class FolderActionDisplayContext {
 		return portletURL.toString();
 	}
 
+	public String getDownloadFolderSevenZipURL() {
+		return _getDownloadFolderURL("7z");
+	}
+
 	public String getDownloadFolderURL() {
-		LiferayPortletResponse liferayPortletResponse =
-			_dlRequestHelper.getLiferayPortletResponse();
-
-		ResourceURL resourceURL = liferayPortletResponse.createResourceURL();
-
-		resourceURL.setParameter("folderId", String.valueOf(_getFolderId()));
-		resourceURL.setParameter(
-			"repositoryId", String.valueOf(_getRepositoryId()));
-		resourceURL.setResourceID("/document_library/download_folder");
-
-		return resourceURL.toString();
+		return _getDownloadFolderURL("zip");
 	}
 
 	public String getEditFolderURL() {
@@ -658,6 +652,21 @@ public class FolderActionDisplayContext {
 		}
 
 		return Constants.DELETE;
+	}
+
+	private String _getDownloadFolderURL(String format) {
+		LiferayPortletResponse liferayPortletResponse =
+			_dlRequestHelper.getLiferayPortletResponse();
+
+		ResourceURL resourceURL = liferayPortletResponse.createResourceURL();
+
+		resourceURL.setParameter("folderId", String.valueOf(_getFolderId()));
+		resourceURL.setParameter(
+			"repositoryId", String.valueOf(_getRepositoryId()));
+		resourceURL.setParameter("format", format);
+		resourceURL.setResourceID("/document_library/download_folder");
+
+		return resourceURL.toString();
 	}
 
 	private Folder _getFolder() {

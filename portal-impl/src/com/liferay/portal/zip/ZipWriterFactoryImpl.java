@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.zip.ZipWriterFactory;
 
 import java.io.File;
 
+import java.util.Objects;
+
 /**
  * @author Raymond Augé
  */
@@ -27,7 +29,12 @@ public class ZipWriterFactoryImpl implements ZipWriterFactory {
 
 	@Override
 	public ZipWriter getZipWriter() {
-		ZipWriter zipWriter = new ZipWriterImpl();
+		return getZipWriter(FORMAT_ZIP);
+	}
+
+	@Override
+	public ZipWriter getZipWriter(File file) {
+		ZipWriter zipWriter = new ZipWriterImpl(file);
 
 		if (ExportImportThreadLocal.isExportInProcess()) {
 			zipWriter = new LarZipWriterWrapper(zipWriter);
@@ -37,8 +44,19 @@ public class ZipWriterFactoryImpl implements ZipWriterFactory {
 	}
 
 	@Override
-	public ZipWriter getZipWriter(File file) {
-		ZipWriter zipWriter = new ZipWriterImpl(file);
+	public ZipWriter getZipWriter(String format) {
+		ZipWriter zipWriter = null;
+
+		if (Objects.equals(format, FORMAT_7ZIP)) {
+			zipWriter = new SevenZipWriterImpl();
+		}
+		else if (Objects.equals(format, FORMAT_ZIP)) {
+			zipWriter = new ZipWriterImpl();
+		}
+		else {
+			throw new IllegalArgumentException(
+				"Unrecognized format: " + format);
+		}
 
 		if (ExportImportThreadLocal.isExportInProcess()) {
 			zipWriter = new LarZipWriterWrapper(zipWriter);

@@ -24,8 +24,14 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface ZipWriterFactory {
 
+	public static final String FORMAT_7ZIP = "7z";
+
+	public static final String FORMAT_ZIP = "zip";
+
 	public ZipWriter getZipWriter();
 
 	public ZipWriter getZipWriter(File file);
+
+	public ZipWriter getZipWriter(String format);
 
 }

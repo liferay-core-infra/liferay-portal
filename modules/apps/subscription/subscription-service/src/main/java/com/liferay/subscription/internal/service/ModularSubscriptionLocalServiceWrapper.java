@@ -14,7 +14,7 @@
 
 package com.liferay.subscription.internal.service;
 
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -45,7 +45,7 @@ public class ModularSubscriptionLocalServiceWrapper
 			long userId, long groupId, String className, long classPK)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.addSubscription(
 				userId, groupId, className, classPK));
@@ -57,7 +57,7 @@ public class ModularSubscriptionLocalServiceWrapper
 			String frequency)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.addSubscription(
 				userId, groupId, className, classPK, frequency));
@@ -67,7 +67,7 @@ public class ModularSubscriptionLocalServiceWrapper
 	public Subscription deleteSubscription(long subscriptionId)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.deleteSubscription(subscriptionId));
 	}
@@ -84,7 +84,7 @@ public class ModularSubscriptionLocalServiceWrapper
 	public Subscription deleteSubscription(Subscription subscription)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.deleteSubscription(
 				subscription.getSubscriptionId()));
@@ -115,7 +115,7 @@ public class ModularSubscriptionLocalServiceWrapper
 	public Subscription fetchSubscription(
 		long companyId, long userId, String className, long classPK) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.fetchSubscription(
 				companyId, userId, className, classPK));
@@ -131,7 +131,7 @@ public class ModularSubscriptionLocalServiceWrapper
 			long companyId, long userId, String className, long classPK)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getSubscription(
 				companyId, userId, className, classPK));
@@ -141,7 +141,7 @@ public class ModularSubscriptionLocalServiceWrapper
 	public List<Subscription> getSubscriptions(
 		long companyId, long userId, String className, long[] classPKs) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getSubscriptions(
 				companyId, userId, className, classPKs));
@@ -151,7 +151,7 @@ public class ModularSubscriptionLocalServiceWrapper
 	public List<Subscription> getSubscriptions(
 		long companyId, String className, long classPK) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getSubscriptions(
 				companyId, className, classPK));
@@ -180,7 +180,7 @@ public class ModularSubscriptionLocalServiceWrapper
 						com.liferay.subscription.model.Subscription
 							subscription) {
 
-						return ModelAdapterUtil.adapt(
+						return AdapterUtil.adapt(
 							_subscriptionModuleToKernelProxyProviderFunction,
 							subscription);
 					}
@@ -188,7 +188,7 @@ public class ModularSubscriptionLocalServiceWrapper
 				};
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getUserSubscriptions(
 				userId, start, end, subscriptionOrderByComparatorAdapter));
@@ -198,7 +198,7 @@ public class ModularSubscriptionLocalServiceWrapper
 	public List<Subscription> getUserSubscriptions(
 		long userId, String className) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_subscriptionModuleToKernelProxyProviderFunction,
 			_subscriptionLocalService.getUserSubscriptions(userId, className));
 	}

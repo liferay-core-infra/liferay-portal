@@ -14,7 +14,7 @@
 
 package com.liferay.trash.internal.service;
 
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -55,7 +55,7 @@ public class ModularTrashVersionLocalServiceWrapper
 		long trashEntryId, String className, long classPK, int status,
 		UnicodeProperties typeSettingsUnicodeProperties) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.addTrashVersion(
 				trashEntryId, className, classPK, status,
@@ -64,17 +64,17 @@ public class ModularTrashVersionLocalServiceWrapper
 
 	@Override
 	public TrashVersion addTrashVersion(TrashVersion trashVersion) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.addTrashVersion(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashVersionKernelToModuleProxyProviderFunction,
 					trashVersion)));
 	}
 
 	@Override
 	public TrashVersion createTrashVersion(long versionId) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.createTrashVersion(versionId));
 	}
@@ -90,7 +90,7 @@ public class ModularTrashVersionLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction, trashVersion);
 	}
 
@@ -103,7 +103,7 @@ public class ModularTrashVersionLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction, trashVersion);
 	}
 
@@ -111,7 +111,7 @@ public class ModularTrashVersionLocalServiceWrapper
 	public TrashVersion deleteTrashVersion(TrashVersion trashVersion) {
 		com.liferay.trash.model.TrashVersion deleteTrashVersion =
 			_trashVersionLocalService.deleteTrashVersion(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashVersionKernelToModuleProxyProviderFunction,
 					trashVersion));
 
@@ -119,7 +119,7 @@ public class ModularTrashVersionLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			deleteTrashVersion);
 	}
@@ -133,7 +133,7 @@ public class ModularTrashVersionLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction, trashVersion);
 	}
 
@@ -146,7 +146,7 @@ public class ModularTrashVersionLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction, trashVersion);
 	}
 
@@ -157,14 +157,14 @@ public class ModularTrashVersionLocalServiceWrapper
 
 	@Override
 	public TrashVersion getTrashVersion(long versionId) throws PortalException {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.getTrashVersion(versionId));
 	}
 
 	@Override
 	public List<TrashVersion> getTrashVersions(int start, int end) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.getTrashVersions(start, end));
 	}
@@ -176,24 +176,24 @@ public class ModularTrashVersionLocalServiceWrapper
 
 	@Override
 	public List<TrashVersion> getVersions(long entryId) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.getVersions(entryId));
 	}
 
 	@Override
 	public List<TrashVersion> getVersions(long entryId, String className) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.getVersions(entryId, className));
 	}
 
 	@Override
 	public TrashVersion updateTrashVersion(TrashVersion trashVersion) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashVersionModuleToKernelProxyProviderFunction,
 			_trashVersionLocalService.updateTrashVersion(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashVersionKernelToModuleProxyProviderFunction,
 					trashVersion)));
 	}

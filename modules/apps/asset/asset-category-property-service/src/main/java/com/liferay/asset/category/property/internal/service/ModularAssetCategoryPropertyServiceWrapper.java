@@ -17,7 +17,7 @@ package com.liferay.asset.category.property.internal.service;
 import com.liferay.asset.category.property.service.AssetCategoryPropertyService;
 import com.liferay.asset.kernel.model.AssetCategoryProperty;
 import com.liferay.asset.kernel.service.AssetCategoryPropertyServiceWrapper;
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -43,7 +43,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 			long entryId, String key, String value)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.addCategoryProperty(
 				entryId, key, value));
@@ -59,7 +59,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 
 	@Override
 	public List<AssetCategoryProperty> getCategoryProperties(long entryId) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.getCategoryProperties(entryId));
 	}
@@ -68,7 +68,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 	public List<AssetCategoryProperty> getCategoryPropertyValues(
 		long companyId, String key) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.getCategoryPropertyValues(
 				companyId, key));
@@ -84,7 +84,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 			long userId, long categoryPropertyId, String key, String value)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.updateCategoryProperty(
 				userId, categoryPropertyId, key, value));
@@ -95,7 +95,7 @@ public class ModularAssetCategoryPropertyServiceWrapper
 			long categoryPropertyId, String key, String value)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_assetCategoryPropertyModuleToKernelProxyProviderFunction,
 			_assetCategoryPropertyService.updateCategoryProperty(
 				categoryPropertyId, key, value));

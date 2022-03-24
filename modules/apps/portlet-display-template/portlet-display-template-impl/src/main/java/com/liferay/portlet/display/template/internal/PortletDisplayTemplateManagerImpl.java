@@ -15,7 +15,7 @@
 package com.liferay.portlet.display.template.internal;
 
 import com.liferay.dynamic.data.mapping.kernel.DDMTemplate;
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManager;
@@ -54,7 +54,7 @@ public class PortletDisplayTemplateManagerImpl
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_ddmTemplateModuleToKernelProxyProviderFunction, ddmTemplate);
 	}
 
@@ -79,7 +79,7 @@ public class PortletDisplayTemplateManagerImpl
 
 		return _portletDisplayTemplate.renderDDMTemplate(
 			httpServletRequest, httpServletResponse,
-			ModelAdapterUtil.adapt(
+			AdapterUtil.adapt(
 				_ddmTemplateKernelToModuleProxyProviderFunction, ddmTemplate),
 			entries, contextObjects);
 	}

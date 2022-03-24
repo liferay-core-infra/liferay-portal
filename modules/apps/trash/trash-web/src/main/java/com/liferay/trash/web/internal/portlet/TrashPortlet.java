@@ -14,7 +14,7 @@
 
 package com.liferay.trash.web.internal.portlet;
 
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.exception.TrashPermissionException;
@@ -333,7 +333,7 @@ public class TrashPortlet extends MVCPortlet {
 
 		try {
 			trashHandler.checkRestorableEntry(
-				ModelAdapterUtil.adapt(_trashEntryProxyProviderFunction, entry),
+				AdapterUtil.adapt(_trashEntryProxyProviderFunction, entry),
 				TrashEntryConstants.DEFAULT_CONTAINER_ID, newName);
 		}
 		catch (RestoreEntryException restoreEntryException) {

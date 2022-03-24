@@ -14,7 +14,7 @@
 
 package com.liferay.trash.internal.service;
 
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -65,7 +65,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			UnicodeProperties typeSettingsUnicodeProperties)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.addTrashEntry(
 				userId, groupId, className, classPK, classUuid,
@@ -80,7 +80,7 @@ public class ModularTrashEntryLocalServiceWrapper
 
 	@Override
 	public TrashEntry createTrashEntry(long entryId) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.createTrashEntry(entryId));
 	}
@@ -99,7 +99,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 	}
 
@@ -112,7 +112,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 	}
 
@@ -120,7 +120,7 @@ public class ModularTrashEntryLocalServiceWrapper
 	public TrashEntry deleteEntry(TrashEntry trashEntry) {
 		com.liferay.trash.model.TrashEntry deleteTrashEntry =
 			_trashEntryLocalService.deleteEntry(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashEntryKernelToModuleProxyProviderFunction,
 					trashEntry));
 
@@ -128,7 +128,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, deleteTrashEntry);
 	}
 
@@ -141,7 +141,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 	}
 
@@ -149,7 +149,7 @@ public class ModularTrashEntryLocalServiceWrapper
 	public TrashEntry deleteTrashEntry(TrashEntry trashEntry) {
 		com.liferay.trash.model.TrashEntry deleteTrashEntry =
 			_trashEntryLocalService.deleteTrashEntry(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashEntryKernelToModuleProxyProviderFunction,
 					trashEntry));
 
@@ -157,7 +157,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, deleteTrashEntry);
 	}
 
@@ -175,7 +175,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 	}
 
@@ -188,7 +188,7 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 	}
 
@@ -201,20 +201,20 @@ public class ModularTrashEntryLocalServiceWrapper
 			return null;
 		}
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 	}
 
 	@Override
 	public List<TrashEntry> getEntries(long groupId) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(groupId));
 	}
 
 	@Override
 	public List<TrashEntry> getEntries(long groupId, int start, int end) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(groupId, start, end));
 	}
@@ -224,7 +224,7 @@ public class ModularTrashEntryLocalServiceWrapper
 		long groupId, int start, int end,
 		OrderByComparator<TrashEntry> orderByComparator) {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(
 				groupId, start, end,
@@ -233,7 +233,7 @@ public class ModularTrashEntryLocalServiceWrapper
 
 	@Override
 	public List<TrashEntry> getEntries(long groupId, String className) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntries(groupId, className));
 	}
@@ -245,7 +245,7 @@ public class ModularTrashEntryLocalServiceWrapper
 
 	@Override
 	public TrashEntry getEntry(long entryId) throws PortalException {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntry(entryId));
 	}
@@ -254,7 +254,7 @@ public class ModularTrashEntryLocalServiceWrapper
 	public TrashEntry getEntry(String className, long classPK)
 		throws PortalException {
 
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getEntry(className, classPK));
 	}
@@ -266,7 +266,7 @@ public class ModularTrashEntryLocalServiceWrapper
 
 	@Override
 	public List<TrashEntry> getTrashEntries(int start, int end) {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getTrashEntries(start, end));
 	}
@@ -278,7 +278,7 @@ public class ModularTrashEntryLocalServiceWrapper
 
 	@Override
 	public TrashEntry getTrashEntry(long entryId) throws PortalException {
-		return ModelAdapterUtil.adapt(
+		return AdapterUtil.adapt(
 			_trashEntryModuleToKernelProxyProviderFunction,
 			_trashEntryLocalService.getTrashEntry(entryId));
 	}
@@ -302,7 +302,7 @@ public class ModularTrashEntryLocalServiceWrapper
 				companyId, groupId, userId, keywords, start, end, sort);
 
 		return new BaseModelSearchResult<>(
-			ModelAdapterUtil.adapt(
+			AdapterUtil.adapt(
 				_trashEntryModuleToKernelProxyProviderFunction,
 				baseModelSearchResult.getBaseModels()),
 			baseModelSearchResult.getLength());
@@ -340,7 +340,7 @@ public class ModularTrashEntryLocalServiceWrapper
 
 		@Override
 		public TrashEntry adapt(com.liferay.trash.model.TrashEntry trashEntry) {
-			return ModelAdapterUtil.adapt(
+			return AdapterUtil.adapt(
 				_trashEntryModuleToKernelProxyProviderFunction, trashEntry);
 		}
 

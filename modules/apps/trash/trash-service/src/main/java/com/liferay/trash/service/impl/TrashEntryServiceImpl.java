@@ -14,7 +14,7 @@
 
 package com.liferay.trash.service.impl;
 
-import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
+import com.liferay.petra.adapter.util.AdapterUtil;
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
@@ -380,13 +380,13 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 				TrashPermissionException.RESTORE);
 		}
 
-		TrashEntry trashEntry = ModelAdapterUtil.adapt(
+		TrashEntry trashEntry = AdapterUtil.adapt(
 			_trashEntryKernelToModuleProxyProviderFunction,
 			trashHandler.getTrashEntry(classPK));
 
 		if (trashEntry.isTrashEntry(className, classPK)) {
 			trashHandler.checkRestorableEntry(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashEntryModuleToKernelProxyProviderFunction, trashEntry),
 				destinationContainerModelId, StringPool.BLANK);
 		}
@@ -475,7 +475,7 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 			trashHandler.deleteTrashEntry(overrideClassPK);
 
 			trashHandler.checkRestorableEntry(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashEntryModuleToKernelProxyProviderFunction, entry),
 				TrashEntryConstants.DEFAULT_CONTAINER_ID, null);
 		}
@@ -489,7 +489,7 @@ public class TrashEntryServiceImpl extends TrashEntryServiceBaseImpl {
 			}
 
 			trashHandler.checkRestorableEntry(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_trashEntryModuleToKernelProxyProviderFunction, entry),
 				TrashEntryConstants.DEFAULT_CONTAINER_ID, name);
 

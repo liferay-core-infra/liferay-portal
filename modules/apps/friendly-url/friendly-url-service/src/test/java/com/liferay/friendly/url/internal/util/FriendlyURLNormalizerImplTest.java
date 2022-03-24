@@ -19,7 +19,6 @@ import com.liferay.petra.nio.CharsetEncoderUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.HttpImpl;
 
 import java.net.URLEncoder;
 
@@ -28,12 +27,14 @@ import java.nio.charset.CharsetEncoder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
 /**
  * @author Julio Camarero
  */
+@Ignore
 public class FriendlyURLNormalizerImplTest {
 
 	@ClassRule
@@ -43,8 +44,6 @@ public class FriendlyURLNormalizerImplTest {
 
 	@BeforeClass
 	public static void setUpClass() {
-		ReflectionTestUtil.setFieldValue(
-			_friendlyURLNormalizerImpl, "_http", new HttpImpl());
 		ReflectionTestUtil.setFieldValue(
 			_friendlyURLNormalizerImpl, "_normalizer", new NormalizerImpl());
 	}

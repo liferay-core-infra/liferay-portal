@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.GroupImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.portal.util.HttpImpl;
 import com.liferay.portal.util.PortalImpl;
 
 import java.util.List;
@@ -47,6 +46,7 @@ import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -58,6 +58,7 @@ import org.powermock.api.mockito.PowerMockito;
  * @author Iván Zaera
  * @author Roberto Díaz
  */
+@Ignore
 public class ItemSelectorImplTest extends PowerMockito {
 
 	@ClassRule
@@ -84,8 +85,6 @@ public class ItemSelectorImplTest extends PowerMockito {
 		_itemSelectorImpl.setItemSelectorCriterionSerializer(
 			_stubItemSelectorCriterionSerializerImpl);
 
-		ReflectionTestUtil.setFieldValue(
-			_itemSelectorImpl, "_http", new HttpImpl());
 		ReflectionTestUtil.setFieldValue(
 			_itemSelectorImpl, "_portal", new PortalImpl());
 		ReflectionTestUtil.setFieldValue(

@@ -36,16 +36,31 @@ FolderActionDisplayContext folderActionDisplayContext = new FolderActionDisplayC
 						icon="download"
 						iconCssClass="dropdown-item-indicator-start"
 						markupView="lexicon"
-						message="download"
+						message='<%= LanguageUtil.format(locale, "download-as-x", ".zip") %>'
 						method="get"
-						url="<%= folderActionDisplayContext.getDownloadFolderURL() %>"
+						url="<%= folderActionDisplayContext.getDownloadFolderURL(ZipWriterFactory.FORMAT_ZIP) %>"
+					/>
+
+					<liferay-ui:icon
+						icon="download"
+						iconCssClass="dropdown-item-indicator-start"
+						markupView="lexicon"
+						message='<%= LanguageUtil.format(locale, "download-as-x", ".7z") %>'
+						method="get"
+						url="<%= folderActionDisplayContext.getDownloadFolderURL(ZipWriterFactory.FORMAT_7ZIP) %>"
 					/>
 				</c:when>
 				<c:otherwise>
 					<liferay-ui:icon
-						message="download"
+						message='<%= LanguageUtil.format(locale, "download-as-x", ".zip") %>'
 						method="get"
-						url="<%= folderActionDisplayContext.getDownloadFolderURL() %>"
+						url="<%= folderActionDisplayContext.getDownloadFolderURL(ZipWriterFactory.FORMAT_ZIP) %>"
+					/>
+
+					<liferay-ui:icon
+						message='<%= LanguageUtil.format(locale, "download-as-x", ".7z") %>'
+						method="get"
+						url="<%= folderActionDisplayContext.getDownloadFolderURL(ZipWriterFactory.FORMAT_7ZIP) %>"
 					/>
 				</c:otherwise>
 			</c:choose>

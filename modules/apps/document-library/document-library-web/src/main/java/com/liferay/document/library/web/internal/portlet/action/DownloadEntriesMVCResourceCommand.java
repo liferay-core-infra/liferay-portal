@@ -205,12 +205,25 @@ public class DownloadEntriesMVCResourceCommand implements MVCResourceCommand {
 
 		long folderId = ParamUtil.getLong(resourceRequest, "folderId");
 
+		String format = ParamUtil.getString(resourceRequest, "format");
+
+		String contentType;
+
+		if (format.equals(ZipWriterFactory.FORMAT_7ZIP)) {
+			contentType = ContentTypes.APPLICATION_7ZIP;
+		}
+		else {
+			contentType = ContentTypes.APPLICATION_ZIP;
+			format = ZipWriterFactory.FORMAT_ZIP;
+		}
+
 		_checkFolder(folderId);
 
-		ZipWriter zipWriter = _zipWriterFactory.getZipWriter();
+		ZipWriter zipWriter = _zipWriterFactory.getZipWriter(format);
 
 		try {
-			String zipFileName = _getZipFileName(folderId, themeDisplay);
+			String zipFileName = _getZipFileName(
+				folderId, themeDisplay, format);
 
 			long repositoryId = ParamUtil.getLong(
 				resourceRequest, "repositoryId");
@@ -222,7 +235,7 @@ public class DownloadEntriesMVCResourceCommand implements MVCResourceCommand {
 
 				PortletResponseUtil.sendFile(
 					resourceRequest, resourceResponse, zipFileName, inputStream,
-					ContentTypes.APPLICATION_ZIP);
+					contentType);
 			}
 		}
 		finally {
@@ -235,13 +248,23 @@ public class DownloadEntriesMVCResourceCommand implements MVCResourceCommand {
 	private String _getZipFileName(long folderId, ThemeDisplay themeDisplay)
 		throws PortalException {
 
+		return _getZipFileName(
+			folderId, themeDisplay, ZipWriterFactory.FORMAT_ZIP);
+	}
+
+	private String _getZipFileName(
+			long folderId, ThemeDisplay themeDisplay, String format)
+		throws PortalException {
+
 		if (folderId != DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
 			Folder folder = _dlAppService.getFolder(folderId);
 
-			return folder.getName() + ".zip";
+			return StringBundler.concat(
+				folder.getName(), StringPool.PERIOD, format);
 		}
 
-		return themeDisplay.getScopeGroupName() + ".zip";
+		return StringBundler.concat(
+			themeDisplay.getScopeGroupName(), StringPool.PERIOD, format);
 	}
 
 	private boolean _isExternalRepositoryFolder(Folder folder) {

@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.zip.ZipWriterFactory;
 
 import java.io.File;
 
+import java.util.Objects;
+
 /**
  * @author Raymond Augé
  */
@@ -41,6 +43,15 @@ public class ZipWriterFactoryImpl implements ZipWriterFactory {
 		}
 
 		return new ZipWriterImpl(file);
+	}
+
+	@Override
+	public ZipWriter getZipWriter(String format) {
+		if (Objects.equals(format, "7z")) {
+			return new SevenZipWriterImpl();
+		}
+
+		return new ZipWriterImpl();
 	}
 
 }

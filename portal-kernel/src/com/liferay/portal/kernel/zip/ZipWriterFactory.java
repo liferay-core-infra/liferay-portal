@@ -28,4 +28,6 @@ public interface ZipWriterFactory {
 
 	public ZipWriter getZipWriter(File file);
 
+	public ZipWriter getZipWriter(String format);
+
 }

@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowEngineManagerUtil;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
+import com.liferay.portal.kernel.zip.ZipWriterFactory;
 import com.liferay.portal.util.RepositoryUtil;
 import com.liferay.staging.StagingGroupHelper;
 import com.liferay.staging.StagingGroupHelperUtil;
@@ -207,7 +208,7 @@ public class FolderActionDisplayContext {
 		return portletURL.toString();
 	}
 
-	public String getDownloadFolderURL() {
+	public String getDownloadFolderURL(String format) {
 		LiferayPortletResponse liferayPortletResponse =
 			_dlRequestHelper.getLiferayPortletResponse();
 
@@ -216,6 +217,7 @@ public class FolderActionDisplayContext {
 		resourceURL.setParameter("folderId", String.valueOf(_getFolderId()));
 		resourceURL.setParameter(
 			"repositoryId", String.valueOf(_getRepositoryId()));
+		resourceURL.setParameter("format", format);
 		resourceURL.setResourceID("/document_library/download_folder");
 
 		return resourceURL.toString();

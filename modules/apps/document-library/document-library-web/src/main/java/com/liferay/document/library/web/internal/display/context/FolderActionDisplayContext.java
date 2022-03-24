@@ -207,7 +207,7 @@ public class FolderActionDisplayContext {
 		return portletURL.toString();
 	}
 
-	public String getDownloadFolderURL() {
+	public String getDownloadFolderURL(String format) {
 		LiferayPortletResponse liferayPortletResponse =
 			_dlRequestHelper.getLiferayPortletResponse();
 
@@ -216,6 +216,7 @@ public class FolderActionDisplayContext {
 		resourceURL.setParameter("folderId", String.valueOf(_getFolderId()));
 		resourceURL.setParameter(
 			"repositoryId", String.valueOf(_getRepositoryId()));
+		resourceURL.setParameter("format", format);
 		resourceURL.setResourceID("/document_library/download_folder");
 
 		return resourceURL.toString();

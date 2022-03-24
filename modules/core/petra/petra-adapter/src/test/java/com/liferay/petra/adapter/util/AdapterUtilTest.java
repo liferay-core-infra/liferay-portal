@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.model.adapter.util;
+package com.liferay.petra.adapter.util;
 
 import com.liferay.petra.reflect.ProxyUtil;
 import com.liferay.portal.kernel.model.ModelWrapper;
@@ -30,7 +30,7 @@ import org.junit.Test;
 /**
  * @author Tina Tian
  */
-public class ModelAdapterUtilTest {
+public class AdapterUtilTest {
 
 	@ClassRule
 	@Rule
@@ -40,19 +40,19 @@ public class ModelAdapterUtilTest {
 	@Test
 	public void testAdapt() {
 		Assert.assertEquals(
-			ModelAdapterUtil.adapt(
+			AdapterUtil.adapt(
 				_testInterfaceModuleToKernelProxyProviderFunction,
 				new TestClass(1)),
 			new TestClass(1));
 		Assert.assertEquals(
-			ModelAdapterUtil.adapt(
+			AdapterUtil.adapt(
 				_testInterfaceModuleToKernelProxyProviderFunction,
 				new TestClass(1)),
-			ModelAdapterUtil.adapt(
+			AdapterUtil.adapt(
 				_testInterfaceModuleToKernelProxyProviderFunction,
 				new TestClass(1)));
 
-		TestInterface proxyObject = ModelAdapterUtil.adapt(
+		TestInterface proxyObject = AdapterUtil.adapt(
 			_testInterfaceModuleToKernelProxyProviderFunction,
 			new TestClass(1));
 
@@ -63,19 +63,19 @@ public class ModelAdapterUtilTest {
 		Assert.assertEquals(
 			0,
 			proxyObject.compareTo(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_testInterfaceModuleToKernelProxyProviderFunction,
 					new TestClass(1))));
 		Assert.assertEquals(
 			-1,
 			proxyObject.compareTo(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_testInterfaceModuleToKernelProxyProviderFunction,
 					new TestClass(2))));
 		Assert.assertEquals(
 			1,
 			proxyObject.compareTo(
-				ModelAdapterUtil.adapt(
+				AdapterUtil.adapt(
 					_testInterfaceModuleToKernelProxyProviderFunction,
 					new TestClass(0))));
 	}

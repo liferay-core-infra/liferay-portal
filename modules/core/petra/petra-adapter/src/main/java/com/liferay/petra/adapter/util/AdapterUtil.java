@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.model.adapter.util;
+package com.liferay.petra.adapter.util;
 
 import com.liferay.petra.reflect.ProxyUtil;
 
@@ -26,7 +26,7 @@ import java.util.function.Function;
 /**
  * @author Shuyang Zhou
  */
-public class ModelAdapterUtil {
+public class AdapterUtil {
 
 	public static <T> List<T> adapt(
 		Function<InvocationHandler, T> proxyProviderFunction,

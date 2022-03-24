@@ -19,6 +19,8 @@ package com.liferay.portal.kernel.util;
  */
 public interface ContentTypes {
 
+	public static final String APPLICATION_7ZIP = "application/x-7z-compressed";
+
 	public static final String APPLICATION_ATOM_XML = "application/atom+xml";
 
 	public static final String APPLICATION_GZIP = "application/gzip";

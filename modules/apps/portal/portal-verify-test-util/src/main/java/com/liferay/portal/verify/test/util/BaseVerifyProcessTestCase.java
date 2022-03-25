@@ -48,7 +48,7 @@ public abstract class BaseVerifyProcessTestCase {
 		_dataSource = _infrastructureUtil.getDataSource();
 
 		_infrastructureUtil.setDataSource(
-			(DataSource) ProxyUtil.newProxyInstance(
+			(DataSource)ProxyUtil.newProxyInstance(
 				ClassLoader.getSystemClassLoader(),
 				new Class<?>[] {DataSource.class},
 				new DataSourceInvocationHandler(_dataSource)));

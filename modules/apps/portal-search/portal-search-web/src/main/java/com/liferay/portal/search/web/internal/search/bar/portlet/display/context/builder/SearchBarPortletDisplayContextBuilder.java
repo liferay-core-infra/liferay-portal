@@ -145,13 +145,14 @@ public class SearchBarPortletDisplayContextBuilder {
 			keywords -> _keywords = keywords
 		);
 
-		searchBarPortletDisplayContext.setKeywords(getKeywords());
+		searchBarPortletDisplayContext.setKeywords(
+			_getNoneNullValue(_keywords));
 
 		_paginationStartParameterName =
 			searchRequest.getPaginationStartParameterName();
 
 		searchBarPortletDisplayContext.setPaginationStartParameterName(
-			getPaginationStartParameterName());
+			_getNoneNullValue(_paginationStartParameterName));
 
 		Optional<String> scopeParameterValueOptional =
 			portletSharedSearchResponse.getParameter(
@@ -161,7 +162,7 @@ public class SearchBarPortletDisplayContextBuilder {
 			scopeParameterValue -> _scopeParameterValue = scopeParameterValue);
 
 		searchBarPortletDisplayContext.setScopeParameterValue(
-			getScopeParameterValue());
+			_getNoneNullValue(_scopeParameterValue));
 
 		HttpServletRequest httpServletRequest = getHttpServletRequest(
 			_renderRequest);
@@ -231,14 +232,6 @@ public class SearchBarPortletDisplayContextBuilder {
 		return liferayPortletRequest.getHttpServletRequest();
 	}
 
-	protected String getKeywords() {
-		if (_keywords != null) {
-			return _keywords;
-		}
-
-		return StringPool.BLANK;
-	}
-
 	protected String getLayoutFriendlyURL(Layout layout) {
 		try {
 			return _portal.getLayoutFriendlyURL(layout, _themeDisplay);
@@ -253,22 +246,6 @@ public class SearchBarPortletDisplayContextBuilder {
 
 			return null;
 		}
-	}
-
-	protected String getPaginationStartParameterName() {
-		if (_paginationStartParameterName != null) {
-			return _paginationStartParameterName;
-		}
-
-		return StringPool.BLANK;
-	}
-
-	protected String getScopeParameterValue() {
-		if (_scopeParameterValue != null) {
-			return _scopeParameterValue;
-		}
-
-		return StringPool.BLANK;
 	}
 
 	protected SearchBarPortletInstanceConfiguration
@@ -339,6 +316,14 @@ public class SearchBarPortletDisplayContextBuilder {
 		}
 
 		return searchBarPortletPreferences.getKeywordsParameterName();
+	}
+
+	private String _getNoneNullValue(String originValue) {
+		if (originValue != null) {
+			return originValue;
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private String _getScopeParameterName(

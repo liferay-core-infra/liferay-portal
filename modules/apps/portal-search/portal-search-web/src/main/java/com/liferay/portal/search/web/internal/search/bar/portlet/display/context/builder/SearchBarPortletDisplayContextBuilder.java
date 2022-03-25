@@ -32,8 +32,11 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
+import com.liferay.portal.search.web.internal.portlet.preferences.PortletPreferencesLookup;
 import com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletDisplayContext;
+import com.liferay.portal.search.web.internal.search.bar.portlet.helper.SearchBarPrecedenceHelper;
+import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 
 import java.util.Optional;
 
@@ -49,12 +52,18 @@ public class SearchBarPortletDisplayContextBuilder {
 
 	public SearchBarPortletDisplayContextBuilder(
 		Http http, LayoutLocalService layoutLocalService, Portal portal,
-		RenderRequest renderRequest) {
+		PortletPreferencesLookup portletPreferencesLookup,
+		PortletSharedSearchRequest portletSharedSearchRequest,
+		RenderRequest renderRequest,
+		SearchBarPrecedenceHelper searchBarPrecedenceHelper) {
 
 		_http = http;
 		_layoutLocalService = layoutLocalService;
 		_portal = portal;
+		_portletPreferencesLookup = portletPreferencesLookup;
+		_portletSharedSearchRequest = portletSharedSearchRequest;
 		_renderRequest = renderRequest;
+		_searchBarPrecedenceHelper = searchBarPrecedenceHelper;
 
 		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -362,9 +371,12 @@ public class SearchBarPortletDisplayContextBuilder {
 	private final LayoutLocalService _layoutLocalService;
 	private String _paginationStartParameterName;
 	private final Portal _portal;
+	private final PortletPreferencesLookup _portletPreferencesLookup;
+	private final PortletSharedSearchRequest _portletSharedSearchRequest;
 	private final RenderRequest _renderRequest;
 	private String _scopeParameterName;
 	private String _scopeParameterValue;
+	private final SearchBarPrecedenceHelper _searchBarPrecedenceHelper;
 	private SearchScopePreference _searchScopePreference;
 	private final ThemeDisplay _themeDisplay;
 

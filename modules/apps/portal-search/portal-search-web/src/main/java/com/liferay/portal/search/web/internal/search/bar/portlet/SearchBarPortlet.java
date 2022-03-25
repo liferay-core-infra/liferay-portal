@@ -198,7 +198,9 @@ public class SearchBarPortlet extends MVCPortlet {
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
 				new SearchBarPortletDisplayContextBuilder(
-					http, layoutLocalService, portal, renderRequest);
+					http, layoutLocalService, portal, portletPreferencesLookup,
+					portletSharedSearchRequest, renderRequest,
+					searchBarPrecedenceHelper);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);

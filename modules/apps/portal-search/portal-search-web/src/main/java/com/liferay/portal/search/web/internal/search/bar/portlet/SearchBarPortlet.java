@@ -204,8 +204,8 @@ public class SearchBarPortlet extends MVCPortlet {
 				new SearchBarPortletDisplayContextBuilder(
 					http, layoutLocalService, portal, renderRequest);
 
-		ThemeDisplay themeDisplay = portletSharedSearchResponse.getThemeDisplay(
-			renderRequest);
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		String keywordsParameterName = getKeywordsParameterName(
 			portletSharedSearchResponse.getSearchSettings(),

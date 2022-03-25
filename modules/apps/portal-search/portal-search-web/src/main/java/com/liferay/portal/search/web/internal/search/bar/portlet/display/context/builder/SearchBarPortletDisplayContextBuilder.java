@@ -148,11 +148,8 @@ public class SearchBarPortletDisplayContextBuilder {
 		searchBarPortletDisplayContext.setKeywords(
 			_getNoneNullValue(_keywords));
 
-		_paginationStartParameterName =
-			searchRequest.getPaginationStartParameterName();
-
 		searchBarPortletDisplayContext.setPaginationStartParameterName(
-			_getNoneNullValue(_paginationStartParameterName));
+			_getNoneNullValue(searchRequest.getPaginationStartParameterName()));
 
 		Optional<String> scopeParameterValueOptional =
 			portletSharedSearchResponse.getParameter(
@@ -407,7 +404,6 @@ public class SearchBarPortletDisplayContextBuilder {
 	private final Http _http;
 	private String _keywords;
 	private final LayoutLocalService _layoutLocalService;
-	private String _paginationStartParameterName;
 	private final Portal _portal;
 	private final PortletPreferencesLookup _portletPreferencesLookup;
 	private final PortletSharedSearchRequest _portletSharedSearchRequest;

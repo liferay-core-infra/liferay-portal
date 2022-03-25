@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.service.LayoutLocalService;
@@ -30,17 +31,25 @@ import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.search.searcher.SearchRequest;
+import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
 import com.liferay.portal.search.web.internal.portlet.preferences.PortletPreferencesLookup;
+import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortletDestinationUtil;
+import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortletPreferences;
+import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortletPreferencesImpl;
 import com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletDisplayContext;
 import com.liferay.portal.search.web.internal.search.bar.portlet.helper.SearchBarPrecedenceHelper;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
+import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
+import com.liferay.portal.search.web.search.request.SearchSettings;
 
 import java.util.Optional;
 
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -136,6 +145,51 @@ public class SearchBarPortletDisplayContextBuilder {
 		}
 
 		return searchBarPortletDisplayContext;
+	}
+
+	public SearchBarPortletDisplayContext buildDisplayContext()
+		throws PortletException {
+
+		SearchBarPortletPreferences searchBarPortletPreferences =
+			new SearchBarPortletPreferencesImpl(
+				Optional.ofNullable(_renderRequest.getPreferences()));
+
+		PortletSharedSearchResponse portletSharedSearchResponse =
+			_portletSharedSearchRequest.search(_renderRequest);
+
+		String keywordsParameterName = _getKeywordsParameterName(
+			searchBarPortletPreferences,
+			portletSharedSearchResponse.getSearchSettings());
+
+		String scopeParameterName = _getScopeParameterName(
+			searchBarPortletPreferences,
+			portletSharedSearchResponse.getSearchSettings());
+
+		SearchResponse searchResponse = _getSearchResponse(
+			portletSharedSearchResponse, searchBarPortletPreferences);
+
+		SearchRequest searchRequest = searchResponse.getRequest();
+
+		return setDestination(
+			searchBarPortletPreferences.getDestinationString()
+		).setEmptySearchEnabled(
+			_isEmptySearchEnabled(portletSharedSearchResponse)
+		).setInvisible(
+			searchBarPortletPreferences.isInvisible()
+		).setKeywords(
+			Optional.ofNullable(searchRequest.getQueryString())
+		).setKeywordsParameterName(
+			keywordsParameterName
+		).setPaginationStartParameterName(
+			searchRequest.getPaginationStartParameterName()
+		).setScopeParameterName(
+			scopeParameterName
+		).setScopeParameterValue(
+			portletSharedSearchResponse.getParameter(
+				scopeParameterName, _renderRequest)
+		).setSearchScopePreference(
+			searchBarPortletPreferences.getSearchScopePreference()
+		).build();
 	}
 
 	public SearchBarPortletDisplayContextBuilder setDestination(
@@ -331,8 +385,83 @@ public class SearchBarPortletDisplayContextBuilder {
 		return getLayoutFriendlyURL(layout);
 	}
 
+	private String _getKeywordsParameterName(
+		SearchBarPortletPreferences searchBarPortletPreferences,
+		SearchSettings searchSettings) {
+
+		Optional<Portlet> headerSearchBarOptional =
+			_searchBarPrecedenceHelper.findHeaderSearchBarPortletOptional(
+				_themeDisplay);
+
+		if (headerSearchBarOptional.isPresent()) {
+			Optional<PortletPreferences> headerPortletPreferencesOptional =
+				_portletPreferencesLookup.fetchPreferences(
+					headerSearchBarOptional.get(), _themeDisplay);
+
+			if (headerPortletPreferencesOptional.isPresent() &&
+				SearchBarPortletDestinationUtil.isSameDestination(
+					headerPortletPreferencesOptional.get(), _themeDisplay)) {
+
+				Optional<String> optional =
+					searchSettings.getKeywordsParameterName();
+
+				return optional.orElse(
+					searchBarPortletPreferences.getKeywordsParameterName());
+			}
+		}
+
+		return searchBarPortletPreferences.getKeywordsParameterName();
+	}
+
+	private String _getScopeParameterName(
+		SearchBarPortletPreferences searchBarPortletPreferences,
+		SearchSettings searchSettings) {
+
+		Optional<Portlet> headerSearchBarOptional =
+			_searchBarPrecedenceHelper.findHeaderSearchBarPortletOptional(
+				_themeDisplay);
+
+		if (headerSearchBarOptional.isPresent()) {
+			Optional<PortletPreferences> headerPortletPreferencesOptional =
+				_portletPreferencesLookup.fetchPreferences(
+					headerSearchBarOptional.get(), _themeDisplay);
+
+			if (headerPortletPreferencesOptional.isPresent() &&
+				SearchBarPortletDestinationUtil.isSameDestination(
+					headerPortletPreferencesOptional.get(), _themeDisplay)) {
+
+				Optional<String> optional =
+					searchSettings.getScopeParameterName();
+
+				return optional.orElse(
+					searchBarPortletPreferences.getScopeParameterName());
+			}
+		}
+
+		return searchBarPortletPreferences.getScopeParameterName();
+	}
+
+	private SearchResponse _getSearchResponse(
+		PortletSharedSearchResponse portletSharedSearchResponse,
+		SearchBarPortletPreferences searchBarPortletPreferences) {
+
+		return portletSharedSearchResponse.getFederatedSearchResponse(
+			searchBarPortletPreferences.getFederatedSearchKeyOptional());
+	}
+
 	private String _getURLCurrentPath() {
 		return _http.getPath(_themeDisplay.getURLCurrent());
+	}
+
+	private boolean _isEmptySearchEnabled(
+		PortletSharedSearchResponse portletSharedSearchResponse) {
+
+		SearchResponse searchResponse =
+			portletSharedSearchResponse.getSearchResponse();
+
+		SearchRequest searchRequest = searchResponse.getRequest();
+
+		return searchRequest.isEmptySearchEnabled();
 	}
 
 	private void _setSelectedSearchScope(

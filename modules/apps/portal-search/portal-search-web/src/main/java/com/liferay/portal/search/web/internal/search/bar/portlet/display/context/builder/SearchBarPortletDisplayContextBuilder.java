@@ -55,6 +55,9 @@ public class SearchBarPortletDisplayContextBuilder {
 		_layoutLocalService = layoutLocalService;
 		_portal = portal;
 		_renderRequest = renderRequest;
+
+		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	public SearchBarPortletDisplayContext build() throws PortletException {
@@ -64,14 +67,10 @@ public class SearchBarPortletDisplayContextBuilder {
 		HttpServletRequest httpServletRequest = getHttpServletRequest(
 			_renderRequest);
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 		SearchBarPortletInstanceConfiguration
 			searchBarPortletInstanceConfiguration =
 				getSearchBarPortletInstanceConfiguration(
-					themeDisplay.getPortletDisplay());
+					_themeDisplay.getPortletDisplay());
 
 		searchBarPortletDisplayContext.setAvailableEverythingSearchScope(
 			isAvailableEverythingSearchScope());
@@ -79,7 +78,7 @@ public class SearchBarPortletDisplayContextBuilder {
 			SearchScope.THIS_SITE.getParameterString());
 		searchBarPortletDisplayContext.setDisplayStyleGroupId(
 			getDisplayStyleGroupId(
-				searchBarPortletInstanceConfiguration, themeDisplay));
+				searchBarPortletInstanceConfiguration, _themeDisplay));
 		searchBarPortletDisplayContext.setEmptySearchEnabled(
 			_emptySearchEnabled);
 		searchBarPortletDisplayContext.setEverythingSearchScopeParameterString(

@@ -78,58 +78,38 @@ public class PropsUtilTest {
 	}
 
 	@Test
-	public void testGetParentPath() {
-		ClassLoader classLoader = ClassUtilTest.class.getClassLoader();
+	public void testGetLibDir() {
+		ClassLoader classLoader = PropsUtilTest.class.getClassLoader();
 
-		String className = "java/lang/String.class";
+		URL url = classLoader.getResource("java/lang/String.class");
 
-		URL url = classLoader.getResource(className);
+		String expectedPath = url.getPath();
 
-		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
-
-		Path path = Paths.get(uri);
-
-		String expectedParentPath = StringUtil.replace(
-			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
-
-		int pos = expectedParentPath.indexOf(className);
-
-		expectedParentPath = expectedParentPath.substring(0, pos);
-
-		Assert.assertEquals(
-			expectedParentPath,
-			ClassUtil.getParentPath(classLoader, "java.lang.String.class"));
-		Assert.assertEquals(
-			expectedParentPath,
-			ClassUtil.getParentPath(classLoader, "java.lang.String"));
-
-		//Test log output
-
-		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
-				ClassUtil.class.getName(), Level.FINE)) {
-
-			ClassUtil.getParentPath(classLoader, "java.lang.String");
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 3, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Assert.assertEquals(
-				"Class name java.lang.String", logEntry.getMessage());
-
-			logEntry = logEntries.get(1);
-
-			Assert.assertEquals("URI " + uri, logEntry.getMessage());
-
-			logEntry = logEntries.get(2);
-
-			Assert.assertEquals(
-				"Parent path " + expectedParentPath, logEntry.getMessage());
+		if (expectedPath.startsWith("file:")) {
+			expectedPath = expectedPath.substring(5);
 		}
+
+		int pos = expectedPath.lastIndexOf("!/");
+
+		expectedPath = expectedPath.substring(0, pos);
+
+		pos = expectedPath.lastIndexOf("/");
+
+		expectedPath = expectedPath.substring(0, pos + 1);
+
+		String actualPath = ReflectionTestUtil.invoke(
+			PropsUtil.class, "_getLibDir",
+			new Class<?>[] {ClassLoader.class, String.class}, classLoader,
+			"java/lang/String.class");
+
+		Assert.assertEquals(expectedPath, actualPath);
+
+		actualPath = ReflectionTestUtil.invoke(
+			PropsUtil.class, "_getLibDir",
+			new Class<?>[] {ClassLoader.class, String.class}, classLoader,
+			"java/lang/String");
+
+		Assert.assertEquals(expectedPath, actualPath);
 	}
 
 	@Test
@@ -137,24 +117,24 @@ public class PropsUtilTest {
 
 		// Tomcat
 
-		_testGetPathURIFromURL("jar:file:", "jar:file:/");
-		_testGetPathURIFromURL(
+		_testGetPathFromURL("jar:file:", "jar:file:/");
+		_testGetPathFromURL(
 			new URL(
 				"file:/opt/liferay/tomcat/classes/javax/servlet/Servlet.class"),
 			"/opt/liferay/tomcat/classes/javax/servlet/Servlet.class");
-		_testGetPathURIFromURL(
+		_testGetPathFromURL(
 			new URL(
 				"file:/C:/Liferay/tomcat/classes/javax/servlet/Servlet.class"),
 			"/C:/Liferay/tomcat/classes/javax/servlet/Servlet.class");
 
 		// Weblogic
 
-		_testGetPathURIFromURL("zip:", "zip:");
+		_testGetPathFromURL("zip:", "zip:");
 
 		// Websphere
 
-		_testGetPathURIFromURL("wsjar:file:", "wsjar:file:/");
-		_testGetPathURIFromURL(
+		_testGetPathFromURL("wsjar:file:", "wsjar:file:/");
+		_testGetPathFromURL(
 			new URL(
 				"bundleresource://266.fwk-486185329/javax/servlet/Servlet." +
 					"class"),
@@ -162,16 +142,15 @@ public class PropsUtilTest {
 
 		// Wildfly
 
-		_testGetPathURIFromURL("vfs:", "vfs:/");
+		_testGetPathFromURL("vfs:", "vfs:/");
 
 		// logging
 
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
-				ClassUtil.class.getName(), Level.FINE)) {
+				PropsUtil.class.getName(), Level.FINE)) {
 
 			ReflectionTestUtil.invoke(
-				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				PropsUtil.class, "_getPathFromURL", new Class<?>[] {URL.class},
 				new URL(
 					"jar:file:/opt/liferay/tomcat/lib/servlet-api.jar" +
 						"!/javax/servlet/Servlet.class"));
@@ -193,8 +172,7 @@ public class PropsUtilTest {
 	public void testGetPathURIFromURLWithIllegalCharacter() {
 		try {
 			ReflectionTestUtil.invoke(
-				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				PropsUtil.class, "_getPathFromURL", new Class<?>[] {URL.class},
 				new URL(
 					"jar:file:/[opt/liferay/tomcat/lib/servlet-api.jar" +
 						"!/javax/servlet/Servlet.class"));
@@ -216,8 +194,7 @@ public class PropsUtilTest {
 	public void testGetPathURIFromURLWithUnknownProtocol() {
 		try {
 			ReflectionTestUtil.invoke(
-				ClassUtil.class, "_getPathURIFromURL",
-				new Class<?>[] {URL.class},
+				PropsUtil.class, "_getPathFromURL", new Class<?>[] {URL.class},
 				new URL(
 					"jar", null, -1,
 					"unknown:/opt/liferay/tomcat/lib/servlet-api.jar!/javax" +
@@ -238,29 +215,29 @@ public class PropsUtilTest {
 		}
 	}
 
-	private void _testGetPathURIFromURL(
+	private void _testGetPathFromURL(
 			String linuxProtocol, String windowsProtocol)
 		throws Exception {
 
-		_testGetPathURIFromURL(
+		_testGetPathFromURL(
 			new URL(
 				linuxProtocol + "/opt/liferay/tomcat/lib/servlet-api.jar" +
 					"!/javax/servlet/Servlet.class"),
 			"/opt/liferay/tomcat/lib/servlet-api.jar" +
 				"!/javax/servlet/Servlet.class");
-		_testGetPathURIFromURL(
+		_testGetPathFromURL(
 			new URL(
 				linuxProtocol + "/opt/with%20space/tomcat/lib/servlet-api.jar" +
 					"!/javax/servlet/Servlet.class"),
 			"/opt/with space/tomcat/lib/servlet-api.jar" +
 				"!/javax/servlet/Servlet.class");
-		_testGetPathURIFromURL(
+		_testGetPathFromURL(
 			new URL(
 				windowsProtocol + "C:/Liferay/tomcat/lib/servlet-api.jar" +
 					"!/javax/servlet/Servlet.class"),
 			"/C:/Liferay/tomcat/lib/servlet-api.jar" +
 				"!/javax/servlet/Servlet.class");
-		_testGetPathURIFromURL(
+		_testGetPathFromURL(
 			new URL(
 				windowsProtocol + "C:/With%20Space/tomcat/lib/servlet-api.jar" +
 					"!/javax/servlet/Servlet.class"),
@@ -268,12 +245,12 @@ public class PropsUtilTest {
 				"!/javax/servlet/Servlet.class");
 	}
 
-	private void _testGetPathURIFromURL(URL url, String expectedPath) {
-		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
+	private void _testGetPathFromURL(URL url, String expectedPath) {
+		Path path = ReflectionTestUtil.invoke(
+			PropsUtil.class, "_getPathFromURL", new Class<?>[] {URL.class},
 			url);
 
-		Assert.assertEquals(expectedPath, uri.getPath());
+		Assert.assertEquals(Paths.get(expectedPath), path);
 	}
 
 }

@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -122,7 +121,7 @@ public class AuthorizePortlet extends MVCPortlet {
 
 		String requestToken = oAuthAccessor.getRequestToken();
 
-		String oAuthVerifier = DigesterUtil.digestHex(
+		String oAuthVerifier = _digester.digestHex(
 			Digester.MD5, oAuthCallbackURL + System.nanoTime() + requestToken);
 
 		if (Validator.isNull(oAuthCallbackURL)) {
@@ -146,6 +145,9 @@ public class AuthorizePortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AuthorizePortlet.class);
+
+	@Reference
+	private Digester _digester;
 
 	@Reference
 	private OAuth _oAuth;

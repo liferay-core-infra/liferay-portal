@@ -77,7 +77,6 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -632,8 +631,7 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 		}
 
 		return TempFileEntryUtil.getTempFileEntry(
-			groupId, userId,
-			DigesterUtil.digestHex(Digester.SHA_256, folderName),
+			groupId, userId, _digester.digestHex(Digester.SHA_256, folderName),
 			tempFileNames[0]);
 	}
 
@@ -1530,6 +1528,9 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 
 	@Reference
 	private DateFormatFactory _dateFormatFactory;
+
+	@Reference
+	private Digester _digester;
 
 	private DLFileEntryLocalService _dlFileEntryLocalService;
 	private GroupLocalService _groupLocalService;

@@ -21,7 +21,7 @@ import com.liferay.document.library.versioning.VersioningPolicy;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.DigesterUtil;
+import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class ContentVersioningPolicy implements VersioningPolicy {
 		}
 
 		try (InputStream inputStream = dlFileVersion.getContentStream(false)) {
-			dlFileVersion.setChecksum(DigesterUtil.digestBase64(inputStream));
+			dlFileVersion.setChecksum(_digester.digestBase64(inputStream));
 
 			_dlFileVersionLocalService.updateDLFileVersion(dlFileVersion);
 
@@ -93,6 +93,9 @@ public class ContentVersioningPolicy implements VersioningPolicy {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContentVersioningPolicy.class);
+
+	@Reference
+	private Digester _digester;
 
 	@Reference
 	private DLFileVersionLocalService _dlFileVersionLocalService;

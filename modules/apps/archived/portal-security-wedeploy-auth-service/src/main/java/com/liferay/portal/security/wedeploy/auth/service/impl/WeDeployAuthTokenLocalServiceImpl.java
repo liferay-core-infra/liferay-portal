@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.security.wedeploy.auth.configuration.WeDeployAuthWebConfiguration;
 import com.liferay.portal.security.wedeploy.auth.constants.WeDeployAuthTokenConstants;
@@ -34,6 +33,7 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Supritha Sundaram
@@ -69,7 +69,7 @@ public class WeDeployAuthTokenLocalServiceImpl
 			throw new WeDeployAuthTokenExpiredException();
 		}
 
-		String token = DigesterUtil.digestHex(
+		String token = _digester.digestHex(
 			Digester.MD5, clientId.concat(authorizationToken),
 			PwdGenerator.getPassword());
 
@@ -86,7 +86,7 @@ public class WeDeployAuthTokenLocalServiceImpl
 
 		validateAuthorization(redirectURI, clientId);
 
-		String token = DigesterUtil.digestHex(
+		String token = _digester.digestHex(
 			Digester.MD5, clientId, PwdGenerator.getPassword());
 
 		return addWeDeployAuthToken(
@@ -159,6 +159,9 @@ public class WeDeployAuthTokenLocalServiceImpl
 
 		weDeployAuthAppPersistence.findByRU_CI(redirectURI, clientId);
 	}
+
+	@Reference
+	private Digester _digester;
 
 	private volatile WeDeployAuthWebConfiguration _weDeployAuthWebConfiguration;
 

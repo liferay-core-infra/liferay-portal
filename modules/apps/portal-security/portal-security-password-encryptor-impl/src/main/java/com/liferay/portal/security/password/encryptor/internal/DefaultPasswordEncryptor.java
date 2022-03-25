@@ -15,9 +15,10 @@
 package com.liferay.portal.security.password.encryptor.internal;
 
 import com.liferay.portal.kernel.security.pwd.PasswordEncryptor;
-import com.liferay.portal.kernel.util.DigesterUtil;
+import com.liferay.portal.kernel.util.Digester;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -34,7 +35,10 @@ public class DefaultPasswordEncryptor
 	public String encrypt(
 		String algorithm, String plainTextPassword, String encryptedPassword) {
 
-		return DigesterUtil.digest(algorithm, plainTextPassword);
+		return _digester.digest(algorithm, plainTextPassword);
 	}
+
+	@Reference
+	private Digester _digester;
 
 }

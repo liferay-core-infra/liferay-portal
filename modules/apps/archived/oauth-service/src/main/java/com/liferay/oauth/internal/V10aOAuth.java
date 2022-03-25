@@ -47,7 +47,6 @@ import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServic
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.Portal;
@@ -305,7 +304,7 @@ public class V10aOAuth implements IdentifiableOSGiService, OAuth {
 
 	@Override
 	public String randomizeToken(String token) {
-		return DigesterUtil.digestHex(
+		return _digester.digestHex(
 			Digester.MD5, token, PwdGenerator.getPassword());
 	}
 
@@ -409,6 +408,9 @@ public class V10aOAuth implements IdentifiableOSGiService, OAuth {
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
+
+	@Reference
+	private Digester _digester;
 
 	@Reference
 	private OAuthApplicationLocalService _oAuthApplicationLocalService;

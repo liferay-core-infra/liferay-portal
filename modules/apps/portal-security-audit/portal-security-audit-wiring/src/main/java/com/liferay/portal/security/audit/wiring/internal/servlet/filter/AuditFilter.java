@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.TryFilter;
-import com.liferay.portal.kernel.util.DigesterUtil;
+import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Portal;
@@ -209,6 +209,9 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
+	private Digester _digester;
+
+	@Reference
 	private Portal _portal;
 
 	private ServiceRegistration<LogContext> _serviceRegistration;
@@ -250,7 +253,7 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 							User user = _userLocalService.fetchUser(userId);
 
 							if (user != null) {
-								return DigesterUtil.digest(
+								return _digester.digest(
 									_MESSAGE_DIGEST_ALGORITHM,
 									user.getEmailAddress());
 							}
@@ -262,7 +265,7 @@ public class AuditFilter extends BaseFilter implements TryFilter {
 					"serverName", serverName
 				).put(
 					"sessionId",
-					DigesterUtil.digest(_MESSAGE_DIGEST_ALGORITHM, sessionId)
+					_digester.digest(_MESSAGE_DIGEST_ALGORITHM, sessionId)
 				).put(
 					"userId", (userId != null) ? String.valueOf(userId) : ""
 				).put(

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Accessor;
-import com.liferay.portal.kernel.util.DigesterUtil;
+import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -131,7 +131,7 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 		String mfaWebDigest = (String)httpSession.getAttribute(
 			MFAWebKeys.MFA_WEB_DIGEST);
 
-		if (!StringUtil.equals(DigesterUtil.digest(state), mfaWebDigest)) {
+		if (!StringUtil.equals(_digester.digest(state), mfaWebDigest)) {
 			throw new PrincipalException("User sent unverified state");
 		}
 
@@ -269,8 +269,7 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 
 		httpSession.setAttribute(MFAWebKeys.MFA_USER_ID, userId);
 		httpSession.setAttribute(
-			MFAWebKeys.MFA_WEB_DIGEST,
-			DigesterUtil.digest(encryptedStateMapJSON));
+			MFAWebKeys.MFA_WEB_DIGEST, _digester.digest(encryptedStateMapJSON));
 		httpSession.setAttribute(MFAWebKeys.MFA_WEB_KEY, key);
 	}
 
@@ -293,6 +292,9 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 			}
 
 		};
+
+	@Reference
+	private Digester _digester;
 
 	@Reference
 	private JSONFactory _jsonFactory;

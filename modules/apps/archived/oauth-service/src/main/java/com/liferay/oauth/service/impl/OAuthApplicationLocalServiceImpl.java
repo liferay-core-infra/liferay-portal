@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.Validator;
@@ -77,7 +76,7 @@ public class OAuthApplicationLocalServiceImpl
 
 		return oAuthApplicationLocalService.addOAuthApplication(
 			userId, name, description,
-			DigesterUtil.digestHex(
+			_digester.digestHex(
 				Digester.MD5, consumerKey, PwdGenerator.getPassword()),
 			accessLevel, shareableAccessToken, callbackURI, websiteURL,
 			serviceContext);
@@ -337,6 +336,9 @@ public class OAuthApplicationLocalServiceImpl
 
 	@Reference
 	private CustomSQL _customSQL;
+
+	@Reference
+	private Digester _digester;
 
 	@Reference
 	private ImageLocalService _imageLocalService;

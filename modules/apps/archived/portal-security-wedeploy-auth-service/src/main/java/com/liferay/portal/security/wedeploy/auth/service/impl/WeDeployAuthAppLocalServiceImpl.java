@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthApp;
@@ -28,6 +27,7 @@ import com.liferay.portal.security.wedeploy.auth.service.base.WeDeployAuthAppLoc
 import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Supritha Sundaram
@@ -67,7 +67,7 @@ public class WeDeployAuthAppLocalServiceImpl
 
 		weDeployAuthApp.setClientId(clientId);
 
-		String clientSecret = DigesterUtil.digestHex(
+		String clientSecret = _digester.digestHex(
 			Digester.MD5, clientId, PwdGenerator.getPassword());
 
 		weDeployAuthApp.setClientSecret(clientSecret);
@@ -87,5 +87,8 @@ public class WeDeployAuthAppLocalServiceImpl
 
 		return weDeployAuthAppPersistence.fetchByRU_CI(redirectURI, clientId);
 	}
+
+	@Reference
+	private Digester _digester;
 
 }

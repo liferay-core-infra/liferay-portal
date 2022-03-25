@@ -45,7 +45,6 @@ import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ClassUtil;
 import com.liferay.portal.kernel.util.Digester;
-import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
@@ -300,7 +299,7 @@ public class SyncHelperImpl implements SyncHelper {
 		}
 
 		try {
-			return DigesterUtil.digestBase64(
+			return _digester.digestBase64(
 				Digester.SHA_1, dlFileVersion.getContentStream(false));
 		}
 		catch (Exception exception) {
@@ -322,7 +321,7 @@ public class SyncHelperImpl implements SyncHelper {
 		}
 
 		try (FileInputStream fileInputStream = new FileInputStream(file)) {
-			return DigesterUtil.digestBase64(Digester.SHA_1, fileInputStream);
+			return _digester.digestBase64(Digester.SHA_1, fileInputStream);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -728,6 +727,10 @@ public class SyncHelperImpl implements SyncHelper {
 	private static final Log _log = LogFactoryUtil.getLog(SyncHelperImpl.class);
 
 	private final Map<String, String> _checksums = new ConcurrentHashMap<>();
+
+	@Reference
+	private Digester _digester;
+
 	private DLFileVersionLocalService _dlFileVersionLocalService;
 	private GroupLocalService _groupLocalService;
 	private final Map<String, String> _lanTokenKeys = new ConcurrentHashMap<>();

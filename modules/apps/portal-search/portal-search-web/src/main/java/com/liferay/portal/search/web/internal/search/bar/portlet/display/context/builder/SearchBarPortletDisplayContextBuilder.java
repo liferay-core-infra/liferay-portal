@@ -154,15 +154,25 @@ public class SearchBarPortletDisplayContextBuilder {
 			new SearchBarPortletPreferencesImpl(
 				Optional.ofNullable(_renderRequest.getPreferences()));
 
+		_destination = searchBarPortletPreferences.getDestinationString();
+
+		_invisible = searchBarPortletPreferences.isInvisible();
+
+		_searchScopePreference =
+			searchBarPortletPreferences.getSearchScopePreference();
+
 		PortletSharedSearchResponse portletSharedSearchResponse =
 			_portletSharedSearchRequest.search(_renderRequest);
 
-		String keywordsParameterName = _getKeywordsParameterName(
-			searchBarPortletPreferences,
+		_emptySearchEnabled = _isEmptySearchEnabled(
+			portletSharedSearchResponse);
+
+		_keywordsParameterName = _getKeywordsParameterName(
+			earchBarPortletPreferences,
 			portletSharedSearchResponse.getSearchSettings());
 
-		String scopeParameterName = _getScopeParameterName(
-			searchBarPortletPreferences,
+		_scopeParameterName = _getScopeParameterName(
+			 searchBarPortletPreferences,
 			portletSharedSearchResponse.getSearchSettings());
 
 		SearchResponse searchResponse = _getSearchResponse(
@@ -170,99 +180,23 @@ public class SearchBarPortletDisplayContextBuilder {
 
 		SearchRequest searchRequest = searchResponse.getRequest();
 
-		return setDestination(
-			searchBarPortletPreferences.getDestinationString()
-		).setEmptySearchEnabled(
-			_isEmptySearchEnabled(portletSharedSearchResponse)
-		).setInvisible(
-			searchBarPortletPreferences.isInvisible()
-		).setKeywords(
-			Optional.ofNullable(searchRequest.getQueryString())
-		).setKeywordsParameterName(
-			keywordsParameterName
-		).setPaginationStartParameterName(
-			searchRequest.getPaginationStartParameterName()
-		).setScopeParameterName(
-			scopeParameterName
-		).setScopeParameterValue(
+		Optional.ofNullable(
+			searchRequest.getQueryString()
+		).ifPresent(
+			keywords -> _keywords = keywords
+		);
+
+		_paginationStartParameterName =
+			searchRequest.getPaginationStartParameterName();
+
+		Optional<String> scopeParameterValueOptional =
 			portletSharedSearchResponse.getParameter(
-				scopeParameterName, _renderRequest)
-		).setSearchScopePreference(
-			searchBarPortletPreferences.getSearchScopePreference()
-		).build();
-	}
-
-	public SearchBarPortletDisplayContextBuilder setDestination(
-		String destination) {
-
-		_destination = destination;
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setEmptySearchEnabled(
-		boolean emptySearchEnabled) {
-
-		_emptySearchEnabled = emptySearchEnabled;
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setInvisible(
-		boolean invisible) {
-
-		_invisible = invisible;
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setKeywords(
-		Optional<String> keywordsOptional) {
-
-		keywordsOptional.ifPresent(keywords -> _keywords = keywords);
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setKeywordsParameterName(
-		String keywordsParameterName) {
-
-		_keywordsParameterName = keywordsParameterName;
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder
-		setPaginationStartParameterName(String paginationStartParameterName) {
-
-		_paginationStartParameterName = paginationStartParameterName;
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setScopeParameterName(
-		String scopeParameterName) {
-
-		_scopeParameterName = scopeParameterName;
-
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setScopeParameterValue(
-		Optional<String> scopeParameterValueOptional) {
+				_scopeParameterName, _renderRequest);
 
 		scopeParameterValueOptional.ifPresent(
 			scopeParameterValue -> _scopeParameterValue = scopeParameterValue);
 
-		return this;
-	}
-
-	public SearchBarPortletDisplayContextBuilder setSearchScopePreference(
-		SearchScopePreference searchScopePreference) {
-
-		_searchScopePreference = searchScopePreference;
-
-		return this;
+		return build();
 	}
 
 	protected Layout fetchLayoutByFriendlyURL(

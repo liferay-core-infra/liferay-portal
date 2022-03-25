@@ -48,7 +48,6 @@ import com.liferay.portal.search.web.search.request.SearchSettings;
 
 import java.util.Optional;
 
-import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
@@ -78,58 +77,21 @@ public class SearchBarPortletDisplayContextBuilder {
 			WebKeys.THEME_DISPLAY);
 	}
 
-	public SearchBarPortletDisplayContext build() throws PortletException {
+	public SearchBarPortletDisplayContext buildDisplayContext() {
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			new SearchBarPortletDisplayContext();
 
-		HttpServletRequest httpServletRequest = getHttpServletRequest(
-			_renderRequest);
+		SearchBarPortletPreferences searchBarPortletPreferences =
+			new SearchBarPortletPreferencesImpl(
+				Optional.ofNullable(_renderRequest.getPreferences()));
 
-		SearchBarPortletInstanceConfiguration
-			searchBarPortletInstanceConfiguration =
-				getSearchBarPortletInstanceConfiguration(
-					_themeDisplay.getPortletDisplay());
+		String destination = searchBarPortletPreferences.getDestinationString();
 
-		searchBarPortletDisplayContext.setAvailableEverythingSearchScope(
-			isAvailableEverythingSearchScope());
-		searchBarPortletDisplayContext.setCurrentSiteSearchScopeParameterString(
-			SearchScope.THIS_SITE.getParameterString());
-		searchBarPortletDisplayContext.setDisplayStyleGroupId(
-			getDisplayStyleGroupId(
-				searchBarPortletInstanceConfiguration, _themeDisplay));
-		searchBarPortletDisplayContext.setEmptySearchEnabled(
-			_emptySearchEnabled);
-		searchBarPortletDisplayContext.setEverythingSearchScopeParameterString(
-			SearchScope.EVERYTHING.getParameterString());
-		searchBarPortletDisplayContext.setInputPlaceholder(
-			LanguageUtil.get(httpServletRequest, "search-..."));
-		searchBarPortletDisplayContext.setKeywords(getKeywords());
-		searchBarPortletDisplayContext.setKeywordsParameterName(
-			_keywordsParameterName);
-
-		if (_searchScopePreference ==
-				SearchScopePreference.LET_THE_USER_CHOOSE) {
-
-			searchBarPortletDisplayContext.setLetTheUserChooseTheSearchScope(
-				true);
-		}
-
-		searchBarPortletDisplayContext.setPaginationStartParameterName(
-			getPaginationStartParameterName());
-		searchBarPortletDisplayContext.setScopeParameterName(
-			_scopeParameterName);
-		searchBarPortletDisplayContext.setScopeParameterValue(
-			getScopeParameterValue());
-		searchBarPortletDisplayContext.setSearchBarPortletInstanceConfiguration(
-			searchBarPortletInstanceConfiguration);
-
-		_setSelectedSearchScope(searchBarPortletDisplayContext);
-
-		if (Validator.isBlank(_destination)) {
+		if (Validator.isBlank(destination)) {
 			searchBarPortletDisplayContext.setSearchURL(_getURLCurrentPath());
 		}
 		else {
-			String destinationURL = _getDestinationURL(_destination);
+			String destinationURL = _getDestinationURL(destination);
 
 			if (destinationURL == null) {
 				searchBarPortletDisplayContext.setDestinationUnreachable(true);
@@ -140,40 +102,37 @@ public class SearchBarPortletDisplayContextBuilder {
 			}
 		}
 
-		if (_invisible) {
+		if (searchBarPortletPreferences.isInvisible()) {
 			searchBarPortletDisplayContext.setRenderNothing(true);
 		}
-
-		return searchBarPortletDisplayContext;
-	}
-
-	public SearchBarPortletDisplayContext buildDisplayContext()
-		throws PortletException {
-
-		SearchBarPortletPreferences searchBarPortletPreferences =
-			new SearchBarPortletPreferencesImpl(
-				Optional.ofNullable(_renderRequest.getPreferences()));
-
-		_destination = searchBarPortletPreferences.getDestinationString();
-
-		_invisible = searchBarPortletPreferences.isInvisible();
 
 		_searchScopePreference =
 			searchBarPortletPreferences.getSearchScopePreference();
 
+		if (_searchScopePreference ==
+				SearchScopePreference.LET_THE_USER_CHOOSE) {
+
+			searchBarPortletDisplayContext.setLetTheUserChooseTheSearchScope(
+				true);
+		}
+
 		PortletSharedSearchResponse portletSharedSearchResponse =
 			_portletSharedSearchRequest.search(_renderRequest);
 
-		_emptySearchEnabled = _isEmptySearchEnabled(
-			portletSharedSearchResponse);
+		searchBarPortletDisplayContext.setEmptySearchEnabled(
+			_isEmptySearchEnabled(portletSharedSearchResponse));
 
-		_keywordsParameterName = _getKeywordsParameterName(
-			earchBarPortletPreferences,
-			portletSharedSearchResponse.getSearchSettings());
+		searchBarPortletDisplayContext.setKeywordsParameterName(
+			_getKeywordsParameterName(
+				searchBarPortletPreferences,
+				portletSharedSearchResponse.getSearchSettings()));
 
 		_scopeParameterName = _getScopeParameterName(
-			 searchBarPortletPreferences,
+			searchBarPortletPreferences,
 			portletSharedSearchResponse.getSearchSettings());
+
+		searchBarPortletDisplayContext.setScopeParameterName(
+			_scopeParameterName);
 
 		SearchResponse searchResponse = _getSearchResponse(
 			portletSharedSearchResponse, searchBarPortletPreferences);
@@ -186,8 +145,13 @@ public class SearchBarPortletDisplayContextBuilder {
 			keywords -> _keywords = keywords
 		);
 
+		searchBarPortletDisplayContext.setKeywords(getKeywords());
+
 		_paginationStartParameterName =
 			searchRequest.getPaginationStartParameterName();
+
+		searchBarPortletDisplayContext.setPaginationStartParameterName(
+			getPaginationStartParameterName());
 
 		Optional<String> scopeParameterValueOptional =
 			portletSharedSearchResponse.getParameter(
@@ -196,7 +160,37 @@ public class SearchBarPortletDisplayContextBuilder {
 		scopeParameterValueOptional.ifPresent(
 			scopeParameterValue -> _scopeParameterValue = scopeParameterValue);
 
-		return build();
+		searchBarPortletDisplayContext.setScopeParameterValue(
+			getScopeParameterValue());
+
+		HttpServletRequest httpServletRequest = getHttpServletRequest(
+			_renderRequest);
+
+		searchBarPortletDisplayContext.setInputPlaceholder(
+			LanguageUtil.get(httpServletRequest, "search-..."));
+
+		SearchBarPortletInstanceConfiguration
+			searchBarPortletInstanceConfiguration =
+				getSearchBarPortletInstanceConfiguration(
+					_themeDisplay.getPortletDisplay());
+
+		searchBarPortletDisplayContext.setDisplayStyleGroupId(
+			getDisplayStyleGroupId(
+				searchBarPortletInstanceConfiguration, _themeDisplay));
+
+		searchBarPortletDisplayContext.setSearchBarPortletInstanceConfiguration(
+			searchBarPortletInstanceConfiguration);
+
+		searchBarPortletDisplayContext.setAvailableEverythingSearchScope(
+			isAvailableEverythingSearchScope());
+		searchBarPortletDisplayContext.setCurrentSiteSearchScopeParameterString(
+			SearchScope.THIS_SITE.getParameterString());
+		searchBarPortletDisplayContext.setEverythingSearchScopeParameterString(
+			SearchScope.EVERYTHING.getParameterString());
+
+		_setSelectedSearchScope(searchBarPortletDisplayContext);
+
+		return searchBarPortletDisplayContext;
 	}
 
 	protected Layout fetchLayoutByFriendlyURL(
@@ -425,12 +419,8 @@ public class SearchBarPortletDisplayContextBuilder {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchBarPortletDisplayContextBuilder.class);
 
-	private String _destination;
-	private boolean _emptySearchEnabled;
 	private final Http _http;
-	private boolean _invisible;
 	private String _keywords;
-	private String _keywordsParameterName;
 	private final LayoutLocalService _layoutLocalService;
 	private String _paginationStartParameterName;
 	private final Portal _portal;

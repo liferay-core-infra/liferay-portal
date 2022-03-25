@@ -202,14 +202,6 @@ public class SearchBarPortletDisplayContextBuilder {
 		return this;
 	}
 
-	public SearchBarPortletDisplayContextBuilder setThemeDisplay(
-		ThemeDisplay themeDisplay) {
-
-		_themeDisplay = themeDisplay;
-
-		return this;
-	}
-
 	protected Layout fetchLayoutByFriendlyURL(
 		long groupId, String friendlyURL) {
 
@@ -374,6 +366,6 @@ public class SearchBarPortletDisplayContextBuilder {
 	private String _scopeParameterName;
 	private String _scopeParameterValue;
 	private SearchScopePreference _searchScopePreference;
-	private ThemeDisplay _themeDisplay;
+	private final ThemeDisplay _themeDisplay;
 
 }

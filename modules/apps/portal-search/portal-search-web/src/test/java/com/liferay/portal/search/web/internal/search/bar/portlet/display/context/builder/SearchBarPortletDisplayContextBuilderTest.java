@@ -269,6 +269,12 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
 
+		Mockito.when(
+			renderRequest.getAttribute(WebKeys.THEME_DISPLAY)
+		).thenReturn(
+			_themeDisplay
+		);
+
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
 				new SearchBarPortletDisplayContextBuilder(
@@ -276,7 +282,6 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 		searchBarPortletDisplayContextBuilder.setSearchScopePreference(
 			SearchScopePreference.getSearchScopePreference("everything"));
-		searchBarPortletDisplayContextBuilder.setThemeDisplay(_themeDisplay);
 
 		return searchBarPortletDisplayContextBuilder;
 	}

@@ -239,8 +239,6 @@ public class SearchBarPortlet extends MVCPortlet {
 				scopeParameterName, renderRequest)
 		).setSearchScopePreference(
 			searchBarPortletPreferences.getSearchScopePreference()
-		).setThemeDisplay(
-			themeDisplay
 		).build();
 	}
 

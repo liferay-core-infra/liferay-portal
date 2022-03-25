@@ -33,6 +33,10 @@ public class ModelAdapterUtil {
 		Function<InvocationHandler, T> proxyProviderFunction,
 		List<?> delegateObjects) {
 
+		if (delegateObjects == null) {
+			return null;
+		}
+
 		List<T> adaptedObjects = new ArrayList<>(delegateObjects.size());
 
 		for (Object delegateObject : delegateObjects) {

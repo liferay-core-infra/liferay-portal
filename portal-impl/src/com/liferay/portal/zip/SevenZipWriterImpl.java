@@ -14,8 +14,6 @@
 
 package com.liferay.portal.zip;
 
-import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
-import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.memory.DeleteFileFinalizeAction;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.StringBundler;
@@ -28,14 +26,12 @@ import com.liferay.portal.kernel.zip.ZipWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 
-import java.nio.file.FileSystem;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
@@ -44,27 +40,25 @@ import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
 /**
  * @author Hong Vo
  */
-public class SevenZipWriterImpl implements ZipWriter {
+public class SevenZipWriterImpl extends BaseZipWriter implements ZipWriter {
 
 	public SevenZipWriterImpl() {
-		this(
-			new File(
-				StringBundler.concat(
-					SystemProperties.get(SystemProperties.TMP_DIR),
-					StringPool.SLASH, PortalUUIDUtil.generate())));
+		_directory = new File(
+			StringBundler.concat(
+				SystemProperties.get(SystemProperties.TMP_DIR),
+				StringPool.SLASH, PortalUUIDUtil.generate()));
 
 		FinalizeManager.register(
-			_directory,
-			new DeleteFileFinalizeAction(_directory.getAbsolutePath()),
+			_directory, reference -> FileUtil.deltree(_directory),
 			FinalizeManager.PHANTOM_REFERENCE_FACTORY);
-	}
 
-	public SevenZipWriterImpl(File directory) {
-		_directory = directory.getAbsoluteFile();
+		_directoryPath = _directory.toPath();
 
-		_path = _directory.toPath();
+		_file = new File(_directory.getAbsolutePath() + ".7z");
 
-		_file = null;
+		FinalizeManager.register(
+			_file, new DeleteFileFinalizeAction(_file.getAbsolutePath()),
+			FinalizeManager.PHANTOM_REFERENCE_FACTORY);
 	}
 
 	@Override
@@ -73,20 +67,11 @@ public class SevenZipWriterImpl implements ZipWriter {
 			return;
 		}
 
-		FileSystem fileSystem = _path.getFileSystem();
-
-		Path filePath = fileSystem.getPath(
-			StringBundler.concat(_path.toString(), StringPool.SLASH, name));
-
-		Path parentPath = filePath.getParent();
-
-		if (parentPath != null) {
-			Files.createDirectories(parentPath);
+		while (name.startsWith(StringPool.SLASH)) {
+			name = name.substring(1);
 		}
 
-		Files.write(
-			filePath, bytes, StandardOpenOption.CREATE,
-			StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+		addEntry(_directoryPath.resolve(name), bytes);
 	}
 
 	@Override
@@ -97,113 +82,24 @@ public class SevenZipWriterImpl implements ZipWriter {
 			return;
 		}
 
-		if (ExportImportThreadLocal.isExportInProcess()) {
-			addEntry(name, StreamUtil.toByteArray(inputStream));
-
-			return;
+		while (name.startsWith(StringPool.SLASH)) {
+			name = name.substring(1);
 		}
 
-		FileSystem fileSystem = _path.getFileSystem();
-
-		Path filePath = fileSystem.getPath(
-			StringBundler.concat(_path.toString(), StringPool.SLASH, name));
-
-		Path parentPath = filePath.getParent();
-
-		if (parentPath != null) {
-			Files.createDirectories(parentPath);
-		}
-
-		Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-	}
-
-	@Override
-	public void addEntry(String name, String s) throws IOException {
-		if (s == null) {
-			return;
-		}
-
-		addEntry(name, s.getBytes(StringPool.UTF8));
-	}
-
-	@Override
-	public void addEntry(String name, StringBuilder sb) throws IOException {
-		if (sb == null) {
-			return;
-		}
-
-		addEntry(name, sb.toString());
-	}
-
-	@Override
-	public byte[] finish() throws IOException {
-		return FileUtil.getBytes(getFile());
+		addEntry(_directoryPath.resolve(name), inputStream);
 	}
 
 	@Override
 	public File getFile() {
-		if (_file != null) {
-			return _file;
-		}
-
-		_file = _generateSevenZipOutput();
+		_generateSevenZipOutput();
 
 		return _file;
 	}
 
-	@Override
-	public String getPath() {
-		return _file.getPath();
-	}
-
-	@Override
-	public void umount() {
-	}
-
-	private void _appendSevenZip(
-			File entryFile, Path entryPath, SevenZOutputFile sevenZOutputFile)
-		throws IOException {
-
-		SevenZArchiveEntry sevenZArchiveEntry =
-			sevenZOutputFile.createArchiveEntry(
-				entryFile, entryPath.toString());
-
-		sevenZOutputFile.putArchiveEntry(sevenZArchiveEntry);
-
-		sevenZOutputFile.write(Files.readAllBytes(entryFile.toPath()));
-
-		sevenZOutputFile.closeArchiveEntry();
-	}
-
-	private File _generateSevenZipOutput() {
-		try {
-			_file = new File(_directory.getAbsolutePath() + ".7z");
-
-			FinalizeManager.register(
-				_file, new DeleteFileFinalizeAction(_file.getAbsolutePath()),
-				FinalizeManager.PHANTOM_REFERENCE_FACTORY);
-
-			_sevenZip(_path, _file);
-
-			FileUtil.deltree(_directory);
-
-			return _file;
-		}
-		catch (Exception exception) {
-			return _file;
-		}
-	}
-
-	private void _sevenZip(Path sourcePath, File sevenZipFile)
-		throws Exception {
-
-		final Path parentPath = sourcePath;
-
-		try (SevenZOutputFile sevenZOutputFile = new SevenZOutputFile(
-				sevenZipFile)) {
-
+	private void _generateSevenZipOutput() {
+		try (SevenZOutputFile sevenZOutputFile = new SevenZOutputFile(_file)) {
 			Files.walkFileTree(
-				sourcePath,
+				_directoryPath,
 				new SimpleFileVisitor<Path>() {
 
 					@Override
@@ -211,20 +107,30 @@ public class SevenZipWriterImpl implements ZipWriter {
 							Path path, BasicFileAttributes basicFileAttributes)
 						throws IOException {
 
-						Path entryPath = parentPath.relativize(path);
+						Path entryPath = _directoryPath.relativize(path);
 
-						_appendSevenZip(
-							path.toFile(), entryPath, sevenZOutputFile);
+						SevenZArchiveEntry sevenZArchiveEntry =
+							sevenZOutputFile.createArchiveEntry(
+								path, entryPath.toString());
+
+						sevenZOutputFile.putArchiveEntry(sevenZArchiveEntry);
+
+						sevenZOutputFile.write(path);
+
+						sevenZOutputFile.closeArchiveEntry();
 
 						return FileVisitResult.CONTINUE;
 					}
 
 				});
 		}
+		catch (IOException ioException) {
+			throw new UncheckedIOException(ioException);
+		}
 	}
 
-	private File _directory;
-	private File _file;
-	private Path _path;
+	private final File _directory;
+	private final Path _directoryPath;
+	private final File _file;
 
 }

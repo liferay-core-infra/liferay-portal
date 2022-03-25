@@ -87,19 +87,21 @@ public class SearchBarPortletDisplayContextBuilder {
 
 		String destination = searchBarPortletPreferences.getDestinationString();
 
+		if (!Validator.isBlank(destination) &&
+			(_getDestinationURL(destination) == null)) {
+
+			searchBarPortletDisplayContext.setDestinationUnreachable(true);
+			searchBarPortletDisplayContext.setRenderNothing(true);
+
+			return searchBarPortletDisplayContext;
+		}
+
 		if (Validator.isBlank(destination)) {
 			searchBarPortletDisplayContext.setSearchURL(_getURLCurrentPath());
 		}
 		else {
-			String destinationURL = _getDestinationURL(destination);
-
-			if (destinationURL == null) {
-				searchBarPortletDisplayContext.setDestinationUnreachable(true);
-				searchBarPortletDisplayContext.setRenderNothing(true);
-			}
-			else {
-				searchBarPortletDisplayContext.setSearchURL(destinationURL);
-			}
+			searchBarPortletDisplayContext.setSearchURL(
+				_getDestinationURL(destination));
 		}
 
 		if (searchBarPortletPreferences.isInvisible()) {

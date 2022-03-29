@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet.display.context.builder;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
@@ -32,13 +33,17 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
+import com.liferay.portal.search.web.internal.portlet.preferences.PortletPreferencesLookup;
 import com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletDisplayContext;
+import com.liferay.portal.search.web.internal.search.bar.portlet.helper.SearchBarPrecedenceHelper;
+import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import java.lang.reflect.Field;
 
 import java.util.Optional;
 
-import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -278,10 +283,23 @@ public class SearchBarPortletDisplayContextBuilderTest {
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
 				new SearchBarPortletDisplayContextBuilder(
-					_http, _layoutLocalService, _portal, renderRequest);
+					_http, _layoutLocalService, _portal,
+					Mockito.mock(PortletPreferencesLookup.class),
+					Mockito.mock(PortletSharedSearchRequest.class),
+					renderRequest,
+					Mockito.mock(SearchBarPrecedenceHelper.class));
 
-		searchBarPortletDisplayContextBuilder.setSearchScopePreference(
-			SearchScopePreference.getSearchScopePreference("everything"));
+		try {
+			Field field = ReflectionUtil.getDeclaredField(
+				SearchBarPortletDisplayContextBuilder.class,
+				"_searchScopePreference");
+
+			field.set(
+				searchBarPortletDisplayContextBuilder,
+				SearchScopePreference.getSearchScopePreference("everything"));
+		}
+		catch (Exception exception) {
+		}
 
 		return searchBarPortletDisplayContextBuilder;
 	}

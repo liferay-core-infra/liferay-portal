@@ -335,8 +335,8 @@ public class PropsUtil {
 		return defaultLiferayHome;
 	}
 
-	private static String _getLibDir(
-		ClassLoader classLoader, String className) {
+	private static String _getLibDir(Class<?> clazz) {
+		String className = clazz.getName();
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Class name " + className);
@@ -350,6 +350,8 @@ public class PropsUtil {
 			className, CharPool.PERIOD, CharPool.SLASH);
 
 		className = StringUtil.replace(className, "/class", _CLASS_EXTENSION);
+
+		ClassLoader classLoader = clazz.getClassLoader();
 
 		URL url = classLoader.getResource(className);
 
@@ -421,8 +423,7 @@ public class PropsUtil {
 
 		// Global shared lib directory
 
-		String globalSharedLibDir = _getLibDir(
-			Servlet.class.getClassLoader(), Servlet.class.getName());
+		String globalSharedLibDir = _getLibDir(Servlet.class);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Global shared lib directory " + globalSharedLibDir);
@@ -433,8 +434,7 @@ public class PropsUtil {
 
 		// Portal shielded container lib directory
 
-		String portalShieldedContainerLibDir = _getLibDir(
-			PropsUtil.class.getClassLoader(), PropsUtil.class.getName());
+		String portalShieldedContainerLibDir = _getLibDir(PropsUtil.class);
 
 		String portalShieldedContainerLibDirProperty = System.getProperty(
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);

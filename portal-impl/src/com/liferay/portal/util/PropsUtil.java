@@ -342,10 +342,6 @@ public class PropsUtil {
 			_log.debug("Class name " + className);
 		}
 
-		if (!className.endsWith(_CLASS_EXTENSION)) {
-			className += _CLASS_EXTENSION;
-		}
-
 		className = StringUtil.replace(
 			className, CharPool.PERIOD, CharPool.SLASH);
 

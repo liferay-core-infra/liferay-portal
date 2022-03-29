@@ -21,7 +21,6 @@ import com.liferay.portal.configuration.ConfigurationImpl;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -35,13 +34,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -344,57 +337,21 @@ public class PropsUtil {
 
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		Path path = _getPathFromURL(
-			classLoader.getResource(
-				StringUtil.replace(
-					StringUtil.replace(
-						className, CharPool.PERIOD, CharPool.SLASH),
-					"/class", ".class")));
-
-		String parentPath = StringUtil.replace(
-			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
-
-		int pos = parentPath.lastIndexOf(".jar!");
-
-		if (pos == -1) {
-			pos = parentPath.lastIndexOf(".jar/");
-		}
-
-		pos = parentPath.lastIndexOf(CharPool.SLASH, pos);
-
-		return parentPath.substring(0, pos + 1);
-	}
-
-	private static Path _getPathFromURL(URL url) {
-		String urlProtocol = url.getProtocol();
-
-		if (urlProtocol.equals("jar") || urlProtocol.equals("wsjar")) {
-			try {
-				url = new URL(url.getPath());
-			}
-			catch (MalformedURLException malformedURLException) {
-				throw new SystemException(malformedURLException);
-			}
-		}
+		URL url = classLoader.getResource(
+			StringUtil.replace(className, CharPool.PERIOD, CharPool.SLASH) +
+				".class");
 
 		String path = url.getPath();
 
-		if (!path.startsWith(StringPool.SLASH)) {
-			path = StringPool.SLASH + path;
+		if (path.startsWith("file:")) {
+			path = path.substring(5);
 		}
 
-		try {
-			URI uri = new URI("file:" + path);
+		int pos = path.lastIndexOf("!/");
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("URI " + uri);
-			}
+		pos = path.lastIndexOf(CharPool.SLASH, pos);
 
-			return Paths.get(uri);
-		}
-		catch (URISyntaxException uriSyntaxException) {
-			throw new SystemException(uriSyntaxException);
-		}
+		return path.substring(0, pos + 1);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(PropsUtil.class);

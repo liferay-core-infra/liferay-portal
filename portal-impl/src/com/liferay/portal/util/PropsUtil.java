@@ -342,16 +342,14 @@ public class PropsUtil {
 			_log.debug("Class name " + className);
 		}
 
-		className = StringUtil.replace(
-			className, CharPool.PERIOD, CharPool.SLASH);
-
-		className = StringUtil.replace(className, "/class", _CLASS_EXTENSION);
-
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		URL url = classLoader.getResource(className);
-
-		Path path = _getPathFromURL(url);
+		Path path = _getPathFromURL(
+			classLoader.getResource(
+				StringUtil.replace(
+					StringUtil.replace(
+						className, CharPool.PERIOD, CharPool.SLASH),
+					"/class", ".class")));
 
 		String parentPath = StringUtil.replace(
 			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
@@ -398,8 +396,6 @@ public class PropsUtil {
 			throw new SystemException(uriSyntaxException);
 		}
 	}
-
-	private static final String _CLASS_EXTENSION = ".class";
 
 	private static final Log _log = LogFactoryUtil.getLog(PropsUtil.class);
 

@@ -356,11 +356,7 @@ public class PropsUtil {
 		String parentPath = StringUtil.replace(
 			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
 
-		int pos = parentPath.indexOf(className);
-
-		parentPath = parentPath.substring(0, pos);
-
-		pos = parentPath.lastIndexOf(".jar!");
+		int pos = parentPath.lastIndexOf(".jar!");
 
 		if (pos == -1) {
 			pos = parentPath.lastIndexOf(".jar/");

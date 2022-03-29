@@ -36,17 +36,21 @@ import com.liferay.portal.search.searcher.SearchResponse;
 import com.liferay.portal.search.web.internal.display.context.SearchScope;
 import com.liferay.portal.search.web.internal.display.context.SearchScopePreference;
 import com.liferay.portal.search.web.internal.portlet.preferences.PortletPreferencesLookup;
+import com.liferay.portal.search.web.internal.search.bar.portlet.SearchBarPortletPreferences;
 import com.liferay.portal.search.web.internal.search.bar.portlet.configuration.SearchBarPortletInstanceConfiguration;
 import com.liferay.portal.search.web.internal.search.bar.portlet.display.context.SearchBarPortletDisplayContext;
 import com.liferay.portal.search.web.internal.search.bar.portlet.helper.SearchBarPrecedenceHelper;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchRequest;
 import com.liferay.portal.search.web.portlet.shared.search.PortletSharedSearchResponse;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portlet.PortletPreferencesImpl;
 
 import java.lang.reflect.Field;
 
 import java.util.Optional;
 
+import javax.portlet.PortletPreferences;
+import javax.portlet.ReadOnlyException;
 import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,12 +88,17 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	}
 
 	@Test
-	public void testDestinationBlank() throws PortletException {
+	public void testDestinationBlank() throws ReadOnlyException {
+		PortletPreferences portletPreferences = new PortletPreferencesImpl();
+
+		portletPreferences.setValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
+			StringPool.BLANK);
+
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
-
-		searchBarPortletDisplayContextBuilder.setDestination(StringPool.BLANK);
+				_createSearchBarPortletDisplayContextBuilder(
+					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			searchBarPortletDisplayContextBuilder.build();
@@ -99,12 +108,16 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	}
 
 	@Test
-	public void testDestinationNull() throws PortletException {
+	public void testDestinationNull() throws ReadOnlyException {
+		PortletPreferences portletPreferences = new PortletPreferencesImpl();
+
+		portletPreferences.setValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION, null);
+
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
-
-		searchBarPortletDisplayContextBuilder.setDestination(null);
+				_createSearchBarPortletDisplayContextBuilder(
+					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			searchBarPortletDisplayContextBuilder.build();
@@ -114,16 +127,21 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	}
 
 	@Test
-	public void testDestinationUnreachable() throws PortletException {
+	public void testDestinationUnreachable() throws ReadOnlyException {
 		String destination = RandomTestUtil.randomString();
 
 		_whenLayoutLocalServiceFetchLayoutByFriendlyURL(destination, null);
 
+		PortletPreferences portletPreferences = new PortletPreferencesImpl();
+
+		portletPreferences.setValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
+			destination);
+
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
-
-		searchBarPortletDisplayContextBuilder.setDestination(destination);
+				_createSearchBarPortletDisplayContextBuilder(
+					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			searchBarPortletDisplayContextBuilder.build();
@@ -144,12 +162,16 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 		_whenPortalGetLayoutFriendlyURL(layout, layoutFriendlyURL);
 
+		PortletPreferences portletPreferences = new PortletPreferencesImpl();
+
+		portletPreferences.setValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
+			StringPool.SLASH.concat(destination));
+
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
-
-		searchBarPortletDisplayContextBuilder.setDestination(
-			StringPool.SLASH.concat(destination));
+				_createSearchBarPortletDisplayContextBuilder(
+					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			searchBarPortletDisplayContextBuilder.build();
@@ -173,11 +195,16 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 		_whenPortalGetLayoutFriendlyURL(layout, layoutFriendlyURL);
 
+		PortletPreferences portletPreferences = new PortletPreferencesImpl();
+
+		portletPreferences.setValue(
+			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
+			destination);
+
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
-
-		searchBarPortletDisplayContextBuilder.setDestination(destination);
+				_createSearchBarPortletDisplayContextBuilder(
+					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			searchBarPortletDisplayContextBuilder.build();
@@ -190,7 +217,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	}
 
 	@Test
-	public void testSamePageNoDestination() throws PortletException {
+	public void testSamePageNoDestination() {
 		Mockito.doReturn(
 			"http://example.com/web/guest/home?param=arg"
 		).when(
@@ -199,7 +226,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
+				_createSearchBarPortletDisplayContextBuilder(null);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			searchBarPortletDisplayContextBuilder.build();
@@ -215,10 +242,19 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	public void testSearchScope() {
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
-				_createSearchBarPortletDisplayContextBuilder();
+				_createSearchBarPortletDisplayContextBuilder(null);
 
-		searchBarPortletDisplayContextBuilder.setScopeParameterValue(
-			Optional.of(SearchScope.EVERYTHING.getParameterString()));
+		try {
+			Field field = ReflectionUtil.getDeclaredField(
+				SearchBarPortletDisplayContextBuilder.class,
+				"_scopeParameterValue");
+
+			field.set(
+				searchBarPortletDisplayContextBuilder,
+				Optional.of(SearchScope.EVERYTHING.getParameterString()));
+		}
+		catch (Exception exception) {
+		}
 
 		Assert.assertEquals(
 			SearchScope.EVERYTHING,
@@ -273,7 +309,8 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	}
 
 	private SearchBarPortletDisplayContextBuilder
-		_createSearchBarPortletDisplayContextBuilder() {
+		_createSearchBarPortletDisplayContextBuilder(
+			PortletPreferences portletPreferences) {
 
 		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
 
@@ -282,6 +319,14 @@ public class SearchBarPortletDisplayContextBuilderTest {
 		).thenReturn(
 			_themeDisplay
 		);
+
+		if (portletPreferences != null) {
+			Mockito.when(
+				renderRequest.getPreferences()
+			).thenReturn(
+				portletPreferences
+			);
+		}
 
 		PortletSharedSearchRequest portletSharedSearchRequest = Mockito.mock(
 			PortletSharedSearchRequest.class);

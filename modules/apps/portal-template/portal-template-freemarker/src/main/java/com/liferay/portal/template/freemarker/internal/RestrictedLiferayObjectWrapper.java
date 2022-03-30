@@ -179,6 +179,12 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 
 		Class<?> clazz = object.getClass();
 
+		String className = clazz.getName();
+
+		if (_allowAllClasses|| _allowedClassNames.contains(className)) {
+			return super.wrap(object);
+		}
+
 		if ((object instanceof BaseModel) &&
 			!CompanyThreadLocal.isInitializingPortalInstance()) {
 
@@ -208,8 +214,6 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 		if (!_allowAllClasses && _isRestricted(clazz)) {
 			return _RESTRICTED_STRING_MODEL_FACTORY.create(object, this);
 		}
-
-		String className = clazz.getName();
 
 		if (_restrictedMethodNames.containsKey(className)) {
 			LiferayFreeMarkerStringModel liferayFreeMarkerStringModel =

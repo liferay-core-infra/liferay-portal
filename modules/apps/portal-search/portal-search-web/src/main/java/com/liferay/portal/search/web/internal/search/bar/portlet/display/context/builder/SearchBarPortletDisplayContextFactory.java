@@ -77,7 +77,7 @@ public class SearchBarPortletDisplayContextFactory {
 			WebKeys.THEME_DISPLAY);
 	}
 
-	public SearchBarPortletDisplayContext build() {
+	public SearchBarPortletDisplayContext create() {
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
 			new SearchBarPortletDisplayContext();
 

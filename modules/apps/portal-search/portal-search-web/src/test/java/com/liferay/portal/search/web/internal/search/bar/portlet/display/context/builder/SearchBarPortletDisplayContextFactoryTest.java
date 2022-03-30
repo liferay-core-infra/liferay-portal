@@ -101,7 +101,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextBuilder.build();
+			searchBarPortletDisplayContextBuilder.create();
 
 		Assert.assertFalse(
 			searchBarPortletDisplayContext.isDestinationUnreachable());
@@ -120,7 +120,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextBuilder.build();
+			searchBarPortletDisplayContextBuilder.create();
 
 		Assert.assertFalse(
 			searchBarPortletDisplayContext.isDestinationUnreachable());
@@ -144,7 +144,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextBuilder.build();
+			searchBarPortletDisplayContextBuilder.create();
 
 		Assert.assertTrue(
 			searchBarPortletDisplayContext.isDestinationUnreachable());
@@ -174,7 +174,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextBuilder.build();
+			searchBarPortletDisplayContextBuilder.create();
 
 		Assert.assertEquals(
 			layoutFriendlyURL, searchBarPortletDisplayContext.getSearchURL());
@@ -207,7 +207,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 					portletPreferences);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextBuilder.build();
+			searchBarPortletDisplayContextBuilder.create();
 
 		Assert.assertEquals(
 			layoutFriendlyURL, searchBarPortletDisplayContext.getSearchURL());
@@ -229,7 +229,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 				_createSearchBarPortletDisplayContextBuilder(null);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextBuilder.build();
+			searchBarPortletDisplayContextBuilder.create();
 
 		Assert.assertFalse(
 			searchBarPortletDisplayContext.isDestinationUnreachable());

@@ -81,7 +81,7 @@ public class SearchBarPortlet extends MVCPortlet {
 					searchBarPrecedenceHelper);
 
 		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-			searchBarPortletDisplayContextFactory.build();
+			searchBarPortletDisplayContextFactory.create();
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, searchBarPortletDisplayContext);

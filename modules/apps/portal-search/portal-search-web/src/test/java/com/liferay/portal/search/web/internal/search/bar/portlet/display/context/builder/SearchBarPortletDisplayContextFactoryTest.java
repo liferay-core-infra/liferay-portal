@@ -70,7 +70,7 @@ import org.powermock.api.mockito.PowerMockito;
 /**
  * @author Adam Brandizzi
  */
-public class SearchBarPortletDisplayContextBuilderTest {
+public class SearchBarPortletDisplayContextFactoryTest {
 
 	@ClassRule
 	@Rule
@@ -95,7 +95,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
 			StringPool.BLANK);
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(
 					portletPreferences);
@@ -114,7 +114,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 		portletPreferences.setValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION, null);
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(
 					portletPreferences);
@@ -138,7 +138,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
 			destination);
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(
 					portletPreferences);
@@ -168,7 +168,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
 			StringPool.SLASH.concat(destination));
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(
 					portletPreferences);
@@ -201,7 +201,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 			SearchBarPortletPreferences.PREFERENCE_KEY_DESTINATION,
 			destination);
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(
 					portletPreferences);
@@ -224,7 +224,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 			_themeDisplay
 		).getURLCurrent();
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(null);
 
@@ -240,13 +240,13 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 	@Test
 	public void testSearchScope() {
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
 				_createSearchBarPortletDisplayContextBuilder(null);
 
 		try {
 			Field field = ReflectionUtil.getDeclaredField(
-				SearchBarPortletDisplayContextBuilder.class,
+				SearchBarPortletDisplayContextFactory.class,
 				"_scopeParameterValue");
 
 			field.set(
@@ -308,7 +308,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 		return liferayPortletRequest;
 	}
 
-	private SearchBarPortletDisplayContextBuilder
+	private SearchBarPortletDisplayContextFactory
 		_createSearchBarPortletDisplayContextBuilder(
 			PortletPreferences portletPreferences) {
 
@@ -396,9 +396,9 @@ public class SearchBarPortletDisplayContextBuilderTest {
 			Optional.empty()
 		);
 
-		SearchBarPortletDisplayContextBuilder
+		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextBuilder =
-				new SearchBarPortletDisplayContextBuilder(
+				new SearchBarPortletDisplayContextFactory(
 					_http, _layoutLocalService, _portal,
 					Mockito.mock(PortletPreferencesLookup.class),
 					portletSharedSearchRequest, renderRequest,
@@ -406,7 +406,7 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 		try {
 			Field field = ReflectionUtil.getDeclaredField(
-				SearchBarPortletDisplayContextBuilder.class,
+				SearchBarPortletDisplayContextFactory.class,
 				"_searchScopePreference");
 
 			field.set(

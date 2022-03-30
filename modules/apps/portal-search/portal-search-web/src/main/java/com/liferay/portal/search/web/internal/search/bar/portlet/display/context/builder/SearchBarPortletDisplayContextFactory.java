@@ -56,9 +56,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author André de Oliveira
  */
-public class SearchBarPortletDisplayContextBuilder {
+public class SearchBarPortletDisplayContextFactory {
 
-	public SearchBarPortletDisplayContextBuilder(
+	public SearchBarPortletDisplayContextFactory(
 		Http http, LayoutLocalService layoutLocalService, Portal portal,
 		PortletPreferencesLookup portletPreferencesLookup,
 		PortletSharedSearchRequest portletSharedSearchRequest,
@@ -401,7 +401,7 @@ public class SearchBarPortletDisplayContextBuilder {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SearchBarPortletDisplayContextBuilder.class);
+		SearchBarPortletDisplayContextFactory.class);
 
 	private final Http _http;
 	private String _keywords;

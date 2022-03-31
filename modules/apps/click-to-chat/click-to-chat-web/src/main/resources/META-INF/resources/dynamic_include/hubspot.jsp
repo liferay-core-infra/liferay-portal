@@ -24,7 +24,7 @@ String[] parts = clickToChatChatProviderAccountId.split(StringPool.SLASH);
 
 if (themeDisplay.isSignedIn() && (parts.length > 1)) {
 	try {
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader(HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON);
 		options.setBody(
@@ -39,7 +39,7 @@ if (themeDisplay.isSignedIn() && (parts.length > 1)) {
 		options.setLocation("https://api.hubspot.com/conversations/v3/visitor-identification/tokens/create?hapikey=" + parts[1]);
 		options.setPost(true);
 
-		String responseJSON = HttpUtil.URLtoString(options);
+		String responseJSON = HttpClientUtil.urlToString(options);
 
 		JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(responseJSON);
 

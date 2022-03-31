@@ -21,7 +21,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import org.osgi.service.component.annotations.Component;
@@ -39,7 +39,7 @@ public class WebhookObjectActionExecutorImpl implements ObjectActionExecutor {
 			JSONObject payloadJSONObject, long userId)
 		throws Exception {
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader(
 			HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON);
@@ -51,7 +51,7 @@ public class WebhookObjectActionExecutorImpl implements ObjectActionExecutor {
 		options.setLocation(parametersUnicodeProperties.get("url"));
 		options.setPost(true);
 
-		_http.URLtoString(options);
+		_httpClient.urlToString(options);
 	}
 
 	@Override
@@ -65,6 +65,6 @@ public class WebhookObjectActionExecutorImpl implements ObjectActionExecutor {
 	}
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 }

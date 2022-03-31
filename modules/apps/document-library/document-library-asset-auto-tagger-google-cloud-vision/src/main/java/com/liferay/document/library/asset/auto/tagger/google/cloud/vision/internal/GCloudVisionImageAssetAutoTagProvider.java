@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.repository.capabilities.TemporaryFileEntriesCapability;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 
 import java.net.HttpURLConnection;
 
@@ -119,7 +119,7 @@ public class GCloudVisionImageAssetAutoTagProvider
 			String apiKey, String payloadJSON)
 		throws Exception {
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 		options.setBody(
@@ -128,9 +128,9 @@ public class GCloudVisionImageAssetAutoTagProvider
 			"https://vision.googleapis.com/v1/images:annotate?key=" + apiKey);
 		options.setPost(true);
 
-		String responseJSON = _http.URLtoString(options);
+		String responseJSON = _httpClient.urlToString(options);
 
-		Http.Response response = options.getResponse();
+		HttpClient.Response response = options.getResponse();
 
 		if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
 			throw new PortalException(
@@ -153,6 +153,6 @@ public class GCloudVisionImageAssetAutoTagProvider
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 }

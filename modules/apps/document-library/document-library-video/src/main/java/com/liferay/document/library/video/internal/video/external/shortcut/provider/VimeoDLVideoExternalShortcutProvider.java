@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.net.HttpURLConnection;
@@ -90,14 +90,14 @@ public class VimeoDLVideoExternalShortcutProvider
 
 	private JSONObject _getEmbedJSONObject(String url) {
 		try {
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 			options.setLocation("https://vimeo.com/api/oembed.json?url=" + url);
 
-			String responseJSON = _http.URLtoString(options);
+			String responseJSON = _httpClient.urlToString(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			JSONObject jsonObject;
 
@@ -150,6 +150,6 @@ public class VimeoDLVideoExternalShortcutProvider
 		Pattern.compile("https?:\\/\\/player\\.vimeo\\.com\\/video\\/(\\S*)$"));
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 }

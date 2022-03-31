@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -37,7 +37,8 @@ public class DSHttp {
 
 	public JSONObject get(long companyId, long groupId, String location) {
 		try {
-			return _invoke(companyId, groupId, location, Http.Method.GET, null);
+			return _invoke(
+				companyId, groupId, location, HttpClient.Method.GET, null);
 		}
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
@@ -47,7 +48,7 @@ public class DSHttp {
 	public byte[] getAsBytes(long companyId, long groupId, String location) {
 		try {
 			return _invokeAsBytes(
-				companyId, groupId, location, Http.Method.GET, null);
+				companyId, groupId, location, HttpClient.Method.GET, null);
 		}
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
@@ -60,7 +61,8 @@ public class DSHttp {
 
 		try {
 			return _invoke(
-				companyId, groupId, location, Http.Method.POST, bodyJSONObject);
+				companyId, groupId, location, HttpClient.Method.POST,
+				bodyJSONObject);
 		}
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
@@ -73,7 +75,8 @@ public class DSHttp {
 
 		try {
 			return _invoke(
-				companyId, groupId, location, Http.Method.PUT, bodyJSONObject);
+				companyId, groupId, location, HttpClient.Method.PUT,
+				bodyJSONObject);
 		}
 		catch (Exception exception) {
 			return ReflectionUtil.throwException(exception);
@@ -81,8 +84,7 @@ public class DSHttp {
 	}
 
 	private String _getDocuSignAccessToken(
-			DigitalSignatureConfiguration digitalSignatureConfiguration)
-		throws Exception {
+		DigitalSignatureConfiguration digitalSignatureConfiguration) {
 
 		JSONObject jsonObject = DSAccessTokenWebCacheItem.get(
 			digitalSignatureConfiguration.apiUsername(),
@@ -93,8 +95,8 @@ public class DSHttp {
 	}
 
 	private JSONObject _invoke(
-			long companyId, long groupId, String location, Http.Method method,
-			JSONObject bodyJSONObject)
+			long companyId, long groupId, String location,
+			HttpClient.Method method, JSONObject bodyJSONObject)
 		throws Exception {
 
 		byte[] bytes = _invokeAsBytes(
@@ -108,11 +110,11 @@ public class DSHttp {
 	}
 
 	private byte[] _invokeAsBytes(
-			long companyId, long groupId, String location, Http.Method method,
-			JSONObject bodyJSONObject)
+			long companyId, long groupId, String location,
+			HttpClient.Method method, JSONObject bodyJSONObject)
 		throws Exception {
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		if (bodyJSONObject != null) {
 			options.addHeader(
@@ -140,11 +142,11 @@ public class DSHttp {
 				digitalSignatureConfiguration.apiAccountId(), "/", location));
 		options.setMethod(method);
 
-		return _http.URLtoByteArray(options);
+		return _httpClient.urlToByteArray(options);
 	}
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Reference
 	private JSONFactory _jsonFactory;

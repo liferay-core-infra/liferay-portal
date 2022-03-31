@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.security.sso.OpenSSO;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.CookieKeys;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -284,7 +284,7 @@ public class OpenSSOImpl implements OpenSSO {
 						_VALIDATE_TOKEN_VERSION_13, "{#subjectId}",
 						URLCodec.encodeURL(subjectId)));
 
-				String json = _http.URLtoString(url, true);
+				String json = _httpClient.urlToString(url, true);
 
 				try {
 					JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
@@ -483,7 +483,7 @@ public class OpenSSOImpl implements OpenSSO {
 		new ConcurrentHashMap<>();
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Reference
 	private Portal _portal;

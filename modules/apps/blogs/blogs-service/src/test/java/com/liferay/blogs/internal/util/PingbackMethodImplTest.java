@@ -32,8 +32,8 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -320,7 +320,7 @@ public class PingbackMethodImplTest {
 	@Test
 	public void testGetExcerptWhenReferrerIsUnavailable() throws Exception {
 		Mockito.when(
-			_http.URLtoString(_SOURCE_URI)
+			_httpClient.urlToString(_SOURCE_URI)
 		).thenThrow(
 			IOException.class
 		);
@@ -340,7 +340,7 @@ public class PingbackMethodImplTest {
 			String sourceURL = "http://" + inetAddress.getHostAddress();
 
 			Mockito.when(
-				_http.URLtoString(sourceURL)
+				_httpClient.urlToString(sourceURL)
 			).thenReturn(
 				StringBundler.concat(
 					"<body><a href='http://", _TARGET_URI, "'>", _EXCERPT_BODY,
@@ -421,7 +421,7 @@ public class PingbackMethodImplTest {
 		ReflectionTestUtil.setFieldValue(
 			pingbackMethodImpl, "_commentManager", _commentManager);
 		ReflectionTestUtil.setFieldValue(
-			pingbackMethodImpl, "_http", HttpUtil.getHttp());
+			pingbackMethodImpl, "_httpClient", HttpClientUtil.getHttpClient());
 		ReflectionTestUtil.setFieldValue(
 			pingbackMethodImpl, "_portal", PortalUtil.getPortal());
 		ReflectionTestUtil.setFieldValue(
@@ -471,9 +471,9 @@ public class PingbackMethodImplTest {
 				"<body><a href='http://", _TARGET_URI, "'>", _EXCERPT_BODY,
 				"</a></body>"));
 
-		HttpUtil httpUtil = new HttpUtil();
+		HttpClientUtil httpClientUtil = new HttpClientUtil();
 
-		httpUtil.setHttp(_http);
+		httpClientUtil.setHttpClient(_httpClient);
 	}
 
 	private void _setUpInetAddressLookup() throws Exception {
@@ -683,7 +683,7 @@ public class PingbackMethodImplTest {
 
 	private void _whenHttpURLToString(String returnValue) throws Exception {
 		Mockito.when(
-			_http.URLtoString(_SOURCE_URI)
+			_httpClient.urlToString(_SOURCE_URI)
 		).thenReturn(
 			returnValue
 		);
@@ -738,7 +738,7 @@ public class PingbackMethodImplTest {
 	private FriendlyURLMapper _friendlyURLMapper;
 
 	@Mock
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Mock
 	private PingbackMethodImpl.InetAddressLookup _inetAddressLookup;

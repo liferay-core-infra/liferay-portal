@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
@@ -244,7 +245,7 @@ public class AnalyticsBatchExportImportManagerImpl
 
 		_checkCompany(companyId);
 
-		Http.Options options = _getOptions(companyId);
+		HttpClient.Options options = _getOptions(companyId);
 
 		if (resourceLastModifiedDate != null) {
 			options.addHeader(
@@ -261,9 +262,9 @@ public class AnalyticsBatchExportImportManagerImpl
 				"resourceName", resourceName));
 
 		try {
-			InputStream inputStream = _http.URLtoInputStream(options);
+			InputStream inputStream = _httpClient.urlToInputStream(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			if (response.getResponseCode() ==
 					HttpURLConnection.HTTP_FORBIDDEN) {
@@ -287,11 +288,11 @@ public class AnalyticsBatchExportImportManagerImpl
 		return null;
 	}
 
-	private Http.Options _getOptions(long companyId) {
+	private HttpClient.Options _getOptions(long companyId) {
 		AnalyticsConfiguration analyticsConfiguration =
 			_analyticsConfigurationTracker.getAnalyticsConfiguration(companyId);
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader(
 			"OSB-Asah-Data-Source-ID",
@@ -394,7 +395,7 @@ public class AnalyticsBatchExportImportManagerImpl
 
 		_checkCompany(companyId);
 
-		Http.Options options = _getOptions(companyId);
+		HttpClient.Options options = _getOptions(companyId);
 
 		options.addHeader(
 			HttpHeaders.CONTENT_TYPE,
@@ -417,9 +418,9 @@ public class AnalyticsBatchExportImportManagerImpl
 		options.setPost(true);
 
 		try {
-			InputStream inputStream = _http.URLtoInputStream(options);
+			InputStream inputStream = _httpClient.urlToInputStream(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			if (response.getResponseCode() ==
 					HttpURLConnection.HTTP_FORBIDDEN) {
@@ -484,5 +485,8 @@ public class AnalyticsBatchExportImportManagerImpl
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private HttpClient _httpClient;
 
 }

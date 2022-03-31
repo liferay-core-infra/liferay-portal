@@ -94,7 +94,7 @@ import com.liferay.portal.kernel.util.GroupSubscriptionCheckSubscriptionSender;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlParser;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -2100,7 +2100,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 		}
 
 		try {
-			String response = _http.URLtoString(sb.toString());
+			String response = _httpClient.urlToString(sb.toString());
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Google ping response: " + response);
@@ -2428,7 +2428,7 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	private HtmlParser _htmlParser;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Reference
 	private ImageLocalService _imageLocalService;

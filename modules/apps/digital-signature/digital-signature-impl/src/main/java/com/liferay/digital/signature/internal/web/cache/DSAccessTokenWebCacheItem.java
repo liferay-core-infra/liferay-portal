@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
@@ -78,7 +78,7 @@ public class DSAccessTokenWebCacheItem implements WebCacheItem {
 						_integrationKey);
 			}
 
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.setParts(
 				HashMapBuilder.put(
@@ -90,7 +90,7 @@ public class DSAccessTokenWebCacheItem implements WebCacheItem {
 			options.setPost(true);
 
 			return JSONFactoryUtil.createJSONObject(
-				HttpUtil.URLtoString(options));
+				HttpClientUtil.urlToString(options));
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

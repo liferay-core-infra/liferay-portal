@@ -18,7 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.search.experiences.constants.SXPPortletKeys;
@@ -91,7 +91,7 @@ public class ImportWikipediaMVCActionCommand extends BaseMVCActionCommand {
 		List<String> linkedWikipediaPageTitles = new ArrayList<>();
 
 		for (String wikipediaPageTitle : wikipediaPageTitles) {
-			String json = _http.URLtoString(
+			String json = _httpClient.urlToString(
 				StringBundler.concat(
 					"https://", wikipediaLanguageCode,
 					".wikipedia.org/w/api.php?action=parse&format=json&page=",
@@ -133,6 +133,6 @@ public class ImportWikipediaMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 }

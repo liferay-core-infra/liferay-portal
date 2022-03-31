@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
 import com.liferay.portal.kernel.webcache.WebCachePoolUtil;
 import com.liferay.portal.util.PropsValues;
@@ -81,7 +81,7 @@ public class LearnMessageUtil {
 				}
 
 				return JSONFactoryUtil.createJSONObject(
-					HttpUtil.URLtoString(url));
+					HttpClientUtil.urlToString(url));
 			}
 			catch (Exception exception) {
 				if (_log.isDebugEnabled()) {

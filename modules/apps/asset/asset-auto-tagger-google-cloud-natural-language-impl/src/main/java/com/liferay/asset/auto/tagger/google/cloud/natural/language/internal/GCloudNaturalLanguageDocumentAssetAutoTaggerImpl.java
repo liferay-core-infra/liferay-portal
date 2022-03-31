@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -203,18 +203,18 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 	}
 
 	private JSONObject _post(String serviceURL, String body) throws Exception {
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 		options.setBody(body, ContentTypes.APPLICATION_JSON, StringPool.UTF8);
 		options.setLocation(serviceURL);
 		options.setPost(true);
 
-		String responseJSON = _http.URLtoString(options);
+		String responseJSON = _httpClient.urlToString(options);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(responseJSON);
 
-		Http.Response response = options.getResponse();
+		HttpClient.Response response = options.getResponse();
 
 		if (response.getResponseCode() == HttpURLConnection.HTTP_OK) {
 			return jsonObject;
@@ -299,6 +299,6 @@ public class GCloudNaturalLanguageDocumentAssetAutoTaggerImpl
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 }

@@ -20,7 +20,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -52,7 +53,7 @@ public class RESTProxyAction implements Action {
 			return null;
 		}
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		int pos = url.indexOf(CharPool.QUESTION);
 
@@ -69,7 +70,7 @@ public class RESTProxyAction implements Action {
 
 		options.setPost(true);
 
-		String content = HttpUtil.URLtoString(options);
+		String content = HttpClientUtil.urlToString(options);
 
 		ServletResponseUtil.write(httpServletResponse, content);
 

@@ -29,8 +29,8 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -125,7 +125,7 @@ public class ReCaptchaImpl extends SimpleCaptchaImpl {
 			throw new CaptchaException();
 		}
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.setLocation(_captchaConfiguration.reCaptchaVerifyURL());
 
@@ -144,7 +144,7 @@ public class ReCaptchaImpl extends SimpleCaptchaImpl {
 		String content = null;
 
 		try {
-			content = HttpUtil.URLtoString(options);
+			content = HttpClientUtil.urlToString(options);
 		}
 		catch (IOException ioException) {
 			_log.error(ioException);

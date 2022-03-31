@@ -16,7 +16,7 @@ package com.liferay.xsl.content.web.internal.util;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.xsl.content.web.internal.configuration.XSLContentConfiguration;
 
@@ -120,7 +120,7 @@ public class XSLContentUtil {
 			DocumentBuilder documentBuilder, URL xmlURL)
 		throws Exception {
 
-		String xml = HttpUtil.URLtoString(xmlURL);
+		String xml = HttpClientUtil.urlToString(xmlURL);
 
 		Document xmlDocument = documentBuilder.parse(
 			new ByteArrayInputStream(xml.getBytes()));
@@ -132,7 +132,7 @@ public class XSLContentUtil {
 			DocumentBuilder documentBuilder, URL xslURL)
 		throws Exception {
 
-		String xsl = HttpUtil.URLtoString(xslURL);
+		String xsl = HttpClientUtil.urlToString(xslURL);
 
 		Document xslDocument = documentBuilder.parse(
 			new ByteArrayInputStream(xsl.getBytes()));

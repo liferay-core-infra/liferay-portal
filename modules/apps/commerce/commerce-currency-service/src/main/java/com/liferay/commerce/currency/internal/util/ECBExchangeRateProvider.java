@@ -19,7 +19,7 @@ import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.util.ExchangeRateProvider;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -66,7 +66,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
 
 		while (Validator.isNull(xml)) {
 			try {
-				xml = _http.URLtoString(_getURL());
+				xml = _httpClient.urlToString(_getURL());
 			}
 			catch (IOException ioException) {
 				if (i++ >= 10) {
@@ -174,7 +174,7 @@ public class ECBExchangeRateProvider implements ExchangeRateProvider {
 	}
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Reference
 	private SAXReader _saxReader;

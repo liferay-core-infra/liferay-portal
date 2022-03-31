@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.Time;
 
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +57,7 @@ public class MicrosoftTranslatorAuthenticator {
 		_error = null;
 
 		try {
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.addHeader(HttpHeaders.CONTENT_LENGTH, "0");
 			options.addHeader("Ocp-Apim-Subscription-Key", _subscriptionKey);
@@ -66,9 +66,9 @@ public class MicrosoftTranslatorAuthenticator {
 
 			options.setPost(true);
 
-			String content = HttpUtil.URLtoString(options);
+			String content = HttpClientUtil.urlToString(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			int responseCode = response.getResponseCode();
 

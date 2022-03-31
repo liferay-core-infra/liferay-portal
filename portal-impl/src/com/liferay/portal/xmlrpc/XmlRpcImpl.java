@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xmlrpc.Fault;
@@ -86,7 +86,7 @@ public class XmlRpcImpl implements XmlRpc {
 
 		String requestXML = XmlRpcParser.buildMethod(methodName, arguments);
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		if (_HTTP_HEADER_VERSION_VERBOSITY_DEFAULT) {
 		}
@@ -102,7 +102,7 @@ public class XmlRpcImpl implements XmlRpc {
 		options.setLocation(url);
 		options.setPost(true);
 
-		String responseXML = HttpUtil.URLtoString(options);
+		String responseXML = HttpClientUtil.urlToString(options);
 
 		return XmlRpcParser.parseResponse(responseXML);
 	}

@@ -15,8 +15,8 @@
 package com.liferay.rss.web.internal.util;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.webcache.WebCacheException;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
@@ -87,12 +87,12 @@ public class RSSWebCacheItem implements WebCacheItem {
 			return url.openStream();
 		}
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.setLocation(_url);
 		options.setTimeout(PropsValues.RSS_CONNECTION_TIMEOUT);
 
-		return HttpUtil.URLtoInputStream(options);
+		return HttpClientUtil.urlToInputStream(options);
 	}
 
 	private final RSSWebCacheConfiguration _rssWebCacheConfiguration;

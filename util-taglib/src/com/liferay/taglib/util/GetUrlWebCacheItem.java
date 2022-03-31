@@ -14,7 +14,7 @@
 
 package com.liferay.taglib.util;
 
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.webcache.WebCacheException;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
 
@@ -35,7 +35,7 @@ public class GetUrlWebCacheItem implements WebCacheItem {
 		String content = null;
 
 		try {
-			content = HttpUtil.URLtoString(_url);
+			content = HttpClientUtil.urlToString(_url);
 		}
 		catch (Exception exception) {
 			throw new WebCacheException(url + " " + exception.toString());

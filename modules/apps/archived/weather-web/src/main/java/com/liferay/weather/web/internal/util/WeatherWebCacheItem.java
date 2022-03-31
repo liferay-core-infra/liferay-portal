@@ -16,7 +16,7 @@ package com.liferay.weather.web.internal.util;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.webcache.WebCacheException;
@@ -64,7 +64,7 @@ public class WeatherWebCacheItem implements WebCacheItem {
 	}
 
 	private Weather _convert() throws Exception {
-		String xml = HttpUtil.URLtoString(
+		String xml = HttpClientUtil.urlToString(
 			StringBundler.concat(
 				"http://api.openweathermap.org/data/2.5/weather?q=",
 				URLCodec.encodeURL(_zip), "&units=imperial&mode=xml&APPID=",

@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlParserUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Tuple;
@@ -111,7 +111,7 @@ public class LinkbackProducerUtil {
 			_log.info("Pinging trackback " + trackback);
 		}
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		if (_HTTP_HEADER_VERSION_VERBOSITY_DEFAULT) {
 		}
@@ -127,7 +127,7 @@ public class LinkbackProducerUtil {
 		options.setParts(parts);
 		options.setPost(true);
 
-		String xml = HttpUtil.URLtoString(options);
+		String xml = HttpClientUtil.urlToString(options);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(xml);
@@ -194,7 +194,7 @@ public class LinkbackProducerUtil {
 		String serverUri = null;
 
 		try {
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			if (_HTTP_HEADER_VERSION_VERBOSITY_DEFAULT) {
 			}
@@ -210,9 +210,9 @@ public class LinkbackProducerUtil {
 			options.setLocation(targetUri);
 			options.setHead(true);
 
-			HttpUtil.URLtoByteArray(options);
+			HttpClientUtil.urlToByteArray(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			serverUri = response.getHeader("X-Pingback");
 		}
@@ -230,7 +230,7 @@ public class LinkbackProducerUtil {
 					getAttributeValueFunction.apply("rel"), "pingback"),
 				getAttributeValueFunction -> HtmlUtil.escape(
 					getAttributeValueFunction.apply("href")),
-				HttpUtil.URLtoString(targetUri), "link");
+				HttpClientUtil.urlToString(targetUri), "link");
 		}
 		catch (Exception exception) {
 			_log.error("Unable to call GET of " + targetUri, exception);

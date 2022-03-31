@@ -36,8 +36,8 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -385,7 +385,7 @@ public class ObjectDefinitionGraphQLTest {
 	private JSONObject _invoke(GraphQLField queryGraphQLField)
 		throws Exception {
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader(
 			HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON);
@@ -400,7 +400,8 @@ public class ObjectDefinitionGraphQLTest {
 		options.setLocation("http://localhost:8080/o/graphql");
 		options.setPost(true);
 
-		return JSONFactoryUtil.createJSONObject(HttpUtil.URLtoString(options));
+		return JSONFactoryUtil.createJSONObject(
+			HttpClientUtil.urlToString(options));
 	}
 
 	@DeleteAfterTestRun

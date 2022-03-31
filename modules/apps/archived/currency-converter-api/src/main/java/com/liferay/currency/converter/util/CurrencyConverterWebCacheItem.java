@@ -16,7 +16,7 @@ package com.liferay.currency.converter.util;
 
 import com.liferay.currency.converter.model.CurrencyConverter;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.webcache.WebCacheException;
 import com.liferay.portal.kernel.webcache.WebCacheItem;
@@ -56,7 +56,7 @@ public class CurrencyConverterWebCacheItem implements WebCacheItem {
 				throw new WebCacheException(symbol);
 			}
 
-			String text = HttpUtil.URLtoString(
+			String text = HttpClientUtil.urlToString(
 				"http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml");
 
 			Document document = SAXReaderUtil.read(text);

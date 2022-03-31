@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -284,7 +284,7 @@ public class AkismetClientImpl implements AkismetClient {
 		options.setPost(true);
 
 		try {
-			return _http.URLtoString(options);
+			return _httpClient.urlToString(options);
 		}
 		catch (IOException ioException) {
 			_log.error(ioException);
@@ -305,7 +305,7 @@ public class AkismetClientImpl implements AkismetClient {
 	private CompanyLocalService _companyLocalService;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Reference
 	private Portal _portal;

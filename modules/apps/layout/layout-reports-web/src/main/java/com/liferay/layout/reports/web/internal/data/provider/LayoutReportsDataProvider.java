@@ -20,7 +20,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -103,7 +104,7 @@ public class LayoutReportsDataProvider {
 			throw new LayoutReportsDataProviderException("Invalid Connection");
 		}
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		String googlePageSpeedURL =
 			"https://content-pagespeedonline.googleapis.com/pagespeedonline" +
@@ -128,9 +129,9 @@ public class LayoutReportsDataProvider {
 
 		options.setTimeout(120000);
 
-		String responseJSON = HttpUtil.URLtoString(options);
+		String responseJSON = HttpClientUtil.urlToString(options);
 
-		Http.Response response = options.getResponse();
+		HttpClient.Response response = options.getResponse();
 
 		if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
 			throw new LayoutReportsDataProviderException(

@@ -18,8 +18,8 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.microsofttranslator.MicrosoftTranslator;
 import com.liferay.portal.kernel.microsofttranslator.MicrosoftTranslatorException;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClient;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
@@ -89,7 +89,7 @@ public class MicrosoftTranslatorImpl implements MicrosoftTranslator {
 		fromLanguageId = _getMicrosoftLanguageId(fromLanguageId);
 		toLanguageId = _getMicrosoftLanguageId(toLanguageId);
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.setLocation(
 			StringBundler.concat(
@@ -106,7 +106,7 @@ public class MicrosoftTranslatorImpl implements MicrosoftTranslator {
 
 		options.addHeader("Authorization", "Bearer " + accessToken);
 
-		String text = HttpUtil.URLtoString(options);
+		String text = HttpClientUtil.urlToString(options);
 
 		int x = text.indexOf(">") + 1;
 

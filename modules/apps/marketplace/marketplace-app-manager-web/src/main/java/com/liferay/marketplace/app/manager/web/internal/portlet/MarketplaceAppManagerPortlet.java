@@ -47,7 +47,7 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -445,15 +445,15 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 		int responseCode = HttpServletResponse.SC_OK;
 
 		try {
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.setFollowRedirects(false);
 			options.setLocation(url);
 			options.setPost(false);
 
-			byte[] bytes = _http.URLtoByteArray(options);
+			byte[] bytes = _httpClient.urlToByteArray(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			responseCode = response.getResponseCode();
 
@@ -534,7 +534,7 @@ public class MarketplaceAppManagerPortlet extends MVCPortlet {
 	private BundleManager _bundleManager;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	private PanelAppRegistry _panelAppRegistry;
 	private PanelCategoryRegistry _panelCategoryRegistry;

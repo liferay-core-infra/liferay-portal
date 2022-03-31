@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -62,7 +63,7 @@ public class LayoutCrawlerImpl implements LayoutCrawler {
 		Company company = _companyLocalService.getCompany(
 			layout.getCompanyId());
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader(HttpHeaders.USER_AGENT, _USER_AGENT);
 		options.addHeader("Host", company.getVirtualHostname());
@@ -82,9 +83,9 @@ public class LayoutCrawlerImpl implements LayoutCrawler {
 				_portal.getLayoutFullURL(layout, themeDisplay), "p_l_mode",
 				Constants.SEARCH));
 
-		String response = _http.URLtoString(options);
+		String response = _httpClient.urlToString(options);
 
-		Http.Response httpResponse = options.getResponse();
+		HttpClient.Response httpResponse = options.getResponse();
 
 		if (httpResponse.getResponseCode() == HttpStatus.SC_OK) {
 			return response;
@@ -146,6 +147,9 @@ public class LayoutCrawlerImpl implements LayoutCrawler {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private HttpClient _httpClient;
 
 	@Reference
 	private Language _language;

@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.service.CountryLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.RegionLocalService;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -134,13 +134,13 @@ public class BingCommerceGeocoder implements CommerceGeocoder {
 				"Bing commerce geocoder is not configured properly");
 		}
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.setLocation(_getUrl(street, city, zip, region, country));
 
-		String json = _http.URLtoString(options);
+		String json = _httpClient.urlToString(options);
 
-		Http.Response response = options.getResponse();
+		HttpClient.Response response = options.getResponse();
 
 		int responseCode = response.getResponseCode();
 
@@ -220,7 +220,7 @@ public class BingCommerceGeocoder implements CommerceGeocoder {
 	private volatile GroupLocalService _groupLocalService;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	@Reference
 	private JSONFactory _jsonFactory;

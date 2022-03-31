@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -312,7 +312,7 @@ public class PingbackMethodImpl implements Method {
 	}
 
 	private String _getExcerpt() throws Exception {
-		String html = _http.URLtoString(_sourceURI);
+		String html = _httpClient.urlToString(_sourceURI);
 
 		Source source = new Source(html);
 
@@ -426,7 +426,7 @@ public class PingbackMethodImpl implements Method {
 		Source source = null;
 
 		try {
-			String html = _http.URLtoString(_sourceURI);
+			String html = _httpClient.urlToString(_sourceURI);
 
 			source = new Source(html);
 		}
@@ -464,7 +464,7 @@ public class PingbackMethodImpl implements Method {
 	private CommentManager _commentManager;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 	private InetAddressLookup _inetAddressLookup;
 	private PingbackProperties _pingbackProperties;

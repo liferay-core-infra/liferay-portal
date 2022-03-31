@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.sso.facebook.connect.configuration.FacebookConnectConfiguration;
@@ -73,12 +74,12 @@ public class FacebookConnectImpl implements FacebookConnect {
 			url, "redirect_uri",
 			facebookConnectConfiguration.oauthRedirectURL());
 
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.setLocation(url);
 
 		try {
-			String content = _http.URLtoString(options);
+			String content = _httpClient.urlToString(options);
 
 			JSONObject contentJSONObject = JSONFactoryUtil.createJSONObject(
 				content);
@@ -160,11 +161,11 @@ public class FacebookConnectImpl implements FacebookConnect {
 				url = _http.addParameter(url, "fields", fields);
 			}
 
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.setLocation(url);
 
-			String json = _http.URLtoString(options);
+			String json = _httpClient.urlToString(options);
 
 			return JSONFactoryUtil.createJSONObject(json);
 		}
@@ -269,6 +270,9 @@ public class FacebookConnectImpl implements FacebookConnect {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private HttpClient _httpClient;
 
 	@Reference
 	private Portal _portal;

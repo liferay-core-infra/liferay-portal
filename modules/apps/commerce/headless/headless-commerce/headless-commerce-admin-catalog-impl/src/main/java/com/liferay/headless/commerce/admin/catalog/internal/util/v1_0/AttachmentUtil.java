@@ -35,7 +35,7 @@ import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpClientUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -120,7 +120,7 @@ public class AttachmentUtil {
 		}
 
 		File file = FileUtil.createTempFile(
-			HttpUtil.URLtoInputStream(attachmentUrl.getSrc()));
+			HttpClientUtil.urlToInputStream(attachmentUrl.getSrc()));
 
 		return _addFileEntry(
 			file, attachmentUrl.getContentType(), uniqueFileNameProvider,

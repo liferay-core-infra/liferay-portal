@@ -44,7 +44,7 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -258,7 +258,7 @@ public class DLOpenerGoogleDriveManagerTest {
 	}
 
 	private String _getAuthorizationToken() throws Exception {
-		Http.Options options = new Http.Options();
+		HttpClient.Options options = new HttpClient.Options();
 
 		options.addHeader(
 			"Content-Type", ContentTypes.APPLICATION_X_WWW_FORM_URLENCODED);
@@ -270,7 +270,7 @@ public class DLOpenerGoogleDriveManagerTest {
 		options.setPost(true);
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-			_http.URLtoString(options));
+			_httpClient.urlToString(options));
 
 		return jsonObject.getString("access_token");
 	}
@@ -338,7 +338,7 @@ public class DLOpenerGoogleDriveManagerTest {
 	private DLOpenerGoogleDriveManager _dlOpenerGoogleDriveManager;
 
 	@Inject
-	private Http _http;
+	private HttpClient _httpClient;
 
 	private String _originalName;
 	private User _user;

@@ -18,7 +18,7 @@ import com.liferay.blogs.linkback.LinkbackConsumer;
 import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
@@ -51,7 +51,8 @@ public class LinkbackConsumerTest {
 		ReflectionTestUtil.setFieldValue(
 			_linkbackConsumer, "_commentManager", _commentManager);
 
-		ReflectionTestUtil.setFieldValue(_linkbackConsumer, "_http", _http);
+		ReflectionTestUtil.setFieldValue(
+			_linkbackConsumer, "_httpClient", _httpClient);
 	}
 
 	@Test
@@ -61,7 +62,7 @@ public class LinkbackConsumerTest {
 		String url = RandomTestUtil.randomString();
 
 		Mockito.when(
-			_http.URLtoString(url)
+			_httpClient.urlToString(url)
 		).thenReturn(
 			RandomTestUtil.randomString()
 		);
@@ -80,8 +81,8 @@ public class LinkbackConsumerTest {
 		);
 
 		Mockito.verify(
-			_http
-		).URLtoString(
+			_httpClient
+		).urlToString(
 			url
 		);
 	}
@@ -93,8 +94,8 @@ public class LinkbackConsumerTest {
 		Mockito.doThrow(
 			IOException.class
 		).when(
-			_http
-		).URLtoString(
+			_httpClient
+		).urlToString(
 			url
 		);
 
@@ -112,8 +113,8 @@ public class LinkbackConsumerTest {
 		);
 
 		Mockito.verify(
-			_http
-		).URLtoString(
+			_httpClient
+		).urlToString(
 			url
 		);
 	}
@@ -125,7 +126,7 @@ public class LinkbackConsumerTest {
 		String url = RandomTestUtil.randomString();
 
 		Mockito.when(
-			_http.URLtoString(url)
+			_httpClient.urlToString(url)
 		).thenReturn(
 			"__URLtoString_containing_**entryUrl**__"
 		);
@@ -138,8 +139,8 @@ public class LinkbackConsumerTest {
 		Mockito.verifyZeroInteractions(_commentManager);
 
 		Mockito.verify(
-			_http
-		).URLtoString(
+			_httpClient
+		).urlToString(
 			url
 		);
 	}
@@ -148,7 +149,7 @@ public class LinkbackConsumerTest {
 	private CommentManager _commentManager;
 
 	@Mock
-	private Http _http;
+	private HttpClient _httpClient;
 
 	private LinkbackConsumer _linkbackConsumer;
 

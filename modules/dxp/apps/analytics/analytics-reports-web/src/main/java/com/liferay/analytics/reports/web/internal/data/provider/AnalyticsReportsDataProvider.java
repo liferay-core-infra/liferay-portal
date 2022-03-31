@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.Http;
 
 import java.time.format.DateTimeFormatter;
 
@@ -52,12 +51,12 @@ import java.util.stream.Stream;
  */
 public class AnalyticsReportsDataProvider {
 
-	public AnalyticsReportsDataProvider(Http http) {
-		if (http == null) {
-			throw new IllegalArgumentException("Http is null");
+	public AnalyticsReportsDataProvider(HttpClient httpClient) {
+		if (httpClient == null) {
+			throw new IllegalArgumentException("HttpClient is null");
 		}
 
-		_asahFaroBackendClient = new AsahFaroBackendClient(http);
+		_asahFaroBackendClient = new AsahFaroBackendClient(httpClient);
 	}
 
 	public Map<String, AcquisitionChannel> getAcquisitionChannels(

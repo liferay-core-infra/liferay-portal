@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.net.HttpURLConnection;
@@ -93,15 +94,15 @@ public class YouTubeDLVideoExternalShortcutProvider
 
 	private JSONObject _getEmbedJSONObject(String url) {
 		try {
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
 			options.setLocation(
 				"https://www.youtube.com/oembed?format=json&url=" + url);
 
-			String responseJSON = _http.URLtoString(options);
+			String responseJSON = _httpClient.urlToString(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			JSONObject jsonObject;
 
@@ -147,5 +148,8 @@ public class YouTubeDLVideoExternalShortcutProvider
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private HttpClient _httpClient;
 
 }

@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpClient;
 import com.liferay.translation.translator.Translator;
 import com.liferay.translation.translator.TranslatorPacket;
 import com.liferay.translation.translator.azure.internal.configuration.AzureTranslatorConfiguration;
@@ -64,7 +64,7 @@ public class AzureTranslator implements Translator {
 		throws PortalException {
 
 		try {
-			Http.Options options = new Http.Options();
+			HttpClient.Options options = new HttpClient.Options();
 
 			options.addHeader(
 				"Ocp-Apim-Subscription-Key",
@@ -92,9 +92,9 @@ public class AzureTranslator implements Translator {
 				).toString());
 			options.setPost(true);
 
-			String json = _http.URLtoString(options);
+			String json = _httpClient.urlToString(options);
 
-			Http.Response response = options.getResponse();
+			HttpClient.Response response = options.getResponse();
 
 			if (response.getResponseCode() != 200) {
 				throw new PortalException(
@@ -188,6 +188,6 @@ public class AzureTranslator implements Translator {
 	private volatile AzureTranslatorConfiguration _azureTranslatorConfiguration;
 
 	@Reference
-	private Http _http;
+	private HttpClient _httpClient;
 
 }

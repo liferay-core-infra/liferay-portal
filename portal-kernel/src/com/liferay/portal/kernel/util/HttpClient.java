@@ -14,172 +14,78 @@
 
 package com.liferay.portal.kernel.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 
-import java.net.URI;
+import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.RenderRequest;
-
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Hugo Huijser
+ * @author Janis Zhang
  */
 @ProviderType
-public interface Http {
+public interface HttpClient {
 
 	public static final String HTTP = "http";
-
-	public static final int HTTP_PORT = 80;
 
 	public static final String HTTP_WITH_SLASH = "http://";
 
 	public static final String HTTPS = "https";
 
-	public static final int HTTPS_PORT = 443;
-
 	public static final String HTTPS_WITH_SLASH = "https://";
 
-	public static final String PROTOCOL_DELIMITER = "://";
+	public byte[] urlToByteArray(HttpClient.Options options) throws IOException;
 
-	public static final int URL_MAXIMUM_LENGTH = 2083;
+	public byte[] urlToByteArray(String location) throws IOException;
 
-	public String addParameter(String url, String name, boolean value);
+	public byte[] urlToByteArray(String location, boolean post)
+		throws IOException;
 
-	public String addParameter(String url, String name, double value);
+	public InputStream urlToInputStream(HttpClient.Options options)
+		throws IOException;
 
-	public String addParameter(String url, String name, int value);
+	public InputStream urlToInputStream(String location) throws IOException;
 
-	public String addParameter(String url, String name, long value);
+	public InputStream urlToInputStream(String location, boolean post)
+		throws IOException;
 
-	public String addParameter(String url, String name, short value);
+	public String urlToString(HttpClient.Options options) throws IOException;
 
-	public String addParameter(String url, String name, String value);
+	public String urlToString(String location) throws IOException;
 
-	public String decodePath(String path);
+	public String urlToString(String location, boolean post) throws IOException;
 
-	public String decodeURL(String url);
-
-	public String encodeParameters(String url);
-
-	public String encodePath(String path);
-
-	public String fixPath(String path);
-
-	public String fixPath(String path, boolean leading, boolean trailing);
-
-	public String getCompleteURL(HttpServletRequest httpServletRequest);
-
-	public Cookie[] getCookies();
-
-	public String getDomain(String url);
-
-	public String getIpAddress(String url);
-
-	public String getParameter(String url, String name);
-
-	public String getParameter(String url, String name, boolean escaped);
-
-	public Map<String, String[]> getParameterMap(String queryString);
-
-	public String getPath(String url);
-
-	public String getProtocol(ActionRequest actionRequest);
-
-	public String getProtocol(boolean secure);
-
-	public String getProtocol(HttpServletRequest httpServletRequest);
-
-	public String getProtocol(RenderRequest renderRequest);
-
-	public String getProtocol(String url);
-
-	public String getQueryString(HttpServletRequest httpServletRequest);
-
-	public String getQueryString(String url);
-
-	public String getRequestURL(HttpServletRequest httpServletRequest);
-
-	public URI getURI(String uriString);
-
-	public boolean hasDomain(String url);
-
-	public boolean hasProtocol(String url);
-
-	public boolean hasProxyConfig();
-
-	public boolean isForwarded(HttpServletRequest httpServletRequest);
-
-	public boolean isNonProxyHost(String host);
-
-	public boolean isProxyHost(String host);
-
-	public boolean isSecure(String url);
-
-	public String normalizePath(String uri);
-
-	public Map<String, String[]> parameterMapFromString(String queryString);
-
-	public String parameterMapToString(Map<String, String[]> parameterMap);
-
-	public String parameterMapToString(
-		Map<String, String[]> parameterMap, boolean addQuestion);
-
-	public String protocolize(String url, ActionRequest actionRequest);
-
-	public String protocolize(String url, boolean secure);
-
-	public String protocolize(
-		String url, HttpServletRequest httpServletRequest);
-
-	public String protocolize(String url, int port, boolean secure);
-
-	public String protocolize(String url, RenderRequest renderRequest);
-
-	public String removeDomain(String url);
-
-	public String removeParameter(String url, String name);
-
-	public String removePathParameters(String uri);
-
-	public String removeProtocol(String url);
-
-	public String sanitizeHeader(String header);
-
-	public String setParameter(String url, String name, boolean value);
-
-	public String setParameter(String url, String name, double value);
-
-	public String setParameter(String url, String name, int value);
-
-	public String setParameter(String url, String name, long value);
-
-	public String setParameter(String url, String name, short value);
-
-	public String setParameter(String url, String name, String value);
-
-	public String shortenURL(String url);
+	/**
+	 * This method only uses the default Commons HttpClient implementation when
+	 * the URL object represents a HTTP resource. The URL object could also
+	 * represent a file or some JNDI resource. In that case, the default Java
+	 * implementation is used.
+	 *
+	 * @param  url the URL
+	 * @return A string representation of the resource referenced by the URL
+	 *         object
+	 * @throws IOException if an IO exception occurred
+	 */
+	public String urlToString(URL url) throws IOException;
 
 	public class Auth {
 
 		public Auth(
-			String host, int port, String realm, String username,
+			String host, int port, String realm, String userName,
 			String password) {
 
 			_host = host;
 			_port = port;
 			_realm = realm;
-			_username = username;
+			_userName = userName;
 			_password = password;
 		}
 
@@ -199,15 +105,15 @@ public interface Http {
 			return _realm;
 		}
 
-		public String getUsername() {
-			return _username;
+		public String getUserName() {
+			return _userName;
 		}
 
 		private final String _host;
 		private final String _password;
 		private final int _port;
 		private final String _realm;
-		private final String _username;
+		private final String _userName;
 
 	}
 
@@ -335,7 +241,7 @@ public interface Http {
 				_fileParts = new ArrayList<>();
 			}
 
-			FilePart filePart = new FilePart(
+			HttpClient.FilePart filePart = new HttpClient.FilePart(
 				name, fileName, value, contentType, charSet);
 
 			_fileParts.add(filePart);
@@ -363,8 +269,9 @@ public interface Http {
 				_inputStreamParts = new ArrayList<>();
 			}
 
-			InputStreamPart inputStreamPart = new InputStreamPart(
-				name, inputStreamName, inputStream, contentType);
+			HttpClient.InputStreamPart inputStreamPart =
+				new HttpClient.InputStreamPart(
+					name, inputStreamName, inputStream, contentType);
 
 			_inputStreamParts.add(inputStreamPart);
 		}
@@ -382,11 +289,11 @@ public interface Http {
 			_parts.put(name, value);
 		}
 
-		public Auth getAuth() {
+		public HttpClient.Auth getAuth() {
 			return _auth;
 		}
 
-		public Body getBody() {
+		public HttpClient.Body getBody() {
 			return _body;
 		}
 
@@ -394,7 +301,7 @@ public interface Http {
 			return _cookies;
 		}
 
-		public List<FilePart> getFileParts() {
+		public List<HttpClient.FilePart> getFileParts() {
 			return _fileParts;
 		}
 
@@ -410,7 +317,7 @@ public interface Http {
 			return _headers;
 		}
 
-		public List<InputStreamPart> getInputStreamParts() {
+		public List<HttpClient.InputStreamPart> getInputStreamParts() {
 			return _inputStreamParts;
 		}
 
@@ -418,7 +325,7 @@ public interface Http {
 			return _location;
 		}
 
-		public Method getMethod() {
+		public HttpClient.Method getMethod() {
 			return _method;
 		}
 
@@ -426,7 +333,7 @@ public interface Http {
 			return _parts;
 		}
 
-		public Response getResponse() {
+		public HttpClient.Response getResponse() {
 			return _response;
 		}
 
@@ -435,7 +342,7 @@ public interface Http {
 		}
 
 		public boolean isDelete() {
-			if (_method == Method.DELETE) {
+			if (_method == HttpClient.Method.DELETE) {
 				return true;
 			}
 
@@ -447,7 +354,7 @@ public interface Http {
 		}
 
 		public boolean isGet() {
-			if (_method == Method.GET) {
+			if (_method == HttpClient.Method.GET) {
 				return true;
 			}
 
@@ -455,7 +362,7 @@ public interface Http {
 		}
 
 		public boolean isHead() {
-			if (_method == Method.HEAD) {
+			if (_method == HttpClient.Method.HEAD) {
 				return true;
 			}
 
@@ -463,7 +370,7 @@ public interface Http {
 		}
 
 		public boolean isPatch() {
-			if (_method == Method.PATCH) {
+			if (_method == HttpClient.Method.PATCH) {
 				return true;
 			}
 
@@ -471,7 +378,7 @@ public interface Http {
 		}
 
 		public boolean isPost() {
-			if (_method == Method.POST) {
+			if (_method == HttpClient.Method.POST) {
 				return true;
 			}
 
@@ -479,27 +386,27 @@ public interface Http {
 		}
 
 		public boolean isPut() {
-			if (_method == Method.PUT) {
+			if (_method == HttpClient.Method.PUT) {
 				return true;
 			}
 
 			return false;
 		}
 
-		public void setAuth(Http.Auth auth) {
+		public void setAuth(HttpClient.Auth auth) {
 			setAuth(
 				auth.getHost(), auth.getPort(), auth.getRealm(),
-				auth.getUsername(), auth.getPassword());
+				auth.getUserName(), auth.getPassword());
 		}
 
 		public void setAuth(
-			String host, int port, String realm, String username,
+			String host, int port, String realm, String userName,
 			String password) {
 
-			_auth = new Auth(host, port, realm, username, password);
+			_auth = new HttpClient.Auth(host, port, realm, userName, password);
 		}
 
-		public void setBody(Http.Body body) {
+		public void setBody(HttpClient.Body body) {
 			setBody(
 				body.getContent(), body.getContentType(), body.getCharset());
 		}
@@ -512,7 +419,7 @@ public interface Http {
 					"Body cannot be set because a part has already been added");
 			}
 
-			_body = new Body(content, contentType, charset);
+			_body = new HttpClient.Body(content, contentType, charset);
 		}
 
 		public void setCookies(Cookie[] cookies) {
@@ -521,14 +428,14 @@ public interface Http {
 
 		public void setDelete(boolean delete) {
 			if (delete) {
-				_method = Method.DELETE;
+				_method = HttpClient.Method.DELETE;
 			}
 			else {
-				_method = Method.GET;
+				_method = HttpClient.Method.GET;
 			}
 		}
 
-		public void setFileParts(List<FilePart> fileParts) {
+		public void setFileParts(List<HttpClient.FilePart> fileParts) {
 			_fileParts = fileParts;
 		}
 
@@ -538,10 +445,10 @@ public interface Http {
 
 		public void setHead(boolean head) {
 			if (head) {
-				_method = Method.HEAD;
+				_method = HttpClient.Method.HEAD;
 			}
 			else {
-				_method = Method.GET;
+				_method = HttpClient.Method.GET;
 			}
 		}
 
@@ -550,7 +457,7 @@ public interface Http {
 		}
 
 		public void setInputStreamParts(
-			List<InputStreamPart> inputStreamParts) {
+			List<HttpClient.InputStreamPart> inputStreamParts) {
 
 			_inputStreamParts = inputStreamParts;
 		}
@@ -559,7 +466,7 @@ public interface Http {
 			_location = location;
 		}
 
-		public void setMethod(Method method) {
+		public void setMethod(HttpClient.Method method) {
 			if (method != null) {
 				_method = method;
 			}
@@ -571,32 +478,32 @@ public interface Http {
 
 		public void setPatch(boolean patch) {
 			if (patch) {
-				_method = Method.PATCH;
+				_method = HttpClient.Method.PATCH;
 			}
 			else {
-				_method = Method.GET;
+				_method = HttpClient.Method.GET;
 			}
 		}
 
 		public void setPost(boolean post) {
 			if (post) {
-				_method = Method.POST;
+				_method = HttpClient.Method.POST;
 			}
 			else {
-				_method = Method.GET;
+				_method = HttpClient.Method.GET;
 			}
 		}
 
 		public void setPut(boolean put) {
 			if (put) {
-				_method = Method.PUT;
+				_method = HttpClient.Method.PUT;
 			}
 			else {
-				_method = Method.GET;
+				_method = HttpClient.Method.GET;
 			}
 		}
 
-		public void setResponse(Response response) {
+		public void setResponse(HttpClient.Response response) {
 			_response = response;
 		}
 
@@ -604,17 +511,17 @@ public interface Http {
 			_timeout = timeout;
 		}
 
-		private Auth _auth;
-		private Body _body;
+		private HttpClient.Auth _auth;
+		private HttpClient.Body _body;
 		private Cookie[] _cookies;
-		private List<FilePart> _fileParts;
+		private List<HttpClient.FilePart> _fileParts;
 		private boolean _followRedirects = true;
 		private Map<String, String> _headers;
-		private List<InputStreamPart> _inputStreamParts;
+		private List<HttpClient.InputStreamPart> _inputStreamParts;
 		private String _location;
-		private Method _method = Method.GET;
+		private HttpClient.Method _method = HttpClient.Method.GET;
 		private Map<String, String> _parts;
-		private Response _response = new Response();
+		private HttpClient.Response _response = new HttpClient.Response();
 		private int _timeout;
 
 	}

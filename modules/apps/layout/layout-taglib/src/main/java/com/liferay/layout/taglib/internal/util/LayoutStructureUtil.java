@@ -22,6 +22,11 @@ import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.layout.util.structure.DropZoneLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.cache.PortalCache;
+import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
+import com.liferay.portal.kernel.cache.PortalCacheManagerNames;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -30,6 +35,10 @@ import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.segments.manager.SegmentsExperienceManager;
+import com.liferay.segments.service.SegmentsExperienceLocalServiceUtil;
+
+import java.util.Date;
+import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,8 +58,11 @@ public class LayoutStructureUtil {
 					fetchLayoutPageTemplateStructure(
 						layout.getGroupId(), layout.getPlid(), true);
 
+			long segmentsExperienceId = _getSegmentsExperienceId(
+				httpServletRequest);
+
 			String data = layoutPageTemplateStructure.getData(
-				_getSegmentsExperienceId(httpServletRequest));
+				segmentsExperienceId);
 
 			if (Validator.isNull(data)) {
 				return null;
@@ -63,8 +75,11 @@ public class LayoutStructureUtil {
 					fetchLayoutPageTemplateEntryByPlid(
 						layout.getMasterLayoutPlid());
 
+			LayoutPageTemplateStructure masterLayoutPageTemplateStructure =
+				null;
+
 			if (masterLayoutPageTemplateEntry != null) {
-				LayoutPageTemplateStructure masterLayoutPageTemplateStructure =
+				masterLayoutPageTemplateStructure =
 					LayoutPageTemplateStructureLocalServiceUtil.
 						fetchLayoutPageTemplateStructure(
 							masterLayoutPageTemplateEntry.getGroupId(),
@@ -77,17 +92,49 @@ public class LayoutStructureUtil {
 				}
 			}
 
+			String dataKey = _getKey(
+				layoutPageTemplateStructure.getLayoutPageTemplateStructureId(),
+				segmentsExperienceId,
+				layoutPageTemplateStructure.getModifiedDate());
+
 			if (Validator.isNull(masterLayoutData)) {
-				return LayoutStructure.of(data);
+				return _getLayoutStructure(
+					dataKey, () -> LayoutStructure.of(data));
 			}
 
-			return _mergeLayoutStructure(data, masterLayoutData);
+			String masterLayoutDataKey = _getKey(
+				masterLayoutPageTemplateStructure.
+					getLayoutPageTemplateStructureId(),
+				_getMasterSegmentsExperienceId(
+					masterLayoutPageTemplateEntry.getPlid()),
+				masterLayoutPageTemplateStructure.getModifiedDate());
+
+			String copyMasterLayoutData = masterLayoutData;
+
+			return _getLayoutStructure(
+				dataKey + StringPool.DASH + masterLayoutDataKey,
+				() -> _mergeLayoutStructure(data, copyMasterLayoutData));
 		}
 		catch (Exception exception) {
 			_log.error("Unable to get layout structure", exception);
 
 			return null;
 		}
+	}
+
+	private static String _getKey(
+		long layoutPageTemplateStructureId, long segmentsExperienceId,
+		Date modifiedDate) {
+
+		StringBundler cacheKeyDSB = new StringBundler(5);
+
+		cacheKeyDSB.append(layoutPageTemplateStructureId);
+		cacheKeyDSB.append(StringPool.DASH);
+		cacheKeyDSB.append(segmentsExperienceId);
+		cacheKeyDSB.append(StringPool.DASH);
+		cacheKeyDSB.append(modifiedDate.getTime());
+
+		return cacheKeyDSB.toString();
 	}
 
 	private static Layout _getLayout(long plid) {
@@ -100,6 +147,25 @@ public class LayoutStructureUtil {
 		}
 
 		return layout;
+	}
+
+	private static LayoutStructure _getLayoutStructure(
+		String key, Supplier<LayoutStructure> layoutStructureSupplier) {
+
+		LayoutStructure layoutStructure = _portalCache.get(key);
+
+		if (layoutStructure == null) {
+			layoutStructure = layoutStructureSupplier.get();
+
+			_portalCache.put(key, layoutStructure);
+		}
+
+		return layoutStructure;
+	}
+
+	private static long _getMasterSegmentsExperienceId(long plid) {
+		return SegmentsExperienceLocalServiceUtil.
+			fetchDefaultSegmentsExperienceId(plid);
 	}
 
 	private static long _getSegmentsExperienceId(
@@ -153,5 +219,10 @@ public class LayoutStructureUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutStructureUtil.class);
+
+	private static final PortalCache<String, LayoutStructure> _portalCache =
+		PortalCacheHelperUtil.getPortalCache(
+			PortalCacheManagerNames.MULTI_VM,
+			LayoutStructureUtil.class.getName());
 
 }

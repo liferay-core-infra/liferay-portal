@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.json.validator;
+package com.liferay.portal.utilities.json.validator;
 
 /**
  * @author Rubén Pulido

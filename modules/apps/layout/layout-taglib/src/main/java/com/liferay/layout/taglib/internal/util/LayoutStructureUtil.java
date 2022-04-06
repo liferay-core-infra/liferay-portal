@@ -106,7 +106,7 @@ public class LayoutStructureUtil {
 				masterLayoutPageTemplateStructure.
 					getLayoutPageTemplateStructureId(),
 				_getMasterSegmentsExperienceId(
-					masterLayoutPageTemplateEntry.getPlid()),
+					masterLayoutPageTemplateStructure.getPlid()),
 				masterLayoutPageTemplateStructure.getModifiedDate());
 
 			String copyMasterLayoutData = masterLayoutData;

@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.MultiValueFacet;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
-import com.liferay.portal.kernel.search.filter.QueryFilter;
 import com.liferay.portal.kernel.search.filter.TermsFilter;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.hits.HitsProcessorRegistryUtil;
@@ -696,36 +695,6 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		}
 	}
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x)
-	 */
-	@Deprecated
-	protected void addFacetClause(
-			SearchContext searchContext, BooleanFilter facetBooleanFilter,
-			Collection<Facet> facets)
-		throws ParseException {
-
-		BooleanQuery facetBooleanQuery = new BooleanQueryImpl();
-
-		for (Facet facet : facets) {
-			BooleanClause<Query> facetBooleanClause = facet.getFacetClause();
-
-			if (facetBooleanClause != null) {
-				facetBooleanQuery.add(
-					facetBooleanClause.getClause(),
-					facetBooleanClause.getBooleanClauseOccur());
-			}
-		}
-
-		if (!facetBooleanQuery.hasClauses()) {
-			return;
-		}
-
-		QueryFilter queryFilter = new QueryFilter(facetBooleanQuery);
-
-		facetBooleanFilter.add(queryFilter, BooleanClauseOccur.MUST);
-	}
-
 	protected void addFacetSelectedFieldNames(
 		SearchContext searchContext, QueryConfig queryConfig) {
 
@@ -1036,11 +1005,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 
 		doPostProcessSearchQuery(this, searchQuery, searchContext);
 
-		Map<String, Facet> facets = searchContext.getFacets();
-
 		BooleanFilter facetBooleanFilter = new BooleanFilter();
-
-		addFacetClause(searchContext, facetBooleanFilter, facets.values());
 
 		if (facetBooleanFilter.hasClauses()) {
 			fullQueryBooleanFilter.add(

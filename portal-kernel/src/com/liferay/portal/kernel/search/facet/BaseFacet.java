@@ -16,7 +16,6 @@ package com.liferay.portal.kernel.search.facet;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.search.BooleanClause;
-import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.collector.FacetCollector;
 import com.liferay.portal.kernel.search.facet.collector.TermCollector;
@@ -36,16 +35,6 @@ public abstract class BaseFacet implements Facet {
 
 	public BaseFacet(SearchContext searchContext) {
 		_searchContext = searchContext;
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #getFacetFilterBooleanClause}
-	 */
-	@Deprecated
-	@Override
-	public BooleanClause<Query> getFacetClause() {
-		return doGetFacetClause();
 	}
 
 	@Override
@@ -118,15 +107,6 @@ public abstract class BaseFacet implements Facet {
 	@Override
 	public void setStatic(boolean isStatic) {
 		_facetConfiguration.setStatic(isStatic);
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #doGetFacetFilterBooleanClause}
-	 */
-	@Deprecated
-	protected BooleanClause<Query> doGetFacetClause() {
-		return null;
 	}
 
 	protected abstract BooleanClause<Filter> doGetFacetFilterBooleanClause();

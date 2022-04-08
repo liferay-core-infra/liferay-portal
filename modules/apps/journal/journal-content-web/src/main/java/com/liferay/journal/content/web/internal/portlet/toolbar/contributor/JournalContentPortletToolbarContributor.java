@@ -38,7 +38,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -174,7 +174,7 @@ public class JournalContentPortletToolbarContributor
 
 			urlMenuItem.setLabel(label);
 
-			String url = _http.addParameter(
+			String url = HttpHelperUtil.addParameter(
 				portletURL.toString(), "refererPlid", plid);
 
 			urlMenuItem.setURL(url);
@@ -216,9 +216,6 @@ public class JournalContentPortletToolbarContributor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalContentPortletToolbarContributor.class);
-
-	@Reference
-	private Http _http;
 
 	@Reference
 	private JournalFolderService _journalFolderService;

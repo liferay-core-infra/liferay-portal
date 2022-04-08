@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.facet.AssetEntriesFacet;
 import com.liferay.portal.kernel.search.facet.Facet;
-import com.liferay.portal.kernel.search.facet.ScopeFacet;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcher;
 import com.liferay.portal.kernel.search.facet.faceted.searcher.FacetedSearcherManagerUtil
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
@@ -79,12 +78,6 @@ function List getAssetEntries(
 	assetEntriesFacet.setStatic(true);
 
 	searchContext.addFacet(assetEntriesFacet);
-
-	Facet scopeFacet = new ScopeFacet(searchContext);
-
-	scopeFacet.setStatic(true);
-
-	searchContext.addFacet(scopeFacet);
 
 	searchContext.setAttribute("paginationType", "regular");
 	searchContext.setCompanyId(user.getCompanyId());

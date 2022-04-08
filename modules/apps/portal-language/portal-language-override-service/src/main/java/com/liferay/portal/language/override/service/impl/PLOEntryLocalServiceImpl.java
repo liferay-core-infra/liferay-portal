@@ -16,6 +16,7 @@ package com.liferay.portal.language.override.service.impl;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
@@ -42,6 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class PLOEntryLocalServiceImpl extends PLOEntryLocalServiceBaseImpl {
 
+	@Clusterable
 	@Override
 	public PLOEntry addOrUpdatePLOEntry(
 			long companyId, long userId, String key, String languageId,
@@ -75,11 +77,13 @@ public class PLOEntryLocalServiceImpl extends PLOEntryLocalServiceBaseImpl {
 		return updatePLOEntry(ploEntry);
 	}
 
+	@Clusterable
 	@Override
 	public void deletePLOEntries(long companyId, String key) {
 		ploEntryPersistence.removeByC_K(companyId, key);
 	}
 
+	@Clusterable
 	@Override
 	public PLOEntry deletePLOEntry(
 		long companyId, String key, String languageId) {

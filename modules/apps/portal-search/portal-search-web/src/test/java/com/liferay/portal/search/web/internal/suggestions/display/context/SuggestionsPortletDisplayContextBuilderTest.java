@@ -19,7 +19,8 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Html;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.web.internal.suggestions.display.context.builder.SuggestionsPortletDisplayContextBuilder;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -33,19 +34,28 @@ import java.util.stream.Stream;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.mockito.AdditionalAnswers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 /**
  * @author Adam Brandizzi
  * @author André de Oliveira
  */
-public class SuggestionsPortletDisplayContextBuilderTest {
+@Ignore
+@PrepareForTest(HttpHelperUtil.class)
+@RunWith(PowerMockRunner.class)
+public class SuggestionsPortletDisplayContextBuilderTest extends PowerMockito {
 
 	@ClassRule
 	@Rule
@@ -53,11 +63,24 @@ public class SuggestionsPortletDisplayContextBuilderTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
 		_setUpHtml();
-		_setUpHttp();
+
+		mockStatic(HttpHelperUtil.class);
+
+		when(
+			HttpHelperUtil.setParameter(
+				Mockito.anyString(), Mockito.anyString(), Mockito.anyString())
+		).thenAnswer(
+			invocation -> StringBundler.concat(
+				invocation.getArgumentAt(0, String.class),
+				StringPool.OPEN_PARENTHESIS,
+				invocation.getArgumentAt(1, String.class), "<<",
+				invocation.getArgumentAt(2, String.class),
+				StringPool.CLOSE_PARENTHESIS)
+		);
 
 		_setUpDisplayContextBuilder();
 	}
@@ -355,7 +378,7 @@ public class SuggestionsPortletDisplayContextBuilderTest {
 	protected Html html;
 
 	@Mock
-	protected Http http;
+	protected Portal portal;
 
 	private void _assertSuggestion(
 		String expected, SuggestionDisplayContext suggestionDisplayContext) {
@@ -394,7 +417,7 @@ public class SuggestionsPortletDisplayContextBuilderTest {
 
 	private void _setUpDisplayContextBuilder() {
 		_displayContextBuilder = new SuggestionsPortletDisplayContextBuilder(
-			html, http);
+			html);
 
 		_setUpSearchedKeywords("q", "X");
 	}
@@ -406,21 +429,6 @@ public class SuggestionsPortletDisplayContextBuilderTest {
 			html
 		).escape(
 			Mockito.anyString()
-		);
-	}
-
-	private void _setUpHttp() {
-		Mockito.doAnswer(
-			invocation -> StringBundler.concat(
-				invocation.getArgumentAt(0, String.class),
-				StringPool.OPEN_PARENTHESIS,
-				invocation.getArgumentAt(1, String.class), "<<",
-				invocation.getArgumentAt(2, String.class),
-				StringPool.CLOSE_PARENTHESIS)
-		).when(
-			http
-		).setParameter(
-			Mockito.anyString(), Mockito.anyString(), Mockito.anyString()
 		);
 	}
 

@@ -109,15 +109,13 @@ public class SearchBarPortlet extends MVCPortlet {
 		SearchBarPortletPreferences searchBarPortletPreferences,
 		ThemeDisplay themeDisplay) {
 
-		Optional<com.liferay.portal.kernel.model.Portlet>
-			headerSearchBarOptional =
-				searchBarPrecedenceHelper.findHeaderSearchBarPortletOptional(
-					themeDisplay);
+		com.liferay.portal.kernel.model.Portlet headerSearchBarPortlet =
+			searchBarPrecedenceHelper.findHeaderSearchBarPortlet(themeDisplay);
 
-		if (headerSearchBarOptional.isPresent()) {
+		if (headerSearchBarPortlet != null) {
 			Optional<PortletPreferences> headerPortletPreferencesOptional =
 				portletPreferencesLookup.fetchPreferences(
-					headerSearchBarOptional.get(), themeDisplay);
+					headerSearchBarPortlet, themeDisplay);
 
 			if (headerPortletPreferencesOptional.isPresent() &&
 				SearchBarPortletDestinationUtil.isSameDestination(
@@ -139,15 +137,13 @@ public class SearchBarPortlet extends MVCPortlet {
 		SearchBarPortletPreferences searchBarPortletPreferences,
 		ThemeDisplay themeDisplay) {
 
-		Optional<com.liferay.portal.kernel.model.Portlet>
-			headerSearchBarOptional =
-				searchBarPrecedenceHelper.findHeaderSearchBarPortletOptional(
-					themeDisplay);
+		com.liferay.portal.kernel.model.Portlet headerSearchBarPortlet =
+			searchBarPrecedenceHelper.findHeaderSearchBarPortlet(themeDisplay);
 
-		if (headerSearchBarOptional.isPresent()) {
+		if (headerSearchBarPortlet != null) {
 			Optional<PortletPreferences> headerPortletPreferencesOptional =
 				portletPreferencesLookup.fetchPreferences(
-					headerSearchBarOptional.get(), themeDisplay);
+					headerSearchBarPortlet, themeDisplay);
 
 			if (headerPortletPreferencesOptional.isPresent() &&
 				SearchBarPortletDestinationUtil.isSameDestination(

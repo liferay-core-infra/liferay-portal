@@ -16,7 +16,7 @@ package com.liferay.adaptive.media.image.internal.configuration;
 
 import com.liferay.adaptive.media.image.configuration.AMImageConfigurationEntry;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 
 import java.util.Collections;
@@ -36,18 +36,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
 /**
  * @author Adolfo Pérez
  */
-@PrepareForTest(URLCodec.class)
+@PrepareForTest({URLCodec.class, HttpHelperUtil.class})
 @RunWith(PowerMockRunner.class)
 public class AMImageConfigurationEntryParserTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
-		_http = mock(Http.class);
-
-		_amImageConfigurationEntryParser = new AMImageConfigurationEntryParser(
-			_http);
+		_amImageConfigurationEntryParser =
+			new AMImageConfigurationEntryParser();
 
 		PowerMockito.mockStatic(URLCodec.class);
+		PowerMockito.mockStatic(HttpHelperUtil.class);
 
 		when(
 			URLCodec.encodeURL(Mockito.eq("desc"))
@@ -56,7 +55,7 @@ public class AMImageConfigurationEntryParserTest extends PowerMockito {
 		);
 
 		when(
-			_http.decodeURL(Mockito.eq("desc"))
+			HttpHelperUtil.decodeURL(Mockito.eq("desc"))
 		).thenReturn(
 			"desc"
 		);
@@ -68,7 +67,7 @@ public class AMImageConfigurationEntryParserTest extends PowerMockito {
 		);
 
 		when(
-			_http.decodeURL(Mockito.eq("test"))
+			HttpHelperUtil.decodeURL(Mockito.eq("test"))
 		).thenReturn(
 			"test"
 		);
@@ -130,7 +129,7 @@ public class AMImageConfigurationEntryParserTest extends PowerMockito {
 		);
 
 		when(
-			_http.decodeURL(Mockito.eq("desc%3A%3B"))
+			HttpHelperUtil.decodeURL(Mockito.eq("desc%3A%3B"))
 		).thenReturn(
 			"desc:;"
 		);
@@ -161,7 +160,7 @@ public class AMImageConfigurationEntryParserTest extends PowerMockito {
 		);
 
 		when(
-			_http.decodeURL(Mockito.eq("test%3A%3B"))
+			HttpHelperUtil.decodeURL(Mockito.eq("test%3A%3B"))
 		).thenReturn(
 			"test:;"
 		);
@@ -369,6 +368,5 @@ public class AMImageConfigurationEntryParserTest extends PowerMockito {
 	}
 
 	private AMImageConfigurationEntryParser _amImageConfigurationEntryParser;
-	private Http _http;
 
 }

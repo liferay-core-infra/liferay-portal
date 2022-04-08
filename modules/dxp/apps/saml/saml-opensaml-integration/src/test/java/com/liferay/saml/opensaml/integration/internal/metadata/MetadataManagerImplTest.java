@@ -15,7 +15,7 @@
 package com.liferay.saml.opensaml.integration.internal.metadata;
 
 import com.liferay.portal.kernel.servlet.HttpMethods;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.saml.opensaml.integration.internal.BaseSamlTestCase;
 
 import org.junit.Assert;
@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -30,6 +31,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 /**
  * @author Tomas Polesovsky
  */
+@PrepareForTest(HttpHelperUtil.class)
 @RunWith(PowerMockRunner.class)
 public class MetadataManagerImplTest extends BaseSamlTestCase {
 
@@ -38,15 +40,13 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_http = mock(Http.class);
-
-		metadataManagerImpl.setHttp(_http);
+		mockStatic(HttpHelperUtil.class);
 	}
 
 	@Test
 	public void testGetRequestPath() {
 		when(
-			_http.removePathParameters(
+			HttpHelperUtil.removePathParameters(
 				"/c/portal/login;jsessionid=ACD311312312323BF.worker1")
 		).thenReturn(
 			"/c/portal/login"
@@ -63,7 +63,7 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 	@Test
 	public void testGetRequestPathWithContext() {
 		when(
-			_http.removePathParameters(
+			HttpHelperUtil.removePathParameters(
 				"/c/portal/login;jsessionid=ACD311312312323BF.worker1")
 		).thenReturn(
 			"/c/portal/login"
@@ -82,7 +82,7 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 	@Test
 	public void testGetRequestPathWithoutJsessionId() {
 		when(
-			_http.removePathParameters("/c/portal/login")
+			HttpHelperUtil.removePathParameters("/c/portal/login")
 		).thenReturn(
 			"/c/portal/login"
 		);
@@ -93,7 +93,5 @@ public class MetadataManagerImplTest extends BaseSamlTestCase {
 		Assert.assertEquals(
 			"/c/portal/login", metadataManagerImpl.getRequestPath(request));
 	}
-
-	private Http _http;
 
 }

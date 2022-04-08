@@ -15,6 +15,7 @@
 package com.liferay.portal.search.elasticsearch7.internal.connection;
 
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.Objects;
@@ -26,15 +27,22 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 /**
  * @author Adam Brandizzi
  */
-public class ProxyConfigTest {
+@PrepareForTest(HttpHelperUtil.class)
+@RunWith(PowerMockRunner.class)
+public class ProxyConfigTest extends PowerMockito {
 
 	@ClassRule
 	@Rule
@@ -45,6 +53,7 @@ public class ProxyConfigTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
+		mockStatic(HttpHelperUtil.class);
 		_systemProperties = new Properties(System.getProperties());
 	}
 
@@ -85,8 +94,8 @@ public class ProxyConfigTest {
 		String domain = "domain";
 		String networkAddress = "http://domain:9200";
 
-		Mockito.when(
-			_http.getDomain(networkAddress)
+		when(
+			HttpHelperUtil.getDomain(networkAddress)
 		).thenReturn(
 			domain
 		);
@@ -115,8 +124,8 @@ public class ProxyConfigTest {
 		String domain = "domain";
 		String networkAddress = "http://domain:9200";
 
-		Mockito.when(
-			_http.getDomain(networkAddress)
+		when(
+			HttpHelperUtil.getDomain(networkAddress)
 		).thenReturn(
 			domain
 		);

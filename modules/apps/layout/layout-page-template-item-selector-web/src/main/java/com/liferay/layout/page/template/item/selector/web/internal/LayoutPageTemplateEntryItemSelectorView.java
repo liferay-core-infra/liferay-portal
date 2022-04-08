@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -217,20 +217,20 @@ public class LayoutPageTemplateEntryItemSelectorView
 						getPagePreviewURL.setResourceID(
 							"/layout_content_page_editor/get_page_preview");
 
-						String url = HttpUtil.addParameter(
+						String url = HttpHelperUtil.addParameter(
 							getPagePreviewURL.toString(), "p_l_mode",
 							Constants.PREVIEW);
 
-						return HttpUtil.addParameter(
+						return HttpHelperUtil.addParameter(
 							url, "doAsUserId",
 							_themeDisplay.getDefaultUserId());
 					}
 
-					String layoutURL = HttpUtil.addParameter(
+					String layoutURL = HttpHelperUtil.addParameter(
 						PortalUtil.getLayoutFullURL(layout, _themeDisplay),
 						"p_l_mode", Constants.PREVIEW);
 
-					return HttpUtil.addParameter(
+					return HttpHelperUtil.addParameter(
 						layoutURL, "p_p_auth",
 						AuthTokenUtil.getToken(_httpServletRequest));
 				}

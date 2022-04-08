@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -136,10 +136,10 @@ public class LayoutRevisionAssetRenderer
 
 			String layoutURL = PortalUtil.getLayoutURL(layout, themeDisplay);
 
-			layoutURL = HttpUtil.addParameter(
+			layoutURL = HttpHelperUtil.addParameter(
 				layoutURL, "layoutSetBranchId",
 				_layoutRevision.getLayoutSetBranchId());
-			layoutURL = HttpUtil.addParameter(
+			layoutURL = HttpHelperUtil.addParameter(
 				layoutURL, "layoutRevisionId",
 				_layoutRevision.getLayoutRevisionId());
 

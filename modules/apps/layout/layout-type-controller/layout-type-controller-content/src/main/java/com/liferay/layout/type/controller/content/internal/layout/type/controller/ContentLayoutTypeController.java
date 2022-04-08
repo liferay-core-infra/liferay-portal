@@ -36,7 +36,7 @@ import com.liferay.portal.kernel.servlet.PipingServletResponse;
 import com.liferay.portal.kernel.servlet.TransferHeadersHelper;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpHelperUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
@@ -182,18 +182,18 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 					"p_l_back_url");
 
 				if (Validator.isNotNull(backURL)) {
-					layoutFullURL = _http.addParameter(
+					layoutFullURL = HttpHelperUtil.addParameter(
 						layoutFullURL, "p_l_back_url", backURL);
 				}
 
-				layoutFullURL = _http.addParameter(
+				layoutFullURL = HttpHelperUtil.addParameter(
 					layoutFullURL, "p_l_mode", Constants.EDIT);
 
 				long segmentsExperienceId = ParamUtil.getLong(
 					httpServletRequest, "segmentsExperienceId", -1);
 
 				if (segmentsExperienceId != -1) {
-					layoutFullURL = _http.setParameter(
+					layoutFullURL = HttpHelperUtil.setParameter(
 						layoutFullURL, "segmentsExperienceId",
 						segmentsExperienceId);
 				}
@@ -340,9 +340,6 @@ public class ContentLayoutTypeController extends BaseLayoutTypeControllerImpl {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContentLayoutTypeController.class);
-
-	@Reference
-	private Http _http;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

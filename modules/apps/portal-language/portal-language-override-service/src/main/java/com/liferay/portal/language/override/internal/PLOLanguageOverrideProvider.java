@@ -16,6 +16,7 @@ package com.liferay.portal.language.override.internal;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.language.LanguageOverrideProvider;
@@ -72,10 +73,51 @@ public class PLOLanguageOverrideProvider implements LanguageOverrideProvider {
 	@SuppressWarnings("unchecked")
 	protected void activate() {
 		_ploEntriesMap = new ConcurrentHashMap<>();
+
+		for (PLOEntry ploEntry :
+				_ploEntryLocalService.getPLOEntries(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
+
+			add(ploEntry);
+		}
 	}
 
-	protected void clear(long companyId, String languageId) {
-		_ploEntriesMap.remove(_encodeKey(companyId, languageId));
+	protected void add(PLOEntry ploEntry) {
+		_ploEntriesMap.compute(
+			_encodeKey(ploEntry.getCompanyId(), ploEntry.getLanguageId()),
+			(key, value) -> {
+				if (value == null) {
+					value = new HashMap<>();
+				}
+
+				value.put(ploEntry.getKey(), ploEntry.getValue());
+
+				return value;
+			});
+	}
+
+	protected void remove(PLOEntry ploEntry) {
+		_ploEntriesMap.computeIfPresent(
+			_encodeKey(ploEntry.getCompanyId(), ploEntry.getLanguageId()),
+			(key, value) -> {
+				value.remove(ploEntry.getKey());
+
+				if (value.isEmpty()) {
+					return null;
+				}
+
+				return value;
+			});
+	}
+
+	protected void update(PLOEntry ploEntry) {
+		_ploEntriesMap.computeIfPresent(
+			_encodeKey(ploEntry.getCompanyId(), ploEntry.getLanguageId()),
+			(key, value) -> {
+				value.put(ploEntry.getKey(), ploEntry.getValue());
+
+				return value;
+			});
 	}
 
 	private String _encodeKey(long companyId, String languageId) {
@@ -83,23 +125,15 @@ public class PLOLanguageOverrideProvider implements LanguageOverrideProvider {
 	}
 
 	private Map<String, String> _getOverrideMap(long companyId, Locale locale) {
-		String languageId = LanguageUtil.getLanguageId(locale);
+		if (_ploEntriesMap.isEmpty()) {
+			return Collections.emptyMap();
+		}
 
-		String key = _encodeKey(companyId, languageId);
-
-		HashMap<String, String> overrideMap = _ploEntriesMap.get(key);
+		Map<String, String> overrideMap = _ploEntriesMap.get(
+			_encodeKey(companyId, LanguageUtil.getLanguageId(locale)));
 
 		if (overrideMap == null) {
-			overrideMap = new HashMap<>();
-
-			for (PLOEntry ploEntry :
-					_ploEntryLocalService.getPLOEntries(
-						companyId, languageId)) {
-
-				overrideMap.put(ploEntry.getKey(), ploEntry.getValue());
-			}
-
-			_ploEntriesMap.put(key, overrideMap);
+			return Collections.emptyMap();
 		}
 
 		return overrideMap;

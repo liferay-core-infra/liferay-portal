@@ -69,7 +69,6 @@ public class SearchBarPortletDisplayContextBuilderTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		_setUpHttp();
 		_setUpLanguageUtil();
 		_setUpPortal();
 		_setUpThemeDisplay();
@@ -272,23 +271,13 @@ public class SearchBarPortletDisplayContextBuilderTest {
 		SearchBarPortletDisplayContextBuilder
 			searchBarPortletDisplayContextBuilder =
 				new SearchBarPortletDisplayContextBuilder(
-					_http, _layoutLocalService, _portal, renderRequest);
+					_layoutLocalService, _portal, renderRequest);
 
 		searchBarPortletDisplayContextBuilder.setSearchScopePreference(
 			SearchScopePreference.getSearchScopePreference("everything"));
 		searchBarPortletDisplayContextBuilder.setThemeDisplay(_themeDisplay);
 
 		return searchBarPortletDisplayContextBuilder;
-	}
-
-	private void _setUpHttp() {
-		Mockito.doAnswer(
-			invocation -> getPath(invocation.getArgumentAt(0, String.class))
-		).when(
-			_http
-		).getPath(
-			Mockito.anyString()
-		);
 	}
 
 	private void _setUpLanguageUtil() {
@@ -362,9 +351,6 @@ public class SearchBarPortletDisplayContextBuilderTest {
 
 	@Mock
 	private Group _group;
-
-	@Mock
-	private Http _http;
 
 	@Mock
 	private LayoutLocalService _layoutLocalService;

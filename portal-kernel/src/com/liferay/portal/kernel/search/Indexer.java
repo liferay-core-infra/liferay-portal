@@ -103,16 +103,6 @@ public interface Indexer<T> {
 			BooleanFilter contextBooleanFilter, SearchContext searchContext)
 		throws Exception;
 
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), replaced by {@link
-	 *             #postProcessContextBooleanFilter(BooleanFilter,
-	 *             SearchContext)}
-	 */
-	@Deprecated
-	public void postProcessContextQuery(
-			BooleanQuery contextQuery, SearchContext searchContext)
-		throws Exception;
-
 	public void postProcessSearchQuery(
 			BooleanQuery searchQuery, BooleanFilter fullQueryBooleanFilter,
 			SearchContext searchContext)

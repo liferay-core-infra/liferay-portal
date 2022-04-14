@@ -15,8 +15,6 @@
 package com.liferay.portal.kernel.search;
 
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
-import com.liferay.portal.kernel.search.filter.QueryFilter;
-import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -61,8 +59,8 @@ public class BaseRelatedEntryIndexer implements RelatedEntryIndexer {
 					relatedBooleanFilter, searchContext);
 			}
 
-			postProcessContextQuery(
-				relatedBooleanFilter, searchContext, indexer);
+			indexer.postProcessContextBooleanFilter(
+				relatedBooleanFilter, searchContext);
 
 			relatedBooleanFilter.addRequiredTerm(
 				Field.CLASS_NAME_ID,
@@ -94,28 +92,6 @@ public class BaseRelatedEntryIndexer implements RelatedEntryIndexer {
 
 	@Override
 	public void updateFullQuery(SearchContext searchContext) {
-	}
-
-	/**
-	 * @deprecated As of Wilberforce (7.0.x), added strictly to support
-	 *             backwards compatibility of {@link
-	 *             Indexer#postProcessContextQuery(BooleanQuery, SearchContext)}
-	 */
-	@Deprecated
-	protected void postProcessContextQuery(
-			BooleanFilter relatedBooleanFilter, SearchContext searchContext,
-			Indexer<?> indexer)
-		throws Exception {
-
-		BooleanQuery entityQuery = new BooleanQueryImpl();
-
-		indexer.postProcessContextQuery(entityQuery, searchContext);
-
-		if (entityQuery.hasClauses()) {
-			QueryFilter queryFilter = new QueryFilter(entityQuery);
-
-			relatedBooleanFilter.add(queryFilter, BooleanClauseOccur.MUST);
-		}
 	}
 
 }

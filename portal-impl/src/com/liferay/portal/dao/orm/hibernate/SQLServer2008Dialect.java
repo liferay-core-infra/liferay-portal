@@ -16,6 +16,8 @@ package com.liferay.portal.dao.orm.hibernate;
 
 import java.sql.Types;
 
+import org.hibernate.LockMode;
+import org.hibernate.LockOptions;
 import org.hibernate.type.StandardBasicTypes;
 
 /**
@@ -27,6 +29,25 @@ public class SQLServer2008Dialect
 	public SQLServer2008Dialect() {
 		registerHibernateType(
 			Types.NVARCHAR, StandardBasicTypes.STRING.getName());
+	}
+
+	@Override
+	public String appendLockHint(LockOptions lockOptions, String tableName) {
+		LockMode lockMode = lockOptions.getLockMode();
+
+		if ((lockMode == LockMode.UPGRADE) ||
+			(lockMode == LockMode.UPGRADE_NOWAIT) ||
+			(lockMode == LockMode.PESSIMISTIC_WRITE) ||
+			(lockMode == LockMode.WRITE)) {
+
+			return tableName + " with (updlock, rowlock)";
+		}
+		else if (lockMode == LockMode.PESSIMISTIC_READ) {
+			return tableName + " with (holdlock, rowlock)";
+		}
+		else {
+			return tableName;
+		}
 	}
 
 	@Override

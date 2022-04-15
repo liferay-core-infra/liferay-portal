@@ -15,9 +15,7 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
-
-import java.text.NumberFormat;
+import com.liferay.portal.kernel.language.LanguageUtil;
 
 import java.util.Locale;
 
@@ -191,51 +189,8 @@ public class TextFormatter {
 		return s + "s";
 	}
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
-	 *             com.liferay.portal.kernel.language.LanguageUtil#formatStorageSize(
-	 *             double, Locale) }
-	 */
-	@Deprecated
-	public static String formatStorageSize(double size, Locale locale) {
-		String suffix = _STORAGE_SIZE_SUFFIX_B;
-
-		if (size >= _STORAGE_SIZE_DENOMINATOR) {
-			suffix = _STORAGE_SIZE_SUFFIX_KB;
-
-			size = size / _STORAGE_SIZE_DENOMINATOR;
-		}
-
-		if (size >= _STORAGE_SIZE_DENOMINATOR) {
-			suffix = _STORAGE_SIZE_SUFFIX_MB;
-
-			size = size / _STORAGE_SIZE_DENOMINATOR;
-		}
-
-		if (size >= _STORAGE_SIZE_DENOMINATOR) {
-			suffix = _STORAGE_SIZE_SUFFIX_GB;
-
-			size = size / _STORAGE_SIZE_DENOMINATOR;
-		}
-
-		NumberFormat numberFormat = NumberFormat.getInstance(locale);
-
-		if (suffix.equals(_STORAGE_SIZE_SUFFIX_B) ||
-			suffix.equals(_STORAGE_SIZE_SUFFIX_KB)) {
-
-			numberFormat.setMaximumFractionDigits(0);
-		}
-		else {
-			numberFormat.setMaximumFractionDigits(1);
-		}
-
-		numberFormat.setMinimumFractionDigits(0);
-
-		return numberFormat.format(size) + StringPool.SPACE + suffix;
-	}
-
 	public static String formatStorageSize(int size, Locale locale) {
-		return formatStorageSize((double)size, locale);
+		return LanguageUtil.formatStorageSize((double)size, locale);
 	}
 
 	private static String _formatA(String s) {
@@ -430,15 +385,5 @@ public class TextFormatter {
 
 		return sb.toString();
 	}
-
-	private static final double _STORAGE_SIZE_DENOMINATOR = 1024.0;
-
-	private static final String _STORAGE_SIZE_SUFFIX_B = "B";
-
-	private static final String _STORAGE_SIZE_SUFFIX_GB = "GB";
-
-	private static final String _STORAGE_SIZE_SUFFIX_KB = "KB";
-
-	private static final String _STORAGE_SIZE_SUFFIX_MB = "MB";
 
 }

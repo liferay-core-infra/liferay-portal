@@ -20,10 +20,10 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
-import com.liferay.petra.http.invoker.HttpInvoker;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.http.invoker.HttpInvoker;
 
 import java.io.File;
 import java.io.InputStream;

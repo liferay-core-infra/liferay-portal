@@ -105,32 +105,18 @@ public class ViewCountEntryLocalServiceTest {
 			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
 				BatchingBatch.class.getName(), LoggerTestUtil.OFF)) {
 
-			FutureTask<Void> futureTask = new FutureTask<>(
-				() -> {
-					try (SafeCloseable safeCloseable1 =
-							BufferedIncrementThreadLocal.setWithSafeCloseable(
-								true);
-						SafeCloseable safeCloseable2 =
-							ProxyModeThreadLocal.setWithSafeCloseable(true)) {
-
-						_viewCountEntryLocalService.incrementViewCount(
-							TestPropsValues.getCompanyId(),
-							_className.getClassNameId(), classPK, viewCount);
-					}
-
-					return null;
-				});
-
-			Thread thread = new Thread(
-				futureTask, "Inner View Count Incrementer");
-
-			thread.start();
-
-			_viewCountEntryLocalService.incrementViewCount(
-				TestPropsValues.getCompanyId(), _className.getClassNameId(),
+			FutureTask<Void> futureTask1 = _createFutureTask(
 				classPK, viewCount);
 
-			futureTask.get();
+			_startThread(futureTask1, "Inner View Count Incrementer Thread1");
+
+			FutureTask<Void> futureTask2 = _createFutureTask(
+				classPK, viewCount);
+
+			_startThread(futureTask2, "Inner View Count Incrementer Thread2");
+
+			futureTask1.get();
+			futureTask2.get();
 		}
 		finally {
 			ReflectionTestUtil.setFieldValue(
@@ -141,6 +127,23 @@ public class ViewCountEntryLocalServiceTest {
 			viewCountEntryPK);
 
 		Assert.assertEquals(viewCount * 2, _viewCountEntry.getViewCount());
+	}
+
+	private FutureTask<Void> _createFutureTask(long classPK, int viewCount) {
+		return new FutureTask<>(
+			() -> {
+				try (SafeCloseable safeCloseable1 =
+						BufferedIncrementThreadLocal.setWithSafeCloseable(true);
+					SafeCloseable safeCloseable2 =
+						ProxyModeThreadLocal.setWithSafeCloseable(true)) {
+
+					_viewCountEntryLocalService.incrementViewCount(
+						TestPropsValues.getCompanyId(),
+						_className.getClassNameId(), classPK, viewCount);
+				}
+
+				return null;
+			});
 	}
 
 	private Object _createSessionFactoryProxy(
@@ -176,6 +179,12 @@ public class ViewCountEntryLocalServiceTest {
 					throw invocationTargetException.getCause();
 				}
 			});
+	}
+
+	private void _startThread(FutureTask<Void> futureTask, String threadName) {
+		Thread thread = new Thread(futureTask, threadName);
+
+		thread.start();
 	}
 
 	@DeleteAfterTestRun

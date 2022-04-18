@@ -12,7 +12,6 @@ dependencies {
 	compileOnly project(":apps:frontend-taglib:frontend-taglib-clay")
 	compileOnly project(":apps:item-selector:item-selector-api")
 	compileOnly project(":apps:item-selector:item-selector-criteria-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:portlet-display-template:portlet-display-template-api")
 	compileOnly project(":apps:site-navigation:site-navigation-api")
 	compileOnly project(":apps:site-navigation:site-navigation-item-selector-api")
@@ -23,4 +22,5 @@ dependencies {
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 }

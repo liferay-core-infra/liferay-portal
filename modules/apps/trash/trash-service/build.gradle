@@ -13,7 +13,6 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:change-tracking:change-tracking-spi")
 	compileOnly project(":apps:message-boards:message-boards-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:portal-search:portal-search-api")
 	compileOnly project(":apps:portal:portal-aop-api")
 	compileOnly project(":apps:portal:portal-model-adapter")
@@ -23,4 +22,5 @@ dependencies {
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 }

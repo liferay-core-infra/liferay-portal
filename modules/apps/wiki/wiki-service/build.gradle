@@ -26,7 +26,6 @@ dependencies {
 	compileOnly project(":apps:diff:diff-api")
 	compileOnly project(":apps:export-import:export-import-api")
 	compileOnly project(":apps:item-selector:item-selector-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:portal-search:portal-search-api")
 	compileOnly project(":apps:portal:portal-aop-api")
 	compileOnly project(":apps:portal:portal-dao-orm-custom-sql-api")
@@ -46,6 +45,7 @@ dependencies {
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-sql-dsl-spi")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 }
 
 liferayOSGi {

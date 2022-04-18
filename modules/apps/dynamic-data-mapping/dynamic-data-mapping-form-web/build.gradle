@@ -36,7 +36,6 @@ dependencies {
 	compileOnly project(":apps:layout:layout-dynamic-data-mapping-form-field-type-api")
 	compileOnly project(":apps:layout:layout-type-controller:layout-type-controller-api")
 	compileOnly project(":apps:object:object-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:portal:portal-instance-lifecycle-api")
 	compileOnly project(":apps:static:osgi:osgi-util")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")
@@ -48,6 +47,7 @@ dependencies {
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 
 	testCompile group: "org.hamcrest", name: "hamcrest-all", version: "1.3"
 	testCompile group: "org.skyscreamer", name: "jsonassert", version: "1.2.3"

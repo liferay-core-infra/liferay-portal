@@ -10,10 +10,10 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly project(":apps:application-list:application-list-api")
 	compileOnly project(":apps:marketplace:marketplace-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:portal-lock:portal-lock-api")
 	compileOnly project(":core:petra:petra-function")
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 }

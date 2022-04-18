@@ -18,7 +18,6 @@ dependencies {
 	compileOnly project(":apps:journal:journal-api")
 	compileOnly project(":apps:layout:layout-admin-api")
 	compileOnly project(":apps:layout:layout-seo-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:portal-template:portal-template-react-renderer-api")
 	compileOnly project(":apps:product-navigation:product-navigation-control-menu-api")
 	compileOnly project(":apps:site:site-api")
@@ -26,6 +25,7 @@ dependencies {
 	compileOnly project(":core:petra:petra-function")
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 }

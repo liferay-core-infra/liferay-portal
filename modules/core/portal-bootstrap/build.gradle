@@ -97,7 +97,6 @@ dependencies {
 	compileOnly project(":apps:petra:petra-encryptor")
 	compileOnly project(":apps:petra:petra-log4j")
 	compileOnly project(":apps:petra:petra-mail")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:petra:petra-xml")
 	compileOnly project(":core:jaxws-osgi-bridge")
 	compileOnly project(":core:osgi-service-tracker-collections")
@@ -115,6 +114,7 @@ dependencies {
 	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":core:petra:petra-url-pattern-mapper")
 	compileOnly project(":core:portal-app-license-api")
+	compileOnly project(":core:portal-portlet-url-builder")
 }
 
 deployDependencies {

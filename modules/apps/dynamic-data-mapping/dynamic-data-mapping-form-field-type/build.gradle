@@ -21,7 +21,6 @@ dependencies {
 	compileOnly project(":apps:journal:journal-api")
 	compileOnly project(":apps:journal:journal-item-selector-api")
 	compileOnly project(":apps:map:map-api")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:static:osgi:osgi-util")
 	compileOnly project(":apps:trash:trash-api")
 	compileOnly project(":core:osgi-service-tracker-collections")
@@ -30,6 +29,7 @@ dependencies {
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
+	compileOnly project(":core:portal-portlet-url-builder")
 
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	testCompile group: "org.skyscreamer", name: "jsonassert", version: "1.2.3"

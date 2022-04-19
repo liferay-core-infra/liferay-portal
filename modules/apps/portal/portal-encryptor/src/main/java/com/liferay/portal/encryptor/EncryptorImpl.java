@@ -109,11 +109,7 @@ public class EncryptorImpl implements Encryptor {
 
 		String algorithm = key.getAlgorithm();
 
-		String cacheKey = algorithm.concat(
-			StringPool.POUND
-		).concat(
-			key.toString()
-		);
+		String cacheKey = algorithm + StringPool.POUND + key.toString();
 
 		Cipher cipher = _decryptCipherMap.get(cacheKey);
 
@@ -154,11 +150,7 @@ public class EncryptorImpl implements Encryptor {
 
 		String algorithm = key.getAlgorithm();
 
-		String cacheKey = algorithm.concat(
-			StringPool.POUND
-		).concat(
-			key.toString()
-		);
+		String cacheKey = algorithm + StringPool.POUND + key.toString();
 
 		Cipher cipher = _encryptCipherMap.get(cacheKey);
 

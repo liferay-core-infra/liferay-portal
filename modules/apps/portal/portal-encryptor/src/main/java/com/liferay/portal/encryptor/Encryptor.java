@@ -68,10 +68,41 @@ public class Encryptor {
 
 		byte[] encryptedBytes = Base64.decode(encryptedString);
 
-		return decryptUnencodedAsString(key, encryptedBytes);
+		return _decryptUnencodedAsString(key, encryptedBytes);
 	}
 
-	public static byte[] decryptUnencodedAsBytes(Key key, byte[] encryptedBytes)
+	public static Key deserializeKey(String base64String) {
+		byte[] bytes = Base64.decode(base64String);
+
+		return new SecretKeySpec(bytes, Encryptor.KEY_ALGORITHM);
+	}
+
+	public static String encrypt(Key key, String plainText)
+		throws EncryptorException {
+
+		if (key == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Skip encrypting based on a null key");
+			}
+
+			return plainText;
+		}
+
+		byte[] encryptedBytes = _encryptUnencoded(key, plainText);
+
+		return Base64.encode(encryptedBytes);
+	}
+
+	public static Key generateKey() throws EncryptorException {
+		return _generateKey(KEY_ALGORITHM);
+	}
+
+	public static String serializeKey(Key key) {
+		return Base64.encode(key.getEncoded());
+	}
+
+	private static byte[] _decryptUnencodedAsBytes(
+			Key key, byte[] encryptedBytes)
 		throws EncryptorException {
 
 		String algorithm = key.getAlgorithm();
@@ -102,12 +133,12 @@ public class Encryptor {
 		}
 	}
 
-	public static String decryptUnencodedAsString(
+	private static String _decryptUnencodedAsString(
 			Key key, byte[] encryptedBytes)
 		throws EncryptorException {
 
 		try {
-			byte[] decryptedBytes = decryptUnencodedAsBytes(
+			byte[] decryptedBytes = _decryptUnencodedAsBytes(
 				key, encryptedBytes);
 
 			return new String(decryptedBytes, ENCODING);
@@ -117,29 +148,7 @@ public class Encryptor {
 		}
 	}
 
-	public static Key deserializeKey(String base64String) {
-		byte[] bytes = Base64.decode(base64String);
-
-		return new SecretKeySpec(bytes, Encryptor.KEY_ALGORITHM);
-	}
-
-	public static String encrypt(Key key, String plainText)
-		throws EncryptorException {
-
-		if (key == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Skip encrypting based on a null key");
-			}
-
-			return plainText;
-		}
-
-		byte[] encryptedBytes = encryptUnencoded(key, plainText);
-
-		return Base64.encode(encryptedBytes);
-	}
-
-	public static byte[] encryptUnencoded(Key key, byte[] plainBytes)
+	private static byte[] _encryptUnencoded(Key key, byte[] plainBytes)
 		throws EncryptorException {
 
 		String algorithm = key.getAlgorithm();
@@ -170,24 +179,22 @@ public class Encryptor {
 		}
 	}
 
-	public static byte[] encryptUnencoded(Key key, String plainText)
+	private static byte[] _encryptUnencoded(Key key, String plainText)
 		throws EncryptorException {
 
 		try {
 			byte[] decryptedBytes = plainText.getBytes(ENCODING);
 
-			return encryptUnencoded(key, decryptedBytes);
+			return _encryptUnencoded(key, decryptedBytes);
 		}
 		catch (Exception exception) {
 			throw new EncryptorException(exception);
 		}
 	}
 
-	public static Key generateKey() throws EncryptorException {
-		return generateKey(KEY_ALGORITHM);
-	}
+	private static Key _generateKey(String algorithm)
+		throws EncryptorException {
 
-	public static Key generateKey(String algorithm) throws EncryptorException {
 		try {
 			KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
 
@@ -198,10 +205,6 @@ public class Encryptor {
 		catch (Exception exception) {
 			throw new EncryptorException(exception);
 		}
-	}
-
-	public static String serializeKey(Key key) {
-		return Base64.encode(key.getEncoded());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(Encryptor.class);

@@ -41,7 +41,6 @@ page import="com.liferay.dispatch.web.internal.display.context.DispatchTriggerDi
 page import="com.liferay.dispatch.web.internal.display.context.SchedulerResponseDisplayContext" %><%@
 page import="com.liferay.dispatch.web.internal.display.context.ViewDispatchLogManagementToolbarDisplayContext" %><%@
 page import="com.liferay.dispatch.web.internal.security.permisison.resource.DispatchTriggerPermission" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.cluster.ClusterExecutorUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
@@ -55,7 +54,8 @@ page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %>
+page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="java.text.Format" %>
 

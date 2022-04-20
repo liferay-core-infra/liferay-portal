@@ -19,7 +19,6 @@ import com.liferay.analytics.settings.web.internal.constants.AnalyticsSettingsWe
 import com.liferay.analytics.settings.web.internal.search.GroupChecker;
 import com.liferay.analytics.settings.web.internal.search.GroupSearch;
 import com.liferay.analytics.settings.web.internal.util.AnalyticsSettingsUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -40,6 +39,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.util.comparator.GroupNameComparator;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.Collections;
 import java.util.HashMap;

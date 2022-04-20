@@ -40,7 +40,6 @@ page import="com.liferay.analytics.settings.web.internal.display.context.UserGro
 page import="com.liferay.analytics.settings.web.internal.display.context.UserGroupManagementToolbarDisplayContext" %><%@
 page import="com.liferay.analytics.settings.web.internal.search.ChannelSearch" %><%@
 page import="com.liferay.analytics.settings.web.internal.user.AnalyticsUsersManager" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.Group" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
@@ -52,7 +51,8 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.SetUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %>
+page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="java.util.List" %><%@
 page import="java.util.Set" %>

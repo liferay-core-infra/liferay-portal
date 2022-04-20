@@ -14664,7 +14664,7 @@ url=${short.hostname}:8080</echo>
 			file="${project.dir}/modules/test/spring-service-builder-test-service/build.gradle"
 			match="(compileOnly project\(&quot;:apps:portal:portal-spring-extender-api&quot;\))"
 			replace="\1${line.separator}compileOnly project(&quot;:apps:portal:portal-aop-api&quot;)"
-		/>		
+		/>
 	</target>
 
 	<target name="update-translation-file">

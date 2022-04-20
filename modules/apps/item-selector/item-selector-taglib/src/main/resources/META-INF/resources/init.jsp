@@ -38,7 +38,6 @@ page import="com.liferay.item.selector.taglib.internal.display.context.GroupSele
 page import="com.liferay.item.selector.taglib.internal.security.permission.resource.DLFolderPermission" %><%@
 page import="com.liferay.item.selector.taglib.internal.servlet.ServletContextUtil" %><%@
 page import="com.liferay.item.selector.taglib.internal.util.ItemSelectorRepositoryEntryBrowserUtil" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
@@ -57,7 +56,8 @@ page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %>
+page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="java.util.List" %><%@
 page import="java.util.Map" %><%@

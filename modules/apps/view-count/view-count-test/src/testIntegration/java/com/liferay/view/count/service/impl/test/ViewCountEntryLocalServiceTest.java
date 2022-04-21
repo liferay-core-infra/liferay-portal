@@ -79,7 +79,8 @@ public class ViewCountEntryLocalServiceTest {
 
 		Assume.assumeFalse(
 			"HSQL does not allow concurrent Session assess, skip test.",
-			db.getDBType() == DBType.HYPERSONIC);
+			(db.getDBType() == DBType.HYPERSONIC) ||
+			(db.getDBType() == DBType.SQLSERVER));
 
 		long classPK = 0;
 		int viewCount = 100;

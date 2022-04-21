@@ -5012,7 +5012,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 		for (String languageId : languageIdsArray) {
 			if (!LanguageUtil.isAvailableLocale(
-					groupId, LocaleUtil.fromLanguageId(languageId))) {
+					groupId, LocaleUtil.fromLanguageId(languageId, false))) {
 
 				LocaleException localeException = new LocaleException(
 					LocaleException.TYPE_DISPLAY_SETTINGS);

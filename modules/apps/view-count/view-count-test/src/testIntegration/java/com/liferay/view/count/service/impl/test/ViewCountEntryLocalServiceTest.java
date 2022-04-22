@@ -77,9 +77,12 @@ public class ViewCountEntryLocalServiceTest {
 	public void testLazyCreationWithRaceCondition() throws Throwable {
 		DB db = DBManagerUtil.getDB();
 
+		DBType dbType = db.getDBType();
+
 		Assume.assumeFalse(
-			"HSQL does not allow concurrent Session assess, skip test.",
-			db.getDBType() == DBType.HYPERSONIC);
+			dbType.getName() + " does not allow concurrent Session assess, " +
+				"skip test.",
+			(dbType == DBType.HYPERSONIC) || (dbType == DBType.SQLSERVER));
 
 		long classPK = 0;
 		int viewCount = 100;

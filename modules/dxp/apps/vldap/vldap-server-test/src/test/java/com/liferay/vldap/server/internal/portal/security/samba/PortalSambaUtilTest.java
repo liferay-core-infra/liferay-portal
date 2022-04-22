@@ -16,35 +16,39 @@ package com.liferay.vldap.server.internal.portal.security.samba;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
+import com.liferay.expando.kernel.util.ExpandoBridgeFactory;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 import com.liferay.vldap.server.internal.BaseVLDAPTestCase;
 
 import java.lang.reflect.Method;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 /**
  * @author Jonathan McCann
  */
-@PrepareForTest({CompanyLocalServiceUtil.class, ExpandoBridgeFactoryUtil.class})
-@RunWith(PowerMockRunner.class)
 public class PortalSambaUtilTest extends BaseVLDAPTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@Before
 	@Override
@@ -257,9 +261,13 @@ public class PortalSambaUtilTest extends BaseVLDAPTestCase {
 	}
 
 	private void _setUpCompanyLocalServiceUtil() throws Exception {
-		mockStatic(CompanyLocalServiceUtil.class);
+		CompanyLocalService companyLocalService = Mockito.mock(
+			CompanyLocalService.class);
 
-		doAnswer(
+		ReflectionTestUtil.setFieldValue(
+			CompanyLocalServiceUtil.class, "_service", companyLocalService);
+
+		Mockito.doAnswer(
 			invocation -> {
 				UnsafeConsumer<Long, Exception> unsafeConsumer =
 					(UnsafeConsumer)invocation.getArguments()[0];
@@ -269,7 +277,8 @@ public class PortalSambaUtilTest extends BaseVLDAPTestCase {
 				return null;
 			}
 		).when(
-			CompanyLocalServiceUtil.class, "forEachCompanyId",
+			companyLocalService
+		).forEachCompanyId(
 			Mockito.any(UnsafeConsumer.class)
 		);
 	}
@@ -289,14 +298,20 @@ public class PortalSambaUtilTest extends BaseVLDAPTestCase {
 			new UnicodeProperties()
 		);
 
-		PowerMockito.mockStatic(ExpandoBridgeFactoryUtil.class);
+		ExpandoBridgeFactory expandoBridgeFactory = Mockito.mock(
+			ExpandoBridgeFactory.class);
 
-		PowerMockito.doReturn(
+		Mockito.doReturn(
 			_expandoBridge
 		).when(
-			ExpandoBridgeFactoryUtil.class, "getExpandoBridge", PRIMARY_KEY,
-			User.class.getName()
+			expandoBridgeFactory
+		).getExpandoBridge(
+			Matchers.eq(PRIMARY_KEY), Matchers.eq(User.class.getName())
 		);
+
+		ReflectionTestUtil.setFieldValue(
+			ExpandoBridgeFactoryUtil.class, "_expandoBridgeFactory",
+			expandoBridgeFactory);
 	}
 
 	private void _setUpUser() {

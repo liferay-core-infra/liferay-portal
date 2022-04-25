@@ -88,9 +88,6 @@ public class ViewCountEntryLocalServiceTest {
 			TestPropsValues.getCompanyId(), _className.getClassNameId(),
 			classPK);
 
-		Assert.assertNull(
-			_viewCountEntryLocalService.fetchViewCountEntry(viewCountEntryPK));
-
 		SessionFactory sessionFactory = ReflectionTestUtil.getFieldValue(
 			_viewCountEntryFinder, "_sessionFactory");
 
@@ -164,9 +161,6 @@ public class ViewCountEntryLocalServiceTest {
 		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
 			TestPropsValues.getCompanyId(), _className.getClassNameId(),
 			classPK);
-
-		Assert.assertNull(
-			_viewCountEntryLocalService.fetchViewCountEntry(viewCountEntryPK));
 
 		SessionFactory sessionFactory = ReflectionTestUtil.getFieldValue(
 			_viewCountEntryFinder, "_sessionFactory");

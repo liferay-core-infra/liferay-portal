@@ -212,11 +212,28 @@ public class UserPortraitTag extends IncludeTag {
 
 	@Override
 	protected boolean isCleanUpSetAttributes() {
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void setAttributes(HttpServletRequest httpServletRequest) {
+		User user = getUser();
+
+		if ((user != null) && (user.getPortraitId() > 0)) {
+			ThemeDisplay themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			try {
+				httpServletRequest.setAttribute(
+					"liferay-ui:user-portrait:portraitURL",
+					user.getPortraitURL(themeDisplay));
+			}
+			catch (PortalException pe) {
+				_log.error(pe);
+			}
+		}
+
+		httpServletRequest.setAttribute("liferay-ui:user-portrait:user", user);
 	}
 
 	private static String _getPortraitURL(

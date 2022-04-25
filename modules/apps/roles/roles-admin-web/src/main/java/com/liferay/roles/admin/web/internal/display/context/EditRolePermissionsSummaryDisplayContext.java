@@ -14,7 +14,6 @@
 
 package com.liferay.roles.admin.web.internal.display.context;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.impl.ResourceImpl;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.roles.admin.web.internal.group.type.contributor.util.GroupTypeContributorUtil;
 import com.liferay.taglib.search.ResultRow;
 

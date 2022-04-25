@@ -14,7 +14,6 @@
 
 package com.liferay.trash.web.internal.portlet;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.TrashPermissionException;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -30,6 +29,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.adapter.ModelAdapterUtil;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.trash.TrashHelper;
 import com.liferay.trash.constants.TrashEntryConstants;
 import com.liferay.trash.constants.TrashPortletKeys;

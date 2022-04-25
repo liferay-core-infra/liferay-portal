@@ -14,7 +14,6 @@
 
 package com.liferay.social.activities.web.internal.portlet.display.context;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -22,6 +21,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.social.activities.web.internal.helper.SocialActivitiesQueryHelper;
 import com.liferay.social.activities.web.internal.portlet.display.context.helper.SocialActivitiesRequestHelper;
 import com.liferay.social.kernel.model.SocialActivitySet;

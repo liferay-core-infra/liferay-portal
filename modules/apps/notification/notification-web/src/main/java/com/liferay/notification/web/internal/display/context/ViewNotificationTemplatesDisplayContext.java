@@ -20,7 +20,6 @@ import com.liferay.notification.constants.NotificationActionKeys;
 import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.web.internal.constants.NotificationWebKeys;
 import com.liferay.notification.web.internal.display.context.helper.NotificationRequestHelper;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.editor.configuration.EditorConfiguration;
 import com.liferay.portal.kernel.editor.configuration.EditorConfigurationFactory;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,6 +33,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.Arrays;
 import java.util.List;

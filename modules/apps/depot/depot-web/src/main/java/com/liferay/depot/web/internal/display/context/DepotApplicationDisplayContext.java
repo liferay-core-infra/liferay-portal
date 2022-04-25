@@ -16,7 +16,6 @@ package com.liferay.depot.web.internal.display.context;
 
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.web.internal.constants.DepotAdminWebKeys;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;

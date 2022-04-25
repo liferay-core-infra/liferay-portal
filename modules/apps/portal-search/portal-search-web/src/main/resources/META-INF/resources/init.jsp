@@ -29,7 +29,6 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.asset.kernel.model.AssetRendererFactory" %><%@
 page import="com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.CharPool" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
@@ -69,6 +68,7 @@ page import="com.liferay.portal.kernel.util.Tuple" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.xml.Element" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.search.web.constants.SearchPortletKeys" %><%@
 page import="com.liferay.portal.search.web.constants.SearchPortletParameterNames" %><%@
 page import="com.liferay.portal.search.web.facet.SearchFacet" %><%@

@@ -18,7 +18,6 @@ import com.liferay.journal.content.search.web.internal.configuration.JournalCont
 import com.liferay.journal.content.search.web.internal.constants.JournalContentSearchWebKeys;
 import com.liferay.journal.content.search.web.internal.util.ContentHits;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.search.summary.Summary;
 import com.liferay.portal.search.summary.SummaryBuilder;
 import com.liferay.portal.search.summary.SummaryBuilderFactory;

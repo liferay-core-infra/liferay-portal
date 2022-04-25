@@ -15,7 +15,6 @@
 package com.liferay.document.library.item.selector.web.internal.util;
 
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -30,6 +29,7 @@ import com.liferay.portal.kernel.service.RepositoryServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.Collections;
 import java.util.List;

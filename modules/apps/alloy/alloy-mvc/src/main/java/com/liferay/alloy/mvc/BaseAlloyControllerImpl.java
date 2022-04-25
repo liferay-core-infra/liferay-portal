@@ -18,7 +18,6 @@ import com.liferay.alloy.mvc.internal.json.web.service.AlloyControllerInvokerMan
 import com.liferay.alloy.mvc.internal.json.web.service.AlloyMockUtil;
 import com.liferay.alloy.mvc.internal.util.ConstantsBeanFactoryUtil;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
@@ -88,6 +87,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.io.PrintWriter;
 import java.io.Serializable;

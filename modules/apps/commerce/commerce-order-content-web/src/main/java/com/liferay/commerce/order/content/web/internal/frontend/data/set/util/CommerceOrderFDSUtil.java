@@ -27,7 +27,6 @@ import com.liferay.commerce.order.content.web.internal.model.Order;
 import com.liferay.commerce.order.content.web.internal.model.WishList;
 import com.liferay.commerce.pricing.constants.CommercePricingConstants;
 import com.liferay.commerce.service.CommerceOrderTypeService;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -45,6 +44,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.text.DateFormat;
 import java.text.Format;

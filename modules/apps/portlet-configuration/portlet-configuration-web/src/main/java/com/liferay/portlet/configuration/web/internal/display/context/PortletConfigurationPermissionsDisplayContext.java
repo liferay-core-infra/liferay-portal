@@ -14,7 +14,6 @@
 
 package com.liferay.portlet.configuration.web.internal.display.context;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -55,6 +54,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.configuration.web.internal.configuration.RoleVisibilityConfiguration;
 import com.liferay.portlet.configuration.web.internal.constants.PortletConfigurationPortletKeys;

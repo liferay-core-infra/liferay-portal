@@ -19,10 +19,10 @@ import com.liferay.commerce.account.item.selector.web.internal.display.context.h
 import com.liferay.commerce.account.item.selector.web.internal.search.CommerceAccountItemSelectorChecker;
 import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.account.service.CommerceAccountService;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.PortletURL;
 

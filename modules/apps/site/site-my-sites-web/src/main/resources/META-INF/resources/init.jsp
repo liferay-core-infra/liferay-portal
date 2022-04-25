@@ -27,7 +27,6 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.exception.MembershipRequestCommentsException" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
@@ -40,6 +39,7 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.liveusers.LiveUsers" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.util.PropsValues" %><%@
 page import="com.liferay.site.my.sites.web.internal.display.context.SiteMySitesDisplayContext" %><%@
 page import="com.liferay.site.my.sites.web.internal.display.context.SiteMySitesManagementToolbarDisplayContext" %><%@

@@ -44,7 +44,6 @@ page import="com.liferay.commerce.product.type.grouped.util.GroupedCPTypeHelper"
 page import="com.liferay.commerce.product.type.grouped.web.internal.display.context.CPDefinitionGroupedEntriesDisplayContext" %><%@
 page import="com.liferay.commerce.product.type.grouped.web.internal.display.context.CPDefinitionGroupedManagementToolbarDisplayContext" %><%@
 page import="com.liferay.commerce.util.CommerceUtil" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
@@ -53,7 +52,8 @@ page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %>
+page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="java.util.Collections" %><%@
 page import="java.util.List" %>

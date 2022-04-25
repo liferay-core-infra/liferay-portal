@@ -19,12 +19,12 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.web.internal.constants.JournalWebConstants;
 import com.liferay.journal.web.internal.servlet.taglib.util.JournalFolderActionDropdownItems;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.RowChecker;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.trash.TrashHelper;
 
 import java.util.List;

@@ -16,7 +16,6 @@ package com.liferay.document.library.web.internal.info.display.url.provider;
 
 import com.liferay.document.library.constants.DLPortletKeys;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -30,6 +29,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;

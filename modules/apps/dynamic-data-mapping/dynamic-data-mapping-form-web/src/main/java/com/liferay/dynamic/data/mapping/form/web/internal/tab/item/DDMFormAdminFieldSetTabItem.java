@@ -16,10 +16,10 @@ package com.liferay.dynamic.data.mapping.form.web.internal.tab.item;
 
 import com.liferay.dynamic.data.mapping.constants.DDMPortletKeys;
 import com.liferay.dynamic.data.mapping.util.DDMDisplayTabItem;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import org.osgi.service.component.annotations.Component;
 

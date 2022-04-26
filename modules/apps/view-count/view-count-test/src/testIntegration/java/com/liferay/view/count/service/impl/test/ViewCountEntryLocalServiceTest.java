@@ -81,12 +81,9 @@ public class ViewCountEntryLocalServiceTest {
 	public void testCreationWithHoldLock() throws Throwable {
 		Assume.assumeTrue(_db.getDBType() == DBType.SQLSERVER);
 
-		long classPK = 0;
-		int viewCount = 100;
-
 		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
 			TestPropsValues.getCompanyId(), _className.getClassNameId(),
-			classPK);
+			_CLASS_PK);
 
 		SessionFactory sessionFactory = ReflectionTestUtil.getFieldValue(
 			_viewCountEntryFinder, "_sessionFactory");
@@ -112,20 +109,20 @@ public class ViewCountEntryLocalServiceTest {
 
 						_viewCountEntryLocalService.incrementViewCount(
 							TestPropsValues.getCompanyId(),
-							_className.getClassNameId(), classPK, viewCount);
+							_className.getClassNameId(), _CLASS_PK,
+							_VIEW_COUNT);
 					}
 
 					return null;
 				});
 
-			Thread thread = new Thread(
-				futureTask, "Inner View Count Incrementer");
+			Thread thread = new Thread(futureTask, _THREAD_NAME);
 
 			thread.start();
 
 			_viewCountEntryLocalService.incrementViewCount(
 				TestPropsValues.getCompanyId(), _className.getClassNameId(),
-				classPK, viewCount);
+				_CLASS_PK, _VIEW_COUNT);
 
 			futureTask.get();
 		}
@@ -141,7 +138,7 @@ public class ViewCountEntryLocalServiceTest {
 		_viewCountEntry = _viewCountEntryLocalService.getViewCountEntry(
 			viewCountEntryPK);
 
-		Assert.assertEquals(viewCount * 2, _viewCountEntry.getViewCount());
+		Assert.assertEquals(_VIEW_COUNT * 2, _viewCountEntry.getViewCount());
 	}
 
 	@Test
@@ -155,12 +152,9 @@ public class ViewCountEntryLocalServiceTest {
 				"SQLSERVER database, skip test.",
 			_db.getDBType() == DBType.SQLSERVER);
 
-		long classPK = 0;
-		int viewCount = 100;
-
 		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
 			TestPropsValues.getCompanyId(), _className.getClassNameId(),
-			classPK);
+			_CLASS_PK);
 
 		SessionFactory sessionFactory = ReflectionTestUtil.getFieldValue(
 			_viewCountEntryFinder, "_sessionFactory");
@@ -186,20 +180,20 @@ public class ViewCountEntryLocalServiceTest {
 
 						_viewCountEntryLocalService.incrementViewCount(
 							TestPropsValues.getCompanyId(),
-							_className.getClassNameId(), classPK, viewCount);
+							_className.getClassNameId(), _CLASS_PK,
+							_VIEW_COUNT);
 					}
 
 					return null;
 				});
 
-			Thread thread = new Thread(
-				futureTask, "Inner View Count Incrementer");
+			Thread thread = new Thread(futureTask, _THREAD_NAME);
 
 			thread.start();
 
 			_viewCountEntryLocalService.incrementViewCount(
 				TestPropsValues.getCompanyId(), _className.getClassNameId(),
-				classPK, viewCount);
+				_CLASS_PK, _VIEW_COUNT);
 
 			futureTask.get();
 		}
@@ -215,7 +209,7 @@ public class ViewCountEntryLocalServiceTest {
 		_viewCountEntry = _viewCountEntryLocalService.getViewCountEntry(
 			viewCountEntryPK);
 
-		Assert.assertEquals(viewCount * 2, _viewCountEntry.getViewCount());
+		Assert.assertEquals(_VIEW_COUNT * 2, _viewCountEntry.getViewCount());
 	}
 
 	private Object _createSessionFactoryProxy(
@@ -267,6 +261,12 @@ public class ViewCountEntryLocalServiceTest {
 				}
 			});
 	}
+
+	private static final long _CLASS_PK = 0;
+
+	private static final String _THREAD_NAME = "Inner View Count Incrementer";
+
+	private static final int _VIEW_COUNT = 100;
 
 	@DeleteAfterTestRun
 	private static ClassName _className;

@@ -99,38 +99,7 @@ public class ViewCountEntryLocalServiceTest {
 	public void testCreationWithHoldLock() throws Throwable {
 		Assume.assumeTrue(_db.getDBType() == DBType.SQLSERVER);
 
-		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
-				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF);
-			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
-				BatchingBatch.class.getName(), LoggerTestUtil.OFF)) {
-
-			FutureTask<Void> futureTask = new FutureTask<>(
-				() -> {
-					try (SafeCloseable safeCloseable1 =
-							BufferedIncrementThreadLocal.setWithSafeCloseable(
-								true);
-						SafeCloseable safeCloseable2 =
-							ProxyModeThreadLocal.setWithSafeCloseable(true)) {
-
-						_viewCountEntryLocalService.incrementViewCount(
-							TestPropsValues.getCompanyId(),
-							_className.getClassNameId(), _CLASS_PK,
-							_VIEW_COUNT);
-					}
-
-					return null;
-				});
-
-			Thread thread = new Thread(futureTask, _THREAD_NAME);
-
-			thread.start();
-
-			_viewCountEntryLocalService.incrementViewCount(
-				TestPropsValues.getCompanyId(), _className.getClassNameId(),
-				_CLASS_PK, _VIEW_COUNT);
-
-			futureTask.get();
-		}
+		_setUpRaceCondition();
 
 		Assert.assertTrue(_viewCountEntries.size() == 2);
 		Assert.assertNull(_viewCountEntries.get(0));
@@ -153,38 +122,7 @@ public class ViewCountEntryLocalServiceTest {
 				"SQLSERVER database, skip test.",
 			_db.getDBType() == DBType.SQLSERVER);
 
-		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
-				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF);
-			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
-				BatchingBatch.class.getName(), LoggerTestUtil.OFF)) {
-
-			FutureTask<Void> futureTask = new FutureTask<>(
-				() -> {
-					try (SafeCloseable safeCloseable1 =
-							BufferedIncrementThreadLocal.setWithSafeCloseable(
-								true);
-						SafeCloseable safeCloseable2 =
-							ProxyModeThreadLocal.setWithSafeCloseable(true)) {
-
-						_viewCountEntryLocalService.incrementViewCount(
-							TestPropsValues.getCompanyId(),
-							_className.getClassNameId(), _CLASS_PK,
-							_VIEW_COUNT);
-					}
-
-					return null;
-				});
-
-			Thread thread = new Thread(futureTask, _THREAD_NAME);
-
-			thread.start();
-
-			_viewCountEntryLocalService.incrementViewCount(
-				TestPropsValues.getCompanyId(), _className.getClassNameId(),
-				_CLASS_PK, _VIEW_COUNT);
-
-			futureTask.get();
-		}
+		_setUpRaceCondition();
 
 		Assert.assertTrue(_viewCountEntries.size() > 2);
 		Assert.assertNull(_viewCountEntries.get(0));
@@ -244,6 +182,41 @@ public class ViewCountEntryLocalServiceTest {
 					throw invocationTargetException.getCause();
 				}
 			});
+	}
+
+	private void _setUpRaceCondition() throws Throwable {
+		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
+				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF);
+			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
+				BatchingBatch.class.getName(), LoggerTestUtil.OFF)) {
+
+			FutureTask<Void> futureTask = new FutureTask<>(
+				() -> {
+					try (SafeCloseable safeCloseable1 =
+							BufferedIncrementThreadLocal.setWithSafeCloseable(
+								true);
+						SafeCloseable safeCloseable2 =
+							ProxyModeThreadLocal.setWithSafeCloseable(true)) {
+
+						_viewCountEntryLocalService.incrementViewCount(
+							TestPropsValues.getCompanyId(),
+							_className.getClassNameId(), _CLASS_PK,
+							_VIEW_COUNT);
+					}
+
+					return null;
+				});
+
+			Thread thread = new Thread(futureTask, _THREAD_NAME);
+
+			thread.start();
+
+			_viewCountEntryLocalService.incrementViewCount(
+				TestPropsValues.getCompanyId(), _className.getClassNameId(),
+				_CLASS_PK, _VIEW_COUNT);
+
+			futureTask.get();
+		}
 	}
 
 	private static final long _CLASS_PK = 0;

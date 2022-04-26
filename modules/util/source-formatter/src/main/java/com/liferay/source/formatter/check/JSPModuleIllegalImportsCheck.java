@@ -34,11 +34,6 @@ public class JSPModuleIllegalImportsCheck extends BaseFileCheck {
 				"Do not use com.liferay.registry.Registry in modules");
 		}
 
-		if (content.contains("import=\"com.liferay.util.ContentUtil")) {
-			addMessage(
-				fileName, "Do not use com.liferay.util.ContentUtil in modules");
-		}
-
 		return content;
 	}
 

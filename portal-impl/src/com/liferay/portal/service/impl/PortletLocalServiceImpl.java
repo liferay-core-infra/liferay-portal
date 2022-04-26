@@ -17,7 +17,6 @@ package com.liferay.portal.service.impl;
 import com.liferay.admin.kernel.util.PortalMyAccountApplicationType;
 import com.liferay.expando.kernel.model.CustomAttributesDisplay;
 import com.liferay.exportimport.kernel.staging.LayoutStagingUtil;
-import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -1279,7 +1278,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		if (xml == null) {
 			Class<?> clazz = getClass();
 
-			xml = ContentUtil.get(
+			xml = com.liferay.petra.string.StringUtil.read(
 				clazz.getClassLoader(),
 				"com/liferay/portal/deploy/dependencies/liferay-display.xml");
 		}

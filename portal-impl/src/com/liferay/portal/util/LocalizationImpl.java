@@ -14,7 +14,6 @@
 
 package com.liferay.portal.util;
 
-import com.liferay.petra.content.ContentUtil;
 import com.liferay.petra.io.unsync.UnsyncStringReader;
 import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.string.StringBundler;
@@ -41,6 +40,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import java.util.Collection;
@@ -463,8 +463,16 @@ public class LocalizationImpl implements Localization {
 			return map;
 		}
 
-		map.put(
-			defaultLocale, ContentUtil.get(classLoader, defaultPropertyValue));
+		try {
+			map.put(
+				defaultLocale,
+				com.liferay.petra.string.StringUtil.read(
+					classLoader, defaultPropertyValue));
+		}
+		catch (IOException ioException) {
+			_log.error(
+				"Unable to read the content for: " + defaultPropertyValue);
+		}
 
 		return map;
 	}

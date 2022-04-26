@@ -20,18 +20,14 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
-import com.liferay.portal.kernel.test.rule.NewEnv;
-import com.liferay.portal.test.rule.AdviseWith;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Semaphore;
-
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,6 +53,26 @@ public class MVCCPortalCacheTest {
 
 			},
 			LiferayUnitTestRule.INSTANCE);
+
+	public static void block() {
+		_semaphore = new Semaphore(0);
+	}
+
+	public static void unblock(int permits) {
+		Semaphore semaphore = _semaphore;
+
+		_semaphore = null;
+
+		semaphore.release(permits);
+	}
+
+	public static void waitUntilBlock(int threadCount) {
+		Semaphore semaphore = _semaphore;
+
+		if (semaphore != null) {
+			while (semaphore.getQueueLength() < threadCount);
+		}
+	}
 
 	@Before
 	public void setUp() {
@@ -88,44 +104,56 @@ public class MVCCPortalCacheTest {
 		mvccPortalCache.put(key, value, 10);
 	}
 
-	@AdviseWith(adviceClasses = TestPortalCacheAdvice.class)
-	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
 	public void testMVCCCacheWithAdvice() throws Exception {
+		TestPortalCache testPortalCache = new TestPortalCache(
+			"_mvccPortalCache");
+
+		LowLevelCache lowLevelCache = (LowLevelCache)ProxyUtil.newProxyInstance(
+			LowLevelCache.class.getClassLoader(),
+			new Class<?>[] {LowLevelCache.class},
+			(proxy, method, args) -> {
+				if (Objects.equals(method.getName(), "putIfAbsent") ||
+					Objects.equals(method.getName(), "replace")) {
+
+					Semaphore semaphore = _semaphore;
+
+					if (semaphore != null) {
+						semaphore.acquire();
+					}
+				}
+
+				return method.invoke(testPortalCache, args);
+			});
+
+		_mvccPortalCache = new MVCCPortalCache<>(lowLevelCache);
+
+		lowLevelCache.registerPortalCacheListener(_testPortalCacheListener);
+
+		lowLevelCache.registerPortalCacheListener(_testPortalCacheReplicator);
+
 		Assert.assertNull(_mvccPortalCache.get(_KEY_1));
 		Assert.assertNull(_mvccPortalCache.get(_KEY_2));
 
 		// Concurrent put 1
 
-		TestPortalCacheAdvice.block();
+		block();
 
-		Thread thread1 = new Thread() {
-
-			@Override
-			public void run() {
-				_mvccPortalCache.put(_KEY_1, new MockMVCCModel(_VERSION_1));
-			}
-
-		};
+		Thread thread1 = new Thread(
+			() -> _mvccPortalCache.put(_KEY_1, new MockMVCCModel(_VERSION_1)));
 
 		thread1.start();
 
-		TestPortalCacheAdvice.waitUntilBlock(1);
+		waitUntilBlock(1);
 
-		Thread thread2 = new Thread() {
-
-			@Override
-			public void run() {
-				_mvccPortalCache.put(_KEY_1, new MockMVCCModel(_VERSION_1));
-			}
-
-		};
+		Thread thread2 = new Thread(
+			() -> _mvccPortalCache.put(_KEY_1, new MockMVCCModel(_VERSION_1)));
 
 		thread2.start();
 
-		TestPortalCacheAdvice.waitUntilBlock(2);
+		waitUntilBlock(2);
 
-		TestPortalCacheAdvice.unblock(2);
+		unblock(2);
 
 		thread1.join();
 		thread2.join();
@@ -147,37 +175,25 @@ public class MVCCPortalCacheTest {
 
 		// Concurrent put 2
 
-		TestPortalCacheAdvice.block();
+		block();
 
-		thread1 = new Thread() {
-
-			@Override
-			public void run() {
-				PortalCacheHelperUtil.putWithoutReplicator(
-					_mvccPortalCache, _KEY_1, new MockMVCCModel(_VERSION_2));
-			}
-
-		};
+		thread1 = new Thread(
+			() -> PortalCacheHelperUtil.putWithoutReplicator(
+				_mvccPortalCache, _KEY_1, new MockMVCCModel(_VERSION_2)));
 
 		thread1.start();
 
-		TestPortalCacheAdvice.waitUntilBlock(1);
+		waitUntilBlock(1);
 
-		thread2 = new Thread() {
-
-			@Override
-			public void run() {
-				PortalCacheHelperUtil.putWithoutReplicator(
-					_mvccPortalCache, _KEY_1, new MockMVCCModel(_VERSION_2));
-			}
-
-		};
+		thread2 = new Thread(
+			() -> PortalCacheHelperUtil.putWithoutReplicator(
+				_mvccPortalCache, _KEY_1, new MockMVCCModel(_VERSION_2)));
 
 		thread2.start();
 
-		TestPortalCacheAdvice.waitUntilBlock(2);
+		waitUntilBlock(2);
 
-		TestPortalCacheAdvice.unblock(2);
+		unblock(2);
 
 		thread1.join();
 		thread2.join();
@@ -221,65 +237,6 @@ public class MVCCPortalCacheTest {
 		mvccPortalCache.put(key, mockMVCCModel2);
 
 		Assert.assertSame(mockMVCCModel2, mvccPortalCache.get(key));
-	}
-
-	@Aspect
-	public static class TestPortalCacheAdvice {
-
-		public static void block() {
-			_semaphore = new Semaphore(0);
-		}
-
-		public static void unblock(int permits) {
-			Semaphore semaphore = _semaphore;
-
-			_semaphore = null;
-
-			semaphore.release(permits);
-		}
-
-		public static void waitUntilBlock(int threadCount) {
-			Semaphore semaphore = _semaphore;
-
-			if (semaphore != null) {
-				while (semaphore.getQueueLength() < threadCount);
-			}
-		}
-
-		@Around(
-			"execution(protected * com.liferay.portal.cache.test.util." +
-				"TestPortalCache.doPutIfAbsent(..))"
-		)
-		public Object doPutIfAbsent(ProceedingJoinPoint proceedingJoinPoint)
-			throws Throwable {
-
-			Semaphore semaphore = _semaphore;
-
-			if (semaphore != null) {
-				semaphore.acquire();
-			}
-
-			return proceedingJoinPoint.proceed();
-		}
-
-		@Around(
-			"execution(protected * com.liferay.portal.cache.test.util." +
-				"TestPortalCache.doReplace(..))"
-		)
-		public Object doReplace(ProceedingJoinPoint proceedingJoinPoint)
-			throws Throwable {
-
-			Semaphore semaphore = _semaphore;
-
-			if (semaphore != null) {
-				semaphore.acquire();
-			}
-
-			return proceedingJoinPoint.proceed();
-		}
-
-		private static volatile Semaphore _semaphore;
-
 	}
 
 	protected void doTestMVCCCache(boolean timeToLive) {
@@ -394,6 +351,8 @@ public class MVCCPortalCacheTest {
 	private static final long _VERSION_1 = 1;
 
 	private static final long _VERSION_2 = 2;
+
+	private static volatile Semaphore _semaphore;
 
 	private MVCCPortalCache<String, MockMVCCModel> _mvccPortalCache;
 	private PortalCache<String, MockMVCCModel> _portalCache;

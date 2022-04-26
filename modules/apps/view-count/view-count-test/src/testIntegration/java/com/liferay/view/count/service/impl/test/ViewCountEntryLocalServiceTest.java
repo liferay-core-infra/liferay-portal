@@ -50,6 +50,7 @@ import java.util.concurrent.FutureTask;
 import org.hibernate.engine.jdbc.batch.internal.BatchingBatch;
 import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -70,29 +71,33 @@ public class ViewCountEntryLocalServiceTest {
 		new LiferayIntegrationTestRule();
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Throwable {
 		_className = _classNameLocalService.getClassName(
 			ViewCountEntryLocalServiceTest.class.getName());
 
 		_db = DBManagerUtil.getDB();
+
+		_viewCountEntryPK = new ViewCountEntryPK(
+			TestPropsValues.getCompanyId(), _className.getClassNameId(),
+			_CLASS_PK);
+
+		_sessionFactory = ReflectionTestUtil.getFieldValue(
+			_viewCountEntryFinder, "_sessionFactory");
+
+		ReflectionTestUtil.setFieldValue(
+			_viewCountEntryFinder, "_sessionFactory",
+			_createSessionFactoryProxy(_sessionFactory, _cyclicBarrier));
+	}
+
+	@After
+	public void tearDown() {
+		ReflectionTestUtil.setFieldValue(
+			_viewCountEntryFinder, "_sessionFactory", _sessionFactory);
 	}
 
 	@Test
 	public void testCreationWithHoldLock() throws Throwable {
 		Assume.assumeTrue(_db.getDBType() == DBType.SQLSERVER);
-
-		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
-			TestPropsValues.getCompanyId(), _className.getClassNameId(),
-			_CLASS_PK);
-
-		SessionFactory sessionFactory = ReflectionTestUtil.getFieldValue(
-			_viewCountEntryFinder, "_sessionFactory");
-
-		CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
-
-		ReflectionTestUtil.setFieldValue(
-			_viewCountEntryFinder, "_sessionFactory",
-			_createSessionFactoryProxy(sessionFactory, cyclicBarrier));
 
 		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
 				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF);
@@ -126,17 +131,13 @@ public class ViewCountEntryLocalServiceTest {
 
 			futureTask.get();
 		}
-		finally {
-			ReflectionTestUtil.setFieldValue(
-				_viewCountEntryFinder, "_sessionFactory", sessionFactory);
-		}
 
 		Assert.assertTrue(_viewCountEntries.size() == 2);
 		Assert.assertNull(_viewCountEntries.get(0));
 		Assert.assertNotNull(_viewCountEntries.get(1));
 
 		_viewCountEntry = _viewCountEntryLocalService.getViewCountEntry(
-			viewCountEntryPK);
+			_viewCountEntryPK);
 
 		Assert.assertEquals(_VIEW_COUNT * 2, _viewCountEntry.getViewCount());
 	}
@@ -152,19 +153,6 @@ public class ViewCountEntryLocalServiceTest {
 				"SQLSERVER database, skip test.",
 			_db.getDBType() == DBType.SQLSERVER);
 
-		ViewCountEntryPK viewCountEntryPK = new ViewCountEntryPK(
-			TestPropsValues.getCompanyId(), _className.getClassNameId(),
-			_CLASS_PK);
-
-		SessionFactory sessionFactory = ReflectionTestUtil.getFieldValue(
-			_viewCountEntryFinder, "_sessionFactory");
-
-		CyclicBarrier cyclicBarrier = new CyclicBarrier(2);
-
-		ReflectionTestUtil.setFieldValue(
-			_viewCountEntryFinder, "_sessionFactory",
-			_createSessionFactoryProxy(sessionFactory, cyclicBarrier));
-
 		try (LogCapture logCapture1 = LoggerTestUtil.configureLog4JLogger(
 				SqlExceptionHelper.class.getName(), LoggerTestUtil.OFF);
 			LogCapture logCapture2 = LoggerTestUtil.configureLog4JLogger(
@@ -197,17 +185,13 @@ public class ViewCountEntryLocalServiceTest {
 
 			futureTask.get();
 		}
-		finally {
-			ReflectionTestUtil.setFieldValue(
-				_viewCountEntryFinder, "_sessionFactory", sessionFactory);
-		}
 
 		Assert.assertTrue(_viewCountEntries.size() > 2);
 		Assert.assertNull(_viewCountEntries.get(0));
 		Assert.assertNull(_viewCountEntries.get(1));
 
 		_viewCountEntry = _viewCountEntryLocalService.getViewCountEntry(
-			viewCountEntryPK);
+			_viewCountEntryPK);
 
 		Assert.assertEquals(_VIEW_COUNT * 2, _viewCountEntry.getViewCount());
 	}
@@ -280,10 +264,14 @@ public class ViewCountEntryLocalServiceTest {
 	@Inject
 	private static ViewCountEntryLocalService _viewCountEntryLocalService;
 
+	private final CyclicBarrier _cyclicBarrier = new CyclicBarrier(2);
 	private DB _db;
+	private SessionFactory _sessionFactory;
 	private final List<ViewCountEntry> _viewCountEntries = new ArrayList<>();
 
 	@DeleteAfterTestRun
 	private ViewCountEntry _viewCountEntry;
+
+	private ViewCountEntryPK _viewCountEntryPK;
 
 }

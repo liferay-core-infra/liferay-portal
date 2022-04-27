@@ -18,7 +18,6 @@ import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalServic
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.template.MailTemplate;
 import com.liferay.mail.kernel.template.MailTemplateContext;
 import com.liferay.mail.kernel.template.MailTemplateContextBuilder;
@@ -60,6 +59,7 @@ import com.liferay.portal.kernel.exception.UserSmsException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSenderUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -1762,7 +1762,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		if (user.hasCompanyMx()) {
-			mailService.addUser(
+			MailSenderUtil.addUser(
 				user.getCompanyId(), user.getUserId(), password,
 				user.getFirstName(), user.getMiddleName(), user.getLastName(),
 				user.getEmailAddress());
@@ -1989,7 +1989,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Mail
 
-		mailService.deleteUser(user.getCompanyId(), user.getUserId());
+		MailSenderUtil.deleteUser(user.getCompanyId(), user.getUserId());
 
 		// Contact
 
@@ -4812,7 +4812,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 
 		if (user.hasCompanyMx()) {
-			mailService.updatePassword(user.getCompanyId(), userId, password1);
+			MailSenderUtil.updatePassword(
+				user.getCompanyId(), userId, password1);
 		}
 
 		ServiceContext serviceContext =
@@ -6363,7 +6364,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			// test@test.com -> test@liferay.com
 
-			mailService.addUser(
+			MailSenderUtil.addUser(
 				user.getCompanyId(), userId, password, firstName, middleName,
 				lastName, emailAddress);
 		}
@@ -6371,14 +6372,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			// test@liferay.com -> bob@liferay.com
 
-			mailService.updateEmailAddress(
+			MailSenderUtil.updateEmailAddress(
 				user.getCompanyId(), userId, emailAddress);
 		}
 		else if (user.hasCompanyMx() && !user.hasCompanyMx(emailAddress)) {
 
 			// test@liferay.com -> test@test.com
 
-			mailService.deleteEmailAddress(user.getCompanyId(), userId);
+			MailSenderUtil.deleteEmailAddress(user.getCompanyId(), userId);
 		}
 
 		user.setDigest(StringPool.BLANK);
@@ -6941,9 +6942,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		}
 	}
 
-	@BeanReference(type = MailService.class)
-	protected MailService mailService;
-
 	private User _checkPasswordPolicy(User user) throws PortalException {
 
 		// Check password policy to see if the is account locked out or if the
@@ -7077,7 +7075,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				PortalUtil.getMailId(
 					company.getMx(), "user", System.currentTimeMillis()));
 
-			mailService.sendEmail(mailMessage);
+			MailSenderUtil.sendEmail(mailMessage);
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);

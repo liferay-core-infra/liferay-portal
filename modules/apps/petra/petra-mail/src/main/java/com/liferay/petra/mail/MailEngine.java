@@ -18,7 +18,6 @@ import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.FileAttachment;
 import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.model.SMTPAccount;
-import com.liferay.mail.kernel.service.MailServiceUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.LogUtil;
+import com.liferay.portal.kernel.mail.sender.MailSenderUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -101,7 +101,7 @@ public class MailEngine {
 		Session session = null;
 
 		try {
-			session = MailServiceUtil.getSession();
+			session = MailSenderUtil.getSession();
 		}
 		catch (SystemException systemException) {
 			if (_log.isWarnEnabled()) {

@@ -18,7 +18,7 @@ import com.dumbster.smtp.SmtpServer;
 import com.dumbster.smtp.SmtpServerFactory;
 import com.dumbster.smtp.mailstores.RollingMailStore;
 
-import com.liferay.mail.kernel.service.MailServiceUtil;
+import com.liferay.portal.kernel.mail.sender.MailSenderUtil;
 import com.liferay.portal.kernel.service.PortalPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -144,7 +144,7 @@ public class MailServiceTestUtil {
 			SmtpServerFactory.class, "startServerThread",
 			new Class<?>[] {SmtpServer.class}, _smtpServer);
 
-		MailServiceUtil.clearSession();
+		MailSenderUtil.clearSession();
 	}
 
 	public static void stop() throws Exception {
@@ -158,7 +158,7 @@ public class MailServiceTestUtil {
 
 		_prefsPropsTemporarySwapper.close();
 
-		MailServiceUtil.clearSession();
+		MailSenderUtil.clearSession();
 	}
 
 	private static int _getFreePort() throws Exception {

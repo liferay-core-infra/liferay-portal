@@ -14,12 +14,32 @@
 
 package com.liferay.client.extension.internal.upgrade.v3_0_0;
 
+import com.liferay.portal.kernel.dao.orm.WildcardMode;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeKernelPackage;
 
 /**
  * @author Dante Wang
  */
 public class ClassNamesUpgradeProcess extends UpgradeKernelPackage {
+
+	@Override
+	protected void doUpgrade() throws UpgradeException {
+		super.doUpgrade();
+
+		try {
+			upgradeTable(
+				"ResourcePermission", "primKey", getClassNames(),
+				WildcardMode.LEADING);
+
+			upgradeTable(
+				"ResourcePermission", "primKey", getResourceNames(),
+				WildcardMode.LEADING);
+		}
+		catch (Exception exception) {
+			throw new UpgradeException(exception);
+		}
+	}
 
 	@Override
 	protected String[][] getClassNames() {

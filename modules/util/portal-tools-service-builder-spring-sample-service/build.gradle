@@ -1,5 +1,5 @@
 buildService {
-	apiDir = "../spring-service-builder-test-api/src/main/java"
+	apiDir = "../portal-tools-service-builder-spring-sample-api/src/main/java"
 }
 
 dependencies {
@@ -10,5 +10,5 @@ dependencies {
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
-	compileOnly project(":test:spring-service-builder-test-api")
+	compileOnly project(":util:portal-tools-service-builder-spring-sample-api")
 }

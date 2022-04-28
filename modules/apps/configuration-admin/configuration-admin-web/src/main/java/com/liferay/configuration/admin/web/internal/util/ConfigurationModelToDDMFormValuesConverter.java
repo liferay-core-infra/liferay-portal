@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.settings.LocationVariableResolver;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -190,7 +191,7 @@ public class ConfigurationModelToDDMFormValuesConverter {
 		String type = getDDMFormFieldType(ddmFormFieldValue.getName());
 
 		if (type.equals(DDMFormFieldType.LOCALIZABLE_TEXT) &&
-			!JSONUtil.isValid(value)) {
+			Validator.isNull(JSONUtil.getValidJSONObject(value))) {
 
 			value = String.valueOf(
 				JSONUtil.put(LocaleUtil.toLanguageId(_locale), value));

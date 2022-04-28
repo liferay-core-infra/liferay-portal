@@ -15,11 +15,13 @@
 package com.liferay.client.extension.web.internal.portlet;
 
 import com.liferay.client.extension.web.internal.constants.ClientExtensionAdminPortletKeys;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Iván Zaera
@@ -48,4 +50,10 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class ClientExtensionAdminPortlet extends MVCPortlet {
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.client.extension.web)(release.schema.version>=2.0.0))"
+	)
+	private Release _release;
+
 }

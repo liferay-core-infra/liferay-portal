@@ -16,6 +16,7 @@ package com.liferay.client.extension.web.internal.upgrade;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.upgrade.BasePortletIdUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Iván Zaera Avellón
@@ -116,5 +118,10 @@ public class ClientExtensionWebUpgrade implements UpgradeStepRegistrator {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClientExtensionWebUpgrade.class);
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.client.extension.service)(release.schema.version>=3.0.0))"
+	)
+	private Release _release;
 
 }

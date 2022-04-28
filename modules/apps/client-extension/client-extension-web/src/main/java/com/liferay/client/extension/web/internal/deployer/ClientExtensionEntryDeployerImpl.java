@@ -23,6 +23,7 @@ import com.liferay.client.extension.web.internal.portlet.action.ClientExtensionE
 import com.liferay.client.extension.web.internal.servlet.taglib.ClientExtensionTopHeadDynamicInclude;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -197,5 +198,10 @@ public class ClientExtensionEntryDeployerImpl
 
 	@Reference
 	private NPMResolver _npmResolver;
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.client.extension.web)(release.schema.version>=2.0.1))"
+	)
+	private Release _release;
 
 }

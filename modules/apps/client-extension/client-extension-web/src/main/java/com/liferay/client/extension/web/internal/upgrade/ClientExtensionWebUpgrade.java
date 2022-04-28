@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.upgrade.BasePortletIdUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import java.sql.Connection;
@@ -70,30 +71,21 @@ public class ClientExtensionWebUpgrade implements UpgradeStepRegistrator {
 
 				@Override
 				protected String[][] getRenamePortletIdsArray() {
-					return new String[][] {
-						{
-							"com_liferay_remote_app_admin_web_portlet_" +
-								"RemoteAppAdminPortlet",
+					return ArrayUtil.append(
+						_getRenamePortletIdsArray(
+							connection,
+							"com_liferay_remote_app_web_internal_portlet_" +
+								"RemoteAppEntryPortlet_",
 							"com_liferay_client_extension_web_internal_" +
-								"portlet_ClientExtensionAdminPortlet"
-						}
-					};
-				}
-
-			});
-
-		registry.register(
-			"2.0.0", "2.0.1",
-			new BasePortletIdUpgradeProcess() {
-
-				@Override
-				protected String[][] getRenamePortletIdsArray() {
-					return _getRenamePortletIdsArray(
-						connection,
-						"com_liferay_remote_app_web_internal_portlet_" +
-							"RemoteAppEntryPortlet_",
-						"com_liferay_client_extension_web_internal_portlet_" +
-							"ClientExtensionEntryPortlet_");
+								"portlet_ClientExtensionEntryPortlet_"),
+						new String[][] {
+							{
+								"com_liferay_remote_app_admin_web_portlet_" +
+									"RemoteAppAdminPortlet",
+								"com_liferay_client_extension_web_internal_" +
+									"portlet_ClientExtensionAdminPortlet"
+							}
+						});
 				}
 
 			});

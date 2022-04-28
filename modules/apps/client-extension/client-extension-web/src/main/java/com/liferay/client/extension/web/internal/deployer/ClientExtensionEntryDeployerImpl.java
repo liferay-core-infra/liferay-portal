@@ -200,7 +200,7 @@ public class ClientExtensionEntryDeployerImpl
 	private NPMResolver _npmResolver;
 
 	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.client.extension.web)(release.schema.version>=2.0.1))"
+		target = "(&(release.bundle.symbolic.name=com.liferay.client.extension.web)(release.schema.version>=2.0.0))"
 	)
 	private Release _release;
 

@@ -145,9 +145,9 @@ public class ClientExtensionEntryUpgradeProcess extends UpgradeProcess {
 				"update ResourcePermission set name = ? where name = ?")) {
 
 			preparedStatement.setString(
-				1, "com.liferay.remote.app.model.RemoteAppEntry");
+				1, "com.liferay.client.extension.model.ClientExtensionEntry");
 			preparedStatement.setString(
-				2, "com.liferay.client.extension.model.ClientExtensionEntry");
+				2, "com.liferay.remote.app.model.RemoteAppEntry");
 
 			preparedStatement.executeUpdate();
 		}

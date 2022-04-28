@@ -39,7 +39,7 @@
 		<Logger level="INFO" name="com.liferay.bean.portlet" />
 		<Logger level="ERROR" name="com.liferay.jdbc" />
 		<Logger level="WARN" name="com.liferay.mail.messaging" />
-		<Logger level="ERROR" name="com.liferay.mail.service.impl.MailServiceImpl" />
+		<Logger level="ERROR" name="com.liferay.mail.sender.internal.MailSenderImpl" />
 		<Logger level="ERROR" name="com.liferay.mail.util" />
 		<Logger level="ERROR" name="com.liferay.mail.util.DummyHook" />
 		<Logger level="ERROR" name="com.liferay.mail.util.HookFactory" />

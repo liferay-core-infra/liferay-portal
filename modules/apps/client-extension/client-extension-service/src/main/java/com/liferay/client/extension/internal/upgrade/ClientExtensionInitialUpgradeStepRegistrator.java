@@ -66,7 +66,9 @@ public class ClientExtensionInitialUpgradeStepRegistrator
 		new com.liferay.client.extension.internal.upgrade.v2_5_0.
 			RemoteAppEntryUpgradeProcess(),
 		new com.liferay.client.extension.internal.upgrade.v3_0_0.
-			ClientExtensionEntryUpgradeProcess()
+			ClientExtensionEntryUpgradeProcess(),
+		new com.liferay.client.extension.internal.upgrade.v3_0_0.
+			ClassNamesUpgradeProcess()
 	};
 
 }

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
@@ -102,9 +103,10 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 				JSONFactoryUtil.createJSONObject(
 					fragmentEntryLink.getEditableValues());
 
-			if (!JSONUtil.isValid(
-					editableValuesJSONObject.getString(
-						_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR))) {
+			if (Validator.isNull(
+					JSONUtil.getValidJSONObject(
+						editableValuesJSONObject.getString(
+							_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR)))) {
 
 				continue;
 			}

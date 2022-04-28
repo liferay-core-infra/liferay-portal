@@ -15,7 +15,6 @@
 package com.liferay.multi.factor.authentication.email.otp.web.internal.portlet.action;
 
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.template.MailTemplate;
 import com.liferay.mail.kernel.template.MailTemplateContext;
 import com.liferay.mail.kernel.template.MailTemplateContextBuilder;
@@ -26,6 +25,7 @@ import com.liferay.multi.factor.authentication.email.otp.web.internal.constants.
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
@@ -116,7 +116,7 @@ public class SendMFAEmailOTPMVCResourceCommand implements MVCResourceCommand {
 		mailMessage.setMessageId(
 			_portal.getMailId(company.getMx(), "user", toUser.getUserId()));
 
-		_mailService.sendEmail(mailMessage);
+		_mailSender.sendEmail(mailMessage);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
@@ -236,7 +236,7 @@ public class SendMFAEmailOTPMVCResourceCommand implements MVCResourceCommand {
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 	@Reference
 	private Portal _portal;

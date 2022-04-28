@@ -15,7 +15,7 @@
 package com.liferay.portal.workflow.kaleo.runtime.internal.notification;
 
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -126,7 +126,7 @@ public class EmailNotificationSender
 					notificationRecipients.get(NotificationReceptionType.BCC),
 					UserNotificationDeliveryConstants.TYPE_EMAIL)));
 
-		_mailService.sendEmail(mailMessage);
+		_mailSender.sendEmail(mailMessage);
 	}
 
 	private InternetAddress[] _getInternetAddresses(
@@ -153,6 +153,6 @@ public class EmailNotificationSender
 	private String _fromName;
 
 	@Reference
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 }

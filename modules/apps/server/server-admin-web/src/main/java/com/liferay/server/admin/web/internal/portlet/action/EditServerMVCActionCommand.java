@@ -17,7 +17,6 @@ package com.liferay.server.admin.web.internal.portlet.action;
 import com.liferay.configuration.admin.constants.ConfigurationAdminPortletKeys;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.mail.kernel.model.Account;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.CharPool;
@@ -42,6 +41,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.log.SanitizerLogWrapper;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
@@ -780,7 +780,7 @@ public class EditServerMVCActionCommand
 
 		portletPreferences.store();
 
-		_mailService.clearSession();
+		_mailSender.clearSession();
 	}
 
 	private void _verifyMembershipPolicies() throws Exception {
@@ -845,7 +845,7 @@ public class EditServerMVCActionCommand
 	private LayoutRevisionLocalService _layoutRevisionLocalService;
 
 	@Reference
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 	@Reference
 	private MessageBus _messageBus;

@@ -41,10 +41,10 @@ import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
 import com.liferay.dynamic.data.mapping.util.DDMFormInstanceFactory;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidator;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -394,7 +394,7 @@ public class DDMFormInstanceLocalServiceImpl
 
 		mailMessage.setTo(internetAddresses.toArray(new InternetAddress[0]));
 
-		_mailService.sendEmail(mailMessage);
+		_mailSender.sendEmail(mailMessage);
 	}
 
 	@Override
@@ -786,7 +786,7 @@ public class DDMFormInstanceLocalServiceImpl
 	private KaleoDefinitionLocalService _kaleoDefinitionLocalService;
 
 	@Reference
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;

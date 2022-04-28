@@ -21,7 +21,6 @@ import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
@@ -329,11 +329,6 @@ public class WebFormPortlet extends MVCPortlet {
 		_expandoValueLocalService = expandoValueLocalService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setMailService(MailService mailService) {
-		_mailService = mailService;
-	}
-
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.web.form.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))",
 		unbind = "-"
@@ -569,7 +564,7 @@ public class WebFormPortlet extends MVCPortlet {
 
 			mailMessage.setTo(toAddresses);
 
-			_mailService.sendEmail(mailMessage);
+			_mailSender.sendEmail(mailMessage);
 
 			return true;
 		}
@@ -637,10 +632,12 @@ public class WebFormPortlet extends MVCPortlet {
 	private static ExpandoRowLocalService _expandoRowLocalService;
 	private static ExpandoTableLocalService _expandoTableLocalService;
 	private static ExpandoValueLocalService _expandoValueLocalService;
-	private static MailService _mailService;
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private MailSender _mailSender;
 
 	@Reference
 	private Portal _portal;

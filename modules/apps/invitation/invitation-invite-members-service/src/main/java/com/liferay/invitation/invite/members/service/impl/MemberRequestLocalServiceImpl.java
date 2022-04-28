@@ -20,7 +20,6 @@ import com.liferay.invitation.invite.members.exception.MemberRequestInvalidUserE
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.invitation.invite.members.service.base.MemberRequestLocalServiceBaseImpl;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.MembershipRequestConstants;
 import com.liferay.portal.kernel.model.User;
@@ -432,7 +432,7 @@ public class MemberRequestLocalServiceImpl
 		MailMessage mailMessage = new MailMessage(
 			from, to, subject, body, true);
 
-		_mailService.sendEmail(mailMessage);
+		_mailSender.sendEmail(mailMessage);
 	}
 
 	protected void sendNotificationEvent(MemberRequest memberRequest)
@@ -485,7 +485,7 @@ public class MemberRequestLocalServiceImpl
 	private GroupLocalService _groupLocalService;
 
 	@Reference
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 	@Reference
 	private PortalUUID _portalUUID;

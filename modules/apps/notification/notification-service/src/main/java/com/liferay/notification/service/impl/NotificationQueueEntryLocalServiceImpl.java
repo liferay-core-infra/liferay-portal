@@ -15,13 +15,13 @@
 package com.liferay.notification.service.impl;
 
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.notification.model.NotificationQueueEntry;
 import com.liferay.notification.service.base.NotificationQueueEntryLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
@@ -136,7 +136,7 @@ public class NotificationQueueEntryLocalServiceImpl
 				mailMessage.setCC(
 					_toInternetAddresses(notificationQueueEntry.getCc()));
 
-				_mailService.sendEmail(mailMessage);
+				_mailSender.sendEmail(mailMessage);
 
 				notificationQueueEntryLocalService.updateSent(
 					notificationQueueEntry.getNotificationQueueEntryId(), true);
@@ -192,7 +192,7 @@ public class NotificationQueueEntryLocalServiceImpl
 		NotificationQueueEntryLocalServiceImpl.class);
 
 	@Reference
-	private MailService _mailService;
+	private MailSender _mailSender;
 
 	@Reference
 	private UserLocalService _userLocalService;

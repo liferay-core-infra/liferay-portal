@@ -19,12 +19,12 @@ import com.liferay.commerce.notification.model.CommerceNotificationQueueEntry;
 import com.liferay.commerce.notification.service.base.CommerceNotificationQueueEntryLocalServiceBaseImpl;
 import com.liferay.commerce.notification.util.comparator.CommerceNotificationAttachmentCreateDateComparator;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -276,7 +276,7 @@ public class CommerceNotificationQueueEntryLocalServiceImpl
 				ccInternetAddresses.toArray(new InternetAddress[0]));
 
 			try {
-				_mailService.sendEmail(mailMessage);
+				_mailSender.sendEmail(mailMessage);
 
 				commerceNotificationQueueEntryLocalService.updateSent(
 					commerceNotificationQueueEntry.
@@ -347,7 +347,7 @@ public class CommerceNotificationQueueEntryLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceNotificationQueueEntryLocalServiceImpl.class);
 
-	@ServiceReference(type = MailService.class)
-	private MailService _mailService;
+	@ServiceReference(type = MailSender.class)
+	private MailSender _mailSender;
 
 }

@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.upgrade.BasePortletIdUpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import java.sql.Connection;
@@ -55,6 +56,16 @@ public class ClientExtensionWebUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"1.0.0", "2.0.0",
+			new UpgradeProcess() {
+
+				@Override
+				protected void doUpgrade() throws Exception {
+					runSQL(
+						"delete from Release_ where servletContextName = " +
+							"'com.liferay.remote.app.web'");
+				}
+
+			},
 			new BasePortletIdUpgradeProcess() {
 
 				@Override

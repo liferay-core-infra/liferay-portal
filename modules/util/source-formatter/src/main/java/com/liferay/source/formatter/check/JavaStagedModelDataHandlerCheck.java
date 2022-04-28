@@ -310,7 +310,6 @@ public class JavaStagedModelDataHandlerCheck extends BaseJavaTermCheck {
 
 	private static final String[] _SERVICE_XML_FILE_NAMES = {
 		"portal-impl/src/com/liferay/counter/service.xml",
-		"portal-impl/src/com/liferay/mail/service.xml",
 		"portal-impl/src/com/liferay/portal/service.xml",
 		"portal-impl/src/com/liferay/portlet/announcements/service.xml",
 		"portal-impl/src/com/liferay/portlet/asset/service.xml",

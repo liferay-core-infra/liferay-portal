@@ -70,7 +70,6 @@ public class PollsToDDMUpgradeProcessTest extends BaseDDMTestCase {
 			HashMapBuilder.put(
 				"radio-field-type-label", "Single Selection"
 			).build());
-		setUpLocaleUtil();
 		_setUpLocalizationUtil();
 		_setUpPollsToDDMUpgradeProcess();
 	}

@@ -79,7 +79,6 @@ public class DynamicDataMappingUpgradeProcessTest extends BaseDDMTestCase {
 		setUpDDMFormValuesJSONSerializer();
 		setUpJSONFactoryUtil();
 		setUpLanguageUtil();
-		setUpLocaleUtil();
 		setUpLocalizationUtil();
 		setUpPropsUtil();
 		setUpSAXReaderUtil();

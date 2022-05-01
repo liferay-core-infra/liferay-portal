@@ -626,8 +626,6 @@ public class DDMFormValuesQueryTest {
 	private void _setUpLanguageUtil() {
 		LanguageUtil languageUtil = new LanguageUtil();
 
-		_whenLanguageIsAvailableLocale("en_US");
-		_whenLanguageIsAvailableLocale("pt_BR");
 		_whenLanguageIsAvailableLocale(LocaleUtil.BRAZIL);
 		_whenLanguageIsAvailableLocale(LocaleUtil.US);
 
@@ -640,11 +638,10 @@ public class DDMFormValuesQueryTest {
 		).thenReturn(
 			true
 		);
-	}
 
-	private void _whenLanguageIsAvailableLocale(String languageId) {
 		Mockito.when(
-			_language.isAvailableLocale(Matchers.eq(languageId))
+			_language.isAvailableLocale(
+				Matchers.eq(LocaleUtil.toLanguageId(locale)))
 		).thenReturn(
 			true
 		);

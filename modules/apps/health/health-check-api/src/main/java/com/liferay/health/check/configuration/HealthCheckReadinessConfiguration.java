@@ -33,7 +33,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface HealthCheckReadinessConfiguration {
 
 	public static final String PID =
-		"com.liferay.health.check.configuration.ReadinessConfiguration";
+		"com.liferay.health.check.configuration.HealthCheckReadinessConfiguration";
 
 	@Meta.AD(
 		deflt = "false",

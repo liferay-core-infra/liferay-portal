@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.health.check.configuration;
+
+import aQute.bnd.annotation.metatype.Meta;
+
+import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+
+/**
+ * @author Louis-Guillaume Durand
+ */
+@ExtendedObjectClassDefinition(
+	category = "health-check",
+	scope = ExtendedObjectClassDefinition.Scope.SYSTEM
+)
+@Meta.OCD(
+	id = HealthCheckLivenessConfiguration.PID,
+	localization = "content/Language",
+	name = "health-check-liveness-configuration-name"
+)
+public interface HealthCheckLivenessConfiguration {
+
+	public static final String PID =
+		"com.liferay.health.check.configuration.LivenessConfiguration";
+
+	@Meta.AD(
+		deflt = "true",
+		description = "health-check-liveness-ignore-osgi-states-description",
+		name = "health-check-liveness-ignore-osgi-states", required = false
+	)
+	public boolean ignoreOSGiStatesForLiveness();
+
+	@Meta.AD(
+		deflt = "",
+		description = "health-check-liveness-bundle-symbolic-names-description",
+		name = "health-check-liveness-bundle-symbolic-names", required = false
+	)
+	public String[] bundleSymbolicNamesForLiveness();
+
+}

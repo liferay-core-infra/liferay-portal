@@ -51,7 +51,7 @@ public class ComponentsStatesHealthCheckService implements HealthCheckService {
 		if (_healthCheckLivenessConfiguration.ignoreOSGiStatesForLiveness()) {
 			return HealthCheckResponse.builder(
 			).name(
-				BundlesStatesHealthCheckService.class.getName()
+				ComponentsStatesHealthCheckService.class.getName()
 			).up(
 			).build();
 		}
@@ -64,7 +64,7 @@ public class ComponentsStatesHealthCheckService implements HealthCheckService {
 		if (_healthCheckReadinessConfiguration.ignoreOSGiStatesForReadiness()) {
 			return HealthCheckResponse.builder(
 			).name(
-				BundlesStatesHealthCheckService.class.getName()
+				ComponentsStatesHealthCheckService.class.getName()
 			).up(
 			).build();
 		}

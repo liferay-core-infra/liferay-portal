@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class HealthCheckResponse {
 
-	public static HealthCheckResponseBuilder builder() {
-		return new HealthCheckResponseBuilder();
+	public static HealthCheckBuilderName builder() {
+		return new HealthCheckResponseBuilderImpl();
 	}
 
 	public List<String> getIssues() {
@@ -56,31 +56,63 @@ public class HealthCheckResponse {
 		return _jsonSerializer.serializeDeep(this);
 	}
 
-	public static class HealthCheckResponseBuilder {
+	public interface HealthCheckBuilder {
 
+		public HealthCheckResponse build();
+
+		public HealthCheckBuilder issues(List<String> issues);
+
+	}
+
+	public interface HealthCheckBuilderName {
+
+		public HealthCheckBuilderStatus name(String name);
+
+	}
+
+	public interface HealthCheckBuilderStatus {
+
+		public HealthCheckBuilder down();
+
+		public HealthCheckBuilder up();
+
+	}
+
+	protected HealthCheckResponse() {
+	}
+
+	protected static class HealthCheckResponseBuilderImpl
+		implements HealthCheckBuilder, HealthCheckBuilderName,
+				   HealthCheckBuilderStatus {
+
+		@Override
 		public HealthCheckResponse build() {
 			return _healthCheckResponse;
 		}
 
-		public HealthCheckResponseBuilder down() {
+		@Override
+		public HealthCheckBuilder down() {
 			_healthCheckResponse._status = HealthCheckStatus.DOWN;
 
 			return this;
 		}
 
-		public HealthCheckResponseBuilder issues(List<String> issues) {
+		@Override
+		public HealthCheckBuilder issues(List<String> issues) {
 			_healthCheckResponse._issues.addAll(issues);
 
 			return this;
 		}
 
-		public HealthCheckResponseBuilder name(String name) {
+		@Override
+		public HealthCheckBuilderStatus name(String name) {
 			_healthCheckResponse._name = name;
 
 			return this;
 		}
 
-		public HealthCheckResponseBuilder up() {
+		@Override
+		public HealthCheckBuilder up() {
 			_healthCheckResponse._status = HealthCheckStatus.UP;
 
 			return this;
@@ -89,9 +121,6 @@ public class HealthCheckResponse {
 		private final HealthCheckResponse _healthCheckResponse =
 			new HealthCheckResponse();
 
-	}
-
-	protected HealthCheckResponse() {
 	}
 
 	private final List<String> _issues = new ArrayList<>();

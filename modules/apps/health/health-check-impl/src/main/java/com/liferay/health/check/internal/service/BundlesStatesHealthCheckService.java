@@ -120,6 +120,14 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 				HealthCheckReadinessConfiguration.class, properties);
 	}
 
+	// SPDX-SnippetBegin
+	// SPDX-License-Identifier: Apache-2.0 License
+	// SPDX-SnippetCopyrightText: © 2022 The Apache Software Foundation,
+	// <https://felix.apache.org/>
+	// SPDX-SnippetComment: This snippet includes the logic behind the command
+	// "dm:wtf" from Apache Felix.
+	// Original source code: https://github.com/apache/felix-dev
+
 	private List<String> _getBundlesIssues() {
 		List<String> issues = new ArrayList<>();
 
@@ -291,6 +299,8 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 
 		return resolveBundleNames;
 	}
+
+	// SPDX-SnippetEnd
 
 	private volatile BundleContext _bundleContext;
 	private volatile HealthCheckLivenessConfiguration

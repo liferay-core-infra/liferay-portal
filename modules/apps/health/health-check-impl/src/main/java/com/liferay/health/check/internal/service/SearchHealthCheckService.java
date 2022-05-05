@@ -62,6 +62,10 @@ public class SearchHealthCheckService implements HealthCheckService {
 		long timeout = _healthCheckSearchConfiguration.timeout();
 		String statusUp = _healthCheckSearchConfiguration.statusUp();
 
+		if (timeout < 1) {
+			timeout = 1;
+		}
+
 		HealthClusterRequest healthClusterRequest = new HealthClusterRequest();
 
 		healthClusterRequest.setTimeout(timeout);

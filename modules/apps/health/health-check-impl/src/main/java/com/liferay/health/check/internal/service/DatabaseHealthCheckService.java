@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.sql.Connection;
-import java.util.Collections;
+
 import java.util.Properties;
 
 import javax.sql.DataSource;

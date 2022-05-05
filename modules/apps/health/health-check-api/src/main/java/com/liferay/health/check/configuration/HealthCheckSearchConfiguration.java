@@ -36,7 +36,7 @@ public interface HealthCheckSearchConfiguration {
 
 	@Meta.AD(
 		deflt = "3", description = "health-check-search-timeout-description",
-		name = "health-check-search-timeout", required = false
+		min = "1", name = "health-check-search-timeout", required = false
 	)
 	public long timeout();
 

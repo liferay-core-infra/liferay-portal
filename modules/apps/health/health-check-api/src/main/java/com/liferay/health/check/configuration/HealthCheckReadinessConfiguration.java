@@ -26,6 +26,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 	scope = ExtendedObjectClassDefinition.Scope.SYSTEM
 )
 @Meta.OCD(
+	description = "health-check-readiness-configuration-description",
 	id = HealthCheckReadinessConfiguration.PID,
 	localization = "content/Language",
 	name = "health-check-readiness-configuration-name"

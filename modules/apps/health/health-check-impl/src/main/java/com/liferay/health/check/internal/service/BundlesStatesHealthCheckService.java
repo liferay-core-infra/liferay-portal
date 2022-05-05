@@ -126,7 +126,8 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 	// <https://felix.apache.org/>
 	// SPDX-SnippetComment: This snippet includes the logic behind the command
 	// "dm:wtf" from Apache Felix.
-	// Original source code: https://github.com/apache/felix-dev
+	// SPDX-ExternalRef: PACKAGE-MANAGER purl
+	// pkg:github/apache/felix-dev@dccce6feb31e75b636bab7507dbfa832fbb723b4
 
 	private List<String> _getBundlesIssues() {
 		List<String> issues = new ArrayList<>();

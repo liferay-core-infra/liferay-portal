@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 
+import java.sql.Connection;
 import java.util.Collections;
 import java.util.Properties;
 
@@ -54,21 +55,12 @@ public class DatabaseHealthCheckService implements HealthCheckService {
 			jdbcProperties = jdbcReadProperties;
 		}
 
-		try {
-			DataSource dataSource = DataSourceFactoryUtil.initDataSource(
-				jdbcProperties);
+		DataSource dataSource = null;
 
-			if (dataSource != null) {
-				dataSource.getConnection();
-			}
-			else {
-				return HealthCheckResponse.builder(
-				).name(
-					DatabaseHealthCheckService.class.getName()
-				).down(
-				).withData(
-					"datasource", "datasource is null"
-				).build();
+		try {
+			dataSource = DataSourceFactoryUtil.initDataSource(jdbcProperties);
+
+			try (Connection connection = dataSource.getConnection()) {
 			}
 		}
 		catch (Exception exception) {
@@ -81,6 +73,14 @@ public class DatabaseHealthCheckService implements HealthCheckService {
 			).withData(
 				"database connection failed", exception.getMessage()
 			).build();
+		}
+		finally {
+			try {
+				DataSourceFactoryUtil.destroyDataSource(dataSource);
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
 		}
 
 		return HealthCheckResponse.builder(

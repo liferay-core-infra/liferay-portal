@@ -18,10 +18,9 @@ import com.liferay.health.check.configuration.HealthCheckLivenessConfiguration;
 import com.liferay.health.check.configuration.HealthCheckReadinessConfiguration;
 import com.liferay.health.check.model.HealthCheckResponse;
 import com.liferay.health.check.service.HealthCheckService;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -97,7 +96,7 @@ public class ComponentsStatesHealthCheckService implements HealthCheckService {
 			graph.getAllComponents();
 
 		if (!unregisteredComponents.isEmpty()) {
-			List<String> issues = new ArrayList<>();
+			Map<String, String> data = new HashMap<>();
 
 			for (ComponentDeclaration componentDeclaration :
 					unregisteredComponents) {
@@ -109,11 +108,10 @@ public class ComponentsStatesHealthCheckService implements HealthCheckService {
 					Bundle bundle = bundleContext.getBundle();
 
 					if (bundle != null) {
-						issues.add(
-							StringBundler.concat(
-								"Unregistered component ",
-								componentDeclaration.getName(), " in bundle: ",
-								bundle.getSymbolicName()));
+						data.put(
+							bundle.getSymbolicName(),
+							"Unregistered component " +
+								componentDeclaration.getName());
 					}
 				}
 			}
@@ -122,8 +120,8 @@ public class ComponentsStatesHealthCheckService implements HealthCheckService {
 			).name(
 				ComponentsStatesHealthCheckService.class.getName()
 			).down(
-			).issues(
-				issues
+			).withData(
+				data
 			).build();
 		}
 

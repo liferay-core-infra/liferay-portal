@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,9 +60,9 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 			).build();
 		}
 
-		List<String> bundlesIssues = _getBundlesIssues();
+		Map<String, String> bundlesData = _getBundlesData();
 
-		if (bundlesIssues.isEmpty()) {
+		if (bundlesData.isEmpty()) {
 			return HealthCheckResponse.builder(
 			).name(
 				BundlesStatesHealthCheckService.class.getName()
@@ -73,8 +74,8 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 		).name(
 			BundlesStatesHealthCheckService.class.getName()
 		).down(
-		).issues(
-			bundlesIssues
+		).withData(
+			bundlesData
 		).build();
 	}
 
@@ -88,9 +89,9 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 			).build();
 		}
 
-		List<String> bundlesIssues = _getBundlesIssues();
+		Map<String, String> bundlesData = _getBundlesData();
 
-		if (bundlesIssues.isEmpty()) {
+		if (bundlesData.isEmpty()) {
 			return HealthCheckResponse.builder(
 			).name(
 				BundlesStatesHealthCheckService.class.getName()
@@ -102,8 +103,8 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 		).name(
 			BundlesStatesHealthCheckService.class.getName()
 		).down(
-		).issues(
-			bundlesIssues
+		).withData(
+			bundlesData
 		).build();
 	}
 
@@ -129,108 +130,114 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 	// SPDX-ExternalRef: PACKAGE-MANAGER purl
 	// pkg:github/apache/felix-dev@dccce6feb31e75b636bab7507dbfa832fbb723b4
 
-	private List<String> _getBundlesIssues() {
-		List<String> issues = new ArrayList<>();
+	private Map<String, String> _getBundlesData() {
+		Map<String, String> data = new HashMap<>();
 
 		DependencyGraph graph = DependencyGraph.getGraph(
 			DependencyGraph.ComponentState.UNREGISTERED,
 			DependencyGraph.DependencyState.REQUIRED_UNAVAILABLE);
 
-		issues.addAll(_listResolvedBundles(_bundleContext.getBundles()));
-		issues.addAll(_listInstalledBundles(_bundleContext.getBundles()));
+		List<String> resolvedBundles = _listResolvedBundles(
+			_bundleContext.getBundles());
+		List<String> installedBundles = _listInstalledBundles(
+			_bundleContext.getBundles());
+
+		resolvedBundles.forEach(bundle -> data.put(bundle, "RESOLVED"));
+		installedBundles.forEach(bundle -> data.put(bundle, "INSTALLED"));
 
 		List<CircularDependency> circularDependencies =
 			graph.getCircularDependencies();
 
 		if (!circularDependencies.isEmpty()) {
-			issues.addAll(_getCircularDependenciesIssues(circularDependencies));
+			List<String> circularDependenciesComponents =
+				_getCircularDependenciesComponents(circularDependencies);
+
+			circularDependenciesComponents.forEach(
+				component -> data.put(component, "Circular dependency"));
 		}
 
 		List<MissingDependency> missingConfigDependencies =
 			graph.getMissingDependencies("configuration");
 
 		if (!missingConfigDependencies.isEmpty()) {
-			issues.addAll(
-				_getMissingDependenciesIssues(missingConfigDependencies));
+			data.putAll(_getMissingDependenciesData(missingConfigDependencies));
 		}
 
 		List<MissingDependency> missingServiceDependencies =
 			graph.getMissingDependencies("service");
 
 		if (!missingServiceDependencies.isEmpty()) {
-			issues.addAll(
-				_getMissingDependenciesIssues(missingServiceDependencies));
+			data.putAll(
+				_getMissingDependenciesData(missingServiceDependencies));
 		}
 
 		List<MissingDependency> missingResourceDependencies =
 			graph.getMissingDependencies("resource");
 
 		if (!missingResourceDependencies.isEmpty()) {
-			issues.addAll(
-				_getMissingDependenciesIssues(missingResourceDependencies));
+			data.putAll(
+				_getMissingDependenciesData(missingResourceDependencies));
 		}
 
 		List<MissingDependency> missingBundleDependencies =
 			graph.getMissingDependencies("bundle");
 
 		if (!missingBundleDependencies.isEmpty()) {
-			issues.addAll(
-				_getMissingDependenciesIssues(missingBundleDependencies));
+			data.putAll(_getMissingDependenciesData(missingBundleDependencies));
 		}
 
 		List<MissingDependency> missingCustomDependencies =
 			graph.getMissingCustomDependencies();
 
 		if (!missingCustomDependencies.isEmpty()) {
-			issues.addAll(
-				_getMissingCustomDependenciesIssues(missingCustomDependencies));
+			data.putAll(
+				_getMissingCustomDependenciesData(missingCustomDependencies));
 		}
 
-		return issues;
+		return data;
 	}
 
-	private List<String> _getCircularDependenciesIssues(
+	private List<String> _getCircularDependenciesComponents(
 		List<CircularDependency> circularDependencies) {
 
-		List<String> issues = new ArrayList<>();
+		List<String> components = new ArrayList<>();
 
 		circularDependencies.forEach(
 			circularDependency -> circularDependency.getComponents(
 			).forEach(
-				componentDeclaration -> issues.add(
+				componentDeclaration -> components.add(
 					componentDeclaration.getName())
 			));
 
-		return issues;
+		return components;
 	}
 
-	private List<String> _getMissingCustomDependenciesIssues(
+	private Map<String, String> _getMissingCustomDependenciesData(
 		List<MissingDependency> missingDependencies) {
 
-		List<String> issues = new ArrayList<>();
+		Map<String, String> data = new HashMap<>();
 
 		missingDependencies.forEach(
-			missingDependency -> issues.add(
+			missingDependency -> data.put(
+				missingDependency.getBundleName(),
 				StringBundler.concat(
 					"Missing custom dependency ", missingDependency.getName(),
-					"(", missingDependency.getType(), ") for bundle ",
-					missingDependency.getBundleName())));
+					" (", missingDependency.getType(), ")")));
 
-		return issues;
+		return data;
 	}
 
-	private List<String> _getMissingDependenciesIssues(
+	private Map<String, String> _getMissingDependenciesData(
 		List<MissingDependency> missingDependencies) {
 
-		List<String> issues = new ArrayList<>();
+		Map<String, String> data = new HashMap<>();
 
 		missingDependencies.forEach(
-			missingDependency -> issues.add(
-				StringBundler.concat(
-					"Missing dependency ", missingDependency.getName(),
-					" for bundle ", missingDependency.getBundleName())));
+			missingDependency -> data.put(
+				missingDependency.getBundleName(),
+				"Missing dependency " + missingDependency.getName()));
 
-		return issues;
+		return data;
 	}
 
 	private boolean _isNotFragment(Bundle b) {
@@ -259,10 +266,7 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 		if (areInstalled) {
 			for (Bundle bundle : bundles) {
 				if (bundle.getState() == Bundle.INSTALLED) {
-					installedBundles.add(
-						StringBundler.concat(
-							"[", String.valueOf(bundle.getBundleId()), "] ",
-							bundle.getSymbolicName(), " is INSTALLED"));
+					installedBundles.add(bundle.getSymbolicName());
 				}
 			}
 		}
@@ -290,10 +294,7 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 				if ((bundle.getState() == Bundle.RESOLVED) &&
 					_isNotFragment(bundle)) {
 
-					resolveBundleNames.add(
-						StringBundler.concat(
-							" * [", String.valueOf(bundle.getBundleId()), "] ",
-							bundle.getSymbolicName(), " is RESOLVED"));
+					resolveBundleNames.add(bundle.getSymbolicName());
 				}
 			}
 		}

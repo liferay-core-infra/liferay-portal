@@ -66,8 +66,8 @@ public class DatabaseHealthCheckService implements HealthCheckService {
 				).name(
 					DatabaseHealthCheckService.class.getName()
 				).down(
-				).issues(
-					Collections.singletonList("datasource is null")
+				).withData(
+					"datasource", "datasource is null"
 				).build();
 			}
 		}
@@ -78,8 +78,8 @@ public class DatabaseHealthCheckService implements HealthCheckService {
 			).name(
 				DatabaseHealthCheckService.class.getName()
 			).down(
-			).issues(
-				Collections.singletonList("database connection failed")
+			).withData(
+				"database connection failed", exception.getMessage()
 			).build();
 		}
 

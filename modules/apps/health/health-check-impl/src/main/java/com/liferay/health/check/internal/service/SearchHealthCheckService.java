@@ -25,7 +25,6 @@ import com.liferay.portal.search.engine.adapter.cluster.ClusterHealthStatus;
 import com.liferay.portal.search.engine.adapter.cluster.HealthClusterRequest;
 import com.liferay.portal.search.engine.adapter.cluster.HealthClusterResponse;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
@@ -83,14 +82,17 @@ public class SearchHealthCheckService implements HealthCheckService {
 			String healthStatusMessage =
 				healthClusterResponse.getHealthStatusMessage();
 
+			String healthStatus = String.valueOf(
+				healthClusterResponse.getClusterHealthStatus());
+
 			_log.error("Failed with response: " + healthStatusMessage);
 
 			return HealthCheckResponse.builder(
 			).name(
 				SearchHealthCheckService.class.getName()
 			).down(
-			).issues(
-				Collections.singletonList(healthStatusMessage)
+			).withData(
+				healthStatus, healthStatusMessage
 			).build();
 		}
 

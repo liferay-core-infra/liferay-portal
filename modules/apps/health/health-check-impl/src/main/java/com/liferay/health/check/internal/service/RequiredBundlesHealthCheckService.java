@@ -19,9 +19,9 @@ import com.liferay.health.check.configuration.HealthCheckReadinessConfiguration;
 import com.liferay.health.check.model.HealthCheckResponse;
 import com.liferay.health.check.service.HealthCheckService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -138,21 +138,24 @@ public class RequiredBundlesHealthCheckService implements HealthCheckService {
 			requiredBundleSymbolicNameStream = Arrays.stream(
 				requiredBundleSymbolicNames);
 
-			List<String> issues = requiredBundleSymbolicNameStream.filter(
-				symbolicName -> !bundleFoundSymbolicNames.contains(symbolicName)
-			).map(
-				symbolicName -> StringBundler.concat(
-					"Bundle [", symbolicName, "] was not found.")
-			).collect(
-				Collectors.toList()
-			);
+			List<String> bundlesNotFound =
+				requiredBundleSymbolicNameStream.filter(
+					symbolicName -> !bundleFoundSymbolicNames.contains(
+						symbolicName)
+				).collect(
+					Collectors.toList()
+				);
+
+			Map<String, String> data = new HashMap<>();
+
+			bundlesNotFound.forEach(bundle -> data.put(bundle, "Not Found"));
 
 			return HealthCheckResponse.builder(
 			).name(
 				RequiredBundlesHealthCheckService.class.getName()
 			).down(
-			).issues(
-				issues
+			).withData(
+				data
 			).build();
 		}
 

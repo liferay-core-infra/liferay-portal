@@ -186,12 +186,14 @@ public class HealthCheckApplication extends Application {
 						_log.warn(
 							StringBundler.concat(
 								"Service [", serviceName,
-								"] is DOWN with the following issues:"));
+								"] is DOWN with the following data:"));
 
-						List<String> healthCheckResponseIssues =
-							healthCheckResponse.getIssues();
+						Map<String, String> healthCheckResponseData =
+							healthCheckResponse.getData();
 
-						healthCheckResponseIssues.forEach(_log::warn);
+						healthCheckResponseData.forEach(
+							(key, value) -> _log.warn(
+								StringBundler.concat("[", key, "]: ", value)));
 					}
 				}
 				else {

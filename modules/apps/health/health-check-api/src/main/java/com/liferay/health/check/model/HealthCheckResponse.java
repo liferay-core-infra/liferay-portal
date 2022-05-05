@@ -17,8 +17,8 @@ package com.liferay.health.check.model;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONSerializer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represent a response body for the readiness and liveness probes and provide information about the
@@ -33,8 +33,8 @@ public class HealthCheckResponse {
 		return new HealthCheckResponseBuilderImpl();
 	}
 
-	public List<String> getIssues() {
-		return _issues;
+	public Map<String, String> getData() {
+		return _data;
 	}
 
 	public String getName() {
@@ -60,7 +60,9 @@ public class HealthCheckResponse {
 
 		public HealthCheckResponse build();
 
-		public HealthCheckBuilder issues(List<String> issues);
+		public HealthCheckBuilder withData(Map<String, String> data);
+
+		public HealthCheckBuilder withData(String key, String value);
 
 	}
 
@@ -98,13 +100,6 @@ public class HealthCheckResponse {
 		}
 
 		@Override
-		public HealthCheckBuilder issues(List<String> issues) {
-			_healthCheckResponse._issues.addAll(issues);
-
-			return this;
-		}
-
-		@Override
 		public HealthCheckBuilderStatus name(String name) {
 			_healthCheckResponse._name = name;
 
@@ -118,12 +113,26 @@ public class HealthCheckResponse {
 			return this;
 		}
 
+		@Override
+		public HealthCheckBuilder withData(Map<String, String> data) {
+			_healthCheckResponse._data.putAll(data);
+
+			return this;
+		}
+
+		@Override
+		public HealthCheckBuilder withData(String key, String value) {
+			_healthCheckResponse._data.put(key, value);
+
+			return this;
+		}
+
 		private final HealthCheckResponse _healthCheckResponse =
 			new HealthCheckResponse();
 
 	}
 
-	private final List<String> _issues = new ArrayList<>();
+	private final Map<String, String> _data = new HashMap<>();
 	private final JSONSerializer _jsonSerializer =
 		JSONFactoryUtil.createJSONSerializer();
 	private String _name;

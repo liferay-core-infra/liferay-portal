@@ -776,7 +776,25 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			ZipEntry entry = null;
 
 			while ((entry = zipInputStream.getNextEntry()) != null) {
+				String canonicalDestinationDirPath =
+					destination.getCanonicalPath();
+
 				File destinationFile = new File(destination, entry.getName());
+
+				String canonicalDestinationFile =
+					destinationFile.getCanonicalPath();
+
+				if (!canonicalDestinationFile.startsWith(
+						canonicalDestinationDirPath + File.separator)) {
+
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"Entry is outside of the target dir: " +
+								entry.getName());
+					}
+
+					continue;
+				}
 
 				if (entry.isDirectory()) {
 					destinationFile.mkdirs();

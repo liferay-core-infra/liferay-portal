@@ -815,6 +815,10 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			ZipEntry entry = null;
 
 			while ((entry = zipInputStream.getNextEntry()) != null) {
+				if (_isZipSlipVulnerable(destinationPath, entry.getName())) {
+					continue;
+				}
+
 				Path path = destinationPath.resolve(entry.getName());
 
 				if (entry.isDirectory()) {
@@ -982,6 +986,31 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 			// having the permission to check if the parent file exists
 
 		}
+	}
+
+	private boolean _isZipSlipVulnerable(Path destinationPath, String entryName)
+		throws IOException {
+
+		File canonicalDirectoryFile = destinationPath.toFile();
+
+		String canonicalDirectoryPath =
+			canonicalDirectoryFile.getCanonicalPath();
+
+		File destinationfile = new File(destinationPath.toFile(), entryName);
+
+		String canonicalDestinationFile = destinationfile.getCanonicalPath();
+
+		if (!canonicalDestinationFile.startsWith(
+				canonicalDirectoryPath + File.separator)) {
+
+			if (_log.isWarnEnabled()) {
+				_log.warn("Entry is outside of the target dir: " + entryName);
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private static final String[] _SAFE_FILE_NAME_1 = {

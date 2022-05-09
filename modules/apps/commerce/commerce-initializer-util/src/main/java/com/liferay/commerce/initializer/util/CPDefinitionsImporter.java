@@ -59,7 +59,7 @@ import com.liferay.portal.json.JSONArrayImpl;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -128,7 +128,7 @@ public class CPDefinitionsImporter {
 		while (jsonFactoryParser.nextToken() != JsonToken.END_ARRAY) {
 			TreeNode treeNode = jsonFactoryParser.readValueAsTree();
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				treeNode.toString());
 
 			if (_log.isDebugEnabled()) {
@@ -810,7 +810,7 @@ public class CPDefinitionsImporter {
 		String optionsJSON = null;
 
 		if (optionsJSONArray != null) {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+			JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 			for (int i = 0; i < optionsJSONArray.length(); i++) {
 				JSONObject optionsJSONObject = optionsJSONArray.getJSONObject(
@@ -1032,6 +1032,9 @@ public class CPDefinitionsImporter {
 
 	@Reference
 	private FriendlyURLNormalizer _friendlyURLNormalizer;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -27,7 +27,6 @@ import com.liferay.dynamic.data.mapping.model.LocalizedValue;
 import com.liferay.dynamic.data.mapping.util.LocalizedValueUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -72,7 +71,7 @@ public class DDMFormLayoutJSONDeserializer
 					Optional.ofNullable(
 						jsonObject.getJSONArray("fields")
 					).orElse(
-						JSONFactoryUtil.createJSONArray()
+						_jsonFactory.createJSONArray()
 					),
 					_jsonFactory));
 
@@ -195,11 +194,6 @@ public class DDMFormLayoutJSONDeserializer
 		_ddmFormFieldTypeServicesTracker = ddmFormFieldTypeServicesTracker;
 	}
 
-	@Reference(unbind = "-")
-	protected void setJSONFactory(JSONFactory jsonFactory) {
-		_jsonFactory = jsonFactory;
-	}
-
 	private List<String> _getDDMFormLayoutColumnFieldNames(
 		JSONArray jsonArray) {
 
@@ -303,6 +297,8 @@ public class DDMFormLayoutJSONDeserializer
 		DDMFormLayoutJSONDeserializer.class);
 
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
+
+	@Reference
 	private JSONFactory _jsonFactory;
 
 }

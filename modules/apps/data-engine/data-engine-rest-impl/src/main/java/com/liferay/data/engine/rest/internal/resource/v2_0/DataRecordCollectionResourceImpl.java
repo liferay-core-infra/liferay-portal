@@ -30,7 +30,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ResourceAction;
 import com.liferay.portal.kernel.search.Field;
@@ -134,7 +134,7 @@ public class DataRecordCollectionResourceImpl
 			Long dataRecordCollectionId)
 		throws Exception {
 
-		JSONArray actionIdsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray actionIdsJSONArray = _jsonFactory.createJSONArray();
 
 		DDLRecordSet ddlRecordSet = _ddlRecordSetLocalService.getRecordSet(
 			dataRecordCollectionId);
@@ -421,6 +421,9 @@ public class DataRecordCollectionResourceImpl
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

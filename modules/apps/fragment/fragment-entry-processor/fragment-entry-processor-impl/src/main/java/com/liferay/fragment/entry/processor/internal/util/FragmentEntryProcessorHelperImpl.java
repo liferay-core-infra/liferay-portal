@@ -31,7 +31,7 @@ import com.liferay.info.type.Labeled;
 import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -215,7 +215,7 @@ public class FragmentEntryProcessorHelperImpl
 		Locale locale) {
 
 		if (!isMappedCollection(jsonObject)) {
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 
 		if (!displayObjectOptional.isPresent()) {
@@ -266,7 +266,7 @@ public class FragmentEntryProcessorHelperImpl
 		throws PortalException {
 
 		if (!isMapped(jsonObject) && !isAssetDisplayPage(mode)) {
-			return JSONFactoryUtil.createJSONObject();
+			return _jsonFactory.createJSONObject();
 		}
 
 		long classNameId = jsonObject.getLong("classNameId");
@@ -507,6 +507,9 @@ public class FragmentEntryProcessorHelperImpl
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

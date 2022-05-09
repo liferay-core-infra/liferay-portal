@@ -19,7 +19,7 @@ import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -101,7 +101,7 @@ public class PortletRegistryImpl implements PortletRegistry {
 		}
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				fragmentEntryLink.getEditableValues());
 
 			String portletId = jsonObject.getString("portletId");
@@ -221,6 +221,9 @@ public class PortletRegistryImpl implements PortletRegistry {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletRegistryImpl.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

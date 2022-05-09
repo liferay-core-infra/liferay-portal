@@ -26,7 +26,7 @@ import com.liferay.commerce.frontend.internal.address.model.RegionModel;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Country;
@@ -68,7 +68,7 @@ public class AddressResource {
 
 			if (commerceAddress != null) {
 				String json = _OBJECT_MAPPER.writeValueAsString(
-					JSONFactoryUtil.looseSerialize(commerceAddress));
+					_jsonFactory.looseSerialize(commerceAddress));
 
 				return Response.ok(
 					json, MediaType.APPLICATION_JSON
@@ -203,6 +203,9 @@ public class AddressResource {
 
 	@Reference
 	private CountryService _countryService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private RegionService _regionService;

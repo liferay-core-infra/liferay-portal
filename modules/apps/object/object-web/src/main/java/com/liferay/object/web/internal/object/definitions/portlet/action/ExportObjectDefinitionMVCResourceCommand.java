@@ -21,7 +21,7 @@ import com.liferay.object.constants.ObjectPortletKeys;
 import com.liferay.object.web.internal.object.definitions.portlet.action.util.ExportImportObjectDefinitiontUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
@@ -86,8 +86,8 @@ public class ExportObjectDefinitionMVCResourceCommand
 				objectField -> Validator.isNull(
 					objectField.getRelationshipType())));
 
-		JSONObject objectDefinitionJSONObject =
-			JSONFactoryUtil.createJSONObject(objectDefinition.toString());
+		JSONObject objectDefinitionJSONObject = _jsonFactory.createJSONObject(
+			objectDefinition.toString());
 
 		for (ObjectField objectField : objectDefinition.getObjectFields()) {
 			if (Objects.equals(
@@ -184,6 +184,9 @@ public class ExportObjectDefinitionMVCResourceCommand
 			}
 		}
 	}
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ObjectDefinitionResource.Factory _objectDefinitionResourceFactory;

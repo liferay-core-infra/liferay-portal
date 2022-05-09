@@ -20,7 +20,7 @@ import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.info.item.renderer.InfoItemRenderer;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletProvider;
@@ -88,7 +88,7 @@ public class ImageGalleryInfoItemRenderer
 					List<CPMedia> images = _cpContentHelper.getImages(
 						cpDefinition.getCPDefinitionId(), themeDisplay);
 
-					JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+					JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 					for (CPMedia cpMedia : images) {
 						jsonArray.put(
@@ -139,6 +139,9 @@ public class ImageGalleryInfoItemRenderer
 
 	@Reference
 	private CPContentHelper _cpContentHelper;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

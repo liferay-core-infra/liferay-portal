@@ -17,7 +17,7 @@ package com.liferay.portal.search.tuning.rankings.web.internal.storage.helper;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.json.storage.service.JSONStorageEntryLocalService;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -40,9 +40,9 @@ public class RankingJSONStorageHelper {
 		boolean inactive, String indexName, String name, List<Ranking.Pin> pins,
 		String queryString) {
 
-		long classPK = counterLocalService.increment();
+		long classPK = _counterLocalService.increment();
 
-		JSONArray pinsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray pinsJSONArray = _jsonFactory.createJSONArray();
 
 		for (Ranking.Pin pin : pins) {
 			pinsJSONArray.put(
@@ -54,10 +54,9 @@ public class RankingJSONStorageHelper {
 		}
 
 		JSONObject jsonObject = JSONUtil.put(
-			"aliases", JSONFactoryUtil.createJSONArray(aliases)
+			"aliases", _jsonFactory.createJSONArray(aliases)
 		).put(
-			"hiddenDocumentIds",
-			JSONFactoryUtil.createJSONArray(hiddenDocumentIds)
+			"hiddenDocumentIds", _jsonFactory.createJSONArray(hiddenDocumentIds)
 		).put(
 			"inactive", inactive
 		).put(
@@ -72,22 +71,22 @@ public class RankingJSONStorageHelper {
 			"rankingDocumentId", Ranking.class.getName() + "_PORTLET_" + classPK
 		);
 
-		jsonStorageEntryLocalService.addJSONStorageEntries(
-			companyId, classNameLocalService.getClassNameId(Ranking.class),
+		_jsonStorageEntryLocalService.addJSONStorageEntries(
+			companyId, _classNameLocalService.getClassNameId(Ranking.class),
 			classPK, jsonObject.toString());
 	}
 
 	public String addJSONStorageEntry(
 		String indexName, String name, String queryString) {
 
-		long classPK = counterLocalService.increment();
+		long classPK = _counterLocalService.increment();
 
 		String rankingDocumentId =
 			Ranking.class.getName() + "_PORTLET_" + classPK;
 
-		jsonStorageEntryLocalService.addJSONStorageEntries(
+		_jsonStorageEntryLocalService.addJSONStorageEntries(
 			CompanyThreadLocal.getCompanyId(),
-			classNameLocalService.getClassNameId(Ranking.class), classPK,
+			_classNameLocalService.getClassNameId(Ranking.class), classPK,
 			JSONUtil.put(
 				"indexName", indexName
 			).put(
@@ -102,18 +101,18 @@ public class RankingJSONStorageHelper {
 	}
 
 	public void deleteJSONStorageEntry(long classPK) {
-		jsonStorageEntryLocalService.deleteJSONStorageEntries(
-			classNameLocalService.getClassNameId(Ranking.class), classPK);
+		_jsonStorageEntryLocalService.deleteJSONStorageEntries(
+			_classNameLocalService.getClassNameId(Ranking.class), classPK);
 	}
 
 	public void updateJSONStorageEntry(
 		long classPK, List<String> aliases, List<String> hiddenDocumentIds,
 		boolean inactive, String name, List<Ranking.Pin> pins) {
 
-		JSONObject jsonObject = jsonStorageEntryLocalService.getJSONObject(
-			classNameLocalService.getClassNameId(Ranking.class), classPK);
+		JSONObject jsonObject = _jsonStorageEntryLocalService.getJSONObject(
+			_classNameLocalService.getClassNameId(Ranking.class), classPK);
 
-		JSONArray pinsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray pinsJSONArray = _jsonFactory.createJSONArray();
 
 		for (Ranking.Pin pin : pins) {
 			pinsJSONArray.put(
@@ -125,10 +124,9 @@ public class RankingJSONStorageHelper {
 		}
 
 		jsonObject.put(
-			"aliases", JSONFactoryUtil.createJSONArray(aliases)
+			"aliases", _jsonFactory.createJSONArray(aliases)
 		).put(
-			"hiddenDocumentIds",
-			JSONFactoryUtil.createJSONArray(hiddenDocumentIds)
+			"hiddenDocumentIds", _jsonFactory.createJSONArray(hiddenDocumentIds)
 		).put(
 			"inactive", inactive
 		).put(
@@ -137,19 +135,22 @@ public class RankingJSONStorageHelper {
 			"pins", pinsJSONArray
 		);
 
-		jsonStorageEntryLocalService.updateJSONStorageEntries(
+		_jsonStorageEntryLocalService.updateJSONStorageEntries(
 			CompanyThreadLocal.getCompanyId(),
-			classNameLocalService.getClassNameId(Ranking.class), classPK,
+			_classNameLocalService.getClassNameId(Ranking.class), classPK,
 			jsonObject.toString());
 	}
 
 	@Reference
-	protected ClassNameLocalService classNameLocalService;
+	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
-	protected CounterLocalService counterLocalService;
+	private CounterLocalService _counterLocalService;
 
 	@Reference
-	protected JSONStorageEntryLocalService jsonStorageEntryLocalService;
+	private JSONFactory _jsonFactory;
+
+	@Reference
+	private JSONStorageEntryLocalService _jsonStorageEntryLocalService;
 
 }

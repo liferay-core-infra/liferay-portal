@@ -18,7 +18,7 @@ import com.liferay.frontend.editor.alloyeditor.web.internal.constants.AlloyEdito
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.editor.configuration.EditorConfigContributor;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -30,6 +30,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Sergio González
@@ -166,7 +167,7 @@ public class AlloyEditorCreoleConfigContributor
 				JSONUtil.put(
 					"cfg",
 					JSONUtil.put(
-						"tableAttributes", JSONFactoryUtil.createJSONObject())
+						"tableAttributes", _jsonFactory.createJSONObject())
 				).put(
 					"name", "table"
 				),
@@ -267,5 +268,8 @@ public class AlloyEditorCreoleConfigContributor
 	}
 
 	private static final int _CKEDITOR_STYLE_BLOCK = 1;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

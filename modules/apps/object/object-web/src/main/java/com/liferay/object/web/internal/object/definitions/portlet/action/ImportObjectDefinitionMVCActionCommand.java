@@ -27,7 +27,7 @@ import com.liferay.object.constants.ObjectPortletKeys;
 import com.liferay.object.exception.ObjectDefinitionNameException;
 import com.liferay.object.web.internal.object.definitions.portlet.action.util.ExportImportObjectDefinitiontUtil;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -160,8 +160,8 @@ public class ImportObjectDefinitionMVCActionCommand
 		String objectDefinitionJSON = FileUtil.read(
 			uploadPortletRequest.getFile("objectDefinitionJSON"));
 
-		JSONObject objectDefinitionJSONObject =
-			JSONFactoryUtil.createJSONObject(objectDefinitionJSON);
+		JSONObject objectDefinitionJSONObject = _jsonFactory.createJSONObject(
+			objectDefinitionJSON);
 
 		ExportImportObjectDefinitiontUtil.apply(
 			objectDefinitionJSONObject,
@@ -200,7 +200,7 @@ public class ImportObjectDefinitionMVCActionCommand
 		_importObjectActions(
 			objectDefinition, postObjectDefinition, themeDisplay);
 
-		objectDefinitionJSONObject = JSONFactoryUtil.createJSONObject(
+		objectDefinitionJSONObject = _jsonFactory.createJSONObject(
 			objectDefinitionJSON);
 
 		_importObjectLayouts(
@@ -278,6 +278,9 @@ public class ImportObjectDefinitionMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ImportObjectDefinitionMVCActionCommand.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ObjectActionResource.Factory _objectActionResourceFactory;

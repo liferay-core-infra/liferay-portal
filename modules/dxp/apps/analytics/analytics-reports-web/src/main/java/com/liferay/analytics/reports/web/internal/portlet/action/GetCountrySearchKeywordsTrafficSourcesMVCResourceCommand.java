@@ -20,7 +20,7 @@ import com.liferay.analytics.reports.web.internal.model.CountrySearchKeywords;
 import com.liferay.analytics.reports.web.internal.model.TrafficSource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -134,7 +134,7 @@ public class GetCountrySearchKeywordsTrafficSourcesMVCResourceCommand
 		List<CountrySearchKeywords> countrySearchKeywordsList, Locale locale) {
 
 		if (ListUtil.isEmpty(countrySearchKeywordsList)) {
-			return JSONFactoryUtil.createJSONArray();
+			return _jsonFactory.createJSONArray();
 		}
 
 		Stream<CountrySearchKeywords> stream =
@@ -152,5 +152,8 @@ public class GetCountrySearchKeywordsTrafficSourcesMVCResourceCommand
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

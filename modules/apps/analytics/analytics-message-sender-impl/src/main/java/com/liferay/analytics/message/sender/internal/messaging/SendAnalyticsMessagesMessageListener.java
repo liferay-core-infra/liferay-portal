@@ -22,7 +22,7 @@ import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalServic
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationTracker;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -115,7 +115,7 @@ public class SendAnalyticsMessagesMessageListener extends BaseMessageListener {
 				return;
 			}
 
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+			JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 			for (AnalyticsMessage analyticsMessage : analyticsMessages) {
 				String json = new String(
@@ -124,7 +124,7 @@ public class SendAnalyticsMessagesMessageListener extends BaseMessageListener {
 							analyticsMessage.getAnalyticsMessageId())),
 					StandardCharsets.UTF_8);
 
-				jsonArray.put(JSONFactoryUtil.createJSONObject(json));
+				jsonArray.put(_jsonFactory.createJSONObject(json));
 			}
 
 			try {
@@ -188,6 +188,9 @@ public class SendAnalyticsMessagesMessageListener extends BaseMessageListener {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;

@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -116,7 +115,7 @@ public class FieldSetDDMFormFieldTemplateContextContributor
 
 	protected JSONArray getJSONArray(String rows) {
 		try {
-			return jsonFactory.createJSONArray(rows);
+			return _jsonFactory.createJSONArray(rows);
 		}
 		catch (JSONException jsonException) {
 			if (_log.isDebugEnabled()) {
@@ -124,11 +123,11 @@ public class FieldSetDDMFormFieldTemplateContextContributor
 			}
 		}
 
-		return jsonFactory.createJSONArray();
+		return _jsonFactory.createJSONArray();
 	}
 
 	protected JSONArray getRowsJSONArray(List<Object> nestedFields) {
-		JSONArray rowsJSONArray = jsonFactory.createJSONArray();
+		JSONArray rowsJSONArray = _jsonFactory.createJSONArray();
 
 		List<Object> visibleNestedFields = _getVisibleNestedFields(
 			nestedFields);
@@ -154,7 +153,7 @@ public class FieldSetDDMFormFieldTemplateContextContributor
 
 	protected JSONArray getRowsJSONArray(String definition) {
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
 				StringUtil.replace(definition, "fieldNames", "fields"));
 
 			JSONArray pagesJSONArray = jsonObject.getJSONArray("pages");
@@ -169,17 +168,14 @@ public class FieldSetDDMFormFieldTemplateContextContributor
 			}
 		}
 
-		return jsonFactory.createJSONArray();
+		return _jsonFactory.createJSONArray();
 	}
 
 	@Reference
 	protected DDMStructureLayoutLocalService ddmStructureLayoutLocalService;
 
-	@Reference
-	protected JSONFactory jsonFactory;
-
 	private JSONObject _createRowJSONObject(List<Object> nestedFields) {
-		JSONArray columnsJSONArray = jsonFactory.createJSONArray();
+		JSONArray columnsJSONArray = _jsonFactory.createJSONArray();
 
 		for (Object nestedField : nestedFields) {
 			columnsJSONArray.put(
@@ -241,5 +237,8 @@ public class FieldSetDDMFormFieldTemplateContextContributor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FieldSetDDMFormFieldTemplateContextContributor.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

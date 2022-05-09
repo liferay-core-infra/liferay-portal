@@ -29,7 +29,7 @@ import com.liferay.info.item.InfoItemReference;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -186,7 +186,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 						contentDashboardItem, locale)
 				)
 			).orElseGet(
-				JSONFactoryUtil::createJSONObject
+				_jsonFactory::createJSONObject
 			);
 
 			JSONPortletResponseUtil.writeJSON(
@@ -228,7 +228,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 		Stream<AssetCategory> stream = assetCategories.stream();
 
-		return JSONFactoryUtil.createJSONObject(
+		return _jsonFactory.createJSONObject(
 			stream.collect(_getCollector(locale)));
 	}
 
@@ -319,7 +319,7 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 		Stream<Map.Entry<String, Object>> stream = entries.stream();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		stream.sorted(
 			Comparator.comparing(entry -> entry.getKey())
@@ -466,6 +466,9 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

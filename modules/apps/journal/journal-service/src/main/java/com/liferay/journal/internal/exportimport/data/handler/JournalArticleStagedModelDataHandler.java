@@ -63,7 +63,7 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -154,7 +154,7 @@ public class JournalArticleStagedModelDataHandler
 			return;
 		}
 
-		JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject(
+		JSONObject extraDataJSONObject = _jsonFactory.createJSONObject(
 			extraData);
 
 		if (Validator.isNotNull(extraData) && extraDataJSONObject.has("uuid")) {
@@ -1576,7 +1576,7 @@ public class JournalArticleStagedModelDataHandler
 				userNotificationEvent -> {
 					userNotificationEvent.setDelivered(true);
 
-					JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+					JSONObject jsonObject = _jsonFactory.createJSONObject(
 						userNotificationEvent.getPayload());
 
 					SubscriptionSender subscriptionSender =
@@ -1590,7 +1590,7 @@ public class JournalArticleStagedModelDataHandler
 						userNotificationEvent.getCompanyId());
 
 					Map<String, HashMap<String, Object>> contextMap =
-						(Map)JSONFactoryUtil.looseDeserialize(
+						(Map)_jsonFactory.looseDeserialize(
 							String.valueOf(jsonObject.get("context")));
 
 					String articleURL = JournalUtil.getJournalControlPanelLink(
@@ -1651,7 +1651,7 @@ public class JournalArticleStagedModelDataHandler
 					subscriptionSender.setHtmlFormat(true);
 
 					Map<String, String> localizedJsonBodyMap =
-						(Map)JSONFactoryUtil.looseDeserialize(
+						(Map)_jsonFactory.looseDeserialize(
 							String.valueOf(jsonObject.get("localizedBodyMap")));
 
 					Map<Locale, String> localizedBodyMap = new HashMap<>();
@@ -1667,7 +1667,7 @@ public class JournalArticleStagedModelDataHandler
 					subscriptionSender.setLocalizedBodyMap(localizedBodyMap);
 
 					Map<String, String> localizedJsonSubjectMap =
-						(Map)JSONFactoryUtil.looseDeserialize(
+						(Map)_jsonFactory.looseDeserialize(
 							String.valueOf(
 								jsonObject.get("localizedSubjectMap")));
 
@@ -1812,6 +1812,9 @@ public class JournalArticleStagedModelDataHandler
 	private JournalArticleResourceLocalService
 		_journalArticleResourceLocalService;
 	private JournalCreationStrategy _journalCreationStrategy;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

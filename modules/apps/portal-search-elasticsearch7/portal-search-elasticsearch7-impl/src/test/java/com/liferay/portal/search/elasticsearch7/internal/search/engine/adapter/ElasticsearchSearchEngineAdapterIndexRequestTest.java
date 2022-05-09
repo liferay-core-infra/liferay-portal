@@ -16,13 +16,17 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
+import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.GetFieldMappingIndexRequestExecutor;
+import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.GetFieldMappingIndexRequestExecutorImpl;
 import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.IndexRequestExecutorFixture;
 import com.liferay.portal.search.engine.adapter.SearchEngineAdapter;
 import com.liferay.portal.search.engine.adapter.index.AnalysisIndexResponseToken;
@@ -572,6 +576,27 @@ public class ElasticsearchSearchEngineAdapterIndexRequestTest {
 			};
 
 		indexRequestExecutorFixture.setUp();
+
+		IndexRequestExecutor indexRequestExecutor =
+			ReflectionTestUtil.getFieldValue(
+				indexRequestExecutorFixture, "_indexRequestExecutor");
+
+		GetFieldMappingIndexRequestExecutor
+			getFieldMappingIndexRequestExecutor =
+				new GetFieldMappingIndexRequestExecutorImpl() {
+					{
+						setElasticsearchClientResolver(
+							elasticsearchClientResolver);
+					}
+				};
+
+		ReflectionTestUtil.setFieldValue(
+			getFieldMappingIndexRequestExecutor, "_jsonFactory",
+			new JSONFactoryImpl());
+
+		ReflectionTestUtil.setFieldValue(
+			indexRequestExecutor, "_getFieldMappingIndexRequestExecutor",
+			getFieldMappingIndexRequestExecutor);
 
 		return indexRequestExecutorFixture.getIndexRequestExecutor();
 	}

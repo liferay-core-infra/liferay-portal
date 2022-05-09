@@ -14,9 +14,13 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.mappings;
 
+import com.liferay.portal.json.JSONFactoryImpl;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.ElasticsearchIndexingFixture;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.index.constants.LiferayTypeMappingsConstants;
+import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.ElasticsearchIndexRequestExecutor;
+import com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.index.GetFieldMappingIndexRequestExecutorImpl;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.search.test.util.mappings.BaseNestedFieldsTestCase;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
@@ -47,6 +51,26 @@ public class NestedFieldsTest extends BaseNestedFieldsTestCase {
 	@Override
 	protected String getMappingName() {
 		return LiferayTypeMappingsConstants.LIFERAY_DOCUMENT_TYPE;
+	}
+
+	@Override
+	protected void setUpIndexingFixture() throws Exception {
+		super.setUpIndexingFixture();
+
+		ElasticsearchIndexRequestExecutor indexRequestExecutor =
+			ReflectionTestUtil.getFieldValue(
+				indexingFixture.getSearchEngineAdapter(),
+				"_indexRequestExecutor");
+
+		GetFieldMappingIndexRequestExecutorImpl
+			getFieldMappingIndexRequestExecutorImpl =
+				ReflectionTestUtil.getFieldValue(
+					indexRequestExecutor,
+					"_getFieldMappingIndexRequestExecutor");
+
+		ReflectionTestUtil.setFieldValue(
+			getFieldMappingIndexRequestExecutorImpl, "_jsonFactory",
+			new JSONFactoryImpl());
 	}
 
 }

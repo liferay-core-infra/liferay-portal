@@ -21,7 +21,7 @@ import com.liferay.portal.json.validator.JSONValidator;
 import com.liferay.portal.json.validator.JSONValidatorException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -33,6 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Rubén Pulido
@@ -59,8 +60,8 @@ public class FragmentEntryValidatorImpl implements FragmentEntryValidator {
 		try {
 			_jsonValidator.validate(configuration);
 
-			JSONObject configurationJSONObject =
-				JSONFactoryUtil.createJSONObject(configuration);
+			JSONObject configurationJSONObject = _jsonFactory.createJSONObject(
+				configuration);
 
 			JSONArray fieldSetsJSONArray = configurationJSONObject.getJSONArray(
 				"fieldSets");
@@ -195,5 +196,8 @@ public class FragmentEntryValidatorImpl implements FragmentEntryValidator {
 	private static final JSONValidator _jsonValidator = new JSONValidator(
 		FragmentEntryValidatorImpl.class.getResourceAsStream(
 			"dependencies/configuration-json-schema.json"));
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

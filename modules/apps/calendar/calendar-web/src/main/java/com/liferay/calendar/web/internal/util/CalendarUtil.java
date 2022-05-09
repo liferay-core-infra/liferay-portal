@@ -28,7 +28,7 @@ import com.liferay.calendar.util.RecurrenceUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -122,14 +122,14 @@ public class CalendarUtil {
 
 		Set<Integer> years = rulesMap.keySet();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		for (Integer year : years) {
 			Map<Integer, List<Integer>> monthsMap = rulesMap.get(year);
 
 			Set<Integer> months = monthsMap.keySet();
 
-			JSONObject monthJSONObject = JSONFactoryUtil.createJSONObject();
+			JSONObject monthJSONObject = _jsonFactory.createJSONObject();
 
 			jsonObject.put(String.valueOf(year), monthJSONObject);
 
@@ -247,7 +247,7 @@ public class CalendarUtil {
 			ThemeDisplay themeDisplay, List<CalendarBooking> calendarBookings)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		if (calendarBookings == null) {
 			return jsonArray;
@@ -268,7 +268,7 @@ public class CalendarUtil {
 			TimeZone timeZone)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (CalendarBooking calendarBooking : calendarBookings) {
 			if ((calendarBooking.getStatus() ==
@@ -358,7 +358,7 @@ public class CalendarUtil {
 			ThemeDisplay themeDisplay, List<Calendar> calendars)
 		throws PortalException {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		if (calendars == null) {
 			return jsonArray;
@@ -391,6 +391,11 @@ public class CalendarUtil {
 	@Reference(unbind = "-")
 	protected void setCalendarService(CalendarService calendarService) {
 		_calendarService = calendarService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setJsonFactory(JSONFactory jsonFactory) {
+		_jsonFactory = jsonFactory;
 	}
 
 	@Reference(
@@ -473,6 +478,7 @@ public class CalendarUtil {
 		_calendarModelResourcePermission;
 	private static CalendarResourceLocalService _calendarResourceLocalService;
 	private static CalendarService _calendarService;
+	private static JSONFactory _jsonFactory;
 	private static WorkflowDefinitionLinkLocalService
 		_workflowDefinitionLinkLocalService;
 	private static WorkflowInstanceLinkLocalService

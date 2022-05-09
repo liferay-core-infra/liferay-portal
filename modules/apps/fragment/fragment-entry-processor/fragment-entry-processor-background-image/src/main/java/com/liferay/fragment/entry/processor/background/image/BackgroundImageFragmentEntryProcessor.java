@@ -27,7 +27,7 @@ import com.liferay.info.type.WebImage;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -68,7 +68,7 @@ public class BackgroundImageFragmentEntryProcessor
 		String html, String configuration) {
 
 		JSONObject defaultEditableValuesJSONObject =
-			JSONFactoryUtil.createJSONObject();
+			_jsonFactory.createJSONObject();
 
 		Document document = _getDocument(html);
 
@@ -78,7 +78,7 @@ public class BackgroundImageFragmentEntryProcessor
 			String id = element.attr("data-lfr-background-image-id");
 
 			defaultEditableValuesJSONObject.put(
-				id, JSONFactoryUtil.createJSONObject());
+				id, _jsonFactory.createJSONObject());
 		}
 
 		return defaultEditableValuesJSONObject;
@@ -90,7 +90,7 @@ public class BackgroundImageFragmentEntryProcessor
 			FragmentEntryProcessorContext fragmentEntryProcessorContext)
 		throws PortalException {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+		JSONObject jsonObject = _jsonFactory.createJSONObject(
 			fragmentEntryLink.getEditableValues());
 
 		Document document = _getDocument(html);
@@ -137,8 +137,8 @@ public class BackgroundImageFragmentEntryProcessor
 				long fileEntryId = 0;
 
 				if (JSONUtil.isValid(value)) {
-					JSONObject valueJSONObject =
-						JSONFactoryUtil.createJSONObject(value);
+					JSONObject valueJSONObject = _jsonFactory.createJSONObject(
+						value);
 
 					fileEntryId = valueJSONObject.getLong("fileEntryId");
 
@@ -320,6 +320,9 @@ public class BackgroundImageFragmentEntryProcessor
 
 	@Reference
 	private FragmentEntryProcessorHelper _fragmentEntryProcessorHelper;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

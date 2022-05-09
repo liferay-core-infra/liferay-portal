@@ -21,7 +21,7 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
@@ -103,7 +103,7 @@ public class AzureTranslator implements Translator {
 
 			Map<String, String> translatedFieldsMap = _getTranslatedFieldsMap(
 				translatorPacket.getFieldsMap(),
-				JSONFactoryUtil.createJSONArray(json));
+				_jsonFactory.createJSONArray(json));
 
 			return new TranslatorPacket() {
 
@@ -175,7 +175,7 @@ public class AzureTranslator implements Translator {
 	private String _getTranslatorPacketPayload(
 		TranslatorPacket translatorPacket) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		Map<String, String> fields = translatorPacket.getFieldsMap();
 
@@ -189,5 +189,8 @@ public class AzureTranslator implements Translator {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

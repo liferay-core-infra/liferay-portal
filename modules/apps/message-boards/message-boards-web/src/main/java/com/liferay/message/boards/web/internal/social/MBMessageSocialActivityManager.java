@@ -20,7 +20,7 @@ import com.liferay.message.boards.service.MBDiscussionLocalService;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.social.BaseSocialActivityManager;
@@ -77,7 +77,7 @@ public class MBMessageSocialActivityManager
 				continue;
 			}
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject(
+			JSONObject extraDataJSONObject = _jsonFactory.createJSONObject(
 				socialActivity.getExtraData());
 
 			long extraDataMessageId = extraDataJSONObject.getLong("messageId");
@@ -91,6 +91,9 @@ public class MBMessageSocialActivityManager
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private MBDiscussionLocalService _mbDiscussionLocalService;

@@ -34,7 +34,7 @@ import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
 import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -306,7 +306,7 @@ public class LayoutPageTemplateStructureRelStagedModelDataHandler
 			return data;
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(data);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(data);
 
 		if (!jsonObject.has("items")) {
 			return data;
@@ -365,6 +365,9 @@ public class LayoutPageTemplateStructureRelStagedModelDataHandler
 
 	@Reference
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutPageTemplateStructureLocalService

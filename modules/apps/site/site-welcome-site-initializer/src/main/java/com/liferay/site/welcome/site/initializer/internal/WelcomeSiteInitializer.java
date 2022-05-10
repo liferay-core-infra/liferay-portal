@@ -22,7 +22,7 @@ import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -323,8 +323,7 @@ public class WelcomeSiteInitializer implements SiteInitializer {
 				).put(
 					"WELCOME_TO_LIFERAY_I18N_JSON_VALUE",
 					() -> {
-						JSONObject jsonObject =
-							JSONFactoryUtil.createJSONObject();
+						JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 						Set<Locale> locales = new HashSet<>(
 							LanguageUtil.getAvailableLocales());
@@ -363,6 +362,9 @@ public class WelcomeSiteInitializer implements SiteInitializer {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutCopyHelper _layoutCopyHelper;

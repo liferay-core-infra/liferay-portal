@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.task.web.internal.notifications;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
@@ -72,6 +73,7 @@ public class WorkflowTaskUserNotificationHandlerTest {
 		_setUpUserNotificationEventLocalService();
 		_setUpWorkflowTaskManagerUtil();
 		_setUpWorkflowTaskPermissionChecker();
+		_setUpJSONFactory();
 	}
 
 	@Before
@@ -202,6 +204,12 @@ public class WorkflowTaskUserNotificationHandlerTest {
 			}
 
 		};
+	}
+
+	private static void _setUpJSONFactory() throws Exception {
+		ReflectionTestUtil.setFieldValue(
+			_workflowTaskUserNotificationHandler, "_jsonFactory",
+			new JSONFactoryImpl());
 	}
 
 	private static void _setUpUserNotificationEventLocalService()

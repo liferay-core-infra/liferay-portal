@@ -14,7 +14,9 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.portlet.action;
 
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +53,9 @@ public class ValidateRankingMVCResourceCommandTest
 		ReflectionTestUtil.setFieldValue(
 			_validateRankingMVCResourceCommand, "indexNameBuilder",
 			indexNameBuilder);
+		ReflectionTestUtil.setFieldValue(
+			_validateRankingMVCResourceCommand, "_jsonFactory",
+			ProxyFactory.newDummyInstance(JSONFactory.class));
 		ReflectionTestUtil.setFieldValue(
 			_validateRankingMVCResourceCommand, "portal", portal);
 		ReflectionTestUtil.setFieldValue(

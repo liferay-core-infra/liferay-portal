@@ -18,7 +18,7 @@ import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -52,10 +52,61 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eudaldo Alonso
  */
-@Component(immediate = true, service = SearchFacet.class)
+@Component(
+	immediate = true,
+	service = {AssetEntriesSearchFacet.class, SearchFacet.class}
+)
 public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 
-	public static String[] getEntryClassNames(String configuration) {
+	public List<AssetRendererFactory<?>> getAssetRendererFactories(
+		long companyId) {
+
+		return AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
+			companyId);
+	}
+
+	@Override
+	public String getConfigurationJspPath() {
+		return "/facets/configuration/asset_entries.jsp";
+	}
+
+	@Override
+	public FacetConfiguration getDefaultConfiguration(long companyId) {
+		FacetConfiguration facetConfiguration = new FacetConfiguration();
+
+		facetConfiguration.setClassName(getFacetClassName());
+
+		facetConfiguration.setDataJSONObject(
+			JSONUtil.put(
+				"frequencyThreshold", 1
+			).put(
+				"values",
+				() -> {
+					JSONArray jsonArray = _jsonFactory.createJSONArray();
+
+					for (String assetType : getAssetTypes(companyId)) {
+						jsonArray.put(assetType);
+					}
+
+					return jsonArray;
+				}
+			));
+
+		facetConfiguration.setFieldName(getFieldName());
+		facetConfiguration.setLabel(getLabel());
+		facetConfiguration.setOrder(getOrder());
+		facetConfiguration.setStatic(false);
+		facetConfiguration.setWeight(1.5);
+
+		return facetConfiguration;
+	}
+
+	@Override
+	public String getDisplayJspPath() {
+		return "/facets/view/asset_entries.jsp";
+	}
+
+	public String[] getEntryClassNames(String configuration) {
 		if (Validator.isNull(configuration)) {
 			return null;
 		}
@@ -63,7 +114,7 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 		JSONObject configurationJSONObject;
 
 		try {
-			configurationJSONObject = JSONFactoryUtil.createJSONObject(
+			configurationJSONObject = _jsonFactory.createJSONObject(
 				configuration);
 		}
 		catch (JSONException jsonException) {
@@ -106,54 +157,6 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 		);
 	}
 
-	public List<AssetRendererFactory<?>> getAssetRendererFactories(
-		long companyId) {
-
-		return AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
-			companyId);
-	}
-
-	@Override
-	public String getConfigurationJspPath() {
-		return "/facets/configuration/asset_entries.jsp";
-	}
-
-	@Override
-	public FacetConfiguration getDefaultConfiguration(long companyId) {
-		FacetConfiguration facetConfiguration = new FacetConfiguration();
-
-		facetConfiguration.setClassName(getFacetClassName());
-
-		facetConfiguration.setDataJSONObject(
-			JSONUtil.put(
-				"frequencyThreshold", 1
-			).put(
-				"values",
-				() -> {
-					JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-					for (String assetType : getAssetTypes(companyId)) {
-						jsonArray.put(assetType);
-					}
-
-					return jsonArray;
-				}
-			));
-
-		facetConfiguration.setFieldName(getFieldName());
-		facetConfiguration.setLabel(getLabel());
-		facetConfiguration.setOrder(getOrder());
-		facetConfiguration.setStatic(false);
-		facetConfiguration.setWeight(1.5);
-
-		return facetConfiguration;
-	}
-
-	@Override
-	public String getDisplayJspPath() {
-		return "/facets/view/asset_entries.jsp";
-	}
-
 	@Override
 	public String getFacetClassName() {
 		return assetEntriesFacetFactory.getFacetClassName();
@@ -179,7 +182,7 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 					ParamUtil.getString(
 						actionRequest, getClassName() + "assetTypes"));
 
-				JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+				JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 				if (ArrayUtil.isEmpty(assetTypes)) {
 					ThemeDisplay themeDisplay =
@@ -235,5 +238,8 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AssetEntriesSearchFacet.class);
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

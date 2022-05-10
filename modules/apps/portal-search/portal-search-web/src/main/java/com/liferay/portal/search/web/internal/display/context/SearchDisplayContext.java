@@ -78,7 +78,8 @@ public class SearchDisplayContext {
 			SummaryBuilderFactory summaryBuilderFactory,
 			SearchContextFactory searchContextFactory,
 			SearchRequestBuilderFactory searchRequestBuilderFactory,
-			SearchFacetTracker searchFacetTracker)
+			SearchFacetTracker searchFacetTracker,
+			AssetEntriesSearchFacet assetEntriesSearchFacet)
 		throws PortletException {
 
 		_renderRequest = renderRequest;
@@ -158,7 +159,7 @@ public class SearchDisplayContext {
 		searchContext.setKeywords(_keywords.getKeywords());
 
 		searchContext.setEntryClassNames(
-			AssetEntriesSearchFacet.getEntryClassNames(
+			assetEntriesSearchFacet.getEntryClassNames(
 				getSearchConfiguration()));
 
 		SearchRequestImpl searchRequestImpl = new SearchRequestImpl(

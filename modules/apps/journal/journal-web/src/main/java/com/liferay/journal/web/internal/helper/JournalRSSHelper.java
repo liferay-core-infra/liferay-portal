@@ -34,7 +34,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -611,7 +611,7 @@ public class JournalRSSHelper {
 			if (elType.equals("document_library")) {
 				String url = element.elementText("dynamic-content");
 
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(url);
+				JSONObject jsonObject = _jsonFactory.createJSONObject(url);
 
 				String uuid = jsonObject.getString("uuid");
 				long groupId = jsonObject.getLong("groupId");
@@ -709,6 +709,9 @@ public class JournalRSSHelper {
 
 	@Reference
 	private JournalFeedLocalService _journalFeedLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

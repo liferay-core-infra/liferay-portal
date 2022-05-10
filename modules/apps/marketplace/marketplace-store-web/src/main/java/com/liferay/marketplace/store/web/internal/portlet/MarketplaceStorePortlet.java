@@ -26,7 +26,7 @@ import com.liferay.marketplace.store.web.internal.util.MarketplaceLicenseUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -188,7 +188,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		Map<String, String> prepackagedApps =
 			_appLocalService.getPrepackagedApps();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = jsonFactory.createJSONObject();
 
 		Set<String> keys = prepackagedApps.keySet();
 
@@ -202,7 +202,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
 
-		JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(
+		JSONObject responseJSONObject = jsonFactory.createJSONObject(
 			response.getBody());
 
 		writeJSON(actionRequest, actionResponse, responseJSONObject);
@@ -356,7 +356,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 				long[] appPackageIds = ParamUtil.getLongValues(
 					actionRequest, "appPackageIds");
 
-				JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+				JSONArray jsonArray = jsonFactory.createJSONArray();
 
 				for (long appPackageId : appPackageIds) {
 					File file = null;
@@ -515,6 +515,9 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		super.setOAuthManager(oAuthManager);
 	}
 
+	@Reference
+	protected JSONFactory jsonFactory;
+
 	private JSONObject _getAppJSONObject(App app) throws Exception {
 		return JSONUtil.put(
 			"appId", app.getRemoteAppId()
@@ -546,7 +549,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	}
 
 	private JSONArray _getInstalledAppsJSONArray() throws Exception {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = jsonFactory.createJSONArray();
 
 		List<App> apps = _appLocalService.getInstalledApps();
 

@@ -19,7 +19,7 @@ import com.liferay.frontend.icons.web.internal.model.FrontendIconsResource;
 import com.liferay.frontend.icons.web.internal.model.FrontendIconsResourcePack;
 import com.liferay.frontend.icons.web.internal.repository.FrontendIconsResourcePackRepository;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
@@ -91,7 +91,7 @@ public class SaveFrontendIconsPackFromExistingIconsMVCActionCommand
 			frontendIconsResourcePack = new FrontendIconsResourcePack(name);
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+		JSONObject jsonObject = _jsonFactory.createJSONObject(
 			ParamUtil.getString(actionRequest, "icons"));
 
 		for (String key : jsonObject.keySet()) {
@@ -122,7 +122,7 @@ public class SaveFrontendIconsPackFromExistingIconsMVCActionCommand
 		_frontendIconsResourcePackRepository.addFrontendIconsResourcePack(
 			companyId, frontendIconsResourcePack);
 
-		JSONArray iconsJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray iconsJSONArray = _jsonFactory.createJSONArray();
 
 		for (FrontendIconsResource frontendIconsResource :
 				frontendIconsResourcePack.getFrontendIconsResources()) {
@@ -161,6 +161,9 @@ public class SaveFrontendIconsPackFromExistingIconsMVCActionCommand
 	@Reference
 	private FrontendIconsResourcePackRepository
 		_frontendIconsResourcePackRepository;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

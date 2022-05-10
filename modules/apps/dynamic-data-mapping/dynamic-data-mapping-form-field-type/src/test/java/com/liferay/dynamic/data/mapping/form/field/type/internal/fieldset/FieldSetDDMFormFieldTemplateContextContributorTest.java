@@ -19,6 +19,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -47,6 +48,9 @@ public class FieldSetDDMFormFieldTemplateContextContributorTest
 		super.setUp();
 
 		_setUpJSONFactoryUtil();
+		ReflectionTestUtil.setFieldValue(
+			_fieldSetDDMFormFieldTemplateContextContributor, "_jsonFactory",
+			new JSONFactoryImpl());
 	}
 
 	@Test

@@ -97,7 +97,7 @@ public abstract class BaseIndexingTestCase {
 
 	@BeforeClass
 	public static void setUpClassBaseIndexingTestCase() {
-		_indexingFixture = null;
+		indexingFixture = null;
 
 		_documentFixture.setUp();
 	}
@@ -106,15 +106,15 @@ public abstract class BaseIndexingTestCase {
 	public static void tearDownClassBaseIndexingTestCase() throws Exception {
 		_documentFixture.tearDown();
 
-		if (_indexingFixture == null) {
+		if (indexingFixture == null) {
 			return;
 		}
 
-		if (_indexingFixture.isSearchEngineAvailable()) {
-			_indexingFixture.tearDown();
+		if (indexingFixture.isSearchEngineAvailable()) {
+			indexingFixture.tearDown();
 		}
 
-		_indexingFixture = null;
+		indexingFixture = null;
 	}
 
 	@Before
@@ -126,20 +126,22 @@ public abstract class BaseIndexingTestCase {
 		_entryClassName = StringUtil.toLowerCase(
 			clazz.getSimpleName() + CharPool.PERIOD + testName.getMethodName());
 
-		_indexSearcher = _indexingFixture.getIndexSearcher();
-		_indexWriter = _indexingFixture.getIndexWriter();
+		_indexSearcher = indexingFixture.getIndexSearcher();
+		_indexWriter = indexingFixture.getIndexWriter();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if ((_indexingFixture == null) ||
-			!_indexingFixture.isSearchEngineAvailable()) {
+		if ((indexingFixture == null) ||
+			!indexingFixture.isSearchEngineAvailable()) {
 
 			return;
 		}
 
-		_indexWriter.deleteEntityDocuments(
-			createSearchContext(), _entryClassName);
+		if (_indexWriter != null) {
+			_indexWriter.deleteEntityDocuments(
+				createSearchContext(), _entryClassName);
+		}
 	}
 
 	@Rule
@@ -231,7 +233,7 @@ public abstract class BaseIndexingTestCase {
 	}
 
 	protected long getCompanyId() {
-		return _indexingFixture.getCompanyId();
+		return indexingFixture.getCompanyId();
 	}
 
 	protected Query getDefaultQuery() {
@@ -265,7 +267,7 @@ public abstract class BaseIndexingTestCase {
 	}
 
 	protected SearchEngineAdapter getSearchEngineAdapter() {
-		return _indexingFixture.getSearchEngineAdapter();
+		return indexingFixture.getSearchEngineAdapter();
 	}
 
 	protected DocumentBuilder newDocumentBuilder() {
@@ -314,20 +316,22 @@ public abstract class BaseIndexingTestCase {
 	}
 
 	protected void setUpIndexingFixture() throws Exception {
-		if (_indexingFixture != null) {
-			Assume.assumeTrue(_indexingFixture.isSearchEngineAvailable());
+		if (indexingFixture != null) {
+			Assume.assumeTrue(indexingFixture.isSearchEngineAvailable());
 
 			return;
 		}
 
-		_indexingFixture = createIndexingFixture();
+		indexingFixture = createIndexingFixture();
 
-		Assume.assumeTrue(_indexingFixture.isSearchEngineAvailable());
+		Assume.assumeTrue(indexingFixture.isSearchEngineAvailable());
 
-		_indexingFixture.setUp();
+		indexingFixture.setUp();
 	}
 
 	protected static final long GROUP_ID = RandomTestUtil.randomLong();
+
+	protected static IndexingFixture indexingFixture;
 
 	protected final AggregationFixture aggregationFixture =
 		new AggregationFixture();
@@ -534,7 +538,6 @@ public abstract class BaseIndexingTestCase {
 
 	private static final DocumentFixture _documentFixture =
 		new DocumentFixture();
-	private static IndexingFixture _indexingFixture;
 
 	private String _entryClassName;
 	private IndexSearcher _indexSearcher;

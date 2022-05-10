@@ -14,6 +14,7 @@
 
 package com.liferay.search.experiences.rest.internal.resource.v1_0;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
@@ -92,6 +93,9 @@ public class SearchResponseResourceImplTest {
 		ReflectionTestUtil.setFieldValue(
 			_searchResponseResourceImpl, "contextUser",
 			Mockito.mock(User.class));
+		ReflectionTestUtil.setFieldValue(
+			_searchResponseResourceImpl, "_jsonFactory",
+			JSONFactoryUtil.getJSONFactory());
 		ReflectionTestUtil.setFieldValue(
 			_searchResponseResourceImpl, "_searcher", _searcher);
 		ReflectionTestUtil.setFieldValue(

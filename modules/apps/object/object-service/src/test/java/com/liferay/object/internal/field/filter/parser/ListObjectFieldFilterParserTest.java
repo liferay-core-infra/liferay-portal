@@ -17,10 +17,13 @@ package com.liferay.object.internal.field.filter.parser;
 import com.liferay.object.constants.ObjectViewFilterColumnConstants;
 import com.liferay.object.exception.ObjectViewFilterColumnException;
 import com.liferay.object.model.ObjectViewFilterColumn;
+import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,6 +39,13 @@ public class ListObjectFieldFilterParserTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@Before
+	public void setUp() {
+		ReflectionTestUtil.setFieldValue(
+			_listObjectFieldFilterParser, "_jsonFactory",
+			new JSONFactoryImpl());
+	}
 
 	@Test
 	public void testValidate() throws PortalException {

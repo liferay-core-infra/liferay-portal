@@ -15,9 +15,20 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.io.File;
+import java.io.IOException;
+
+import java.nio.file.AccessMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,6 +44,28 @@ public class FileImplTest {
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
 
+	@Before
+	public void setUp() throws IOException {
+		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
+			new FastDateFormatFactoryUtil();
+
+		fastDateFormatFactoryUtil.setFastDateFormatFactory(
+			new FastDateFormatFactoryImpl());
+		_tempFolder = _fileImpl.createTempFolder();//"temp_folder"
+		_evilFileTargetDir = _tempFolder.toPath(
+		).resolve(
+			"../../../../../../../../../../../../../../../../../../../../.." +
+				"/../../../../../../../../../../../../../../../../../../.." +
+					"/tmp/evil.txt"
+		);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		_fileImpl.delete(_tempFolder);
+		_fileImpl.delete(_evilFileTargetDir.toFile());
+	}
+
 	@Test
 	public void testAppendParentheticalSuffixWhenFileNameHasParenthesis() {
 		String fileName = _fileImpl.appendParentheticalSuffix(
@@ -40,6 +73,22 @@ public class FileImplTest {
 
 		Assert.assertEquals("test(1) (1).jsp", fileName);
 	}
+
+	// 	@Test
+
+	//	public void testUnzipTwo() throws Exception {
+	//		File file = new File("/home/me/dev/projects/liferay-portal/portal-impl/test/unit/com/liferay/portal/util/root/test2.zip");
+
+	//		_fileImpl.unzip(file, _tempFolder);
+	//
+	//
+	//		_assertExists("test2/zip/test2/test2.txt");
+	//
+	//
+	//		Assert.assertTrue(
+	//			_canFileExecuteReadWrite(
+	//				_tempFolder.toPath().resolve("test2/zip/test2/test2.txt")));
+	//	}
 
 	@Test
 	public void testAppendParentheticalSuffixWithMultipleCharacterValue() {
@@ -223,6 +272,109 @@ public class FileImplTest {
 			"()test.jsp", _fileImpl.stripParentheticalSuffix("()test.jsp"));
 	}
 
+	@Test
+	public void testUnzipOne() throws Exception {
+		File file = new File(
+			"/home/me/dev/projects/liferay-portal/portal-impl/test/unit/com/liferay/portal/util/root/test.zip");
+
+		_fileImpl.unzip(file, _tempFolder);
+
+		_assertExists("zip/test/directory");
+		_assertExists("zip/test/entry/entry.txt");
+
+		Assert.assertTrue(
+			_canFileExecuteReadWrite(
+				_tempFolder.toPath(
+				).resolve(
+					"zip/test/directory"
+				)));
+		Assert.assertTrue(
+			_canFileExecuteReadWrite(
+				_tempFolder.toPath(
+				).resolve(
+					"zip/test/entry/entry.txt"
+				)));
+	}
+
+	@Test
+	public void testUnzipZipSlipVulnerable() throws Exception {
+		File file = new File(
+			"/home/me/dev/projects/liferay-portal/portal-impl/test/unit/com/liferay/portal/util/root/test_slip.zip");
+
+		_fileImpl.unzip(file, _tempFolder);
+
+		_assertExists("good.txt");
+		Assert.assertFalse(Files.exists(_evilFileTargetDir));
+		//_assertDoesNotExist(_evilFileTargetDir);
+	}
+
+	private void _assertDoesNotExist(String name) {
+		Path fullPath = _tempFolder.toPath(
+		).resolve(
+			name
+		);
+
+		Assert.assertFalse(Files.exists(fullPath));
+	}
+
+	private void _assertExists(String name) {
+		Path fullPath = _tempFolder.toPath(
+		).resolve(
+			name
+		);
+
+		Assert.assertTrue(Files.exists(fullPath));
+	}
+
+	private boolean _canFileExecuteReadWrite(Path path) {//Path path File file
+
+		if (OSDetector.isWindows()) {
+			File file = path.toFile();
+
+			if (file.canExecute() && file.canRead() && file.canWrite()) {
+				return true;
+			}
+
+			return false;
+		}
+		//Path path = p.toPath();
+
+		try {
+			path.getFileSystem(
+			).provider(
+			).checkAccess(
+				path, AccessMode.EXECUTE
+			);
+			System.out.println("can execute " + path);
+		}
+		catch (IOException ex) {
+			System.out.println("can not execute: " + ex);
+		}
+
+		if (Files.isExecutable(path) && Files.isReadable(path) &&
+			Files.isWritable(path)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	//	private Path _getResourcePath(String fileName) throws Exception {
+	//		Class<? extends FileImplTest> clazz = getClass();
+
+	//
+	//		//URL url = clazz.getResource("root");
+	//
+	//		//Path path = Paths.get(url.toURI());
+	//		String pathStr = _fileImpl.getPath(fileName);
+	//		Path path = new Path();
+
+	//		return path.resolve(fileName);
+	//	}
+
+	private Path _evilFileTargetDir;
 	private final FileImpl _fileImpl = new FileImpl();
+	private File _tempFolder;
 
 }

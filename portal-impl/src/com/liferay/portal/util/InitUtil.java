@@ -55,6 +55,8 @@ import com.liferay.portal.spring.bean.LiferayBeanFactory;
 import com.liferay.portal.spring.compat.CompatBeanDefinitionRegistryPostProcessor;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
 import com.liferay.portal.spring.context.ArrayApplicationContext;
+import com.liferay.portal.verify.VerifyException;
+import com.liferay.portal.verify.VerifyProperties;
 import com.liferay.portal.xml.SAXReaderImpl;
 
 import java.lang.reflect.Field;
@@ -303,6 +305,15 @@ public class InitUtil {
 	}
 
 	public static void registerSpringInitialized() {
+		try {
+			VerifyProperties verifyProperties = new VerifyProperties();
+
+			verifyProperties.verify();
+		}
+		catch (VerifyException verifyException) {
+			throw new RuntimeException(verifyException);
+		}
+
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 		final ServiceRegistration<ModuleServiceLifecycle>

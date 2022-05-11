@@ -41,7 +41,7 @@ import com.liferay.commerce.product.util.CPDefinitionHelper;
 import com.liferay.commerce.service.CommerceOrderService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -134,7 +134,7 @@ public class CommerceSearchResource {
 
 				SearchItemModel searchItemModel = new SearchItemModel(
 					"category",
-					LanguageUtil.get(themeDisplay.getLocale(), "all-content"));
+					_language.get(themeDisplay.getLocale(), "all-content"));
 
 				searchItemModel.setUrl(url);
 
@@ -222,7 +222,7 @@ public class CommerceSearchResource {
 			searchItemModels.add(
 				new SearchItemModel(
 					"label",
-					LanguageUtil.get(themeDisplay.getLocale(), "accounts")));
+					_language.get(themeDisplay.getLocale(), "accounts")));
 		}
 
 		for (Account account : accountList.getAccounts()) {
@@ -245,7 +245,7 @@ public class CommerceSearchResource {
 
 			SearchItemModel searchItemModel = new SearchItemModel(
 				"category",
-				LanguageUtil.get(themeDisplay.getLocale(), "accounts"));
+				_language.get(themeDisplay.getLocale(), "accounts"));
 
 			searchItemModel.setUrl(url);
 
@@ -270,7 +270,7 @@ public class CommerceSearchResource {
 			searchItemModels.add(
 				new SearchItemModel(
 					"label",
-					LanguageUtil.get(themeDisplay.getLocale(), "orders")));
+					_language.get(themeDisplay.getLocale(), "orders")));
 		}
 
 		for (Order order : orderList.getOrders()) {
@@ -298,8 +298,7 @@ public class CommerceSearchResource {
 			url = HttpComponentsUtil.addParameter(url, "q", queryString);
 
 			SearchItemModel searchItemModel = new SearchItemModel(
-				"category",
-				LanguageUtil.get(themeDisplay.getLocale(), "orders"));
+				"category", _language.get(themeDisplay.getLocale(), "orders"));
 
 			searchItemModel.setUrl(url);
 
@@ -368,7 +367,7 @@ public class CommerceSearchResource {
 		if (cpDataSourceResult.getLength() > 0) {
 			searchItemModels.add(
 				new SearchItemModel(
-					"label", LanguageUtil.get(resourceBundle, "catalog")));
+					"label", _language.get(resourceBundle, "catalog")));
 		}
 
 		for (CPCatalogEntry cpCatalogEntry :
@@ -385,7 +384,7 @@ public class CommerceSearchResource {
 			url = HttpComponentsUtil.addParameter(url, "q", queryString);
 
 			SearchItemModel searchItemModel = new SearchItemModel(
-				"category", LanguageUtil.get(resourceBundle, "catalog"));
+				"category", _language.get(resourceBundle, "catalog"));
 
 			searchItemModel.setUrl(url);
 
@@ -434,6 +433,9 @@ public class CommerceSearchResource {
 
 	@Reference
 	private HtmlParser _htmlParser;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

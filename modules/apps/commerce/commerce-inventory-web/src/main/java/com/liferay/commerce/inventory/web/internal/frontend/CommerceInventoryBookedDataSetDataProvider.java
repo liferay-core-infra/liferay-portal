@@ -26,7 +26,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -134,7 +134,7 @@ public class CommerceInventoryBookedDataSetDataProvider
 		Date expirationDate, HttpServletRequest httpServletRequest) {
 
 		if (expirationDate == null) {
-			return LanguageUtil.get(httpServletRequest, "never-expire");
+			return _language.get(httpServletRequest, "never-expire");
 		}
 
 		ThemeDisplay themeDisplay =
@@ -154,6 +154,9 @@ public class CommerceInventoryBookedDataSetDataProvider
 
 	@Reference
 	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

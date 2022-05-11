@@ -39,7 +39,7 @@ import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvide
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
@@ -240,12 +240,12 @@ public class CommerceOrderItemDataSetDataProvider
 		HttpServletRequest httpServletRequest, String period, boolean plural) {
 
 		if (plural) {
-			return LanguageUtil.get(
+			return _language.get(
 				httpServletRequest,
 				StringUtil.toLowerCase(period + CharPool.LOWER_CASE_S));
 		}
 
-		return LanguageUtil.get(httpServletRequest, period);
+		return _language.get(httpServletRequest, period);
 	}
 
 	private String _getPrice(
@@ -303,7 +303,7 @@ public class CommerceOrderItemDataSetDataProvider
 				long duration = cpSubscriptionInfo.getMaxSubscriptionCycles();
 
 				if (duration > 0) {
-					subscriptionDuration = LanguageUtil.format(
+					subscriptionDuration = _language.format(
 						httpServletRequest, "duration-x-x",
 						new Object[] {
 							duration,
@@ -335,7 +335,7 @@ public class CommerceOrderItemDataSetDataProvider
 				long duration =
 					commerceSubscriptionEntry.getMaxSubscriptionCycles();
 
-				subscriptionDuration = LanguageUtil.format(
+				subscriptionDuration = _language.format(
 					httpServletRequest, "duration-x-x",
 					new Object[] {
 						duration,
@@ -382,7 +382,7 @@ public class CommerceOrderItemDataSetDataProvider
 				int subscriptionLength =
 					cpSubscriptionInfo.getSubscriptionLength();
 
-				subscriptionPeriod = LanguageUtil.format(
+				subscriptionPeriod = _language.format(
 					httpServletRequest, "every-x-x",
 					new Object[] {
 						subscriptionLength,
@@ -413,7 +413,7 @@ public class CommerceOrderItemDataSetDataProvider
 				int subscriptionLength =
 					commerceSubscriptionEntry.getSubscriptionLength();
 
-				subscriptionPeriod = LanguageUtil.format(
+				subscriptionPeriod = _language.format(
 					httpServletRequest, "every-x-x",
 					new Object[] {
 						subscriptionLength,
@@ -458,5 +458,8 @@ public class CommerceOrderItemDataSetDataProvider
 
 	@Reference
 	private CPSubscriptionTypeRegistry _cpSubscriptionTypeRegistry;
+
+	@Reference
+	private Language _language;
 
 }

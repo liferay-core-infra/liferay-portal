@@ -28,7 +28,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
@@ -102,7 +102,7 @@ public class CommercePaymentDataSetDataProvider
 					new LabelField(
 						CommerceOrderPaymentConstants.getOrderPaymentLabelStyle(
 							commerceOrderPayment.getStatus()),
-						LanguageUtil.get(
+						_language.get(
 							httpServletRequest,
 							CommerceOrderPaymentConstants.
 								getOrderPaymentStatusLabel(
@@ -132,5 +132,8 @@ public class CommercePaymentDataSetDataProvider
 
 	@Reference
 	private CommerceOrderService _commerceOrderService;
+
+	@Reference
+	private Language _language;
 
 }

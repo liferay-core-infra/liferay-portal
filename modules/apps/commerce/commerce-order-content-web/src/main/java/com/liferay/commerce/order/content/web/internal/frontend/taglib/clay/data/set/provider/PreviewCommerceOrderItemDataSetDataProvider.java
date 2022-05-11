@@ -36,7 +36,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
@@ -307,7 +307,7 @@ public class PreviewCommerceOrderItemDataSetDataProvider
 		CommerceOrderImporterItem commerceOrderImporterItem, Locale locale) {
 
 		if (commerceOrderImporterItem.isValid()) {
-			return LanguageUtil.get(locale, "ok");
+			return _language.get(locale, "ok");
 		}
 
 		String[] errorMessages = commerceOrderImporterItem.getErrorMessages();
@@ -347,6 +347,9 @@ public class PreviewCommerceOrderItemDataSetDataProvider
 
 	@Reference
 	private CPInstanceLocalService _cpInstanceLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

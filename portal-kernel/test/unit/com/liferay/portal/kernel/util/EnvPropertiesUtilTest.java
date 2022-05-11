@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.configuration;
+package com.liferay.portal.kernel.util;
 
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.test.log.LogCapture;
@@ -31,7 +31,7 @@ import org.junit.Test;
 /**
  * @author Shuyang Zhou
  */
-public class ClassLoaderAggregatePropertiesUtilTest {
+public class EnvPropertiesUtilTest {
 
 	@ClassRule
 	@Rule
@@ -65,8 +65,7 @@ public class ClassLoaderAggregatePropertiesUtilTest {
 		// Encoded with illegal content
 
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
-				ClassLoaderAggregatePropertiesUtil.class.getName(),
-				Level.WARNING)) {
+				EnvPropertiesUtil.class.getName(), Level.WARNING)) {
 
 			String s = "abc_xyz_D_-1__DEF__GH";
 
@@ -101,8 +100,8 @@ public class ClassLoaderAggregatePropertiesUtilTest {
 
 	private String _decode(String s) {
 		return ReflectionTestUtil.invoke(
-			ClassLoaderAggregatePropertiesUtil.class, "_decode",
-			new Class<?>[] {String.class}, s);
+			EnvPropertiesUtil.class, "_decode", new Class<?>[] {String.class},
+			s);
 	}
 
 }

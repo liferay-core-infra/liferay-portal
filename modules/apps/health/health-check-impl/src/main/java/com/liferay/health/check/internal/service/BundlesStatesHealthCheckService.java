@@ -34,6 +34,7 @@ import org.apache.felix.dm.diagnostics.MissingDependency;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
@@ -243,7 +244,7 @@ public class BundlesStatesHealthCheckService implements HealthCheckService {
 	private boolean _isNotFragment(Bundle b) {
 		Dictionary<String, String> headers = b.getHeaders(StringPool.BLANK);
 
-		if (headers.get("Fragment-Host") == null) {
+		if (headers.get(Constants.FRAGMENT_HOST) == null) {
 			return true;
 		}
 

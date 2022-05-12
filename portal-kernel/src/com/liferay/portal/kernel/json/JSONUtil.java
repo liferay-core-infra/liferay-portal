@@ -105,6 +105,19 @@ public class JSONUtil {
 		return Objects.equals(jsonObject1.toString(), jsonObject2.toString());
 	}
 
+	public static JSONObject getValidJSONObject(String json) {
+		try {
+			return _createJSONObject(json);
+		}
+		catch (JSONException jsonException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(jsonException);
+			}
+
+			return null;
+		}
+	}
+
 	public static Object getValue(Object object, String... paths) {
 		Object value = null;
 

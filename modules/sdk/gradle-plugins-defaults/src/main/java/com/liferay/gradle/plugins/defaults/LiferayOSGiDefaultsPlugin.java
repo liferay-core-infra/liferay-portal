@@ -712,27 +712,16 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	private void _addDependenciesTestCompile(Project project) {
 		GradleUtil.addDependency(
 			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, "org.mockito",
-			"mockito-core", "1.10.8");
+			"mockito-core", "4.5.1");
 
-		ModuleDependency moduleDependency =
-			(ModuleDependency)GradleUtil.addDependency(
-				project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME,
-				"org.powermock", "powermock-api-mockito", "1.6.1");
-
-		Map<String, String> excludeArgs = new HashMap<>();
-
-		excludeArgs.put("group", "org.mockito");
-		excludeArgs.put("module", "mockito-all");
-
-		moduleDependency.exclude(excludeArgs);
+		GradleUtil.addDependency(
+			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, "org.mockito",
+			"mockito-inline", "4.5.1");
 
 		GradleUtil.addDependency(
 			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME,
 			"com.liferay.portletmvc4spring",
 			"com.liferay.portletmvc4spring.test", "5.2.1");
-		GradleUtil.addDependency(
-			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME,
-			"org.powermock", "powermock-module-junit4", "1.6.1");
 		GradleUtil.addDependency(
 			project, JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME,
 			"org.springframework", "spring-test", "5.2.2.RELEASE");

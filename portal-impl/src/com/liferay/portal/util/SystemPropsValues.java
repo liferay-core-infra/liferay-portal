@@ -29,4 +29,9 @@ public class SystemPropsValues {
 				SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL),
 			2000);
 
+	public static final int MODULE_FRAMEWORK_BEGINNING_START_LEVEL =
+		GetterUtil.getInteger(
+			SystemProperties.get(
+				SystemPropsKeys.MODULE_FRAMEWORK_BEGINNING_START_LEVEL));
+
 }

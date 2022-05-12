@@ -290,6 +290,10 @@ public class VerifyProperties extends VerifyProcess {
 		{
 			"module.framework.auto.deploy.interval",
 			"module.framework.auto.deploy.interval"
+		},
+		{
+			"module.framework.beginning.start.level",
+			"module.framework.beginning.start.level"
 		}
 	};
 

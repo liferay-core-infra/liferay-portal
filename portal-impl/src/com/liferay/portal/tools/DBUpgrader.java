@@ -157,6 +157,8 @@ public class DBUpgrader {
 	public static void upgrade(ApplicationContext applicationContext)
 		throws Exception {
 
+		verify();
+
 		StartupHelperUtil.setUpgrading(true);
 
 		_upgradePortal();
@@ -415,8 +417,6 @@ public class DBUpgrader {
 		CacheRegistryUtil.setActive(true);
 
 		_checkClassNamesAndResourceActions();
-
-		verify();
 	}
 
 	private static final Version _VERSION_7010 = new Version(0, 0, 6);

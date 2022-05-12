@@ -1377,11 +1377,6 @@ public class PropsValues {
 			PropsUtil.getArray(
 				PropsKeys.MODULE_FRAMEWORK_CONFIGURATION_BUNDLE_SYMBOLIC_NAMES);
 
-	public static final boolean MODULE_FRAMEWORK_EXPORT_PASSWORD_ATTRIBUTES =
-		GetterUtil.getBoolean(
-			PropsUtil.get(
-				PropsKeys.MODULE_FRAMEWORK_EXPORT_PASSWORD_ATTRIBUTES));
-
 	public static final int MODULE_FRAMEWORK_FILE_INSTALL_ACTIVE_LEVEL =
 		GetterUtil.getInteger(
 			PropsUtil.get(

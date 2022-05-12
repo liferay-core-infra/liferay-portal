@@ -44,4 +44,9 @@ public class SystemPropsValues {
 			SystemProperties.get(
 				SystemPropsKeys.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL));
 
+	public static final boolean MODULE_FRAMEWORK_EXPORT_PASSWORD_ATTRIBUTES =
+		GetterUtil.getBoolean(
+			SystemProperties.get(
+				SystemPropsKeys.MODULE_FRAMEWORK_EXPORT_PASSWORD_ATTRIBUTES));
+
 }

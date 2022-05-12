@@ -39,4 +39,9 @@ public class SystemPropsValues {
 			SystemProperties.get(
 				SystemPropsKeys.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED));
 
+	public static final int MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL =
+		GetterUtil.getInteger(
+			SystemProperties.get(
+				SystemPropsKeys.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL));
+
 }

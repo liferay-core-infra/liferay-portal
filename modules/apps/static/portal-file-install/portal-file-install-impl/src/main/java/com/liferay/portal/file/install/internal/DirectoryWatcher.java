@@ -840,11 +840,12 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				bundleStartLevel.setStartLevel(
 					PropsValues.MODULE_FRAMEWORK_WEB_START_LEVEL);
 			}
-			else if (PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL !=
-						0) {
+			else if (SystemPropsValues.
+						MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL != 0) {
 
 				bundleStartLevel.setStartLevel(
-					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+					SystemPropsValues.
+						MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
 			}
 
 			return bundle;

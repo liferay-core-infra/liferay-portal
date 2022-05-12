@@ -298,6 +298,10 @@ public class VerifyProperties extends VerifyProcess {
 		{
 			"module.framework.concurrent.startup.enabled",
 			"module.framework.concurrent.startup.enabled"
+		},
+		{
+			"module.framework.dynamic.install.start.level",
+			"module.framework.dynamic.install.start.level"
 		}
 	};
 

@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -132,7 +133,9 @@ public class DDMFormFieldValidationUpgradeProcess extends UpgradeProcess {
 			String originalValue = validationJSONObject.getString(
 				"errorMessage");
 
-			if (JSONUtil.isValid(originalValue)) {
+			if (Validator.isNotNull(
+					JSONUtil.createValidJSONObject(originalValue))) {
+
 				continue;
 			}
 

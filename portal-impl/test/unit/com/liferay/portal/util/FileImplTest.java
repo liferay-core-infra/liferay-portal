@@ -15,9 +15,21 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.io.File;
+
+import java.net.URL;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,6 +44,22 @@ public class FileImplTest {
 	@Rule
 	public static final LiferayUnitTestRule liferayUnitTestRule =
 		LiferayUnitTestRule.INSTANCE;
+
+	@Before
+	public void setUp() throws Exception {
+		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
+			new FastDateFormatFactoryUtil();
+
+		fastDateFormatFactoryUtil.setFastDateFormatFactory(
+			new FastDateFormatFactoryImpl());
+
+		_tempFolder = _fileImpl.createTempFolder();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		_fileImpl.delete(_tempFolder);
+	}
 
 	@Test
 	public void testAppendParentheticalSuffixWhenFileNameHasParenthesis() {
@@ -223,6 +251,80 @@ public class FileImplTest {
 			"()test.jsp", _fileImpl.stripParentheticalSuffix("()test.jsp"));
 	}
 
+	@Test
+	public void testUnzip() throws Exception {
+		_fileImpl.unzip(
+			_getResourcePath("testForFileImplTest.zip"), _tempFolder);
+
+		_assertExists("zip/test/directory");
+		_assertExists("zip/test/entry/entry.txt");
+
+		Assert.assertTrue(
+			_canFileReadWrite(_getTempTestFilePath("zip/test/directory")));
+
+		Assert.assertTrue(
+			_canFileReadWrite(
+				_getTempTestFilePath("zip/test/entry/entry.txt")));
+	}
+
+	@Test
+	public void testUnzipZipSlipVulnerable() throws Exception {
+		_fileImpl.unzip(
+			_getResourcePath("test_slipForFileImplTest.zip"), _tempFolder);
+
+		_assertExists("good.txt");
+		_assertDoesNotExist("tmp/evil.txt");
+	}
+
+	private void _assertDoesNotExist(String name) throws Exception {
+		Path fullPath = _getTempTestFilePath(name);
+
+		Assert.assertFalse(Files.exists(fullPath));
+	}
+
+	private void _assertExists(String name) throws Exception {
+		Path fullPath = _getTempTestFilePath(name);
+
+		Assert.assertTrue(Files.exists(fullPath));
+	}
+
+	private boolean _canFileReadWrite(Path path) {
+		if (OSDetector.isWindows()) {
+			File file = path.toFile();
+
+			if (file.canExecute() && file.canRead() && file.canWrite()) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (Files.isReadable(path) && Files.isWritable(path)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private File _getResourcePath(String fileName) throws Exception {
+		Class<? extends FileImplTest> clazz = getClass();
+
+		URL url = clazz.getResource("dependencies");
+
+		Path path = Paths.get(url.toURI());
+
+		Path pathOfFile = path.resolve(fileName);
+
+		return pathOfFile.toFile();
+	}
+
+	private Path _getTempTestFilePath(String path) throws Exception {
+		Path pathToTempFolder = _tempFolder.toPath();
+
+		return pathToTempFolder.resolve(path);
+	}
+
 	private final FileImpl _fileImpl = new FileImpl();
+	private File _tempFolder;
 
 }

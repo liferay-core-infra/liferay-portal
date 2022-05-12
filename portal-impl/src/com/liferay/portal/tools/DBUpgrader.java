@@ -180,9 +180,7 @@ public class DBUpgrader {
 	}
 
 	public static void verify() throws Exception {
-		VerifyProperties verifyProperties = new VerifyProperties();
-
-		verifyProperties.verify();
+		VerifyProperties.verify();
 
 		VerifyGroup verifyGroup = new VerifyGroup();
 

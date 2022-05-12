@@ -15,7 +15,18 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.OSDetector;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -223,6 +234,171 @@ public class FileImplTest {
 			"()test.jsp", _fileImpl.stripParentheticalSuffix("()test.jsp"));
 	}
 
+	@Test
+	public void testUnzip() throws Exception {
+		_setUpForUnzipTests();
+
+		File file = _createZipFileTestZip();
+
+		_fileImpl.unzip(file, _tempFolder);
+
+		_assertExists("zip/test/directory");
+		_assertExists("zip/test/entry/entry.txt");
+
+		Assert.assertTrue(
+			_canFileReadWrite(_getTempTestFilePath("zip/test/directory")));
+
+		Assert.assertTrue(
+			_canFileReadWrite(
+				_getTempTestFilePath("zip/test/entry/entry.txt")));
+		_tearDown();
+	}
+
+	@Test
+	public void testUnzipZipSlipVulnerable() throws Exception {
+		_setUpForUnzipTests();
+
+		File file = _createZipFileTestSlipZip();
+
+		_fileImpl.unzip(file, _tempFolder);
+
+		_assertExists("good.txt");
+		_assertDoesNotExist("tmp/bad.txt");
+		_tearDown();
+	}
+
+	private void _assertDoesNotExist(String name) throws Exception {
+		Path fullPath = _getTempTestFilePath(name);
+
+		Assert.assertFalse(Files.exists(fullPath));
+	}
+
+	private void _assertExists(String name) throws Exception {
+		Path fullPath = _getTempTestFilePath(name);
+
+		Assert.assertTrue(Files.exists(fullPath));
+	}
+
+	private boolean _canFileReadWrite(Path path) {
+		if (OSDetector.isWindows()) {
+			File file = path.toFile();
+
+			if (file.canExecute() && file.canRead() && file.canWrite()) {
+				return true;
+			}
+
+			return false;
+		}
+
+		if (Files.isReadable(path) && Files.isWritable(path)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private File _createZipFileTestSlipZip() throws Exception {
+		StringBuilder sbForGoodTxt = new StringBuilder();
+
+		sbForGoodTxt.append("I am good!");
+
+		StringBuilder sbForBadTxt = new StringBuilder();
+
+		sbForBadTxt.append("I am bad!");
+
+		File file = new File(
+			_tempFolderForCreatingZip.getCanonicalPath() + "/test_slip.zip");
+
+		ZipOutputStream zipOutputStream = new ZipOutputStream(
+			new FileOutputStream(file));
+
+		ZipEntry e1 = new ZipEntry("good.txt");
+
+		zipOutputStream.putNextEntry(e1);
+
+		String tempStrGood = sbForGoodTxt.toString();
+
+		byte[] dataForGood = tempStrGood.getBytes();
+
+		zipOutputStream.write(dataForGood, 0, dataForGood.length);
+
+		zipOutputStream.closeEntry();
+
+		ZipEntry e2 = new ZipEntry("../../../../../../bad.txt");
+
+		zipOutputStream.putNextEntry(e2);
+
+		String tempStrBad = sbForBadTxt.toString();
+
+		byte[] dataForBad = tempStrBad.getBytes();
+
+		zipOutputStream.write(dataForBad, 0, dataForBad.length);
+
+		zipOutputStream.closeEntry();
+
+		zipOutputStream.close();
+
+		return file;
+	}
+
+	private File _createZipFileTestZip() throws Exception {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("Test String");
+
+		File file = new File(
+			_tempFolderForCreatingZip.getCanonicalPath() + "/test.zip");
+
+		ZipOutputStream zipOutputStream = new ZipOutputStream(
+			new FileOutputStream(file));
+
+		ZipEntry e1 = new ZipEntry("zip/test/entry/entry.txt");
+
+		zipOutputStream.putNextEntry(e1);
+
+		String tempStr = sb.toString();
+
+		byte[] data = tempStr.getBytes();
+
+		zipOutputStream.write(data, 0, data.length);
+
+		zipOutputStream.closeEntry();
+
+		ZipEntry e2 = new ZipEntry("zip/test/directory/");
+
+		zipOutputStream.putNextEntry(e2);
+
+		zipOutputStream.closeEntry();
+
+		zipOutputStream.close();
+
+		return file;
+	}
+
+	private Path _getTempTestFilePath(String path) throws Exception {
+		Path pathToTempFolder = _tempFolder.toPath();
+
+		return pathToTempFolder.resolve(path);
+	}
+
+	private void _setUpForUnzipTests() throws Exception {
+		FastDateFormatFactoryUtil fastDateFormatFactoryUtil =
+			new FastDateFormatFactoryUtil();
+
+		fastDateFormatFactoryUtil.setFastDateFormatFactory(
+			new FastDateFormatFactoryImpl());
+
+		_tempFolder = _fileImpl.createTempFolder();
+		_tempFolderForCreatingZip = _fileImpl.createTempFolder();
+	}
+
+	private void _tearDown() throws Exception {
+		_fileImpl.deltree(_tempFolder);
+		_fileImpl.deltree(_tempFolderForCreatingZip);
+	}
+
 	private final FileImpl _fileImpl = new FileImpl();
+	private File _tempFolder;
+	private File _tempFolderForCreatingZip;
 
 }

@@ -55,6 +55,7 @@ import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PortalClassPathUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.beans.PropertyDescriptor;
 
@@ -260,7 +261,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		FutureTask<Void> springInitTask = null;
 
-		if (PropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
+		if (SystemPropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
 			springInitTask = new FutureTask<>(
 				() -> {
 					super.contextInitialized(servletContextEvent);

@@ -1467,7 +1467,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		_installConfigs(bundleWiring.getClassLoader());
 
-		if (PropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
+		if (SystemPropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
 			Runtime runtime = Runtime.getRuntime();
 
 			Thread currentThread = Thread.currentThread();

@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -192,7 +193,8 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 	public void run() {
 		if (!PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_NO_INITIAL_DELAY) {
 			try {
-				Thread.sleep(PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL);
+				Thread.sleep(
+					SystemPropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL);
 			}
 			catch (InterruptedException interruptedException) {
 				if (_log.isDebugEnabled()) {
@@ -223,7 +225,9 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 				}
 
 				synchronized (this) {
-					wait(PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL);
+					wait(
+						SystemPropsValues.
+							MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL);
 				}
 			}
 			catch (InterruptedException interruptedException) {

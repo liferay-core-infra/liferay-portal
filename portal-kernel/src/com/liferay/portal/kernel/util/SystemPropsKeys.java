@@ -18,4 +18,8 @@ package com.liferay.portal.kernel.util;
  * @author Jiaxu Wei
  */
 public interface SystemPropsKeys {
+
+	public static final String MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL =
+		"module.framework.auto.deploy.interval";
+
 }

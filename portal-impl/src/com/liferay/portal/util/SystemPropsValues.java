@@ -14,8 +14,19 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
+
 /**
  * @author Jiaxu Wei
  */
 public class SystemPropsValues {
+
+	public static final long MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL =
+		GetterUtil.getLong(
+			SystemProperties.get(
+				SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL),
+			2000);
+
 }

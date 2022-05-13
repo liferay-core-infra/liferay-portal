@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.upgrade.PortalUpgradeProcess;
 import com.liferay.portal.upgrade.internal.release.osgi.commands.ReleaseManagerOSGiCommands;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -362,7 +363,7 @@ public class UpgradeReport {
 	private String _getPropertiesInfo() {
 		StringBuffer sb = new StringBuffer(12);
 
-		sb.append("liferay.home=" + PropsValues.LIFERAY_HOME);
+		sb.append("liferay.home=" + SystemPropsValues.LIFERAY_HOME);
 		sb.append("\nlocales=" + Arrays.toString(PropsValues.LOCALES));
 		sb.append(
 			"\nlocales.enabled=" +
@@ -397,7 +398,8 @@ public class UpgradeReport {
 			_rootDir = _getRootDir(_CONFIGURATION_PID_FILE_SYSTEM_STORE);
 
 			if (_rootDir == null) {
-				_rootDir = PropsValues.LIFERAY_HOME + "/data/document_library";
+				_rootDir =
+					SystemPropsValues.LIFERAY_HOME + "/data/document_library";
 			}
 		}
 

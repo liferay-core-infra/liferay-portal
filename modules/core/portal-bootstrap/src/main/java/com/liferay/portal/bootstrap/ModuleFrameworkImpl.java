@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.module.framework.ModuleFramework;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -411,7 +412,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		properties.put("java.security.manager", null);
 		properties.put("org.osgi.framework.security", null);
 
-		File file = new File(PropsValues.LIFERAY_HOME);
+		File file = new File(SystemPropsValues.LIFERAY_HOME);
 
 		URI uri = file.toURI();
 
@@ -960,6 +961,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		_installBundlesFromDir(
 			PropsValues.MODULE_FRAMEWORK_PORTAL_DIR, checksums, fragmentHosts);
+
 		_installBundlesFromDir(
 			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, checksums, fragmentHosts);
 

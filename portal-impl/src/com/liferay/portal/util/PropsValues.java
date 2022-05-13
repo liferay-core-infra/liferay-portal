@@ -1177,9 +1177,6 @@ public class PropsValues {
 	public static final long LEARN_RESOURCES_REFRESH_TIME = GetterUtil.getLong(
 		PropsUtil.get(PropsKeys.LEARN_RESOURCES_REFRESH_TIME));
 
-	public static final String LIFERAY_HOME = PropsUtil.get(
-		PropsKeys.LIFERAY_HOME);
-
 	public static final String LIFERAY_LIB_GLOBAL_SHARED_DIR = PropsUtil.get(
 		PropsKeys.LIFERAY_LIB_GLOBAL_SHARED_DIR);
 

@@ -32,6 +32,9 @@ public interface SystemPropsKeys {
 	public static final String MODULE_FRAMEWORK_MARKETPLACE_DIR =
 		"module.framework.marketplace.dir";
 
+	public static final String MODULE_FRAMEWORK_RESOLVER_REVISION_BATCH_SIZE =
+		"module.framework.resolver.revision.batch.size";
+
 	public static final String RESOURCE_REPOSITORIES_ROOT =
 		"resource.repositories.root";
 

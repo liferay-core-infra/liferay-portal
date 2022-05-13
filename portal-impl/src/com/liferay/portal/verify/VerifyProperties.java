@@ -325,6 +325,10 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir",
 			"module.framework.marketplace.dir"
 		},
+		{
+			"module.framework.resolver.revision.batch.size",
+			"module.framework.resolver.revision.batch.size"
+		},
 		{"resource.repositories.root", "resource.repositories.root"}
 
 	};

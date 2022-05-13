@@ -436,6 +436,7 @@ public class VerifyProperties {
 		},
 		{"module.framework.configs.dir", "module.framework.configs.dir"},
 		{"module.framework.modules.dir", "module.framework.modules.dir"},
+		{"module.framework.portal.dir", "module.framework.portal.dir"},
 		{"resource.repositories.root", "resource.repositories.root"}
 	};
 

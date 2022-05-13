@@ -14,8 +14,15 @@
 
 package com.liferay.portal.util;
 
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
+
 /**
  * @author Jiaxu Wei
  */
 public class SystemPropsValues {
+
+
+	public static final String RESOURCE_REPOSITORIES_ROOT =
+		SystemProperties.get(SystemPropsKeys.RESOURCE_REPOSITORIES_ROOT);
 }

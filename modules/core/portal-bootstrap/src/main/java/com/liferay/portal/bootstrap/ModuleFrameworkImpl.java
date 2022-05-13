@@ -798,7 +798,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private String _getSystemPackagesExtra(String exportedPackages) {
 		String[] systemPackagesExtra =
-			PropsValues.MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA;
+			SystemPropsValues.MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA;
 
 		StringBundler sb = new StringBundler();
 

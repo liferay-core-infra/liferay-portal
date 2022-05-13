@@ -329,8 +329,11 @@ public class VerifyProperties {
 			"module.framework.resolver.revision.batch.size",
 			"module.framework.resolver.revision.batch.size"
 		},
+		{
+			"module.framework.system.packages.extra",
+			"module.framework.system.packages.extra"
+		},
 		{"resource.repositories.root", "resource.repositories.root"}
-
 	};
 
 	private static final String[][] _MIGRATED_SYSTEM_KEYS = {

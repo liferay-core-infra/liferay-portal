@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.StringPool;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -53,13 +55,7 @@ public class SystemProperties {
 	}
 
 	public static String get(String key) {
-		String value = _properties.get(key);
-
-		if (value == null) {
-			value = System.getProperty(key);
-		}
-
-		return value;
+		return _parseProperty(_get(key));
 	}
 
 	public static String[] getArray(String key) {
@@ -86,7 +82,7 @@ public class SystemProperties {
 				properties.put(key, _parseProperty(entry.getValue()));
 			}
 		}
-
+		
 		return properties;
 	}
 
@@ -198,6 +194,59 @@ public class SystemProperties {
 		System.setProperty(key, value);
 
 		_properties.put(key, value);
+	}
+
+	private static String _get(String key) {
+		String value = _properties.get(key);
+
+		if (value == null) {
+			value = System.getProperty(key);
+		}
+
+		return value;
+	}
+
+	private static String _parseProperty(String value) {
+		return _replacePlaceholders(value);
+	}
+
+	private static String _replacePlaceholders(String value) {
+		if (value == null) {
+			return value;
+		}
+
+		int startIndex = value.indexOf(StringPool.DOLLAR_AND_OPEN_CURLY_BRACE);
+
+		if (startIndex != -1) {
+			int endIndex = value.indexOf(
+				StringPool.CLOSE_CURLY_BRACE, startIndex);
+
+			if (endIndex != -1) {
+				String placeholderKey = value.substring(
+					startIndex +
+						StringPool.DOLLAR_AND_OPEN_CURLY_BRACE.length(),
+					endIndex);
+
+				String placeholderValue = _get(placeholderKey);
+
+				if (placeholderValue == null) {
+					placeholderValue = StringPool.BLANK;
+				}
+				else {
+					placeholderValue = _replacePlaceholders(placeholderValue);
+				}
+
+				String newValue = StringUtil.replace(
+					value,
+					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE + placeholderKey +
+						StringPool.CLOSE_CURLY_BRACE,
+					placeholderValue, startIndex);
+
+				value = _replacePlaceholders(newValue);
+			}
+		}
+
+		return value;
 	}
 
 	private static final Map<String, String[]> _arrayValues =

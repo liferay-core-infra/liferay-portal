@@ -17,12 +17,8 @@ package com.liferay.fragment.renderer.menu.display.internal;
 import com.liferay.fragment.renderer.menu.display.internal.MenuDisplayFragmentConfiguration.ContextualMenu;
 import com.liferay.fragment.renderer.menu.display.internal.MenuDisplayFragmentConfiguration.DisplayStyle;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -62,19 +58,6 @@ public class MenuDisplayFragmentConfigurationParser {
 			sublevels);
 	}
 
-	private JSONObject _createJSONObject(String value) {
-		try {
-			return JSONFactoryUtil.createJSONObject(value);
-		}
-		catch (JSONException jsonException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(jsonException);
-			}
-
-			return JSONFactoryUtil.createJSONObject();
-		}
-	}
-
 	private DisplayStyle _getDisplayStyle(
 		String configuration, String editableValues) {
 
@@ -94,9 +77,9 @@ public class MenuDisplayFragmentConfigurationParser {
 				configuration, editableValues,
 				LocaleUtil.getMostRelevantLocale(), "source"));
 
-		if (JSONUtil.isValid(source)) {
-			JSONObject jsonObject = _createJSONObject(source);
+		JSONObject jsonObject = JSONUtil.createJSONObject(source);
 
+		if (jsonObject != null) {
 			if (jsonObject.has("contextualMenu")) {
 				return ContextualMenu.parse(
 					jsonObject.getString("contextualMenu"));
@@ -119,9 +102,6 @@ public class MenuDisplayFragmentConfigurationParser {
 				configuration, editableValues,
 				LocaleUtil.getMostRelevantLocale(), "sublevels"));
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		MenuDisplayFragmentConfigurationParser.class);
 
 	@Reference
 	private FragmentEntryConfigurationParser _fragmentEntryConfigurationParser;

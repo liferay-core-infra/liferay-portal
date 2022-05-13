@@ -321,6 +321,10 @@ public class VerifyProperties {
 			"module.framework.auto.deploy.dirs"
 		},
 		{"module.framework.base.dir", "module.framework.base.dir"},
+		{
+			"module.framework.marketplace.dir",
+			"module.framework.marketplace.dir"
+		},
 		{"resource.repositories.root", "resource.repositories.root"}
 
 	};

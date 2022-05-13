@@ -37,6 +37,7 @@ import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -418,7 +419,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 		File deploymentDir = new File(
 			GetterUtil.getString(
 				bundleContext.getProperty("lpkg.deployer.dir"),
-				PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR));
+				SystemPropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR));
 
 		deploymentDir = deploymentDir.getCanonicalFile();
 

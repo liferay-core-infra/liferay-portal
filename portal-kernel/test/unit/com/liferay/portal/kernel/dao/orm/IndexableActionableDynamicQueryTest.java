@@ -39,7 +39,7 @@ public class IndexableActionableDynamicQueryTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
@@ -90,7 +90,7 @@ public class IndexableActionableDynamicQueryTest {
 	}
 
 	protected void verifyNoDocumentsUpdated() {
-		Mockito.verifyZeroInteractions(indexWriterHelper);
+		Mockito.verifyNoInteractions(indexWriterHelper);
 	}
 
 	@Mock

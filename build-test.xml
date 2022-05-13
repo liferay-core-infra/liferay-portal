@@ -10531,8 +10531,6 @@ ${update.properties}</echo>
 
 		<echo append="true" file="portal-impl/src/portal-ext.properties">
 
-liferay.home=${liferay.home}
-
 jdbc.default.jndi.name=
 
 jdbc.default.driverClassName=${database.driver}
@@ -10562,9 +10560,6 @@ passwords.default.policy.change.required=false
 mail.send.blacklist=
 
 mail.session.jndi.name=
-
-module.framework.properties.dependency.manager.sync.timeout=1800
-module.framework.properties.initial.system.check.enabled=true
 
 memory.scheduler.org.quartz.threadPool.threadCount=1
 
@@ -11838,7 +11833,11 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 	</target>
 
 	<target name="prepare-system-ext-properties">
-		<echo file="${app.server.classes.portal.dir}/system-ext.properties">com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000
+		<echo file="${app.server.classes.portal.dir}/system-ext.properties">
+			com.liferay.portal.kernel.util.ServiceProxyFactory.timeout=300000
+			liferay.home=${liferay.home}
+			module.framework.properties.dependency.manager.sync.timeout=1800
+			module.framework.properties.initial.system.check.enabled=true
 log.sanitizer.enabled=false</echo>
 
 		<get-testcase-property property.name="custom.system.properties" />

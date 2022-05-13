@@ -827,7 +827,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			_log.debug("Initializing required startup directories");
 		}
 
-		for (String dirName : PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
+		for (String dirName :
+				SystemPropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
+
 			FileUtil.mkdirs(dirName);
 		}
 

@@ -101,18 +101,13 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 				JSONFactoryUtil.createJSONObject(
 					fragmentEntryLink.getEditableValues());
 
-			if (!JSONUtil.isValid(
-					editableValuesJSONObject.getString(
-						_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR))) {
+			JSONObject configurationJSONObject = JSONUtil.createJSONObject(
+				editableValuesJSONObject.getString(
+					_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR));
 
-				continue;
-			}
+			if ((configurationJSONObject == null) ||
+				!configurationJSONObject.has("targetCollections")) {
 
-			JSONObject configurationJSONObject =
-				editableValuesJSONObject.getJSONObject(
-					_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
-
-			if (!configurationJSONObject.has("targetCollections")) {
 				continue;
 			}
 

@@ -18,7 +18,7 @@ import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 
@@ -77,8 +77,8 @@ public class Log4jExtenderBundleActivator implements BundleActivator {
 	private void _configureLog4j(String symbolicName) {
 		File configFile = new File(
 			StringBundler.concat(
-				PropsValues.MODULE_FRAMEWORK_BASE_DIR, "/log4j/", symbolicName,
-				"-log4j-ext.xml"));
+				SystemPropsValues.MODULE_FRAMEWORK_BASE_DIR, "/log4j/",
+				symbolicName, "-log4j-ext.xml"));
 
 		if (!configFile.exists()) {
 			return;

@@ -23,10 +23,11 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.lpkg.deployer.test.util.LPKGTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -109,7 +110,8 @@ public class BundleBlacklistTest {
 		File deploymentDir = new File(
 			GetterUtil.getString(
 				_bundleContext.getProperty("lpkg.deployer.dir"),
-				PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR));
+				SystemProperties.get(
+					SystemPropsKeys.MODULE_FRAMEWORK_MARKETPLACE_DIR)));
 
 		deploymentDir = deploymentDir.getCanonicalFile();
 

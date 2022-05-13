@@ -22,7 +22,10 @@ import com.liferay.portal.kernel.util.SystemPropsKeys;
  */
 public class SystemPropsValues {
 
+	public static final String LIFERAY_HOME = SystemProperties.get(
+		SystemPropsKeys.LIFERAY_HOME);
 
 	public static final String RESOURCE_REPOSITORIES_ROOT =
 		SystemProperties.get(SystemPropsKeys.RESOURCE_REPOSITORIES_ROOT);
+
 }

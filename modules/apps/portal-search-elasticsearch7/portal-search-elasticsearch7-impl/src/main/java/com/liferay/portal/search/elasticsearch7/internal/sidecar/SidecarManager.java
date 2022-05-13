@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationObserver;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.ElasticsearchConfigurationWrapper;
 import com.liferay.portal.search.elasticsearch7.internal.configuration.OperationModeResolver;
@@ -32,6 +31,7 @@ import com.liferay.portal.search.elasticsearch7.internal.connection.constants.Co
 import com.liferay.portal.search.elasticsearch7.internal.index.constants.SidecarVersionConstants;
 import com.liferay.portal.search.elasticsearch7.internal.util.ResourceUtil;
 import com.liferay.portal.search.elasticsearch7.settings.SettingsContributor;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -184,7 +184,7 @@ public class SidecarManager implements ElasticsearchConfigurationObserver {
 		ElasticsearchInstancePathsBuilder elasticsearchInstancePathsBuilder =
 			new ElasticsearchInstancePathsBuilder();
 
-		Path workPath = Paths.get(props.get(PropsKeys.LIFERAY_HOME));
+		Path workPath = Paths.get(SystemPropsValues.LIFERAY_HOME);
 
 		Path dataPath = workPath.resolve("data/elasticsearch7");
 

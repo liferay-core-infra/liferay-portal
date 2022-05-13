@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.osgi.web.servlet.JSPServletFactory;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 
@@ -72,7 +73,7 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 	private static final String _DIR_NAME_RESOURCES = "/META-INF/resources";
 
 	private static final String _WORK_DIR = StringBundler.concat(
-		PropsValues.LIFERAY_HOME, File.separator, "work", File.separator);
+		SystemPropsValues.LIFERAY_HOME, File.separator, "work", File.separator);
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JSPServletFactoryImpl.class);

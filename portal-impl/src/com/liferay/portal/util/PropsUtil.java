@@ -361,22 +361,13 @@ public class PropsUtil {
 
 		SystemProperties.set(PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
 
-		// Liferay home directory
+		// Ehcache disk directory
 
 		_configuration = ConfigurationFactoryImpl.CONFIGURATION_PORTAL;
 
-		String liferayHome = _configuration.get(PropsKeys.LIFERAY_HOME);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Configured Liferay home " + liferayHome);
-		}
-
-		SystemProperties.set(PropsKeys.LIFERAY_HOME, liferayHome);
-
-		// Ehcache disk directory
-
 		SystemProperties.set(
-			"ehcache.disk.store.dir", liferayHome + "/data/ehcache");
+			"ehcache.disk.store.dir",
+			SystemPropsValues.LIFERAY_HOME + "/data/ehcache");
 
 		if (GetterUtil.getBoolean(
 				SystemProperties.get("company-id-properties"))) {

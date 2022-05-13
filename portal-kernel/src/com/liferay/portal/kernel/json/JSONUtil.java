@@ -95,6 +95,19 @@ public class JSONUtil {
 			JSONUtil::_createJSONArray, JSONArray::put, JSONUtil::concat);
 	}
 
+	public static JSONObject createJSONObject(String json) {
+		try {
+			return _createJSONObject(json);
+		}
+		catch (JSONException jsonException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(jsonException);
+			}
+
+			return null;
+		}
+	}
+
 	public static boolean equals(JSONArray jsonArray1, JSONArray jsonArray2) {
 		return Objects.equals(jsonArray1.toString(), jsonArray2.toString());
 	}

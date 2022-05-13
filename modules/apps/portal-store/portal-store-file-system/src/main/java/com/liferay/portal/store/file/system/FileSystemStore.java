@@ -21,8 +21,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.store.file.system.configuration.FileSystemStoreConfiguration;
 
@@ -54,7 +54,8 @@ public class FileSystemStore implements Store {
 		File rootDir = new File(path);
 
 		if (!rootDir.isAbsolute()) {
-			rootDir = new File(PropsUtil.get(PropsKeys.LIFERAY_HOME), path);
+			rootDir = new File(
+				SystemProperties.get(SystemPropsKeys.LIFERAY_HOME), path);
 		}
 
 		_rootDir = rootDir;

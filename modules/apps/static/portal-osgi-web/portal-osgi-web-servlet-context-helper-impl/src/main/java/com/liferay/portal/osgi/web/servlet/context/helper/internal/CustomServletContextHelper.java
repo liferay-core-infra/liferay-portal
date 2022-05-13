@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.osgi.web.servlet.context.helper.definition.WebResourceCollectionDefinition;
 import com.liferay.portal.servlet.delegate.ServletContextDelegate;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,8 +68,9 @@ public class CustomServletContextHelper
 		_webResourceCollectionDefinitions = webResourceCollectionDefinitions;
 
 		_overrideDirName = StringBundler.concat(
-			PropsValues.LIFERAY_HOME, File.separator, "work", File.separator,
-			_bundle.getSymbolicName(), StringPool.DASH, _bundle.getVersion());
+			SystemPropsValues.LIFERAY_HOME, File.separator, "work",
+			File.separator, _bundle.getSymbolicName(), StringPool.DASH,
+			_bundle.getVersion());
 
 		Class<?> clazz = getClass();
 

@@ -24,7 +24,7 @@ import com.liferay.portal.osgi.web.wab.generator.internal.artifact.ArtifactURLUt
 import com.liferay.portal.osgi.web.wab.generator.internal.artifact.WarArtifactUrlTransformer;
 import com.liferay.portal.osgi.web.wab.generator.internal.handler.WabURLStreamHandlerService;
 import com.liferay.portal.osgi.web.wab.generator.internal.processor.WabProcessor;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +96,7 @@ public class WabGenerator
 
 		final Set<String> requiredForStartupContextPaths =
 			_getRequiredForStartupContextPaths(
-				Paths.get(PropsValues.LIFERAY_HOME, "osgi/war"));
+				Paths.get(SystemPropsValues.LIFERAY_HOME, "osgi/war"));
 
 		if (requiredForStartupContextPaths.isEmpty()) {
 			return;

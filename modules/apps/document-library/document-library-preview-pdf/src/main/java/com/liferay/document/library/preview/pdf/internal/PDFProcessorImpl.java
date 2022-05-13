@@ -43,9 +43,10 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.SystemEnv;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.log.Log4jLogFactoryImpl;
@@ -709,7 +710,7 @@ public class PDFProcessorImpl
 					ProcessCallable<String> processCallable =
 						new LiferayPDFBoxProcessCallable(
 							ServerDetector.getServerId(),
-							PropsUtil.get(PropsKeys.LIFERAY_HOME),
+							SystemProperties.get(SystemPropsKeys.LIFERAY_HOME),
 							HashMapBuilder.putAll(
 								Log4JUtil.getCustomLogSettings()
 							).put(

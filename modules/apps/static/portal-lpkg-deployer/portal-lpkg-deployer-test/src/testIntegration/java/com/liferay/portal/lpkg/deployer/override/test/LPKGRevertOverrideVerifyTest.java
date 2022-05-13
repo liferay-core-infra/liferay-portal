@@ -16,7 +16,7 @@ package com.liferay.portal.lpkg.deployer.override.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,7 +54,7 @@ public class LPKGRevertOverrideVerifyTest {
 
 		Properties properties = new Properties();
 
-		Path path = Paths.get(PropsValues.LIFERAY_HOME, "/overrides");
+		Path path = Paths.get(SystemPropsValues.LIFERAY_HOME, "/overrides");
 
 		Assert.assertTrue(Files.exists(path));
 
@@ -140,7 +140,7 @@ public class LPKGRevertOverrideVerifyTest {
 			"Static JARs not reverted: " + statics, statics.isEmpty());
 		Assert.assertTrue("WARs not reverted: " + wars, wars.isEmpty());
 
-		Files.delete(Paths.get(PropsValues.LIFERAY_HOME, "/overrides"));
+		Files.delete(Paths.get(SystemPropsValues.LIFERAY_HOME, "/overrides"));
 	}
 
 }

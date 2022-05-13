@@ -40,7 +40,7 @@ import com.liferay.portal.osgi.web.servlet.jsp.compiler.test.servlet.PrecompileT
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,7 +103,7 @@ public class JspPrecompileTest {
 		_bundle.start();
 
 		_workDirPath = Paths.get(
-			PropsValues.LIFERAY_HOME, "work",
+			SystemPropsValues.LIFERAY_HOME, "work",
 			_bundle.getSymbolicName() + StringPool.DASH + _bundle.getVersion());
 
 		Files.createDirectories(_workDirPath);

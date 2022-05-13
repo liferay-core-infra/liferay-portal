@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -39,27 +40,32 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 
 /**
  * @author Igor Spasic
  */
-@PrepareForTest(ServiceContextFactory.class)
-@RunWith(PowerMockRunner.class)
 public class JSONWebServiceInvokerTest extends BaseJSONWebServiceTestCase {
+
+	@ClassRule
+	@Rule
+	public static final LiferayUnitTestRule liferayUnitTestRule =
+		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		final Method getDefaultPlidMethod = LayoutLocalService.class.getMethod(
+		Method getDefaultPlidMethod = LayoutLocalService.class.getMethod(
 			"getDefaultPlid", long.class, boolean.class);
 
 		ReflectionTestUtil.setFieldValue(
@@ -91,15 +97,17 @@ public class JSONWebServiceInvokerTest extends BaseJSONWebServiceTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		Method method = method(
-			ServiceContextFactory.class, "getInstance",
-			HttpServletRequest.class);
-
-		stub(
-			method
-		).toReturn(
+		Mockito.when(
+			ServiceContextFactory.getInstance(
+				Mockito.any(HttpServletRequest.class))
+		).thenReturn(
 			new ServiceContext()
 		);
+	}
+
+	@After
+	public void tearDown() {
+		_serviceContextFactoryMockedStatic.close();
 	}
 
 	@Test
@@ -974,5 +982,9 @@ public class JSONWebServiceInvokerTest extends BaseJSONWebServiceTestCase {
 
 		return new JSONWebServiceInvokerAction(mockHttpServletRequest);
 	}
+
+	private final MockedStatic<ServiceContextFactory>
+		_serviceContextFactoryMockedStatic = Mockito.mockStatic(
+			ServiceContextFactory.class);
 
 }

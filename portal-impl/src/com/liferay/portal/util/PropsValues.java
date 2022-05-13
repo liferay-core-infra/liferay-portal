@@ -1450,9 +1450,6 @@ public class PropsValues {
 		GetterUtil.getLong(
 			PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_STOP_WAIT_TIMEOUT));
 
-	public static final String MODULE_FRAMEWORK_WAR_DIR = PropsUtil.get(
-		PropsKeys.MODULE_FRAMEWORK_WAR_DIR);
-
 	public static final String[]
 		MODULE_FRAMEWORK_WEB_GENERATOR_DEFAULT_SERVLET_PACKAGES =
 			PropsUtil.getArray(

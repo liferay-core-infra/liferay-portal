@@ -15,7 +15,7 @@
 package com.liferay.portal.lpkg.deployer.independence.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class LPKGIndependenceTest {
 		BundleContext bundleContext = bundle.getBundleContext();
 
 		Path tempPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_BASE_DIR, "temp");
+			SystemPropsValues.MODULE_FRAMEWORK_BASE_DIR, "temp");
 
 		File tempFile = tempPath.toFile();
 

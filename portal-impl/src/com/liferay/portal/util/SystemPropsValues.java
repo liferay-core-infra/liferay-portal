@@ -25,6 +25,10 @@ public class SystemPropsValues {
 	public static final String LIFERAY_HOME = SystemProperties.get(
 		SystemPropsKeys.LIFERAY_HOME);
 
+	public static final String[] MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS =
+		SystemProperties.getArray(
+			SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
+
 	public static final String RESOURCE_REPOSITORIES_ROOT =
 		SystemProperties.get(SystemPropsKeys.RESOURCE_REPOSITORIES_ROOT);
 

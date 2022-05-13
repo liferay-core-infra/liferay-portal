@@ -102,6 +102,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
@@ -158,7 +159,7 @@ import org.osgi.framework.ServiceRegistration;
  * @author Kamesh Sampath
  */
 public class HookHotDeployListener
-	extends BaseHotDeployListener implements PropsKeys {
+	extends BaseHotDeployListener implements PropsKeys, SystemPropsKeys {
 
 	public static final String[] SUPPORTED_PROPERTIES = {
 		"admin.default.group.names", "admin.default.role.names",

@@ -2003,9 +2003,6 @@ public class PropsValues {
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.RESOURCE_ACTIONS_STRICT_MODE_ENABLED));
 
-	public static final String RESOURCE_REPOSITORIES_ROOT = PropsUtil.get(
-		PropsKeys.RESOURCE_REPOSITORIES_ROOT);
-
 	public static final String[] REST_PROXY_URL_PREFIXES_ALLOWED =
 		PropsUtil.getArray(PropsKeys.REST_PROXY_URL_PREFIXES_ALLOWED);
 

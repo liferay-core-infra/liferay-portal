@@ -314,7 +314,8 @@ public class VerifyProperties {
 		{
 			"http.header.secure.x.frame.options.255",
 			"http.header.secure.x.frame.options.255"
-		}
+		},
+		{"resource.repositories.root", "resource.repositories.root"}
 	};
 
 	private static final String[][] _MIGRATED_SYSTEM_KEYS = {

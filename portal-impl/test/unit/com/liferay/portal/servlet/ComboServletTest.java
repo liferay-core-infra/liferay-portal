@@ -104,7 +104,7 @@ public class ComboServletTest {
 
 	@Before
 	public void setUp() throws ServletException {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		ReflectionTestUtil.setFieldValue(
 			PortletLocalServiceUtil.class, "_service",

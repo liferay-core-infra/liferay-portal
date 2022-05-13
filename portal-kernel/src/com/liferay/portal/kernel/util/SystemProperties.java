@@ -20,7 +20,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -64,8 +66,28 @@ public class SystemProperties {
 		return _arrayValues.computeIfAbsent(key, k -> StringUtil.split(get(k)));
 	}
 
-	public static Properties getProperties() {
-		return PropertiesUtil.fromMap(_properties);
+	public static Map<String, String> getProperties() {
+		return Collections.unmodifiableMap(_properties);
+	}
+
+	public static Map<String, String> getProperties(
+		String prefix, boolean removePrefix) {
+
+		Map<String, String> properties = new HashMap<>();
+
+		for (Map.Entry<String, String> entry : _properties.entrySet()) {
+			String key = entry.getKey();
+
+			if (key.startsWith(prefix)) {
+				if (removePrefix) {
+					key = key.substring(prefix.length());
+				}
+
+				properties.put(key, _parseProperty(entry.getValue()));
+			}
+		}
+
+		return properties;
 	}
 
 	public static void load(ClassLoader classLoader) {

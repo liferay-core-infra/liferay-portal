@@ -964,7 +964,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		Set<String> fragmentHosts = new HashSet<>();
 
 		_installBundlesFromDir(
-			PropsValues.MODULE_FRAMEWORK_PORTAL_DIR, checksums, fragmentHosts);
+			SystemPropsValues.MODULE_FRAMEWORK_PORTAL_DIR, checksums,
+			fragmentHosts);
 
 		_installBundlesFromDir(
 			SystemPropsValues.MODULE_FRAMEWORK_MODULES_DIR, checksums,

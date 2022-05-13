@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -85,7 +86,7 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		_systemBundle = bundleContext.getBundle(
 			Constants.SYSTEM_BUNDLE_LOCATION);
 
-		for (String dir : PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
+		for (String dir : SystemPropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
 			_watchedDirs.add(new File(dir));
 		}
 

@@ -39,6 +39,10 @@ public class SystemPropsValues {
 		SystemProperties.get(
 			SystemPropsKeys.MODULE_FRAMEWORK_RESOLVER_REVISION_BATCH_SIZE);
 
+	public static final String[] MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA =
+		SystemProperties.getArray(
+			SystemPropsKeys.MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA);
+
 	public static final String RESOURCE_REPOSITORIES_ROOT =
 		SystemProperties.get(SystemPropsKeys.RESOURCE_REPOSITORIES_ROOT);
 

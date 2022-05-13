@@ -29,6 +29,7 @@ import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.File;
 
@@ -92,7 +93,7 @@ public class FileInstallConfigTest {
 			".testConfigurationArrayValues");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		_configuration = _createConfiguration(
@@ -156,11 +157,11 @@ public class FileInstallConfigTest {
 		String contentDeprecated = "testKeyDeprecated=\"testValueDeprecated\"";
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		Path configPathDeprecated = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPidDeprecated.concat(".cfg"));
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
@@ -201,7 +202,7 @@ public class FileInstallConfigTest {
 			".testConfigurationEscapedSubstitution");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		String testKey = "testKey";
@@ -222,7 +223,7 @@ public class FileInstallConfigTest {
 			".testConfigurationValues");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		_configuration = _createConfiguration(
@@ -256,7 +257,7 @@ public class FileInstallConfigTest {
 			".testConfigurationWithComment");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		String testKey = "testKey";
@@ -278,7 +279,7 @@ public class FileInstallConfigTest {
 			".testEncoding");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		String special = "üß";
@@ -324,7 +325,7 @@ public class FileInstallConfigTest {
 			".testReadOnlyConfiguration");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".config"));
 
 		_configuration = _createConfiguration(
@@ -453,7 +454,7 @@ public class FileInstallConfigTest {
 			".testFactoryConfiguration");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			SystemPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			StringBundler.concat(
 				factoryPid, separator, factoryConfigurationName, ".config"));
 

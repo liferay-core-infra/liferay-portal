@@ -84,7 +84,7 @@ public class CompanyIndexFactoryTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_companyIndexFactoryFixture = new CompanyIndexFactoryFixture(
 			_elasticsearchFixture, testName.getMethodName());

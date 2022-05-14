@@ -45,7 +45,7 @@ public class ElasticsearchClusterTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_replicasClusterContext = createReplicasClusterContext();
 	}

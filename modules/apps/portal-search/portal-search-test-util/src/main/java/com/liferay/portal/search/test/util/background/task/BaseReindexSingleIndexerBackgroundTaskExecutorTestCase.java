@@ -39,7 +39,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -56,7 +55,7 @@ public abstract class BaseReindexSingleIndexerBackgroundTaskExecutorTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		long companyId = RandomTestUtil.randomLong();
 
@@ -138,7 +137,7 @@ public abstract class BaseReindexSingleIndexerBackgroundTaskExecutorTestCase {
 
 	protected void setUpIndexerRegistry() {
 		Mockito.when(
-			_indexerRegistry.getIndexer(Matchers.anyString())
+			_indexerRegistry.getIndexer(Mockito.anyString())
 		).thenReturn(
 			_indexer
 		);

@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -60,7 +59,7 @@ public class SynonymSetFilterWriterImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(3)
 		).execute(
-			Matchers.any(CloseIndexRequest.class)
+			Mockito.any(CloseIndexRequest.class)
 		);
 	}
 
@@ -72,7 +71,7 @@ public class SynonymSetFilterWriterImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.never()
 		).execute(
-			Matchers.any(CloseIndexRequest.class)
+			Mockito.any(CloseIndexRequest.class)
 		);
 	}
 

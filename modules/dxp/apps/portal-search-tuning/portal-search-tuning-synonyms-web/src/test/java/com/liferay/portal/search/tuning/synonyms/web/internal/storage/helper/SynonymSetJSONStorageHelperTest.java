@@ -28,7 +28,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -45,7 +44,7 @@ public class SynonymSetJSONStorageHelperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_synonymSetJSONStorageHelper = new SynonymSetJSONStorageHelper();
 
@@ -78,7 +77,7 @@ public class SynonymSetJSONStorageHelperTest {
 		Mockito.verify(
 			_classNameLocalService, Mockito.times(1)
 		).getClassNameId(
-			Matchers.eq(SynonymSet.class)
+			Mockito.eq(SynonymSet.class)
 		);
 		Mockito.verify(
 			_jsonStorageEntryLocalService, Mockito.times(1)
@@ -97,7 +96,7 @@ public class SynonymSetJSONStorageHelperTest {
 		Mockito.verify(
 			_classNameLocalService, Mockito.times(2)
 		).getClassNameId(
-			Matchers.eq(SynonymSet.class)
+			Mockito.eq(SynonymSet.class)
 		);
 		Mockito.verify(
 			_jsonStorageEntryLocalService, Mockito.times(1)

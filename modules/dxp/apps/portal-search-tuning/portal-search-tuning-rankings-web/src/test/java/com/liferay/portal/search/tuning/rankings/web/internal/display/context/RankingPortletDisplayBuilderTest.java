@@ -37,7 +37,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -118,7 +117,7 @@ public class RankingPortletDisplayBuilderTest extends BaseRankingsWebTestCase {
 		).when(
 			portal
 		).getHttpServletRequest(
-			Matchers.any(PortletRequest.class)
+			Mockito.any(PortletRequest.class)
 		);
 
 		return _httpServletRequest;

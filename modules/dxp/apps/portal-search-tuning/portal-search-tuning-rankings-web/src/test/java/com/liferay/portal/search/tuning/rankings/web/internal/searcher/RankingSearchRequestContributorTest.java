@@ -86,14 +86,14 @@ public class RankingSearchRequestContributorTest
 		).when(
 			_rankingIndexReader
 		).fetchByQueryStringOptional(
-			Mockito.anyObject(), Mockito.anyString()
+			Mockito.any(), Mockito.anyString()
 		);
 
 		Mockito.doNothing(
 		).when(
 			_rankingSearchRequestHelper
 		).contribute(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 
 		SearchRequest searchRequest = Mockito.mock(SearchRequest.class);
@@ -132,7 +132,7 @@ public class RankingSearchRequestContributorTest
 		).when(
 			_rankingIndexReader
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		return searchRequestBuilder;

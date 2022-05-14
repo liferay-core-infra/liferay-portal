@@ -42,7 +42,7 @@ public class RankingIndexCreationBundleActivatorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_rankingIndexCreationBundleActivator =
 			new RankingIndexCreationBundleActivator();
@@ -77,7 +77,7 @@ public class RankingIndexCreationBundleActivatorTest {
 			_backgroundTaskManager, Mockito.times(0)
 		).addBackgroundTask(
 			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyString(),
-			Mockito.anyString(), Mockito.anyMap(), Mockito.anyObject()
+			Mockito.anyString(), Mockito.anyMap(), Mockito.any()
 		);
 	}
 
@@ -96,7 +96,7 @@ public class RankingIndexCreationBundleActivatorTest {
 			_backgroundTaskManager, Mockito.times(1)
 		).addBackgroundTask(
 			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyString(),
-			Mockito.anyString(), Mockito.anyMap(), Mockito.anyObject()
+			Mockito.anyString(), Mockito.anyMap(), Mockito.any()
 		);
 	}
 

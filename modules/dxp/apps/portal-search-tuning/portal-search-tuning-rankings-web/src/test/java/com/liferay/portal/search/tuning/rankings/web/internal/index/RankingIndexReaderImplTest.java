@@ -135,7 +135,7 @@ public class RankingIndexReaderImplTest extends BaseRankingsIndexTestCase {
 		).when(
 			_documentToRankingTranslator
 		).translate(
-			Mockito.anyObject(), Mockito.anyString()
+			Mockito.any(), Mockito.anyString()
 		);
 
 		return ranking;

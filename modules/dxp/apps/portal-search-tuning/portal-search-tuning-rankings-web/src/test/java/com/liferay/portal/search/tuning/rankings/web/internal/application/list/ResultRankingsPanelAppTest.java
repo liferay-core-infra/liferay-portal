@@ -44,7 +44,7 @@ public class ResultRankingsPanelAppTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_resultRankingsPanelApp = new ResultRankingsPanelApp();
 

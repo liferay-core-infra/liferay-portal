@@ -81,7 +81,7 @@ public class RankingIndexWriterImplTest extends BaseRankingsIndexTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			(DeleteDocumentRequest)Mockito.anyObject()
+			(DeleteDocumentRequest)Mockito.any()
 		);
 	}
 
@@ -94,7 +94,7 @@ public class RankingIndexWriterImplTest extends BaseRankingsIndexTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			(IndexDocumentRequest)Mockito.anyObject()
+			(IndexDocumentRequest)Mockito.any()
 		);
 	}
 

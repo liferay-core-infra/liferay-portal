@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -63,7 +64,7 @@ public class AsahFaroBackendClientImplTest {
 			_jsonWebServiceClient.doPost(
 				Mockito.eq(String.class), Mockito.anyString(),
 				Mockito.anyString(), Mockito.any(ExperimentSettings.class),
-				Mockito.anyMapOf(String.class, String.class))
+				Mockito.anyMap())
 		).thenReturn(
 			days
 		);
@@ -81,7 +82,7 @@ public class AsahFaroBackendClientImplTest {
 			_jsonWebServiceClient.doPost(
 				Mockito.eq(String.class), Mockito.anyString(),
 				Mockito.anyString(), Mockito.any(ExperimentSettings.class),
-				Mockito.anyMapOf(String.class, String.class))
+				Mockito.anyMap())
 		).thenReturn(
 			StringPool.BLANK
 		);
@@ -98,7 +99,7 @@ public class AsahFaroBackendClientImplTest {
 			_jsonWebServiceClient.doPost(
 				Mockito.eq(String.class), Mockito.anyString(),
 				Mockito.anyString(), Mockito.any(ExperimentSettings.class),
-				Mockito.anyMapOf(String.class, String.class))
+				Mockito.anyMap())
 		).thenReturn(
 			RandomTestUtil.randomString()
 		);

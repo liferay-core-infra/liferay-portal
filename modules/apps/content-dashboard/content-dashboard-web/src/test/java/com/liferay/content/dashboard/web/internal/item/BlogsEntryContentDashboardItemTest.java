@@ -50,7 +50,6 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -217,7 +216,7 @@ public class BlogsEntryContentDashboardItemTest {
 		Group group = Mockito.mock(Group.class);
 
 		Mockito.when(
-			group.getDescriptiveName(Matchers.any(Locale.class))
+			group.getDescriptiveName(Mockito.any(Locale.class))
 		).thenReturn(
 			"scopeName"
 		);
@@ -362,7 +361,7 @@ public class BlogsEntryContentDashboardItemTest {
 			url
 		);
 		Mockito.when(
-			contentDashboardItemAction.getURL(Matchers.any(Locale.class))
+			contentDashboardItemAction.getURL(Mockito.any(Locale.class))
 		).thenReturn(
 			url
 		);
@@ -383,8 +382,8 @@ public class BlogsEntryContentDashboardItemTest {
 
 		Mockito.when(
 			contentDashboardItemActionProvider.getContentDashboardItemAction(
-				Matchers.any(BlogsEntry.class),
-				Matchers.any(HttpServletRequest.class))
+				Mockito.any(BlogsEntry.class),
+				Mockito.any(HttpServletRequest.class))
 		).thenReturn(
 			contentDashboardItemAction
 		);
@@ -397,8 +396,8 @@ public class BlogsEntryContentDashboardItemTest {
 
 		Mockito.when(
 			contentDashboardItemActionProvider.isShow(
-				Matchers.any(JournalArticle.class),
-				Matchers.any(HttpServletRequest.class))
+				Mockito.any(JournalArticle.class),
+				Mockito.any(HttpServletRequest.class))
 		).thenReturn(
 			true
 		);
@@ -419,7 +418,7 @@ public class BlogsEntryContentDashboardItemTest {
 			Mockito.when(
 				contentDashboardItemActionProviderTracker.
 					getContentDashboardItemActionProviderOptional(
-						Mockito.anyString(), Mockito.anyObject())
+						Mockito.anyString(), Mockito.any())
 			).thenReturn(
 				Optional.empty()
 			);
@@ -476,7 +475,7 @@ public class BlogsEntryContentDashboardItemTest {
 		Language language = Mockito.mock(Language.class);
 
 		Mockito.when(
-			language.get(Matchers.any(Locale.class), Mockito.anyString())
+			language.get(Mockito.any(Locale.class), Mockito.anyString())
 		).thenAnswer(
 			invocation -> invocation.getArguments()[1]
 		);

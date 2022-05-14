@@ -29,6 +29,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.AdditionalMatchers;
 import org.mockito.Mockito;
 
 /**
@@ -56,8 +57,9 @@ public class HTMLImageAttachmentElementReplacerTest {
 
 		Mockito.when(
 			_portletFileRepository.getPortletFileEntryURL(
-				Mockito.isNull(ThemeDisplay.class), Mockito.eq(_fileEntry),
-				Mockito.eq(StringPool.BLANK))
+				AdditionalMatchers.and(
+					Mockito.isNull(), Mockito.isA(ThemeDisplay.class)),
+				Mockito.eq(_fileEntry), Mockito.eq(StringPool.BLANK))
 		).thenReturn(
 			_FILE_ENTRY_IMAGE_URL
 		);

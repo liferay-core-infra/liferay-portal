@@ -44,7 +44,7 @@ public class LinkbackConsumerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_linkbackConsumer = new LinkbackConsumerImpl();
 
@@ -135,7 +135,7 @@ public class LinkbackConsumerTest {
 
 		_linkbackConsumer.verifyNewTrackbacks();
 
-		Mockito.verifyZeroInteractions(_commentManager);
+		Mockito.verifyNoInteractions(_commentManager);
 
 		Mockito.verify(
 			_http

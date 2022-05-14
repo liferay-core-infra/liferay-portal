@@ -56,7 +56,7 @@ import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  * @author Alejandro Tardín
@@ -654,7 +654,7 @@ public class MediaQueryProviderImplTest {
 		).thenAnswer(
 			invocation -> {
 				Function<AMImageQueryBuilder, AMQuery<?, ?>>
-					amImageQueryBuilderFunction = invocation.getArgumentAt(
+					amImageQueryBuilderFunction = invocation.getArgument(
 						0, Function.class);
 
 				AMImageQueryBuilderImpl amImageQueryBuilderImpl =

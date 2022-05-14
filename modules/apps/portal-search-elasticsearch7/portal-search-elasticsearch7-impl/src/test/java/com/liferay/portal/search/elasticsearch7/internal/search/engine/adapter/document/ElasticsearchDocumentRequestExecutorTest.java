@@ -44,7 +44,7 @@ public class ElasticsearchDocumentRequestExecutorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_elasticsearchDocumentRequestExecutor =
 			new ElasticsearchDocumentRequestExecutor() {

@@ -45,7 +45,7 @@ public class ElasticsearchConnectionManagerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_resetAndSetUpMocks();
 

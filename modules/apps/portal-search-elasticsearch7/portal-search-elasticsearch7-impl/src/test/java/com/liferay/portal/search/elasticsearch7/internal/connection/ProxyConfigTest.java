@@ -43,7 +43,7 @@ public class ProxyConfigTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_systemProperties = new Properties(System.getProperties());
 	}

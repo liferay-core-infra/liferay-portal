@@ -48,7 +48,7 @@ public class AttributeDefinitionUtilTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.doReturn(
 			_ID

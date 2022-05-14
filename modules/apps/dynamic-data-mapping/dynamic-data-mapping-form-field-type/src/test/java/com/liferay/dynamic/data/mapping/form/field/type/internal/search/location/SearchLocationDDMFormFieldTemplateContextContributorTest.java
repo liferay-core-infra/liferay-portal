@@ -52,7 +52,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -137,7 +136,7 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 
 	private static void _mockGet(String key, String message) {
 		Mockito.when(
-			_language.get(Matchers.any(ResourceBundle.class), Matchers.eq(key))
+			_language.get(Mockito.any(ResourceBundle.class), Mockito.eq(key))
 		).thenReturn(
 			message
 		);

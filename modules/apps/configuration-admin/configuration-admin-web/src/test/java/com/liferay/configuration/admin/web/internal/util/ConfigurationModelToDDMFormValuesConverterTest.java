@@ -40,7 +40,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
@@ -58,7 +57,7 @@ public class ConfigurationModelToDDMFormValuesConverterTest extends Mockito {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		LanguageUtil languageUtil = new LanguageUtil();
 
@@ -409,7 +408,7 @@ public class ConfigurationModelToDDMFormValuesConverterTest extends Mockito {
 		ExtendedAttributeDefinition[] extendedAttributeDefinitions) {
 
 		when(
-			objectClassDefinition.getAttributeDefinitions(Matchers.anyInt())
+			objectClassDefinition.getAttributeDefinitions(Mockito.anyInt())
 		).thenReturn(
 			extendedAttributeDefinitions
 		);

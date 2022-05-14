@@ -40,7 +40,7 @@ import org.mockito.MockitoAnnotations;
 public class DDMFixture {
 
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_setUpBeanPropertiesUtil();
 		_setUpDDMStructureLocalServiceUtil();

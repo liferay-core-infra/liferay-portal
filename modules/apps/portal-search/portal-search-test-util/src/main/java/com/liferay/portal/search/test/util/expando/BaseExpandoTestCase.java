@@ -52,7 +52,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -193,7 +192,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoBridgeFactory
 		).getExpandoBridge(
-			Mockito.anyLong(), Matchers.eq(_CLASS_NAME_KEYWORD)
+			Mockito.anyLong(), Mockito.eq(_CLASS_NAME_KEYWORD)
 		);
 
 		Mockito.doReturn(
@@ -202,7 +201,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoBridgeFactory
 		).getExpandoBridge(
-			Mockito.anyLong(), Matchers.eq(_CLASS_NAME_TEXT)
+			Mockito.anyLong(), Mockito.eq(_CLASS_NAME_TEXT)
 		);
 
 		return expandoBridgeFactory;
@@ -217,7 +216,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoBridgeIndexer
 		).encodeFieldName(
-			Matchers.eq(_indexTypeKeywordExpandoColumn)
+			Mockito.eq(_indexTypeKeywordExpandoColumn)
 		);
 
 		Mockito.doReturn(
@@ -225,7 +224,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoBridgeIndexer
 		).encodeFieldName(
-			Matchers.eq(_indexTypeTextExpandoColumn)
+			Mockito.eq(_indexTypeTextExpandoColumn)
 		);
 
 		Mockito.doReturn(

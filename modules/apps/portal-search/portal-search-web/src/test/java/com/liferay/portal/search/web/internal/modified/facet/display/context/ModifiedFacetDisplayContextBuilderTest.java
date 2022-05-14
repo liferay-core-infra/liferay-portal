@@ -53,7 +53,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -70,7 +69,7 @@ public class ModifiedFacetDisplayContextBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_calendarFactory = new CalendarFactoryImpl();
 
@@ -332,7 +331,7 @@ public class ModifiedFacetDisplayContextBuilderTest {
 		).when(
 			portletDisplay
 		).getPortletInstanceConfiguration(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		return portletDisplay;
@@ -495,7 +494,7 @@ public class ModifiedFacetDisplayContextBuilderTest {
 	private void _setUpPortalUtil() {
 		Mockito.doAnswer(
 			invocation -> new String[] {
-				invocation.getArgumentAt(0, String.class), StringPool.BLANK
+				invocation.getArgument(0, String.class), StringPool.BLANK
 			}
 		).when(
 			portal

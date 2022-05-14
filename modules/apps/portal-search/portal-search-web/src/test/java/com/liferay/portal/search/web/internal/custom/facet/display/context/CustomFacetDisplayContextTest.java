@@ -52,7 +52,7 @@ public class CustomFacetDisplayContextTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.doReturn(
 			_facetCollector

@@ -34,10 +34,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  * @author Jeyvison Nascimento
@@ -141,13 +140,13 @@ public class DDMFormContextToDDMFormTest {
 	public void testGetValueFromValueAccessor() throws IOException {
 		Mockito.when(
 			_ddmFormFieldTypeServicesTracker.getDDMFormFieldValueAccessor(
-				Matchers.anyString())
+				Mockito.anyString())
 		).thenReturn(
 			_ddmFormFieldValueAccessor
 		);
 
 		Mockito.when(
-			_ddmFormFieldValueAccessor.getValue(Matchers.any(), Matchers.any())
+			_ddmFormFieldValueAccessor.getValue(Mockito.any(), Mockito.any())
 		).thenReturn(
 			false
 		);
@@ -165,7 +164,7 @@ public class DDMFormContextToDDMFormTest {
 	public void testGetValueWithoutValueAccessor() throws IOException {
 		Mockito.when(
 			_ddmFormFieldTypeServicesTracker.getDDMFormFieldValueAccessor(
-				Matchers.anyString())
+				Mockito.anyString())
 		).thenReturn(
 			null
 		);

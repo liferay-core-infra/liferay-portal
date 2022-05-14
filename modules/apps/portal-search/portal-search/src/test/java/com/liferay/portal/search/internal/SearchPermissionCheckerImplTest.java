@@ -34,6 +34,7 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import org.mockito.AdditionalMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -50,14 +51,14 @@ public class SearchPermissionCheckerImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.doReturn(
 			_indexer
 		).when(
 			_indexerRegistry
 		).getIndexer(
-			Mockito.anyString()
+			AdditionalMatchers.or(Mockito.isNull(), Mockito.anyString())
 		);
 
 		_searchPermissionChecker = _createSearchPermissionChecker();

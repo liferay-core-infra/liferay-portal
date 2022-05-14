@@ -55,7 +55,7 @@ public class FacetedSearcherImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_documentFixture = new DocumentFixture();
 
@@ -154,7 +154,7 @@ public class FacetedSearcherImplTest {
 
 		Assert.assertEquals(hits.toString(), 0, hits.getLength());
 
-		Mockito.verifyZeroInteractions(indexSearcherHelper);
+		Mockito.verifyNoInteractions(indexSearcherHelper);
 	}
 
 	private SearchRequestBuilderFactory _createSearchRequestBuilderFactory() {

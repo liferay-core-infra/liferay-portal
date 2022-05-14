@@ -74,7 +74,7 @@ public class SearchDisplayContextTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		themeDisplay = _createThemeDisplay();
 
@@ -185,7 +185,7 @@ public class SearchDisplayContextTest {
 		Assert.assertNull(searchDisplayContext.getSearchContainer());
 		Assert.assertNull(searchDisplayContext.getSearchContext());
 
-		Mockito.verifyZeroInteractions(searcher);
+		Mockito.verifyNoMoreInteractions(searcher);
 	}
 
 	private JSONArray _createJSONArray() {

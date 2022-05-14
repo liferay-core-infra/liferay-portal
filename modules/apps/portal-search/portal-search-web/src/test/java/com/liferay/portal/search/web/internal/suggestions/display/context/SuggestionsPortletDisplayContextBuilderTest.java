@@ -55,7 +55,7 @@ public class SuggestionsPortletDisplayContextBuilderTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_setUpHtml();
 
@@ -413,7 +413,7 @@ public class SuggestionsPortletDisplayContextBuilderTest {
 	private void _setUpPortalUtil() {
 		Mockito.doAnswer(
 			invocation -> new String[] {
-				invocation.getArgumentAt(0, String.class), StringPool.BLANK
+				invocation.getArgument(0, String.class), StringPool.BLANK
 			}
 		).when(
 			portal

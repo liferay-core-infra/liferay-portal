@@ -36,7 +36,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -89,7 +88,7 @@ public class BlogsSimilarResultsContributorTest
 		).when(
 			_blogsEntryLocalService
 		).fetchEntry(
-			Matchers.anyLong(), Matchers.anyString()
+			Mockito.anyLong(), Mockito.anyString()
 		);
 
 		_blogsSimilarResultsContributor.setBlogsEntryLocalService(

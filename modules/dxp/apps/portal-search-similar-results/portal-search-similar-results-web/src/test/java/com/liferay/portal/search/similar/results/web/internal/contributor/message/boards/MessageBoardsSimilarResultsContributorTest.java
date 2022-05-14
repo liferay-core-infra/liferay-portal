@@ -37,7 +37,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -106,7 +105,7 @@ public class MessageBoardsSimilarResultsContributorTest
 		).when(
 			_mbMessageLocalService
 		).fetchMBMessage(
-			Matchers.anyLong()
+			Mockito.anyLong()
 		);
 
 		setUpAssetEntryLocalServiceFetchEntry(
@@ -145,7 +144,7 @@ public class MessageBoardsSimilarResultsContributorTest
 		).when(
 			_mbCategoryLocalService
 		).fetchMBCategory(
-			Matchers.anyLong()
+			Mockito.anyLong()
 		);
 
 		setUpCriteriaHelper("type", "category");

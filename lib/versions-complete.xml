@@ -4447,9 +4447,9 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.tika.jar!poi-scratchpad.jar</file-name>
-				<version>4.1.2</version>
+				<version>5.2.2</version>
 				<project-name>Apache POI</project-name>
-				<project-url>http://poi.apache.org/</project-url>
+				<project-url>https://poi.apache.org/</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -5148,6 +5148,18 @@
 					<license>
 						<license-name>GNU Lesser General Public Licence</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-codec.jar</file-name>
+				<version>1.13</version>
+				<project-name>Apache Commons Codec</project-name>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>

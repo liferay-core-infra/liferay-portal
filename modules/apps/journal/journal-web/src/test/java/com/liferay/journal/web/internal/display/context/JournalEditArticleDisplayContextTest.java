@@ -52,7 +52,7 @@ public class JournalEditArticleDisplayContextTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.when(
 			_httpServletRequest.getAttribute(WebKeys.THEME_DISPLAY)
@@ -127,7 +127,7 @@ public class JournalEditArticleDisplayContextTest {
 			_httpServletRequest, "home"
 		);
 
-		Mockito.verifyZeroInteractions(_journalFolderLocalService);
+		Mockito.verifyNoInteractions(_journalFolderLocalService);
 	}
 
 	@Test
@@ -174,7 +174,7 @@ public class JournalEditArticleDisplayContextTest {
 			folderId
 		);
 
-		Mockito.verifyZeroInteractions(_language);
+		Mockito.verifyNoInteractions(_language);
 	}
 
 	@Test

@@ -57,7 +57,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -74,7 +73,7 @@ public class PingbackMethodImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_setUpBlogsEntryLocalService();
 		_setUpHttpUtil();
@@ -240,9 +239,9 @@ public class PingbackMethodImplTest {
 		Mockito.verify(
 			_commentManager
 		).addComment(
-			Matchers.eq(_USER_ID), Matchers.eq(_GROUP_ID),
-			Matchers.eq(BlogsEntry.class.getName()), Matchers.eq(_ENTRY_ID),
-			Matchers.eq(
+			Mockito.eq(_USER_ID), Mockito.eq(_GROUP_ID),
+			Mockito.eq(BlogsEntry.class.getName()), Mockito.eq(_ENTRY_ID),
+			Mockito.eq(
 				StringBundler.concat(
 					"[...] ", _EXCERPT_BODY, " [...] <a href=", _SOURCE_URI,
 					">", _READ_MORE, "</a>")),
@@ -379,7 +378,7 @@ public class PingbackMethodImplTest {
 		throws Exception {
 
 		Mockito.when(
-			_blogsEntryLocalService.getEntry(Matchers.anyLong())
+			_blogsEntryLocalService.getEntry(Mockito.anyLong())
 		).thenReturn(
 			_blogsEntry
 		);
@@ -461,7 +460,7 @@ public class PingbackMethodImplTest {
 
 		Mockito.when(
 			_blogsEntryLocalService.getEntry(
-				Matchers.anyLong(), Matchers.anyString())
+				Mockito.anyLong(), Mockito.anyString())
 		).thenReturn(
 			_blogsEntry
 		);
@@ -501,7 +500,7 @@ public class PingbackMethodImplTest {
 		for (InetAddress localAddress : _localAddresses) {
 			Mockito.doAnswer(
 				invocation -> InetAddress.getByName(
-					invocation.getArgumentAt(0, String.class))
+					invocation.getArgument(0, String.class))
 			).when(
 				_inetAddressLookup
 			).getInetAddressByName(
@@ -536,20 +535,20 @@ public class PingbackMethodImplTest {
 	private void _setUpPortalUtil() throws Exception {
 		Mockito.when(
 			_portal.getLayoutFullURL(
-				Matchers.anyLong(), Matchers.eq(BlogsPortletKeys.BLOGS))
+				Mockito.anyLong(), Mockito.eq(BlogsPortletKeys.BLOGS))
 		).thenReturn(
 			_LAYOUT_FULL_URL
 		);
 
 		Mockito.when(
 			_portal.getPlidFromFriendlyURL(
-				Matchers.eq(_COMPANY_ID), Matchers.anyString())
+				Mockito.eq(_COMPANY_ID), Mockito.anyString())
 		).thenReturn(
 			RandomTestUtil.randomLong()
 		);
 
 		Mockito.when(
-			_portal.getScopeGroupId(Matchers.anyLong())
+			_portal.getScopeGroupId(Mockito.anyLong())
 		).thenReturn(
 			RandomTestUtil.randomLong()
 		);
@@ -592,7 +591,7 @@ public class PingbackMethodImplTest {
 
 		Mockito.when(
 			_portletLocalService.getPortletById(
-				Matchers.anyLong(), Matchers.eq(BlogsPortletKeys.BLOGS))
+				Mockito.anyLong(), Mockito.eq(BlogsPortletKeys.BLOGS))
 		).thenReturn(
 			portlet
 		);
@@ -610,7 +609,7 @@ public class PingbackMethodImplTest {
 
 	private void _setUpUserLocalService() throws Exception {
 		Mockito.when(
-			_userLocalService.getDefaultUserId(Matchers.anyLong())
+			_userLocalService.getDefaultUserId(Mockito.anyLong())
 		).thenReturn(
 			_USER_ID
 		);
@@ -620,7 +619,7 @@ public class PingbackMethodImplTest {
 		Fault fault = Mockito.mock(Fault.class);
 
 		Mockito.when(
-			_xmlRpc.createFault(Matchers.anyInt(), Matchers.anyString())
+			_xmlRpc.createFault(Mockito.anyInt(), Mockito.anyString())
 		).thenReturn(
 			fault
 		);
@@ -636,13 +635,13 @@ public class PingbackMethodImplTest {
 		Mockito.verify(
 			_commentManager
 		).addComment(
-			Matchers.anyLong(), Matchers.anyLong(), Matchers.anyString(),
-			Matchers.anyLong(),
-			Matchers.eq(
+			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyString(),
+			Mockito.anyLong(),
+			Mockito.eq(
 				StringBundler.concat(
 					"[...] ", excerpt, " [...] <a href=", _SOURCE_URI, ">",
 					_READ_MORE, "</a>")),
-			Matchers.<ServiceContextFunction>any()
+			Mockito.<ServiceContextFunction>any()
 		);
 	}
 
@@ -677,7 +676,7 @@ public class PingbackMethodImplTest {
 		).when(
 			_friendlyURLMapper
 		).populateParams(
-			Matchers.eq(friendlyURLPath), Matchers.anyMap(), Matchers.anyMap()
+			Mockito.eq(friendlyURLPath), Mockito.anyMap(), Mockito.anyMap()
 		);
 	}
 
@@ -691,7 +690,7 @@ public class PingbackMethodImplTest {
 
 	private void _whenLanguageGet(String key, String returnValue) {
 		Mockito.when(
-			_language.get((Locale)Matchers.any(), Matchers.eq(key))
+			_language.get((Locale)Mockito.any(), Mockito.eq(key))
 		).thenReturn(
 			returnValue
 		);

@@ -122,7 +122,7 @@ public class EditSynonymSetsMVCActionCommandTest
 		Mockito.verify(
 			_indexToFilterSynchronizer, Mockito.times(1)
 		).copyToFilter(
-			Mockito.any(), Mockito.anyString(), Mockito.anyBoolean()
+			Mockito.any(), Mockito.nullable(String.class), Mockito.anyBoolean()
 		);
 	}
 

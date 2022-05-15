@@ -58,7 +58,8 @@ public class DDMDataProviderInstanceSettingsImplTest {
 	@Test
 	public void testGetSettings() {
 		Mockito.when(
-			_ddmDataProviderTracker.getDDMDataProvider(Mockito.anyString())
+			_ddmDataProviderTracker.getDDMDataProvider(
+				Mockito.nullable(String.class))
 		).thenReturn(
 			_ddmDataProvider
 		);
@@ -98,7 +99,8 @@ public class DDMDataProviderInstanceSettingsImplTest {
 	@Test(expected = IllegalStateException.class)
 	public void testGetSettingsCatchException() {
 		Mockito.when(
-			_ddmDataProviderTracker.getDDMDataProvider(Mockito.anyString())
+			_ddmDataProviderTracker.getDDMDataProvider(
+				Mockito.nullable(String.class))
 		).thenThrow(
 			IllegalStateException.class
 		);

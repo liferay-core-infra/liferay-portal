@@ -69,7 +69,7 @@ public class SynonymSetToDocumentTranslatorImplTest {
 		).when(
 			documentBuilder
 		).setString(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.nullable(String.class), Mockito.nullable(String.class)
 		);
 
 		Mockito.doReturn(

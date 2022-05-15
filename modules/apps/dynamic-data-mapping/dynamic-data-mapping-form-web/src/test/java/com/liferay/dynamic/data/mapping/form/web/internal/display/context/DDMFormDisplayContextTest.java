@@ -91,7 +91,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.AdditionalMatchers;
 import org.mockito.Mockito;
 
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -795,11 +794,9 @@ public class DDMFormDisplayContextTest {
 
 		Mockito.when(
 			portletPermission.contains(
-				AdditionalMatchers.or(
-					Mockito.any(PermissionChecker.class), Mockito.isNull()),
-				AdditionalMatchers.or(
-					Mockito.any(Layout.class), Mockito.isNull()),
-				Mockito.anyString(), Mockito.anyString())
+				Mockito.nullable(PermissionChecker.class),
+				Mockito.nullable(Layout.class), Mockito.anyString(),
+				Mockito.anyString())
 		).thenReturn(
 			true
 		);

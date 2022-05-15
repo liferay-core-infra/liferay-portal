@@ -82,7 +82,7 @@ public class GooglePlacesUtilTest {
 
 		Mockito.when(
 			portletPreferences.getValue(
-				Mockito.anyString(), Mockito.anyString())
+				Mockito.nullable(String.class), Mockito.nullable(String.class))
 		).thenReturn(
 			_COMPANY_GOOGLE_PLACES_API_KEY
 		);

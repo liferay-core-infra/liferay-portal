@@ -59,8 +59,9 @@ public class WikiLinksCKEditorCreoleEditorConfigContributorTest {
 
 		Mockito.when(
 			itemSelector.getItemSelectorURL(
-				Mockito.any(RequestBackedPortletURLFactory.class),
-				Mockito.anyString(), Mockito.any(ItemSelectorCriterion.class))
+				Mockito.nullable(RequestBackedPortletURLFactory.class),
+				Mockito.nullable(String.class),
+				Mockito.nullable(ItemSelectorCriterion.class))
 		).thenReturn(
 			new PortletURLWrapper(null) {
 
@@ -74,8 +75,9 @@ public class WikiLinksCKEditorCreoleEditorConfigContributorTest {
 
 		Mockito.when(
 			itemSelector.getItemSelectorURL(
-				Mockito.any(RequestBackedPortletURLFactory.class),
-				Mockito.anyString(), Mockito.any(ItemSelectorCriterion.class),
+				Mockito.nullable(RequestBackedPortletURLFactory.class),
+				Mockito.nullable(String.class),
+				Mockito.any(ItemSelectorCriterion.class),
 				Mockito.any(ItemSelectorCriterion.class))
 		).thenReturn(
 			new PortletURLWrapper(null) {

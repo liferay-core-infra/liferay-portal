@@ -703,7 +703,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 		).when(
 			destinationHelper
 		).getRouteParameter(
-			Mockito.anyString()
+			Mockito.nullable(String.class)
 		);
 
 		similarResultsContributor.writeDestination(
@@ -908,7 +908,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 	private void _setUpAssetEntryLocalServiceFetchUUID(AssetEntry assetEntry) {
 		Mockito.when(
 			_assetEntryLocalService.fetchEntry(
-				Mockito.anyLong(), Mockito.anyString())
+				Mockito.anyLong(), Mockito.nullable(String.class))
 		).thenReturn(
 			assetEntry
 		);
@@ -917,7 +917,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 	private void _setUpBlogsEntryLocalService(BlogsEntry blogsEntry) {
 		Mockito.when(
 			_blogsEntryLocalService.fetchEntry(
-				Mockito.anyLong(), Mockito.anyString())
+				Mockito.anyLong(), Mockito.nullable(String.class))
 		).thenReturn(
 			blogsEntry
 		);
@@ -1014,7 +1014,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 	private void _setUpWikiNodeLocalService(WikiNode wikiNode) {
 		Mockito.when(
 			_wikiNodeLocalService.fetchNode(
-				Mockito.anyLong(), Mockito.anyString())
+				Mockito.anyLong(), Mockito.nullable(String.class))
 		).thenReturn(
 			wikiNode
 		);
@@ -1023,7 +1023,8 @@ public class SimilarResultsUidsAndDestinationsTest {
 	private void _setUpWikiPageLocalService(WikiPage wikiPage) {
 		Mockito.when(
 			_wikiPageLocalService.fetchPage(
-				Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())
+				Mockito.anyLong(), Mockito.nullable(String.class),
+				Mockito.anyDouble())
 		).thenReturn(
 			wikiPage
 		);

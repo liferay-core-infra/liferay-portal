@@ -182,7 +182,8 @@ public class UserInitialsGeneratorImplTest {
 		).when(
 			language
 		).get(
-			Mockito.any(Locale.class), Mockito.anyString(), Mockito.anyString()
+			Mockito.any(Locale.class), Mockito.anyString(),
+			Mockito.nullable(String.class)
 		);
 
 		LanguageUtil languageUtil = new LanguageUtil();

@@ -278,28 +278,28 @@ public class DDMFormInstanceRecordXLSWriterTest {
 			ddmFormInstanceRecordXLSWriter, Mockito.times(1)
 		).createCellStyle(
 			Mockito.any(Workbook.class), Mockito.anyBoolean(),
-			Mockito.anyString(), Mockito.anyByte()
+			Mockito.anyString(), Mockito.anyShort()
 		);
 
 		inOrder.verify(
 			ddmFormInstanceRecordXLSWriter, Mockito.times(1)
 		).createRow(
-			Mockito.anyInt(), Mockito.any(CellStyle.class),
-			Mockito.anyCollection(), Mockito.any(Sheet.class)
+			Mockito.anyInt(), Mockito.nullable(CellStyle.class),
+			Mockito.anyCollection(), Mockito.nullable(Sheet.class)
 		);
 
 		inOrder.verify(
 			ddmFormInstanceRecordXLSWriter, Mockito.times(1)
 		).createCellStyle(
 			Mockito.any(Workbook.class), Mockito.anyBoolean(),
-			Mockito.anyString(), Mockito.anyByte()
+			Mockito.anyString(), Mockito.anyShort()
 		);
 
 		inOrder.verify(
 			ddmFormInstanceRecordXLSWriter, Mockito.times(2)
 		).createRow(
-			Mockito.anyInt(), Mockito.any(CellStyle.class),
-			Mockito.anyCollection(), Mockito.any(Sheet.class)
+			Mockito.anyInt(), Mockito.nullable(CellStyle.class),
+			Mockito.anyCollection(), Mockito.nullable(Sheet.class)
 		);
 
 		inOrder.verify(

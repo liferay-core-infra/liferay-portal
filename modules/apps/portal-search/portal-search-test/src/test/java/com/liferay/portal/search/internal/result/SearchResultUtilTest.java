@@ -42,16 +42,12 @@ import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  * @author André de Oliveira
  */
-@RunWith(MockitoJUnitRunner.class)
 public class SearchResultUtilTest extends BaseSearchResultUtilTestCase {
 
 	@ClassRule
@@ -205,21 +201,15 @@ public class SearchResultUtilTest extends BaseSearchResultUtilTestCase {
 		return summaryFactoryImpl;
 	}
 
-	@Mock
 	@SuppressWarnings("rawtypes")
-	private AssetRenderer _assetRenderer;
+	private AssetRenderer _assetRenderer = Mockito.mock(AssetRenderer.class);
 
-	@Mock
-	private AssetRendererFactory<?> _assetRendererFactory;
-
-	@Mock
-	private Indexer<Object> _indexer;
-
-	@Mock
-	private IndexerRegistry _indexerRegistry;
-
-	@Mock
-	private ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_serviceTrackerMap;
+	private final AssetRendererFactory<?> _assetRendererFactory = Mockito.mock(
+		AssetRendererFactory.class);
+	private final Indexer<Object> _indexer = Mockito.mock(Indexer.class);
+	private final IndexerRegistry _indexerRegistry = Mockito.mock(
+		IndexerRegistry.class);
+	private final ServiceTrackerMap<String, AssetRendererFactory<?>>
+		_serviceTrackerMap = Mockito.mock(ServiceTrackerMap.class);
 
 }

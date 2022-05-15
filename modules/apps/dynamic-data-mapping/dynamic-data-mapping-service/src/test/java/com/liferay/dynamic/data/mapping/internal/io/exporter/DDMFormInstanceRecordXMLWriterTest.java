@@ -275,7 +275,7 @@ public class DDMFormInstanceRecordXMLWriterTest {
 		inOrder.verify(
 			ddmFormInstanceRecordXMLWriter, Mockito.times(1)
 		).addFieldElements(
-			Mockito.any(Element.class), Mockito.anyMap(), Mockito.anyMap()
+			Mockito.nullable(Element.class), Mockito.anyMap(), Mockito.anyMap()
 		);
 
 		inOrder.verify(
@@ -287,7 +287,7 @@ public class DDMFormInstanceRecordXMLWriterTest {
 		inOrder.verify(
 			ddmFormInstanceRecordXMLWriter, Mockito.times(1)
 		).addFieldElements(
-			Mockito.any(Element.class), Mockito.anyMap(), Mockito.anyMap()
+			Mockito.nullable(Element.class), Mockito.anyMap(), Mockito.anyMap()
 		);
 
 		inOrder.verify(

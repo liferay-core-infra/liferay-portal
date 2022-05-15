@@ -152,7 +152,7 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 
 		Mockito.when(
 			portletPreferences.getValue(
-				Mockito.anyString(), Mockito.anyString())
+				Mockito.nullable(String.class), Mockito.nullable(String.class))
 		).thenReturn(
 			"googlePlacesAPIKey"
 		);

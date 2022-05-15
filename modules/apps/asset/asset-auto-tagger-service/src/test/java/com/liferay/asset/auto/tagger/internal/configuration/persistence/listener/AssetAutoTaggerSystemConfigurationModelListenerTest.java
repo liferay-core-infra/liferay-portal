@@ -71,7 +71,8 @@ public class AssetAutoTaggerSystemConfigurationModelListenerTest {
 			resourceBundleLoader);
 
 		Mockito.when(
-			resourceBundleLoader.loadResourceBundle(Mockito.any(Locale.class))
+			resourceBundleLoader.loadResourceBundle(
+				Mockito.nullable(Locale.class))
 		).thenReturn(
 			ResourceBundleUtil.EMPTY_RESOURCE_BUNDLE
 		);

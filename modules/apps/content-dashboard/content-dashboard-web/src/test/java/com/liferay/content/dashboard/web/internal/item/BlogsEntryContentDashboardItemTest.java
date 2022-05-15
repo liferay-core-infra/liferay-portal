@@ -22,7 +22,6 @@ import com.liferay.content.dashboard.item.action.provider.ContentDashboardItemAc
 import com.liferay.content.dashboard.web.internal.item.action.ContentDashboardItemActionProviderTracker;
 import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtype;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
-import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -396,7 +395,7 @@ public class BlogsEntryContentDashboardItemTest {
 
 		Mockito.when(
 			contentDashboardItemActionProvider.isShow(
-				Mockito.any(JournalArticle.class),
+				Mockito.any(BlogsEntry.class),
 				Mockito.any(HttpServletRequest.class))
 		).thenReturn(
 			true

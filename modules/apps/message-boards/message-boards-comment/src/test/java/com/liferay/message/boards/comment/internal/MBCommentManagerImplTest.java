@@ -425,10 +425,10 @@ public class MBCommentManagerImplTest extends Mockito {
 
 		when(
 			_mbMessageLocalService.addDiscussionMessage(
+				Mockito.nullable(String.class), Mockito.anyLong(),
 				Mockito.anyString(), Mockito.anyLong(), Mockito.anyString(),
-				Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong(),
-				Mockito.anyLong(), Mockito.anyLong(), Mockito.anyString(),
-				Mockito.anyString(), Mockito.any())
+				Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong(),
+				Mockito.anyString(), Mockito.anyString(), Mockito.any())
 		).thenReturn(
 			_mbMessage
 		);

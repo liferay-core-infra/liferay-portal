@@ -300,8 +300,9 @@ public class DDMFormRendererTagTest {
 
 		Mockito.when(
 			ddmFormInstanceModelResourcePermission.contains(
-				Mockito.any(PermissionChecker.class),
-				Mockito.any(DDMFormInstance.class), Mockito.anyString())
+				Mockito.nullable(PermissionChecker.class),
+				Mockito.nullable(DDMFormInstance.class),
+				Mockito.nullable(String.class))
 		).thenReturn(
 			true
 		);

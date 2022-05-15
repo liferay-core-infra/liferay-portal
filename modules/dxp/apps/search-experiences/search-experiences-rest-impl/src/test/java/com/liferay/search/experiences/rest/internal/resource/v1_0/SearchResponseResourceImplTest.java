@@ -140,7 +140,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			searchRequestBuilder
 		).queryString(
-			Mockito.anyString()
+			Mockito.nullable(String.class)
 		);
 
 		Mockito.doReturn(
@@ -156,7 +156,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			searchRequestBuilder
 		).withSearchContext(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		SearchResponseBuilder searchResponseBuilder = Mockito.mock(
@@ -167,7 +167,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			searchRequestBuilder
 		).withSearchContextGet(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -183,7 +183,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			_sxpBlueprintSearchRequestEnhancer
 		).enhance(
-			Mockito.any(), Mockito.anyString()
+			Mockito.any(), Mockito.nullable(String.class)
 		);
 
 		SearchResponse searchResponse = _searchResponseResourceImpl.search(
@@ -246,7 +246,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			_sxpBlueprintSearchRequestEnhancer
 		).enhance(
-			Mockito.any(), Mockito.anyString()
+			Mockito.any(), Mockito.nullable(String.class)
 		);
 
 		SearchResponse searchResponse = _searchResponseResourceImpl.search(
@@ -444,7 +444,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			_sxpBlueprintSearchRequestEnhancer
 		).enhance(
-			Mockito.any(), Mockito.anyString()
+			Mockito.any(), Mockito.nullable(String.class)
 		);
 
 		NumberFormatException numberFormatException =
@@ -625,7 +625,7 @@ public class SearchResponseResourceImplTest {
 		).when(
 			searchResponse
 		).withSearchContextGet(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		return searchResponse;

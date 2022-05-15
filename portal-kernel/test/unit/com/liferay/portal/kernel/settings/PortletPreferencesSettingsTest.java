@@ -34,7 +34,7 @@ public class PortletPreferencesSettingsTest {
 		Mockito.when(
 			_portletPreferences.getValue(
 				Mockito.eq(_PORTLET_PREFERENCES_SINGLE_KEY),
-				Mockito.anyString())
+				Mockito.nullable(String.class))
 		).thenReturn(
 			_PORTLET_PREFERENCES_SINGLE_VALUE
 		);

@@ -63,7 +63,7 @@ public class SynonymSetStorageAdapterTest {
 		).when(
 			_synonymSetJSONStorageHelper
 		).addJSONStorageEntry(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.nullable(String.class), Mockito.nullable(String.class)
 		);
 
 		Assert.assertEquals(

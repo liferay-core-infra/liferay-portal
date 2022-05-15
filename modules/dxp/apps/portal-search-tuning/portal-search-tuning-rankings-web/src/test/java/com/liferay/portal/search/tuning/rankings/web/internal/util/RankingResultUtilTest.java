@@ -264,7 +264,7 @@ public class RankingResultUtilTest extends BaseRankingsWebTestCase {
 	private void _setUpPortalStripURLAnchor() {
 		Mockito.doAnswer(
 			invocation -> new String[] {
-				invocation.getArgumentAt(0, String.class), StringPool.BLANK
+				invocation.getArgument(0, String.class), StringPool.BLANK
 			}
 		).when(
 			portal

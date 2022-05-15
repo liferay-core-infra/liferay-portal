@@ -97,16 +97,17 @@ public class OAuth2ControllerTest {
 
 		Mockito.when(
 			_portletURLFactory.create(
-				Mockito.any(PortletRequest.class), Mockito.anyString(),
-				Mockito.anyLong(), Mockito.anyString())
+				Mockito.any(PortletRequest.class),
+				Mockito.nullable(String.class), Mockito.anyLong(),
+				Mockito.nullable(String.class))
 		).thenReturn(
 			_liferayPortletURL
 		);
 
 		Mockito.when(
 			_portletURLFactory.create(
-				Mockito.any(PortletRequest.class), Mockito.anyString(),
-				Mockito.anyString())
+				Mockito.any(PortletRequest.class),
+				Mockito.nullable(String.class), Mockito.nullable(String.class))
 		).thenReturn(
 			_liferayPortletURL
 		);

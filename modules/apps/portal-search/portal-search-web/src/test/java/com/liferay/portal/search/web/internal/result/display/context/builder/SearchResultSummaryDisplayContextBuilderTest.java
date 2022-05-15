@@ -60,7 +60,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.AdditionalMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -315,7 +314,7 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 		).when(
 			assetRenderer
 		).getSearchSummary(
-			AdditionalMatchers.or(Mockito.any(Locale.class), Mockito.isNull())
+			Mockito.nullable(Locale.class)
 		);
 
 		Mockito.doReturn(
@@ -323,7 +322,7 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 		).when(
 			assetRenderer
 		).getTitle(
-			AdditionalMatchers.or(Mockito.any(Locale.class), Mockito.isNull())
+			Mockito.nullable(Locale.class)
 		);
 	}
 
@@ -681,9 +680,7 @@ public class SearchResultSummaryDisplayContextBuilderTest {
 		).when(
 			language
 		).get(
-			AdditionalMatchers.or(
-				Mockito.isNull(), Mockito.any(HttpServletRequest.class)),
-			Mockito.anyString()
+			Mockito.nullable(HttpServletRequest.class), Mockito.anyString()
 		);
 	}
 

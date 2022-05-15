@@ -37,16 +37,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 /**
  * @author David Arques
  */
-@RunWith(MockitoJUnitRunner.class)
 public class SegmentsEntryProviderRegistryTest {
 
 	@ClassRule
@@ -56,6 +54,8 @@ public class SegmentsEntryProviderRegistryTest {
 
 	@Before
 	public void setUp() throws PortalException {
+		MockitoAnnotations.openMocks(this);
+
 		ReflectionTestUtil.setFieldValue(
 			_segmentsEntryProviderRegistry, "_segmentsEntryLocalService",
 			_segmentsEntryLocalService);

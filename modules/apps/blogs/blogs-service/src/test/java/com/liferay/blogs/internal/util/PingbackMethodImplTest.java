@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.ServiceContextFunction;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
@@ -218,9 +217,9 @@ public class PingbackMethodImplTest {
 		).when(
 			_commentManager
 		).addComment(
-			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyString(),
-			Mockito.anyLong(), Mockito.anyString(),
-			Mockito.<ServiceContextFunction>any()
+			Mockito.anyLong(), Mockito.anyLong(),
+			Mockito.nullable(String.class), Mockito.anyLong(),
+			Mockito.nullable(String.class), Mockito.any()
 		);
 
 		execute();
@@ -245,7 +244,7 @@ public class PingbackMethodImplTest {
 				StringBundler.concat(
 					"[...] ", _EXCERPT_BODY, " [...] <a href=", _SOURCE_URI,
 					">", _READ_MORE, "</a>")),
-			Mockito.<ServiceContextFunction>any()
+			Mockito.any()
 		);
 	}
 
@@ -460,7 +459,7 @@ public class PingbackMethodImplTest {
 
 		Mockito.when(
 			_blogsEntryLocalService.getEntry(
-				Mockito.anyLong(), Mockito.anyString())
+				Mockito.anyLong(), Mockito.nullable(String.class))
 		).thenReturn(
 			_blogsEntry
 		);
@@ -542,7 +541,7 @@ public class PingbackMethodImplTest {
 
 		Mockito.when(
 			_portal.getPlidFromFriendlyURL(
-				Mockito.eq(_COMPANY_ID), Mockito.anyString())
+				Mockito.eq(_COMPANY_ID), Mockito.nullable(String.class))
 		).thenReturn(
 			RandomTestUtil.randomLong()
 		);
@@ -564,7 +563,7 @@ public class PingbackMethodImplTest {
 		).when(
 			_portletIdLookup
 		).getPortletId(
-			Mockito.anyString(), Mockito.any()
+			Mockito.nullable(String.class), Mockito.any()
 		);
 	}
 
@@ -619,7 +618,8 @@ public class PingbackMethodImplTest {
 		Fault fault = Mockito.mock(Fault.class);
 
 		Mockito.when(
-			_xmlRpc.createFault(Mockito.anyInt(), Mockito.anyString())
+			_xmlRpc.createFault(
+				Mockito.anyInt(), Mockito.nullable(String.class))
 		).thenReturn(
 			fault
 		);
@@ -635,13 +635,13 @@ public class PingbackMethodImplTest {
 		Mockito.verify(
 			_commentManager
 		).addComment(
-			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyString(),
-			Mockito.anyLong(),
+			Mockito.anyLong(), Mockito.anyLong(),
+			Mockito.nullable(String.class), Mockito.anyLong(),
 			Mockito.eq(
 				StringBundler.concat(
 					"[...] ", excerpt, " [...] <a href=", _SOURCE_URI, ">",
 					_READ_MORE, "</a>")),
-			Mockito.<ServiceContextFunction>any()
+			Mockito.any()
 		);
 	}
 
@@ -676,7 +676,8 @@ public class PingbackMethodImplTest {
 		).when(
 			_friendlyURLMapper
 		).populateParams(
-			Mockito.eq(friendlyURLPath), Mockito.anyMap(), Mockito.anyMap()
+			Mockito.eq(friendlyURLPath), Mockito.nullable(Map.class),
+			Mockito.nullable(Map.class)
 		);
 	}
 
@@ -690,7 +691,7 @@ public class PingbackMethodImplTest {
 
 	private void _whenLanguageGet(String key, String returnValue) {
 		Mockito.when(
-			_language.get((Locale)Mockito.any(), Mockito.eq(key))
+			_language.get(Mockito.nullable(Locale.class), Mockito.eq(key))
 		).thenReturn(
 			returnValue
 		);

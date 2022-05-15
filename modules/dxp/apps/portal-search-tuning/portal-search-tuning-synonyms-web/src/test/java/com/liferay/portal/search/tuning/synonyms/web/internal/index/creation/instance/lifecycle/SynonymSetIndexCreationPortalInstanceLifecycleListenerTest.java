@@ -82,7 +82,7 @@ public class SynonymSetIndexCreationPortalInstanceLifecycleListenerTest
 		Mockito.verify(
 			_filterToIndexSynchronizer, Mockito.times(1)
 		).copyToIndex(
-			Mockito.anyString(), Mockito.any()
+			Mockito.nullable(String.class), Mockito.any()
 		);
 	}
 

@@ -203,14 +203,15 @@ public class PollsToDDMUpgradeProcessTest extends BaseDDMTestCase {
 		LocalizationUtil localizationUtil = new LocalizationUtil();
 
 		Mockito.when(
-			_localization.getAvailableLanguageIds(Mockito.anyString())
+			_localization.getAvailableLanguageIds(
+				Mockito.nullable(String.class))
 		).thenReturn(
 			new String[] {"en_US", "pt_BR"}
 		);
 
 		Mockito.when(
 			_localization.getLocalization(
-				Mockito.anyString(), Mockito.anyString())
+				Mockito.nullable(String.class), Mockito.nullable(String.class))
 		).then(
 			(Answer<String>)invocationOnMock -> {
 				Object[] arguments = invocationOnMock.getArguments();

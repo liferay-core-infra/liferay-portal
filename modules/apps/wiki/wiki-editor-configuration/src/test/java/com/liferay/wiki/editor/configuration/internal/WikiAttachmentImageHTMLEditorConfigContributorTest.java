@@ -81,8 +81,9 @@ public class WikiAttachmentImageHTMLEditorConfigContributorTest {
 
 		Mockito.when(
 			_itemSelector.getItemSelectorURL(
-				Mockito.any(RequestBackedPortletURLFactory.class),
-				Mockito.anyString(), Mockito.any(ItemSelectorCriterion.class),
+				Mockito.nullable(RequestBackedPortletURLFactory.class),
+				Mockito.nullable(String.class),
+				Mockito.any(ItemSelectorCriterion.class),
 				Mockito.any(ItemSelectorCriterion.class))
 		).thenReturn(
 			new PortletURLWrapper(null) {

@@ -99,7 +99,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			assetEntryLocalService
 		).fetchEntry(
-			Mockito.anyLong(), Mockito.anyString()
+			Mockito.anyLong(), Mockito.nullable(String.class)
 		);
 
 		Mockito.doReturn(
@@ -221,7 +221,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			uidFactory
 		).getUID(
-			Mockito.any(ClassedModel.class)
+			Mockito.nullable(ClassedModel.class)
 		);
 
 		return uidFactory;
@@ -245,7 +245,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			wikiNodeLocalService
 		).fetchNode(
-			Mockito.anyLong(), Mockito.anyString()
+			Mockito.anyLong(), Mockito.nullable(String.class)
 		);
 	}
 
@@ -273,7 +273,8 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			wikiPageLocalService
 		).fetchPage(
-			Mockito.anyLong(), Mockito.anyString(), Mockito.anyDouble()
+			Mockito.anyLong(), Mockito.nullable(String.class),
+			Mockito.anyDouble()
 		);
 	}
 

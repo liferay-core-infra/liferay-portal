@@ -176,7 +176,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoBridge
 		).getAttributeProperties(
-			Mockito.anyString()
+			Mockito.nullable(String.class)
 		);
 
 		return expandoBridge;
@@ -265,7 +265,7 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoColumnLocalService
 		).getDefaultTableColumn(
-			Mockito.anyLong(), Mockito.anyString(),
+			Mockito.anyLong(), Mockito.nullable(String.class),
 			Mockito.eq(_ATTRIBUTE_KEYWORD)
 		);
 
@@ -274,7 +274,8 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 		).when(
 			expandoColumnLocalService
 		).getDefaultTableColumn(
-			Mockito.anyLong(), Mockito.anyString(), Mockito.eq(_ATTRIBUTE_TEXT)
+			Mockito.anyLong(), Mockito.nullable(String.class),
+			Mockito.eq(_ATTRIBUTE_TEXT)
 		);
 
 		return expandoColumnLocalService;

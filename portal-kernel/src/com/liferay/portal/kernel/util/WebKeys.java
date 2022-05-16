@@ -179,6 +179,8 @@ public interface WebKeys {
 	public static final String FACEBOOK_USER_EMAIL_ADDRESS =
 		"FACEBOOK_USER_EMAIL_ADDRESS";
 
+	public static final String FILE_VERSION = "FILE_VERSION";
+
 	public static final String FORGOT_PASSWORD_REMINDER_ATTEMPTS =
 		"FORGOT_PASSWORD_REMINDER_ATTEMPTS";
 

@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.constants.MVCRenderConstant
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.RepositoryProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -162,11 +163,15 @@ public class ViewFileEntryMVCRenderCommand
 			DLViewFileEntryDisplayContext.class.getName(),
 			dlViewFileEntryDisplayContext);
 
+		FileVersion fileVersion =
+			dlViewFileEntryDisplayContext.getFileVersion();
+
+		renderRequest.setAttribute(WebKeys.FILE_VERSION, fileVersion);
+
 		AssetEntry layoutAssetEntry = _assetEntryLocalService.fetchEntry(
 			DLFileEntryConstants.getClassName(),
 			_dlAssetHelper.getAssetClassPK(
-				dlViewFileEntryDisplayContext.getFileEntry(),
-				dlViewFileEntryDisplayContext.getFileVersion()));
+				dlViewFileEntryDisplayContext.getFileEntry(), fileVersion));
 
 		renderRequest.setAttribute(
 			WebKeys.LAYOUT_ASSET_ENTRY, layoutAssetEntry);

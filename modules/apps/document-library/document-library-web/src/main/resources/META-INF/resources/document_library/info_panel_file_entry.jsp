@@ -236,7 +236,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 				<div class="sidebar-section">
 
 					<%
-					boolean isLatestVersion = fileVersion.equals(fileEntry.getLatestFileVersion());
+					boolean isLatestVersion = fileVersion.equals((FileVersion)request.getAttribute(WebKeys.FILE_VERSION));
 
 					String urlLabel = null;
 

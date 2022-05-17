@@ -18,6 +18,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -163,7 +164,7 @@ public class TypedProperties implements ConfigurationProperties {
 		return false;
 	}
 
-	private static final String _LINE_SEPARATOR = System.getProperty(
+	private static final String _LINE_SEPARATOR = SystemProperties.get(
 		"line.separator");
 
 	private static final Log _log = LogFactoryUtil.getLog(

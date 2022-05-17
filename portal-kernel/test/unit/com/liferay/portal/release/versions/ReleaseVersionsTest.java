@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 
@@ -62,12 +63,12 @@ public class ReleaseVersionsTest {
 		Assume.assumeTrue(Validator.isNull(System.getenv("JENKINS_HOME")));
 
 		List<String> portalDirNames = ListUtil.fromArray(
-			System.getProperty("user.dir"));
+			SystemProperties.get("user.dir"));
 
 		Collections.addAll(
 			portalDirNames,
 			StringUtil.split(
-				System.getProperty("release.versions.test.other.dir.names")));
+				SystemProperties.get("release.versions.test.other.dir.names")));
 
 		Assert.assertTrue(
 			"Please set the property \"release.versions.test.other.dir.names\"",

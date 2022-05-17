@@ -18,6 +18,7 @@ import com.liferay.petra.io.unsync.UnsyncBufferedReader;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -202,7 +203,7 @@ public class CFGProperties implements ConfigurationProperties {
 		return new UnsyncBufferedReader(reader);
 	}
 
-	private static final String _LINE_SEPARATOR = System.getProperty(
+	private static final String _LINE_SEPARATOR = SystemProperties.get(
 		"line.separator");
 
 	private static final Pattern _configPattern = Pattern.compile(

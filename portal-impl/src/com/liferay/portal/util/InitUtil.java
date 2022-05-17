@@ -222,7 +222,7 @@ public class InitUtil {
 		try {
 			if (initModuleFramework) {
 				PropsValues.LIFERAY_WEB_PORTAL_CONTEXT_TEMPDIR =
-					System.getProperty(SystemProperties.TMP_DIR);
+					SystemProperties.get(SystemProperties.TMP_DIR);
 
 				ModuleFrameworkUtil.initFramework();
 			}

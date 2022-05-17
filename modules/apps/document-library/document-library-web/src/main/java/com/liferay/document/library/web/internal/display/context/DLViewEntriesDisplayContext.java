@@ -327,13 +327,17 @@ public class DLViewEntriesDisplayContext {
 	private boolean _hasValidAssetVocabularies(long scopeGroupId)
 		throws PortalException {
 
+		if (_hasValidAssetVocabularies != null) {
+			return _hasValidAssetVocabularies;
+		}
+
 		List<AssetVocabulary> assetVocabularies =
 			AssetVocabularyServiceUtil.getGroupVocabularies(
 				PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId));
 
 		Stream<AssetVocabulary> stream = assetVocabularies.stream();
 
-		return stream.anyMatch(
+		_hasValidAssetVocabularies = stream.anyMatch(
 			assetVocabulary -> {
 				if (!assetVocabulary.isAssociatedToClassNameId(
 						ClassNameLocalServiceUtil.getClassNameId(
@@ -353,6 +357,8 @@ public class DLViewEntriesDisplayContext {
 
 				return false;
 			});
+
+		return _hasValidAssetVocabularies;
 	}
 
 	private boolean _hasWorkflowDefinitionLink(FileEntry fileEntry) {
@@ -390,6 +396,7 @@ public class DLViewEntriesDisplayContext {
 	private final DLAdminDisplayContext _dlAdminDisplayContext;
 	private final DLRequestHelper _dlRequestHelper;
 	private final DLTrashHelper _dlTrashHelper;
+	private Boolean _hasValidAssetVocabularies;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;

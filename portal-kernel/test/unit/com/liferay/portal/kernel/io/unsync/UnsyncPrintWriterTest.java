@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.io.unsync;
 
 import com.liferay.portal.kernel.exception.LoggedExceptionInInitializerError;
 import com.liferay.portal.kernel.io.OutputStreamWriter;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -121,7 +122,7 @@ public class UnsyncPrintWriterTest {
 
 		unsyncPrintWriter.println();
 
-		String lineSeparator = System.getProperty("line.separator");
+		String lineSeparator = SystemProperties.get("line.separator");
 
 		Assert.assertEquals(lineSeparator, stringWriter.toString());
 	}

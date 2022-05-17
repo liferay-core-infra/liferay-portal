@@ -17,6 +17,7 @@ package com.liferay.semantic.versioning;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class SemanticVersioningTest {
 
 	@Parameterized.Parameters(name = "{0}")
 	public static List<String> sampleData() {
-		String modulesTestClassGroup = System.getProperty(
+		String modulesTestClassGroup = SystemProperties.get(
 			"modules.test.class.group");
 
 		Assert.assertFalse(
@@ -50,7 +51,7 @@ public class SemanticVersioningTest {
 
 		Assert.assertFalse(
 			"Missing system property \"project.dir\"",
-			Validator.isNull(System.getProperty("project.dir")));
+			Validator.isNull(SystemProperties.get("project.dir")));
 
 		modulesTestClassGroup = StringUtil.replace(
 			modulesTestClassGroup, CharPool.COLON, CharPool.SLASH);
@@ -68,7 +69,7 @@ public class SemanticVersioningTest {
 	@Test
 	public void testSemanticVersioning() throws IOException {
 		Path baselineLogPath = Paths.get(
-			System.getProperty("project.dir"), "modules", _module, "build",
+			SystemProperties.get("project.dir"), "modules", _module, "build",
 			"reports", "baseline", "baseline.log");
 
 		boolean exist = Files.exists(baselineLogPath);

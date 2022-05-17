@@ -24,6 +24,7 @@ import com.liferay.petra.json.web.service.client.internal.AsyncHttpClient;
 import com.liferay.petra.json.web.service.client.internal.IdleConnectionMonitorThread;
 import com.liferay.petra.json.web.service.client.internal.JSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.internal.X509TrustManagerImpl;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
 
@@ -918,10 +919,11 @@ public abstract class BaseJSONWebServiceClientImpl
 			throw new RuntimeException(exception);
 		}
 
-		String[] httpsProtocols = _split(System.getProperty("https.protocols"));
+		String[] httpsProtocols = _split(
+			SystemProperties.get("https.protocols"));
 
 		String[] cipherSuites = _split(
-			System.getProperty("https.cipherSuites"));
+			SystemProperties.get("https.cipherSuites"));
 
 		return new SSLIOSessionStrategy(
 			sslContext, httpsProtocols, cipherSuites,

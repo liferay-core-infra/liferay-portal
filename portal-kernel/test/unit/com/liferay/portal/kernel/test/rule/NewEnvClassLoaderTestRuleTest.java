@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.test.rule;
 
+import com.liferay.portal.kernel.util.SystemProperties;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.After;
@@ -99,7 +101,7 @@ public class NewEnvClassLoaderTestRuleTest {
 
 	private static class ValueClass {
 
-		public static String value = System.getProperty(_PROPERTY_KEY);
+		public static String value = SystemProperties.get(_PROPERTY_KEY);
 
 	}
 

@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.io.unsync;
 
+import com.liferay.portal.kernel.util.SystemProperties;
+
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -149,7 +151,7 @@ public class UnsyncBufferedWriterTest {
 
 		unsyncBufferedWriter.newLine();
 
-		String lineSeparator = System.getProperty("line.separator");
+		String lineSeparator = SystemProperties.get("line.separator");
 
 		Assert.assertEquals(lineSeparator.length(), unsyncBufferedWriter.count);
 

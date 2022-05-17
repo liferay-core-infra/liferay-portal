@@ -16,6 +16,7 @@ package com.liferay.portal.split.packages;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class SplitPackagesTest {
 	public void testSplitPackage() throws IOException {
 		final Map<Path, Set<String>> moduleMap = new HashMap<>();
 
-		final Path portalPath = Paths.get(System.getProperty("user.dir"));
+		final Path portalPath = Paths.get(SystemProperties.get("user.dir"));
 
 		Path portalImplPath = portalPath.resolve("portal-impl");
 

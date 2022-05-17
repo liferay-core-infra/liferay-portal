@@ -17,6 +17,7 @@ package com.liferay.portal.bundle.blacklist;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.lpkg.deployer.test.util.LPKGTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -40,12 +41,12 @@ public class BundleBlacklistSetUpBatchTest {
 
 	@Test
 	public void testCreateAndBlacklistTestBundles() throws Exception {
-		String liferayHome = System.getProperty("liferay.home");
+		String liferayHome = SystemProperties.get("liferay.home");
 
 		Assert.assertNotNull(
 			"Missing system property \"liferay.home\"", liferayHome);
 
-		String blacklistConfigName = System.getProperty(
+		String blacklistConfigName = SystemProperties.get(
 			"blacklist.config.name");
 
 		Assert.assertNotNull(

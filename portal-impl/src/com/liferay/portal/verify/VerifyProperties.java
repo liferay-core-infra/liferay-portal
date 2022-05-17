@@ -326,6 +326,107 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir"
 		},
 		{
+			"module.framework.properties.dependency.manager.sync.timeout",
+			"module.framework.properties.dependency.manager.sync.timeout"
+		},
+		{
+			"module.framework.properties.dependency.manager.thread.pool." +
+				"enabled",
+			"module.framework.properties.dependency.manager.thread.pool.enabled"
+		},
+		{
+			"module.framework.properties.ds.lock.timeout.milliseconds",
+			"module.framework.properties.ds.lock.timeout.milliseconds"
+		},
+		{
+			"module.framework.properties.ds.stop.timeout.milliseconds",
+			"module.framework.properties.ds.stop.timeout.milliseconds"
+		},
+		{
+			"module.framework.properties.eclipse.stateSaveDelayInterval",
+			"module.framework.properties.eclipse.stateSaveDelayInterval"
+		},
+		{
+			"module.framework.properties.felix.cm.config.plugins",
+			"module.framework.properties.felix.cm.config.plugins"
+		},
+		{
+			"module.framework.properties.felix.cm.pm",
+			"module.framework.properties.felix.cm.pm"
+		},
+		{
+			"module.framework.properties.gosh.args",
+			"module.framework.properties.gosh.args"
+		},
+		{
+			"module.framework.properties.initial.system.check.enabled",
+			"module.framework.properties.initial.system.check.enabled"
+		},
+		{
+			"module.framework.properties.lpkg.deployer.dir",
+			"module.framework.properties.lpkg.deployer.dir"
+		},
+		{
+			"module.framework.properties.org.apache.cxf.osgi.http.transport." +
+				"disable",
+			"module.framework.properties.org.apache.cxf.osgi.http.transport." +
+				"disable"
+		},
+		{
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.file.encoding",
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.file.encoding"
+		},
+		{
+			"module.framework.properties.org.apache.felix.eventadmin." +
+				"ThreadPoolSize",
+			"module.framework.properties.org.apache.felix.eventadmin." +
+				"ThreadPoolSize"
+		},
+		{
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.secretsdir",
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.secretsdir"
+		},
+		{
+			"module.framework.properties.org.osgi.framework.bootdelegation",
+			"module.framework.properties.org.osgi.framework.bootdelegation"
+		},
+		{
+			"module.framework.properties.org.osgi.framework.bundle.parent",
+			"module.framework.properties.org.osgi.framework.bundle.parent"
+		},
+		{
+			"module.framework.properties.org.osgi.framework.system." +
+				"capabilities.extra",
+			"module.framework.properties.org.osgi.framework.system." +
+				"capabilities.extra"
+		},
+		{
+			"module.framework.properties.osgi.bundlefile.limit",
+			"module.framework.properties.osgi.bundlefile.limit"
+		},
+		{
+			"module.framework.properties.osgi.compatibility.eagerStart." +
+				"LazyActivation",
+			"module.framework.properties.osgi.compatibility.eagerStart." +
+				"LazyActivation"
+		},
+		{
+			"module.framework.properties.osgi.context.bootdelegation",
+			"module.framework.properties.osgi.context.bootdelegation"
+		},
+		{
+			"module.framework.properties.osgi.module.lock.timeout",
+			"module.framework.properties.osgi.module.lock.timeout"
+		},
+		{
+			"module.framework.properties.spifly.spi.consumer.header.enabled",
+			"module.framework.properties.spifly.spi.consumer.header.enabled"
+		},
+		{
 			"module.framework.resolver.revision.batch.size",
 			"module.framework.resolver.revision.batch.size"
 		},

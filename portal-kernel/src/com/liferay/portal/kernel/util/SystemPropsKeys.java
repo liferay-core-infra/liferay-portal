@@ -18,4 +18,7 @@ package com.liferay.portal.kernel.util;
  * @author Jiaxu Wei
  */
 public interface SystemPropsKeys {
+
+	public static final String DEFAULT_LIFERAY_HOME = "default.liferay.home";
+
 }

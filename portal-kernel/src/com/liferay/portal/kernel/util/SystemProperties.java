@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 
 import java.io.IOException;
@@ -156,6 +157,11 @@ public class SystemProperties {
 
 		SystemEnv.setProperties(properties);
 
+		// Default liferay home directory
+
+		properties.put(
+			SystemPropsKeys.DEFAULT_LIFERAY_HOME, _getDefaultLiferayHome());
+
 		// Set system properties
 
 		if (GetterUtil.getBoolean(
@@ -215,6 +221,40 @@ public class SystemProperties {
 		}
 
 		return value;
+	}
+
+	private static String _getDefaultLiferayHome() {
+		String defaultLiferayHome = null;
+
+		if (ServerDetector.isJBoss()) {
+			defaultLiferayHome = get("jboss.home.dir") + "/..";
+		}
+		else if (ServerDetector.isWebLogic()) {
+			defaultLiferayHome = get("env.DOMAIN_HOME") + "/..";
+		}
+		else if (ServerDetector.isTomcat()) {
+			defaultLiferayHome = get("catalina.base") + "/..";
+		}
+		else {
+			defaultLiferayHome = get("user.dir") + "/liferay";
+		}
+
+		defaultLiferayHome = StringUtil.replace(
+			defaultLiferayHome, CharPool.BACK_SLASH, CharPool.SLASH);
+
+		defaultLiferayHome = StringUtil.replace(
+			defaultLiferayHome, StringPool.DOUBLE_SLASH, StringPool.SLASH);
+
+		if (defaultLiferayHome.endsWith("/..")) {
+			int pos = defaultLiferayHome.lastIndexOf(
+				CharPool.SLASH, defaultLiferayHome.length() - 4);
+
+			if (pos != -1) {
+				defaultLiferayHome = defaultLiferayHome.substring(0, pos);
+			}
+		}
+
+		return defaultLiferayHome;
 	}
 
 	private static String _parseProperty(String value) {

@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -286,7 +287,7 @@ public class BodyContentWrapper
 		_sb.writeTo(writer);
 	}
 
-	private static final String _LINE_SEPARATOR = System.getProperty(
+	private static final String _LINE_SEPARATOR = SystemProperties.get(
 		"line.separator");
 
 	private final StringBundler _sb;

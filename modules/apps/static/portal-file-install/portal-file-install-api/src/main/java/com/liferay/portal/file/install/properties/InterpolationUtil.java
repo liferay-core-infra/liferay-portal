@@ -14,6 +14,8 @@
 
 package com.liferay.portal.file.install.properties;
 
+import com.liferay.portal.kernel.util.SystemProperties;
+
 /**
  * @author Matthew Tambara
  */
@@ -81,7 +83,7 @@ public class InterpolationUtil {
 		// configuration properties first.
 
 		if ((substValue == null) && (variable.length() > 0)) {
-			substValue = System.getProperty(variable);
+			substValue = SystemProperties.get(variable);
 
 			if ((substValue == null) && variable.startsWith(_LIFERAY_PREFIX)) {
 				substValue = System.getenv(variable);

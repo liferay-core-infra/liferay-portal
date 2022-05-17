@@ -14,6 +14,7 @@
 
 package com.liferay.portal.service;
 
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class ServiceXMLTest {
 	@Test
 	public void testTXRequired() throws Exception {
 		Stream<Path> stream = Files.find(
-			Paths.get(System.getProperty("user.dir")), Integer.MAX_VALUE,
+			Paths.get(SystemProperties.get("user.dir")), Integer.MAX_VALUE,
 			ServiceXMLTest::_isServiceXml, FileVisitOption.FOLLOW_LINKS);
 
 		stream.forEach(ServiceXMLTest::_assertNoTXRequiredElement);

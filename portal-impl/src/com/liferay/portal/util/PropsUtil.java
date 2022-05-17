@@ -324,7 +324,7 @@ public class PropsUtil {
 
 		String portalShieldedContainerLibDir = _getLibDir(PropsUtil.class);
 
-		String portalShieldedContainerLibDirProperty = System.getProperty(
+		String portalShieldedContainerLibDirProperty = SystemProperties.get(
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
 
 		if (portalShieldedContainerLibDirProperty != null) {

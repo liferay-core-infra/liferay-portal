@@ -18,6 +18,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -55,7 +56,7 @@ public class NewEnvJVMTestRuleTest {
 		_processId = getProcessId();
 
 		_parentEnvironment = _fromString(
-			System.getProperty(_SYSTEM_PROPERTY_KEY_ENVIRONMENT));
+			SystemProperties.get(_SYSTEM_PROPERTY_KEY_ENVIRONMENT));
 	}
 
 	@After
@@ -71,9 +72,9 @@ public class NewEnvJVMTestRuleTest {
 
 		assertProcessId();
 
-		Assert.assertEquals("default1", System.getProperty("key1"));
-		Assert.assertEquals("default2", System.getProperty("key2"));
-		Assert.assertNull(System.getProperty("key3"));
+		Assert.assertEquals("default1", SystemProperties.get("key1"));
+		Assert.assertEquals("default2", SystemProperties.get("key2"));
+		Assert.assertNull(SystemProperties.get("key3"));
 	}
 
 	@NewEnv.JVMArgsLine("-Dkey1=value1")
@@ -83,9 +84,9 @@ public class NewEnvJVMTestRuleTest {
 
 		assertProcessId();
 
-		Assert.assertEquals("value1", System.getProperty("key1"));
-		Assert.assertEquals("default2", System.getProperty("key2"));
-		Assert.assertNull(System.getProperty("key3"));
+		Assert.assertEquals("value1", SystemProperties.get("key1"));
+		Assert.assertEquals("default2", SystemProperties.get("key2"));
+		Assert.assertNull(SystemProperties.get("key3"));
 	}
 
 	@NewEnv.JVMArgsLine("-Dkey2=value2")
@@ -95,9 +96,9 @@ public class NewEnvJVMTestRuleTest {
 
 		assertProcessId();
 
-		Assert.assertEquals("default1", System.getProperty("key1"));
-		Assert.assertEquals("value2", System.getProperty("key2"));
-		Assert.assertNull(System.getProperty("key3"));
+		Assert.assertEquals("default1", SystemProperties.get("key1"));
+		Assert.assertEquals("value2", SystemProperties.get("key2"));
+		Assert.assertNull(SystemProperties.get("key3"));
 	}
 
 	@NewEnv.JVMArgsLine("-Dkey1=value1 -Dkey2=value2")
@@ -107,9 +108,9 @@ public class NewEnvJVMTestRuleTest {
 
 		assertProcessId();
 
-		Assert.assertEquals("value1", System.getProperty("key1"));
-		Assert.assertEquals("value2", System.getProperty("key2"));
-		Assert.assertNull(System.getProperty("key3"));
+		Assert.assertEquals("value1", SystemProperties.get("key1"));
+		Assert.assertEquals("value2", SystemProperties.get("key2"));
+		Assert.assertNull(SystemProperties.get("key3"));
 	}
 
 	@NewEnv.JVMArgsLine("-Dkey1=value1 -Dkey2=value2 -Dkey3=value3")
@@ -119,9 +120,9 @@ public class NewEnvJVMTestRuleTest {
 
 		assertProcessId();
 
-		Assert.assertEquals("value1", System.getProperty("key1"));
-		Assert.assertEquals("value2", System.getProperty("key2"));
-		Assert.assertEquals("value3", System.getProperty("key3"));
+		Assert.assertEquals("value1", SystemProperties.get("key1"));
+		Assert.assertEquals("value2", SystemProperties.get("key2"));
+		Assert.assertEquals("value3", SystemProperties.get("key3"));
 	}
 
 	@NewEnv.Environment(variables = {})

@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.aspects.WeavingClassLoader;
 
 import java.io.File;
@@ -124,7 +125,7 @@ public class AspectJNewEnvTestRule extends NewEnvTestRule {
 		}
 
 		File dumpDir = new File(
-			System.getProperty("junit.aspectj.dump"),
+			SystemProperties.get("junit.aspectj.dump"),
 			StringBundler.concat(
 				description.getClassName(), StringPool.PERIOD,
 				description.getMethodName()));
@@ -148,7 +149,7 @@ public class AspectJNewEnvTestRule extends NewEnvTestRule {
 		String className = clazz.getName();
 
 		File dumpDir = new File(
-			System.getProperty("junit.aspectj.dump"),
+			SystemProperties.get("junit.aspectj.dump"),
 			StringBundler.concat(
 				className, StringPool.PERIOD, methodKey.getMethodName()));
 
@@ -182,7 +183,7 @@ public class AspectJNewEnvTestRule extends NewEnvTestRule {
 			attachProcess("Attached " + toString());
 
 			String[] aspectClassNames = StringUtil.split(
-				System.getProperty("aspectClasses"));
+				SystemProperties.get("aspectClasses"));
 
 			Class<?>[] aspectClasses = new Class<?>[aspectClassNames.length];
 

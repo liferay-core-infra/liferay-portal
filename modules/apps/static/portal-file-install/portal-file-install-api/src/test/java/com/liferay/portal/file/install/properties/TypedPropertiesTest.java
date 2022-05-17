@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
@@ -181,7 +182,7 @@ public class TypedPropertiesTest {
 
 		String systemValue = "testSystemValue";
 
-		String oldSystemValue = System.getProperty(systemKey);
+		String oldSystemValue = SystemProperties.get(systemKey);
 
 		System.setProperty(systemKey, systemValue);
 

@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.template.BaseTemplateManager;
 import com.liferay.portal.template.TemplateContextHelper;
 import com.liferay.portal.template.freemarker.configuration.FreeMarkerEngineConfiguration;
@@ -575,8 +576,8 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	}
 
 	private boolean _isEnableDebuggerService() {
-		if ((System.getProperty("freemarker.debug.password") != null) &&
-			(System.getProperty("freemarker.debug.port") != null)) {
+		if ((SystemProperties.get("freemarker.debug.password") != null) &&
+			(SystemProperties.get("freemarker.debug.port") != null)) {
 
 			return true;
 		}

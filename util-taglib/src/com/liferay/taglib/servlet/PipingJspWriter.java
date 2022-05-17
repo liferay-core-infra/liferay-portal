@@ -15,6 +15,7 @@
 package com.liferay.taglib.servlet;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -211,7 +212,7 @@ public class PipingJspWriter extends JspWriter {
 		_writer.write(string, offset, length);
 	}
 
-	private static final String _LINE_SEPARATOR = System.getProperty(
+	private static final String _LINE_SEPARATOR = SystemProperties.get(
 		"line.separator");
 
 	private final Writer _writer;

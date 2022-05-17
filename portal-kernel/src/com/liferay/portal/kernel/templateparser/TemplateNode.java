@@ -23,7 +23,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -209,13 +208,9 @@ public class TemplateNode extends LinkedHashMap<String, Object> {
 
 		String data = (String)get("data");
 
-		JSONObject jsonObject = JSONUtil.createJSONObject(data);
-
-		if (jsonObject == null) {
-			return StringPool.BLANK;
-		}
-
 		try {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(data);
+
 			Layout layout = LayoutLocalServiceUtil.fetchLayout(
 				jsonObject.getLong("groupId"),
 				jsonObject.getBoolean("privateLayout"),

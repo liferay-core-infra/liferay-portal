@@ -58,6 +58,16 @@ public class SystemProperties {
 		return _parseProperty(_get(key));
 	}
 
+	public static String get(String key, String defaultValue) {
+		String value = _parseProperty(_get(key));
+
+		if (value == null) {
+			return defaultValue;
+		}
+
+		return value;
+	}
+
 	public static String[] getArray(String key) {
 		return _arrayValues.computeIfAbsent(key, k -> StringUtil.split(get(k)));
 	}

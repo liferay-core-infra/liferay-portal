@@ -87,10 +87,6 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 
 		browserSnifferUtil.setBrowserSniffer(new BrowserSnifferImpl());
 
-		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
-
-		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
-
 		LanguageUtil languageUtil = new LanguageUtil();
 
 		languageUtil.setLanguage(new LanguageImpl());

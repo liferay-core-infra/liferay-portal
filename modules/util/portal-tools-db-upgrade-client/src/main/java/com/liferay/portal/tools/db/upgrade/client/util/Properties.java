@@ -41,33 +41,7 @@ public class Properties {
 		load(new FileInputStream(file));
 	}
 
-	public Set<String> propertyNames() {
-		return _properties.keySet();
-	}
-
-	public void setProperty(String key, String value) {
-		_properties.put(key, value);
-	}
-
-	public void store(File file) throws IOException {
-		try (PrintWriter printWriter = new PrintWriter(
-				file, StandardCharsets.UTF_8.name())) {
-
-			for (String name : propertyNames()) {
-				String value = getProperty(name);
-
-				if (name.endsWith(".dir") || name.endsWith(".dirs") ||
-					name.endsWith("liferay.home")) {
-
-					value = value.replace('\\', '/');
-				}
-
-				printWriter.println(name + "=" + value);
-			}
-		}
-	}
-
-	protected void load(InputStream inputStream) throws IOException {
+	public void load(InputStream inputStream) throws IOException {
 		try (BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
@@ -94,6 +68,32 @@ public class Properties {
 				}
 
 				_properties.put(name, value);
+			}
+		}
+	}
+
+	public Set<String> propertyNames() {
+		return _properties.keySet();
+	}
+
+	public void setProperty(String key, String value) {
+		_properties.put(key, value);
+	}
+
+	public void store(File file) throws IOException {
+		try (PrintWriter printWriter = new PrintWriter(
+				file, StandardCharsets.UTF_8.name())) {
+
+			for (String name : propertyNames()) {
+				String value = getProperty(name);
+
+				if (name.endsWith(".dir") || name.endsWith(".dirs") ||
+					name.endsWith("liferay.home")) {
+
+					value = value.replace('\\', '/');
+				}
+
+				printWriter.println(name + "=" + value);
 			}
 		}
 	}

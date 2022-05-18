@@ -16,9 +16,11 @@ package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import java.net.URL;
 
@@ -99,7 +101,7 @@ public class SystemProperties {
 	}
 
 	public static void load(ClassLoader classLoader) {
-		Properties properties = new Properties();
+		ExtendedProperties properties = new ExtendedProperties();
 
 		List<URL> urls = null;
 
@@ -311,6 +313,70 @@ public class SystemProperties {
 		ClassLoader classLoader = currentThread.getContextClassLoader();
 
 		load(classLoader);
+	}
+
+	private static class ExtendedProperties extends Properties {
+
+		@Override
+		public void load(InputStream inputStream) throws IOException {
+			try (UnsyncBufferedReader unsyncBufferedReader =
+					new UnsyncBufferedReader(
+						new InputStreamReader(inputStream))) {
+
+				String line = null;
+
+				StringBundler multiLineSB = new StringBundler();
+
+				while ((line = unsyncBufferedReader.readLine()) != null) {
+					line = line.trim();
+
+					// Comment line, Empty line or "\"
+
+					if (line.startsWith(StringPool.POUND) || line.isEmpty() ||
+						line.equals(StringPool.BACK_SLASH)) {
+
+						continue;
+					}
+
+					// Line ending with "\" indicates multi-line property
+
+					if (line.endsWith(StringPool.BACK_SLASH)) {
+						line = line.substring(0, line.length() - 1);
+
+						multiLineSB.append(line);
+
+						continue;
+					}
+
+					// Not ending with "\" -- end of multi-line property
+
+					if (multiLineSB.index() != 0) {
+						multiLineSB.append(line);
+
+						_setProperty(multiLineSB.toString());
+
+						multiLineSB.setIndex(0);
+
+						continue;
+					}
+
+					// Single line property
+
+					_setProperty(line);
+				}
+			}
+		}
+
+		private void _setProperty(String line) {
+			int index = line.indexOf(CharPool.EQUAL);
+
+			if (index < 0) {
+				return;
+			}
+
+			setProperty(line.substring(0, index), line.substring(index + 1));
+		}
+
 	}
 
 }

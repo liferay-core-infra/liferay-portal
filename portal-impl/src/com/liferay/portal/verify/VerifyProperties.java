@@ -326,6 +326,10 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir"
 		},
 		{
+			"module.framework.properties.blacklist.portal.profile.names",
+			"module.framework.properties.blacklist.portal.profile.names"
+		},
+		{
 			"module.framework.properties.dependency.manager.sync.timeout",
 			"module.framework.properties.dependency.manager.sync.timeout"
 		},
@@ -421,6 +425,10 @@ public class VerifyProperties {
 		{
 			"module.framework.properties.osgi.module.lock.timeout",
 			"module.framework.properties.osgi.module.lock.timeout"
+		},
+		{
+			"module.framework.properties.osgi.console",
+			"module.framework.properties.osgi.console"
 		},
 		{
 			"module.framework.properties.spifly.spi.consumer.header.enabled",

@@ -28,8 +28,10 @@ import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDe
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.settings.LocationVariableProtocol;
 import com.liferay.portal.kernel.settings.LocationVariableResolver;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -201,15 +203,20 @@ public class DDMFormValuesToPropertiesConverter {
 		}
 
 		if (type == ExtendedAttributeDefinition.LOCALIZED_VALUES_MAP) {
-			JSONObject jsonObject = JSONUtil.createJSONObject(
-				String.valueOf(value));
+			try {
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+					String.valueOf(value));
 
-			if ((jsonObject != null) && (jsonObject.length() == 1) &&
-				Objects.equals(
-					jsonObject.get(LocaleUtil.toLanguageId(_defaultLocale)),
-					resolvedDefaultValue)) {
+				if ((jsonObject.length() == 1) &&
+					Objects.equals(
+						jsonObject.get(LocaleUtil.toLanguageId(_defaultLocale)),
+						resolvedDefaultValue)) {
 
-				return true;
+					return true;
+				}
+			}
+			catch (JSONException jsonException) {
+				_log.error(jsonException);
 			}
 		}
 
@@ -252,6 +259,9 @@ public class DDMFormValuesToPropertiesConverter {
 
 		return values;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DDMFormValuesToPropertiesConverter.class);
 
 	private final ConfigurationModel _configurationModel;
 	private final Map<String, DDMFormField> _ddmFormFieldsMap;

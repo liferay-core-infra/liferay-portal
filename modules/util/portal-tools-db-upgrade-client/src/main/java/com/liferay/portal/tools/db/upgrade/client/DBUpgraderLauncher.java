@@ -24,6 +24,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,13 +37,22 @@ public class DBUpgraderLauncher {
 
 		String classPath = (String)objectInputStream.readObject();
 
+		Map<String, String> systemProperties =
+			(Map<String, String>)objectInputStream.readObject();
+
 		ClassLoader classLoader = new URLClassLoader(
 			_getClassPathURLs(classPath));
 
-		Class<?> clazz = classLoader.loadClass(
+		Class<?> dbUpgraderClass = classLoader.loadClass(
 			"com.liferay.portal.tools.DBUpgrader");
 
-		Method method = clazz.getMethod("main", String[].class);
+		Method mainMethod = dbUpgraderClass.getMethod("main", String[].class);
+
+		Class<?> systemPropertiesClass = classLoader.loadClass(
+			"com.liferay.portal.kernel.util.SystemProperties");
+
+		Method setMethod = systemPropertiesClass.getMethod(
+			"set", String.class, String.class);
 
 		Thread currentThread = Thread.currentThread();
 
@@ -51,7 +61,13 @@ public class DBUpgraderLauncher {
 		currentThread.setContextClassLoader(classLoader);
 
 		try {
-			method.invoke(null, new Object[] {args});
+			for (Map.Entry<String, String> entry :
+					systemProperties.entrySet()) {
+
+				setMethod.invoke(null, entry.getKey(), entry.getValue());
+			}
+
+			mainMethod.invoke(null, new Object[] {args});
 		}
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);

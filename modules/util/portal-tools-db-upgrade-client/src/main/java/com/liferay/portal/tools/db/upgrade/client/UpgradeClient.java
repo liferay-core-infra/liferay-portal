@@ -37,9 +37,12 @@ import java.security.ProtectionDomain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -171,10 +174,51 @@ public class UpgradeClient {
 
 		_systemUpgradeExtProperties = _readProperties(
 			_systemUpgradeExtPropertiesFile);
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader classLoader = currentThread.getContextClassLoader();
+
+		Enumeration<URL> enumeration = classLoader.getResources(
+			"system-upgrade.properties");
+
+		ArrayList<File> files = new ArrayList<>();
+
+		while (enumeration.hasMoreElements()) {
+			URL url = enumeration.nextElement();
+
+			try {
+				File file = new File(url.toURI());
+
+				files.add(file);
+			}
+			catch (URISyntaxException uriSyntaxException) {
+				System.err.println("Unable to load " + url);
+			}
+		}
+
+		_systemUpgradeProperties = _readProperties(files.toArray(new File[0]));
 	}
 
 	public void upgrade() throws IOException {
 		verifyProperties();
+
+		Map<String, String> systemProperties = new HashMap<>();
+
+		Set<String> systemKeys = _systemUpgradeProperties.propertyNames();
+
+		for (String systemKey : systemKeys) {
+			systemProperties.put(
+				systemKey, _systemUpgradeProperties.getProperty(systemKey));
+		}
+
+		Set<String> systemExtKeys = _systemUpgradeExtProperties.propertyNames();
+
+		for (String systemExtKey : systemExtKeys) {
+			systemProperties.put(
+				systemExtKey,
+				_systemUpgradeExtProperties.getProperty(systemExtKey));
+		}
 
 		System.setOut(new TeePrintStream(_fileOutputStream, System.out));
 
@@ -220,7 +264,7 @@ public class UpgradeClient {
 				inputStreamReader)) {
 
 			bootstrapObjectOutputStream.writeObject(_getClassPath());
-
+			bootstrapObjectOutputStream.writeObject(systemProperties);
 			bootstrapObjectOutputStream.flush();
 
 			String line = null;
@@ -460,15 +504,17 @@ public class UpgradeClient {
 		return true;
 	}
 
-	private Properties _readProperties(File file) {
+	private Properties _readProperties(File... files) {
 		Properties properties = new Properties();
 
-		if (file.exists()) {
-			try {
-				properties.load(file);
-			}
-			catch (IOException ioException) {
-				System.err.println("Unable to load " + file);
+		for (File file : files) {
+			if (file.exists()) {
+				try {
+					properties.load(file);
+				}
+				catch (IOException ioException) {
+					System.err.println("Unable to load " + file);
+				}
 			}
 		}
 
@@ -800,8 +846,9 @@ public class UpgradeClient {
 	private final File _portalUpgradeDatabasePropertiesFile;
 	private final Properties _portalUpgradeExtProperties;
 	private final File _portalUpgradeExtPropertiesFile;
+	private final boolean _shell;
 	private final Properties _systemUpgradeExtProperties;
 	private final File _systemUpgradeExtPropertiesFile;
-	private final boolean _shell;
+	private final Properties _systemUpgradeProperties;
 
 }

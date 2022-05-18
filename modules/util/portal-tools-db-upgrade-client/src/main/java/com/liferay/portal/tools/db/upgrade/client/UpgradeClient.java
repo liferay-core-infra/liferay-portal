@@ -165,6 +165,12 @@ public class UpgradeClient {
 
 		_portalUpgradeExtProperties = _readProperties(
 			_portalUpgradeExtPropertiesFile);
+
+		_systemUpgradeExtPropertiesFile = new File(
+			_jarDir, "system-upgrade-ext.properties");
+
+		_systemUpgradeExtProperties = _readProperties(
+			_systemUpgradeExtPropertiesFile);
 	}
 
 	public void upgrade() throws IOException {
@@ -272,7 +278,7 @@ public class UpgradeClient {
 		try {
 			_verifyAppServerProperties();
 			_verifyPortalUpgradeDatabaseProperties();
-			_verifyPortalUpgradeExtProperties();
+			_verifySystemUpgradeExtProperties();
 
 			_saveProperties();
 		}
@@ -368,7 +374,7 @@ public class UpgradeClient {
 	}
 
 	private GogoShellClient _initGogoShellClient() throws IOException {
-		String value = _portalUpgradeExtProperties.getProperty(
+		String value = _systemUpgradeExtProperties.getProperty(
 			"module.framework.properties.osgi.console");
 
 		if (value == null) {
@@ -474,6 +480,7 @@ public class UpgradeClient {
 		_portalUpgradeDatabaseProperties.store(
 			_portalUpgradeDatabasePropertiesFile);
 		_portalUpgradeExtProperties.store(_portalUpgradeExtPropertiesFile);
+		_systemUpgradeExtProperties.store(_systemUpgradeExtPropertiesFile);
 	}
 
 	private void _verifyAppServerProperties() throws IOException {
@@ -699,8 +706,8 @@ public class UpgradeClient {
 			"jdbc.default.username", userName);
 	}
 
-	private void _verifyPortalUpgradeExtProperties() throws IOException {
-		String value = _portalUpgradeExtProperties.getProperty("liferay.home");
+	private void _verifySystemUpgradeExtProperties() throws IOException {
+		String value = _systemUpgradeExtProperties.getProperty("liferay.home");
 
 		File baseDir = new File(".");
 
@@ -727,7 +734,7 @@ public class UpgradeClient {
 			liferayHome = new File(baseDir, value);
 		}
 
-		_portalUpgradeExtProperties.setProperty(
+		_systemUpgradeExtProperties.setProperty(
 			"liferay.home", liferayHome.getCanonicalPath());
 	}
 
@@ -793,6 +800,8 @@ public class UpgradeClient {
 	private final File _portalUpgradeDatabasePropertiesFile;
 	private final Properties _portalUpgradeExtProperties;
 	private final File _portalUpgradeExtPropertiesFile;
+	private final Properties _systemUpgradeExtProperties;
+	private final File _systemUpgradeExtPropertiesFile;
 	private final boolean _shell;
 
 }

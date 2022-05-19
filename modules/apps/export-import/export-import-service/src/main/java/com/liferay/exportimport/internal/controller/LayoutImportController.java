@@ -653,7 +653,8 @@ public class LayoutImportController implements ImportController {
 		List<Locale> sourceAvailableLocales = Arrays.asList(
 			LocaleUtil.fromLanguageIds(
 				StringUtil.split(
-					headerElement.attributeValue("available-locales"))));
+					headerElement.attributeValue("available-locales")),
+				false));
 
 		for (Locale sourceAvailableLocale : sourceAvailableLocales) {
 			if (!LanguageUtil.isAvailableLocale(

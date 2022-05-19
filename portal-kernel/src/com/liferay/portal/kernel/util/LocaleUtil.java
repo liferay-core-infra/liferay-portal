@@ -109,11 +109,23 @@ public class LocaleUtil {
 	}
 
 	public static Locale[] fromLanguageIds(List<String> languageIds) {
-		return _localeUtil._fromLanguageIds(languageIds);
+		return _localeUtil._fromLanguageIds(languageIds, true);
+	}
+
+	public static Locale[] fromLanguageIds(
+		List<String> languageIds, boolean validate) {
+
+		return _localeUtil._fromLanguageIds(languageIds, validate);
 	}
 
 	public static Locale[] fromLanguageIds(String[] languageIds) {
-		return _localeUtil._fromLanguageIds(languageIds);
+		return _localeUtil._fromLanguageIds(languageIds, true);
+	}
+
+	public static Locale[] fromLanguageIds(
+		String[] languageIds, boolean validate) {
+
+		return _localeUtil._fromLanguageIds(languageIds, validate);
 	}
 
 	public static Locale getDefault() {
@@ -315,21 +327,23 @@ public class LocaleUtil {
 		return locale;
 	}
 
-	private Locale[] _fromLanguageIds(List<String> languageIds) {
+	private Locale[] _fromLanguageIds(
+		List<String> languageIds, boolean validate) {
+
 		Locale[] locales = new Locale[languageIds.size()];
 
 		for (int i = 0; i < languageIds.size(); i++) {
-			locales[i] = _fromLanguageId(languageIds.get(i), true);
+			locales[i] = _fromLanguageId(languageIds.get(i), validate);
 		}
 
 		return locales;
 	}
 
-	private Locale[] _fromLanguageIds(String[] languageIds) {
+	private Locale[] _fromLanguageIds(String[] languageIds, boolean validate) {
 		Locale[] locales = new Locale[languageIds.length];
 
 		for (int i = 0; i < languageIds.length; i++) {
-			locales[i] = _fromLanguageId(languageIds[i], true);
+			locales[i] = _fromLanguageId(languageIds[i], validate);
 		}
 
 		return locales;

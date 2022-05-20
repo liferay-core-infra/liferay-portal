@@ -21,14 +21,14 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
@@ -46,35 +46,58 @@ public class CompanyLogRoutingAppender extends AbstractAppender {
 
 	@Override
 	public void append(LogEvent logEvent) {
-		String prefix = CompanyThreadLocal.getCompanyId() + "-";
+		long companyId = CompanyThreadLocal.getCompanyId();
 
-		RollingFileAppender textFileRollingFileAppender =
-			_companyAppenders.computeIfAbsent(
-				prefix + _TEXT_FILE,
-				key -> _createFileAppender(_getAppender(_TEXT_FILE), key));
+		Appender textFileAppender = _textFileAppenders.computeIfAbsent(
+			companyId,
+			key -> _createFileAppender(_portalTextFileAppender, key));
 
-		if (textFileRollingFileAppender != null) {
-			textFileRollingFileAppender.append(logEvent);
+		if (textFileAppender != null) {
+			textFileAppender.append(logEvent);
 		}
 
-		RollingFileAppender xmFileRollingFileAppender =
-			_companyAppenders.computeIfAbsent(
-				prefix + _XML_FILE,
-				key -> _createFileAppender(_getAppender(_XML_FILE), key));
+		Appender xmlFileAppender = _xmlFileAppenders.computeIfAbsent(
+			companyId, key -> _createFileAppender(_portalXmlFileAppender, key));
 
-		if (xmFileRollingFileAppender != null) {
-			xmFileRollingFileAppender.append(logEvent);
+		if (xmlFileAppender != null) {
+			xmlFileAppender.append(logEvent);
 		}
 	}
 
-	private RollingFileAppender _createFileAppender(
-		Appender appender, String appendName) {
+	public void reset(Collection<Appender> appenders) {
+		Appender portalTextFileAppender = null;
+		Appender portalXmlFileAppender = null;
 
+		for (Appender appender : appenders) {
+			if (Objects.equals(_TEXT_FILE, appender.getName())) {
+				portalTextFileAppender = appender;
+			}
+			else if (Objects.equals(_XML_FILE, appender.getName())) {
+				portalXmlFileAppender = appender;
+			}
+		}
+
+		Appender originalPortalTextFileAppender = _portalTextFileAppender;
+
+		if (originalPortalTextFileAppender != portalTextFileAppender) {
+			_portalTextFileAppender = portalTextFileAppender;
+
+			_textFileAppenders.clear();
+		}
+
+		Appender originalPortalXmlFileAppender = _portalXmlFileAppender;
+
+		if (originalPortalXmlFileAppender != portalXmlFileAppender) {
+			_portalXmlFileAppender = portalXmlFileAppender;
+
+			_xmlFileAppenders.clear();
+		}
+	}
+
+	private Appender _createFileAppender(Appender appender, long companyId) {
 		if (appender == null) {
 			return null;
 		}
-
-		long companyId = CompanyThreadLocal.getCompanyId();
 
 		RollingFileAppender portalRollingFileAppender =
 			(RollingFileAppender)appender;
@@ -90,7 +113,8 @@ public class CompanyLogRoutingAppender extends AbstractAppender {
 
 		RollingFileAppender rollingFileAppender =
 			RollingFileAppender.createAppender(
-				null, testFilePattern, Boolean.TRUE.toString(), appendName,
+				null, testFilePattern, Boolean.TRUE.toString(),
+				companyId + StringPool.DASH + appender.getName(),
 				Boolean.TRUE.toString(), String.valueOf(_BUFFER_SIZE),
 				Boolean.TRUE.toString(),
 				portalRollingFileAppender.getTriggeringPolicy(), null,
@@ -103,29 +127,17 @@ public class CompanyLogRoutingAppender extends AbstractAppender {
 		return rollingFileAppender;
 	}
 
-	private Appender _getAppender(String appendName) {
-		Logger rootLogger = (Logger)LogManager.getRootLogger();
-
-		Map<String, Appender> appenders = rootLogger.getAppenders();
-
-		for (Appender appender : appenders.values()) {
-			if ((appender instanceof RollingFileAppender) &&
-				Objects.equals(appendName, appender.getName())) {
-
-				return appender;
-			}
-		}
-
-		return null;
-	}
-
 	private static final int _BUFFER_SIZE = 8192;
 
 	private static final String _TEXT_FILE = "TEXT_FILE";
 
 	private static final String _XML_FILE = "XML_FILE";
 
-	private final Map<String, RollingFileAppender> _companyAppenders =
-		new HashMap<>();
+	private volatile Appender _portalTextFileAppender;
+	private volatile Appender _portalXmlFileAppender;
+	private final Map<Long, Appender> _textFileAppenders =
+		new ConcurrentHashMap<>();
+	private final Map<Long, Appender> _xmlFileAppenders =
+		new ConcurrentHashMap<>();
 
 }

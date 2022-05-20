@@ -19,7 +19,7 @@ import com.liferay.info.list.renderer.InfoListRenderer;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -57,7 +57,7 @@ public class GetAvailableListRenderersMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		String className = ParamUtil.getString(resourceRequest, "className");
 
@@ -86,5 +86,8 @@ public class GetAvailableListRenderersMVCResourceCommand
 
 	@Reference
 	private InfoListRendererTracker _infoListRendererTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 }

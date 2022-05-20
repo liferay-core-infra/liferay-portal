@@ -120,7 +120,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -6936,7 +6936,7 @@ public class JournalArticleLocalServiceImpl
 					continue;
 				}
 
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(value);
+				JSONObject jsonObject = _jsonFactory.createJSONObject(value);
 
 				if (!jsonObject.has("groupId") || !jsonObject.has("uuid")) {
 					continue;
@@ -6978,7 +6978,7 @@ public class JournalArticleLocalServiceImpl
 					}
 				}
 
-				JSONObject cdataJSONObject = JSONFactoryUtil.createJSONObject(
+				JSONObject cdataJSONObject = _jsonFactory.createJSONObject(
 					dynamicContentElement.getText());
 
 				cdataJSONObject.put(
@@ -9390,6 +9390,9 @@ public class JournalArticleLocalServiceImpl
 
 	@Reference
 	private JournalHelper _journalHelper;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutDisplayPageProviderTracker _layoutDisplayPageProviderTracker;

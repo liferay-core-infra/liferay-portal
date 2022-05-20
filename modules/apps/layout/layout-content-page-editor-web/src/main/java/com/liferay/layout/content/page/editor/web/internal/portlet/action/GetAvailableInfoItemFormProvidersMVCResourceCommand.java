@@ -22,7 +22,7 @@ import com.liferay.info.localized.InfoLocalizedValue;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.page.template.info.item.capability.DisplayPageInfoItemCapability;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -62,7 +62,7 @@ public class GetAvailableInfoItemFormProvidersMVCResourceCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		JSONArray mappingTypesJSONArray = JSONFactoryUtil.createJSONArray();
+		JSONArray mappingTypesJSONArray = _jsonFactory.createJSONArray();
 
 		for (InfoItemClassDetails infoItemClassDetails :
 				_infoItemServiceTracker.getInfoItemClassDetails(
@@ -93,7 +93,7 @@ public class GetAvailableInfoItemFormProvidersMVCResourceCommand
 		InfoItemClassDetails infoItemClassDetails, long groupId,
 		Locale locale) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
 			_infoItemServiceTracker.getFirstInfoItemService(
@@ -129,6 +129,9 @@ public class GetAvailableInfoItemFormProvidersMVCResourceCommand
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Portal _portal;

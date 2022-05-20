@@ -80,7 +80,8 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		if (GetterUtil.getBoolean(
 				PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED))) {
 
-			rootLoggerConfig.addAppender(new AggregateAppender(), null, null);
+			rootLoggerConfig.addAppender(
+				new CompanyLogRoutingAppender(), null, null);
 		}
 
 		setStarted();

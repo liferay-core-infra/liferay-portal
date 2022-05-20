@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -277,15 +278,21 @@ public class VerifyProperties {
 				verifyObsoleteSystemProperty(key);
 			}
 
-			Properties systemProperties = SystemProperties.getProperties();
+			Set<String> propertyNames = SystemProperties.getPropertyNames();
 
 			for (String[] keys : _MODULARIZED_SYSTEM_KEYS) {
 				String oldKey = keys[0];
-				String newKey = keys[1];
-				String moduleName = keys[2];
 
-				verifyModularizedSystemProperty(
-					systemProperties, oldKey, newKey, moduleName);
+				if (propertyNames.contains(oldKey)) {
+					String newKey = keys[1];
+					String moduleName = keys[2];
+
+					_log.error(
+						StringBundler.concat(
+							"System property \"", oldKey,
+							"\" was modularized to ", moduleName, " as \"",
+							newKey, "\""));
+				}
 			}
 		}
 	}

@@ -25,11 +25,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -78,10 +80,6 @@ public class SystemProperties {
 		return _arrayValues.computeIfAbsent(key, k -> StringUtil.split(get(k)));
 	}
 
-	public static Properties getProperties() {
-		return PropertiesUtil.fromMap(_properties);
-	}
-
 	public static Map<String, String> getProperties(
 		String prefix, boolean removePrefix) {
 
@@ -100,6 +98,10 @@ public class SystemProperties {
 		}
 
 		return properties;
+	}
+
+	public static Set<String> getPropertyNames() {
+		return Collections.unmodifiableSet(_properties.keySet());
 	}
 
 	public static void load(ClassLoader classLoader) {

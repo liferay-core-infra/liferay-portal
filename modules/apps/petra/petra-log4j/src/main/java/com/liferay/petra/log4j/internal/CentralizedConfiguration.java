@@ -74,6 +74,8 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 
 		addLogger(LogManager.ROOT_LOGGER_NAME, rootLoggerConfig);
 
+		rootLoggerConfig.addAppender(new AggregateAppender(), null, null);
+
 		setStarted();
 	}
 

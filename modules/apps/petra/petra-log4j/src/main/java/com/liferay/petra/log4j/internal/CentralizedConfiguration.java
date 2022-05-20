@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Filter;
@@ -81,7 +82,7 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 				PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED))) {
 
 			rootLoggerConfig.addAppender(
-				new CompanyLogRoutingAppender(), null, null);
+				new CompanyLogRoutingAppender(), Level.ALL, null);
 		}
 
 		setStarted();

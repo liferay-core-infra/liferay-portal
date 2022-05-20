@@ -36,10 +36,10 @@ import org.apache.logging.log4j.core.appender.RollingFileAppender;
 /**
  * @author Hai Yu
  */
-public class AggregateAppender extends AbstractAppender {
+public class CompanyLogRoutingAppender extends AbstractAppender {
 
-	public AggregateAppender() {
-		super("AggregateAppender", null, null, true, null);
+	public CompanyLogRoutingAppender() {
+		super("CompanyLogRoutingAppender", null, null, true, null);
 
 		start();
 	}

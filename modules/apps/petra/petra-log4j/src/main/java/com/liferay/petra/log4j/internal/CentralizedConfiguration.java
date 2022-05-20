@@ -15,6 +15,9 @@
 package com.liferay.petra.log4j.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.lang.reflect.Field;
 
@@ -74,7 +77,11 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 
 		addLogger(LogManager.ROOT_LOGGER_NAME, rootLoggerConfig);
 
-		rootLoggerConfig.addAppender(new AggregateAppender(), null, null);
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED))) {
+
+			rootLoggerConfig.addAppender(new AggregateAppender(), null, null);
+		}
 
 		setStarted();
 	}

@@ -32,6 +32,7 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
+import org.apache.logging.log4j.core.appender.rolling.RollingFileManager;
 
 /**
  * @author Hai Yu
@@ -103,35 +104,39 @@ public class CompanyLogRoutingAppender extends AbstractAppender {
 			return null;
 		}
 
-		RollingFileAppender portalRollingFileAppender =
-			(RollingFileAppender)appender;
+		RollingFileAppender rollingFileAppender = (RollingFileAppender)appender;
 
-		String testFilePattern = StringBundler.concat(
-			StringUtil.replace(
-				PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
-			"/logs/companies/", companyId, StringPool.SLASH,
-			StringUtil.extractLast(
-				portalRollingFileAppender.getFilePattern(), StringPool.SLASH));
+		RollingFileManager rollingFileManager =
+			rollingFileAppender.getManager();
+
+		RollingFileAppender.Builder builder = RollingFileAppender.newBuilder();
 
 		LoggerContext loggerContext = (LoggerContext)LogManager.getContext();
 
-		RollingFileAppender rollingFileAppender =
-			RollingFileAppender.createAppender(
-				null, testFilePattern, Boolean.TRUE.toString(),
-				companyId + StringPool.DASH + appender.getName(),
-				Boolean.TRUE.toString(), String.valueOf(_BUFFER_SIZE),
-				Boolean.TRUE.toString(),
-				portalRollingFileAppender.getTriggeringPolicy(), null,
-				portalRollingFileAppender.getLayout(), null,
-				Boolean.FALSE.toString(), null, null,
-				loggerContext.getConfiguration());
+		builder.setConfiguration(loggerContext.getConfiguration());
 
-		rollingFileAppender.start();
+		builder.setName(companyId + StringPool.DASH + appender.getName());
+		builder.setIgnoreExceptions(rollingFileAppender.ignoreExceptions());
+		builder.setLayout(rollingFileAppender.getLayout());
+		builder.withCreateOnDemand(true);
+		builder.withAppend(rollingFileManager.isAppend());
+		builder.withBufferedIo(true);
+		builder.withBufferSize(rollingFileManager.getBufferSize());
+		builder.withFilePattern(
+			StringBundler.concat(
+				StringUtil.replace(
+					PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
+				"/logs/companies/", companyId, StringPool.SLASH,
+				StringUtil.extractLast(
+					rollingFileAppender.getFilePattern(), StringPool.SLASH)));
+		builder.withPolicy(rollingFileAppender.getTriggeringPolicy());
 
-		return rollingFileAppender;
+		Appender fileAppender = builder.build();
+
+		fileAppender.start();
+
+		return fileAppender;
 	}
-
-	private static final int _BUFFER_SIZE = 8192;
 
 	private static final String _TEXT_FILE = "TEXT_FILE";
 

@@ -32,6 +32,8 @@ import org.jabsorb.serializer.ObjectMatch;
 import org.jabsorb.serializer.SerializerState;
 import org.jabsorb.serializer.UnmarshallException;
 
+import java.math.BigDecimal;
+
 /**
  * Serializes primitive Java values
  */
@@ -52,8 +54,8 @@ public class PrimitiveSerializer extends AbstractSerializer
    * Classes that this can serialise to.
    */
   private static Class[] _JSONClasses = new Class[] { Integer.class,
-      Byte.class, Short.class, Long.class, Float.class, Double.class,
-      String.class };
+  Byte.class, Short.class, Long.class, Float.class, Double.class,
+  String.class, BigDecimal.class };
 
   public Class[] getSerializableClasses()
   {
@@ -213,3 +215,5 @@ public class PrimitiveSerializer extends AbstractSerializer
   }
 
 }
+
+/* @generated */

@@ -91,10 +91,14 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 	private void _aggregateAppenders(
 		AbstractConfiguration abstractConfiguration) {
 
-		Map<String, Appender> currentAppenders = getAppenders();
-
 		Map<String, Appender> newAppenders =
 			abstractConfiguration.getAppenders();
+
+		if (newAppenders.isEmpty()) {
+			return;
+		}
+
+		Map<String, Appender> currentAppenders = getAppenders();
 
 		for (Appender newAppender : newAppenders.values()) {
 			newAppender.start();

@@ -155,7 +155,7 @@ public class FileInstallConfigTest {
 			".testConfigurationDeprecatedFileExtension");
 
 		String content = "testKey=\"testValue\"";
-		String contentDeprecated = "testKeyDeprecated=\"testValueDeprecated\"";
+		String contentDeprecated = "testKeyDeprecated=testValueDeprecated";
 
 		_configurationPath = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,

@@ -152,7 +152,7 @@
 			};
 		})();
 
-		var featureFlags = <%= PropsValues.FEATURE_FLAGS_JSON %>;
+		var featureFlags = <%= FeatureFlagUtil.getJSON() %>;
 
 		Liferay.FeatureFlags = Object.keys(featureFlags).reduce(
 			(acc, key) => ({

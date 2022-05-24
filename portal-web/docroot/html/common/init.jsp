@@ -148,6 +148,7 @@ page import="com.liferay.portal.service.*" %><%@
 page import="com.liferay.portal.struts.Definition" %><%@
 page import="com.liferay.portal.struts.StrutsUtil" %><%@
 page import="com.liferay.portal.struts.TilesUtil" %><%@
+page import="com.liferay.portal.util.FeatureFlagUtil" %><%@
 page import="com.liferay.portal.util.PrefsPropsUtil" %><%@
 page import="com.liferay.portal.util.PropsUtil" %><%@
 page import="com.liferay.portal.util.PropsValues" %><%@

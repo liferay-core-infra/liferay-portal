@@ -82,7 +82,7 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 				PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED))) {
 
 			rootLoggerConfig.addAppender(
-				new CompanyLogRoutingAppender(), Level.ALL, null);
+				_companyLogRoutingAppender, Level.ALL, null);
 		}
 
 		setStarted();
@@ -134,6 +134,8 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 
 			currentAppender.stop();
 		}
+
+		_companyLogRoutingAppender.reset(newAppenders.values());
 	}
 
 	private void _aggregateFilter(
@@ -265,5 +267,8 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			throw new ExceptionInInitializerError(exception);
 		}
 	}
+
+	private final CompanyLogRoutingAppender _companyLogRoutingAppender =
+		new CompanyLogRoutingAppender();
 
 }

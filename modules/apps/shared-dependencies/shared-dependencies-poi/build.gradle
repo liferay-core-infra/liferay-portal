@@ -1,0 +1,5 @@
+dependencies {
+	compileInclude group: "org.apache.poi", name: "poi", version: "5.2.2"
+	compileInclude group: "org.apache.poi", name: "poi-ooxml", version: "5.2.2"
+	compileInclude group: "org.apache.poi", name: "poi-ooxml-full", version: "5.2.2"
+}

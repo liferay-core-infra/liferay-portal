@@ -20,6 +20,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -45,7 +46,6 @@ import java.util.concurrent.CountDownLatch;
 
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -144,8 +144,10 @@ public class FileInstallConfigTest {
 
 	@Test
 	public void testConfigurationDeprecatedFileExtension() throws Exception {
-		Assume.assumeFalse(
-			PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED);
+		Boolean originalModuleFrameworkFileInstallCfgEnabled =
+			ReflectionTestUtil.getAndSetFieldValue(
+				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
+				false);
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testDummy");
@@ -192,6 +194,10 @@ public class FileInstallConfigTest {
 		}
 		finally {
 			Files.deleteIfExists(configPathDeprecated);
+
+			ReflectionTestUtil.setFieldValue(
+				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
+				originalModuleFrameworkFileInstallCfgEnabled);
 		}
 	}
 

@@ -153,6 +153,30 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/development/byte-buddy.jar</file-name>
+				<version>1.12.10</version>
+				<project-name>Byte Buddy</project-name>
+				<project-url>https://github.com/raphw/byte-buddy</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>lib/development/byte-buddy-agent.jar</file-name>
+				<version>1.12.10</version>
+				<project-name>Byte Buddy Agent</project-name>
+				<project-url>https://github.com/raphw/byte-buddy</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/development/catalina.jar</file-name>
 				<version>9.0.56</version>
 				<project-name>Tomcat</project-name>

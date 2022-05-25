@@ -404,7 +404,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			Constants.FRAMEWORK_BUNDLE_PARENT_APP);
 		properties.put(
 			Constants.FRAMEWORK_STORAGE,
-			PropsValues.MODULE_FRAMEWORK_STATE_DIR);
+			SystemPropsValues.MODULE_FRAMEWORK_STATE_DIR);
 
 		properties.put("eclipse.security", null);
 		properties.put(
@@ -513,7 +513,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private void _cleanOSGiStateFolder() throws Exception {
 		Files.walkFileTree(
-			Paths.get(PropsValues.MODULE_FRAMEWORK_STATE_DIR),
+			Paths.get(SystemPropsValues.MODULE_FRAMEWORK_STATE_DIR),
 			new SimpleFileVisitor<Path>() {
 
 				@Override

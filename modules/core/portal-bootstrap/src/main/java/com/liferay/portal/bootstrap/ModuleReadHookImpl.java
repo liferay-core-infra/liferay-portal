@@ -18,7 +18,6 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.SystemPropsValues;
 
 import java.io.InputStream;
@@ -47,7 +46,7 @@ public class ModuleReadHookImpl implements ModuleReadHook {
 		}
 
 		Path bundleRevPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_STATE_DIR, "org.eclipse.osgi",
+			SystemPropsValues.MODULE_FRAMEWORK_STATE_DIR, "org.eclipse.osgi",
 			String.valueOf(bundleId), "0");
 
 		if (Files.notExists(bundleRevPath)) {

@@ -47,6 +47,9 @@ public interface SystemPropsKeys {
 	public static final String MODULE_FRAMEWORK_RESOLVER_REVISION_BATCH_SIZE =
 		"module.framework.resolver.revision.batch.size";
 
+	public static final String MODULE_FRAMEWORK_STATE_DIR =
+		"module.framework.state.dir";
+
 	public static final String MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA =
 		"module.framework.system.packages.extra";
 

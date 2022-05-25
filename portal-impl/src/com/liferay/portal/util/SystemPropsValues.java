@@ -48,6 +48,9 @@ public class SystemPropsValues {
 		SystemProperties.get(
 			SystemPropsKeys.MODULE_FRAMEWORK_RESOLVER_REVISION_BATCH_SIZE);
 
+	public static final String MODULE_FRAMEWORK_STATE_DIR =
+		SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_STATE_DIR);
+
 	public static final String[] MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA =
 		SystemProperties.getArray(
 			SystemPropsKeys.MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA);

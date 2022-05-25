@@ -48,6 +48,10 @@ public class SystemPropsValues {
 		SystemProperties.get(
 			SystemPropsKeys.MODULE_FRAMEWORK_RESOLVER_REVISION_BATCH_SIZE);
 
+	public static final String[] MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES =
+		SystemProperties.getArray(
+			SystemPropsKeys.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES);
+
 	public static final String MODULE_FRAMEWORK_STATE_DIR =
 		SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_STATE_DIR);
 

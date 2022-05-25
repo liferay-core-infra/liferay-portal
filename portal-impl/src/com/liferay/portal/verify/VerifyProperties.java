@@ -437,6 +437,10 @@ public class VerifyProperties {
 		{"module.framework.configs.dir", "module.framework.configs.dir"},
 		{"module.framework.modules.dir", "module.framework.modules.dir"},
 		{"module.framework.portal.dir", "module.framework.portal.dir"},
+		{
+			"module.framework.services.ignored.interfaces",
+			"module.framework.services.ignored.interfaces"
+		},
 		{"module.framework.state.dir", "module.framework.state.dir"},
 		{"module.framework.war.dir", "module.framework.war.dir"},
 		{"resource.repositories.root", "resource.repositories.root"}

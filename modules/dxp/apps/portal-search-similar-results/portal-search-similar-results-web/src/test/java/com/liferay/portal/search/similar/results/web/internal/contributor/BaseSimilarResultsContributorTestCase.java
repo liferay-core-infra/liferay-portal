@@ -30,7 +30,6 @@ import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiNodeLocalService;
 import com.liferay.wiki.service.WikiPageLocalService;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -41,7 +40,7 @@ import org.mockito.MockitoAnnotations;
 public abstract class BaseSimilarResultsContributorTestCase {
 
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 	}
 
 	protected AssetEntry setUpAssetEntry(long entryId) {
@@ -88,7 +87,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			assetEntryLocalService
 		).fetchAssetEntry(
-			Matchers.anyLong()
+			Mockito.anyLong()
 		);
 	}
 
@@ -100,7 +99,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			assetEntryLocalService
 		).fetchEntry(
-			Matchers.anyLong(), Matchers.anyString()
+			Mockito.anyLong(), Mockito.nullable(String.class)
 		);
 
 		Mockito.doReturn(
@@ -108,7 +107,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			assetEntryLocalService
 		).fetchEntry(
-			Matchers.anyLong(), Matchers.anyLong()
+			Mockito.anyLong(), Mockito.anyLong()
 		);
 	}
 
@@ -140,7 +139,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			criteriaHelper
 		).getRouteParameter(
-			Matchers.eq(parameterName)
+			Mockito.eq(parameterName)
 		);
 	}
 
@@ -152,7 +151,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			criteriaHelper
 		).getRouteParameter(
-			Matchers.eq(parameterName)
+			Mockito.eq(parameterName)
 		);
 	}
 
@@ -188,7 +187,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			destinationHelper
 		).getRouteParameter(
-			Matchers.eq(paramterName)
+			Mockito.eq(paramterName)
 		);
 	}
 
@@ -200,7 +199,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			destinationHelper
 		).getRouteParameter(
-			Matchers.eq(parameterName)
+			Mockito.eq(parameterName)
 		);
 	}
 
@@ -222,7 +221,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			uidFactory
 		).getUID(
-			Matchers.any(ClassedModel.class)
+			Mockito.nullable(ClassedModel.class)
 		);
 
 		return uidFactory;
@@ -246,7 +245,7 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			wikiNodeLocalService
 		).fetchNode(
-			Matchers.anyLong(), Matchers.anyString()
+			Mockito.anyLong(), Mockito.nullable(String.class)
 		);
 	}
 
@@ -274,7 +273,8 @@ public abstract class BaseSimilarResultsContributorTestCase {
 		).when(
 			wikiPageLocalService
 		).fetchPage(
-			Matchers.anyLong(), Matchers.anyString(), Matchers.anyDouble()
+			Mockito.anyLong(), Mockito.nullable(String.class),
+			Mockito.anyDouble()
 		);
 	}
 

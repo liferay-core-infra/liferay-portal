@@ -36,7 +36,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -54,7 +53,7 @@ public class IpstackSXPParameterContributorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		ConfigurationProvider configurationProvider = Mockito.mock(
 			ConfigurationProvider.class);
@@ -68,7 +67,7 @@ public class IpstackSXPParameterContributorTest {
 
 		Mockito.when(
 			configurationProvider.getCompanyConfiguration(
-				Matchers.anyObject(), Matchers.anyLong())
+				Mockito.any(), Mockito.anyLong())
 		).thenReturn(
 			_ipstackConfiguration
 		);
@@ -90,7 +89,7 @@ public class IpstackSXPParameterContributorTest {
 		Mockito.verify(
 			_sxpParameters, Mockito.never()
 		).add(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -117,7 +116,7 @@ public class IpstackSXPParameterContributorTest {
 		Mockito.verify(
 			_sxpParameters, Mockito.never()
 		).add(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -150,7 +149,7 @@ public class IpstackSXPParameterContributorTest {
 		webCachePoolUtil.setWebCachePool(webCachePool);
 
 		Mockito.when(
-			webCachePool.get(Matchers.anyString(), Matchers.anyObject())
+			webCachePool.get(Mockito.anyString(), Mockito.any())
 		).thenReturn(
 			JSONUtil.put("city", "Diamond Bar")
 		);
@@ -175,7 +174,7 @@ public class IpstackSXPParameterContributorTest {
 
 	private void _setUpSearchContext(String value) {
 		Mockito.when(
-			_searchContext.getAttribute(Matchers.anyString())
+			_searchContext.getAttribute(Mockito.anyString())
 		).thenReturn(
 			value
 		);

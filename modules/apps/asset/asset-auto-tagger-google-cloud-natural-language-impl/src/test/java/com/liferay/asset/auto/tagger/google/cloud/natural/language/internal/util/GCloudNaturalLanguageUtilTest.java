@@ -47,7 +47,7 @@ public class GCloudNaturalLanguageUtilTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 	}
 
 	@Test

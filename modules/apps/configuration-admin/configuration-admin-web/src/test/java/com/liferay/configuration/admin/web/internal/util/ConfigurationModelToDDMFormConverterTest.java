@@ -42,7 +42,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
@@ -58,7 +57,7 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		LanguageUtil languageUtil = new LanguageUtil();
 
@@ -77,13 +76,16 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 			extendedObjectClassDefinition,
 			new ExtendedAttributeDefinition[] {extendedAttributeDefinition},
 			ExtendedObjectClassDefinition.ALL);
+
 		whenGetAttributeDefinitions(
 			extendedObjectClassDefinition, new ExtendedAttributeDefinition[0],
 			ExtendedObjectClassDefinition.OPTIONAL);
+
 		whenGetAttributeDefinitions(
 			extendedObjectClassDefinition,
 			new ExtendedAttributeDefinition[] {extendedAttributeDefinition},
 			ExtendedObjectClassDefinition.REQUIRED);
+
 		whenGetCardinality(extendedAttributeDefinition, 0);
 
 		String fieldName = "Field.Name";
@@ -573,7 +575,7 @@ public class ConfigurationModelToDDMFormConverterTest extends Mockito {
 
 		when(
 			extendedObjectClassDefinition.getAttributeDefinitions(
-				Matchers.eq(filter))
+				Mockito.eq(filter))
 		).thenReturn(
 			extendedAttributeDefinitions
 		);

@@ -33,7 +33,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
@@ -59,7 +58,7 @@ public class DLFolderUtilTest {
 			GroupLocalServiceUtil.class, "_service", groupLocalService);
 
 		Mockito.when(
-			groupLocalService.getGroup(Matchers.anyLong())
+			groupLocalService.getGroup(Mockito.anyLong())
 		).thenReturn(
 			depotGroup
 		);
@@ -75,7 +74,7 @@ public class DLFolderUtilTest {
 
 		Mockito.when(
 			depotEntryService.getGroupConnectedDepotEntries(
-				Matchers.anyLong(), Matchers.anyInt(), Matchers.anyInt())
+				Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt())
 		).thenReturn(
 			depotEntries
 		);
@@ -95,7 +94,7 @@ public class DLFolderUtilTest {
 		Group depotGroup = _getDepotGroup(depotGroupId);
 
 		Mockito.when(
-			groupLocalService.getGroup(Matchers.anyLong())
+			groupLocalService.getGroup(Mockito.anyLong())
 		).thenReturn(
 			depotGroup
 		);
@@ -111,7 +110,7 @@ public class DLFolderUtilTest {
 
 		Mockito.when(
 			depotEntryService.getGroupConnectedDepotEntries(
-				Matchers.anyLong(), Matchers.anyInt(), Matchers.anyInt())
+				Mockito.anyLong(), Mockito.anyInt(), Mockito.anyInt())
 		).thenReturn(
 			depotEntries
 		);

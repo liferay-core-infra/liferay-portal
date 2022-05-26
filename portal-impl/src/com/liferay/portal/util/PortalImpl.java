@@ -5077,10 +5077,6 @@ public class PortalImpl implements Portal {
 			return uri;
 		}
 
-		if (uri.startsWith(StringPool.DOUBLE_SLASH)) {
-			uri = uri.substring(1);
-		}
-
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);

@@ -45,7 +45,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -81,7 +80,7 @@ public class ServletResponseUtilRangeTest {
 		);
 
 		Mockito.when(
-			file.delete(Matchers.any(File.class))
+			file.delete(Mockito.any(File.class))
 		).thenAnswer(
 			(Answer<Boolean>)invocation -> {
 				Object[] args = invocation.getArguments();

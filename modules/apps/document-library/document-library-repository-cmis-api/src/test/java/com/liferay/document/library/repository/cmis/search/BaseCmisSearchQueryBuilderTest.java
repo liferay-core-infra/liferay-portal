@@ -62,7 +62,7 @@ public class BaseCmisSearchQueryBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		setUpPropsUtil();
 

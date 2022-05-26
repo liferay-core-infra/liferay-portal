@@ -105,7 +105,7 @@ public class SXPBlueprintSearchRequestEnhancerImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_sxpBlueprintSearchRequestEnhancerImpl =
 			new SXPBlueprintSearchRequestEnhancerImpl();

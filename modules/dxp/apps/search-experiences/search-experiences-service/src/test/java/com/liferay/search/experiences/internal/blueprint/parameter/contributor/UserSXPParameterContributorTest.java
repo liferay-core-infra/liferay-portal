@@ -62,7 +62,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -79,7 +78,7 @@ public class UserSXPParameterContributorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_mockLanguage();
 		_mockPortal();
@@ -578,7 +577,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			expandoValue
 		).getStringArray(
-			Matchers.any(Locale.class)
+			Mockito.any(Locale.class)
 		);
 
 		_testExpandoSXPParameter(
@@ -613,7 +612,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			expandoValue
 		).getString(
-			Matchers.any(Locale.class)
+			Mockito.any(Locale.class)
 		);
 
 		_testExpandoSXPParameter(
@@ -747,7 +746,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			_language
 		).getLanguageId(
-			Matchers.any(Locale.class)
+			Mockito.any(Locale.class)
 		);
 	}
 
@@ -787,7 +786,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			segmentsEntryRetriever
 		).getSegmentsEntryIds(
-			Matchers.anyLong(), Matchers.anyLong(), Matchers.anyObject()
+			Mockito.anyLong(), Mockito.anyLong(), Mockito.anyObject()
 		);
 
 		return segmentsEntryRetriever;
@@ -899,7 +898,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			userGroupGroupRoleLocalService
 		).getUserGroupGroupRolesByUser(
-			Matchers.anyLong(), Matchers.anyLong()
+			Mockito.anyLong(), Mockito.anyLong()
 		);
 
 		return userGroupGroupRoleLocalService;
@@ -916,7 +915,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			userGroupLocalService
 		).getUserUserGroups(
-			Matchers.anyLong()
+			Mockito.anyLong()
 		);
 
 		return userGroupLocalService;
@@ -933,7 +932,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			userGroupRoleLocalService
 		).getUserGroupRoles(
-			Matchers.anyLong()
+			Mockito.anyLong()
 		);
 
 		return userGroupRoleLocalService;
@@ -948,7 +947,7 @@ public class UserSXPParameterContributorTest {
 		).when(
 			userLocalService
 		).fetchUserById(
-			Matchers.anyLong()
+			Mockito.anyLong()
 		);
 
 		return userLocalService;

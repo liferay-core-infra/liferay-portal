@@ -61,7 +61,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_setUpAssetEntry();
 		setUpAssetRenderer();
@@ -80,7 +80,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_assetRenderer
 		).getTitle(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		String editPortletURLString = RandomTestUtil.randomString();
@@ -108,7 +108,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_assetRenderer
 		).hasEditPermission(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		SearchResultContentDisplayContext searchResultContentDisplayContext =
@@ -153,7 +153,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_assetRenderer
 		).hasViewPermission(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		SearchResultContentDisplayContext searchResultContentDisplayContext =
@@ -168,7 +168,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_assetRenderer
 		).getURLEdit(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 
 		Mockito.doReturn(
@@ -176,7 +176,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_assetRenderer
 		).hasEditPermission(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.doReturn(
@@ -184,7 +184,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_assetRenderer
 		).hasViewPermission(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -286,7 +286,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_portal
 		).getLiferayPortletRequest(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.doReturn(
@@ -294,7 +294,7 @@ public class SearchResultContentDisplayContextBuilderTest {
 		).when(
 			_portal
 		).getLiferayPortletResponse(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 

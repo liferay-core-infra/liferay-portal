@@ -44,7 +44,7 @@ public class ReindexWhenIndexerIsDisabledTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_reindex = createReindex();
 	}
@@ -85,7 +85,7 @@ public class ReindexWhenIndexerIsDisabledTest {
 			Mockito.anyString(), Mockito.anyLong()
 		);
 
-		Mockito.verifyZeroInteractions(bulkReindexer);
+		Mockito.verifyNoInteractions(bulkReindexer);
 	}
 
 	@Test

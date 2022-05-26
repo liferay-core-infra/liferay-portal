@@ -48,7 +48,7 @@ public abstract class BaseGroupIdQueryPreFilterContributorTestCase
 	public void setUp() throws Exception {
 		super.setUp();
 
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.doReturn(
 			Arrays.asList(INACTIVE_GROUP_ID1, INACTIVE_GROUP_ID2)

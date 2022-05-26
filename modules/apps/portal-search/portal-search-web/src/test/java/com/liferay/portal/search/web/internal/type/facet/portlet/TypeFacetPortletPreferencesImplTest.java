@@ -31,7 +31,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -48,7 +47,7 @@ public class TypeFacetPortletPreferencesImplTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		typeFacetPortletPreferencesImpl = new TypeFacetPortletPreferencesImpl(
 			_objectDefinitionLocalService, Optional.empty(),
@@ -169,7 +168,7 @@ public class TypeFacetPortletPreferencesImplTest {
 
 		Mockito.when(
 			_assetRendererFactoryRegistry.getAssetRendererFactories(
-				Matchers.anyLong())
+				Mockito.anyLong())
 		).thenReturn(
 			Arrays.asList(assetRendererFactories)
 		);

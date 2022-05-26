@@ -62,7 +62,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -79,7 +78,7 @@ public class SearchResultsPortletTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_setUpPortletSharedSearchResponse();
 		_setUpPropsUtil();
@@ -318,7 +317,7 @@ public class SearchResultsPortletTest {
 		Mockito.verify(
 			_renderRequest
 		).setAttribute(
-			Matchers.eq(WebKeys.PORTLET_DISPLAY_CONTEXT),
+			Mockito.eq(WebKeys.PORTLET_DISPLAY_CONTEXT),
 			argumentCaptor.capture()
 		);
 

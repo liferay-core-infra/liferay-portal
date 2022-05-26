@@ -27,7 +27,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -44,7 +43,7 @@ public class ModelIndexerWriterDocumentHelperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 	}
 
 	@Test
@@ -66,7 +65,7 @@ public class ModelIndexerWriterDocumentHelperTest {
 
 	private void _throwIndexNameBuilderException(Exception exception) {
 		Mockito.when(
-			indexDocumentBuilder.getDocument(Matchers.any())
+			indexDocumentBuilder.getDocument(Mockito.any())
 		).thenThrow(
 			exception
 		);

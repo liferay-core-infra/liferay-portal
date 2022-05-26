@@ -45,7 +45,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -62,7 +61,7 @@ public class AssetCategoriesSearchFacetDisplayContextTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.doReturn(
 			_facetCollector
@@ -495,7 +494,7 @@ public class AssetCategoriesSearchFacetDisplayContextTest {
 		).when(
 			portal
 		).getHttpServletRequest(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		return portal;

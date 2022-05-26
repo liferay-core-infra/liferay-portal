@@ -26,7 +26,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -70,7 +69,7 @@ public class SynonymSetIndexCreationCompanyModelListenerTest
 		Mockito.verify(
 			_synonymSetIndexCreator, Mockito.times(1)
 		).create(
-			Matchers.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -84,7 +83,7 @@ public class SynonymSetIndexCreationCompanyModelListenerTest
 		Mockito.verify(
 			_synonymSetIndexCreator, Mockito.never()
 		).create(
-			Matchers.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -98,7 +97,7 @@ public class SynonymSetIndexCreationCompanyModelListenerTest
 		Mockito.verify(
 			_synonymSetIndexCreator, Mockito.never()
 		).delete(
-			Matchers.anyObject()
+			Mockito.any()
 		);
 
 		setUpSynonymSetIndexReader(true);
@@ -114,7 +113,7 @@ public class SynonymSetIndexCreationCompanyModelListenerTest
 		Mockito.verify(
 			_synonymSetIndexCreator, Mockito.times(1)
 		).delete(
-			Matchers.anyObject()
+			Mockito.any()
 		);
 	}
 

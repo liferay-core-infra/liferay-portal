@@ -111,7 +111,7 @@ public class SynonymsPortletTest extends BaseSynonymsWebTestCase {
 		).when(
 			config
 		).getResourceBundle(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		ReflectionTestUtil.setFieldValue(_synonymsPortlet, "config", config);

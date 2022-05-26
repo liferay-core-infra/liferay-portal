@@ -28,7 +28,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -78,12 +77,12 @@ public class SynonymSetIndexCreationPortalInstanceLifecycleListenerTest
 		Mockito.verify(
 			_synonymSetIndexCreator, Mockito.times(1)
 		).create(
-			Matchers.anyObject()
+			Mockito.any()
 		);
 		Mockito.verify(
 			_filterToIndexSynchronizer, Mockito.times(1)
 		).copyToIndex(
-			Matchers.anyString(), Matchers.anyObject()
+			Mockito.nullable(String.class), Mockito.any()
 		);
 	}
 
@@ -97,12 +96,12 @@ public class SynonymSetIndexCreationPortalInstanceLifecycleListenerTest
 		Mockito.verify(
 			_synonymSetIndexCreator, Mockito.never()
 		).create(
-			Matchers.anyObject()
+			Mockito.any()
 		);
 		Mockito.verify(
 			_filterToIndexSynchronizer, Mockito.never()
 		).copyToIndex(
-			Matchers.anyString(), Matchers.anyObject()
+			Mockito.anyString(), Mockito.any()
 		);
 	}
 

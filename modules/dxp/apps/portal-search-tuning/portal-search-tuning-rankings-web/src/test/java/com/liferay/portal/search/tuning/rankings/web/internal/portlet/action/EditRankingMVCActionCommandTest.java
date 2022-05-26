@@ -37,7 +37,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -92,7 +91,7 @@ public class EditRankingMVCActionCommandTest
 		Mockito.verify(
 			_actionRequest, Mockito.times(1)
 		).setAttribute(
-			Mockito.anyString(), Mockito.anyObject()
+			Mockito.anyString(), Mockito.any()
 		);
 	}
 
@@ -282,8 +281,8 @@ public class EditRankingMVCActionCommandTest
 		).when(
 			portletURLFactory
 		).create(
-			Matchers.any(PortletRequest.class), Matchers.anyString(),
-			Matchers.anyString()
+			Mockito.any(PortletRequest.class), Mockito.anyString(),
+			Mockito.anyString()
 		);
 
 		PortletURLFactoryUtil portletURLFactoryUtil =

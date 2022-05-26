@@ -59,7 +59,7 @@ public class RankingIndexCreatorImplTest extends BaseRankingsIndexTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			(CreateIndexRequest)Mockito.anyObject()
+			(CreateIndexRequest)Mockito.any()
 		);
 	}
 
@@ -72,7 +72,7 @@ public class RankingIndexCreatorImplTest extends BaseRankingsIndexTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			(DeleteIndexRequest)Mockito.anyObject()
+			(DeleteIndexRequest)Mockito.any()
 		);
 	}
 

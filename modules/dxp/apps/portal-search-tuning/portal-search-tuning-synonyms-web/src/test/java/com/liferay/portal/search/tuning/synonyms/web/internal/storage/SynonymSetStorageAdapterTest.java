@@ -44,7 +44,7 @@ public class SynonymSetStorageAdapterTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_synonymSetStorageAdapter = new SynonymSetStorageAdapter();
 
@@ -63,7 +63,7 @@ public class SynonymSetStorageAdapterTest {
 		).when(
 			_synonymSetJSONStorageHelper
 		).addJSONStorageEntry(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.nullable(String.class), Mockito.nullable(String.class)
 		);
 
 		Assert.assertEquals(
@@ -75,7 +75,7 @@ public class SynonymSetStorageAdapterTest {
 		Mockito.verify(
 			_synonymSetIndexWriter, Mockito.times(1)
 		).create(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 	}
 
@@ -88,7 +88,7 @@ public class SynonymSetStorageAdapterTest {
 		Mockito.verify(
 			_synonymSetIndexWriter, Mockito.times(1)
 		).remove(
-			Mockito.anyObject(), Mockito.anyString()
+			Mockito.any(), Mockito.anyString()
 		);
 	}
 
@@ -115,7 +115,7 @@ public class SynonymSetStorageAdapterTest {
 		Mockito.verify(
 			_synonymSetIndexWriter, Mockito.times(1)
 		).update(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 	}
 

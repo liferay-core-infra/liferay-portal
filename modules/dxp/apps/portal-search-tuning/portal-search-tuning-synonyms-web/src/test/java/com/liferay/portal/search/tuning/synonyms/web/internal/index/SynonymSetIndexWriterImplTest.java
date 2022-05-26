@@ -29,7 +29,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -79,7 +78,7 @@ public class SynonymSetIndexWriterImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			Matchers.any(DeleteDocumentRequest.class)
+			Mockito.any(DeleteDocumentRequest.class)
 		);
 	}
 
@@ -92,7 +91,7 @@ public class SynonymSetIndexWriterImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			Matchers.any(IndexDocumentRequest.class)
+			Mockito.any(IndexDocumentRequest.class)
 		);
 	}
 
@@ -115,7 +114,7 @@ public class SynonymSetIndexWriterImplTest extends BaseSynonymsWebTestCase {
 		).when(
 			_synonymSetToDocumentTranslator
 		).translate(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 

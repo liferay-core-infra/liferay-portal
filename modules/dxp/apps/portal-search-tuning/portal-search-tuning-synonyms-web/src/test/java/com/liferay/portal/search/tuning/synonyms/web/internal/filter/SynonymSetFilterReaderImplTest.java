@@ -66,7 +66,7 @@ public class SynonymSetFilterReaderImplTest extends BaseSynonymsWebTestCase {
 		).when(
 			jsonObject
 		).getJSONArray(
-			Mockito.anyString()
+			Mockito.nullable(String.class)
 		);
 
 		Mockito.doReturn(
@@ -74,7 +74,7 @@ public class SynonymSetFilterReaderImplTest extends BaseSynonymsWebTestCase {
 		).when(
 			_jsonFactory
 		).createJSONObject(
-			Mockito.anyString()
+			Mockito.nullable(String.class)
 		);
 
 		Assert.assertArrayEquals(

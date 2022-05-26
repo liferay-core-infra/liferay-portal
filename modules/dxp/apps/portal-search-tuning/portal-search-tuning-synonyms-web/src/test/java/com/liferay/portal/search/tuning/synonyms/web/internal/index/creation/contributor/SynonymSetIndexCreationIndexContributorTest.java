@@ -64,7 +64,7 @@ public class SynonymSetIndexCreationIndexContributorTest
 		Mockito.verify(
 			_indexToFilterSynchronizer, Mockito.times(1)
 		).copyToFilter(
-			Mockito.anyObject(), Mockito.anyString(), Mockito.anyBoolean()
+			Mockito.any(), Mockito.anyString(), Mockito.anyBoolean()
 		);
 	}
 
@@ -76,7 +76,7 @@ public class SynonymSetIndexCreationIndexContributorTest
 		Mockito.verify(
 			_indexToFilterSynchronizer, Mockito.never()
 		).copyToFilter(
-			Mockito.anyObject(), Mockito.anyString(), Mockito.anyBoolean()
+			Mockito.any(), Mockito.anyString(), Mockito.anyBoolean()
 		);
 	}
 

@@ -67,7 +67,7 @@ public class FilterToIndexSynchronizerImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			synonymSetStorageAdapter, Mockito.times(1)
 		).create(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 	}
 

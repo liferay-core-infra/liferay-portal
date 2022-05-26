@@ -72,7 +72,7 @@ public class TiffOrientationTransformerTest {
 	public void testTransformJPG() throws Exception {
 		Mockito.when(
 			_mimeTypes.getContentType(
-				(InputStream)Mockito.anyObject(), Mockito.anyString())
+				(InputStream)Mockito.any(), Mockito.anyString())
 		).thenReturn(
 			ContentTypes.IMAGE_JPEG
 		);
@@ -94,7 +94,7 @@ public class TiffOrientationTransformerTest {
 	public void testTransformPNG() throws Exception {
 		Mockito.when(
 			_mimeTypes.getContentType(
-				(InputStream)Mockito.anyObject(), Mockito.anyString())
+				(InputStream)Mockito.any(), Mockito.anyString())
 		).thenReturn(
 			ContentTypes.IMAGE_PNG
 		);

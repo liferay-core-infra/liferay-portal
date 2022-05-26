@@ -26,7 +26,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
@@ -59,7 +58,7 @@ public class SynonymSetIndexCreatorImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			Matchers.any(CreateIndexRequest.class)
+			Mockito.any(CreateIndexRequest.class)
 		);
 	}
 
@@ -71,7 +70,7 @@ public class SynonymSetIndexCreatorImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			Matchers.any(DeleteIndexRequest.class)
+			Mockito.any(DeleteIndexRequest.class)
 		);
 	}
 

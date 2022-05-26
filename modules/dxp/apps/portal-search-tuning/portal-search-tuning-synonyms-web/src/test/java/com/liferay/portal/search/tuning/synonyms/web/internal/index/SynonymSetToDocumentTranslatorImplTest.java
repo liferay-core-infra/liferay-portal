@@ -42,7 +42,7 @@ public class SynonymSetToDocumentTranslatorImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_synonymSetToDocumentTranslatorImpl =
 			new SynonymSetToDocumentTranslatorImpl();
@@ -69,7 +69,7 @@ public class SynonymSetToDocumentTranslatorImplTest {
 		).when(
 			documentBuilder
 		).setString(
-			Mockito.anyString(), Mockito.anyString()
+			Mockito.nullable(String.class), Mockito.nullable(String.class)
 		);
 
 		Mockito.doReturn(

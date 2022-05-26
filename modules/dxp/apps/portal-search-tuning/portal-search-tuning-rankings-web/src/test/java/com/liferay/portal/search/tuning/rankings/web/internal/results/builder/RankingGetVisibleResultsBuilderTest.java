@@ -137,7 +137,7 @@ public class RankingGetVisibleResultsBuilderTest
 		).when(
 			_rankingSearchRequestHelper
 		).contribute(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 	}
 

@@ -122,7 +122,7 @@ public class EditSynonymSetsMVCActionCommandTest
 		Mockito.verify(
 			_indexToFilterSynchronizer, Mockito.times(1)
 		).copyToFilter(
-			Mockito.anyObject(), Mockito.anyString(), Mockito.anyBoolean()
+			Mockito.any(), Mockito.nullable(String.class), Mockito.anyBoolean()
 		);
 	}
 
@@ -137,7 +137,7 @@ public class EditSynonymSetsMVCActionCommandTest
 		Mockito.verify(
 			synonymSetStorageAdapter, Mockito.times(1)
 		).create(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 
 		SynonymSet.SynonymSetBuilder synonymSetBuilder =
@@ -157,7 +157,7 @@ public class EditSynonymSetsMVCActionCommandTest
 		Mockito.verify(
 			synonymSetStorageAdapter, Mockito.times(1)
 		).update(
-			Mockito.anyObject(), Mockito.anyObject()
+			Mockito.any(), Mockito.any()
 		);
 	}
 

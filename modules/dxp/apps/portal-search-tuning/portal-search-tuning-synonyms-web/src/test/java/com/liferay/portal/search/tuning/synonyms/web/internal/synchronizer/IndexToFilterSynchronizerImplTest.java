@@ -69,7 +69,7 @@ public class IndexToFilterSynchronizerImplTest extends BaseSynonymsWebTestCase {
 		Mockito.verify(
 			_synonymSetFilterWriter, Mockito.times(1)
 		).updateSynonymSets(
-			Mockito.anyString(), Mockito.anyString(), Mockito.anyObject(),
+			Mockito.anyString(), Mockito.anyString(), Mockito.any(),
 			Mockito.anyBoolean()
 		);
 	}

@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 /**
  * @author Wade Cao
@@ -44,6 +45,8 @@ public class GetResultsMVCResourceCommandTest
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+
+		MockitoAnnotations.openMocks(this);
 
 		_getResultsMVCResourceCommand = new GetResultsMVCResourceCommand();
 

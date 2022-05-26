@@ -42,7 +42,7 @@ public class RankingIndexCreationCompanyModelListenerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_rankingIndexCreationCompanyModelListener =
 			new RankingIndexCreationCompanyModelListener();
@@ -68,13 +68,13 @@ public class RankingIndexCreationCompanyModelListenerTest {
 		Mockito.verify(
 			_rankingIndexReader, Mockito.times(1)
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_rankingIndexCreator, Mockito.times(1)
 		).create(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -88,13 +88,13 @@ public class RankingIndexCreationCompanyModelListenerTest {
 		Mockito.verify(
 			_rankingIndexReader, Mockito.times(1)
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_rankingIndexCreator, Mockito.times(0)
 		).create(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -108,13 +108,13 @@ public class RankingIndexCreationCompanyModelListenerTest {
 		Mockito.verify(
 			_rankingIndexReader, Mockito.times(1)
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_rankingIndexCreator, Mockito.times(0)
 		).delete(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -128,13 +128,13 @@ public class RankingIndexCreationCompanyModelListenerTest {
 		Mockito.verify(
 			_rankingIndexReader, Mockito.times(1)
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_rankingIndexCreator, Mockito.times(1)
 		).delete(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -144,7 +144,7 @@ public class RankingIndexCreationCompanyModelListenerTest {
 		).when(
 			_rankingIndexReader
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 

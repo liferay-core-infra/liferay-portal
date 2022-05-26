@@ -99,14 +99,14 @@ public class SingleIndexToMultipleIndexImporterImplTest
 		).when(
 			_rankingIndexReader
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Mockito.doNothing(
 		).when(
 			_rankingIndexCreator
 		).create(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		SearchHit searchHit = Mockito.mock(SearchHit.class);
@@ -151,7 +151,7 @@ public class SingleIndexToMultipleIndexImporterImplTest
 		).when(
 			searchEngineAdapter
 		).execute(
-			(BulkDocumentRequest)Mockito.anyObject()
+			(BulkDocumentRequest)Mockito.any()
 		);
 
 		_singleIndexToMultipleIndexImporterImpl.importRankings();
@@ -159,12 +159,12 @@ public class SingleIndexToMultipleIndexImporterImplTest
 		Mockito.verify(
 			searchEngineAdapter, Mockito.times(1)
 		).execute(
-			(BulkDocumentRequest)Mockito.anyObject()
+			(BulkDocumentRequest)Mockito.any()
 		);
 		Mockito.verify(
 			_rankingIndexCreator, Mockito.times(1)
 		).delete(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 
@@ -191,7 +191,7 @@ public class SingleIndexToMultipleIndexImporterImplTest
 		).when(
 			_rankingIndexReader
 		).isExists(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 
 		Assert.assertTrue(_singleIndexToMultipleIndexImporterImpl.needImport());

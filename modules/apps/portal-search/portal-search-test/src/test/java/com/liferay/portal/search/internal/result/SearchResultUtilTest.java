@@ -44,10 +44,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  * @author André de Oliveira
@@ -80,19 +79,19 @@ public class SearchResultUtilTest extends BaseSearchResultUtilTestCase {
 	@Test
 	public void testSummaryFromAssetRenderer() throws Exception {
 		Mockito.when(
-			_assetRenderer.getSearchSummary(Matchers.any())
+			_assetRenderer.getSearchSummary(Mockito.any())
 		).thenReturn(
 			SearchTestUtil.SUMMARY_CONTENT
 		);
 
 		Mockito.when(
-			_assetRenderer.getTitle(Matchers.any())
+			_assetRenderer.getTitle(Mockito.any())
 		).thenReturn(
 			SearchTestUtil.SUMMARY_TITLE
 		);
 
 		Mockito.when(
-			_assetRendererFactory.getAssetRenderer(Matchers.anyLong())
+			_assetRendererFactory.getAssetRenderer(Mockito.anyLong())
 		).thenReturn(
 			_assetRenderer
 		);
@@ -129,9 +128,9 @@ public class SearchResultUtilTest extends BaseSearchResultUtilTestCase {
 
 		Mockito.when(
 			_indexer.getSummary(
-				Matchers.any(), Matchers.anyString(),
-				(PortletRequest)Matchers.isNull(),
-				(PortletResponse)Matchers.isNull())
+				Mockito.any(), Mockito.anyString(),
+				(PortletRequest)Mockito.isNull(),
+				(PortletResponse)Mockito.isNull())
 		).thenReturn(
 			summary
 		);

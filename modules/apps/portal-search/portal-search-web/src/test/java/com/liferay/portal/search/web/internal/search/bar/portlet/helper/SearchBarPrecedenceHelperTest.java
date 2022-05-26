@@ -58,7 +58,7 @@ public class SearchBarPrecedenceHelperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Layout layout = _createLayout(_portlets);
 

@@ -42,7 +42,7 @@ public class DictionaryReindexerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.when(
 			_portalInstancesLocalService.getCompanyIds()

@@ -50,14 +50,14 @@ public class SearchPermissionCheckerImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		Mockito.doReturn(
 			_indexer
 		).when(
 			_indexerRegistry
 		).getIndexer(
-			Mockito.anyString()
+			Mockito.nullable(String.class)
 		);
 
 		_searchPermissionChecker = _createSearchPermissionChecker();

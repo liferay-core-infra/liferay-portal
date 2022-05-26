@@ -4437,6 +4437,18 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.portal.template.velocity.jar!commons-collections.jar</file-name>
+				<version>3.2.2</version>
+				<project-name>Apache Commons Collections</project-name>
+				<project-url>http://commons.apache.org/collections/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.portal.template.velocity.jar!org.apache.velocity.jar</file-name>
 				<version>1.6.4.LIFERAY-PATCHED-1</version>
 				<project-name>org.apache.velocity</project-name>
@@ -5368,6 +5380,30 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-beanutils.jar</file-name>
+				<version>1.9.4</version>
+				<project-name>Apache Commons BeanUtils</project-name>
+				<project-url>https://commons.apache.org/proper/commons-beanutils/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-codec.jar</file-name>
+				<version>1.13</version>
+				<project-name>Apache Commons Codec</project-name>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-compress.jar</file-name>
 				<version>1.21</version>
 				<project-name>Apache Commons Compress</project-name>
@@ -6114,6 +6150,30 @@
 				</licenses>
 			</library>
 			<library>
+				<file-name>lib/development/byte-buddy-agent.jar</file-name>
+				<version>1.12.10</version>
+				<project-name>Byte Buddy Agent</project-name>
+				<project-url>https://github.com/raphw/byte-buddy</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>lib/development/byte-buddy.jar</file-name>
+				<version>1.12.10</version>
+				<project-name>Byte Buddy</project-name>
+				<project-url>https://github.com/raphw/byte-buddy</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License 2.0</license-name>
+						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
 				<file-name>lib/development/catalina.jar</file-name>
 				<version>9.0.56</version>
 				<project-name>Tomcat</project-name>
@@ -6570,10 +6630,22 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/development/mockito.jar</file-name>
-				<version>1.9.5</version>
+				<file-name>lib/development/mockito-core.jar</file-name>
+				<version>4.5.1</version>
 				<project-name>Mockito</project-name>
-				<project-url>http://code.google.com/p/mockito</project-url>
+				<project-url>https://github.com/mockito/mockito</project-url>
+				<licenses>
+					<license>
+						<license-name>MIT License</license-name>
+						<license-url>http://opensource.org/licenses/MIT</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>lib/development/mockito-inline.jar</file-name>
+				<version>4.5.1</version>
+				<project-name>Mockito</project-name>
+				<project-url>https://github.com/mockito/mockito</project-url>
 				<licenses>
 					<license>
 						<license-name>MIT License</license-name>
@@ -6698,78 +6770,6 @@
 					<license>
 						<license-name>BSD Style License</license-name>
 						<license-url>http://en.wikipedia.org/wiki/BSD_licenses</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/powermock-api-mockito.jar</file-name>
-				<version>1.6.1</version>
-				<project-name>Powermock</project-name>
-				<project-url>http://code.google.com/p/powermock</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/powermock-api-support.jar</file-name>
-				<version>1.6.1</version>
-				<project-name>Powermock</project-name>
-				<project-url>http://code.google.com/p/powermock</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/powermock-core.jar</file-name>
-				<version>1.6.1</version>
-				<project-name>Powermock</project-name>
-				<project-url>http://code.google.com/p/powermock</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/powermock-module-junit4-common.jar</file-name>
-				<version>1.6.1</version>
-				<project-name>Powermock</project-name>
-				<project-url>http://code.google.com/p/powermock</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/powermock-module-junit4.jar</file-name>
-				<version>1.6.1</version>
-				<project-name>Powermock</project-name>
-				<project-url>http://code.google.com/p/powermock</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/powermock-reflect.jar</file-name>
-				<version>1.6.1</version>
-				<project-name>Powermock</project-name>
-				<project-url>http://code.google.com/p/powermock</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>

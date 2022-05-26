@@ -42,7 +42,7 @@ public class ElasticsearchClusterRequestExecutorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_clusterRequestExecutor = new ElasticsearchClusterRequestExecutor() {
 			{

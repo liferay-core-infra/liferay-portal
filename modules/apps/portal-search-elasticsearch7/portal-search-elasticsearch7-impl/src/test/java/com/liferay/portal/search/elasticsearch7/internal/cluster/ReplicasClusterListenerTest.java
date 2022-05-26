@@ -46,7 +46,7 @@ public class ReplicasClusterListenerTest {
 
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 
 		_setEmbeddedCluster(true);
 		_setMasterExecutor(true);

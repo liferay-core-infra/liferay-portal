@@ -34,6 +34,7 @@ import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -101,7 +102,7 @@ public class AMJournalTransformerListenerTest {
 
 		Assert.assertSame(originalScript, newScript);
 
-		Mockito.verifyZeroInteractions(_document);
+		Mockito.verifyNoInteractions(_document);
 	}
 
 	@Test
@@ -111,7 +112,7 @@ public class AMJournalTransformerListenerTest {
 
 		Assert.assertSame(_document, newDocument);
 
-		Mockito.verifyZeroInteractions(_document);
+		Mockito.verifyNoInteractions(_document);
 	}
 
 	private static final String _LANGUAGE_ID = "en";

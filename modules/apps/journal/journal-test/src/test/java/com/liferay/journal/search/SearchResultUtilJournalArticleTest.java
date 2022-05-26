@@ -47,7 +47,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -66,7 +65,7 @@ public class SearchResultUtilJournalArticleTest
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 		super.setUp();
 	}
 
@@ -86,8 +85,8 @@ public class SearchResultUtilJournalArticleTest
 		).when(
 			_indexer
 		).getSummary(
-			(Document)Matchers.any(), Matchers.anyString(),
-			(PortletRequest)Matchers.any(), (PortletResponse)Matchers.any()
+			(Document)Mockito.any(), Mockito.anyString(),
+			(PortletRequest)Mockito.any(), (PortletResponse)Mockito.any()
 		);
 
 		Mockito.when(

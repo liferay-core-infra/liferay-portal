@@ -575,6 +575,10 @@ public class PropsValues {
 	public static final String DEFAULT_USER_PUBLIC_LAYOUTS_LAR = PropsUtil.get(
 		PropsKeys.DEFAULT_USER_PUBLIC_LAYOUTS_LAR);
 
+	public static final int DEPENDENCY_MANAGER_SYNC_TIMEOUT =
+		GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_SYNC_TIMEOUT), 60);
+
 	public static final boolean DIRECT_SERVLET_CONTEXT_ENABLED =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.DIRECT_SERVLET_CONTEXT_ENABLED));

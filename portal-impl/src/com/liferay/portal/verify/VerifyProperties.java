@@ -2081,6 +2081,10 @@ public class VerifyProperties extends VerifyProcess {
 			"velocity.engine.restricted.variables"
 		},
 		{
+			"module.framework.properties.dependency.manager.sync.timeout",
+			"dependency.manager.sync.timeout"
+		},
+		{
 			"module.framework.properties.felix.fileinstall.bundles.new.start",
 			"module.framework.file.install.bundles.start.new"
 		},

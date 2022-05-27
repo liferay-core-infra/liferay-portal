@@ -579,6 +579,11 @@ public class PropsValues {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_SYNC_TIMEOUT), 60);
 
+	public static final boolean DEPENDENCY_MANAGER_THREAD_POOL_ENABLED =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED),
+			true);
+
 	public static final boolean DIRECT_SERVLET_CONTEXT_ENABLED =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.DIRECT_SERVLET_CONTEXT_ENABLED));

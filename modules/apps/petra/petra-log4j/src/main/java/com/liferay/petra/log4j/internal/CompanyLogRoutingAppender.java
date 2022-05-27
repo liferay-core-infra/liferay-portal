@@ -35,6 +35,7 @@ import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.appender.NullAppender;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
 import org.apache.logging.log4j.core.appender.rolling.DirectWriteRolloverStrategy;
 import org.apache.logging.log4j.core.appender.rolling.PatternProcessor;
@@ -66,16 +67,10 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 
 	@Override
 	public void append(LogEvent logEvent) {
-		RollingFileAppender rollingFileAppender =
-			_rollingFileAppenders.computeIfAbsent(
-				CompanyThreadLocal.getCompanyId(),
-				this::_createRollingFileAppender);
+		Appender appender = _appenders.computeIfAbsent(
+			CompanyThreadLocal.getCompanyId(), this::_createAppender);
 
-		if (rollingFileAppender == null) {
-			return;
-		}
-
-		rollingFileAppender.append(logEvent);
+		appender.append(logEvent);
 	}
 
 	public static class Builder
@@ -168,14 +163,17 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		_rolloverStrategy = rolloverStrategy;
 	}
 
-	private RollingFileAppender _createRollingFileAppender(long companyId) {
+	private Appender _createAppender(long companyId) {
 		RollingFileAppender.Builder builder = RollingFileAppender.newBuilder();
 
 		LoggerContext loggerContext = (LoggerContext)LogManager.getContext();
 
 		builder.setConfiguration(loggerContext.getConfiguration());
 
-		builder.setName(companyId + StringPool.DASH + getName());
+		String name = companyId + StringPool.DASH + getName();
+
+		builder.setName(name);
+
 		builder.setIgnoreExceptions(ignoreExceptions());
 		builder.setLayout(getLayout());
 		builder.withAdvertise(_advertise);
@@ -240,9 +238,11 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 
 		RollingFileAppender rollingFileAppender = builder.build();
 
-		if (rollingFileAppender != null) {
-			rollingFileAppender.start();
+		if (rollingFileAppender == null) {
+			return NullAppender.createAppender(name);
 		}
+
+		rollingFileAppender.start();
 
 		return rollingFileAppender;
 	}
@@ -250,6 +250,7 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 	private final boolean _advertise;
 	private final String _advertiseUri;
 	private final boolean _append;
+	private final Map<Long, Appender> _appenders = new ConcurrentHashMap<>();
 	private final boolean _bufferedIo;
 	private final int _bufferSize;
 	private final boolean _createOnDemand;
@@ -260,8 +261,6 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 	private final String _filePermissions;
 	private final boolean _immediateFlush;
 	private final boolean _locking;
-	private final Map<Long, RollingFileAppender> _rollingFileAppenders =
-		new ConcurrentHashMap<>();
 	private final RolloverStrategy _rolloverStrategy;
 	private final TriggeringPolicy _triggeringPolicy;
 

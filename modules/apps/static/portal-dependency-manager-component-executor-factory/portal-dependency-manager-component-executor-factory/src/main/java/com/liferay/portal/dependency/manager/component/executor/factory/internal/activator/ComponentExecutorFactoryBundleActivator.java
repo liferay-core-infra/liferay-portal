@@ -19,7 +19,6 @@ import com.liferay.portal.dependency.manager.component.executor.factory.internal
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSync;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.util.PropsValues;
 
@@ -41,9 +40,8 @@ public class ComponentExecutorFactoryBundleActivator
 
 	@Override
 	public void start(BundleContext bundleContext) {
-		boolean threadPoolEnabled = GetterUtil.getBoolean(
-			bundleContext.getProperty("dependency.manager.thread.pool.enabled"),
-			true);
+		boolean threadPoolEnabled =
+			PropsValues.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED;
 
 		if (!threadPoolEnabled) {
 			return;

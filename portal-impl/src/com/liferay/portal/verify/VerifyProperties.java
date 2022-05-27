@@ -2085,6 +2085,11 @@ public class VerifyProperties extends VerifyProcess {
 			"dependency.manager.sync.timeout"
 		},
 		{
+			"module.framework.properties.dependency.manager.thread.pool." +
+				"enabled",
+			"dependency.manager.thread.pool.enabled"
+		},
+		{
 			"module.framework.properties.felix.fileinstall.bundles.new.start",
 			"module.framework.file.install.bundles.start.new"
 		},

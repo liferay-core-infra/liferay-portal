@@ -14,11 +14,8 @@
 
 package com.liferay.petra.log4j.internal;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -186,11 +183,8 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		builder.withFileName(_fileName);
 		builder.withFileOwner(_fileOwner);
 		builder.withFilePattern(
-			StringBundler.concat(
-				StringUtil.replace(
-					PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
-				"/logs/companies/", companyId, StringPool.SLASH,
-				StringUtil.extractLast(_filePattern, StringPool.SLASH)));
+			StringUtil.replace(
+				_filePattern, "@company.id@", String.valueOf(companyId)));
 		builder.withFilePermissions(_filePermissions);
 		builder.withImmediateFlush(_immediateFlush);
 		builder.withLocking(_locking);

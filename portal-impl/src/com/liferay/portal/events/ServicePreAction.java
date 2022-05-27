@@ -677,20 +677,26 @@ public class ServicePreAction extends Action {
 		for (Layout curLayout : layouts) {
 			try {
 				if ((ignoreHiddenLayouts || !curLayout.isHidden()) &&
-						_hasAccessPermission(permissionChecker, curLayout, false)) {
+					_hasAccessPermission(permissionChecker, curLayout, false)) {
 
-					if (accessibleLayouts.isEmpty() && !hasViewLayoutPermission) {
+					if (accessibleLayouts.isEmpty() &&
+						!hasViewLayoutPermission) {
+
 						layout = curLayout;
 					}
 
 					accessibleLayouts.add(curLayout);
 				}
-			} catch (Exception e){
-				if (_log.isDebugEnabled()){
-					_log.debug(e);
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Error processing layout " + layout.getLayoutId());
 				}
 
-				_log.warn("Error processing layout " + layout.getLayoutId());
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
+				}
 			}
 		}
 

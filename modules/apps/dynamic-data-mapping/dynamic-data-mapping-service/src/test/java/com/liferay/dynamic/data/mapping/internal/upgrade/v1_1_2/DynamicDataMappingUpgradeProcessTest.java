@@ -27,17 +27,13 @@ import java.util.Set;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.junit.MockitoJUnitRunner;
 
 /**
  * @author Jeyvison Nascimento
  */
-@RunWith(MockitoJUnitRunner.class)
 public class DynamicDataMappingUpgradeProcessTest {
 
 	@ClassRule
@@ -206,13 +202,9 @@ public class DynamicDataMappingUpgradeProcessTest {
 			new SelectDDMFormFieldValueTransformer();
 	}
 
-	@Mock
-	private DDMFormFieldValue _ddmFormFieldValue;
-
-	@Mock
-	private JSONFactory _jsonFactory;
-
-	@Mock
-	private Value _value;
+	private final DDMFormFieldValue _ddmFormFieldValue = Mockito.mock(
+		DDMFormFieldValue.class);
+	private final JSONFactory _jsonFactory = Mockito.mock(JSONFactory.class);
+	private final Value _value = Mockito.mock(Value.class);
 
 }

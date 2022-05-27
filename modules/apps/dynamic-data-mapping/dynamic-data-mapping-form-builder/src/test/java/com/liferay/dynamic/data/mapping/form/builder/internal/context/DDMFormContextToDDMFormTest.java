@@ -32,16 +32,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 /**
  * @author Jeyvison Nascimento
  */
-@RunWith(MockitoJUnitRunner.class)
 public class DDMFormContextToDDMFormTest {
 
 	@ClassRule
@@ -51,6 +49,7 @@ public class DDMFormContextToDDMFormTest {
 
 	@Before
 	public void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
 		_setUpDDMFormContextToDDMFormValues();
 	}
 

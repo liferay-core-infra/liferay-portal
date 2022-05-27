@@ -33,16 +33,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 /**
  * @author Alejandro Tardín
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AMImageHTMLTagFactoryImplTest {
 
 	@ClassRule
@@ -52,6 +50,7 @@ public class AMImageHTMLTagFactoryImplTest {
 
 	@Before
 	public void setUp() throws PortalException {
+		MockitoAnnotations.openMocks(this);
 		ReflectionTestUtil.setFieldValue(
 			_amImageHTMLTagFactoryImpl, "_mediaQueryProvider",
 			_mediaQueryProvider);

@@ -30,17 +30,14 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 /**
  * @author Alejandro Tardín
  */
-@RunWith(MockitoJUnitRunner.class)
 public class AMJournalTransformerListenerTest {
 
 	@ClassRule
@@ -50,6 +47,8 @@ public class AMJournalTransformerListenerTest {
 
 	@Before
 	public void setUp() {
+		MockitoAnnotations.openMocks(this);
+
 		ReflectionTestUtil.setFieldValue(
 			_amJournalTransformerListener, "_contentTransformerHandler",
 			_contentTransformerHandler);

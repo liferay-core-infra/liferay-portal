@@ -15,6 +15,9 @@
 package com.liferay.petra.log4j.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.lang.reflect.Field;
 
@@ -86,6 +89,12 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			abstractConfiguration.getAppenders();
 
 		for (Appender newAppender : newAppenders.values()) {
+			if ((newAppender instanceof CompanyLogRoutingAppender) &&
+				!_COMPANY_LOG_ENABLED) {
+
+				continue;
+			}
+
 			newAppender.start();
 
 			String appenderName = newAppender.getName();
@@ -242,6 +251,9 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			}
 		}
 	}
+
+	private static final boolean _COMPANY_LOG_ENABLED = GetterUtil.getBoolean(
+		PropsUtil.get(PropsKeys.COMPANY_LOG_ENABLED));
 
 	private static final Field _appenderRefsField;
 

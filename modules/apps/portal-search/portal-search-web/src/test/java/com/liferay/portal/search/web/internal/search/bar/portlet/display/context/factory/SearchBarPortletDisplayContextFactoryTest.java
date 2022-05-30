@@ -322,7 +322,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 		Mockito.when(
 			portletSharedSearchResponse.getParameter(
-				Mockito.anyObject(), Mockito.anyObject())
+				Mockito.any(), Mockito.any())
 		).thenReturn(
 			Optional.of(SearchScope.EVERYTHING.getParameterString())
 		);
@@ -331,7 +331,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 		Mockito.when(
 			portletSharedSearchResponse.getFederatedSearchResponse(
-				Mockito.anyObject())
+				Mockito.any())
 		).thenReturn(
 			searchResponse
 		);
@@ -363,7 +363,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 		).when(
 			_portal
 		).getLiferayPortletRequest(
-			Mockito.anyObject()
+			Mockito.any()
 		);
 	}
 

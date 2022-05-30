@@ -175,14 +175,14 @@ public class NewEnvTestRule implements TestRule {
 
 		arguments.add("-Dsun.zip.disableMemoryMapping=true");
 
-		String whipAgentLine = System.getProperty("whip.agent");
+		String whipAgentLine = SystemProperties.get("whip.agent");
 
 		if (Validator.isNotNull(whipAgentLine)) {
 			arguments.add(whipAgentLine);
 			arguments.add("-Dwhip.agent=" + whipAgentLine);
 		}
 
-		String fileName = System.getProperty("whip.datafile");
+		String fileName = SystemProperties.get("whip.datafile");
 
 		if (fileName != null) {
 			arguments.add("-Dwhip.datafile=" + fileName);
@@ -276,7 +276,7 @@ public class NewEnvTestRule implements TestRule {
 			matcher.appendReplacement(
 				sb,
 				Matcher.quoteReplacement(
-					GetterUtil.getString(System.getProperty(key))));
+					GetterUtil.getString(SystemProperties.get(key))));
 		}
 
 		matcher.appendTail(sb);
@@ -450,7 +450,7 @@ public class NewEnvTestRule implements TestRule {
 
 			currentThread.setContextClassLoader(_newClassLoader);
 
-			String quiet = System.getProperty(
+			String quiet = SystemProperties.get(
 				SystemProperties.SYSTEM_PROPERTIES_QUIET);
 
 			System.setProperty(

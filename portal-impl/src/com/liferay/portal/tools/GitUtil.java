@@ -240,7 +240,7 @@ public class GitUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String quiet = System.getProperty(
+		String quiet = SystemProperties.get(
 			SystemProperties.SYSTEM_PROPERTIES_QUIET);
 
 		System.setProperty(

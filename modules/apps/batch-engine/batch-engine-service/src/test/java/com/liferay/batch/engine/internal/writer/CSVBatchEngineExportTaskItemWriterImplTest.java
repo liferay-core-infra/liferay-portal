@@ -20,6 +20,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.Serializable;
@@ -113,7 +114,7 @@ public class CSVBatchEngineExportTaskItemWriterImplTest
 
 		StringBundler sb = new StringBundler();
 
-		String lineSeparator = System.getProperty("line.separator");
+		String lineSeparator = SystemProperties.get("line.separator");
 
 		if (Boolean.valueOf(
 				(String)parameters.getOrDefault(

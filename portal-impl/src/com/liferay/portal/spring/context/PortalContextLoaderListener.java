@@ -216,7 +216,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		PropsValues.LIFERAY_WEB_PORTAL_CONTEXT_TEMPDIR =
 			tempDir.getAbsolutePath();
 
-		Path tempDirPath = Paths.get(System.getProperty("java.io.tmpdir"));
+		Path tempDirPath = Paths.get(SystemProperties.get("java.io.tmpdir"));
 
 		if (!Files.exists(tempDirPath)) {
 			try {

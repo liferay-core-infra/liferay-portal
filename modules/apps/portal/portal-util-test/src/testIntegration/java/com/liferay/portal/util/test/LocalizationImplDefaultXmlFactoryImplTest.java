@@ -15,6 +15,7 @@
 package com.liferay.portal.util.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -35,14 +36,14 @@ public class LocalizationImplDefaultXmlFactoryImplTest
 	public void setUp() throws Exception {
 		super.setUp();
 
-		_xmlInputFactoryClassName = System.getProperty(
+		_xmlInputFactoryClassName = SystemProperties.get(
 			XMLInputFactory.class.getName());
 
 		System.setProperty(
 			XMLInputFactory.class.getName(),
 			"com.sun.xml.internal.stream.XMLInputFactoryImpl");
 
-		_xmlOutputFactoryClassName = System.getProperty(
+		_xmlOutputFactoryClassName = SystemProperties.get(
 			XMLOutputFactory.class.getName());
 
 		System.setProperty(

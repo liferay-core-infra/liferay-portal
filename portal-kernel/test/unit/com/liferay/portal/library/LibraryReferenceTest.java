@@ -20,6 +20,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
@@ -69,7 +70,7 @@ public class LibraryReferenceTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
-		_portalPath = Paths.get(System.getProperty("user.dir"));
+		_portalPath = Paths.get(SystemProperties.get("user.dir"));
 
 		_initGitIgnoreJars();
 		_initLibJars(LIB_DIR_NAME);

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.company.log.internal.servlet;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -32,8 +33,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
@@ -42,11 +41,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.lang.reflect.Field;
+
+import java.util.Map;
+import java.util.Objects;
+
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Logger;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -129,12 +137,13 @@ public class CompanyLogServlet extends HttpServlet {
 
 		String fileName = pathArray[1];
 
-		String path = StringBundler.concat(
-			StringUtil.replace(
-				PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
-			"/logs/companies/", companyId, StringPool.SLASH, fileName);
+		File logFilesDir = _getlogFilesDir(companyId);
 
-		File logFile = new File(path);
+		String logFilePath = StringBundler.concat(
+			StringUtil.replace(logFilesDir.getPath(), '\\', '/'),
+			StringPool.SLASH, fileName);
+
+		File logFile = new File(logFilePath);
 
 		String canonicalPath = logFile.getCanonicalPath();
 
@@ -143,7 +152,7 @@ public class CompanyLogServlet extends HttpServlet {
 				canonicalPath, File.separatorChar, CharPool.SLASH);
 		}
 
-		if (!path.equals(canonicalPath)) {
+		if (!logFilePath.equals(canonicalPath)) {
 			throw new PrincipalException("Unauthorized access");
 		}
 
@@ -157,6 +166,35 @@ public class CompanyLogServlet extends HttpServlet {
 		else {
 			throw new FileNotFoundException();
 		}
+	}
+
+	private File _getlogFilesDir(long companyId) throws Exception {
+		Logger rootLogger = (Logger)LogManager.getRootLogger();
+
+		Map<String, Appender> appenders = rootLogger.getAppenders();
+
+		for (Appender appender : appenders.values()) {
+			if (Objects.equals(
+					appender.getName(), "COMPANY_LOG_ROUTING_TEXT_FILE")) {
+
+				Field filePatternField = ReflectionUtil.getDeclaredField(
+					appender.getClass(), "_filePattern");
+
+				String filePattern = (String)filePatternField.get(appender);
+
+				filePattern = StringUtil.replace(
+					filePattern, "@company.id@", String.valueOf(companyId));
+
+				return new File(
+					filePattern.substring(
+						0,
+						StringUtil.lastIndexOfAny(
+							filePattern, new char[] {CharPool.SLASH})));
+			}
+		}
+
+		throw new Exception(
+			"The appender COMPANY_LOG_ROUTING_TEXT_FILE does not exist");
 	}
 
 	private PermissionChecker _getPermissionChecker(
@@ -206,14 +244,11 @@ public class CompanyLogServlet extends HttpServlet {
 	}
 
 	private void _listCompanyLogFiles(
-		HttpServletRequest httpServletRequest, PrintWriter printWriter,
-		Company company) {
+			HttpServletRequest httpServletRequest, PrintWriter printWriter,
+			Company company)
+		throws Exception {
 
-		File logFilesDir = new File(
-			StringBundler.concat(
-				StringUtil.replace(
-					PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
-				"/logs/companies/", company.getCompanyId()));
+		File logFilesDir = _getlogFilesDir(company.getCompanyId());
 
 		if (!logFilesDir.isDirectory()) {
 			return;

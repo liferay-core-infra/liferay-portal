@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.util.PropsValues;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,9 @@ public class BackgroundTaskMessagingConfigurator {
 	protected void activate(BundleContext bundleContext) {
 		Destination backgroundTaskDestination = _registerDestination(
 			bundleContext, DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-			DestinationNames.BACKGROUND_TASK, 5, 10);
+			DestinationNames.BACKGROUND_TASK,
+			PropsValues.BACKGROUND_TASK_EXECUTOR_WORKERS_CORE_SIZE,
+			PropsValues.BACKGROUND_TASK_EXECUTOR_WORKERS_MAX_SIZE);
 
 		backgroundTaskDestination.register(
 			new BackgroundTaskMessageListener(

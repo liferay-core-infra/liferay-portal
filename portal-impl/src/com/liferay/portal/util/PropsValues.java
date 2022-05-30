@@ -238,6 +238,15 @@ public class PropsValues {
 	public static final String AUTO_DEPLOY_TOMCAT_CONF_DIR = PropsUtil.get(
 		PropsKeys.AUTO_DEPLOY_TOMCAT_CONF_DIR);
 
+	public static final int BACKGROUND_TASK_EXECUTOR_WORKERS_CORE_SIZE =
+		GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.BACKGROUND_TASK_EXECUTOR_WORKERS_CORE_SIZE));
+
+	public static final int BACKGROUND_TASK_EXECUTOR_WORKERS_MAX_SIZE =
+		GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.BACKGROUND_TASK_EXECUTOR_WORKERS_MAX_SIZE));
+
 	public static final boolean BASIC_AUTH_PASSWORD_REQUIRED =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.BASIC_AUTH_PASSWORD_REQUIRED));

@@ -266,6 +266,12 @@ public interface PropsKeys {
 	public static final String AUTO_LOGIN_IGNORE_PATHS =
 		"auto.login.ignore.paths";
 
+	public static final String BACKGROUND_TASK_EXECUTOR_WORKERS_CORE_SIZE =
+		"background.task.executor.workers.core.size";
+
+	public static final String BACKGROUND_TASK_EXECUTOR_WORKERS_MAX_SIZE =
+		"background.task.executor.workers.max.size";
+
 	public static final String BASIC_AUTH_PASSWORD_REQUIRED =
 		"basic.auth.password.required";
 

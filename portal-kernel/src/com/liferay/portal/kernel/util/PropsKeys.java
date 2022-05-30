@@ -1347,6 +1347,9 @@ public interface PropsKeys {
 	public static final String LAYOUT_SET_FORM_UPDATE =
 		"layout.set.form.update";
 
+	public static final String LAYOUT_SET_PROTOTYPE_IMPORT_TASK_ISOLATION =
+		"layout.set.prototype.import.task.isolation";
+
 	public static final String LAYOUT_SET_PROTOTYPE_MERGE_FAIL_THRESHOLD =
 		"layout.set.prototype.merge.fail.threshold";
 

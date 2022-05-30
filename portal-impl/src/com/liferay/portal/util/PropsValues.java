@@ -1120,6 +1120,11 @@ public class PropsValues {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.LAYOUT_SCOPE_GROUP_FINDER_THRESHOLD));
 
+	public static final int LAYOUT_SET_PROTOTYPE_IMPORT_TASK_ISOLATION =
+		GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.LAYOUT_SET_PROTOTYPE_IMPORT_TASK_ISOLATION));
+
 	public static final int LAYOUT_SET_PROTOTYPE_MERGE_FAIL_THRESHOLD =
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.LAYOUT_SET_PROTOTYPE_MERGE_FAIL_THRESHOLD));

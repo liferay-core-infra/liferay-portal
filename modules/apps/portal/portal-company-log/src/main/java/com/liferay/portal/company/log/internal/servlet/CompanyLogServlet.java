@@ -14,6 +14,7 @@
 
 package com.liferay.portal.company.log.internal.servlet;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
@@ -42,14 +42,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Hai Yu
@@ -64,6 +73,23 @@ import org.osgi.service.component.annotations.Reference;
 	service = Servlet.class
 )
 public class CompanyLogServlet extends HttpServlet {
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		String filter = StringBundler.concat(
+			"(&(objectClass=", Object.class.getName(), ")(",
+			PropsKeys.COMPANY_LOG_ENABLED, "=true))");
+
+		_serviceTracker = ServiceTrackerFactory.open(
+			bundleContext, filter, new CompanyLogFilesDireTrackerCustomizer());
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTracker.close();
+	}
 
 	@Override
 	protected void doGet(
@@ -127,12 +153,17 @@ public class CompanyLogServlet extends HttpServlet {
 				permissionChecker.getUserId());
 		}
 
+		String logFilesDirPath = _companyLogFilesDir.get(companyId);
+
+		if (logFilesDirPath == null) {
+			return;
+		}
+
 		String fileName = pathArray[1];
 
 		String path = StringBundler.concat(
-			StringUtil.replace(
-				PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
-			"/logs/companies/", companyId, StringPool.SLASH, fileName);
+			StringUtil.replace(logFilesDirPath, '\\', '/'), StringPool.SLASH,
+			fileName);
 
 		File logFile = new File(path);
 
@@ -209,11 +240,15 @@ public class CompanyLogServlet extends HttpServlet {
 		HttpServletRequest httpServletRequest, PrintWriter printWriter,
 		Company company) {
 
+		String logFilesDirPath = _companyLogFilesDir.get(
+			company.getCompanyId());
+
+		if (logFilesDirPath == null) {
+			return;
+		}
+
 		File logFilesDir = new File(
-			StringBundler.concat(
-				StringUtil.replace(
-					PropsUtil.get(PropsKeys.LIFERAY_HOME), '\\', '/'),
-				"/logs/companies/", company.getCompanyId()));
+			StringUtil.replace(logFilesDirPath, '\\', '/'));
 
 		if (!logFilesDir.isDirectory()) {
 			return;
@@ -242,13 +277,43 @@ public class CompanyLogServlet extends HttpServlet {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CompanyLogServlet.class);
 
+	private BundleContext _bundleContext;
+
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	private Map<Long, String> _companyLogFilesDir = new ConcurrentHashMap<>();
 
 	@Reference
 	private PermissionCheckerFactory _permissionCheckerFactory;
 
 	@Reference
 	private Portal _portal;
+
+	private ServiceTracker<Object, Object> _serviceTracker;
+
+	private class CompanyLogFilesDireTrackerCustomizer
+		implements ServiceTrackerCustomizer<Object, Object> {
+
+		@Override
+		public Object addingService(ServiceReference<Object> serviceReference) {
+			_companyLogFilesDir =
+				(Map<Long, String>)serviceReference.getProperty(
+					"companyLogFilesDir");
+
+			return _bundleContext.getService(serviceReference);
+		}
+
+		@Override
+		public void modifiedService(
+			ServiceReference<Object> serviceReference, Object object) {
+		}
+
+		@Override
+		public void removedService(
+			ServiceReference<Object> serviceReference, Object object) {
+		}
+
+	}
 
 }

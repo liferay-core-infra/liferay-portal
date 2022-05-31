@@ -14,17 +14,22 @@
 
 package com.liferay.petra.log4j.internal;
 
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
+import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,6 +53,9 @@ import org.apache.logging.log4j.core.config.plugins.PluginBuilderFactory;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.util.Constants;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Hai Yu
@@ -75,6 +83,17 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 			CompanyThreadLocal.getCompanyId(), this::_createAppender);
 
 		appender.append(logEvent);
+	}
+
+	@Override
+	public void stop() {
+		if (_serviceRegistration != null) {
+			_companyLogFilesDir.clear();
+
+			_serviceRegistration.unregister();
+		}
+
+		super.stop();
 	}
 
 	public static class Builder
@@ -189,9 +208,12 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		builder.withFileGroup(_fileGroup);
 		builder.withFileName(_fileName);
 		builder.withFileOwner(_fileOwner);
-		builder.withFilePattern(
-			StringUtil.replace(
-				_filePattern, "@company.id@", String.valueOf(companyId)));
+
+		String filePattern = StringUtil.replace(
+			_filePattern, "@company.id@", String.valueOf(companyId));
+
+		builder.withFilePattern(filePattern);
+
 		builder.withFilePermissions(_filePermissions);
 		builder.withImmediateFlush(_immediateFlush);
 		builder.withLocking(_locking);
@@ -242,10 +264,44 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		if (appender != null) {
 			appender.start();
 
+			if (Objects.equals(getName(), "COMPANY_LOG_ROUTING_TEXT_FILE") &&
+				(companyId != 0)) {
+
+				_registerCompanyLogFilesDir(companyId, filePattern);
+			}
+
 			return appender;
 		}
 
 		return NullAppender.createAppender(name);
+	}
+
+	private void _registerCompanyLogFilesDir(
+		long companyId, String filePattern) {
+
+		_companyLogFilesDir.put(
+			companyId,
+			filePattern.substring(
+				0,
+				StringUtil.lastIndexOfAny(
+					filePattern, new char[] {CharPool.SLASH})));
+
+		Dictionary<String, Object> properties =
+			HashMapDictionaryBuilder.<String, Object>put(
+				PropsKeys.COMPANY_LOG_ENABLED, true
+			).put(
+				"companyLogFilesDir", _companyLogFilesDir
+			).build();
+
+		if (_serviceRegistration == null) {
+			BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+			_serviceRegistration = bundleContext.registerService(
+				Object.class, new Object(), properties);
+		}
+		else {
+			_serviceRegistration.setProperties(properties);
+		}
 	}
 
 	private static final boolean _COMPANY_LOG_ENABLED = GetterUtil.getBoolean(
@@ -257,6 +313,8 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 	private final Map<Long, Appender> _appenders = new ConcurrentHashMap<>();
 	private final boolean _bufferedIo;
 	private final int _bufferSize;
+	private final Map<Long, String> _companyLogFilesDir =
+		new ConcurrentHashMap<>();
 	private final boolean _createOnDemand;
 	private final String _fileGroup;
 	private final String _fileName;
@@ -266,6 +324,7 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 	private final boolean _immediateFlush;
 	private final boolean _locking;
 	private final RolloverStrategy _rolloverStrategy;
+	private ServiceRegistration<Object> _serviceRegistration;
 	private final TriggeringPolicy _triggeringPolicy;
 
 }

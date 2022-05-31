@@ -59,7 +59,6 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
@@ -315,7 +314,7 @@ public class DDMFormFieldTemplateContextFactoryTest {
 		Language language, Locale locale, String key, String returnValue) {
 
 		Mockito.when(
-			language.get(Matchers.eq(locale), Matchers.eq(key))
+			language.get(Mockito.eq(locale), Mockito.eq(key))
 		).thenReturn(
 			returnValue
 		);
@@ -332,14 +331,14 @@ public class DDMFormFieldTemplateContextFactoryTest {
 
 		Mockito.when(
 			ddmFormFieldTypeServicesTracker.getDDMFormFieldRenderer(
-				Matchers.anyString())
+				Mockito.anyString())
 		).thenReturn(
 			ddmFormFieldRenderer
 		);
 
 		Mockito.when(
 			ddmFormFieldTypeServicesTracker.
-				getDDMFormFieldTemplateContextContributor(Matchers.anyString())
+				getDDMFormFieldTemplateContextContributor(Mockito.anyString())
 		).thenReturn(
 			ddmFormFieldTemplateContextContributor
 		);

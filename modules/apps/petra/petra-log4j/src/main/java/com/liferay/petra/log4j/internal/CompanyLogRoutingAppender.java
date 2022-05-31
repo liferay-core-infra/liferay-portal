@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
-import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -286,21 +285,16 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 				StringUtil.lastIndexOfAny(
 					filePattern, new char[] {CharPool.SLASH})));
 
-		Dictionary<String, Object> properties =
-			HashMapDictionaryBuilder.<String, Object>put(
-				PropsKeys.COMPANY_LOG_ENABLED, true
-			).put(
-				"companyLogFilesDir", _companyLogFilesDir
-			).build();
-
 		if (_serviceRegistration == null) {
 			BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 			_serviceRegistration = bundleContext.registerService(
-				Object.class, new Object(), properties);
-		}
-		else {
-			_serviceRegistration.setProperties(properties);
+				Object.class, new Object(),
+				HashMapDictionaryBuilder.<String, Object>put(
+					PropsKeys.COMPANY_LOG_ENABLED, true
+				).put(
+					"companyLogFilesDir", _companyLogFilesDir
+				).build());
 		}
 	}
 

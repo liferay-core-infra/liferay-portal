@@ -39,7 +39,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Sort;
@@ -145,7 +145,7 @@ public class CommerceShipmentDataSetDataProvider
 					new LabelField(
 						CommerceShipmentConstants.getShipmentLabelStyle(
 							commerceShipment.getStatus()),
-						LanguageUtil.get(
+						_language.get(
 							httpServletRequest,
 							CommerceShipmentConstants.getShipmentStatusLabel(
 								commerceShipment.getStatus()))),
@@ -253,6 +253,9 @@ public class CommerceShipmentDataSetDataProvider
 
 	@Reference
 	private CommerceShipmentService _commerceShipmentService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

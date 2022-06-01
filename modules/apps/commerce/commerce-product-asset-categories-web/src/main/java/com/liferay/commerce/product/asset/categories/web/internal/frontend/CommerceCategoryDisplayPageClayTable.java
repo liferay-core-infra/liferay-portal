@@ -36,7 +36,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
@@ -111,7 +111,7 @@ public class CommerceCategoryDisplayPageClayTable
 						httpServletRequest,
 						categoryDisplayPage.getCategoryDisplayPageId()));
 				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "edit"));
+					_language.get(httpServletRequest, "edit"));
 				dropdownItem.setTarget("sidePanel");
 			}
 		).add(
@@ -121,7 +121,7 @@ public class CommerceCategoryDisplayPageClayTable
 						httpServletRequest,
 						categoryDisplayPage.getCategoryDisplayPageId()));
 				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "delete"));
+					_language.get(httpServletRequest, "delete"));
 			}
 		).build();
 	}
@@ -264,6 +264,9 @@ public class CommerceCategoryDisplayPageClayTable
 
 	@Reference
 	private CPDisplayLayoutService _cpDisplayLayoutService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

@@ -29,7 +29,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -85,7 +85,7 @@ public class CommerceProductAttachmentDataSetDataProvider
 				cpAttachmentFileEntry.getCPAttachmentFileEntryId();
 
 			String title = cpAttachmentFileEntry.getTitle(
-				LanguageUtil.getLanguageId(locale));
+				_language.getLanguageId(locale));
 
 			String extension = StringPool.BLANK;
 
@@ -97,7 +97,7 @@ public class CommerceProductAttachmentDataSetDataProvider
 
 			Date modifiedDate = cpAttachmentFileEntry.getModifiedDate();
 
-			String modifiedDateDescription = LanguageUtil.getTimeDescription(
+			String modifiedDateDescription = _language.getTimeDescription(
 				httpServletRequest,
 				System.currentTimeMillis() - modifiedDate.getTime(), true);
 
@@ -118,12 +118,12 @@ public class CommerceProductAttachmentDataSetDataProvider
 							CommerceAccountConstants.ACCOUNT_ID_ADMIN,
 							cpAttachmentFileEntryId)),
 					title, extension, cpAttachmentFileEntry.getPriority(),
-					LanguageUtil.format(
+					_language.format(
 						httpServletRequest, "x-ago", modifiedDateDescription,
 						false),
 					new LabelField(
 						statusDisplayStyle,
-						LanguageUtil.get(
+						_language.get(
 							httpServletRequest,
 							WorkflowConstants.getStatusLabel(
 								cpAttachmentFileEntry.getStatus())))));
@@ -148,6 +148,9 @@ public class CommerceProductAttachmentDataSetDataProvider
 
 	@Reference
 	private CPAttachmentFileEntryService _cpAttachmentFileEntryService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

@@ -37,7 +37,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
@@ -126,7 +126,7 @@ public class CommerceShippingFixedOptionSettingClayTableDataSetDisplayView
 						shippingFixedOptionSetting.
 							getShippingFixedOptionSettingId()));
 				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "edit"));
+					_language.get(httpServletRequest, "edit"));
 				dropdownItem.setTarget("sidePanel");
 			}
 		).add(
@@ -137,7 +137,7 @@ public class CommerceShippingFixedOptionSettingClayTableDataSetDisplayView
 						shippingFixedOptionSetting.
 							getShippingFixedOptionSettingId()));
 				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "delete"));
+					_language.get(httpServletRequest, "delete"));
 			}
 		).build();
 	}
@@ -314,6 +314,9 @@ public class CommerceShippingFixedOptionSettingClayTableDataSetDisplayView
 	@Reference
 	private CommerceShippingFixedOptionRelService
 		_commerceShippingFixedOptionRelService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

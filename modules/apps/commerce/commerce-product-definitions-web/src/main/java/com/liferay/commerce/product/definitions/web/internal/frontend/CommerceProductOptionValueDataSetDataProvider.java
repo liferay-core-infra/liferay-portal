@@ -31,7 +31,7 @@ import com.liferay.frontend.taglib.clay.data.Pagination;
 import com.liferay.frontend.taglib.clay.data.set.provider.ClayDataSetDataProvider;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -103,9 +103,9 @@ public class CommerceProductOptionValueDataSetDataProvider
 						locale),
 					cpDefinitionOptionValueRel.getKey(),
 					cpDefinitionOptionValueRel.getName(
-						LanguageUtil.getLanguageId(locale)),
+						_language.getLanguageId(locale)),
 					cpDefinitionOptionValueRel.getPriority(),
-					LanguageUtil.get(
+					_language.get(
 						locale,
 						cpDefinitionOptionValueRel.isPreselected() ? "yes" :
 							"no"),
@@ -205,6 +205,9 @@ public class CommerceProductOptionValueDataSetDataProvider
 	@Reference
 	private CPDefinitionOptionValueRelService
 		_cpDefinitionOptionValueRelService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

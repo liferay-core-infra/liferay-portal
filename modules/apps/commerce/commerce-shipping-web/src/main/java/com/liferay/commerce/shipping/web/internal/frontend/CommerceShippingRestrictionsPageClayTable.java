@@ -32,7 +32,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanProperties;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Sort;
@@ -76,7 +76,7 @@ public class CommerceShippingRestrictionsPageClayTable
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", locale, getClass());
 
-		return LanguageUtil.get(resourceBundle, "country");
+		return _language.get(resourceBundle, "country");
 	}
 
 	@Override
@@ -193,6 +193,9 @@ public class CommerceShippingRestrictionsPageClayTable
 
 	@Reference
 	private CountryService _countryService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

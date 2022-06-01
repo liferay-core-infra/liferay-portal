@@ -40,7 +40,7 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.asset.kernel.service.AssetVocabularyService;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -162,7 +162,7 @@ public class AssetCategoryAdminPortlet extends MVCPortlet {
 
 			MultiSessionMessages.add(
 				actionRequest, "categoryAdded",
-				LanguageUtil.format(
+				_language.format(
 					_portal.getHttpServletRequest(actionRequest),
 					"x-was-created-successfully",
 					new Object[] {
@@ -183,7 +183,7 @@ public class AssetCategoryAdminPortlet extends MVCPortlet {
 
 			MultiSessionMessages.add(
 				actionRequest, "categoryUpdated",
-				LanguageUtil.format(
+				_language.format(
 					_portal.getHttpServletRequest(actionRequest),
 					"x-was-updated-successfully",
 					new Object[] {
@@ -401,6 +401,9 @@ public class AssetCategoryAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private AssetVocabularyService _assetVocabularyService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

@@ -2645,30 +2645,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.petra.doulos.jar!commons-lang3.jar</file-name>
-				<version>3.4</version>
-				<project-name>Apache Commons Lang</project-name>
-				<project-url>http://commons.apache.org/proper/commons-lang/</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.petra.doulos.jar!concurrentlinkedhashmap-lru.jar</file-name>
-				<version>1.4.2</version>
-				<project-name>ConcurrentLinkedHashMap</project-name>
-				<project-url>http://code.google.com/p/concurrentlinkedhashmap</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!commons-codec.jar</file-name>
 				<version>1.7</version>
 				<project-name>Commons Codec</project-name>

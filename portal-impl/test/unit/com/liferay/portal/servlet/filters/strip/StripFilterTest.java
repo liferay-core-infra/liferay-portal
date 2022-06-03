@@ -479,6 +479,23 @@ public class StripFilterTest {
 		Assert.assertEquals(4, charBuffer.position());
 	}
 
+	@Test
+	public void testStrip() throws Exception {
+		StripFilter stripFilter = new StripFilter();
+
+		CharBuffer charBuffer = CharBuffer.wrap("<input ><br>dddd</br>");
+
+		// Matching
+
+		StringWriter stringWriter = new StringWriter();
+
+		stripFilter.strip(null, null, charBuffer, stringWriter);
+
+		Assert.assertEquals("<input ><br>dddd</br>", stringWriter.toString());
+
+		Assert.assertEquals(21, charBuffer.position());
+	}
+
 	private static boolean _minifierEnabled;
 
 }

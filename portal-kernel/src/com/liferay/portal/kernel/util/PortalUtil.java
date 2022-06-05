@@ -1838,6 +1838,10 @@ public class PortalUtil {
 		return _portal.isCompanyControlPanelPortlet(portletId, themeDisplay);
 	}
 
+	public static boolean isControlPanelPath(String path) {
+		return _portal.isControlPanelPath(path);
+	}
+
 	public static boolean isControlPanelPortlet(
 		String portletId, String category, ThemeDisplay themeDisplay) {
 

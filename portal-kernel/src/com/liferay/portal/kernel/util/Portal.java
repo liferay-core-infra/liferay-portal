@@ -1133,6 +1133,8 @@ public interface Portal {
 			String portletId, ThemeDisplay themeDisplay)
 		throws PortalException;
 
+	public boolean isControlPanelPath(String path);
+
 	public boolean isControlPanelPortlet(
 		String portletId, String category, ThemeDisplay themeDisplay);
 

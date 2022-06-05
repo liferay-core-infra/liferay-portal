@@ -6049,6 +6049,17 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
+	public boolean isControlPanelPath(String path) {
+		if (Validator.isNull(path)) {
+			return false;
+		}
+
+		return path.contains(
+			VirtualLayoutConstants.CANONICAL_URL_SEPARATOR +
+				GroupConstants.CONTROL_PANEL_FRIENDLY_URL);
+	}
+
+	@Override
 	public boolean isControlPanelPortlet(
 		String portletId, String category, ThemeDisplay themeDisplay) {
 

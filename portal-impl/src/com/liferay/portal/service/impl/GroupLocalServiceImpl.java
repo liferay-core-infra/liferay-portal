@@ -4997,17 +4997,14 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		String[] languageIdsArray = StringUtil.split(languageIds);
 
 		for (String languageId : languageIdsArray) {
-			if (!LanguageUtil.isAvailableLocale(
-					groupId, LocaleUtil.fromLanguageId(languageId, false))) {
-
+			if (!LanguageUtil.isAvailableLocale(groupId, languageId)) {
 				LocaleException localeException = new LocaleException(
 					LocaleException.TYPE_DISPLAY_SETTINGS);
 
 				localeException.setSourceAvailableLocales(
 					LanguageUtil.getAvailableLocales());
-				localeException.setTargetAvailableLocales(
-					Arrays.asList(
-						LocaleUtil.fromLanguageIds(languageIdsArray)));
+				localeException.setTargetAvailableLanguageIds(
+					Arrays.asList(languageIdsArray));
 
 				throw localeException;
 			}
@@ -5019,8 +5016,8 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 
 			localeException.setSourceAvailableLocales(
 				LanguageUtil.getAvailableLocales());
-			localeException.setTargetAvailableLocales(
-				Arrays.asList(LocaleUtil.fromLanguageIds(languageIdsArray)));
+			localeException.setTargetAvailableLanguageIds(
+				Arrays.asList(languageIdsArray));
 
 			throw localeException;
 		}

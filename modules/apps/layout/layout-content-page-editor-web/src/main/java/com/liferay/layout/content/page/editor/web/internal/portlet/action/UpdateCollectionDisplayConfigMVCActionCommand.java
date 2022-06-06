@@ -105,15 +105,12 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 			String configuration = editableValuesJSONObject.getString(
 				_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
 
-			if ((configuration == null) || !JSONUtil.isValid(configuration)) {
-				continue;
-			}
+			JSONObject configurationJSONObject = JSONUtil.createJSONObject(
+				configuration);
 
-			JSONObject configurationJSONObject =
-				editableValuesJSONObject.getJSONObject(
-					_KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
+			if ((configurationJSONObject == null) ||
+				!configurationJSONObject.has("targetCollections")) {
 
-			if (!configurationJSONObject.has("targetCollections")) {
 				continue;
 			}
 

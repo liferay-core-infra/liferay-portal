@@ -47,8 +47,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Julius Lee
  */
 @Component(
-	immediate = true,
-	property = "destination.name=" + DestinationNames.MAIL,
+	immediate = true, property = "destination.name=" + DestinationNames.MAIL,
 	service = MessageListener.class
 )
 public class MailSenderMessageListener extends BaseMessageListener {

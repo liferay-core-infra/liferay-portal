@@ -400,9 +400,6 @@ public class MailSenderImpl implements MailSender {
 			});
 	}
 
-	@Reference
-	private MessageBus _messageBus;
-
 	private static final Log _log = LogFactoryUtil.getLog(MailSenderImpl.class);
 
 	private static final MethodKey _addForwardMethodKey = new MethodKey(
@@ -424,6 +421,9 @@ public class MailSenderImpl implements MailSender {
 		Hook.class, "updateEmailAddress", long.class, long.class, String.class);
 	private static final MethodKey _updatePasswordMethodKey = new MethodKey(
 		Hook.class, "updatePassword", long.class, long.class, String.class);
+
+	@Reference
+	private MessageBus _messageBus;
 
 	private final Map<Long, Session> _sessions = new ConcurrentHashMap<>();
 

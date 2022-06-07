@@ -16,9 +16,9 @@ package com.liferay.portal.mail.sender.internal.messaging;
 
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.mail.sender.internal.configuration.MailSenderMessagingConfiguration;
 
@@ -48,8 +48,9 @@ public class MailSenderMessagingConfigurator {
 
 		_bundleContext = bundleContext;
 
-		MailSenderMessagingConfiguration mailSenderMessagingConfiguration = ConfigurableUtil.createConfigurable(
-			MailSenderMessagingConfiguration.class, properties);
+		MailSenderMessagingConfiguration mailSenderMessagingConfiguration =
+			ConfigurableUtil.createConfigurable(
+				MailSenderMessagingConfiguration.class, properties);
 
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(

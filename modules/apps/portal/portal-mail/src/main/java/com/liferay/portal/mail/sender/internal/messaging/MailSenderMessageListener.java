@@ -20,6 +20,7 @@ import com.liferay.petra.mail.MailEngine;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.security.auth.EmailAddressGenerator;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.PortalRunMode;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.mail.sender.internal.constants.MailSenderMessagesDestinationNames;
 import com.liferay.portal.security.auth.EmailAddressGeneratorFactory;
 import com.liferay.portal.util.PropsValues;
 
@@ -48,7 +48,7 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	immediate = true,
-	property = "destination.name=" + MailSenderMessagesDestinationNames.MAIL_SENDER_MESSAGES_PROCESSOR,
+	property = "destination.name=" + DestinationNames.MAIL,
 	service = MessageListener.class
 )
 public class MailSenderMessageListener extends BaseMessageListener {

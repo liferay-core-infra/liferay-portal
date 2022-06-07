@@ -12,20 +12,19 @@
  * details.
  */
 
-package com.liferay.mail.service.impl;
+package com.liferay.portal.mail.sender.internal;
 
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.util.Hook;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -52,10 +51,14 @@ import javax.mail.Session;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
+ * @author Julius Lee
  */
-public class MailServiceImpl implements IdentifiableOSGiService, MailService {
+@Component(immediate = true, service = MailSender.class)
+public class MailSenderImpl implements MailSender {
 
 	@Override
 	public void addForward(
@@ -175,9 +178,8 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			});
 	}
 
-	@Override
 	public String getOSGiServiceIdentifier() {
-		return MailService.class.getName();
+		return MailSender.class.getName();
 	}
 
 	@Override
@@ -396,8 +398,7 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			});
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		MailServiceImpl.class);
+	private static final Log _log = LogFactoryUtil.getLog(MailSenderImpl.class);
 
 	private static final MethodKey _addForwardMethodKey = new MethodKey(
 		Hook.class, "addForward", long.class, long.class, List.class,

@@ -103,9 +103,7 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 
 			String appenderName = newAppender.getName();
 
-			if ((newAppender instanceof CompanyLogRoutingAppender) &&
-				appenderName.equals("COMPANY_LOG_ROUTING_TEXT_FILE")) {
-
+			if (newAppender instanceof CompanyLogRoutingAppender) {
 				companyLogRoutingAppender =
 					(CompanyLogRoutingAppender)newAppender;
 			}

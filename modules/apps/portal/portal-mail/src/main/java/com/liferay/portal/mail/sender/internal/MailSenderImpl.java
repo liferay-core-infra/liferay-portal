@@ -23,7 +23,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mail.sender.MailSender;
 import com.liferay.portal.kernel.messaging.DestinationNames;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
@@ -52,6 +53,7 @@ import javax.mail.Session;
 import javax.portlet.PortletPreferences;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -75,7 +77,7 @@ public class MailSenderImpl implements MailSender {
 					_addForwardMethodKey, companyId, userId, filters,
 					emailAddresses, leaveCopy);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -97,7 +99,7 @@ public class MailSenderImpl implements MailSender {
 					_addUserMethodKey, companyId, userId, password, firstName,
 					middleName, lastName, emailAddress);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -119,7 +121,7 @@ public class MailSenderImpl implements MailSender {
 					_addVacationMessageMethodKey, companyId, userId,
 					emailAddress, vacationMessage);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -153,7 +155,7 @@ public class MailSenderImpl implements MailSender {
 				MethodHandler methodHandler = new MethodHandler(
 					_deleteEmailAddressMethodKey, companyId, userId);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -171,7 +173,7 @@ public class MailSenderImpl implements MailSender {
 				MethodHandler methodHandler = new MethodHandler(
 					_deleteUserMethodKey, companyId, userId);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -333,7 +335,7 @@ public class MailSenderImpl implements MailSender {
 					_log.debug("sendEmail");
 				}
 
-				MessageBusUtil.sendMessage(DestinationNames.MAIL, mailMessage);
+				_messageBus.sendMessage(DestinationNames.MAIL, mailMessage);
 
 				return null;
 			});
@@ -352,7 +354,7 @@ public class MailSenderImpl implements MailSender {
 				MethodHandler methodHandler = new MethodHandler(
 					_updateBlockedMethodKey, companyId, userId, blocked);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -373,7 +375,7 @@ public class MailSenderImpl implements MailSender {
 					_updateEmailAddressMethodKey, companyId, userId,
 					emailAddress);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
@@ -391,12 +393,15 @@ public class MailSenderImpl implements MailSender {
 				MethodHandler methodHandler = new MethodHandler(
 					_updatePasswordMethodKey, companyId, userId, password);
 
-				MessageBusUtil.sendMessage(
+				_messageBus.sendMessage(
 					DestinationNames.MAIL, methodHandler);
 
 				return null;
 			});
 	}
+
+	@Reference
+	private MessageBus _messageBus;
 
 	private static final Log _log = LogFactoryUtil.getLog(MailSenderImpl.class);
 

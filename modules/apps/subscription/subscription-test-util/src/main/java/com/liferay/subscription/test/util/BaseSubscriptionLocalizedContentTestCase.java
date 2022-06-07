@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.test.mail.MailMessage;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.HashMap;
@@ -77,7 +77,7 @@ public abstract class BaseSubscriptionLocalizedContentTestCase
 
 		addBaseModel(creatorUser.getUserId(), getDefaultContainerModelId());
 
-		List<MailMessage> messages = MailServiceTestUtil.getMailMessages(
+		List<MailMessage> messages = MailSenderTestUtil.getMailMessages(
 			"Body", GERMAN_BODY);
 
 		Assert.assertEquals(messages.toString(), 1, messages.size());
@@ -105,7 +105,7 @@ public abstract class BaseSubscriptionLocalizedContentTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		List<MailMessage> messages = MailServiceTestUtil.getMailMessages(
+		List<MailMessage> messages = MailSenderTestUtil.getMailMessages(
 			"Body", SPANISH_BODY);
 
 		Assert.assertEquals(messages.toString(), 1, messages.size());

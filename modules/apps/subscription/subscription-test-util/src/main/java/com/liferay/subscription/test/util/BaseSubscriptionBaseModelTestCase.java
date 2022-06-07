@@ -14,7 +14,7 @@
 
 package com.liferay.subscription.test.util;
 
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public abstract class BaseSubscriptionBaseModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public abstract class BaseSubscriptionBaseModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public abstract class BaseSubscriptionBaseModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	protected abstract void addSubscriptionBaseModel(long baseModelId)

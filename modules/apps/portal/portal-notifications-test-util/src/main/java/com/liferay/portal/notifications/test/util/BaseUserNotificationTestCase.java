@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.Inject;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		BaseModel<?> baseModel = addBaseModel();
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -105,7 +105,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		BaseModel<?> baseModel = addBaseModel();
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -137,7 +137,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		addBaseModel();
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -159,7 +159,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		addBaseModel();
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -177,7 +177,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		BaseModel<?> updatedBaseModel = updateBaseModel(baseModel);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -217,7 +217,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		BaseModel<?> updatedBaseModel = updateBaseModel(baseModel);
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -250,7 +250,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		updateBaseModel(addBaseModel());
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());
@@ -277,7 +277,7 @@ public abstract class BaseUserNotificationTestCase {
 
 		updateBaseModel(baseModel);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 
 		List<JSONObject> userNotificationEventsJSONObjects =
 			getUserNotificationEventsJSONObjects(user.getUserId());

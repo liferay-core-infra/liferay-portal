@@ -43,7 +43,7 @@ import javax.portlet.PortletPreferences;
 /**
  * @author Adam Brandizzi
  */
-public class MailServiceTestUtil {
+public class MailSenderTestUtil {
 
 	public static void clearMessages() {
 		_smtpServer.clearMessages();

@@ -14,7 +14,7 @@
 
 package com.liferay.subscription.test.util;
 
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public abstract class BaseSubscriptionRootContainerModelTestCase
 			addContainerModel(
 				creatorUser.getUserId(), PARENT_CONTAINER_MODEL_ID_DEFAULT));
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public abstract class BaseSubscriptionRootContainerModelTestCase
 		addBaseModel(
 			creatorUser.getUserId(), PARENT_CONTAINER_MODEL_ID_DEFAULT);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public abstract class BaseSubscriptionRootContainerModelTestCase
 
 		addBaseModel(creatorUser.getUserId(), subcontainerModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public abstract class BaseSubscriptionRootContainerModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public abstract class BaseSubscriptionRootContainerModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public abstract class BaseSubscriptionRootContainerModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	protected abstract void addSubscriptionContainerModel(long containerModelId)

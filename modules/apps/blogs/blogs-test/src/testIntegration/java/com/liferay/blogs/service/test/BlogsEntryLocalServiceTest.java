@@ -72,7 +72,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 import com.liferay.subscription.service.SubscriptionLocalServiceUtil;
@@ -442,7 +442,7 @@ public class BlogsEntryLocalServiceTest {
 				_addMBMessage(
 					TestPropsValues.getUserId(), serviceContext, blogsEntry);
 
-				Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+				Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 			});
 	}
 

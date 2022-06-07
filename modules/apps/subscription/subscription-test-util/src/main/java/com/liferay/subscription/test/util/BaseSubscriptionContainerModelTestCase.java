@@ -14,7 +14,7 @@
 
 package com.liferay.subscription.test.util;
 
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public abstract class BaseSubscriptionContainerModelTestCase
 
 		addBaseModel(creatorUser.getUserId(), containerModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public abstract class BaseSubscriptionContainerModelTestCase
 			creatorUser.getUserId(),
 			BaseSubscriptionTestCase.PARENT_CONTAINER_MODEL_ID_DEFAULT);
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public abstract class BaseSubscriptionContainerModelTestCase
 			creatorUser.getUserId(),
 			addContainerModel(creatorUser.getUserId(), containerModelId));
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public abstract class BaseSubscriptionContainerModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public abstract class BaseSubscriptionContainerModelTestCase
 			addBaseModel(
 				creatorUser.getUserId(), PARENT_CONTAINER_MODEL_ID_DEFAULT));
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public abstract class BaseSubscriptionContainerModelTestCase
 
 		updateBaseModel(creatorUser.getUserId(), baseModelId);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	protected abstract void addSubscriptionContainerModel(long containerModelId)

@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.notifications.test.util.BaseUserNotificationTestCase;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -83,7 +83,7 @@ public class AddOrUpdateSharingUserNotificationTest
 
 	@Override
 	protected void subscribeToContainer() {
-		MailServiceTestUtil.clearMessages();
+		MailSenderTestUtil.clearMessages();
 
 		_userNotificationEventLocalService.deleteUserNotificationEvents(
 			user.getUserId());

@@ -65,7 +65,7 @@ import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManager;
 import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.mail.MailMessage;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -276,7 +276,7 @@ public class CalendarBookingLocalServiceTest {
 		String messageBodySnippet = "has declined this invitation";
 
 		Assert.assertTrue(
-			MailServiceTestUtil.lastMailMessageContains(messageBodySnippet));
+			MailSenderTestUtil.lastMailMessageContains(messageBodySnippet));
 	}
 
 	@Test
@@ -3234,7 +3234,7 @@ public class CalendarBookingLocalServiceTest {
 	}
 
 	protected void assertMailBody(String subject, String expectedBody) {
-		List<MailMessage> mailMessages = MailServiceTestUtil.getMailMessages(
+		List<MailMessage> mailMessages = MailSenderTestUtil.getMailMessages(
 			"Subject", subject);
 
 		Assert.assertFalse(mailMessages.toString(), mailMessages.isEmpty());
@@ -3247,7 +3247,7 @@ public class CalendarBookingLocalServiceTest {
 	}
 
 	protected void assertMailSubjectCount(String messageSubject, int count) {
-		List<MailMessage> mailMessages = MailServiceTestUtil.getMailMessages(
+		List<MailMessage> mailMessages = MailSenderTestUtil.getMailMessages(
 			"Subject", messageSubject);
 
 		Assert.assertEquals(
@@ -3320,7 +3320,7 @@ public class CalendarBookingLocalServiceTest {
 	}
 
 	protected void assertSentEmail(User toUser) {
-		List<MailMessage> mailMessages = MailServiceTestUtil.getMailMessages(
+		List<MailMessage> mailMessages = MailSenderTestUtil.getMailMessages(
 			"To",
 			StringBundler.concat(
 				toUser.getFullName(), StringPool.SPACE, StringPool.LESS_THAN,

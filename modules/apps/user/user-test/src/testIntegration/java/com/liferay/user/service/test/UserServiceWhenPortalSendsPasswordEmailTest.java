@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -138,7 +138,7 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 			givenThatCompanySendsResetPasswordLink();
 
 		try {
-			int initialInboxSize = MailServiceTestUtil.getInboxSize();
+			int initialInboxSize = MailSenderTestUtil.getInboxSize();
 
 			boolean sentPassword = _userService.sendPasswordByEmailAddress(
 				_user.getCompanyId(), _user.getEmailAddress());
@@ -146,9 +146,9 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 			Assert.assertFalse(sentPassword);
 
 			Assert.assertEquals(
-				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
+				initialInboxSize + 1, MailSenderTestUtil.getInboxSize());
 			Assert.assertTrue(
-				MailServiceTestUtil.lastMailMessageContains(
+				MailSenderTestUtil.lastMailMessageContains(
 					"email_password_reset_body.tmpl"));
 		}
 		finally {
@@ -162,7 +162,7 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 			givenThatCompanySendsResetPasswordLink();
 
 		try {
-			int initialInboxSize = MailServiceTestUtil.getInboxSize();
+			int initialInboxSize = MailSenderTestUtil.getInboxSize();
 
 			boolean sentPassword = _userService.sendPasswordByScreenName(
 				_user.getCompanyId(), _user.getScreenName());
@@ -170,9 +170,9 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 			Assert.assertFalse(sentPassword);
 
 			Assert.assertEquals(
-				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
+				initialInboxSize + 1, MailSenderTestUtil.getInboxSize());
 			Assert.assertTrue(
-				MailServiceTestUtil.lastMailMessageContains(
+				MailSenderTestUtil.lastMailMessageContains(
 					"email_password_reset_body.tmpl"));
 		}
 		finally {
@@ -186,7 +186,7 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 			givenThatCompanySendsResetPasswordLink();
 
 		try {
-			int initialInboxSize = MailServiceTestUtil.getInboxSize();
+			int initialInboxSize = MailSenderTestUtil.getInboxSize();
 
 			boolean sentPassword = _userService.sendPasswordByUserId(
 				_user.getUserId());
@@ -194,9 +194,9 @@ public class UserServiceWhenPortalSendsPasswordEmailTest {
 			Assert.assertFalse(sentPassword);
 
 			Assert.assertEquals(
-				initialInboxSize + 1, MailServiceTestUtil.getInboxSize());
+				initialInboxSize + 1, MailSenderTestUtil.getInboxSize());
 			Assert.assertTrue(
-				MailServiceTestUtil.lastMailMessageContains(
+				MailSenderTestUtil.lastMailMessageContains(
 					"email_password_reset_body.tmpl"));
 		}
 		finally {

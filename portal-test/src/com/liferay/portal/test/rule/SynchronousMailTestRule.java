@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 
 import javax.portlet.PortletPreferences;
 
@@ -41,19 +41,19 @@ public class SynchronousMailTestRule extends SynchronousDestinationTestRule {
 		_setCompanyAdminEmailFromAddress(
 			TestPropsValues.getCompanyId(), _adminEmailFromAddress);
 
-		MailServiceTestUtil.stop();
+		MailSenderTestUtil.stop();
 	}
 
 	@Override
 	public void afterMethod(
 		Description description, SyncHandler syncHandler, Object target) {
 
-		MailServiceTestUtil.clearMessages();
+		MailSenderTestUtil.clearMessages();
 	}
 
 	@Override
 	public SyncHandler beforeClass(Description description) throws Throwable {
-		MailServiceTestUtil.start();
+		MailSenderTestUtil.start();
 
 		_adminEmailFromAddress = PrefsPropsUtil.getString(
 			TestPropsValues.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);

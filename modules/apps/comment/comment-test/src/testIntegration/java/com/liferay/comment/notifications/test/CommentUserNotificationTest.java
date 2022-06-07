@@ -39,7 +39,7 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.notifications.test.util.BaseUserNotificationTestCase;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 
@@ -90,7 +90,7 @@ public class CommentUserNotificationTest extends BaseUserNotificationTestCase {
 
 				BaseModel<?> baseModel = addBaseModel();
 
-				Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+				Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 
 				List<JSONObject> userNotificationEventsJSONObjects =
 					getUserNotificationEventsJSONObjects(user.getUserId());
@@ -126,7 +126,7 @@ public class CommentUserNotificationTest extends BaseUserNotificationTestCase {
 
 				updateBaseModel(baseModel);
 
-				Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+				Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 
 				List<JSONObject> userNotificationEventsJSONObjects =
 					getUserNotificationEventsJSONObjects(user.getUserId());

@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.test.ReloadURLClassLoader;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 import com.liferay.portal.util.PropsUtil;
@@ -65,19 +65,19 @@ public class MailEngineTest {
 				new InternetAddress("to@test.com"), "Hello",
 				"My name is Inigo Montoya.", true));
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 
 		List<com.liferay.portal.test.mail.MailMessage> mailMessages =
-			MailServiceTestUtil.getMailMessages(
+			MailSenderTestUtil.getMailMessages(
 				"Body", "My name is Inigo Montoya.");
 
 		Assert.assertEquals(mailMessages.toString(), 1, mailMessages.size());
 
-		mailMessages = MailServiceTestUtil.getMailMessages("Subject", "Hello");
+		mailMessages = MailSenderTestUtil.getMailMessages("Subject", "Hello");
 
 		Assert.assertEquals(mailMessages.toString(), 1, mailMessages.size());
 
-		mailMessages = MailServiceTestUtil.getMailMessages("To", "to@test.com");
+		mailMessages = MailSenderTestUtil.getMailMessages("To", "to@test.com");
 
 		Assert.assertEquals(mailMessages.toString(), 1, mailMessages.size());
 	}

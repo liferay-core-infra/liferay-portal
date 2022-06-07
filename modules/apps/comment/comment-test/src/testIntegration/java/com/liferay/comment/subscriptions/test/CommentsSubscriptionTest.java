@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.test.mail.MailServiceTestUtil;
+import com.liferay.portal.test.mail.MailSenderTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
@@ -152,7 +152,7 @@ public class CommentsSubscriptionTest {
 		addDiscussionMessage(
 			_creatorUser.getUserId(), serviceContext, blogsEntry);
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -186,7 +186,7 @@ public class CommentsSubscriptionTest {
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(50),
 			serviceContext);
 
-		Assert.assertEquals(0, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(0, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class CommentsSubscriptionTest {
 		addDiscussionMessage(
 			TestPropsValues.getUserId(), serviceContext, blogsEntry);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	@Test
@@ -245,7 +245,7 @@ public class CommentsSubscriptionTest {
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(50),
 			serviceContext);
 
-		Assert.assertEquals(1, MailServiceTestUtil.getInboxSize());
+		Assert.assertEquals(1, MailSenderTestUtil.getInboxSize());
 	}
 
 	protected MBMessage addDiscussionMessage(

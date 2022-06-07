@@ -15,7 +15,22 @@
 package com.liferay.portal.util;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.test.log.LogCapture;
+import com.liferay.portal.test.log.LogEntry;
+import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import java.io.IOException;
+
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.util.List;
+import java.util.logging.Level;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -221,6 +236,43 @@ public class FileImplTest {
 	public void testStripSuffixWhenFileNameHasParenthesisAtStart() {
 		Assert.assertEquals(
 			"()test.jsp", _fileImpl.stripParentheticalSuffix("()test.jsp"));
+	}
+
+	@Test
+	public void testUnzip() throws IOException, URISyntaxException {
+		Class<?> clazz = getClass();
+
+		URL url = clazz.getResource("dependencies/zip_slip.zip");
+
+		Path zipPath = Paths.get(url.toURI());
+
+		Path parentPath = Files.createTempDirectory(null);
+
+		Path destinationPath = Files.createTempDirectory(parentPath, null);
+
+		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
+				FileImpl.class.getName(), Level.WARNING)) {
+
+			_fileImpl.unzip(zipPath.toFile(), destinationPath.toFile());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Assert.assertEquals(
+				"Entry ../evil.txt is outside of the target directory " +
+					destinationPath,
+				logEntry.getMessage());
+
+			Assert.assertTrue(
+				Files.exists(destinationPath.resolve("good.txt")));
+			Assert.assertFalse(Files.exists(parentPath.resolve("evil.txt")));
+		}
+		finally {
+			_fileImpl.deltree(parentPath.toFile());
+		}
 	}
 
 	private final FileImpl _fileImpl = new FileImpl();

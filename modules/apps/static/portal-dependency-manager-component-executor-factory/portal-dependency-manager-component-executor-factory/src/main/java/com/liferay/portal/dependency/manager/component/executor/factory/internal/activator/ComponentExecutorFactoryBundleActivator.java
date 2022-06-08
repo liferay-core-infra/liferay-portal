@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
+import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.PropsKeys;
 
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -30,6 +32,7 @@ import org.apache.felix.dm.ComponentExecutorFactory;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -48,8 +51,18 @@ public class ComponentExecutorFactoryBundleActivator
 			return;
 		}
 
-		long syncTimeout = GetterUtil.getInteger(
-			bundleContext.getProperty("dependency.manager.sync.timeout"), 60);
+		long syncTimeout = 60;
+
+		_propsServiceReference = bundleContext.getServiceReference(Props.class);
+
+		if (_propsServiceReference != null) {
+			Props props = bundleContext.getService(_propsServiceReference);
+
+			if (props != null) {
+				syncTimeout = GetterUtil.getInteger(
+					props.get(PropsKeys.DEPENDENCY_MANAGER_SYNC_TIMEOUT), 60);
+			}
+		}
 
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
 			0, 1, 1, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
@@ -74,6 +87,10 @@ public class ComponentExecutorFactoryBundleActivator
 
 	@Override
 	public void stop(BundleContext bundleContext) {
+		if (_propsServiceReference != null) {
+			bundleContext.ungetService(_propsServiceReference);
+		}
+
 		if (_serviceRegistration == null) {
 			return;
 		}
@@ -98,6 +115,7 @@ public class ComponentExecutorFactoryBundleActivator
 
 	private ServiceRegistration<DependencyManagerSync>
 		_dependencyManagerSyncServiceRegistration;
+	private ServiceReference<Props> _propsServiceReference;
 	private ServiceRegistration<ComponentExecutorFactory> _serviceRegistration;
 
 }

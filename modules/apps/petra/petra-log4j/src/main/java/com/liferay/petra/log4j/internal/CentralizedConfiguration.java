@@ -15,6 +15,9 @@
 package com.liferay.petra.log4j.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.lang.reflect.Field;
 
@@ -99,14 +102,28 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		CompanyLogRoutingAppender companyLogRoutingAppender = null;
 
 		for (Appender newAppender : newAppenders.values()) {
-			newAppender.start();
-
 			String appenderName = newAppender.getName();
 
 			if (newAppender instanceof CompanyLogRoutingAppender) {
+				if (companyLogRoutingAppender != null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							StringBundler.concat(
+								"Ignore appender ", appenderName,
+								", as there is already a ",
+								CompanyLogRoutingAppender.PLUGIN_NAME,
+								" type appender ",
+								companyLogRoutingAppender.getName()));
+					}
+
+					continue;
+				}
+
 				companyLogRoutingAppender =
 					(CompanyLogRoutingAppender)newAppender;
 			}
+
+			newAppender.start();
 
 			Appender currentAppender = currentAppenders.put(
 				appenderName, newAppender);
@@ -264,6 +281,9 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CentralizedConfiguration.class);
 
 	private static final Field _appenderRefsField;
 

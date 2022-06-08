@@ -34,4 +34,5 @@ Import-Package:\
 Liferay-Require-SchemaVersion: 2.3.0
 Liferay-Service: true
 -dsannotations-options: inherit
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning
 -includeresource: @poi-[0-9.]*.jar

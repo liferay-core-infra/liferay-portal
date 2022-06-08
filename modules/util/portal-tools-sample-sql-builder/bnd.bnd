@@ -2,3 +2,4 @@ Bundle-Name: Liferay Portal Tools Sample SQL Builder
 Bundle-SymbolicName: com.liferay.portal.tools.sample.sql.builder
 Bundle-Version: 3.0.0
 Main-Class: com.liferay.portal.tools.sample.sql.builder.SampleSQLBuilderLauncher
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning

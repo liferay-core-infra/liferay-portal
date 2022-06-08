@@ -1178,6 +1178,9 @@ public interface PropsKeys {
 
 	public static final String INDEXER_ENABLED = "indexer.enabled";
 
+	public static final String INITIAL_SYSTEM_CHECK_ENABLED =
+		"initial.system.check.enabled";
+
 	public static final String INVOKER_FILTER_CHAIN_ENABLED =
 		"invoker.filter.chain.cache.enabled";
 

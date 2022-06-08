@@ -542,9 +542,9 @@
 			</library>
 			<library>
 				<file-name>com.liferay.commerce.report.impl.jar!commons-codec.jar</file-name>
-				<version>1.12</version>
+				<version>1.15</version>
 				<project-name>Apache Commons Codec</project-name>
-				<project-url>http://commons.apache.org/proper/commons-codec/</project-url>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -2081,7 +2081,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!common-image.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: Common :: Image</project-name>
 				<licenses>
 					<license>
@@ -2092,7 +2092,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!common-io.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: Common :: IO</project-name>
 				<licenses>
 					<license>
@@ -2103,7 +2103,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!common-lang.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: Common :: Language support</project-name>
 				<licenses>
 					<license>
@@ -2114,7 +2114,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-bmp.jar</file-name>
-				<version>3.4.3</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: BMP plugin</project-name>
 				<licenses>
 					<license>
@@ -2125,7 +2125,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-core.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: Core</project-name>
 				<licenses>
 					<license>
@@ -2136,7 +2136,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-hdr.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: HDR plugin</project-name>
 				<licenses>
 					<license>
@@ -2147,7 +2147,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-icns.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: ICNS plugin</project-name>
 				<licenses>
 					<license>
@@ -2158,7 +2158,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-iff.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: IFF plugin</project-name>
 				<licenses>
 					<license>
@@ -2169,7 +2169,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-jpeg.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: JPEG plugin</project-name>
 				<licenses>
 					<license>
@@ -2180,7 +2180,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-metadata.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: Metadata</project-name>
 				<licenses>
 					<license>
@@ -2191,7 +2191,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-pcx.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PCX plugin</project-name>
 				<licenses>
 					<license>
@@ -2202,7 +2202,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-pict.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PICT plugin</project-name>
 				<licenses>
 					<license>
@@ -2213,7 +2213,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-pnm.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PNM plugin</project-name>
 				<licenses>
 					<license>
@@ -2224,7 +2224,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-psd.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PSD plugin</project-name>
 				<licenses>
 					<license>
@@ -2235,7 +2235,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-sgi.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: SGI plugin</project-name>
 				<licenses>
 					<license>
@@ -2246,7 +2246,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-tga.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: TGA plugin</project-name>
 				<licenses>
 					<license>
@@ -2257,7 +2257,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-thumbsdb.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: Thumbs.db plugin</project-name>
 				<licenses>
 					<license>
@@ -2268,7 +2268,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-tiff.jar</file-name>
-				<version>3.5</version>
+				<version>3.8.2</version>
 				<project-name>TwelveMonkeys :: ImageIO :: TIFF plugin</project-name>
 				<licenses>
 					<license>
@@ -2670,13 +2670,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!commons-codec.jar</file-name>
-				<version>1.7</version>
-				<project-name>Commons Codec</project-name>
-				<project-url>http://commons.apache.org/codec/</project-url>
+				<version>1.15</version>
+				<project-name>Apache Commons Codec</project-name>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
 					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -3510,9 +3510,9 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch7.impl.jar!commons-codec.jar</file-name>
-				<version>1.11</version>
+				<version>1.15</version>
 				<project-name>Apache Commons Codec</project-name>
-				<project-url>http://commons.apache.org/proper/commons-codec/</project-url>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
@@ -4275,7 +4275,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.gcs.jar!commons-codec.jar</file-name>
-				<version>1.13</version>
+				<version>1.15</version>
 				<project-name>Apache Commons Codec</project-name>
 				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
@@ -4699,13 +4699,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-codec.jar</file-name>
-				<version>1.6</version>
-				<project-name>Commons Codec</project-name>
-				<project-url>http://commons.apache.org/codec/</project-url>
+				<version>1.15</version>
+				<project-name>Apache Commons Codec</project-name>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
 					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -5267,13 +5267,13 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.vulcan.impl.jar!commons-codec.jar</file-name>
-				<version>1.10</version>
+				<version>1.15</version>
 				<project-name>Apache Commons Codec</project-name>
-				<project-url>http://commons.apache.org/proper/commons-codec/</project-url>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -5785,7 +5785,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.shared.dependencies.apache.commons.jar!commons-codec.jar</file-name>
-				<version>1.13</version>
+				<version>1.15</version>
 				<project-name>Apache Commons Codec</project-name>
 				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
 				<licenses>
@@ -6273,6 +6273,18 @@
 					<license>
 						<license-name>The Apache Software License, Version 2.0</license-name>
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.translation.translator.aws.jar!commons-codec.jar</file-name>
+				<version>1.15</version>
+				<project-name>Apache Commons Codec</project-name>
+				<project-url>https://commons.apache.org/proper/commons-codec/</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
 			</library>

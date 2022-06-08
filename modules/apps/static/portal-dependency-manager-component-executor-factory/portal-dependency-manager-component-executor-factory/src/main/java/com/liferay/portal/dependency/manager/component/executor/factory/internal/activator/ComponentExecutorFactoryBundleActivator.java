@@ -43,13 +43,7 @@ public class ComponentExecutorFactoryBundleActivator
 
 	@Override
 	public void start(BundleContext bundleContext) {
-		boolean threadPoolEnabled = GetterUtil.getBoolean(
-			bundleContext.getProperty("dependency.manager.thread.pool.enabled"),
-			true);
-
-		if (!threadPoolEnabled) {
-			return;
-		}
+		boolean threadPoolEnabled = true;
 
 		long syncTimeout = 60;
 
@@ -61,7 +55,15 @@ public class ComponentExecutorFactoryBundleActivator
 			if (props != null) {
 				syncTimeout = GetterUtil.getInteger(
 					props.get(PropsKeys.DEPENDENCY_MANAGER_SYNC_TIMEOUT), 60);
+
+				threadPoolEnabled = GetterUtil.getBoolean(
+					props.get(PropsKeys.DEPENDENCY_MANAGER_THREAD_POOL_ENABLED),
+					true);
 			}
+		}
+
+		if (!threadPoolEnabled) {
+			return;
 		}
 
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(

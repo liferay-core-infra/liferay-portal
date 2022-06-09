@@ -214,47 +214,6 @@ public class StripFilterTest {
 	}
 
 	@Test
-	public void testProcessInput() throws Exception {
-		StripFilter stripFilter = new StripFilter();
-
-		CharBuffer charBuffer = CharBuffer.wrap("<input ><br />");
-
-		// Matching
-
-		StringWriter stringWriter = new StringWriter();
-
-		stripFilter.processInput(charBuffer, stringWriter);
-
-		Assert.assertEquals("<input >", stringWriter.toString());
-
-		Assert.assertEquals(8, charBuffer.position());
-
-		// Without trailing spaces
-
-		charBuffer = CharBuffer.wrap("input >");
-
-		stringWriter = new StringWriter();
-
-		stripFilter.processInput(charBuffer, stringWriter);
-
-		Assert.assertEquals("input >", stringWriter.toString());
-
-		Assert.assertEquals(7, charBuffer.position());
-
-		// With trailing spaces
-
-		charBuffer = CharBuffer.wrap("input > \r\n\tc");
-
-		stringWriter = new StringWriter();
-
-		stripFilter.processInput(charBuffer, stringWriter);
-
-		Assert.assertEquals("input > ", stringWriter.toString());
-
-		Assert.assertEquals(11, charBuffer.position());
-	}
-
-	@Test
 	public void testProcessJavaScript() throws Exception {
 		StripFilter stripFilter = new StripFilter();
 
@@ -485,7 +444,7 @@ public class StripFilterTest {
 
 		CharBuffer charBuffer = CharBuffer.wrap("<input ><br>dddd</br>");
 
-		// Matching
+		// Matching with br open and closing tag
 
 		StringWriter stringWriter = new StringWriter();
 
@@ -494,6 +453,42 @@ public class StripFilterTest {
 		Assert.assertEquals("<input ><br>dddd</br>", stringWriter.toString());
 
 		Assert.assertEquals(21, charBuffer.position());
+
+		// Matching with br self-closing tag
+
+		charBuffer = CharBuffer.wrap("<input ><br />");
+
+		stringWriter = new StringWriter();
+
+		stripFilter.processInput(charBuffer, stringWriter);
+
+		Assert.assertEquals("<input >", stringWriter.toString());
+
+		Assert.assertEquals(8, charBuffer.position());
+
+		// Without trailing spaces
+
+		charBuffer = CharBuffer.wrap("input >");
+
+		stringWriter = new StringWriter();
+
+		stripFilter.processInput(charBuffer, stringWriter);
+
+		Assert.assertEquals("input >", stringWriter.toString());
+
+		Assert.assertEquals(7, charBuffer.position());
+
+		// With trailing spaces
+
+		charBuffer = CharBuffer.wrap("input > \r\n\tc");
+
+		stringWriter = new StringWriter();
+
+		stripFilter.processInput(charBuffer, stringWriter);
+
+		Assert.assertEquals("input > ", stringWriter.toString());
+
+		Assert.assertEquals(11, charBuffer.position());
 	}
 
 	private static boolean _minifierEnabled;

@@ -4,6 +4,7 @@ Bundle-Version: 4.0.42
 Import-Package:\
 	!com.graphbuilder.*,\
 	\
+	!org.apache.maven.*,\
 	!org.apache.tools.ant.*,\
 	\
 	com.github.*;resolution:=optional,\
@@ -33,3 +34,4 @@ Import-Package:\
 Liferay-Require-SchemaVersion: 4.6.1
 Liferay-Service: true
 -dsannotations-options: inherit
+-fixupmessages: "^Classes found in the wrong directory: \\\\{META-INF/versions/9/";is:=warning

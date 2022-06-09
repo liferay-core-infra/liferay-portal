@@ -83,13 +83,16 @@ public class DB2SQLTransformerLogicTest
 	public void testReplaceQuestionMark() {
 		_testReplaceQuestionMark("select foo from Foo where foo LIKE ?");
 		_testReplaceQuestionMark("select foo, ?, bar, ? from Foo");
-		_testReplaceQuestionMark("select * from Foo where foo = ? And bar = ?");
 		_testReplaceQuestionMark(
 			"select * from Foo where case when foo = ? then ? else ? end");
 		_testReplaceQuestionMark(
 			"select bar, ?, case when foo = ? then ? else ? end as columnA " +
 				"from Foo");
 
+		Assert.assertEquals(
+			"select * from Foo where foo = ? And bar = ?",
+			sqlTransformer.transform(
+				"select * from Foo where foo = ? And bar = ?"));
 		Assert.assertEquals(
 			"select * from Foo where foo = \" ?\"",
 			sqlTransformer.transform("select * from Foo where foo = \" ?\""));

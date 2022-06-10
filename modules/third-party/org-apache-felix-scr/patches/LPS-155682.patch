@@ -1,0 +1,24 @@
+diff --git a/org/apache/felix/scr/impl/manager/ScrConfiguration.java b/org/apache/felix/scr/impl/manager/ScrConfiguration.java
+index 6f4f529e533c..0c074fbb4417 100644
+--- a/org/apache/felix/scr/impl/manager/ScrConfiguration.java
++++ b/org/apache/felix/scr/impl/manager/ScrConfiguration.java
+@@ -56,11 +56,11 @@ public interface ScrConfiguration
+ 
+     String PROP_STOP_TIMEOUT = "ds.stop.timeout.milliseconds";
+ 
+-    long DEFAULT_LOCK_TIMEOUT_MILLISECONDS = 5000;
++    long DEFAULT_LOCK_TIMEOUT_MILLISECONDS = 1800000;
+ 
+     long DEFAULT_SERVICE_CHANGECOUNT_TIMEOUT_MILLISECONDS = 5000;
+ 
+-    long DEFAULT_STOP_TIMEOUT_MILLISECONDS = 60000;
++    long DEFAULT_STOP_TIMEOUT_MILLISECONDS = 1800000;
+ 
+     String PROP_LOGLEVEL = "ds.loglevel";
+ 
+@@ -98,3 +98,4 @@ public interface ScrConfiguration
+     long serviceChangecountTimeout();
+ 
+ }
++/* @generated */
+\ No newline at end of file

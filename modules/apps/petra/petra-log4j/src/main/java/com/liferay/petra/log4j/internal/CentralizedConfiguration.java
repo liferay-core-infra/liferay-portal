@@ -105,7 +105,7 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			String appenderName = newAppender.getName();
 
 			if (newAppender instanceof CompanyLogRoutingAppender) {
-				if (companyLogRoutingAppender != null) {
+				if (_companyLogRoutingAppender != null) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
 							StringBundler.concat(
@@ -113,7 +113,7 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 								", as there is already a ",
 								CompanyLogRoutingAppender.PLUGIN_NAME,
 								" type appender ",
-								companyLogRoutingAppender.getName()));
+								_companyLogRoutingAppender.getName()));
 					}
 
 					continue;

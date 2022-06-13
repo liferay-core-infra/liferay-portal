@@ -20,6 +20,7 @@ import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -39,6 +40,7 @@ import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -602,9 +604,18 @@ public class FinderCacheImpl
 			keys[index + 1] = StringUtil.toHexString(arguments[i]);
 		}
 
+		String cacheKeyPrefix = finderPath.getCacheKeyPrefix();
+
+		if (DBPartitionUtil.isPartitionEnabled() &&
+			finderPath.isSharedModel()) {
+
+			cacheKeyPrefix =
+				cacheKeyPrefix + "_C_" + CompanyThreadLocal.getCompanyId();
+		}
+
 		return cacheKeyGenerator.getCacheKey(
 			new String[] {
-				finderPath.getCacheKeyPrefix(),
+				cacheKeyPrefix,
 				StringUtil.toHexString(cacheKeyGenerator.getCacheKey(keys))
 			});
 	}

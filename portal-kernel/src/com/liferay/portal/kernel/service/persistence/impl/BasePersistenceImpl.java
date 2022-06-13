@@ -222,7 +222,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		FinderPath finderPath = new FinderPath(
 			FinderPath.encodeDSLQueryCacheName(tableNames), "dslQuery",
 			sb.getStrings(), new String[0],
-			projectionType == ProjectionType.MODELS);
+			projectionType == ProjectionType.MODELS, false);
 
 		Object[] arguments = _getArguments(defaultASTNodeListener);
 

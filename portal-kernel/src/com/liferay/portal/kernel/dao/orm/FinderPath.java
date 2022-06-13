@@ -47,11 +47,12 @@ public class FinderPath {
 
 	public FinderPath(
 		String cacheName, String methodName, String[] params,
-		String[] columnNames, boolean baseModelResult) {
+		String[] columnNames, boolean baseModelResult, boolean sharedModel) {
 
 		_cacheName = cacheName;
 		_columnNames = columnNames;
 		_baseModelResult = baseModelResult;
+		_sharedModel = sharedModel;
 
 		_initCacheKeyPrefix(methodName, params);
 	}
@@ -70,6 +71,10 @@ public class FinderPath {
 
 	public boolean isBaseModelResult() {
 		return _baseModelResult;
+	}
+
+	public boolean isSharedModel() {
+		return _sharedModel;
 	}
 
 	private static Map<String, String> _getEncodedTypes() {
@@ -122,5 +127,6 @@ public class FinderPath {
 	private String _cacheKeyPrefix;
 	private final String _cacheName;
 	private final String[] _columnNames;
+	private final boolean _sharedModel;
 
 }

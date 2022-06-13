@@ -65,7 +65,7 @@ public class PortletPreferencesFinderImpl
 				Long.class.getName(), Integer.class.getName(),
 				String.class.getName(), Boolean.class.getName()
 			},
-			new String[] {"ownerId", "ownerType", "portletId"}, true);
+			new String[] {"ownerId", "ownerType", "portletId"}, true, true);
 
 	@Override
 	public long countByO_O_P(

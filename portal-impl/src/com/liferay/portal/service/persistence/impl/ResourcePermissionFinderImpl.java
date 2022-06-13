@@ -70,7 +70,7 @@ public class ResourcePermissionFinderImpl
 			new String[] {
 				"companyId", "name", "scope", "primKey", "roleId", "actionIds"
 			},
-			false);
+			false, true);
 
 	@Override
 	public int countByR_S(long roleId, int[] scopes) {

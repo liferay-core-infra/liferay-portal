@@ -16,6 +16,7 @@ package com.liferay.portal.cache.internal.dao.orm;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -32,6 +33,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LRUMap;
 import com.liferay.portal.kernel.util.MethodHandler;
@@ -142,6 +145,13 @@ public class EntityCacheImpl
 	public Serializable getResult(Class<?> clazz, Serializable primaryKey) {
 		if (!_valueObjectEntityCacheEnabled || !CacheRegistryUtil.isActive()) {
 			return null;
+		}
+
+		if (DBPartitionUtil.isPartitionEnabled() &&
+			ShardedModel.class.isAssignableFrom(clazz)) {
+
+			primaryKey = new CompanyAwarePrimaryKey(
+				CompanyThreadLocal.getCompanyId(), primaryKey);
 		}
 
 		Serializable result = null;
@@ -356,6 +366,13 @@ public class EntityCacheImpl
 
 		CacheModel<?> result = baseModel.toCacheModel();
 
+		if (DBPartitionUtil.isPartitionEnabled() &&
+			ShardedModel.class.isAssignableFrom(clazz)) {
+
+			primaryKey = new CompanyAwarePrimaryKey(
+				CompanyThreadLocal.getCompanyId(), primaryKey);
+		}
+
 		if (_isLocalCacheEnabled()) {
 			Map<Serializable, Serializable> localCache = _localCache.get();
 
@@ -386,6 +403,13 @@ public class EntityCacheImpl
 
 		if (baseModel != null) {
 			_notifyFinderCache(clazz.getName(), baseModel, false);
+		}
+
+		if (DBPartitionUtil.isPartitionEnabled() &&
+			ShardedModel.class.isAssignableFrom(clazz)) {
+
+			primaryKey = new CompanyAwarePrimaryKey(
+				CompanyThreadLocal.getCompanyId(), primaryKey);
 		}
 
 		if (_isLocalCacheEnabled()) {
@@ -444,6 +468,41 @@ public class EntityCacheImpl
 
 	private boolean _valueObjectEntityCacheEnabled;
 	private boolean _valueObjectMVCCEntityCacheEnabled;
+
+	private static class CompanyAwarePrimaryKey implements Serializable {
+
+		@Override
+		public boolean equals(Object object) {
+			CompanyAwarePrimaryKey companyAwarePrimaryKey =
+				(CompanyAwarePrimaryKey)object;
+
+			if ((companyAwarePrimaryKey._companyId == _companyId) &&
+				companyAwarePrimaryKey._primaryKey.equals(_primaryKey)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return ((int)_companyId * 11) + _primaryKey.hashCode();
+		}
+
+		private CompanyAwarePrimaryKey(
+			long companyId, Serializable primaryKey) {
+
+			_companyId = companyId;
+			_primaryKey = primaryKey;
+		}
+
+		private static final long serialVersionUID = 1L;
+
+		private final long _companyId;
+		private final Serializable _primaryKey;
+
+	}
 
 	private static class LocalCacheKey implements Serializable {
 

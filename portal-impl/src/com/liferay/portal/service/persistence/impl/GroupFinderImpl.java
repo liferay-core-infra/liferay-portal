@@ -112,7 +112,7 @@ public class GroupFinderImpl
 		GroupPersistenceImpl.FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 		"GroupFinderImpl_findByC_A",
 		new String[] {Long.class.getName(), Boolean.class.getName()},
-		new String[] {"companyId", "active_"}, false);
+		new String[] {"companyId", "active_"}, false, true);
 
 	public static final String JOIN_BY_ACTION_ID =
 		GroupFinder.class.getName() + ".joinByActionId";

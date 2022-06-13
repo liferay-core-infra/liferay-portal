@@ -31,6 +31,12 @@
 	/>
 </#if>
 
+<#if entity.isShardedModel()>
+	<#assign shardedModel = "true"/>
+<#else>
+	<#assign shardedModel = "false"/>
+</#if>
+
 <#assign
 	finderFieldSQLSuffix = "_SQL"
 	useCache = "useFinderCache"
@@ -2501,6 +2507,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			"findAll", new String[0]
 			<#if serviceBuilder.isVersionGTE_7_3_0()>
 				, new String[0], true
+				<#if serviceBuilder.isVersionGTE_7_4_0()>
+					,${shardedModel}
+				</#if>
 			</#if>
 			);
 
@@ -2519,6 +2528,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			"findAll", new String[0]
 			<#if serviceBuilder.isVersionGTE_7_3_0()>
 				, new String[0], true
+				<#if serviceBuilder.isVersionGTE_7_4_0()>
+					,${shardedModel}
+				</#if>
 			</#if>
 			);
 
@@ -2537,6 +2549,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			"countAll", new String[0]
 			<#if serviceBuilder.isVersionGTE_7_3_0()>
 				, new String[0], false
+				<#if serviceBuilder.isVersionGTE_7_4_0()>
+					,${shardedModel}
+				</#if>
 			</#if>
 			);
 
@@ -2557,6 +2572,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()}
 				<#if serviceBuilder.isVersionGTE_7_3_0()>
 					, new String[]{"${scopeEntityColumn.DBName}", "left${pkEntityColumn.methodName}", "right${pkEntityColumn.methodName}"}, false
+					<#if serviceBuilder.isVersionGTE_7_4_0()>
+						,${shardedModel}
+					</#if>
 				</#if>
 				);
 
@@ -2576,6 +2594,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()}
 				<#if serviceBuilder.isVersionGTE_7_3_0()>
 					, new String[]{"${scopeEntityColumn.DBName}", "left${pkEntityColumn.methodName}", "right${pkEntityColumn.methodName}"}, false
+					<#if serviceBuilder.isVersionGTE_7_4_0()>
+						,${shardedModel}
+					</#if>
 				</#if>
 				);
 
@@ -2595,6 +2616,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()}
 				<#if serviceBuilder.isVersionGTE_7_3_0()>
 					, new String[]{"${scopeEntityColumn.DBName}", "left${pkEntityColumn.methodName}", "right${pkEntityColumn.methodName}"}, true
+					<#if serviceBuilder.isVersionGTE_7_4_0()>
+						,${shardedModel}
+					</#if>
 				</#if>
 				);
 
@@ -2614,6 +2638,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				new String[] {Long.class.getName(), Long.class.getName(), Long.class.getName()}
 				<#if serviceBuilder.isVersionGTE_7_3_0()>
 					, new String[]{"${scopeEntityColumn.DBName}", "left${pkEntityColumn.methodName}", "right${pkEntityColumn.methodName}"}, true
+					<#if serviceBuilder.isVersionGTE_7_4_0()>
+						,${shardedModel}
+					</#if>
 				</#if>
 				);
 		</#if>
@@ -2654,6 +2681,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 							</#list>
 							},
 						true
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							,${shardedModel}
+						</#if>
 					</#if>
 					);
 
@@ -2692,6 +2722,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 								</#list>
 								},
 							true
+							<#if serviceBuilder.isVersionGTE_7_4_0()>
+								,${shardedModel}
+							</#if>
 						<#elseif columnBitmaskEnabled>
 							,
 
@@ -2755,6 +2788,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 							</#list>
 							},
 						true
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							,${shardedModel}
+						</#if>
 					<#elseif columnBitmaskEnabled>
 						,
 
@@ -2805,6 +2841,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						</#list>
 						},
 						false
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							,${shardedModel}
+						</#if>
 					</#if>
 					);
 			</#if>
@@ -2844,6 +2883,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						</#list>
 						},
 						false
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							,${shardedModel}
+						</#if>
 					</#if>
 					);
 			</#if>

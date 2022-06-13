@@ -16,7 +16,6 @@ package com.liferay.portal.cache.internal.dao.orm;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -147,9 +146,7 @@ public class EntityCacheImpl
 			return null;
 		}
 
-		if (DBPartitionUtil.isPartitionEnabled() &&
-			ShardedModel.class.isAssignableFrom(clazz)) {
-
+		if (ShardedModel.class.isAssignableFrom(clazz)) {
 			primaryKey = new CompanyAwarePrimaryKey(
 				CompanyThreadLocal.getCompanyId(), primaryKey);
 		}
@@ -366,9 +363,7 @@ public class EntityCacheImpl
 
 		CacheModel<?> result = baseModel.toCacheModel();
 
-		if (DBPartitionUtil.isPartitionEnabled() &&
-			ShardedModel.class.isAssignableFrom(clazz)) {
-
+		if (ShardedModel.class.isAssignableFrom(clazz)) {
 			primaryKey = new CompanyAwarePrimaryKey(
 				CompanyThreadLocal.getCompanyId(), primaryKey);
 		}
@@ -405,9 +400,7 @@ public class EntityCacheImpl
 			_notifyFinderCache(clazz.getName(), baseModel, false);
 		}
 
-		if (DBPartitionUtil.isPartitionEnabled() &&
-			ShardedModel.class.isAssignableFrom(clazz)) {
-
+		if (ShardedModel.class.isAssignableFrom(clazz)) {
 			primaryKey = new CompanyAwarePrimaryKey(
 				CompanyThreadLocal.getCompanyId(), primaryKey);
 		}

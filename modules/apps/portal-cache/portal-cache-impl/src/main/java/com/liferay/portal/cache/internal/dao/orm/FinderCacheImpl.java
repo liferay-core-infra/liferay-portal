@@ -20,7 +20,6 @@ import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -606,9 +605,7 @@ public class FinderCacheImpl
 
 		String cacheKeyPrefix = finderPath.getCacheKeyPrefix();
 
-		if (DBPartitionUtil.isPartitionEnabled() &&
-			finderPath.isSharedModel()) {
-
+		if (finderPath.isSharedModel()) {
 			cacheKeyPrefix =
 				cacheKeyPrefix + "_C_" + CompanyThreadLocal.getCompanyId();
 		}

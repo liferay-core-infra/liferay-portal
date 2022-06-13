@@ -2814,15 +2814,15 @@ public class ObjectLayoutColumnPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -2830,17 +2830,17 @@ public class ObjectLayoutColumnPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -2849,17 +2849,17 @@ public class ObjectLayoutColumnPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByObjectFieldId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByObjectFieldId",
@@ -2867,17 +2867,17 @@ public class ObjectLayoutColumnPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"objectFieldId"}, true);
+			new String[] {"objectFieldId"}, true, true);
 
 		_finderPathWithoutPaginationFindByObjectFieldId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByObjectFieldId",
 			new String[] {Long.class.getName()}, new String[] {"objectFieldId"},
-			true);
+			true, true);
 
 		_finderPathCountByObjectFieldId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByObjectFieldId",
 			new String[] {Long.class.getName()}, new String[] {"objectFieldId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByObjectLayoutRowId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByObjectLayoutRowId",
@@ -2885,17 +2885,17 @@ public class ObjectLayoutColumnPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"objectLayoutRowId"}, true);
+			new String[] {"objectLayoutRowId"}, true, true);
 
 		_finderPathWithoutPaginationFindByObjectLayoutRowId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByObjectLayoutRowId", new String[] {Long.class.getName()},
-			new String[] {"objectLayoutRowId"}, true);
+			new String[] {"objectLayoutRowId"}, true, true);
 
 		_finderPathCountByObjectLayoutRowId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByObjectLayoutRowId", new String[] {Long.class.getName()},
-			new String[] {"objectLayoutRowId"}, false);
+			new String[] {"objectLayoutRowId"}, false, true);
 
 		_setObjectLayoutColumnUtilPersistence(this);
 	}

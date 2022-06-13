@@ -11368,15 +11368,15 @@ public class RolePersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -11384,17 +11384,17 @@ public class RolePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -11403,17 +11403,17 @@ public class RolePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -11421,17 +11421,17 @@ public class RolePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
@@ -11439,16 +11439,17 @@ public class RolePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"name"}, true);
+			new String[] {"name"}, true, true);
 
 		_finderPathWithoutPaginationFindByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
-			new String[] {String.class.getName()}, new String[] {"name"}, true);
+			new String[] {String.class.getName()}, new String[] {"name"}, true,
+			true);
 
 		_finderPathCountByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
-			new String[] {String.class.getName()}, new String[] {"name"},
-			false);
+			new String[] {String.class.getName()}, new String[] {"name"}, false,
+			true);
 
 		_finderPathWithPaginationFindByType = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByType",
@@ -11456,17 +11457,17 @@ public class RolePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"type_"}, true);
+			new String[] {"type_"}, true, true);
 
 		_finderPathWithoutPaginationFindByType = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByType",
 			new String[] {Integer.class.getName()}, new String[] {"type_"},
-			true);
+			true, true);
 
 		_finderPathCountByType = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByType",
 			new String[] {Integer.class.getName()}, new String[] {"type_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindBySubtype = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySubtype",
@@ -11474,27 +11475,27 @@ public class RolePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"subtype"}, true);
+			new String[] {"subtype"}, true, true);
 
 		_finderPathWithoutPaginationFindBySubtype = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySubtype",
 			new String[] {String.class.getName()}, new String[] {"subtype"},
-			true);
+			true, true);
 
 		_finderPathCountBySubtype = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySubtype",
 			new String[] {String.class.getName()}, new String[] {"subtype"},
-			false);
+			false, true);
 
 		_finderPathFetchByC_N = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "name"}, true);
+			new String[] {"companyId", "name"}, true, true);
 
 		_finderPathCountByC_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "name"}, false);
+			new String[] {"companyId", "name"}, false, true);
 
 		_finderPathWithPaginationFindByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_T",
@@ -11503,22 +11504,22 @@ public class RolePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "type_"}, true);
+			new String[] {"companyId", "type_"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"companyId", "type_"}, true);
+			new String[] {"companyId", "type_"}, true, true);
 
 		_finderPathCountByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"companyId", "type_"}, false);
+			new String[] {"companyId", "type_"}, false, true);
 
 		_finderPathWithPaginationCountByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"companyId", "type_"}, false);
+			new String[] {"companyId", "type_"}, false, true);
 
 		_finderPathWithPaginationFindByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByT_S",
@@ -11527,17 +11528,17 @@ public class RolePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"type_", "subtype"}, true);
+			new String[] {"type_", "subtype"}, true, true);
 
 		_finderPathWithoutPaginationFindByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByT_S",
 			new String[] {Integer.class.getName(), String.class.getName()},
-			new String[] {"type_", "subtype"}, true);
+			new String[] {"type_", "subtype"}, true, true);
 
 		_finderPathCountByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_S",
 			new String[] {Integer.class.getName(), String.class.getName()},
-			new String[] {"type_", "subtype"}, false);
+			new String[] {"type_", "subtype"}, false, true);
 
 		_finderPathWithPaginationFindByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C",
@@ -11546,35 +11547,35 @@ public class RolePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, true);
+			new String[] {"companyId", "classNameId", "classPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, true);
+			new String[] {"companyId", "classNameId", "classPK"}, true, true);
 
 		_finderPathFetchByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, true);
+			new String[] {"companyId", "classNameId", "classPK"}, true, true);
 
 		_finderPathCountByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, false);
+			new String[] {"companyId", "classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationCountByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, false);
+			new String[] {"companyId", "classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByC_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C_T",
@@ -11584,7 +11585,7 @@ public class RolePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK", "type_"},
+			new String[] {"companyId", "classNameId", "classPK", "type_"}, true,
 			true);
 
 		_finderPathWithoutPaginationFindByC_C_C_T = new FinderPath(
@@ -11593,7 +11594,7 @@ public class RolePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK", "type_"},
+			new String[] {"companyId", "classNameId", "classPK", "type_"}, true,
 			true);
 
 		_finderPathFetchByC_C_C_T = new FinderPath(
@@ -11602,7 +11603,7 @@ public class RolePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK", "type_"},
+			new String[] {"companyId", "classNameId", "classPK", "type_"}, true,
 			true);
 
 		_finderPathCountByC_C_C_T = new FinderPath(
@@ -11612,7 +11613,7 @@ public class RolePersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"companyId", "classNameId", "classPK", "type_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByC_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_C_T",
@@ -11621,7 +11622,7 @@ public class RolePersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"companyId", "classNameId", "classPK", "type_"},
-			false);
+			false, true);
 
 		_setRoleUtilPersistence(this);
 	}

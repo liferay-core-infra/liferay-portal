@@ -2141,15 +2141,15 @@ public class PortletItemPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByG_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C",
@@ -2158,17 +2158,17 @@ public class PortletItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "classNameId"}, true);
+			new String[] {"groupId", "classNameId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"groupId", "classNameId"}, true);
+			new String[] {"groupId", "classNameId"}, true, true);
 
 		_finderPathCountByG_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"groupId", "classNameId"}, false);
+			new String[] {"groupId", "classNameId"}, false, true);
 
 		_finderPathWithPaginationFindByG_P_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P_C",
@@ -2177,7 +2177,7 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "portletId", "classNameId"}, true);
+			new String[] {"groupId", "portletId", "classNameId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_P_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P_C",
@@ -2185,7 +2185,7 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Long.class.getName()
 			},
-			new String[] {"groupId", "portletId", "classNameId"}, true);
+			new String[] {"groupId", "portletId", "classNameId"}, true, true);
 
 		_finderPathCountByG_P_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P_C",
@@ -2193,7 +2193,7 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Long.class.getName()
 			},
-			new String[] {"groupId", "portletId", "classNameId"}, false);
+			new String[] {"groupId", "portletId", "classNameId"}, false, true);
 
 		_finderPathFetchByG_N_P_C = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_N_P_C",
@@ -2201,7 +2201,8 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName(), Long.class.getName()
 			},
-			new String[] {"groupId", "name", "portletId", "classNameId"}, true);
+			new String[] {"groupId", "name", "portletId", "classNameId"}, true,
+			true);
 
 		_finderPathCountByG_N_P_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_P_C",
@@ -2209,8 +2210,8 @@ public class PortletItemPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName(), Long.class.getName()
 			},
-			new String[] {"groupId", "name", "portletId", "classNameId"},
-			false);
+			new String[] {"groupId", "name", "portletId", "classNameId"}, false,
+			true);
 
 		_setPortletItemUtilPersistence(this);
 	}

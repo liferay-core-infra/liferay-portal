@@ -8751,15 +8751,15 @@ public class StyleBookEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -8767,17 +8767,17 @@ public class StyleBookEntryPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByUuid_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_Head",
@@ -8786,17 +8786,17 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "head"}, true);
+			new String[] {"uuid_", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_Head",
 			new String[] {String.class.getName(), Boolean.class.getName()},
-			new String[] {"uuid_", "head"}, true);
+			new String[] {"uuid_", "head"}, true, true);
 
 		_finderPathCountByUuid_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_Head",
 			new String[] {String.class.getName(), Boolean.class.getName()},
-			new String[] {"uuid_", "head"}, false);
+			new String[] {"uuid_", "head"}, false, true);
 
 		_finderPathWithPaginationFindByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUUID_G",
@@ -8805,17 +8805,17 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "groupId"}, true);
+			new String[] {"uuid_", "groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, true);
+			new String[] {"uuid_", "groupId"}, true, true);
 
 		_finderPathCountByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, false);
+			new String[] {"uuid_", "groupId"}, false, true);
 
 		_finderPathFetchByUUID_G_Head = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G_Head",
@@ -8823,7 +8823,7 @@ public class StyleBookEntryPersistenceImpl
 				String.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"uuid_", "groupId", "head"}, true);
+			new String[] {"uuid_", "groupId", "head"}, true, true);
 
 		_finderPathCountByUUID_G_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G_Head",
@@ -8831,7 +8831,7 @@ public class StyleBookEntryPersistenceImpl
 				String.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"uuid_", "groupId", "head"}, false);
+			new String[] {"uuid_", "groupId", "head"}, false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -8840,17 +8840,17 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByUuid_C_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C_Head",
@@ -8859,7 +8859,7 @@ public class StyleBookEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId", "head"}, true);
+			new String[] {"uuid_", "companyId", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C_Head",
@@ -8867,7 +8867,7 @@ public class StyleBookEntryPersistenceImpl
 				String.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"uuid_", "companyId", "head"}, true);
+			new String[] {"uuid_", "companyId", "head"}, true, true);
 
 		_finderPathCountByUuid_C_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C_Head",
@@ -8875,7 +8875,7 @@ public class StyleBookEntryPersistenceImpl
 				String.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"uuid_", "companyId", "head"}, false);
+			new String[] {"uuid_", "companyId", "head"}, false, true);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -8883,17 +8883,17 @@ public class StyleBookEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId"}, true);
+			new String[] {"groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			new String[] {Long.class.getName()}, new String[] {"groupId"}, true,
 			true);
 
 		_finderPathCountByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByGroupId_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId_Head",
@@ -8902,17 +8902,17 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "head"}, true);
+			new String[] {"groupId", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId_Head",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"groupId", "head"}, true);
+			new String[] {"groupId", "head"}, true, true);
 
 		_finderPathCountByGroupId_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId_Head",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"groupId", "head"}, false);
+			new String[] {"groupId", "head"}, false, true);
 
 		_finderPathWithPaginationFindByG_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_D",
@@ -8921,17 +8921,17 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "defaultStyleBookEntry"}, true);
+			new String[] {"groupId", "defaultStyleBookEntry"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_D",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"groupId", "defaultStyleBookEntry"}, true);
+			new String[] {"groupId", "defaultStyleBookEntry"}, true, true);
 
 		_finderPathCountByG_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_D",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"groupId", "defaultStyleBookEntry"}, false);
+			new String[] {"groupId", "defaultStyleBookEntry"}, false, true);
 
 		_finderPathWithPaginationFindByG_D_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_D_Head",
@@ -8940,7 +8940,8 @@ public class StyleBookEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "defaultStyleBookEntry", "head"}, true);
+			new String[] {"groupId", "defaultStyleBookEntry", "head"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByG_D_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_D_Head",
@@ -8948,7 +8949,8 @@ public class StyleBookEntryPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "defaultStyleBookEntry", "head"}, true);
+			new String[] {"groupId", "defaultStyleBookEntry", "head"}, true,
+			true);
 
 		_finderPathCountByG_D_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_D_Head",
@@ -8956,7 +8958,8 @@ public class StyleBookEntryPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "defaultStyleBookEntry", "head"}, false);
+			new String[] {"groupId", "defaultStyleBookEntry", "head"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_LikeN",
@@ -8965,12 +8968,12 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "name"}, true);
+			new String[] {"groupId", "name"}, true, true);
 
 		_finderPathWithPaginationCountByG_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_LikeN",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "name"}, false);
+			new String[] {"groupId", "name"}, false, true);
 
 		_finderPathWithPaginationFindByG_LikeN_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_LikeN_Head",
@@ -8979,7 +8982,7 @@ public class StyleBookEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "name", "head"}, true);
+			new String[] {"groupId", "name", "head"}, true, true);
 
 		_finderPathWithPaginationCountByG_LikeN_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_LikeN_Head",
@@ -8987,7 +8990,7 @@ public class StyleBookEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "name", "head"}, false);
+			new String[] {"groupId", "name", "head"}, false, true);
 
 		_finderPathWithPaginationFindByG_SBEK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_SBEK",
@@ -8996,17 +8999,17 @@ public class StyleBookEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "styleBookEntryKey"}, true);
+			new String[] {"groupId", "styleBookEntryKey"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_SBEK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_SBEK",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "styleBookEntryKey"}, true);
+			new String[] {"groupId", "styleBookEntryKey"}, true, true);
 
 		_finderPathCountByG_SBEK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_SBEK",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "styleBookEntryKey"}, false);
+			new String[] {"groupId", "styleBookEntryKey"}, false, true);
 
 		_finderPathFetchByG_SBEK_Head = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_SBEK_Head",
@@ -9014,7 +9017,7 @@ public class StyleBookEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "styleBookEntryKey", "head"}, true);
+			new String[] {"groupId", "styleBookEntryKey", "head"}, true, true);
 
 		_finderPathCountByG_SBEK_Head = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_SBEK_Head",
@@ -9022,16 +9025,17 @@ public class StyleBookEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "styleBookEntryKey", "head"}, false);
+			new String[] {"groupId", "styleBookEntryKey", "head"}, false, true);
 
 		_finderPathFetchByHeadId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByHeadId",
-			new String[] {Long.class.getName()}, new String[] {"headId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"headId"}, true,
+			true);
 
 		_finderPathCountByHeadId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByHeadId",
-			new String[] {Long.class.getName()}, new String[] {"headId"},
-			false);
+			new String[] {Long.class.getName()}, new String[] {"headId"}, false,
+			true);
 
 		_setStyleBookEntryUtilPersistence(this);
 	}

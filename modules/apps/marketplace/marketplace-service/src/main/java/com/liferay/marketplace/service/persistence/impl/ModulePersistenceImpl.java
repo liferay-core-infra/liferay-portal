@@ -3904,15 +3904,15 @@ public class ModulePersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -3920,17 +3920,17 @@ public class ModulePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -3939,17 +3939,17 @@ public class ModulePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByAppId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAppId",
@@ -3957,15 +3957,17 @@ public class ModulePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"appId"}, true);
+			new String[] {"appId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAppId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAppId",
-			new String[] {Long.class.getName()}, new String[] {"appId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"appId"}, true,
+			true);
 
 		_finderPathCountByAppId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAppId",
-			new String[] {Long.class.getName()}, new String[] {"appId"}, false);
+			new String[] {Long.class.getName()}, new String[] {"appId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByBundleSymbolicName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByBundleSymbolicName",
@@ -3973,17 +3975,17 @@ public class ModulePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"bundleSymbolicName"}, true);
+			new String[] {"bundleSymbolicName"}, true, true);
 
 		_finderPathWithoutPaginationFindByBundleSymbolicName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByBundleSymbolicName", new String[] {String.class.getName()},
-			new String[] {"bundleSymbolicName"}, true);
+			new String[] {"bundleSymbolicName"}, true, true);
 
 		_finderPathCountByBundleSymbolicName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByBundleSymbolicName", new String[] {String.class.getName()},
-			new String[] {"bundleSymbolicName"}, false);
+			new String[] {"bundleSymbolicName"}, false, true);
 
 		_finderPathWithPaginationFindByContextName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByContextName",
@@ -3991,27 +3993,27 @@ public class ModulePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"contextName"}, true);
+			new String[] {"contextName"}, true, true);
 
 		_finderPathWithoutPaginationFindByContextName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByContextName",
 			new String[] {String.class.getName()}, new String[] {"contextName"},
-			true);
+			true, true);
 
 		_finderPathCountByContextName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByContextName",
 			new String[] {String.class.getName()}, new String[] {"contextName"},
-			false);
+			false, true);
 
 		_finderPathFetchByA_CN = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_CN",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"appId", "contextName"}, true);
+			new String[] {"appId", "contextName"}, true, true);
 
 		_finderPathCountByA_CN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_CN",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"appId", "contextName"}, false);
+			new String[] {"appId", "contextName"}, false, true);
 
 		_finderPathFetchByA_BSN_BV = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_BSN_BV",
@@ -4019,7 +4021,7 @@ public class ModulePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"appId", "bundleSymbolicName", "bundleVersion"},
+			new String[] {"appId", "bundleSymbolicName", "bundleVersion"}, true,
 			true);
 
 		_finderPathCountByA_BSN_BV = new FinderPath(
@@ -4029,7 +4031,7 @@ public class ModulePersistenceImpl
 				String.class.getName()
 			},
 			new String[] {"appId", "bundleSymbolicName", "bundleVersion"},
-			false);
+			false, true);
 
 		_setModuleUtilPersistence(this);
 	}

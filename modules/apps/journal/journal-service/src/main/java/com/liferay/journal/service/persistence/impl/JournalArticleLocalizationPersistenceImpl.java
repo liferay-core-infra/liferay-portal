@@ -2661,15 +2661,15 @@ public class JournalArticleLocalizationPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByArticlePK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByArticlePK",
@@ -2677,37 +2677,37 @@ public class JournalArticleLocalizationPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"articlePK"}, true);
+			new String[] {"articlePK"}, true, true);
 
 		_finderPathWithoutPaginationFindByArticlePK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByArticlePK",
 			new String[] {Long.class.getName()}, new String[] {"articlePK"},
-			true);
+			true, true);
 
 		_finderPathCountByArticlePK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByArticlePK",
 			new String[] {Long.class.getName()}, new String[] {"articlePK"},
-			false);
+			false, true);
 
 		_finderPathFetchByC_A = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "articlePK"}, true);
+			new String[] {"companyId", "articlePK"}, true, true);
 
 		_finderPathCountByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "articlePK"}, false);
+			new String[] {"companyId", "articlePK"}, false, true);
 
 		_finderPathFetchByA_L = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_L",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"articlePK", "languageId"}, true);
+			new String[] {"articlePK", "languageId"}, true, true);
 
 		_finderPathCountByA_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_L",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"articlePK", "languageId"}, false);
+			new String[] {"articlePK", "languageId"}, false, true);
 
 		_finderPathFetchByC_A_L = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_A_L",
@@ -2715,7 +2715,7 @@ public class JournalArticleLocalizationPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "articlePK", "languageId"}, true);
+			new String[] {"companyId", "articlePK", "languageId"}, true, true);
 
 		_finderPathCountByC_A_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A_L",
@@ -2723,7 +2723,7 @@ public class JournalArticleLocalizationPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "articlePK", "languageId"}, false);
+			new String[] {"companyId", "articlePK", "languageId"}, false, true);
 
 		_finderPathFetchByC_A_T_L = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_A_T_L",
@@ -2732,7 +2732,7 @@ public class JournalArticleLocalizationPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "articlePK", "title", "languageId"},
-			true);
+			true, true);
 
 		_finderPathCountByC_A_T_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A_T_L",
@@ -2741,7 +2741,7 @@ public class JournalArticleLocalizationPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "articlePK", "title", "languageId"},
-			false);
+			false, true);
 
 		_setJournalArticleLocalizationUtilPersistence(this);
 	}

@@ -7397,15 +7397,15 @@ public class ResourcePermissionPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByName",
@@ -7413,16 +7413,17 @@ public class ResourcePermissionPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"name"}, true);
+			new String[] {"name"}, true, true);
 
 		_finderPathWithoutPaginationFindByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByName",
-			new String[] {String.class.getName()}, new String[] {"name"}, true);
+			new String[] {String.class.getName()}, new String[] {"name"}, true,
+			true);
 
 		_finderPathCountByName = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
-			new String[] {String.class.getName()}, new String[] {"name"},
-			false);
+			new String[] {String.class.getName()}, new String[] {"name"}, false,
+			true);
 
 		_finderPathWithPaginationFindByScope = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByScope",
@@ -7430,22 +7431,22 @@ public class ResourcePermissionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"scope"}, true);
+			new String[] {"scope"}, true, true);
 
 		_finderPathWithoutPaginationFindByScope = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByScope",
 			new String[] {Integer.class.getName()}, new String[] {"scope"},
-			true);
+			true, true);
 
 		_finderPathCountByScope = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByScope",
 			new String[] {Integer.class.getName()}, new String[] {"scope"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByScope = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByScope",
 			new String[] {Integer.class.getName()}, new String[] {"scope"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByRoleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRoleId",
@@ -7453,16 +7454,17 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"roleId"}, true);
+			new String[] {"roleId"}, true, true);
 
 		_finderPathWithoutPaginationFindByRoleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRoleId",
-			new String[] {Long.class.getName()}, new String[] {"roleId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"roleId"}, true,
+			true);
 
 		_finderPathCountByRoleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRoleId",
-			new String[] {Long.class.getName()}, new String[] {"roleId"},
-			false);
+			new String[] {Long.class.getName()}, new String[] {"roleId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByC_LikeP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_LikeP",
@@ -7471,12 +7473,12 @@ public class ResourcePermissionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "primKey"}, true);
+			new String[] {"companyId", "primKey"}, true, true);
 
 		_finderPathWithPaginationCountByC_LikeP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_LikeP",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "primKey"}, false);
+			new String[] {"companyId", "primKey"}, false, true);
 
 		_finderPathWithPaginationFindByC_S_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_S_P",
@@ -7485,7 +7487,7 @@ public class ResourcePermissionPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "scope", "primKey"}, true);
+			new String[] {"companyId", "scope", "primKey"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_S_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_S_P",
@@ -7493,7 +7495,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "scope", "primKey"}, true);
+			new String[] {"companyId", "scope", "primKey"}, true, true);
 
 		_finderPathCountByC_S_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S_P",
@@ -7501,7 +7503,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "scope", "primKey"}, false);
+			new String[] {"companyId", "scope", "primKey"}, false, true);
 
 		_finderPathWithPaginationFindByC_N_S_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N_S_P",
@@ -7511,7 +7513,7 @@ public class ResourcePermissionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "name", "scope", "primKey"}, true);
+			new String[] {"companyId", "name", "scope", "primKey"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_N_S_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N_S_P",
@@ -7519,7 +7521,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), String.class.getName()
 			},
-			new String[] {"companyId", "name", "scope", "primKey"}, true);
+			new String[] {"companyId", "name", "scope", "primKey"}, true, true);
 
 		_finderPathCountByC_N_S_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_S_P",
@@ -7527,7 +7529,8 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), String.class.getName()
 			},
-			new String[] {"companyId", "name", "scope", "primKey"}, false);
+			new String[] {"companyId", "name", "scope", "primKey"}, false,
+			true);
 
 		_finderPathWithPaginationFindByC_N_S_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N_S_R",
@@ -7537,7 +7540,7 @@ public class ResourcePermissionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "name", "scope", "roleId"}, true);
+			new String[] {"companyId", "name", "scope", "roleId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_N_S_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N_S_R",
@@ -7545,7 +7548,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "name", "scope", "roleId"}, true);
+			new String[] {"companyId", "name", "scope", "roleId"}, true, true);
 
 		_finderPathCountByC_N_S_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_S_R",
@@ -7553,7 +7556,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "name", "scope", "roleId"}, false);
+			new String[] {"companyId", "name", "scope", "roleId"}, false, true);
 
 		_finderPathWithPaginationFindByC_N_S_P_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N_S_P_R",
@@ -7564,7 +7567,7 @@ public class ResourcePermissionPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"companyId", "name", "scope", "primKey", "roleId"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_N_S_P_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N_S_P_R",
@@ -7574,7 +7577,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName()
 			},
 			new String[] {"companyId", "name", "scope", "primKey", "roleId"},
-			true);
+			true, true);
 
 		_finderPathFetchByC_N_S_P_R = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_N_S_P_R",
@@ -7584,7 +7587,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName()
 			},
 			new String[] {"companyId", "name", "scope", "primKey", "roleId"},
-			true);
+			true, true);
 
 		_finderPathCountByC_N_S_P_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_S_P_R",
@@ -7594,7 +7597,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName()
 			},
 			new String[] {"companyId", "name", "scope", "primKey", "roleId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByC_N_S_P_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_N_S_P_R",
@@ -7604,7 +7607,7 @@ public class ResourcePermissionPersistenceImpl
 				Long.class.getName()
 			},
 			new String[] {"companyId", "name", "scope", "primKey", "roleId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_N_S_P_R_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_N_S_P_R_V",
@@ -7619,7 +7622,7 @@ public class ResourcePermissionPersistenceImpl
 				"companyId", "name", "scope", "primKeyId", "roleId",
 				"viewActionId"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_N_S_P_R_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_N_S_P_R_V",
@@ -7632,7 +7635,7 @@ public class ResourcePermissionPersistenceImpl
 				"companyId", "name", "scope", "primKeyId", "roleId",
 				"viewActionId"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_N_S_P_R_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N_S_P_R_V",
@@ -7645,7 +7648,7 @@ public class ResourcePermissionPersistenceImpl
 				"companyId", "name", "scope", "primKeyId", "roleId",
 				"viewActionId"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByC_N_S_P_R_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_N_S_P_R_V",
@@ -7658,7 +7661,7 @@ public class ResourcePermissionPersistenceImpl
 				"companyId", "name", "scope", "primKeyId", "roleId",
 				"viewActionId"
 			},
-			false);
+			false, true);
 
 		_setResourcePermissionUtilPersistence(this);
 	}

@@ -6007,15 +6007,15 @@ public class JournalContentSearchPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -6023,17 +6023,17 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByPortletId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPortletId",
@@ -6041,17 +6041,17 @@ public class JournalContentSearchPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"portletId"}, true);
+			new String[] {"portletId"}, true, true);
 
 		_finderPathWithoutPaginationFindByPortletId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPortletId",
 			new String[] {String.class.getName()}, new String[] {"portletId"},
-			true);
+			true, true);
 
 		_finderPathCountByPortletId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPortletId",
 			new String[] {String.class.getName()}, new String[] {"portletId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByArticleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByArticleId",
@@ -6059,17 +6059,17 @@ public class JournalContentSearchPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"articleId"}, true);
+			new String[] {"articleId"}, true, true);
 
 		_finderPathWithoutPaginationFindByArticleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByArticleId",
 			new String[] {String.class.getName()}, new String[] {"articleId"},
-			true);
+			true, true);
 
 		_finderPathCountByArticleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByArticleId",
 			new String[] {String.class.getName()}, new String[] {"articleId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P",
@@ -6078,17 +6078,17 @@ public class JournalContentSearchPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "privateLayout"}, true);
+			new String[] {"groupId", "privateLayout"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"groupId", "privateLayout"}, true);
+			new String[] {"groupId", "privateLayout"}, true, true);
 
 		_finderPathCountByG_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"groupId", "privateLayout"}, false);
+			new String[] {"groupId", "privateLayout"}, false, true);
 
 		_finderPathWithPaginationFindByG_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_A",
@@ -6097,17 +6097,17 @@ public class JournalContentSearchPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "articleId"}, true);
+			new String[] {"groupId", "articleId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_A",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "articleId"}, true);
+			new String[] {"groupId", "articleId"}, true, true);
 
 		_finderPathCountByG_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_A",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "articleId"}, false);
+			new String[] {"groupId", "articleId"}, false, true);
 
 		_finderPathWithPaginationFindByG_P_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P_L",
@@ -6116,7 +6116,7 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "privateLayout", "layoutId"}, true);
+			new String[] {"groupId", "privateLayout", "layoutId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_P_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P_L",
@@ -6124,7 +6124,7 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Long.class.getName()
 			},
-			new String[] {"groupId", "privateLayout", "layoutId"}, true);
+			new String[] {"groupId", "privateLayout", "layoutId"}, true, true);
 
 		_finderPathCountByG_P_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P_L",
@@ -6132,7 +6132,7 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Long.class.getName()
 			},
-			new String[] {"groupId", "privateLayout", "layoutId"}, false);
+			new String[] {"groupId", "privateLayout", "layoutId"}, false, true);
 
 		_finderPathWithPaginationFindByG_P_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P_A",
@@ -6141,7 +6141,7 @@ public class JournalContentSearchPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "privateLayout", "articleId"}, true);
+			new String[] {"groupId", "privateLayout", "articleId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_P_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P_A",
@@ -6149,7 +6149,7 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "privateLayout", "articleId"}, true);
+			new String[] {"groupId", "privateLayout", "articleId"}, true, true);
 
 		_finderPathCountByG_P_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P_A",
@@ -6157,7 +6157,8 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "privateLayout", "articleId"}, false);
+			new String[] {"groupId", "privateLayout", "articleId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_P_L_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_P_L_P",
@@ -6168,7 +6169,7 @@ public class JournalContentSearchPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "privateLayout", "layoutId", "portletId"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_P_L_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_P_L_P",
@@ -6177,7 +6178,7 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), String.class.getName()
 			},
 			new String[] {"groupId", "privateLayout", "layoutId", "portletId"},
-			true);
+			true, true);
 
 		_finderPathCountByG_P_L_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P_L_P",
@@ -6186,7 +6187,7 @@ public class JournalContentSearchPersistenceImpl
 				Long.class.getName(), String.class.getName()
 			},
 			new String[] {"groupId", "privateLayout", "layoutId", "portletId"},
-			false);
+			false, true);
 
 		_finderPathFetchByG_P_L_P_A = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_P_L_P_A",
@@ -6198,7 +6199,7 @@ public class JournalContentSearchPersistenceImpl
 			new String[] {
 				"groupId", "privateLayout", "layoutId", "portletId", "articleId"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_P_L_P_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_P_L_P_A",
@@ -6210,7 +6211,7 @@ public class JournalContentSearchPersistenceImpl
 			new String[] {
 				"groupId", "privateLayout", "layoutId", "portletId", "articleId"
 			},
-			false);
+			false, true);
 
 		_setJournalContentSearchUtilPersistence(this);
 	}

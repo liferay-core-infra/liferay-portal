@@ -2137,15 +2137,15 @@ public class TrashVersionPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByEntryId",
@@ -2153,17 +2153,17 @@ public class TrashVersionPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"entryId"}, true);
+			new String[] {"entryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByEntryId",
-			new String[] {Long.class.getName()}, new String[] {"entryId"},
+			new String[] {Long.class.getName()}, new String[] {"entryId"}, true,
 			true);
 
 		_finderPathCountByEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEntryId",
 			new String[] {Long.class.getName()}, new String[] {"entryId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByE_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByE_C",
@@ -2172,27 +2172,27 @@ public class TrashVersionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"entryId", "classNameId"}, true);
+			new String[] {"entryId", "classNameId"}, true, true);
 
 		_finderPathWithoutPaginationFindByE_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByE_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"entryId", "classNameId"}, true);
+			new String[] {"entryId", "classNameId"}, true, true);
 
 		_finderPathCountByE_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByE_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"entryId", "classNameId"}, false);
+			new String[] {"entryId", "classNameId"}, false, true);
 
 		_finderPathFetchByC_C = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathCountByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, false);
+			new String[] {"classNameId", "classPK"}, false, true);
 
 		_setTrashVersionUtilPersistence(this);
 	}

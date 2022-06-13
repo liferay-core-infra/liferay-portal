@@ -3953,15 +3953,15 @@ public class KaleoLogPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -3969,17 +3969,17 @@ public class KaleoLogPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByKaleoDefinitionVersionId =
 			new FinderPath(
@@ -3989,20 +3989,20 @@ public class KaleoLogPersistenceImpl
 					Long.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"kaleoDefinitionVersionId"}, true);
+				new String[] {"kaleoDefinitionVersionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByKaleoDefinitionVersionId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByKaleoDefinitionVersionId",
 				new String[] {Long.class.getName()},
-				new String[] {"kaleoDefinitionVersionId"}, true);
+				new String[] {"kaleoDefinitionVersionId"}, true, true);
 
 		_finderPathCountByKaleoDefinitionVersionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByKaleoDefinitionVersionId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoDefinitionVersionId"}, false);
+			new String[] {"kaleoDefinitionVersionId"}, false, true);
 
 		_finderPathWithPaginationFindByKaleoInstanceId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKaleoInstanceId",
@@ -4010,17 +4010,17 @@ public class KaleoLogPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoInstanceId"}, true);
+			new String[] {"kaleoInstanceId"}, true, true);
 
 		_finderPathWithoutPaginationFindByKaleoInstanceId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKaleoInstanceId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoInstanceId"}, true);
+			new String[] {"kaleoInstanceId"}, true, true);
 
 		_finderPathCountByKaleoInstanceId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKaleoInstanceId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoInstanceId"}, false);
+			new String[] {"kaleoInstanceId"}, false, true);
 
 		_finderPathWithPaginationFindByKaleoTaskInstanceTokenId =
 			new FinderPath(
@@ -4030,20 +4030,20 @@ public class KaleoLogPersistenceImpl
 					Long.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"kaleoTaskInstanceTokenId"}, true);
+				new String[] {"kaleoTaskInstanceTokenId"}, true, true);
 
 		_finderPathWithoutPaginationFindByKaleoTaskInstanceTokenId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByKaleoTaskInstanceTokenId",
 				new String[] {Long.class.getName()},
-				new String[] {"kaleoTaskInstanceTokenId"}, true);
+				new String[] {"kaleoTaskInstanceTokenId"}, true, true);
 
 		_finderPathCountByKaleoTaskInstanceTokenId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByKaleoTaskInstanceTokenId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoTaskInstanceTokenId"}, false);
+			new String[] {"kaleoTaskInstanceTokenId"}, false, true);
 
 		_finderPathWithPaginationFindByKITI_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKITI_T",
@@ -4052,17 +4052,17 @@ public class KaleoLogPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoInstanceTokenId", "type_"}, true);
+			new String[] {"kaleoInstanceTokenId", "type_"}, true, true);
 
 		_finderPathWithoutPaginationFindByKITI_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKITI_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"kaleoInstanceTokenId", "type_"}, true);
+			new String[] {"kaleoInstanceTokenId", "type_"}, true, true);
 
 		_finderPathCountByKITI_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"kaleoInstanceTokenId", "type_"}, false);
+			new String[] {"kaleoInstanceTokenId", "type_"}, false, true);
 
 		_finderPathWithPaginationFindByKCN_KCPK_KITI_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKCN_KCPK_KITI_T",
@@ -4076,7 +4076,7 @@ public class KaleoLogPersistenceImpl
 				"kaleoClassName", "kaleoClassPK", "kaleoInstanceTokenId",
 				"type_"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByKCN_KCPK_KITI_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKCN_KCPK_KITI_T",
@@ -4088,7 +4088,7 @@ public class KaleoLogPersistenceImpl
 				"kaleoClassName", "kaleoClassPK", "kaleoInstanceTokenId",
 				"type_"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByKCN_KCPK_KITI_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKCN_KCPK_KITI_T",
@@ -4100,7 +4100,7 @@ public class KaleoLogPersistenceImpl
 				"kaleoClassName", "kaleoClassPK", "kaleoInstanceTokenId",
 				"type_"
 			},
-			false);
+			false, true);
 
 		_setKaleoLogUtilPersistence(this);
 	}

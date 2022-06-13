@@ -2662,15 +2662,15 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAccountEntryId",
@@ -2678,17 +2678,17 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"accountEntryId"}, true);
+			new String[] {"accountEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, true);
+			new String[] {"accountEntryId"}, true, true);
 
 		_finderPathCountByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, false);
+			new String[] {"accountEntryId"}, false, true);
 
 		_finderPathWithPaginationFindByCommerceChannelId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCommerceChannelId",
@@ -2696,17 +2696,17 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"commerceChannelId"}, true);
+			new String[] {"commerceChannelId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceChannelId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCommerceChannelId", new String[] {Long.class.getName()},
-			new String[] {"commerceChannelId"}, true);
+			new String[] {"commerceChannelId"}, true, true);
 
 		_finderPathCountByCommerceChannelId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceChannelId", new String[] {Long.class.getName()},
-			new String[] {"commerceChannelId"}, false);
+			new String[] {"commerceChannelId"}, false, true);
 
 		_finderPathWithPaginationFindByCommerceShippingOptionKey =
 			new FinderPath(
@@ -2716,30 +2716,30 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 					String.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"commerceShippingOptionKey"}, true);
+				new String[] {"commerceShippingOptionKey"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceShippingOptionKey =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByCommerceShippingOptionKey",
 				new String[] {String.class.getName()},
-				new String[] {"commerceShippingOptionKey"}, true);
+				new String[] {"commerceShippingOptionKey"}, true, true);
 
 		_finderPathCountByCommerceShippingOptionKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceShippingOptionKey",
 			new String[] {String.class.getName()},
-			new String[] {"commerceShippingOptionKey"}, false);
+			new String[] {"commerceShippingOptionKey"}, false, true);
 
 		_finderPathFetchByA_C = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"accountEntryId", "commerceChannelId"}, true);
+			new String[] {"accountEntryId", "commerceChannelId"}, true, true);
 
 		_finderPathCountByA_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"accountEntryId", "commerceChannelId"}, false);
+			new String[] {"accountEntryId", "commerceChannelId"}, false, true);
 
 		_setCommerceShippingOptionAccountEntryRelUtilPersistence(this);
 	}

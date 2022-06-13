@@ -1486,15 +1486,15 @@ public class CommerceShippingFixedOptionPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCommerceShippingMethodId =
 			new FinderPath(
@@ -1504,30 +1504,30 @@ public class CommerceShippingFixedOptionPersistenceImpl
 					Long.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"commerceShippingMethodId"}, true);
+				new String[] {"commerceShippingMethodId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceShippingMethodId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByCommerceShippingMethodId",
 				new String[] {Long.class.getName()},
-				new String[] {"commerceShippingMethodId"}, true);
+				new String[] {"commerceShippingMethodId"}, true, true);
 
 		_finderPathCountByCommerceShippingMethodId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceShippingMethodId",
 			new String[] {Long.class.getName()},
-			new String[] {"commerceShippingMethodId"}, false);
+			new String[] {"commerceShippingMethodId"}, false, true);
 
 		_finderPathFetchByC_K = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_K",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "key_"}, true);
+			new String[] {"companyId", "key_"}, true, true);
 
 		_finderPathCountByC_K = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_K",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "key_"}, false);
+			new String[] {"companyId", "key_"}, false, true);
 
 		_setCommerceShippingFixedOptionUtilPersistence(this);
 	}

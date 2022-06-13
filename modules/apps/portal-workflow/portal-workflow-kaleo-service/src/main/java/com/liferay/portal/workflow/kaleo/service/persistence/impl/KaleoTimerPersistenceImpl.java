@@ -1840,15 +1840,15 @@ public class KaleoTimerPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByKCN_KCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKCN_KCPK",
@@ -1857,17 +1857,17 @@ public class KaleoTimerPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoClassName", "kaleoClassPK"}, true);
+			new String[] {"kaleoClassName", "kaleoClassPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByKCN_KCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKCN_KCPK",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"kaleoClassName", "kaleoClassPK"}, true);
+			new String[] {"kaleoClassName", "kaleoClassPK"}, true, true);
 
 		_finderPathCountByKCN_KCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKCN_KCPK",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"kaleoClassName", "kaleoClassPK"}, false);
+			new String[] {"kaleoClassName", "kaleoClassPK"}, false, true);
 
 		_finderPathWithPaginationFindByKCN_KCPK_Blocking = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKCN_KCPK_Blocking",
@@ -1876,7 +1876,8 @@ public class KaleoTimerPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, true);
+			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByKCN_KCPK_Blocking = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1885,7 +1886,8 @@ public class KaleoTimerPersistenceImpl
 				String.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, true);
+			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, true,
+			true);
 
 		_finderPathCountByKCN_KCPK_Blocking = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -1894,7 +1896,8 @@ public class KaleoTimerPersistenceImpl
 				String.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, false);
+			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, false,
+			true);
 
 		_setKaleoTimerUtilPersistence(this);
 	}

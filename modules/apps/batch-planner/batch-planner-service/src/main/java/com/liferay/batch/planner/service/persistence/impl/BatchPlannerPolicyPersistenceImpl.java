@@ -1433,15 +1433,15 @@ public class BatchPlannerPolicyPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByBatchPlannerPlanId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByBatchPlannerPlanId",
@@ -1449,27 +1449,27 @@ public class BatchPlannerPolicyPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"batchPlannerPlanId"}, true);
+			new String[] {"batchPlannerPlanId"}, true, true);
 
 		_finderPathWithoutPaginationFindByBatchPlannerPlanId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByBatchPlannerPlanId", new String[] {Long.class.getName()},
-			new String[] {"batchPlannerPlanId"}, true);
+			new String[] {"batchPlannerPlanId"}, true, true);
 
 		_finderPathCountByBatchPlannerPlanId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByBatchPlannerPlanId", new String[] {Long.class.getName()},
-			new String[] {"batchPlannerPlanId"}, false);
+			new String[] {"batchPlannerPlanId"}, false, true);
 
 		_finderPathFetchByBPPI_N = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByBPPI_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"batchPlannerPlanId", "name"}, true);
+			new String[] {"batchPlannerPlanId", "name"}, true, true);
 
 		_finderPathCountByBPPI_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByBPPI_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"batchPlannerPlanId", "name"}, false);
+			new String[] {"batchPlannerPlanId", "name"}, false, true);
 
 		_setBatchPlannerPolicyUtilPersistence(this);
 	}

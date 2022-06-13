@@ -1700,15 +1700,15 @@ public class SegmentsExperimentRelPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindBySegmentsExperimentId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -1717,29 +1717,29 @@ public class SegmentsExperimentRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"segmentsExperimentId"}, true);
+			new String[] {"segmentsExperimentId"}, true, true);
 
 		_finderPathWithoutPaginationFindBySegmentsExperimentId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findBySegmentsExperimentId", new String[] {Long.class.getName()},
-			new String[] {"segmentsExperimentId"}, true);
+			new String[] {"segmentsExperimentId"}, true, true);
 
 		_finderPathCountBySegmentsExperimentId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countBySegmentsExperimentId", new String[] {Long.class.getName()},
-			new String[] {"segmentsExperimentId"}, false);
+			new String[] {"segmentsExperimentId"}, false, true);
 
 		_finderPathFetchByS_S = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByS_S",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"segmentsExperimentId", "segmentsExperienceId"},
+			new String[] {"segmentsExperimentId", "segmentsExperienceId"}, true,
 			true);
 
 		_finderPathCountByS_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByS_S",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"segmentsExperimentId", "segmentsExperienceId"},
-			false);
+			false, true);
 
 		_setSegmentsExperimentRelUtilPersistence(this);
 	}

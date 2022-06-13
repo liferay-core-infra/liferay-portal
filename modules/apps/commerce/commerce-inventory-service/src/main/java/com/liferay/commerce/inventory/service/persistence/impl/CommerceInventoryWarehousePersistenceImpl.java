@@ -5010,15 +5010,15 @@ public class CommerceInventoryWarehousePersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -5026,17 +5026,17 @@ public class CommerceInventoryWarehousePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A",
@@ -5045,17 +5045,17 @@ public class CommerceInventoryWarehousePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "active_"}, true);
+			new String[] {"companyId", "active_"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"companyId", "active_"}, true);
+			new String[] {"companyId", "active_"}, true, true);
 
 		_finderPathCountByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"companyId", "active_"}, false);
+			new String[] {"companyId", "active_"}, false, true);
 
 		_finderPathWithPaginationFindByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
@@ -5064,17 +5064,18 @@ public class CommerceInventoryWarehousePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "countryTwoLettersISOCode"}, true);
+			new String[] {"companyId", "countryTwoLettersISOCode"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "countryTwoLettersISOCode"}, true);
+			new String[] {"companyId", "countryTwoLettersISOCode"}, true, true);
 
 		_finderPathCountByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "countryTwoLettersISOCode"}, false);
+			new String[] {"companyId", "countryTwoLettersISOCode"}, false,
+			true);
 
 		_finderPathWithPaginationFindByC_A_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A_C",
@@ -5084,7 +5085,7 @@ public class CommerceInventoryWarehousePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"companyId", "active_", "countryTwoLettersISOCode"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_A_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A_C",
@@ -5093,7 +5094,7 @@ public class CommerceInventoryWarehousePersistenceImpl
 				String.class.getName()
 			},
 			new String[] {"companyId", "active_", "countryTwoLettersISOCode"},
-			true);
+			true, true);
 
 		_finderPathCountByC_A_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A_C",
@@ -5102,17 +5103,17 @@ public class CommerceInventoryWarehousePersistenceImpl
 				String.class.getName()
 			},
 			new String[] {"companyId", "active_", "countryTwoLettersISOCode"},
-			false);
+			false, true);
 
 		_finderPathFetchByC_ERC = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "externalReferenceCode"}, true);
+			new String[] {"companyId", "externalReferenceCode"}, true, true);
 
 		_finderPathCountByC_ERC = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "externalReferenceCode"}, false);
+			new String[] {"companyId", "externalReferenceCode"}, false, true);
 
 		_setCommerceInventoryWarehouseUtilPersistence(this);
 	}

@@ -2623,24 +2623,25 @@ public class TicketPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathFetchByKey = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByKey",
-			new String[] {String.class.getName()}, new String[] {"key_"}, true);
+			new String[] {String.class.getName()}, new String[] {"key_"}, true,
+			true);
 
 		_finderPathCountByKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKey",
-			new String[] {String.class.getName()}, new String[] {"key_"},
-			false);
+			new String[] {String.class.getName()}, new String[] {"key_"}, false,
+			true);
 
 		_finderPathWithPaginationFindByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C",
@@ -2649,21 +2650,21 @@ public class TicketPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, true);
+			new String[] {"companyId", "classNameId", "classPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, true);
+			new String[] {"companyId", "classNameId", "classPK"}, true, true);
 
 		_finderPathCountByC_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK"}, false);
+			new String[] {"companyId", "classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByC_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_T",
@@ -2672,7 +2673,7 @@ public class TicketPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"classNameId", "classPK", "type_"}, true);
+			new String[] {"classNameId", "classPK", "type_"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C_T",
@@ -2680,7 +2681,7 @@ public class TicketPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"classNameId", "classPK", "type_"}, true);
+			new String[] {"classNameId", "classPK", "type_"}, true, true);
 
 		_finderPathCountByC_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_T",
@@ -2688,7 +2689,7 @@ public class TicketPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"classNameId", "classPK", "type_"}, false);
+			new String[] {"classNameId", "classPK", "type_"}, false, true);
 
 		_finderPathWithPaginationFindByC_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_C_T",
@@ -2698,7 +2699,7 @@ public class TicketPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK", "type_"},
+			new String[] {"companyId", "classNameId", "classPK", "type_"}, true,
 			true);
 
 		_finderPathWithoutPaginationFindByC_C_C_T = new FinderPath(
@@ -2707,7 +2708,7 @@ public class TicketPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			new String[] {"companyId", "classNameId", "classPK", "type_"},
+			new String[] {"companyId", "classNameId", "classPK", "type_"}, true,
 			true);
 
 		_finderPathCountByC_C_C_T = new FinderPath(
@@ -2717,7 +2718,7 @@ public class TicketPersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"companyId", "classNameId", "classPK", "type_"},
-			false);
+			false, true);
 
 		_setTicketUtilPersistence(this);
 	}

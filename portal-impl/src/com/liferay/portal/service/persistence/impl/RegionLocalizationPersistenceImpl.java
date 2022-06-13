@@ -1387,15 +1387,15 @@ public class RegionLocalizationPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByRegionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRegionId",
@@ -1403,28 +1403,28 @@ public class RegionLocalizationPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"regionId"}, true);
+			new String[] {"regionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByRegionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRegionId",
 			new String[] {Long.class.getName()}, new String[] {"regionId"},
-			true);
+			true, true);
 
 		_finderPathCountByRegionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRegionId",
 			new String[] {Long.class.getName()}, new String[] {"regionId"},
-			false);
+			false, true);
 
 		_finderPathFetchByRegionId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByRegionId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"regionId", "languageId"}, true);
+			new String[] {"regionId", "languageId"}, true, true);
 
 		_finderPathCountByRegionId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByRegionId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"regionId", "languageId"}, false);
+			new String[] {"regionId", "languageId"}, false, true);
 
 		_setRegionLocalizationUtilPersistence(this);
 	}

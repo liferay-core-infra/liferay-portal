@@ -2592,15 +2592,15 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByKaleoInstanceId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKaleoInstanceId",
@@ -2608,27 +2608,27 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoInstanceId"}, true);
+			new String[] {"kaleoInstanceId"}, true, true);
 
 		_finderPathWithoutPaginationFindByKaleoInstanceId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKaleoInstanceId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoInstanceId"}, true);
+			new String[] {"kaleoInstanceId"}, true, true);
 
 		_finderPathCountByKaleoInstanceId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKaleoInstanceId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoInstanceId"}, false);
+			new String[] {"kaleoInstanceId"}, false, true);
 
 		_finderPathFetchByKITI_KTI = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByKITI_KTI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"kaleoInstanceTokenId", "kaleoTimerId"}, true);
+			new String[] {"kaleoInstanceTokenId", "kaleoTimerId"}, true, true);
 
 		_finderPathCountByKITI_KTI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_KTI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"kaleoInstanceTokenId", "kaleoTimerId"}, false);
+			new String[] {"kaleoInstanceTokenId", "kaleoTimerId"}, false, true);
 
 		_finderPathWithPaginationFindByKITI_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKITI_C",
@@ -2637,17 +2637,17 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoInstanceTokenId", "completed"}, true);
+			new String[] {"kaleoInstanceTokenId", "completed"}, true, true);
 
 		_finderPathWithoutPaginationFindByKITI_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKITI_C",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"kaleoInstanceTokenId", "completed"}, true);
+			new String[] {"kaleoInstanceTokenId", "completed"}, true, true);
 
 		_finderPathCountByKITI_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_C",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"kaleoInstanceTokenId", "completed"}, false);
+			new String[] {"kaleoInstanceTokenId", "completed"}, false, true);
 
 		_finderPathWithPaginationFindByKITI_B_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKITI_B_C",
@@ -2657,7 +2657,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"kaleoInstanceTokenId", "blocking", "completed"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByKITI_B_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKITI_B_C",
@@ -2666,7 +2666,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"kaleoInstanceTokenId", "blocking", "completed"},
-			true);
+			true, true);
 
 		_finderPathCountByKITI_B_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKITI_B_C",
@@ -2675,7 +2675,7 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"kaleoInstanceTokenId", "blocking", "completed"},
-			false);
+			false, true);
 
 		_setKaleoTimerInstanceTokenUtilPersistence(this);
 	}

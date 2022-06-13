@@ -2229,15 +2229,15 @@ public class NotificationQueueEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByNotificationTemplateId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -2246,20 +2246,20 @@ public class NotificationQueueEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"notificationTemplateId"}, true);
+			new String[] {"notificationTemplateId"}, true, true);
 
 		_finderPathWithoutPaginationFindByNotificationTemplateId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByNotificationTemplateId",
 				new String[] {Long.class.getName()},
-				new String[] {"notificationTemplateId"}, true);
+				new String[] {"notificationTemplateId"}, true, true);
 
 		_finderPathCountByNotificationTemplateId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByNotificationTemplateId",
 			new String[] {Long.class.getName()},
-			new String[] {"notificationTemplateId"}, false);
+			new String[] {"notificationTemplateId"}, false, true);
 
 		_finderPathWithPaginationFindBySent = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySent",
@@ -2267,17 +2267,17 @@ public class NotificationQueueEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"sent"}, true);
+			new String[] {"sent"}, true, true);
 
 		_finderPathWithoutPaginationFindBySent = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySent",
-			new String[] {Boolean.class.getName()}, new String[] {"sent"},
+			new String[] {Boolean.class.getName()}, new String[] {"sent"}, true,
 			true);
 
 		_finderPathCountBySent = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySent",
 			new String[] {Boolean.class.getName()}, new String[] {"sent"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByLtSentDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtSentDate",
@@ -2285,12 +2285,12 @@ public class NotificationQueueEntryPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"sentDate"}, true);
+			new String[] {"sentDate"}, true, true);
 
 		_finderPathWithPaginationCountByLtSentDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtSentDate",
 			new String[] {Date.class.getName()}, new String[] {"sentDate"},
-			false);
+			false, true);
 
 		_setNotificationQueueEntryUtilPersistence(this);
 	}

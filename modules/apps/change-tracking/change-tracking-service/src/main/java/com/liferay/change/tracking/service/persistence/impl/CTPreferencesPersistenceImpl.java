@@ -1859,15 +1859,15 @@ public class CTPreferencesPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCtCollectionId",
@@ -1875,17 +1875,17 @@ public class CTPreferencesPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"ctCollectionId"}, true);
+			new String[] {"ctCollectionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"ctCollectionId"}, true);
+			new String[] {"ctCollectionId"}, true, true);
 
 		_finderPathCountByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"ctCollectionId"}, false);
+			new String[] {"ctCollectionId"}, false, true);
 
 		_finderPathWithPaginationFindByPreviousCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -1894,30 +1894,30 @@ public class CTPreferencesPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"previousCtCollectionId"}, true);
+			new String[] {"previousCtCollectionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByPreviousCtCollectionId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByPreviousCtCollectionId",
 				new String[] {Long.class.getName()},
-				new String[] {"previousCtCollectionId"}, true);
+				new String[] {"previousCtCollectionId"}, true, true);
 
 		_finderPathCountByPreviousCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByPreviousCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"previousCtCollectionId"}, false);
+			new String[] {"previousCtCollectionId"}, false, true);
 
 		_finderPathFetchByC_U = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "userId"}, true);
+			new String[] {"companyId", "userId"}, true, true);
 
 		_finderPathCountByC_U = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "userId"}, false);
+			new String[] {"companyId", "userId"}, false, true);
 
 		_setCTPreferencesUtilPersistence(this);
 	}

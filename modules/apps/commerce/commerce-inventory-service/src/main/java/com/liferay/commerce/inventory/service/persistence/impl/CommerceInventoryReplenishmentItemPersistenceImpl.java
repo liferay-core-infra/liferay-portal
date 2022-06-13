@@ -3635,15 +3635,15 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCommerceInventoryWarehouseId =
 			new FinderPath(
@@ -3653,20 +3653,20 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 					Long.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"commerceInventoryWarehouseId"}, true);
+				new String[] {"commerceInventoryWarehouseId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceInventoryWarehouseId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByCommerceInventoryWarehouseId",
 				new String[] {Long.class.getName()},
-				new String[] {"commerceInventoryWarehouseId"}, true);
+				new String[] {"commerceInventoryWarehouseId"}, true, true);
 
 		_finderPathCountByCommerceInventoryWarehouseId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceInventoryWarehouseId",
 			new String[] {Long.class.getName()},
-			new String[] {"commerceInventoryWarehouseId"}, false);
+			new String[] {"commerceInventoryWarehouseId"}, false, true);
 
 		_finderPathWithPaginationFindBySku = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySku",
@@ -3674,15 +3674,17 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"sku"}, true);
+			new String[] {"sku"}, true, true);
 
 		_finderPathWithoutPaginationFindBySku = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySku",
-			new String[] {String.class.getName()}, new String[] {"sku"}, true);
+			new String[] {String.class.getName()}, new String[] {"sku"}, true,
+			true);
 
 		_finderPathCountBySku = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySku",
-			new String[] {String.class.getName()}, new String[] {"sku"}, false);
+			new String[] {String.class.getName()}, new String[] {"sku"}, false,
+			true);
 
 		_finderPathWithPaginationFindByAvailabilityDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAvailabilityDate",
@@ -3690,17 +3692,17 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"availabilityDate"}, true);
+			new String[] {"availabilityDate"}, true, true);
 
 		_finderPathWithoutPaginationFindByAvailabilityDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAvailabilityDate",
 			new String[] {Date.class.getName()},
-			new String[] {"availabilityDate"}, true);
+			new String[] {"availabilityDate"}, true, true);
 
 		_finderPathCountByAvailabilityDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByAvailabilityDate", new String[] {Date.class.getName()},
-			new String[] {"availabilityDate"}, false);
+			new String[] {"availabilityDate"}, false, true);
 
 		_finderPathWithPaginationFindByC_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_S",
@@ -3709,17 +3711,17 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "sku"}, true);
+			new String[] {"companyId", "sku"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_S",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "sku"}, true);
+			new String[] {"companyId", "sku"}, true, true);
 
 		_finderPathCountByC_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_S",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "sku"}, false);
+			new String[] {"companyId", "sku"}, false, true);
 
 		_finderPathWithPaginationFindByS_AD = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByS_AD",
@@ -3728,17 +3730,17 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"sku", "availabilityDate"}, true);
+			new String[] {"sku", "availabilityDate"}, true, true);
 
 		_finderPathWithoutPaginationFindByS_AD = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByS_AD",
 			new String[] {String.class.getName(), Date.class.getName()},
-			new String[] {"sku", "availabilityDate"}, true);
+			new String[] {"sku", "availabilityDate"}, true, true);
 
 		_finderPathCountByS_AD = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByS_AD",
 			new String[] {String.class.getName(), Date.class.getName()},
-			new String[] {"sku", "availabilityDate"}, false);
+			new String[] {"sku", "availabilityDate"}, false, true);
 
 		_setCommerceInventoryReplenishmentItemUtilPersistence(this);
 	}

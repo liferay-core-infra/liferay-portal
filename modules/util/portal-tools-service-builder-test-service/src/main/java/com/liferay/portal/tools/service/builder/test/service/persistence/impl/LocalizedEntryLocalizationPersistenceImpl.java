@@ -1443,15 +1443,15 @@ public class LocalizedEntryLocalizationPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, false);
 
 		_finderPathWithPaginationFindByLocalizedEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLocalizedEntryId",
@@ -1459,28 +1459,28 @@ public class LocalizedEntryLocalizationPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"localizedEntryId"}, true);
+			new String[] {"localizedEntryId"}, true, false);
 
 		_finderPathWithoutPaginationFindByLocalizedEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByLocalizedEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"localizedEntryId"}, true);
+			new String[] {"localizedEntryId"}, true, false);
 
 		_finderPathCountByLocalizedEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByLocalizedEntryId", new String[] {Long.class.getName()},
-			new String[] {"localizedEntryId"}, false);
+			new String[] {"localizedEntryId"}, false, false);
 
 		_finderPathFetchByLocalizedEntryId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByLocalizedEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"localizedEntryId", "languageId"}, true);
+			new String[] {"localizedEntryId", "languageId"}, true, false);
 
 		_finderPathCountByLocalizedEntryId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByLocalizedEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"localizedEntryId", "languageId"}, false);
+			new String[] {"localizedEntryId", "languageId"}, false, false);
 
 		_setLocalizedEntryLocalizationUtilPersistence(this);
 	}

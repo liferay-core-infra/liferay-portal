@@ -5168,15 +5168,15 @@ public class SiteNavigationMenuItemPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -5184,27 +5184,27 @@ public class SiteNavigationMenuItemPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathFetchByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, true);
+			new String[] {"uuid_", "groupId"}, true, true);
 
 		_finderPathCountByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, false);
+			new String[] {"uuid_", "groupId"}, false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -5213,17 +5213,17 @@ public class SiteNavigationMenuItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -5231,17 +5231,17 @@ public class SiteNavigationMenuItemPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindBySiteNavigationMenuId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -5250,17 +5250,17 @@ public class SiteNavigationMenuItemPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"siteNavigationMenuId"}, true);
+			new String[] {"siteNavigationMenuId"}, true, true);
 
 		_finderPathWithoutPaginationFindBySiteNavigationMenuId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findBySiteNavigationMenuId", new String[] {Long.class.getName()},
-			new String[] {"siteNavigationMenuId"}, true);
+			new String[] {"siteNavigationMenuId"}, true, true);
 
 		_finderPathCountBySiteNavigationMenuId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countBySiteNavigationMenuId", new String[] {Long.class.getName()},
-			new String[] {"siteNavigationMenuId"}, false);
+			new String[] {"siteNavigationMenuId"}, false, true);
 
 		_finderPathWithPaginationFindByParentSiteNavigationMenuItemId =
 			new FinderPath(
@@ -5270,20 +5270,20 @@ public class SiteNavigationMenuItemPersistenceImpl
 					Long.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"parentSiteNavigationMenuItemId"}, true);
+				new String[] {"parentSiteNavigationMenuItemId"}, true, true);
 
 		_finderPathWithoutPaginationFindByParentSiteNavigationMenuItemId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByParentSiteNavigationMenuItemId",
 				new String[] {Long.class.getName()},
-				new String[] {"parentSiteNavigationMenuItemId"}, true);
+				new String[] {"parentSiteNavigationMenuItemId"}, true, true);
 
 		_finderPathCountByParentSiteNavigationMenuItemId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByParentSiteNavigationMenuItemId",
 			new String[] {Long.class.getName()},
-			new String[] {"parentSiteNavigationMenuItemId"}, false);
+			new String[] {"parentSiteNavigationMenuItemId"}, false, true);
 
 		_finderPathWithPaginationFindByS_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByS_P",
@@ -5295,7 +5295,7 @@ public class SiteNavigationMenuItemPersistenceImpl
 			new String[] {
 				"siteNavigationMenuId", "parentSiteNavigationMenuItemId"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByS_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByS_P",
@@ -5303,7 +5303,7 @@ public class SiteNavigationMenuItemPersistenceImpl
 			new String[] {
 				"siteNavigationMenuId", "parentSiteNavigationMenuItemId"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByS_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByS_P",
@@ -5311,7 +5311,7 @@ public class SiteNavigationMenuItemPersistenceImpl
 			new String[] {
 				"siteNavigationMenuId", "parentSiteNavigationMenuItemId"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByS_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByS_LikeN",
@@ -5320,12 +5320,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"siteNavigationMenuId", "name"}, true);
+			new String[] {"siteNavigationMenuId", "name"}, true, true);
 
 		_finderPathWithPaginationCountByS_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByS_LikeN",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"siteNavigationMenuId", "name"}, false);
+			new String[] {"siteNavigationMenuId", "name"}, false, true);
 
 		_setSiteNavigationMenuItemUtilPersistence(this);
 	}

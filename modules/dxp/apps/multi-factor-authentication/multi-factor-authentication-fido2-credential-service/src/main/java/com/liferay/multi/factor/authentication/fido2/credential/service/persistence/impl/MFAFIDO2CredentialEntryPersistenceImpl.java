@@ -1929,15 +1929,15 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
@@ -1945,16 +1945,17 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"userId"}, true);
+			new String[] {"userId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"userId"}, true,
+			true);
 
 		_finderPathCountByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"},
-			false);
+			new String[] {Long.class.getName()}, new String[] {"userId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByCredentialKeyHash = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCredentialKeyHash",
@@ -1962,27 +1963,27 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"credentialKeyHash"}, true);
+			new String[] {"credentialKeyHash"}, true, true);
 
 		_finderPathWithoutPaginationFindByCredentialKeyHash = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCredentialKeyHash", new String[] {Long.class.getName()},
-			new String[] {"credentialKeyHash"}, true);
+			new String[] {"credentialKeyHash"}, true, true);
 
 		_finderPathCountByCredentialKeyHash = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCredentialKeyHash", new String[] {Long.class.getName()},
-			new String[] {"credentialKeyHash"}, false);
+			new String[] {"credentialKeyHash"}, false, true);
 
 		_finderPathFetchByU_C = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByU_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"userId", "credentialKeyHash"}, true);
+			new String[] {"userId", "credentialKeyHash"}, true, true);
 
 		_finderPathCountByU_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"userId", "credentialKeyHash"}, false);
+			new String[] {"userId", "credentialKeyHash"}, false, true);
 
 		_setMFAFIDO2CredentialEntryUtilPersistence(this);
 	}

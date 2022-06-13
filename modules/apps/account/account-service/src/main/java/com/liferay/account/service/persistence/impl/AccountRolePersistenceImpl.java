@@ -4462,15 +4462,15 @@ public class AccountRolePersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -4478,17 +4478,17 @@ public class AccountRolePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAccountEntryId",
@@ -4496,31 +4496,32 @@ public class AccountRolePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"accountEntryId"}, true);
+			new String[] {"accountEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, true);
+			new String[] {"accountEntryId"}, true, true);
 
 		_finderPathCountByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, false);
+			new String[] {"accountEntryId"}, false, true);
 
 		_finderPathWithPaginationCountByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, false);
+			new String[] {"accountEntryId"}, false, true);
 
 		_finderPathFetchByRoleId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByRoleId",
-			new String[] {Long.class.getName()}, new String[] {"roleId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"roleId"}, true,
+			true);
 
 		_finderPathCountByRoleId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRoleId",
-			new String[] {Long.class.getName()}, new String[] {"roleId"},
-			false);
+			new String[] {Long.class.getName()}, new String[] {"roleId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_A",
@@ -4529,22 +4530,22 @@ public class AccountRolePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "accountEntryId"}, true);
+			new String[] {"companyId", "accountEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "accountEntryId"}, true);
+			new String[] {"companyId", "accountEntryId"}, true, true);
 
 		_finderPathCountByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "accountEntryId"}, false);
+			new String[] {"companyId", "accountEntryId"}, false, true);
 
 		_finderPathWithPaginationCountByC_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "accountEntryId"}, false);
+			new String[] {"companyId", "accountEntryId"}, false, true);
 
 		_setAccountRoleUtilPersistence(this);
 	}

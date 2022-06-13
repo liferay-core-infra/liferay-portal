@@ -2803,15 +2803,15 @@ public class CTEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCtCollectionId",
@@ -2819,17 +2819,17 @@ public class CTEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"ctCollectionId"}, true);
+			new String[] {"ctCollectionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"ctCollectionId"}, true);
+			new String[] {"ctCollectionId"}, true, true);
 
 		_finderPathCountByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"ctCollectionId"}, false);
+			new String[] {"ctCollectionId"}, false, true);
 
 		_finderPathWithPaginationFindByC_MCNI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_MCNI",
@@ -2838,17 +2838,17 @@ public class CTEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"ctCollectionId", "modelClassNameId"}, true);
+			new String[] {"ctCollectionId", "modelClassNameId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_MCNI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_MCNI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"ctCollectionId", "modelClassNameId"}, true);
+			new String[] {"ctCollectionId", "modelClassNameId"}, true, true);
 
 		_finderPathCountByC_MCNI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_MCNI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"ctCollectionId", "modelClassNameId"}, false);
+			new String[] {"ctCollectionId", "modelClassNameId"}, false, true);
 
 		_finderPathFetchByC_MCNI_MCPK = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_MCNI_MCPK",
@@ -2856,7 +2856,7 @@ public class CTEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
 			new String[] {"ctCollectionId", "modelClassNameId", "modelClassPK"},
-			true);
+			true, true);
 
 		_finderPathCountByC_MCNI_MCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_MCNI_MCPK",
@@ -2864,7 +2864,7 @@ public class CTEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
 			new String[] {"ctCollectionId", "modelClassNameId", "modelClassPK"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByNotC_MCNI_MCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByNotC_MCNI_MCPK",
@@ -2874,7 +2874,7 @@ public class CTEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"ctCollectionId", "modelClassNameId", "modelClassPK"},
-			true);
+			true, true);
 
 		_finderPathWithPaginationCountByNotC_MCNI_MCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByNotC_MCNI_MCPK",
@@ -2882,7 +2882,7 @@ public class CTEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
 			new String[] {"ctCollectionId", "modelClassNameId", "modelClassPK"},
-			false);
+			false, true);
 
 		_setCTEntryUtilPersistence(this);
 	}

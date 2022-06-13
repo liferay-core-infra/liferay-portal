@@ -1256,35 +1256,35 @@ public class WeDeployAuthAppPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathFetchByRU_CI = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByRU_CI",
 			new String[] {String.class.getName(), String.class.getName()},
-			new String[] {"redirectURI", "clientId"}, true);
+			new String[] {"redirectURI", "clientId"}, true, true);
 
 		_finderPathCountByRU_CI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRU_CI",
 			new String[] {String.class.getName(), String.class.getName()},
-			new String[] {"redirectURI", "clientId"}, false);
+			new String[] {"redirectURI", "clientId"}, false, true);
 
 		_finderPathFetchByCI_CS = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByCI_CS",
 			new String[] {String.class.getName(), String.class.getName()},
-			new String[] {"clientId", "clientSecret"}, true);
+			new String[] {"clientId", "clientSecret"}, true, true);
 
 		_finderPathCountByCI_CS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCI_CS",
 			new String[] {String.class.getName(), String.class.getName()},
-			new String[] {"clientId", "clientSecret"}, false);
+			new String[] {"clientId", "clientSecret"}, false, true);
 
 		_setWeDeployAuthAppUtilPersistence(this);
 	}

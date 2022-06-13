@@ -3686,15 +3686,15 @@ public class CommerceWishListItemPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCommerceWishListId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCommerceWishListId",
@@ -3702,17 +3702,17 @@ public class CommerceWishListItemPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"commerceWishListId"}, true);
+			new String[] {"commerceWishListId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceWishListId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCommerceWishListId", new String[] {Long.class.getName()},
-			new String[] {"commerceWishListId"}, true);
+			new String[] {"commerceWishListId"}, true, true);
 
 		_finderPathCountByCommerceWishListId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceWishListId", new String[] {Long.class.getName()},
-			new String[] {"commerceWishListId"}, false);
+			new String[] {"commerceWishListId"}, false, true);
 
 		_finderPathWithPaginationFindByCPInstanceUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCPInstanceUuid",
@@ -3720,17 +3720,17 @@ public class CommerceWishListItemPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"CPInstanceUuid"}, true);
+			new String[] {"CPInstanceUuid"}, true, true);
 
 		_finderPathWithoutPaginationFindByCPInstanceUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCPInstanceUuid",
 			new String[] {String.class.getName()},
-			new String[] {"CPInstanceUuid"}, true);
+			new String[] {"CPInstanceUuid"}, true, true);
 
 		_finderPathCountByCPInstanceUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPInstanceUuid",
 			new String[] {String.class.getName()},
-			new String[] {"CPInstanceUuid"}, false);
+			new String[] {"CPInstanceUuid"}, false, true);
 
 		_finderPathWithPaginationFindByCProductId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCProductId",
@@ -3738,17 +3738,17 @@ public class CommerceWishListItemPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"CProductId"}, true);
+			new String[] {"CProductId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCProductId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCProductId",
 			new String[] {Long.class.getName()}, new String[] {"CProductId"},
-			true);
+			true, true);
 
 		_finderPathCountByCProductId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCProductId",
 			new String[] {Long.class.getName()}, new String[] {"CProductId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByCW_CPI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCW_CPI",
@@ -3757,17 +3757,17 @@ public class CommerceWishListItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"commerceWishListId", "CPInstanceUuid"}, true);
+			new String[] {"commerceWishListId", "CPInstanceUuid"}, true, true);
 
 		_finderPathWithoutPaginationFindByCW_CPI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCW_CPI",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"commerceWishListId", "CPInstanceUuid"}, true);
+			new String[] {"commerceWishListId", "CPInstanceUuid"}, true, true);
 
 		_finderPathCountByCW_CPI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCW_CPI",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"commerceWishListId", "CPInstanceUuid"}, false);
+			new String[] {"commerceWishListId", "CPInstanceUuid"}, false, true);
 
 		_finderPathWithPaginationFindByCW_CP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCW_CP",
@@ -3776,17 +3776,17 @@ public class CommerceWishListItemPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"commerceWishListId", "CProductId"}, true);
+			new String[] {"commerceWishListId", "CProductId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCW_CP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCW_CP",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"commerceWishListId", "CProductId"}, true);
+			new String[] {"commerceWishListId", "CProductId"}, true, true);
 
 		_finderPathCountByCW_CP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCW_CP",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"commerceWishListId", "CProductId"}, false);
+			new String[] {"commerceWishListId", "CProductId"}, false, true);
 
 		_finderPathFetchByCW_CPI_CP = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByCW_CPI_CP",
@@ -3795,7 +3795,7 @@ public class CommerceWishListItemPersistenceImpl
 				Long.class.getName()
 			},
 			new String[] {"commerceWishListId", "CPInstanceUuid", "CProductId"},
-			true);
+			true, true);
 
 		_finderPathCountByCW_CPI_CP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCW_CPI_CP",
@@ -3804,7 +3804,7 @@ public class CommerceWishListItemPersistenceImpl
 				Long.class.getName()
 			},
 			new String[] {"commerceWishListId", "CPInstanceUuid", "CProductId"},
-			false);
+			false, true);
 
 		_setCommerceWishListItemUtilPersistence(this);
 	}

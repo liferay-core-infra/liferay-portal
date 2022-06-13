@@ -1825,41 +1825,44 @@ public class CompanyPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, false);
 
 		_finderPathFetchByWebId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByWebId",
-			new String[] {String.class.getName()}, new String[] {"webId"},
-			true);
+			new String[] {String.class.getName()}, new String[] {"webId"}, true,
+			false);
 
 		_finderPathCountByWebId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByWebId",
 			new String[] {String.class.getName()}, new String[] {"webId"},
-			false);
+			false, false);
 
 		_finderPathFetchByMx = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByMx",
-			new String[] {String.class.getName()}, new String[] {"mx"}, true);
+			new String[] {String.class.getName()}, new String[] {"mx"}, true,
+			false);
 
 		_finderPathCountByMx = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMx",
-			new String[] {String.class.getName()}, new String[] {"mx"}, false);
+			new String[] {String.class.getName()}, new String[] {"mx"}, false,
+			false);
 
 		_finderPathFetchByLogoId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByLogoId",
-			new String[] {Long.class.getName()}, new String[] {"logoId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"logoId"}, true,
+			false);
 
 		_finderPathCountByLogoId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLogoId",
-			new String[] {Long.class.getName()}, new String[] {"logoId"},
+			new String[] {Long.class.getName()}, new String[] {"logoId"}, false,
 			false);
 
 		_finderPathWithPaginationFindBySystem = new FinderPath(
@@ -1868,17 +1871,17 @@ public class CompanyPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"system_"}, true);
+			new String[] {"system_"}, true, false);
 
 		_finderPathWithoutPaginationFindBySystem = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findBySystem",
 			new String[] {Boolean.class.getName()}, new String[] {"system_"},
-			true);
+			true, false);
 
 		_finderPathCountBySystem = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySystem",
 			new String[] {Boolean.class.getName()}, new String[] {"system_"},
-			false);
+			false, false);
 
 		_setCompanyUtilPersistence(this);
 	}

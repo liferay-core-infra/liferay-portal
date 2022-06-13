@@ -6227,15 +6227,15 @@ public class AssetEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -6243,17 +6243,17 @@ public class AssetEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId"}, true);
+			new String[] {"groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			new String[] {Long.class.getName()}, new String[] {"groupId"}, true,
 			true);
 
 		_finderPathCountByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -6261,17 +6261,17 @@ public class AssetEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByVisible = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByVisible",
@@ -6279,17 +6279,17 @@ public class AssetEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"visible"}, true);
+			new String[] {"visible"}, true, true);
 
 		_finderPathWithoutPaginationFindByVisible = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByVisible",
 			new String[] {Boolean.class.getName()}, new String[] {"visible"},
-			true);
+			true, true);
 
 		_finderPathCountByVisible = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByVisible",
 			new String[] {Boolean.class.getName()}, new String[] {"visible"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByPublishDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByPublishDate",
@@ -6297,17 +6297,17 @@ public class AssetEntryPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"publishDate"}, true);
+			new String[] {"publishDate"}, true, true);
 
 		_finderPathWithoutPaginationFindByPublishDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByPublishDate",
 			new String[] {Date.class.getName()}, new String[] {"publishDate"},
-			true);
+			true, true);
 
 		_finderPathCountByPublishDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPublishDate",
 			new String[] {Date.class.getName()}, new String[] {"publishDate"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByExpirationDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByExpirationDate",
@@ -6315,17 +6315,17 @@ public class AssetEntryPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"expirationDate"}, true);
+			new String[] {"expirationDate"}, true, true);
 
 		_finderPathWithoutPaginationFindByExpirationDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByExpirationDate",
 			new String[] {Date.class.getName()},
-			new String[] {"expirationDate"}, true);
+			new String[] {"expirationDate"}, true, true);
 
 		_finderPathCountByExpirationDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByExpirationDate",
 			new String[] {Date.class.getName()},
-			new String[] {"expirationDate"}, false);
+			new String[] {"expirationDate"}, false, true);
 
 		_finderPathWithPaginationFindByLayoutUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLayoutUuid",
@@ -6333,37 +6333,37 @@ public class AssetEntryPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"layoutUuid"}, true);
+			new String[] {"layoutUuid"}, true, true);
 
 		_finderPathWithoutPaginationFindByLayoutUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByLayoutUuid",
 			new String[] {String.class.getName()}, new String[] {"layoutUuid"},
-			true);
+			true, true);
 
 		_finderPathCountByLayoutUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLayoutUuid",
 			new String[] {String.class.getName()}, new String[] {"layoutUuid"},
-			false);
+			false, true);
 
 		_finderPathFetchByG_CU = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_CU",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "classUuid"}, true);
+			new String[] {"groupId", "classUuid"}, true, true);
 
 		_finderPathCountByG_CU = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_CU",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "classUuid"}, false);
+			new String[] {"groupId", "classUuid"}, false, true);
 
 		_finderPathFetchByC_C = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathCountByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, false);
+			new String[] {"classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByG_C_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_V",
@@ -6372,7 +6372,7 @@ public class AssetEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "visible"}, true);
+			new String[] {"groupId", "classNameId", "visible"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_C_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_V",
@@ -6380,7 +6380,7 @@ public class AssetEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "visible"}, true);
+			new String[] {"groupId", "classNameId", "visible"}, true, true);
 
 		_finderPathCountByG_C_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_V",
@@ -6388,7 +6388,7 @@ public class AssetEntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "visible"}, false);
+			new String[] {"groupId", "classNameId", "visible"}, false, true);
 
 		_finderPathWithPaginationFindByG_C_P_E = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_P_E",
@@ -6401,7 +6401,7 @@ public class AssetEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "publishDate", "expirationDate"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_P_E = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_P_E",
@@ -6412,7 +6412,7 @@ public class AssetEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "publishDate", "expirationDate"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_P_E = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_P_E",
@@ -6423,7 +6423,7 @@ public class AssetEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "publishDate", "expirationDate"
 			},
-			false);
+			false, true);
 
 		_setAssetEntryUtilPersistence(this);
 	}

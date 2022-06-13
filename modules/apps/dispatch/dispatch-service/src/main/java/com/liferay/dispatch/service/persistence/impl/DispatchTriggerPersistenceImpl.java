@@ -5541,15 +5541,15 @@ public class DispatchTriggerPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -5557,17 +5557,17 @@ public class DispatchTriggerPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_U = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_U",
@@ -5576,17 +5576,17 @@ public class DispatchTriggerPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "userId"}, true);
+			new String[] {"companyId", "userId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_U = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "userId"}, true);
+			new String[] {"companyId", "userId"}, true, true);
 
 		_finderPathCountByC_U = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_U",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "userId"}, false);
+			new String[] {"companyId", "userId"}, false, true);
 
 		_finderPathWithPaginationFindByC_DTET = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_DTET",
@@ -5595,27 +5595,28 @@ public class DispatchTriggerPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "dispatchTaskExecutorType"}, true);
+			new String[] {"companyId", "dispatchTaskExecutorType"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_DTET = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_DTET",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "dispatchTaskExecutorType"}, true);
+			new String[] {"companyId", "dispatchTaskExecutorType"}, true, true);
 
 		_finderPathCountByC_DTET = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DTET",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "dispatchTaskExecutorType"}, false);
+			new String[] {"companyId", "dispatchTaskExecutorType"}, false,
+			true);
 
 		_finderPathFetchByC_N = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "name"}, true);
+			new String[] {"companyId", "name"}, true, true);
 
 		_finderPathCountByC_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "name"}, false);
+			new String[] {"companyId", "name"}, false, true);
 
 		_finderPathWithPaginationFindByA_DTCM = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByA_DTCM",
@@ -5624,32 +5625,32 @@ public class DispatchTriggerPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"active_", "dispatchTaskClusterMode"}, true);
+			new String[] {"active_", "dispatchTaskClusterMode"}, true, true);
 
 		_finderPathWithoutPaginationFindByA_DTCM = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByA_DTCM",
 			new String[] {Boolean.class.getName(), Integer.class.getName()},
-			new String[] {"active_", "dispatchTaskClusterMode"}, true);
+			new String[] {"active_", "dispatchTaskClusterMode"}, true, true);
 
 		_finderPathCountByA_DTCM = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_DTCM",
 			new String[] {Boolean.class.getName(), Integer.class.getName()},
-			new String[] {"active_", "dispatchTaskClusterMode"}, false);
+			new String[] {"active_", "dispatchTaskClusterMode"}, false, true);
 
 		_finderPathWithPaginationCountByA_DTCM = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByA_DTCM",
 			new String[] {Boolean.class.getName(), Integer.class.getName()},
-			new String[] {"active_", "dispatchTaskClusterMode"}, false);
+			new String[] {"active_", "dispatchTaskClusterMode"}, false, true);
 
 		_finderPathFetchByC_ERC = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "externalReferenceCode"}, true);
+			new String[] {"companyId", "externalReferenceCode"}, true, true);
 
 		_finderPathCountByC_ERC = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "externalReferenceCode"}, false);
+			new String[] {"companyId", "externalReferenceCode"}, false, true);
 
 		_setDispatchTriggerUtilPersistence(this);
 	}

@@ -3186,15 +3186,15 @@ public class JSONStorageEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCN_CPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCN_CPK",
@@ -3203,17 +3203,17 @@ public class JSONStorageEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByCN_CPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCN_CPK",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathCountByCN_CPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCN_CPK",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, false);
+			new String[] {"classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByC_CN_I_T_VL = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_CN_I_T_VL",
@@ -3226,7 +3226,7 @@ public class JSONStorageEntryPersistenceImpl
 			new String[] {
 				"companyId", "classNameId", "index_", "type_", "valueLong"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_CN_I_T_VL = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CN_I_T_VL",
@@ -3238,7 +3238,7 @@ public class JSONStorageEntryPersistenceImpl
 			new String[] {
 				"companyId", "classNameId", "index_", "type_", "valueLong"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_CN_I_T_VL = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_CN_I_T_VL",
@@ -3250,7 +3250,7 @@ public class JSONStorageEntryPersistenceImpl
 			new String[] {
 				"companyId", "classNameId", "index_", "type_", "valueLong"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_CN_K_T_VL = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_CN_K_T_VL",
@@ -3263,7 +3263,7 @@ public class JSONStorageEntryPersistenceImpl
 			new String[] {
 				"companyId", "classNameId", "key_", "type_", "valueLong"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_CN_K_T_VL = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_CN_K_T_VL",
@@ -3275,7 +3275,7 @@ public class JSONStorageEntryPersistenceImpl
 			new String[] {
 				"companyId", "classNameId", "key_", "type_", "valueLong"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_CN_K_T_VL = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_CN_K_T_VL",
@@ -3287,7 +3287,7 @@ public class JSONStorageEntryPersistenceImpl
 			new String[] {
 				"companyId", "classNameId", "key_", "type_", "valueLong"
 			},
-			false);
+			false, true);
 
 		_finderPathFetchByCN_CPK_P_I_K = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByCN_CPK_P_I_K",
@@ -3300,7 +3300,7 @@ public class JSONStorageEntryPersistenceImpl
 				"classNameId", "classPK", "parentJSONStorageEntryId", "index_",
 				"key_"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByCN_CPK_P_I_K = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCN_CPK_P_I_K",
@@ -3313,7 +3313,7 @@ public class JSONStorageEntryPersistenceImpl
 				"classNameId", "classPK", "parentJSONStorageEntryId", "index_",
 				"key_"
 			},
-			false);
+			false, true);
 
 		_setJSONStorageEntryUtilPersistence(this);
 	}

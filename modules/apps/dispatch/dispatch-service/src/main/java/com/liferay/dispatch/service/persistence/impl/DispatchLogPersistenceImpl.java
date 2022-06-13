@@ -1681,15 +1681,15 @@ public class DispatchLogPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByDispatchTriggerId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDispatchTriggerId",
@@ -1697,17 +1697,17 @@ public class DispatchLogPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"dispatchTriggerId"}, true);
+			new String[] {"dispatchTriggerId"}, true, true);
 
 		_finderPathWithoutPaginationFindByDispatchTriggerId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByDispatchTriggerId", new String[] {Long.class.getName()},
-			new String[] {"dispatchTriggerId"}, true);
+			new String[] {"dispatchTriggerId"}, true, true);
 
 		_finderPathCountByDispatchTriggerId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByDispatchTriggerId", new String[] {Long.class.getName()},
-			new String[] {"dispatchTriggerId"}, false);
+			new String[] {"dispatchTriggerId"}, false, true);
 
 		_finderPathWithPaginationFindByDTI_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDTI_S",
@@ -1716,17 +1716,17 @@ public class DispatchLogPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"dispatchTriggerId", "status"}, true);
+			new String[] {"dispatchTriggerId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByDTI_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDTI_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"dispatchTriggerId", "status"}, true);
+			new String[] {"dispatchTriggerId", "status"}, true, true);
 
 		_finderPathCountByDTI_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDTI_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"dispatchTriggerId", "status"}, false);
+			new String[] {"dispatchTriggerId", "status"}, false, true);
 
 		_setDispatchLogUtilPersistence(this);
 	}

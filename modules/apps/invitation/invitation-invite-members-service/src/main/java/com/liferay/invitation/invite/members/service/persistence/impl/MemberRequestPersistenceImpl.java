@@ -2220,24 +2220,25 @@ public class MemberRequestPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathFetchByKey = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByKey",
-			new String[] {String.class.getName()}, new String[] {"key_"}, true);
+			new String[] {String.class.getName()}, new String[] {"key_"}, true,
+			true);
 
 		_finderPathCountByKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKey",
-			new String[] {String.class.getName()}, new String[] {"key_"},
-			false);
+			new String[] {String.class.getName()}, new String[] {"key_"}, false,
+			true);
 
 		_finderPathWithPaginationFindByReceiverUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByReceiverUserId",
@@ -2245,17 +2246,17 @@ public class MemberRequestPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"receiverUserId"}, true);
+			new String[] {"receiverUserId"}, true, true);
 
 		_finderPathWithoutPaginationFindByReceiverUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByReceiverUserId",
 			new String[] {Long.class.getName()},
-			new String[] {"receiverUserId"}, true);
+			new String[] {"receiverUserId"}, true, true);
 
 		_finderPathCountByReceiverUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByReceiverUserId",
 			new String[] {Long.class.getName()},
-			new String[] {"receiverUserId"}, false);
+			new String[] {"receiverUserId"}, false, true);
 
 		_finderPathWithPaginationFindByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_S",
@@ -2264,17 +2265,17 @@ public class MemberRequestPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"receiverUserId", "status"}, true);
+			new String[] {"receiverUserId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"receiverUserId", "status"}, true);
+			new String[] {"receiverUserId", "status"}, true, true);
 
 		_finderPathCountByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"receiverUserId", "status"}, false);
+			new String[] {"receiverUserId", "status"}, false, true);
 
 		_finderPathFetchByG_R_S = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_R_S",
@@ -2282,7 +2283,7 @@ public class MemberRequestPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "receiverUserId", "status"}, true);
+			new String[] {"groupId", "receiverUserId", "status"}, true, true);
 
 		_finderPathCountByG_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_R_S",
@@ -2290,7 +2291,7 @@ public class MemberRequestPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "receiverUserId", "status"}, false);
+			new String[] {"groupId", "receiverUserId", "status"}, false, true);
 
 		_setMemberRequestUtilPersistence(this);
 	}

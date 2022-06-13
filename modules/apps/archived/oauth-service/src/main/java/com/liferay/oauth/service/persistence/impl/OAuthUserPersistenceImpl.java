@@ -2841,15 +2841,15 @@ public class OAuthUserPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUserId",
@@ -2857,16 +2857,17 @@ public class OAuthUserPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"userId"}, true);
+			new String[] {"userId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"userId"}, true,
+			true);
 
 		_finderPathCountByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"},
-			false);
+			new String[] {Long.class.getName()}, new String[] {"userId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByOAuthApplicationId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByOAuthApplicationId",
@@ -2874,37 +2875,37 @@ public class OAuthUserPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"oAuthApplicationId"}, true);
+			new String[] {"oAuthApplicationId"}, true, true);
 
 		_finderPathWithoutPaginationFindByOAuthApplicationId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByOAuthApplicationId", new String[] {Long.class.getName()},
-			new String[] {"oAuthApplicationId"}, true);
+			new String[] {"oAuthApplicationId"}, true, true);
 
 		_finderPathCountByOAuthApplicationId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByOAuthApplicationId", new String[] {Long.class.getName()},
-			new String[] {"oAuthApplicationId"}, false);
+			new String[] {"oAuthApplicationId"}, false, true);
 
 		_finderPathFetchByAccessToken = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByAccessToken",
 			new String[] {String.class.getName()}, new String[] {"accessToken"},
-			true);
+			true, true);
 
 		_finderPathCountByAccessToken = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccessToken",
 			new String[] {String.class.getName()}, new String[] {"accessToken"},
-			false);
+			false, true);
 
 		_finderPathFetchByU_OAI = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByU_OAI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"userId", "oAuthApplicationId"}, true);
+			new String[] {"userId", "oAuthApplicationId"}, true, true);
 
 		_finderPathCountByU_OAI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_OAI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"userId", "oAuthApplicationId"}, false);
+			new String[] {"userId", "oAuthApplicationId"}, false, true);
 
 		_setOAuthUserUtilPersistence(this);
 	}

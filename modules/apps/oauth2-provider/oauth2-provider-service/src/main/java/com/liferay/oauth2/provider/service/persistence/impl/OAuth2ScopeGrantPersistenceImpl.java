@@ -1948,15 +1948,15 @@ public class OAuth2ScopeGrantPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByOAuth2ApplicationScopeAliasesId =
 			new FinderPath(
@@ -1966,20 +1966,20 @@ public class OAuth2ScopeGrantPersistenceImpl
 					Long.class.getName(), Integer.class.getName(),
 					Integer.class.getName(), OrderByComparator.class.getName()
 				},
-				new String[] {"oA2AScopeAliasesId"}, true);
+				new String[] {"oA2AScopeAliasesId"}, true, true);
 
 		_finderPathWithoutPaginationFindByOAuth2ApplicationScopeAliasesId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByOAuth2ApplicationScopeAliasesId",
 				new String[] {Long.class.getName()},
-				new String[] {"oA2AScopeAliasesId"}, true);
+				new String[] {"oA2AScopeAliasesId"}, true, true);
 
 		_finderPathCountByOAuth2ApplicationScopeAliasesId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByOAuth2ApplicationScopeAliasesId",
 			new String[] {Long.class.getName()},
-			new String[] {"oA2AScopeAliasesId"}, false);
+			new String[] {"oA2AScopeAliasesId"}, false, true);
 
 		_finderPathFetchByC_O_A_B_S = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_O_A_B_S",
@@ -1992,7 +1992,7 @@ public class OAuth2ScopeGrantPersistenceImpl
 				"companyId", "oA2AScopeAliasesId", "applicationName",
 				"bundleSymbolicName", "scope"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_O_A_B_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_O_A_B_S",
@@ -2005,7 +2005,7 @@ public class OAuth2ScopeGrantPersistenceImpl
 				"companyId", "oA2AScopeAliasesId", "applicationName",
 				"bundleSymbolicName", "scope"
 			},
-			false);
+			false, true);
 
 		_setOAuth2ScopeGrantUtilPersistence(this);
 	}

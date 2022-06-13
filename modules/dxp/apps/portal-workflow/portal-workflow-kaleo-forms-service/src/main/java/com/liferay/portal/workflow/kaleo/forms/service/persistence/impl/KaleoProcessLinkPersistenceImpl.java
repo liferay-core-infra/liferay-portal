@@ -1391,15 +1391,15 @@ public class KaleoProcessLinkPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByKaleoProcessId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByKaleoProcessId",
@@ -1407,27 +1407,27 @@ public class KaleoProcessLinkPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"kaleoProcessId"}, true);
+			new String[] {"kaleoProcessId"}, true, true);
 
 		_finderPathWithoutPaginationFindByKaleoProcessId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByKaleoProcessId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoProcessId"}, true);
+			new String[] {"kaleoProcessId"}, true, true);
 
 		_finderPathCountByKaleoProcessId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKaleoProcessId",
 			new String[] {Long.class.getName()},
-			new String[] {"kaleoProcessId"}, false);
+			new String[] {"kaleoProcessId"}, false, true);
 
 		_finderPathFetchByKPI_WTN = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByKPI_WTN",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"kaleoProcessId", "workflowTaskName"}, true);
+			new String[] {"kaleoProcessId", "workflowTaskName"}, true, true);
 
 		_finderPathCountByKPI_WTN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKPI_WTN",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"kaleoProcessId", "workflowTaskName"}, false);
+			new String[] {"kaleoProcessId", "workflowTaskName"}, false, true);
 
 		_setKaleoProcessLinkUtilPersistence(this);
 	}

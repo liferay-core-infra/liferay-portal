@@ -1377,15 +1377,15 @@ public class FolderPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByAccountId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAccountId",
@@ -1393,27 +1393,27 @@ public class FolderPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"accountId"}, true);
+			new String[] {"accountId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAccountId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountId",
 			new String[] {Long.class.getName()}, new String[] {"accountId"},
-			true);
+			true, true);
 
 		_finderPathCountByAccountId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountId",
 			new String[] {Long.class.getName()}, new String[] {"accountId"},
-			false);
+			false, true);
 
 		_finderPathFetchByA_F = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"accountId", "fullName"}, true);
+			new String[] {"accountId", "fullName"}, true, true);
 
 		_finderPathCountByA_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"accountId", "fullName"}, false);
+			new String[] {"accountId", "fullName"}, false, true);
 
 		_setFolderUtilPersistence(this);
 	}

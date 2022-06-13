@@ -4275,15 +4275,15 @@ public class WorkflowDefinitionLinkPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -4291,17 +4291,17 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C",
@@ -4310,21 +4310,21 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "companyId", "classNameId"}, true);
+			new String[] {"groupId", "companyId", "classNameId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"groupId", "companyId", "classNameId"}, true);
+			new String[] {"groupId", "companyId", "classNameId"}, true, true);
 
 		_finderPathCountByG_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"groupId", "companyId", "classNameId"}, false);
+			new String[] {"groupId", "companyId", "classNameId"}, false, true);
 
 		_finderPathWithPaginationFindByG_C_CPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_CPK",
@@ -4333,21 +4333,21 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "companyId", "classPK"}, true);
+			new String[] {"groupId", "companyId", "classPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_C_CPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_CPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"groupId", "companyId", "classPK"}, true);
+			new String[] {"groupId", "companyId", "classPK"}, true, true);
 
 		_finderPathCountByG_C_CPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_CPK",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"groupId", "companyId", "classPK"}, false);
+			new String[] {"groupId", "companyId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByC_W_W = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_W_W",
@@ -4360,7 +4360,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				"companyId", "workflowDefinitionName",
 				"workflowDefinitionVersion"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_W_W = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_W_W",
@@ -4372,7 +4372,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				"companyId", "workflowDefinitionName",
 				"workflowDefinitionVersion"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_W_W = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_W_W",
@@ -4384,7 +4384,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				"companyId", "workflowDefinitionName",
 				"workflowDefinitionVersion"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_C",
@@ -4395,7 +4395,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "companyId", "classNameId", "classPK"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_C",
@@ -4404,7 +4404,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				Long.class.getName(), Long.class.getName()
 			},
 			new String[] {"groupId", "companyId", "classNameId", "classPK"},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_C",
@@ -4413,7 +4413,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				Long.class.getName(), Long.class.getName()
 			},
 			new String[] {"groupId", "companyId", "classNameId", "classPK"},
-			false);
+			false, true);
 
 		_finderPathFetchByG_C_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_C_C_C_T",
@@ -4424,7 +4424,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			new String[] {
 				"groupId", "companyId", "classNameId", "classPK", "typePK"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_C_T",
@@ -4435,7 +4435,7 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			new String[] {
 				"groupId", "companyId", "classNameId", "classPK", "typePK"
 			},
-			false);
+			false, true);
 
 		_setWorkflowDefinitionLinkUtilPersistence(this);
 	}

@@ -2716,15 +2716,15 @@ public class DDMFieldPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByStorageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStorageId",
@@ -2732,17 +2732,17 @@ public class DDMFieldPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"storageId"}, true);
+			new String[] {"storageId"}, true, true);
 
 		_finderPathWithoutPaginationFindByStorageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStorageId",
 			new String[] {Long.class.getName()}, new String[] {"storageId"},
-			true);
+			true, true);
 
 		_finderPathCountByStorageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByStorageId",
 			new String[] {Long.class.getName()}, new String[] {"storageId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByStructureVersionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStructureVersionId",
@@ -2750,17 +2750,17 @@ public class DDMFieldPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"structureVersionId"}, true);
+			new String[] {"structureVersionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByStructureVersionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByStructureVersionId", new String[] {Long.class.getName()},
-			new String[] {"structureVersionId"}, true);
+			new String[] {"structureVersionId"}, true, true);
 
 		_finderPathCountByStructureVersionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByStructureVersionId", new String[] {Long.class.getName()},
-			new String[] {"structureVersionId"}, false);
+			new String[] {"structureVersionId"}, false, true);
 
 		_finderPathWithPaginationFindByC_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_F",
@@ -2769,27 +2769,27 @@ public class DDMFieldPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "fieldType"}, true);
+			new String[] {"companyId", "fieldType"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "fieldType"}, true);
+			new String[] {"companyId", "fieldType"}, true, true);
 
 		_finderPathCountByC_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"companyId", "fieldType"}, false);
+			new String[] {"companyId", "fieldType"}, false, true);
 
 		_finderPathFetchByS_I = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByS_I",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"storageId", "instanceId"}, true);
+			new String[] {"storageId", "instanceId"}, true, true);
 
 		_finderPathCountByS_I = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByS_I",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"storageId", "instanceId"}, false);
+			new String[] {"storageId", "instanceId"}, false, true);
 
 		_setDDMFieldUtilPersistence(this);
 	}

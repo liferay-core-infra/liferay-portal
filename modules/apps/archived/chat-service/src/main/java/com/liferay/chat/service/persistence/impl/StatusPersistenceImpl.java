@@ -2313,23 +2313,24 @@ public class StatusPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, false);
 
 		_finderPathFetchByUserId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"userId"}, true,
+			false);
 
 		_finderPathCountByUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"},
+			new String[] {Long.class.getName()}, new String[] {"userId"}, false,
 			false);
 
 		_finderPathWithPaginationFindByModifiedDate = new FinderPath(
@@ -2338,17 +2339,17 @@ public class StatusPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"modifiedDate"}, true);
+			new String[] {"modifiedDate"}, true, false);
 
 		_finderPathWithoutPaginationFindByModifiedDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByModifiedDate",
 			new String[] {Long.class.getName()}, new String[] {"modifiedDate"},
-			true);
+			true, false);
 
 		_finderPathCountByModifiedDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByModifiedDate",
 			new String[] {Long.class.getName()}, new String[] {"modifiedDate"},
-			false);
+			false, false);
 
 		_finderPathWithPaginationFindByOnline = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByOnline",
@@ -2356,17 +2357,17 @@ public class StatusPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"online_"}, true);
+			new String[] {"online_"}, true, false);
 
 		_finderPathWithoutPaginationFindByOnline = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByOnline",
 			new String[] {Boolean.class.getName()}, new String[] {"online_"},
-			true);
+			true, false);
 
 		_finderPathCountByOnline = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByOnline",
 			new String[] {Boolean.class.getName()}, new String[] {"online_"},
-			false);
+			false, false);
 
 		_finderPathWithPaginationFindByM_O = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByM_O",
@@ -2375,17 +2376,17 @@ public class StatusPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"modifiedDate", "online_"}, true);
+			new String[] {"modifiedDate", "online_"}, true, false);
 
 		_finderPathWithoutPaginationFindByM_O = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByM_O",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"modifiedDate", "online_"}, true);
+			new String[] {"modifiedDate", "online_"}, true, false);
 
 		_finderPathCountByM_O = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByM_O",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"modifiedDate", "online_"}, false);
+			new String[] {"modifiedDate", "online_"}, false, false);
 
 		_setStatusUtilPersistence(this);
 	}

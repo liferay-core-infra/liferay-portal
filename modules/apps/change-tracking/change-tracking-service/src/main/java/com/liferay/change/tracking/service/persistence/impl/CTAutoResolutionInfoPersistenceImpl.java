@@ -2065,15 +2065,15 @@ public class CTAutoResolutionInfoPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCtCollectionId",
@@ -2081,17 +2081,17 @@ public class CTAutoResolutionInfoPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"ctCollectionId"}, true);
+			new String[] {"ctCollectionId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"ctCollectionId"}, true);
+			new String[] {"ctCollectionId"}, true, true);
 
 		_finderPathCountByCtCollectionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCtCollectionId",
 			new String[] {Long.class.getName()},
-			new String[] {"ctCollectionId"}, false);
+			new String[] {"ctCollectionId"}, false, true);
 
 		_finderPathWithPaginationFindByC_MCNI_SMCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_MCNI_SMCPK",
@@ -2103,7 +2103,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 			new String[] {
 				"ctCollectionId", "modelClassNameId", "sourceModelClassPK"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_MCNI_SMCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_MCNI_SMCPK",
@@ -2113,7 +2113,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 			new String[] {
 				"ctCollectionId", "modelClassNameId", "sourceModelClassPK"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_MCNI_SMCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_MCNI_SMCPK",
@@ -2123,7 +2123,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 			new String[] {
 				"ctCollectionId", "modelClassNameId", "sourceModelClassPK"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByC_MCNI_SMCPK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_MCNI_SMCPK",
@@ -2133,7 +2133,7 @@ public class CTAutoResolutionInfoPersistenceImpl
 			new String[] {
 				"ctCollectionId", "modelClassNameId", "sourceModelClassPK"
 			},
-			false);
+			false, true);
 
 		_setCTAutoResolutionInfoUtilPersistence(this);
 	}

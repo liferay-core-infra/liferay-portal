@@ -3451,15 +3451,15 @@ public class SocialActivitySettingPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -3467,17 +3467,17 @@ public class SocialActivitySettingPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId"}, true);
+			new String[] {"groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			new String[] {Long.class.getName()}, new String[] {"groupId"}, true,
 			true);
 
 		_finderPathCountByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C",
@@ -3486,17 +3486,17 @@ public class SocialActivitySettingPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "classNameId"}, true);
+			new String[] {"groupId", "classNameId"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"groupId", "classNameId"}, true);
+			new String[] {"groupId", "classNameId"}, true, true);
 
 		_finderPathCountByG_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"groupId", "classNameId"}, false);
+			new String[] {"groupId", "classNameId"}, false, true);
 
 		_finderPathWithPaginationFindByG_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_A",
@@ -3505,17 +3505,17 @@ public class SocialActivitySettingPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "activityType"}, true);
+			new String[] {"groupId", "activityType"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_A",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "activityType"}, true);
+			new String[] {"groupId", "activityType"}, true, true);
 
 		_finderPathCountByG_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_A",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "activityType"}, false);
+			new String[] {"groupId", "activityType"}, false, true);
 
 		_finderPathWithPaginationFindByG_C_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_A",
@@ -3524,7 +3524,8 @@ public class SocialActivitySettingPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "activityType"}, true);
+			new String[] {"groupId", "classNameId", "activityType"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByG_C_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_A",
@@ -3532,7 +3533,8 @@ public class SocialActivitySettingPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "activityType"}, true);
+			new String[] {"groupId", "classNameId", "activityType"}, true,
+			true);
 
 		_finderPathCountByG_C_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_A",
@@ -3540,7 +3542,8 @@ public class SocialActivitySettingPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "activityType"}, false);
+			new String[] {"groupId", "classNameId", "activityType"}, false,
+			true);
 
 		_finderPathFetchByG_C_A_N = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_C_A_N",
@@ -3549,7 +3552,7 @@ public class SocialActivitySettingPersistenceImpl
 				Integer.class.getName(), String.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "activityType", "name"},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_A_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_A_N",
@@ -3558,7 +3561,7 @@ public class SocialActivitySettingPersistenceImpl
 				Integer.class.getName(), String.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "activityType", "name"},
-			false);
+			false, true);
 
 		_setSocialActivitySettingUtilPersistence(this);
 	}

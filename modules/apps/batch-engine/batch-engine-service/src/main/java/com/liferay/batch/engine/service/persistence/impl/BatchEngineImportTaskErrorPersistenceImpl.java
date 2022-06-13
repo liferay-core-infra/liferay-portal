@@ -1203,15 +1203,15 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByBatchEngineImportTaskId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -1220,20 +1220,20 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"batchEngineImportTaskId"}, true);
+			new String[] {"batchEngineImportTaskId"}, true, true);
 
 		_finderPathWithoutPaginationFindByBatchEngineImportTaskId =
 			new FinderPath(
 				FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 				"findByBatchEngineImportTaskId",
 				new String[] {Long.class.getName()},
-				new String[] {"batchEngineImportTaskId"}, true);
+				new String[] {"batchEngineImportTaskId"}, true, true);
 
 		_finderPathCountByBatchEngineImportTaskId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByBatchEngineImportTaskId",
 			new String[] {Long.class.getName()},
-			new String[] {"batchEngineImportTaskId"}, false);
+			new String[] {"batchEngineImportTaskId"}, false, true);
 
 		_setBatchEngineImportTaskErrorUtilPersistence(this);
 	}

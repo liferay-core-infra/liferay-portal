@@ -26885,15 +26885,15 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -26901,27 +26901,27 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathFetchByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, true);
+			new String[] {"uuid_", "groupId"}, true, true);
 
 		_finderPathCountByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, false);
+			new String[] {"uuid_", "groupId"}, false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -26930,17 +26930,17 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -26948,17 +26948,17 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId"}, true);
+			new String[] {"groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			new String[] {Long.class.getName()}, new String[] {"groupId"}, true,
 			true);
 
 		_finderPathCountByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByLayoutPrototypeId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLayoutPrototypeId",
@@ -26966,25 +26966,27 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"layoutPrototypeId"}, true);
+			new String[] {"layoutPrototypeId"}, true, true);
 
 		_finderPathWithoutPaginationFindByLayoutPrototypeId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByLayoutPrototypeId", new String[] {Long.class.getName()},
-			new String[] {"layoutPrototypeId"}, true);
+			new String[] {"layoutPrototypeId"}, true, true);
 
 		_finderPathCountByLayoutPrototypeId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByLayoutPrototypeId", new String[] {Long.class.getName()},
-			new String[] {"layoutPrototypeId"}, false);
+			new String[] {"layoutPrototypeId"}, false, true);
 
 		_finderPathFetchByPlid = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByPlid",
-			new String[] {Long.class.getName()}, new String[] {"plid"}, true);
+			new String[] {Long.class.getName()}, new String[] {"plid"}, true,
+			true);
 
 		_finderPathCountByPlid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPlid",
-			new String[] {Long.class.getName()}, new String[] {"plid"}, false);
+			new String[] {Long.class.getName()}, new String[] {"plid"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_L",
@@ -26993,27 +26995,31 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "layoutPageTemplateCollectionId"}, true);
+			new String[] {"groupId", "layoutPageTemplateCollectionId"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByG_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_L",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"groupId", "layoutPageTemplateCollectionId"}, true);
+			new String[] {"groupId", "layoutPageTemplateCollectionId"}, true,
+			true);
 
 		_finderPathCountByG_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_L",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"groupId", "layoutPageTemplateCollectionId"}, false);
+			new String[] {"groupId", "layoutPageTemplateCollectionId"}, false,
+			true);
 
 		_finderPathFetchByG_LPTEK = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_LPTEK",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "layoutPageTemplateEntryKey"}, true);
+			new String[] {"groupId", "layoutPageTemplateEntryKey"}, true, true);
 
 		_finderPathCountByG_LPTEK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_LPTEK",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "layoutPageTemplateEntryKey"}, false);
+			new String[] {"groupId", "layoutPageTemplateEntryKey"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N",
@@ -27022,17 +27028,17 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "name"}, true);
+			new String[] {"groupId", "name"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "name"}, true);
+			new String[] {"groupId", "name"}, true, true);
 
 		_finderPathCountByG_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "name"}, false);
+			new String[] {"groupId", "name"}, false, true);
 
 		_finderPathWithPaginationFindByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T",
@@ -27041,22 +27047,22 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "type_"}, true);
+			new String[] {"groupId", "type_"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "type_"}, true);
+			new String[] {"groupId", "type_"}, true, true);
 
 		_finderPathCountByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "type_"}, false);
+			new String[] {"groupId", "type_"}, false, true);
 
 		_finderPathWithPaginationCountByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "type_"}, false);
+			new String[] {"groupId", "type_"}, false, true);
 
 		_finderPathWithPaginationFindByG_L_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_L_LikeN",
@@ -27066,7 +27072,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "layoutPageTemplateCollectionId", "name"},
-			true);
+			true, true);
 
 		_finderPathWithPaginationCountByG_L_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_L_LikeN",
@@ -27075,7 +27081,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				String.class.getName()
 			},
 			new String[] {"groupId", "layoutPageTemplateCollectionId", "name"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_L_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_L_T",
@@ -27085,7 +27091,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "layoutPageTemplateCollectionId", "type_"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_L_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_L_T",
@@ -27094,7 +27100,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName()
 			},
 			new String[] {"groupId", "layoutPageTemplateCollectionId", "type_"},
-			true);
+			true, true);
 
 		_finderPathCountByG_L_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_L_T",
@@ -27103,7 +27109,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName()
 			},
 			new String[] {"groupId", "layoutPageTemplateCollectionId", "type_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_L_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_L_S",
@@ -27115,7 +27121,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "layoutPageTemplateCollectionId", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_L_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_L_S",
@@ -27126,7 +27132,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "layoutPageTemplateCollectionId", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_L_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_L_S",
@@ -27137,7 +27143,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "layoutPageTemplateCollectionId", "status"
 			},
-			false);
+			false, true);
 
 		_finderPathFetchByG_N_T = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_N_T",
@@ -27145,7 +27151,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "name", "type_"}, true);
+			new String[] {"groupId", "name", "type_"}, true, true);
 
 		_finderPathCountByG_N_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_T",
@@ -27153,7 +27159,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "name", "type_"}, false);
+			new String[] {"groupId", "name", "type_"}, false, true);
 
 		_finderPathWithPaginationFindByG_T_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_LikeN",
@@ -27162,7 +27168,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "name", "type_"}, true);
+			new String[] {"groupId", "name", "type_"}, true, true);
 
 		_finderPathWithPaginationCountByG_T_LikeN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T_LikeN",
@@ -27170,7 +27176,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "name", "type_"}, false);
+			new String[] {"groupId", "name", "type_"}, false, true);
 
 		_finderPathWithPaginationFindByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_S",
@@ -27179,7 +27185,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "type_", "status"}, true);
+			new String[] {"groupId", "type_", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_S",
@@ -27187,7 +27193,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "type_", "status"}, true);
+			new String[] {"groupId", "type_", "status"}, true, true);
 
 		_finderPathCountByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T_S",
@@ -27195,7 +27201,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "type_", "status"}, false);
+			new String[] {"groupId", "type_", "status"}, false, true);
 
 		_finderPathWithPaginationCountByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T_S",
@@ -27203,7 +27209,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "type_", "status"}, false);
+			new String[] {"groupId", "type_", "status"}, false, true);
 
 		_finderPathWithPaginationFindByG_L_LikeN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_L_LikeN_S",
@@ -27216,7 +27222,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "layoutPageTemplateCollectionId", "name", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathWithPaginationCountByG_L_LikeN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_L_LikeN_S",
@@ -27227,7 +27233,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "layoutPageTemplateCollectionId", "name", "status"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_T",
@@ -27238,7 +27244,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classTypeId", "type_"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_T",
@@ -27247,7 +27253,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classTypeId", "type_"},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_T",
@@ -27256,7 +27262,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classTypeId", "type_"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_D",
@@ -27269,7 +27275,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "defaultTemplate"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_D",
@@ -27280,7 +27286,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "defaultTemplate"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_D",
@@ -27291,7 +27297,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "defaultTemplate"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_T_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_T_D",
@@ -27302,7 +27308,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "type_", "defaultTemplate"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_T_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_T_D",
@@ -27311,7 +27317,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Boolean.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "type_", "defaultTemplate"},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_T_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_T_D",
@@ -27320,7 +27326,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Boolean.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "type_", "defaultTemplate"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_T_LikeN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_LikeN_S",
@@ -27330,7 +27336,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "name", "type_", "status"}, true);
+			new String[] {"groupId", "name", "type_", "status"}, true, true);
 
 		_finderPathWithPaginationCountByG_T_LikeN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T_LikeN_S",
@@ -27338,7 +27344,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName(), Integer.class.getName()
 			},
-			new String[] {"groupId", "name", "type_", "status"}, false);
+			new String[] {"groupId", "name", "type_", "status"}, false, true);
 
 		_finderPathWithPaginationFindByG_T_D_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_D_S",
@@ -27349,7 +27355,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "type_", "defaultTemplate", "status"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_T_D_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_D_S",
@@ -27358,7 +27364,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "type_", "defaultTemplate", "status"},
-			true);
+			true, true);
 
 		_finderPathCountByG_T_D_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T_D_S",
@@ -27367,7 +27373,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "type_", "defaultTemplate", "status"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_LikeN_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_LikeN_T",
@@ -27380,7 +27386,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "name", "type_"
 			},
-			true);
+			true, true);
 
 		_finderPathWithPaginationCountByG_C_C_LikeN_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_C_C_LikeN_T",
@@ -27392,7 +27398,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "name", "type_"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_T_S",
@@ -27405,7 +27411,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "type_", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_T_S",
@@ -27417,7 +27423,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "type_", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_T_S",
@@ -27429,7 +27435,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 			new String[] {
 				"groupId", "classNameId", "classTypeId", "type_", "status"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_D_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_D_S",
@@ -27443,7 +27449,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				"groupId", "classNameId", "classTypeId", "defaultTemplate",
 				"status"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_D_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_D_S",
@@ -27456,7 +27462,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				"groupId", "classNameId", "classTypeId", "defaultTemplate",
 				"status"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_D_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_D_S",
@@ -27469,7 +27475,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				"groupId", "classNameId", "classTypeId", "defaultTemplate",
 				"status"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_C_C_LikeN_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_LikeN_T_S",
@@ -27484,7 +27490,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				"groupId", "classNameId", "classTypeId", "name", "type_",
 				"status"
 			},
-			true);
+			true, true);
 
 		_finderPathWithPaginationCountByG_C_C_LikeN_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_C_C_LikeN_T_S",
@@ -27497,7 +27503,7 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				"groupId", "classNameId", "classTypeId", "name", "type_",
 				"status"
 			},
-			false);
+			false, true);
 
 		_setLayoutPageTemplateEntryUtilPersistence(this);
 	}

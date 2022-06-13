@@ -3381,15 +3381,15 @@ public class SocialActivityCounterPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -3397,17 +3397,17 @@ public class SocialActivityCounterPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId"}, true);
+			new String[] {"groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			new String[] {Long.class.getName()}, new String[] {"groupId"}, true,
 			true);
 
 		_finderPathCountByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
@@ -3416,17 +3416,17 @@ public class SocialActivityCounterPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathCountByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, false);
+			new String[] {"classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByG_C_C_O = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_O",
@@ -3437,7 +3437,7 @@ public class SocialActivityCounterPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classPK", "ownerType"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_O = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_O",
@@ -3446,7 +3446,7 @@ public class SocialActivityCounterPersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classPK", "ownerType"},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_O = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_O",
@@ -3455,7 +3455,7 @@ public class SocialActivityCounterPersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classPK", "ownerType"},
-			false);
+			false, true);
 
 		_finderPathFetchByG_C_C_N_O_S = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_C_C_N_O_S",
@@ -3468,7 +3468,7 @@ public class SocialActivityCounterPersistenceImpl
 				"groupId", "classNameId", "classPK", "name", "ownerType",
 				"startPeriod"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_N_O_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_N_O_S",
@@ -3481,7 +3481,7 @@ public class SocialActivityCounterPersistenceImpl
 				"groupId", "classNameId", "classPK", "name", "ownerType",
 				"startPeriod"
 			},
-			false);
+			false, true);
 
 		_finderPathFetchByG_C_C_N_O_E = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_C_C_N_O_E",
@@ -3494,7 +3494,7 @@ public class SocialActivityCounterPersistenceImpl
 				"groupId", "classNameId", "classPK", "name", "ownerType",
 				"endPeriod"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_N_O_E = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_N_O_E",
@@ -3507,7 +3507,7 @@ public class SocialActivityCounterPersistenceImpl
 				"groupId", "classNameId", "classPK", "name", "ownerType",
 				"endPeriod"
 			},
-			false);
+			false, true);
 
 		_setSocialActivityCounterUtilPersistence(this);
 	}

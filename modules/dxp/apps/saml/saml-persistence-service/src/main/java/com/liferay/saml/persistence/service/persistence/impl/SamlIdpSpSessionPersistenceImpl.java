@@ -1679,15 +1679,15 @@ public class SamlIdpSpSessionPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByLtCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtCreateDate",
@@ -1695,12 +1695,12 @@ public class SamlIdpSpSessionPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"createDate"}, true);
+			new String[] {"createDate"}, true, true);
 
 		_finderPathWithPaginationCountByLtCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtCreateDate",
 			new String[] {Date.class.getName()}, new String[] {"createDate"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindBySamlIdpSsoSessionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findBySamlIdpSsoSessionId",
@@ -1708,17 +1708,17 @@ public class SamlIdpSpSessionPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"samlIdpSsoSessionId"}, true);
+			new String[] {"samlIdpSsoSessionId"}, true, true);
 
 		_finderPathWithoutPaginationFindBySamlIdpSsoSessionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findBySamlIdpSsoSessionId", new String[] {Long.class.getName()},
-			new String[] {"samlIdpSsoSessionId"}, true);
+			new String[] {"samlIdpSsoSessionId"}, true, true);
 
 		_finderPathCountBySamlIdpSsoSessionId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countBySamlIdpSsoSessionId", new String[] {Long.class.getName()},
-			new String[] {"samlIdpSsoSessionId"}, false);
+			new String[] {"samlIdpSsoSessionId"}, false, true);
 
 		_setSamlIdpSpSessionUtilPersistence(this);
 	}

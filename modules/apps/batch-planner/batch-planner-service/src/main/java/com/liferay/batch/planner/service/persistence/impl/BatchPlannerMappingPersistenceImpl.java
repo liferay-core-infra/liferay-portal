@@ -1508,15 +1508,15 @@ public class BatchPlannerMappingPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByBatchPlannerPlanId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByBatchPlannerPlanId",
@@ -1524,17 +1524,17 @@ public class BatchPlannerMappingPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"batchPlannerPlanId"}, true);
+			new String[] {"batchPlannerPlanId"}, true, true);
 
 		_finderPathWithoutPaginationFindByBatchPlannerPlanId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByBatchPlannerPlanId", new String[] {Long.class.getName()},
-			new String[] {"batchPlannerPlanId"}, true);
+			new String[] {"batchPlannerPlanId"}, true, true);
 
 		_finderPathCountByBatchPlannerPlanId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByBatchPlannerPlanId", new String[] {Long.class.getName()},
-			new String[] {"batchPlannerPlanId"}, false);
+			new String[] {"batchPlannerPlanId"}, false, true);
 
 		_finderPathFetchByBPPI_EFN_IFN = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByBPPI_EFN_IFN",
@@ -1545,7 +1545,7 @@ public class BatchPlannerMappingPersistenceImpl
 			new String[] {
 				"batchPlannerPlanId", "externalFieldName", "internalFieldName"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByBPPI_EFN_IFN = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByBPPI_EFN_IFN",
@@ -1556,7 +1556,7 @@ public class BatchPlannerMappingPersistenceImpl
 			new String[] {
 				"batchPlannerPlanId", "externalFieldName", "internalFieldName"
 			},
-			false);
+			false, true);
 
 		_setBatchPlannerMappingUtilPersistence(this);
 	}

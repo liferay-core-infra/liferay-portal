@@ -9203,15 +9203,15 @@ public class BackgroundTaskPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupId",
@@ -9219,17 +9219,17 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId"}, true);
+			new String[] {"groupId"}, true, true);
 
 		_finderPathWithoutPaginationFindByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupId",
-			new String[] {Long.class.getName()}, new String[] {"groupId"},
+			new String[] {Long.class.getName()}, new String[] {"groupId"}, true,
 			true);
 
 		_finderPathCountByGroupId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupId",
 			new String[] {Long.class.getName()}, new String[] {"groupId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -9237,17 +9237,17 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByCompleted = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompleted",
@@ -9255,17 +9255,17 @@ public class BackgroundTaskPersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"completed"}, true);
+			new String[] {"completed"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompleted = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompleted",
 			new String[] {Boolean.class.getName()}, new String[] {"completed"},
-			true);
+			true, true);
 
 		_finderPathCountByCompleted = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompleted",
 			new String[] {Boolean.class.getName()}, new String[] {"completed"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByStatus = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStatus",
@@ -9273,17 +9273,17 @@ public class BackgroundTaskPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"status"}, true);
+			new String[] {"status"}, true, true);
 
 		_finderPathWithoutPaginationFindByStatus = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStatus",
 			new String[] {Integer.class.getName()}, new String[] {"status"},
-			true);
+			true, true);
 
 		_finderPathCountByStatus = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByStatus",
 			new String[] {Integer.class.getName()}, new String[] {"status"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T",
@@ -9292,22 +9292,22 @@ public class BackgroundTaskPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "taskExecutorClassName"}, true);
+			new String[] {"groupId", "taskExecutorClassName"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "taskExecutorClassName"}, true);
+			new String[] {"groupId", "taskExecutorClassName"}, true, true);
 
 		_finderPathCountByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "taskExecutorClassName"}, false);
+			new String[] {"groupId", "taskExecutorClassName"}, false, true);
 
 		_finderPathWithPaginationCountByG_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "taskExecutorClassName"}, false);
+			new String[] {"groupId", "taskExecutorClassName"}, false, true);
 
 		_finderPathWithPaginationFindByG_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_S",
@@ -9316,17 +9316,17 @@ public class BackgroundTaskPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "status"}, true);
+			new String[] {"groupId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "status"}, true);
+			new String[] {"groupId", "status"}, true, true);
 
 		_finderPathCountByG_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"groupId", "status"}, false);
+			new String[] {"groupId", "status"}, false, true);
 
 		_finderPathWithPaginationFindByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByT_S",
@@ -9335,22 +9335,22 @@ public class BackgroundTaskPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"taskExecutorClassName", "status"}, true);
+			new String[] {"taskExecutorClassName", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByT_S",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			new String[] {"taskExecutorClassName", "status"}, true);
+			new String[] {"taskExecutorClassName", "status"}, true, true);
 
 		_finderPathCountByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_S",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			new String[] {"taskExecutorClassName", "status"}, false);
+			new String[] {"taskExecutorClassName", "status"}, false, true);
 
 		_finderPathWithPaginationCountByT_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByT_S",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			new String[] {"taskExecutorClassName", "status"}, false);
+			new String[] {"taskExecutorClassName", "status"}, false, true);
 
 		_finderPathWithPaginationFindByG_N_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_T",
@@ -9359,7 +9359,8 @@ public class BackgroundTaskPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "name", "taskExecutorClassName"}, true);
+			new String[] {"groupId", "name", "taskExecutorClassName"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByG_N_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_T",
@@ -9367,7 +9368,8 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "name", "taskExecutorClassName"}, true);
+			new String[] {"groupId", "name", "taskExecutorClassName"}, true,
+			true);
 
 		_finderPathCountByG_N_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_T",
@@ -9375,7 +9377,8 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "name", "taskExecutorClassName"}, false);
+			new String[] {"groupId", "name", "taskExecutorClassName"}, false,
+			true);
 
 		_finderPathWithPaginationCountByG_N_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_N_T",
@@ -9383,7 +9386,8 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "name", "taskExecutorClassName"}, false);
+			new String[] {"groupId", "name", "taskExecutorClassName"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_C",
@@ -9393,7 +9397,7 @@ public class BackgroundTaskPersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "taskExecutorClassName", "completed"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_C",
@@ -9402,7 +9406,7 @@ public class BackgroundTaskPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"groupId", "taskExecutorClassName", "completed"},
-			true);
+			true, true);
 
 		_finderPathCountByG_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T_C",
@@ -9411,7 +9415,7 @@ public class BackgroundTaskPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"groupId", "taskExecutorClassName", "completed"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByG_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T_C",
@@ -9420,7 +9424,7 @@ public class BackgroundTaskPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"groupId", "taskExecutorClassName", "completed"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_T_S",
@@ -9429,7 +9433,8 @@ public class BackgroundTaskPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "taskExecutorClassName", "status"}, true);
+			new String[] {"groupId", "taskExecutorClassName", "status"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_T_S",
@@ -9437,7 +9442,8 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "taskExecutorClassName", "status"}, true);
+			new String[] {"groupId", "taskExecutorClassName", "status"}, true,
+			true);
 
 		_finderPathCountByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_T_S",
@@ -9445,7 +9451,8 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "taskExecutorClassName", "status"}, false);
+			new String[] {"groupId", "taskExecutorClassName", "status"}, false,
+			true);
 
 		_finderPathWithPaginationCountByG_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_T_S",
@@ -9453,7 +9460,8 @@ public class BackgroundTaskPersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "taskExecutorClassName", "status"}, false);
+			new String[] {"groupId", "taskExecutorClassName", "status"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_N_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_T_C",
@@ -9466,7 +9474,7 @@ public class BackgroundTaskPersistenceImpl
 			new String[] {
 				"groupId", "name", "taskExecutorClassName", "completed"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_N_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_T_C",
@@ -9477,7 +9485,7 @@ public class BackgroundTaskPersistenceImpl
 			new String[] {
 				"groupId", "name", "taskExecutorClassName", "completed"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByG_N_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_T_C",
@@ -9488,7 +9496,7 @@ public class BackgroundTaskPersistenceImpl
 			new String[] {
 				"groupId", "name", "taskExecutorClassName", "completed"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByG_N_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_N_T_C",
@@ -9499,7 +9507,7 @@ public class BackgroundTaskPersistenceImpl
 			new String[] {
 				"groupId", "name", "taskExecutorClassName", "completed"
 			},
-			false);
+			false, true);
 
 		_setBackgroundTaskUtilPersistence(this);
 	}

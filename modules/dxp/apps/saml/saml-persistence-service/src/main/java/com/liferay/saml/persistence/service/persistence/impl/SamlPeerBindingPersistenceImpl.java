@@ -2412,15 +2412,15 @@ public class SamlPeerBindingPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByC_U_D_SNIF_SNINQ_SPEI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
@@ -2436,7 +2436,7 @@ public class SamlPeerBindingPersistenceImpl
 				"companyId", "userId", "deleted", "samlNameIdFormat",
 				"samlNameIdNameQualifier", "samlPeerEntityId"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_U_D_SNIF_SNINQ_SPEI =
 			new FinderPath(
@@ -2451,7 +2451,7 @@ public class SamlPeerBindingPersistenceImpl
 					"companyId", "userId", "deleted", "samlNameIdFormat",
 					"samlNameIdNameQualifier", "samlPeerEntityId"
 				},
-				true);
+				true, true);
 
 		_finderPathCountByC_U_D_SNIF_SNINQ_SPEI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2465,7 +2465,7 @@ public class SamlPeerBindingPersistenceImpl
 				"companyId", "userId", "deleted", "samlNameIdFormat",
 				"samlNameIdNameQualifier", "samlPeerEntityId"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI =
 			new FinderPath(
@@ -2483,7 +2483,7 @@ public class SamlPeerBindingPersistenceImpl
 					"samlNameIdNameQualifier", "samlNameIdValue",
 					"samlPeerEntityId"
 				},
-				true);
+				true, true);
 
 		_finderPathWithoutPaginationFindByC_D_SNIF_SNINQ_SNIV_SPEI =
 			new FinderPath(
@@ -2499,7 +2499,7 @@ public class SamlPeerBindingPersistenceImpl
 					"samlNameIdNameQualifier", "samlNameIdValue",
 					"samlPeerEntityId"
 				},
-				true);
+				true, true);
 
 		_finderPathCountByC_D_SNIF_SNINQ_SNIV_SPEI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
@@ -2513,7 +2513,7 @@ public class SamlPeerBindingPersistenceImpl
 				"companyId", "deleted", "samlNameIdFormat",
 				"samlNameIdNameQualifier", "samlNameIdValue", "samlPeerEntityId"
 			},
-			false);
+			false, true);
 
 		_setSamlPeerBindingUtilPersistence(this);
 	}

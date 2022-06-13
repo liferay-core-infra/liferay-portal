@@ -1901,15 +1901,15 @@ public class AccountEntryUserRelPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAccountEntryId",
@@ -1917,17 +1917,17 @@ public class AccountEntryUserRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"accountEntryId"}, true);
+			new String[] {"accountEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, true);
+			new String[] {"accountEntryId"}, true, true);
 
 		_finderPathCountByAccountEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountEntryId",
 			new String[] {Long.class.getName()},
-			new String[] {"accountEntryId"}, false);
+			new String[] {"accountEntryId"}, false, true);
 
 		_finderPathWithPaginationFindByAccountUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAccountUserId",
@@ -1935,27 +1935,27 @@ public class AccountEntryUserRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"accountUserId"}, true);
+			new String[] {"accountUserId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAccountUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountUserId",
 			new String[] {Long.class.getName()}, new String[] {"accountUserId"},
-			true);
+			true, true);
 
 		_finderPathCountByAccountUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAccountUserId",
 			new String[] {Long.class.getName()}, new String[] {"accountUserId"},
-			false);
+			false, true);
 
 		_finderPathFetchByAEI_AUI = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByAEI_AUI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"accountEntryId", "accountUserId"}, true);
+			new String[] {"accountEntryId", "accountUserId"}, true, true);
 
 		_finderPathCountByAEI_AUI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAEI_AUI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"accountEntryId", "accountUserId"}, false);
+			new String[] {"accountEntryId", "accountUserId"}, false, true);
 
 		_setAccountEntryUserRelUtilPersistence(this);
 	}

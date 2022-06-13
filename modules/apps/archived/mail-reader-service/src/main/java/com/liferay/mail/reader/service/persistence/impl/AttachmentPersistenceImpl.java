@@ -1102,15 +1102,15 @@ public class AttachmentPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByMessageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByMessageId",
@@ -1118,17 +1118,17 @@ public class AttachmentPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"messageId"}, true);
+			new String[] {"messageId"}, true, true);
 
 		_finderPathWithoutPaginationFindByMessageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByMessageId",
 			new String[] {Long.class.getName()}, new String[] {"messageId"},
-			true);
+			true, true);
 
 		_finderPathCountByMessageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByMessageId",
 			new String[] {Long.class.getName()}, new String[] {"messageId"},
-			false);
+			false, true);
 
 		_setAttachmentUtilPersistence(this);
 	}

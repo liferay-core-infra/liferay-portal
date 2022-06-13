@@ -1479,15 +1479,15 @@ public class CTermEntryLocalizationPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCommerceTermEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCommerceTermEntryId",
@@ -1495,28 +1495,28 @@ public class CTermEntryLocalizationPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"commerceTermEntryId"}, true);
+			new String[] {"commerceTermEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceTermEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCommerceTermEntryId", new String[] {Long.class.getName()},
-			new String[] {"commerceTermEntryId"}, true);
+			new String[] {"commerceTermEntryId"}, true, true);
 
 		_finderPathCountByCommerceTermEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceTermEntryId", new String[] {Long.class.getName()},
-			new String[] {"commerceTermEntryId"}, false);
+			new String[] {"commerceTermEntryId"}, false, true);
 
 		_finderPathFetchByCommerceTermEntryId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByCommerceTermEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"commerceTermEntryId", "languageId"}, true);
+			new String[] {"commerceTermEntryId", "languageId"}, true, true);
 
 		_finderPathCountByCommerceTermEntryId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceTermEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"commerceTermEntryId", "languageId"}, false);
+			new String[] {"commerceTermEntryId", "languageId"}, false, true);
 
 		_setCTermEntryLocalizationUtilPersistence(this);
 	}

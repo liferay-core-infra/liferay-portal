@@ -1498,15 +1498,15 @@ public class SamlSpAuthRequestPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByLtCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtCreateDate",
@@ -1514,22 +1514,24 @@ public class SamlSpAuthRequestPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"createDate"}, true);
+			new String[] {"createDate"}, true, true);
 
 		_finderPathWithPaginationCountByLtCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtCreateDate",
 			new String[] {Date.class.getName()}, new String[] {"createDate"},
-			false);
+			false, true);
 
 		_finderPathFetchBySIEI_SSARK = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchBySIEI_SSARK",
 			new String[] {String.class.getName(), String.class.getName()},
-			new String[] {"samlIdpEntityId", "samlSpAuthRequestKey"}, true);
+			new String[] {"samlIdpEntityId", "samlSpAuthRequestKey"}, true,
+			true);
 
 		_finderPathCountBySIEI_SSARK = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countBySIEI_SSARK",
 			new String[] {String.class.getName(), String.class.getName()},
-			new String[] {"samlIdpEntityId", "samlSpAuthRequestKey"}, false);
+			new String[] {"samlIdpEntityId", "samlSpAuthRequestKey"}, false,
+			true);
 
 		_setSamlSpAuthRequestUtilPersistence(this);
 	}

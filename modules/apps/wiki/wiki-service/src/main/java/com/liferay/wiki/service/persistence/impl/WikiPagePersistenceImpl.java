@@ -24098,15 +24098,15 @@ public class WikiPagePersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByResourcePrimKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByResourcePrimKey",
@@ -24114,17 +24114,17 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"resourcePrimKey"}, true);
+			new String[] {"resourcePrimKey"}, true, true);
 
 		_finderPathWithoutPaginationFindByResourcePrimKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByResourcePrimKey",
 			new String[] {Long.class.getName()},
-			new String[] {"resourcePrimKey"}, true);
+			new String[] {"resourcePrimKey"}, true, true);
 
 		_finderPathCountByResourcePrimKey = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByResourcePrimKey",
 			new String[] {Long.class.getName()},
-			new String[] {"resourcePrimKey"}, false);
+			new String[] {"resourcePrimKey"}, false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -24132,27 +24132,27 @@ public class WikiPagePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathFetchByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, true);
+			new String[] {"uuid_", "groupId"}, true, true);
 
 		_finderPathCountByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, false);
+			new String[] {"uuid_", "groupId"}, false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -24161,17 +24161,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCompanyId",
@@ -24179,17 +24179,17 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId"}, true);
+			new String[] {"companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			true);
+			true, true);
 
 		_finderPathCountByCompanyId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByNodeId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByNodeId",
@@ -24197,16 +24197,17 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId"}, true);
+			new String[] {"nodeId"}, true, true);
 
 		_finderPathWithoutPaginationFindByNodeId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByNodeId",
-			new String[] {Long.class.getName()}, new String[] {"nodeId"}, true);
+			new String[] {Long.class.getName()}, new String[] {"nodeId"}, true,
+			true);
 
 		_finderPathCountByNodeId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByNodeId",
-			new String[] {Long.class.getName()}, new String[] {"nodeId"},
-			false);
+			new String[] {Long.class.getName()}, new String[] {"nodeId"}, false,
+			true);
 
 		_finderPathWithPaginationFindByFormat = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFormat",
@@ -24214,17 +24215,17 @@ public class WikiPagePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"format"}, true);
+			new String[] {"format"}, true, true);
 
 		_finderPathWithoutPaginationFindByFormat = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFormat",
 			new String[] {String.class.getName()}, new String[] {"format"},
-			true);
+			true, true);
 
 		_finderPathCountByFormat = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFormat",
 			new String[] {String.class.getName()}, new String[] {"format"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByR_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_N",
@@ -24233,17 +24234,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId"}, true);
+			new String[] {"resourcePrimKey", "nodeId"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_N",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"resourcePrimKey", "nodeId"}, true);
+			new String[] {"resourcePrimKey", "nodeId"}, true, true);
 
 		_finderPathCountByR_N = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_N",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"resourcePrimKey", "nodeId"}, false);
+			new String[] {"resourcePrimKey", "nodeId"}, false, true);
 
 		_finderPathWithPaginationFindByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_S",
@@ -24252,17 +24253,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"resourcePrimKey", "status"}, true);
+			new String[] {"resourcePrimKey", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"resourcePrimKey", "status"}, true);
+			new String[] {"resourcePrimKey", "status"}, true, true);
 
 		_finderPathCountByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"resourcePrimKey", "status"}, false);
+			new String[] {"resourcePrimKey", "status"}, false, true);
 
 		_finderPathWithPaginationFindByG_ERC = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_ERC",
@@ -24271,17 +24272,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "externalReferenceCode"}, true);
+			new String[] {"groupId", "externalReferenceCode"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_ERC = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "externalReferenceCode"}, true);
+			new String[] {"groupId", "externalReferenceCode"}, true, true);
 
 		_finderPathCountByG_ERC = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_ERC",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"groupId", "externalReferenceCode"}, false);
+			new String[] {"groupId", "externalReferenceCode"}, false, true);
 
 		_finderPathWithPaginationFindByN_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_T",
@@ -24290,17 +24291,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "title"}, true);
+			new String[] {"nodeId", "title"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"nodeId", "title"}, true);
+			new String[] {"nodeId", "title"}, true, true);
 
 		_finderPathCountByN_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_T",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"nodeId", "title"}, false);
+			new String[] {"nodeId", "title"}, false, true);
 
 		_finderPathWithPaginationFindByN_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H",
@@ -24309,17 +24310,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head"}, true);
+			new String[] {"nodeId", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_H",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"nodeId", "head"}, true);
+			new String[] {"nodeId", "head"}, true, true);
 
 		_finderPathCountByN_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_H",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
-			new String[] {"nodeId", "head"}, false);
+			new String[] {"nodeId", "head"}, false, true);
 
 		_finderPathWithPaginationFindByN_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_P",
@@ -24328,17 +24329,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "parentTitle"}, true);
+			new String[] {"nodeId", "parentTitle"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_P",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"nodeId", "parentTitle"}, true);
+			new String[] {"nodeId", "parentTitle"}, true, true);
 
 		_finderPathCountByN_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_P",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"nodeId", "parentTitle"}, false);
+			new String[] {"nodeId", "parentTitle"}, false, true);
 
 		_finderPathWithPaginationFindByN_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_R",
@@ -24347,17 +24348,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "redirectTitle"}, true);
+			new String[] {"nodeId", "redirectTitle"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_R",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"nodeId", "redirectTitle"}, true);
+			new String[] {"nodeId", "redirectTitle"}, true, true);
 
 		_finderPathCountByN_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_R",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"nodeId", "redirectTitle"}, false);
+			new String[] {"nodeId", "redirectTitle"}, false, true);
 
 		_finderPathWithPaginationFindByN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_S",
@@ -24366,17 +24367,17 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "status"}, true);
+			new String[] {"nodeId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"nodeId", "status"}, true);
+			new String[] {"nodeId", "status"}, true, true);
 
 		_finderPathCountByN_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"nodeId", "status"}, false);
+			new String[] {"nodeId", "status"}, false, true);
 
 		_finderPathFetchByR_N_V = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByR_N_V",
@@ -24384,7 +24385,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Double.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "version"}, true);
+			new String[] {"resourcePrimKey", "nodeId", "version"}, true, true);
 
 		_finderPathCountByR_N_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_N_V",
@@ -24392,7 +24393,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Double.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "version"}, false);
+			new String[] {"resourcePrimKey", "nodeId", "version"}, false, true);
 
 		_finderPathWithPaginationFindByR_N_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_N_H",
@@ -24401,7 +24402,7 @@ public class WikiPagePersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "head"}, true);
+			new String[] {"resourcePrimKey", "nodeId", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_N_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_N_H",
@@ -24409,7 +24410,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "head"}, true);
+			new String[] {"resourcePrimKey", "nodeId", "head"}, true, true);
 
 		_finderPathCountByR_N_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_N_H",
@@ -24417,7 +24418,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "head"}, false);
+			new String[] {"resourcePrimKey", "nodeId", "head"}, false, true);
 
 		_finderPathWithPaginationFindByR_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_N_S",
@@ -24426,7 +24427,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "status"}, true);
+			new String[] {"resourcePrimKey", "nodeId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_N_S",
@@ -24434,7 +24435,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "status"}, true);
+			new String[] {"resourcePrimKey", "nodeId", "status"}, true, true);
 
 		_finderPathCountByR_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_N_S",
@@ -24442,7 +24443,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"resourcePrimKey", "nodeId", "status"}, false);
+			new String[] {"resourcePrimKey", "nodeId", "status"}, false, true);
 
 		_finderPathFetchByG_ERC_V = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_ERC_V",
@@ -24450,7 +24451,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Double.class.getName()
 			},
-			new String[] {"groupId", "externalReferenceCode", "version"}, true);
+			new String[] {"groupId", "externalReferenceCode", "version"}, true,
+			true);
 
 		_finderPathCountByG_ERC_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_ERC_V",
@@ -24458,8 +24460,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Double.class.getName()
 			},
-			new String[] {"groupId", "externalReferenceCode", "version"},
-			false);
+			new String[] {"groupId", "externalReferenceCode", "version"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_N_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_H",
@@ -24468,7 +24470,7 @@ public class WikiPagePersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "head"}, true);
+			new String[] {"groupId", "nodeId", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_N_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_H",
@@ -24476,7 +24478,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "head"}, true);
+			new String[] {"groupId", "nodeId", "head"}, true, true);
 
 		_finderPathCountByG_N_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_H",
@@ -24484,7 +24486,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "head"}, false);
+			new String[] {"groupId", "nodeId", "head"}, false, true);
 
 		_finderPathWithPaginationFindByG_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_S",
@@ -24493,7 +24495,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "status"}, true);
+			new String[] {"groupId", "nodeId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_S",
@@ -24501,7 +24503,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "status"}, true);
+			new String[] {"groupId", "nodeId", "status"}, true, true);
 
 		_finderPathCountByG_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_S",
@@ -24509,7 +24511,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "status"}, false);
+			new String[] {"groupId", "nodeId", "status"}, false, true);
 
 		_finderPathWithPaginationFindByU_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_N_S",
@@ -24518,7 +24520,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"userId", "nodeId", "status"}, true);
+			new String[] {"userId", "nodeId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByU_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_N_S",
@@ -24526,7 +24528,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"userId", "nodeId", "status"}, true);
+			new String[] {"userId", "nodeId", "status"}, true, true);
 
 		_finderPathCountByU_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_N_S",
@@ -24534,7 +24536,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"userId", "nodeId", "status"}, false);
+			new String[] {"userId", "nodeId", "status"}, false, true);
 
 		_finderPathFetchByN_T_V = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByN_T_V",
@@ -24542,7 +24544,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Double.class.getName()
 			},
-			new String[] {"nodeId", "title", "version"}, true);
+			new String[] {"nodeId", "title", "version"}, true, true);
 
 		_finderPathCountByN_T_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_T_V",
@@ -24550,7 +24552,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Double.class.getName()
 			},
-			new String[] {"nodeId", "title", "version"}, false);
+			new String[] {"nodeId", "title", "version"}, false, true);
 
 		_finderPathWithPaginationFindByN_T_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_T_H",
@@ -24559,7 +24561,7 @@ public class WikiPagePersistenceImpl
 				Boolean.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "title", "head"}, true);
+			new String[] {"nodeId", "title", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_T_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_T_H",
@@ -24567,7 +24569,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"nodeId", "title", "head"}, true);
+			new String[] {"nodeId", "title", "head"}, true, true);
 
 		_finderPathCountByN_T_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_T_H",
@@ -24575,7 +24577,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
 			},
-			new String[] {"nodeId", "title", "head"}, false);
+			new String[] {"nodeId", "title", "head"}, false, true);
 
 		_finderPathWithPaginationFindByN_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_T_S",
@@ -24584,7 +24586,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "title", "status"}, true);
+			new String[] {"nodeId", "title", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_T_S",
@@ -24592,7 +24594,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"nodeId", "title", "status"}, true);
+			new String[] {"nodeId", "title", "status"}, true, true);
 
 		_finderPathCountByN_T_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_T_S",
@@ -24600,7 +24602,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"nodeId", "title", "status"}, false);
+			new String[] {"nodeId", "title", "status"}, false, true);
 
 		_finderPathWithPaginationFindByN_H_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_P",
@@ -24609,7 +24611,7 @@ public class WikiPagePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle"}, true);
+			new String[] {"nodeId", "head", "parentTitle"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_H_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_H_P",
@@ -24617,7 +24619,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle"}, true);
+			new String[] {"nodeId", "head", "parentTitle"}, true, true);
 
 		_finderPathCountByN_H_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_H_P",
@@ -24625,7 +24627,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle"}, false);
+			new String[] {"nodeId", "head", "parentTitle"}, false, true);
 
 		_finderPathWithPaginationFindByN_H_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_R",
@@ -24634,7 +24636,7 @@ public class WikiPagePersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle"}, true);
+			new String[] {"nodeId", "head", "redirectTitle"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_H_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_H_R",
@@ -24642,7 +24644,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle"}, true);
+			new String[] {"nodeId", "head", "redirectTitle"}, true, true);
 
 		_finderPathCountByN_H_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_H_R",
@@ -24650,7 +24652,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle"}, false);
+			new String[] {"nodeId", "head", "redirectTitle"}, false, true);
 
 		_finderPathWithPaginationFindByN_H_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_S",
@@ -24659,7 +24661,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "status"}, true);
+			new String[] {"nodeId", "head", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByN_H_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_H_S",
@@ -24667,7 +24669,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "status"}, true);
+			new String[] {"nodeId", "head", "status"}, true, true);
 
 		_finderPathCountByN_H_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_H_S",
@@ -24675,7 +24677,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "status"}, false);
+			new String[] {"nodeId", "head", "status"}, false, true);
 
 		_finderPathWithPaginationFindByN_H_NotS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_NotS",
@@ -24684,7 +24686,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "status"}, true);
+			new String[] {"nodeId", "head", "status"}, true, true);
 
 		_finderPathWithPaginationCountByN_H_NotS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByN_H_NotS",
@@ -24692,7 +24694,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "status"}, false);
+			new String[] {"nodeId", "head", "status"}, false, true);
 
 		_finderPathWithPaginationFindByG_U_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_U_N_S",
@@ -24702,7 +24704,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "userId", "nodeId", "status"}, true);
+			new String[] {"groupId", "userId", "nodeId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_U_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_U_N_S",
@@ -24710,7 +24712,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			new String[] {"groupId", "userId", "nodeId", "status"}, true);
+			new String[] {"groupId", "userId", "nodeId", "status"}, true, true);
 
 		_finderPathCountByG_U_N_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_U_N_S",
@@ -24718,7 +24720,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
 			},
-			new String[] {"groupId", "userId", "nodeId", "status"}, false);
+			new String[] {"groupId", "userId", "nodeId", "status"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_N_T_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_T_H",
@@ -24728,7 +24731,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "title", "head"}, true);
+			new String[] {"groupId", "nodeId", "title", "head"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_N_T_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_T_H",
@@ -24736,7 +24739,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), Boolean.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "title", "head"}, true);
+			new String[] {"groupId", "nodeId", "title", "head"}, true, true);
 
 		_finderPathCountByG_N_T_H = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_T_H",
@@ -24744,7 +24747,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName(), Boolean.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "title", "head"}, false);
+			new String[] {"groupId", "nodeId", "title", "head"}, false, true);
 
 		_finderPathWithPaginationFindByG_N_H_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_H_S",
@@ -24754,7 +24757,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "head", "status"}, true);
+			new String[] {"groupId", "nodeId", "head", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByG_N_H_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_H_S",
@@ -24762,7 +24765,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName(), Integer.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "head", "status"}, true);
+			new String[] {"groupId", "nodeId", "head", "status"}, true, true);
 
 		_finderPathCountByG_N_H_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_H_S",
@@ -24770,7 +24773,7 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				Boolean.class.getName(), Integer.class.getName()
 			},
-			new String[] {"groupId", "nodeId", "head", "status"}, false);
+			new String[] {"groupId", "nodeId", "head", "status"}, false, true);
 
 		_finderPathWithPaginationFindByN_H_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_P_S",
@@ -24780,7 +24783,8 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle", "status"}, true);
+			new String[] {"nodeId", "head", "parentTitle", "status"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByN_H_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_H_P_S",
@@ -24788,7 +24792,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle", "status"}, true);
+			new String[] {"nodeId", "head", "parentTitle", "status"}, true,
+			true);
 
 		_finderPathCountByN_H_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_H_P_S",
@@ -24796,7 +24801,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle", "status"}, false);
+			new String[] {"nodeId", "head", "parentTitle", "status"}, false,
+			true);
 
 		_finderPathWithPaginationFindByN_H_P_NotS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_P_NotS",
@@ -24806,7 +24812,8 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle", "status"}, true);
+			new String[] {"nodeId", "head", "parentTitle", "status"}, true,
+			true);
 
 		_finderPathWithPaginationCountByN_H_P_NotS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByN_H_P_NotS",
@@ -24814,7 +24821,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "parentTitle", "status"}, false);
+			new String[] {"nodeId", "head", "parentTitle", "status"}, false,
+			true);
 
 		_finderPathWithPaginationFindByN_H_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_R_S",
@@ -24824,7 +24832,8 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle", "status"}, true);
+			new String[] {"nodeId", "head", "redirectTitle", "status"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByN_H_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByN_H_R_S",
@@ -24832,7 +24841,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle", "status"}, true);
+			new String[] {"nodeId", "head", "redirectTitle", "status"}, true,
+			true);
 
 		_finderPathCountByN_H_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByN_H_R_S",
@@ -24840,7 +24850,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle", "status"}, false);
+			new String[] {"nodeId", "head", "redirectTitle", "status"}, false,
+			true);
 
 		_finderPathWithPaginationFindByN_H_R_NotS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByN_H_R_NotS",
@@ -24850,7 +24861,8 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle", "status"}, true);
+			new String[] {"nodeId", "head", "redirectTitle", "status"}, true,
+			true);
 
 		_finderPathWithPaginationCountByN_H_R_NotS = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByN_H_R_NotS",
@@ -24858,7 +24870,8 @@ public class WikiPagePersistenceImpl
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Integer.class.getName()
 			},
-			new String[] {"nodeId", "head", "redirectTitle", "status"}, false);
+			new String[] {"nodeId", "head", "redirectTitle", "status"}, false,
+			true);
 
 		_finderPathWithPaginationFindByG_N_H_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_N_H_P_S",
@@ -24869,7 +24882,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "nodeId", "head", "parentTitle", "status"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_N_H_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_N_H_P_S",
@@ -24879,7 +24892,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName()
 			},
 			new String[] {"groupId", "nodeId", "head", "parentTitle", "status"},
-			true);
+			true, true);
 
 		_finderPathCountByG_N_H_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_N_H_P_S",
@@ -24889,7 +24902,7 @@ public class WikiPagePersistenceImpl
 				Integer.class.getName()
 			},
 			new String[] {"groupId", "nodeId", "head", "parentTitle", "status"},
-			false);
+			false, true);
 
 		_setWikiPageUtilPersistence(this);
 	}

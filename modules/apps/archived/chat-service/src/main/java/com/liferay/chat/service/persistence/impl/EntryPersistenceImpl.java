@@ -4839,15 +4839,15 @@ public class EntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, false);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, false);
 
 		_finderPathWithPaginationFindByCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCreateDate",
@@ -4855,17 +4855,17 @@ public class EntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"createDate"}, true);
+			new String[] {"createDate"}, true, false);
 
 		_finderPathWithoutPaginationFindByCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCreateDate",
 			new String[] {Long.class.getName()}, new String[] {"createDate"},
-			true);
+			true, false);
 
 		_finderPathCountByCreateDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCreateDate",
 			new String[] {Long.class.getName()}, new String[] {"createDate"},
-			false);
+			false, false);
 
 		_finderPathWithPaginationFindByFromUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFromUserId",
@@ -4873,17 +4873,17 @@ public class EntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"fromUserId"}, true);
+			new String[] {"fromUserId"}, true, false);
 
 		_finderPathWithoutPaginationFindByFromUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFromUserId",
 			new String[] {Long.class.getName()}, new String[] {"fromUserId"},
-			true);
+			true, false);
 
 		_finderPathCountByFromUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFromUserId",
 			new String[] {Long.class.getName()}, new String[] {"fromUserId"},
-			false);
+			false, false);
 
 		_finderPathWithPaginationFindByToUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByToUserId",
@@ -4891,17 +4891,17 @@ public class EntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"toUserId"}, true);
+			new String[] {"toUserId"}, true, false);
 
 		_finderPathWithoutPaginationFindByToUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByToUserId",
 			new String[] {Long.class.getName()}, new String[] {"toUserId"},
-			true);
+			true, false);
 
 		_finderPathCountByToUserId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByToUserId",
 			new String[] {Long.class.getName()}, new String[] {"toUserId"},
-			false);
+			false, false);
 
 		_finderPathWithPaginationFindByC_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_F",
@@ -4910,17 +4910,17 @@ public class EntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"createDate", "fromUserId"}, true);
+			new String[] {"createDate", "fromUserId"}, true, false);
 
 		_finderPathWithoutPaginationFindByC_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_F",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"createDate", "fromUserId"}, true);
+			new String[] {"createDate", "fromUserId"}, true, false);
 
 		_finderPathCountByC_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_F",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"createDate", "fromUserId"}, false);
+			new String[] {"createDate", "fromUserId"}, false, false);
 
 		_finderPathWithPaginationFindByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_T",
@@ -4929,17 +4929,17 @@ public class EntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"createDate", "toUserId"}, true);
+			new String[] {"createDate", "toUserId"}, true, false);
 
 		_finderPathWithoutPaginationFindByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_T",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"createDate", "toUserId"}, true);
+			new String[] {"createDate", "toUserId"}, true, false);
 
 		_finderPathCountByC_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_T",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"createDate", "toUserId"}, false);
+			new String[] {"createDate", "toUserId"}, false, false);
 
 		_finderPathWithPaginationFindByF_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByF_T",
@@ -4948,17 +4948,17 @@ public class EntryPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"fromUserId", "toUserId"}, true);
+			new String[] {"fromUserId", "toUserId"}, true, false);
 
 		_finderPathWithoutPaginationFindByF_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByF_T",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"fromUserId", "toUserId"}, true);
+			new String[] {"fromUserId", "toUserId"}, true, false);
 
 		_finderPathCountByF_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_T",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"fromUserId", "toUserId"}, false);
+			new String[] {"fromUserId", "toUserId"}, false, false);
 
 		_finderPathWithPaginationFindByC_F_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_F_T",
@@ -4967,21 +4967,22 @@ public class EntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"createDate", "fromUserId", "toUserId"}, true);
+			new String[] {"createDate", "fromUserId", "toUserId"}, true, false);
 
 		_finderPathWithoutPaginationFindByC_F_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_F_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"createDate", "fromUserId", "toUserId"}, true);
+			new String[] {"createDate", "fromUserId", "toUserId"}, true, false);
 
 		_finderPathCountByC_F_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_F_T",
 			new String[] {
 				Long.class.getName(), Long.class.getName(), Long.class.getName()
 			},
-			new String[] {"createDate", "fromUserId", "toUserId"}, false);
+			new String[] {"createDate", "fromUserId", "toUserId"}, false,
+			false);
 
 		_finderPathWithPaginationFindByF_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByF_T_C",
@@ -4990,7 +4991,7 @@ public class EntryPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"fromUserId", "toUserId", "content"}, true);
+			new String[] {"fromUserId", "toUserId", "content"}, true, false);
 
 		_finderPathWithoutPaginationFindByF_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByF_T_C",
@@ -4998,7 +4999,7 @@ public class EntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"fromUserId", "toUserId", "content"}, true);
+			new String[] {"fromUserId", "toUserId", "content"}, true, false);
 
 		_finderPathCountByF_T_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_T_C",
@@ -5006,7 +5007,7 @@ public class EntryPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"fromUserId", "toUserId", "content"}, false);
+			new String[] {"fromUserId", "toUserId", "content"}, false, false);
 
 		_setEntryUtilPersistence(this);
 	}

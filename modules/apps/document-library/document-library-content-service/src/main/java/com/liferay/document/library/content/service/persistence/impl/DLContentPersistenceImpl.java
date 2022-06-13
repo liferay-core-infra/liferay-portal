@@ -3014,15 +3014,15 @@ public class DLContentPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByC_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R",
@@ -3031,17 +3031,17 @@ public class DLContentPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "repositoryId"}, true);
+			new String[] {"companyId", "repositoryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_R",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "repositoryId"}, true);
+			new String[] {"companyId", "repositoryId"}, true, true);
 
 		_finderPathCountByC_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "repositoryId"}, false);
+			new String[] {"companyId", "repositoryId"}, false, true);
 
 		_finderPathWithPaginationFindByC_R_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_P",
@@ -3050,7 +3050,7 @@ public class DLContentPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "path_"}, true);
+			new String[] {"companyId", "repositoryId", "path_"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_R_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_R_P",
@@ -3058,7 +3058,7 @@ public class DLContentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "path_"}, true);
+			new String[] {"companyId", "repositoryId", "path_"}, true, true);
 
 		_finderPathCountByC_R_P = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_P",
@@ -3066,7 +3066,7 @@ public class DLContentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "path_"}, false);
+			new String[] {"companyId", "repositoryId", "path_"}, false, true);
 
 		_finderPathWithPaginationFindByC_R_LikeP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_LikeP",
@@ -3075,7 +3075,7 @@ public class DLContentPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "path_"}, true);
+			new String[] {"companyId", "repositoryId", "path_"}, true, true);
 
 		_finderPathWithPaginationCountByC_R_LikeP = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_R_LikeP",
@@ -3083,7 +3083,7 @@ public class DLContentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "path_"}, false);
+			new String[] {"companyId", "repositoryId", "path_"}, false, true);
 
 		_finderPathFetchByC_R_P_V = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_R_P_V",
@@ -3092,7 +3092,7 @@ public class DLContentPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "version"},
-			true);
+			true, true);
 
 		_finderPathCountByC_R_P_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_P_V",
@@ -3101,7 +3101,7 @@ public class DLContentPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "version"},
-			false);
+			false, true);
 
 		_setDLContentUtilPersistence(this);
 	}

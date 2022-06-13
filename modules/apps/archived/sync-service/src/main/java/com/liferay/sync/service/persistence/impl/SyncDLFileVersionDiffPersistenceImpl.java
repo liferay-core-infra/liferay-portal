@@ -1972,15 +1972,15 @@ public class SyncDLFileVersionDiffPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByFileEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFileEntryId",
@@ -1988,17 +1988,17 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"fileEntryId"}, true);
+			new String[] {"fileEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByFileEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByFileEntryId",
 			new String[] {Long.class.getName()}, new String[] {"fileEntryId"},
-			true);
+			true, true);
 
 		_finderPathCountByFileEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFileEntryId",
 			new String[] {Long.class.getName()}, new String[] {"fileEntryId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByLtExpirationDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtExpirationDate",
@@ -2006,12 +2006,12 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				Date.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"expirationDate"}, true);
+			new String[] {"expirationDate"}, true, true);
 
 		_finderPathWithPaginationCountByLtExpirationDate = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtExpirationDate",
 			new String[] {Date.class.getName()},
-			new String[] {"expirationDate"}, false);
+			new String[] {"expirationDate"}, false, true);
 
 		_finderPathFetchByF_S_T = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByF_S_T",
@@ -2021,7 +2021,7 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			new String[] {
 				"fileEntryId", "sourceFileVersionId", "targetFileVersionId"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByF_S_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByF_S_T",
@@ -2031,7 +2031,7 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			new String[] {
 				"fileEntryId", "sourceFileVersionId", "targetFileVersionId"
 			},
-			false);
+			false, true);
 
 		_setSyncDLFileVersionDiffUtilPersistence(this);
 	}

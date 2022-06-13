@@ -2190,15 +2190,15 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByAssetEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAssetEntryId",
@@ -2206,17 +2206,17 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"assetEntryId"}, true);
+			new String[] {"assetEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAssetEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAssetEntryId",
 			new String[] {Long.class.getName()}, new String[] {"assetEntryId"},
-			true);
+			true, true);
 
 		_finderPathCountByAssetEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAssetEntryId",
 			new String[] {Long.class.getName()}, new String[] {"assetEntryId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByAssetTagId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByAssetTagId",
@@ -2224,27 +2224,27 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"assetTagId"}, true);
+			new String[] {"assetTagId"}, true, true);
 
 		_finderPathWithoutPaginationFindByAssetTagId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAssetTagId",
 			new String[] {Long.class.getName()}, new String[] {"assetTagId"},
-			true);
+			true, true);
 
 		_finderPathCountByAssetTagId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByAssetTagId",
 			new String[] {Long.class.getName()}, new String[] {"assetTagId"},
-			false);
+			false, true);
 
 		_finderPathFetchByA_A = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByA_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"assetEntryId", "assetTagId"}, true);
+			new String[] {"assetEntryId", "assetTagId"}, true, true);
 
 		_finderPathCountByA_A = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByA_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"assetEntryId", "assetTagId"}, false);
+			new String[] {"assetEntryId", "assetTagId"}, false, true);
 
 		_setAssetAutoTaggerEntryUtilPersistence(this);
 	}

@@ -1274,25 +1274,25 @@ public class WeDeployAuthTokenPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathFetchByT_T = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByT_T",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			new String[] {"token", "type_"}, true);
+			new String[] {"token", "type_"}, true, true);
 
 		_finderPathCountByT_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByT_T",
 			new String[] {String.class.getName(), Integer.class.getName()},
-			new String[] {"token", "type_"}, false);
+			new String[] {"token", "type_"}, false, true);
 
 		_finderPathFetchByCI_T_T = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByCI_T_T",
@@ -1300,7 +1300,7 @@ public class WeDeployAuthTokenPersistenceImpl
 				String.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"clientId", "token", "type_"}, true);
+			new String[] {"clientId", "token", "type_"}, true, true);
 
 		_finderPathCountByCI_T_T = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCI_T_T",
@@ -1308,7 +1308,7 @@ public class WeDeployAuthTokenPersistenceImpl
 				String.class.getName(), String.class.getName(),
 				Integer.class.getName()
 			},
-			new String[] {"clientId", "token", "type_"}, false);
+			new String[] {"clientId", "token", "type_"}, false, true);
 
 		_setWeDeployAuthTokenUtilPersistence(this);
 	}

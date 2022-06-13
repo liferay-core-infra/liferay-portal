@@ -6477,15 +6477,15 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
@@ -6493,27 +6493,27 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_"}, true);
+			new String[] {"uuid_"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
-			new String[] {String.class.getName()}, new String[] {"uuid_"},
+			new String[] {String.class.getName()}, new String[] {"uuid_"}, true,
 			true);
 
 		_finderPathCountByUuid = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
 			new String[] {String.class.getName()}, new String[] {"uuid_"},
-			false);
+			false, true);
 
 		_finderPathFetchByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, true);
+			new String[] {"uuid_", "groupId"}, true, true);
 
 		_finderPathCountByUUID_G = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUUID_G",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "groupId"}, false);
+			new String[] {"uuid_", "groupId"}, false, true);
 
 		_finderPathWithPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid_C",
@@ -6522,17 +6522,17 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathWithoutPaginationFindByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, true);
+			new String[] {"uuid_", "companyId"}, true, true);
 
 		_finderPathCountByUuid_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
-			new String[] {"uuid_", "companyId"}, false);
+			new String[] {"uuid_", "companyId"}, false, true);
 
 		_finderPathWithPaginationFindByDDMStructureId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDDMStructureId",
@@ -6540,17 +6540,17 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"ddmStructureId"}, true);
+			new String[] {"ddmStructureId"}, true, true);
 
 		_finderPathWithoutPaginationFindByDDMStructureId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDDMStructureId",
 			new String[] {Long.class.getName()},
-			new String[] {"ddmStructureId"}, true);
+			new String[] {"ddmStructureId"}, true, true);
 
 		_finderPathCountByDDMStructureId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDDMStructureId",
 			new String[] {Long.class.getName()},
-			new String[] {"ddmStructureId"}, false);
+			new String[] {"ddmStructureId"}, false, true);
 
 		_finderPathWithPaginationFindByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C",
@@ -6559,17 +6559,17 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, true);
+			new String[] {"classNameId", "classPK"}, true, true);
 
 		_finderPathCountByC_C = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "classPK"}, false);
+			new String[] {"classNameId", "classPK"}, false, true);
 
 		_finderPathWithPaginationFindByC_DDMSI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_DDMSI",
@@ -6578,17 +6578,17 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"classNameId", "ddmStructureId"}, true);
+			new String[] {"classNameId", "ddmStructureId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_DDMSI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_DDMSI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "ddmStructureId"}, true);
+			new String[] {"classNameId", "ddmStructureId"}, true, true);
 
 		_finderPathCountByC_DDMSI = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DDMSI",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"classNameId", "ddmStructureId"}, false);
+			new String[] {"classNameId", "ddmStructureId"}, false, true);
 
 		_finderPathWithPaginationFindByDDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByDDMSI_F",
@@ -6597,22 +6597,22 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"ddmStructureId", "fieldName"}, true);
+			new String[] {"ddmStructureId", "fieldName"}, true, true);
 
 		_finderPathWithoutPaginationFindByDDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByDDMSI_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"ddmStructureId", "fieldName"}, true);
+			new String[] {"ddmStructureId", "fieldName"}, true, true);
 
 		_finderPathCountByDDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByDDMSI_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"ddmStructureId", "fieldName"}, false);
+			new String[] {"ddmStructureId", "fieldName"}, false, true);
 
 		_finderPathWithPaginationCountByDDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByDDMSI_F",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"ddmStructureId", "fieldName"}, false);
+			new String[] {"ddmStructureId", "fieldName"}, false, true);
 
 		_finderPathWithPaginationFindByC_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_DDMSI_F",
@@ -6621,7 +6621,8 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"classNameId", "ddmStructureId", "fieldName"}, true);
+			new String[] {"classNameId", "ddmStructureId", "fieldName"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByC_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_DDMSI_F",
@@ -6629,7 +6630,8 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"classNameId", "ddmStructureId", "fieldName"}, true);
+			new String[] {"classNameId", "ddmStructureId", "fieldName"}, true,
+			true);
 
 		_finderPathCountByC_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_DDMSI_F",
@@ -6637,7 +6639,8 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"classNameId", "ddmStructureId", "fieldName"}, false);
+			new String[] {"classNameId", "ddmStructureId", "fieldName"}, false,
+			true);
 
 		_finderPathWithPaginationCountByC_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_DDMSI_F",
@@ -6645,7 +6648,8 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"classNameId", "ddmStructureId", "fieldName"}, false);
+			new String[] {"classNameId", "ddmStructureId", "fieldName"}, false,
+			true);
 
 		_finderPathFetchByC_C_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_C_DDMSI_F",
@@ -6656,7 +6660,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			new String[] {
 				"classNameId", "classPK", "ddmStructureId", "fieldName"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_C_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_C_DDMSI_F",
@@ -6667,7 +6671,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			new String[] {
 				"classNameId", "classPK", "ddmStructureId", "fieldName"
 			},
-			false);
+			false, true);
 
 		_finderPathWithPaginationCountByC_C_DDMSI_F = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_DDMSI_F",
@@ -6678,7 +6682,7 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			new String[] {
 				"classNameId", "classPK", "ddmStructureId", "fieldName"
 			},
-			false);
+			false, true);
 
 		_setDEDataDefinitionFieldLinkUtilPersistence(this);
 	}

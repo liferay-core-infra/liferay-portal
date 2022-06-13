@@ -3500,15 +3500,15 @@ public class DDLRecordVersionPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByRecordId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByRecordId",
@@ -3516,17 +3516,17 @@ public class DDLRecordVersionPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"recordId"}, true);
+			new String[] {"recordId"}, true, true);
 
 		_finderPathWithoutPaginationFindByRecordId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByRecordId",
 			new String[] {Long.class.getName()}, new String[] {"recordId"},
-			true);
+			true, true);
 
 		_finderPathCountByRecordId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByRecordId",
 			new String[] {Long.class.getName()}, new String[] {"recordId"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByR_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_R",
@@ -3535,27 +3535,27 @@ public class DDLRecordVersionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"recordSetId", "recordSetVersion"}, true);
+			new String[] {"recordSetId", "recordSetVersion"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_R",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"recordSetId", "recordSetVersion"}, true);
+			new String[] {"recordSetId", "recordSetVersion"}, true, true);
 
 		_finderPathCountByR_R = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_R",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"recordSetId", "recordSetVersion"}, false);
+			new String[] {"recordSetId", "recordSetVersion"}, false, true);
 
 		_finderPathFetchByR_V = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByR_V",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"recordId", "version"}, true);
+			new String[] {"recordId", "version"}, true, true);
 
 		_finderPathCountByR_V = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_V",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"recordId", "version"}, false);
+			new String[] {"recordId", "version"}, false, true);
 
 		_finderPathWithPaginationFindByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByR_S",
@@ -3564,17 +3564,17 @@ public class DDLRecordVersionPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"recordId", "status"}, true);
+			new String[] {"recordId", "status"}, true, true);
 
 		_finderPathWithoutPaginationFindByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"recordId", "status"}, true);
+			new String[] {"recordId", "status"}, true, true);
 
 		_finderPathCountByR_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByR_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
-			new String[] {"recordId", "status"}, false);
+			new String[] {"recordId", "status"}, false, true);
 
 		_finderPathWithPaginationFindByU_R_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_R_R_S",
@@ -3587,7 +3587,7 @@ public class DDLRecordVersionPersistenceImpl
 			new String[] {
 				"userId", "recordSetId", "recordSetVersion", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByU_R_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_R_R_S",
@@ -3598,7 +3598,7 @@ public class DDLRecordVersionPersistenceImpl
 			new String[] {
 				"userId", "recordSetId", "recordSetVersion", "status"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByU_R_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_R_R_S",
@@ -3609,7 +3609,7 @@ public class DDLRecordVersionPersistenceImpl
 			new String[] {
 				"userId", "recordSetId", "recordSetVersion", "status"
 			},
-			false);
+			false, true);
 
 		_setDDLRecordVersionUtilPersistence(this);
 	}

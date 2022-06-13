@@ -1926,25 +1926,25 @@ public class VirtualHostPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathFetchByHostname = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByHostname",
 			new String[] {String.class.getName()}, new String[] {"hostname"},
-			true);
+			true, true);
 
 		_finderPathCountByHostname = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByHostname",
 			new String[] {String.class.getName()}, new String[] {"hostname"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_L",
@@ -1953,17 +1953,17 @@ public class VirtualHostPersistenceImpl
 				Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "layoutSetId"}, true);
+			new String[] {"companyId", "layoutSetId"}, true, true);
 
 		_finderPathWithoutPaginationFindByC_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_L",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "layoutSetId"}, true);
+			new String[] {"companyId", "layoutSetId"}, true, true);
 
 		_finderPathCountByC_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L",
 			new String[] {Long.class.getName(), Long.class.getName()},
-			new String[] {"companyId", "layoutSetId"}, false);
+			new String[] {"companyId", "layoutSetId"}, false, true);
 
 		_finderPathFetchByC_L_D = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_L_D",
@@ -1972,7 +1972,7 @@ public class VirtualHostPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"companyId", "layoutSetId", "defaultVirtualHost"},
-			true);
+			true, true);
 
 		_finderPathCountByC_L_D = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_L_D",
@@ -1981,7 +1981,7 @@ public class VirtualHostPersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"companyId", "layoutSetId", "defaultVirtualHost"},
-			false);
+			false, true);
 
 		_setVirtualHostUtilPersistence(this);
 	}

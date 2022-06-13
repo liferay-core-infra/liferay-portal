@@ -2760,15 +2760,15 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByFriendlyURLEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByFriendlyURLEntryId",
@@ -2776,28 +2776,28 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"friendlyURLEntryId"}, true);
+			new String[] {"friendlyURLEntryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByFriendlyURLEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByFriendlyURLEntryId", new String[] {Long.class.getName()},
-			new String[] {"friendlyURLEntryId"}, true);
+			new String[] {"friendlyURLEntryId"}, true, true);
 
 		_finderPathCountByFriendlyURLEntryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByFriendlyURLEntryId", new String[] {Long.class.getName()},
-			new String[] {"friendlyURLEntryId"}, false);
+			new String[] {"friendlyURLEntryId"}, false, true);
 
 		_finderPathFetchByFriendlyURLEntryId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByFriendlyURLEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"friendlyURLEntryId", "languageId"}, true);
+			new String[] {"friendlyURLEntryId", "languageId"}, true, true);
 
 		_finderPathCountByFriendlyURLEntryId_LanguageId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByFriendlyURLEntryId_LanguageId",
 			new String[] {Long.class.getName(), String.class.getName()},
-			new String[] {"friendlyURLEntryId", "languageId"}, false);
+			new String[] {"friendlyURLEntryId", "languageId"}, false, true);
 
 		_finderPathFetchByG_C_U = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByG_C_U",
@@ -2805,7 +2805,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "urlTitle"}, true);
+			new String[] {"groupId", "classNameId", "urlTitle"}, true, true);
 
 		_finderPathCountByG_C_U = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_U",
@@ -2813,7 +2813,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"groupId", "classNameId", "urlTitle"}, false);
+			new String[] {"groupId", "classNameId", "urlTitle"}, false, true);
 
 		_finderPathWithPaginationFindByG_C_C_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_C_C_L",
@@ -2824,7 +2824,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classPK", "languageId"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByG_C_C_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByG_C_C_L",
@@ -2833,7 +2833,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				Long.class.getName(), String.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classPK", "languageId"},
-			true);
+			true, true);
 
 		_finderPathCountByG_C_C_L = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByG_C_C_L",
@@ -2842,7 +2842,7 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 				Long.class.getName(), String.class.getName()
 			},
 			new String[] {"groupId", "classNameId", "classPK", "languageId"},
-			false);
+			false, true);
 
 		_setFriendlyURLEntryLocalizationUtilPersistence(this);
 	}

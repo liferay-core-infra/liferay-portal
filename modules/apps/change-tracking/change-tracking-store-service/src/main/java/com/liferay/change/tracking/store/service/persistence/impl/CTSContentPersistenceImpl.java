@@ -3329,15 +3329,15 @@ public class CTSContentPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByC_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_S",
@@ -3346,7 +3346,8 @@ public class CTSContentPersistenceImpl
 				String.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "storeType"}, true);
+			new String[] {"companyId", "repositoryId", "storeType"}, true,
+			true);
 
 		_finderPathWithoutPaginationFindByC_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_R_S",
@@ -3354,7 +3355,8 @@ public class CTSContentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "storeType"}, true);
+			new String[] {"companyId", "repositoryId", "storeType"}, true,
+			true);
 
 		_finderPathCountByC_R_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_S",
@@ -3362,7 +3364,8 @@ public class CTSContentPersistenceImpl
 				Long.class.getName(), Long.class.getName(),
 				String.class.getName()
 			},
-			new String[] {"companyId", "repositoryId", "storeType"}, false);
+			new String[] {"companyId", "repositoryId", "storeType"}, false,
+			true);
 
 		_finderPathWithPaginationFindByC_R_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_P_S",
@@ -3373,7 +3376,7 @@ public class CTSContentPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "storeType"},
-			true);
+			true, true);
 
 		_finderPathWithoutPaginationFindByC_R_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByC_R_P_S",
@@ -3382,7 +3385,7 @@ public class CTSContentPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "storeType"},
-			true);
+			true, true);
 
 		_finderPathCountByC_R_P_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_P_S",
@@ -3391,7 +3394,7 @@ public class CTSContentPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "storeType"},
-			false);
+			false, true);
 
 		_finderPathWithPaginationFindByC_R_LikeP_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_R_LikeP_S",
@@ -3402,7 +3405,7 @@ public class CTSContentPersistenceImpl
 				OrderByComparator.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "storeType"},
-			true);
+			true, true);
 
 		_finderPathWithPaginationCountByC_R_LikeP_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_R_LikeP_S",
@@ -3411,7 +3414,7 @@ public class CTSContentPersistenceImpl
 				String.class.getName(), String.class.getName()
 			},
 			new String[] {"companyId", "repositoryId", "path_", "storeType"},
-			false);
+			false, true);
 
 		_finderPathFetchByC_R_P_V_S = new FinderPath(
 			FINDER_CLASS_NAME_ENTITY, "fetchByC_R_P_V_S",
@@ -3423,7 +3426,7 @@ public class CTSContentPersistenceImpl
 			new String[] {
 				"companyId", "repositoryId", "path_", "version", "storeType"
 			},
-			true);
+			true, true);
 
 		_finderPathCountByC_R_P_V_S = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByC_R_P_V_S",
@@ -3435,7 +3438,7 @@ public class CTSContentPersistenceImpl
 			new String[] {
 				"companyId", "repositoryId", "path_", "version", "storeType"
 			},
-			false);
+			false, true);
 
 		_setCTSContentUtilPersistence(this);
 	}

@@ -2239,15 +2239,15 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathWithoutPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0],
-			new String[0], true);
+			new String[0], true, true);
 
 		_finderPathCountAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0], new String[0], false);
+			new String[0], new String[0], false, true);
 
 		_finderPathWithPaginationFindByCommerceTaxMethodId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCommerceTaxMethodId",
@@ -2255,17 +2255,17 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"commerceTaxMethodId"}, true);
+			new String[] {"commerceTaxMethodId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCommerceTaxMethodId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"findByCommerceTaxMethodId", new String[] {Long.class.getName()},
-			new String[] {"commerceTaxMethodId"}, true);
+			new String[] {"commerceTaxMethodId"}, true, true);
 
 		_finderPathCountByCommerceTaxMethodId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByCommerceTaxMethodId", new String[] {Long.class.getName()},
-			new String[] {"commerceTaxMethodId"}, false);
+			new String[] {"commerceTaxMethodId"}, false, true);
 
 		_finderPathWithPaginationFindByCPTaxCategoryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCPTaxCategoryId",
@@ -2273,17 +2273,17 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"CPTaxCategoryId"}, true);
+			new String[] {"CPTaxCategoryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCPTaxCategoryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCPTaxCategoryId",
 			new String[] {Long.class.getName()},
-			new String[] {"CPTaxCategoryId"}, true);
+			new String[] {"CPTaxCategoryId"}, true, true);
 
 		_finderPathCountByCPTaxCategoryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPTaxCategoryId",
 			new String[] {Long.class.getName()},
-			new String[] {"CPTaxCategoryId"}, false);
+			new String[] {"CPTaxCategoryId"}, false, true);
 
 		_finderPathWithPaginationFindByCountryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByCountryId",
@@ -2291,17 +2291,17 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				Long.class.getName(), Integer.class.getName(),
 				Integer.class.getName(), OrderByComparator.class.getName()
 			},
-			new String[] {"countryId"}, true);
+			new String[] {"countryId"}, true, true);
 
 		_finderPathWithoutPaginationFindByCountryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByCountryId",
 			new String[] {Long.class.getName()}, new String[] {"countryId"},
-			true);
+			true, true);
 
 		_finderPathCountByCountryId = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCountryId",
 			new String[] {Long.class.getName()}, new String[] {"countryId"},
-			false);
+			false, true);
 
 		_setCommerceTaxFixedRateAddressRelUtilPersistence(this);
 	}

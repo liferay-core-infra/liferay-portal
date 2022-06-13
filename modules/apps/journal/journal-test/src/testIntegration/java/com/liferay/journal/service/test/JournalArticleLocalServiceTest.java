@@ -37,6 +37,7 @@ import com.liferay.journal.exception.DuplicateArticleIdException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.journal.service.persistence.JournalArticleUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
@@ -389,6 +390,25 @@ public class JournalArticleLocalServiceTest {
 				defaultLanguageId, _themeDisplay);
 
 		Assert.assertEquals("no-friendly-url", articleDisplay.getContent());
+	}
+
+	@Test
+	public void testGetArticleWithDecimalVersion() throws Exception {
+		JournalArticle article = JournalTestUtil.addArticle(
+			_group.getGroupId(),
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+
+		article.setVersion(1.1);
+
+		_journalArticleLocalService.updateJournalArticle(article);
+
+		JournalArticleUtil.clearCache(article);
+
+		Assert.assertEquals(
+			article,
+			_journalArticleLocalService.getArticle(
+				article.getGroupId(), article.getArticleId(),
+				article.getVersion()));
 	}
 
 	@Test

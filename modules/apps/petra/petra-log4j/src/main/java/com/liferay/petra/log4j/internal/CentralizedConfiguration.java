@@ -249,6 +249,13 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		for (Appender newAppender : newAppenders.values()) {
 			String name = newAppender.getName();
 
+			if ((newAppender instanceof CompanyLogRoutingAppender) &&
+				(_companyLogRoutingAppender != null) &&
+				!name.equals(_companyLogRoutingAppender.getName())) {
+
+				continue;
+			}
+
 			AppenderRef newAppenderRef = _getAppenderRef(name, newLoggerConfig);
 
 			if (currentAppenders.containsKey(name)) {

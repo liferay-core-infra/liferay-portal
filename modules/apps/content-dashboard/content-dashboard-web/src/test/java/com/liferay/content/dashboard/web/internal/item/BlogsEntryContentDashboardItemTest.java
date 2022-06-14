@@ -397,7 +397,7 @@ public class BlogsEntryContentDashboardItemTest {
 
 		Mockito.when(
 			contentDashboardItemActionProvider.isShow(
-				Matchers.any(JournalArticle.class),
+				Matchers.any(BlogsEntry.class),
 				Matchers.any(HttpServletRequest.class))
 		).thenReturn(
 			true

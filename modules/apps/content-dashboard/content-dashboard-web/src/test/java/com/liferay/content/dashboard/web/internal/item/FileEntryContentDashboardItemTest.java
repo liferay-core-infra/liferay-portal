@@ -424,7 +424,7 @@ public class FileEntryContentDashboardItemTest {
 
 		Mockito.when(
 			contentDashboardItemActionProvider.isShow(
-				Matchers.any(JournalArticle.class),
+				Matchers.any(FileEntry.class),
 				Matchers.any(HttpServletRequest.class))
 		).thenReturn(
 			true

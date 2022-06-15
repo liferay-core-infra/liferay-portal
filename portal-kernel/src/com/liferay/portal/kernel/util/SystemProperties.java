@@ -14,9 +14,10 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.io.unsync.UnsyncBufferedReader;
+import com.liferay.petra.io.unsync.UnsyncStringReader;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
-import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -68,7 +69,7 @@ public class SystemProperties {
 			value = System.getProperty(key, defaultValue);
 		}
 
-		return value;
+		return _resolveReference(value);
 	}
 
 	public static String[] getArray(String key) {
@@ -92,7 +93,7 @@ public class SystemProperties {
 					key = key.substring(prefix.length());
 				}
 
-				properties.put(key, entry.getValue());
+				properties.put(key, _resolveReference(entry.getValue()));
 			}
 		}
 
@@ -241,6 +242,44 @@ public class SystemProperties {
 				}
 			}
 		}
+	}
+
+	private static String _resolveReference(String value) {
+		if (value == null) {
+			return null;
+		}
+
+		int startIndex = 0;
+		int endIndex = 0;
+
+		while (((startIndex = value.indexOf(
+					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE, endIndex)) != -1) &&
+			   ((endIndex = value.indexOf(
+				   StringPool.CLOSE_CURLY_BRACE, startIndex)) != -1)) {
+
+			String placeholderKey = value.substring(
+				startIndex + StringPool.DOLLAR_AND_OPEN_CURLY_BRACE.length(),
+				endIndex);
+
+			if (placeholderKey.equals(StringPool.BLANK)) {
+				continue;
+			}
+
+			String placeholderValue = get(placeholderKey);
+
+			if (placeholderValue == null) {
+				continue;
+			}
+
+			value = StringUtil.replaceFirst(
+				value,
+				StringBundler.concat(
+					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE, placeholderKey,
+					StringPool.CLOSE_CURLY_BRACE),
+				placeholderValue, startIndex);
+		}
+
+		return value;
 	}
 
 	private static final Map<String, String> _properties =

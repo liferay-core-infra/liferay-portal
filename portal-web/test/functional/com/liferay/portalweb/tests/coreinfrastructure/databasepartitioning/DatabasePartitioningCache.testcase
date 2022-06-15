@@ -1,0 +1,98 @@
+@component-name = "portal-database-partitioning"
+definition {
+
+	property database.partition.enabled = "true";
+	property database.types = "mysql";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property test.run.environment = "EE";
+	property testray.main.component.name = "Portal Cache";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		PortalInstances.tearDownCP();
+	}
+
+	@priority = "4"
+	test NullCacheDoesNotBreakSiteFromAnotherPartition {
+		PortalInstances.openVirtualInstancesAdmin();
+
+		PortalInstances.addCP(
+			mailDomain = "www.able.com",
+			virtualHost = "www.able.com",
+			webId = "www.able.com");
+
+		PortalInstances.openVirtualInstancesAdmin();
+
+		User.firstLoginUI(
+			password = "test",
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Sites",
+			panel = "Control Panel",
+			portlet = "Sites");
+
+		Site.addBlankCP(siteName = "Site on Partition");
+
+		var siteId = Site.getSiteId();
+
+		ProductMenu.gotoPortlet(
+			category = "Site Builder",
+			portlet = "Pages");
+
+		PagesAdmin.addPage(
+			pageName = "homepage",
+			sitePageType = "Widget Page");
+
+		Navigator.openURL();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "System",
+			panel = "Control Panel",
+			portlet = "Server Administration");
+
+		ServerAdministration.executeScript(
+			language = "Groovy",
+			script = "com.liferay.portal.kernel.service.GroupLocalServiceUtil.getGroup(${siteId});");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "No Group exists with the primary key");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "System",
+			panel = "Control Panel",
+			portlet = "Server Administration");
+
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Clear content cached across the cluster.");
+
+		User.firstLoginPG();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "System",
+			panel = "Control Panel",
+			portlet = "Server Administration");
+
+		ServerAdministration.executeScript(
+			language = "Groovy",
+			script = "com.liferay.portal.kernel.service.GroupLocalServiceUtil.getGroup(${siteId});");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR",
+			value1 = "No Group exists with the primary key");
+
+		Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+		Smoke.viewWelcomeContentPage();
+	}
+
+}

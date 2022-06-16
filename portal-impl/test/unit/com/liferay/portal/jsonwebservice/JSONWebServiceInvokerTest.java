@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 import java.util.Collections;
@@ -73,19 +72,12 @@ public class JSONWebServiceInvokerTest extends BaseJSONWebServiceTestCase {
 			ProxyUtil.newProxyInstance(
 				LayoutLocalService.class.getClassLoader(),
 				new Class<?>[] {LayoutLocalService.class},
-				new InvocationHandler() {
-
-					@Override
-					public Object invoke(
-						Object proxy, Method method, Object[] args) {
-
-						if (getDefaultPlidMethod.equals(method)) {
-							return 0L;
-						}
-
-						throw new UnsupportedOperationException();
+				(proxy, method, args) -> {
+					if (getDefaultPlidMethod.equals(method)) {
+						return 0L;
 					}
 
+					throw new UnsupportedOperationException();
 				}));
 
 		PropsTestUtil.setProps(Collections.emptyMap());

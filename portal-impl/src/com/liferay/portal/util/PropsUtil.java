@@ -354,8 +354,6 @@ public class PropsUtil {
 
 		// Portal shielded container lib directory
 
-		String portalShieldedContainerLibDir = _getLibDir(PropsUtil.class);
-
 		String portalShieldedContainerLibDirProperty = System.getProperty(
 			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR);
 
@@ -370,28 +368,26 @@ public class PropsUtil {
 				portalShieldedContainerLibDirProperty += StringPool.SLASH;
 			}
 
-			portalShieldedContainerLibDir =
-				portalShieldedContainerLibDirProperty;
+			SystemProperties.set(
+				PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+				portalShieldedContainerLibDirProperty);
+
+			// Portal web director
+
+			String portalWebDir = portalShieldedContainerLibDirProperty;
+
+			if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
+				portalWebDir = portalWebDir.substring(
+					0, portalWebDir.length() - 31);
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Portal web directory " + portalWebDir);
+			}
+
+			SystemProperties.set(
+				PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
 		}
-
-		SystemProperties.set(
-			PropsKeys.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
-			portalShieldedContainerLibDir);
-
-		// Portal web directory
-
-		String portalWebDir = portalShieldedContainerLibDir;
-
-		if (portalWebDir.endsWith("/WEB-INF/shielded-container-lib/")) {
-			portalWebDir = portalWebDir.substring(
-				0, portalWebDir.length() - 31);
-		}
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Portal web directory " + portalWebDir);
-		}
-
-		SystemProperties.set(PropsKeys.LIFERAY_WEB_PORTAL_DIR, portalWebDir);
 
 		// Liferay home directory
 

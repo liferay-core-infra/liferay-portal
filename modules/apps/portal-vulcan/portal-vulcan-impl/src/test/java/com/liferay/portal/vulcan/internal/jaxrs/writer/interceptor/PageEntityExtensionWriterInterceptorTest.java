@@ -35,7 +35,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
@@ -75,13 +74,13 @@ public class PageEntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setEntity(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setGenericType(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
@@ -155,7 +154,7 @@ public class PageEntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_writerInterceptorContext
 		).setGenericType(
-			Matchers.eq(
+			Mockito.eq(
 				new GenericType<Page<ExtendedEntity>>() {
 				}.getType())
 		);
@@ -196,13 +195,13 @@ public class PageEntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setEntity(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setGenericType(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
@@ -246,13 +245,13 @@ public class PageEntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setEntity(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setGenericType(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(

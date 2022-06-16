@@ -30,7 +30,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.ArgumentCaptor;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 /**
@@ -96,7 +95,7 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_mockedWriterInterceptorContext
 		).setGenericType(
-			Matchers.eq(ExtendedEntity.class)
+			Mockito.eq(ExtendedEntity.class)
 		);
 
 		Mockito.verify(
@@ -126,13 +125,13 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_mockedWriterInterceptorContext, Mockito.never()
 		).setEntity(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_mockedWriterInterceptorContext, Mockito.never()
 		).setGenericType(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
@@ -154,13 +153,13 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_mockedWriterInterceptorContext, Mockito.never()
 		).setEntity(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(
 			_mockedWriterInterceptorContext, Mockito.never()
 		).setGenericType(
-			Matchers.any()
+			Mockito.any()
 		);
 
 		Mockito.verify(

@@ -20,13 +20,9 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
-import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.test.log.LogCapture;
-import com.liferay.portal.test.log.LogEntry;
-import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -40,7 +36,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.Dictionary;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
@@ -140,65 +135,6 @@ public class FileInstallConfigTest {
 		Assert.assertArrayEquals(
 			new String[] {"testUntypedString", "testUntypedString2"},
 			(String[])properties.get("configUntypedStringArray"));
-	}
-
-	@Test
-	public void testConfigurationDeprecatedFileExtension() throws Exception {
-		Boolean originalModuleFrameworkFileInstallCfgEnabled =
-			ReflectionTestUtil.getAndSetFieldValue(
-				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
-				false);
-
-		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testDummy");
-		String configurationPidDeprecated = _CONFIGURATION_PID_PREFIX.concat(
-			".testConfigurationDeprecatedFileExtension");
-
-		String content = "testKey=\"testValue\"";
-		String contentDeprecated = "testKeyDeprecated=testValueDeprecated";
-
-		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		Path configPathDeprecated = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPidDeprecated.concat(".cfg"));
-
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.file.install.internal.configuration." +
-					"ConfigurationFileInstaller",
-				LoggerTestUtil.WARN)) {
-
-			Files.write(configPathDeprecated, contentDeprecated.getBytes());
-
-			_configuration = _createConfiguration(configurationPid, content);
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Assert.assertEquals(
-				StringBundler.concat(
-					"Unable to install .cfg file ", configPathDeprecated,
-					", please use .config file instead."),
-				logEntry.getMessage());
-
-			Configuration configurationDeprecated =
-				_configurationAdmin.getConfiguration(
-					configurationPidDeprecated, StringPool.QUESTION);
-
-			Assert.assertNull(configurationDeprecated.getProperties());
-		}
-		finally {
-			Files.deleteIfExists(configPathDeprecated);
-
-			ReflectionTestUtil.setFieldValue(
-				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
-				originalModuleFrameworkFileInstallCfgEnabled);
-		}
 	}
 
 	@Test

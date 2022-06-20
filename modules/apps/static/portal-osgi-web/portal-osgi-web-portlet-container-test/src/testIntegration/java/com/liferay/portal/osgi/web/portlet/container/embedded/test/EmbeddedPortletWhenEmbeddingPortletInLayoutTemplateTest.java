@@ -17,12 +17,10 @@ package com.liferay.portal.osgi.web.portlet.container.embedded.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -34,11 +32,10 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.osgi.web.portlet.container.test.BasePortletContainerTestCase;
 import com.liferay.portal.osgi.web.portlet.container.test.TestPortlet;
-import com.liferay.portal.test.rule.Inject;
+import com.liferay.portal.osgi.web.portlet.container.test.util.PortletContainerTestUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.io.IOException;
@@ -128,12 +125,10 @@ public class EmbeddedPortletWhenEmbeddingPortletInLayoutTemplateTest
 			renderedPortlets);
 	}
 
-	private HttpServletRequest _getHttpServletRequest(
-			HttpServletResponse httpServletResponse)
-		throws Exception {
-
+	private HttpServletRequest _getHttpServletRequest() throws Exception {
 		MockHttpServletRequest httpServletRequest =
-			new MockHttpServletRequest();
+			(MockHttpServletRequest)
+				PortletContainerTestUtil.getHttpServletRequest(group, layout);
 
 		httpServletRequest.setAttribute(
 			JavaConstants.JAVAX_PORTLET_RESPONSE,
@@ -142,45 +137,23 @@ public class EmbeddedPortletWhenEmbeddingPortletInLayoutTemplateTest
 			WebKeys.CTX, httpServletRequest.getServletContext());
 		httpServletRequest.setAttribute(
 			WebKeys.CURRENT_URL, RandomTestUtil.randomString());
-		httpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
 
-		ThemeDisplay themeDisplay = new ThemeDisplay();
+		httpServletRequest.setMethod(HttpMethods.GET);
 
-		Company company = _companyLocalService.getCompany(
-			layout.getCompanyId());
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
 
-		themeDisplay.setCompany(company);
-
-		themeDisplay.setLanguageId(group.getDefaultLanguageId());
-
-		themeDisplay.setLayout(layout);
 		themeDisplay.setLayoutTypePortlet(
 			(LayoutTypePortlet)layout.getLayoutType());
 
 		LayoutSet layoutSet = group.getPublicLayoutSet();
 
-		themeDisplay.setLayoutSet(layoutSet);
-
-		themeDisplay.setLocale(
-			LocaleUtil.fromLanguageId(group.getDefaultLanguageId()));
 		themeDisplay.setLookAndFeel(
 			layoutSet.getTheme(), layoutSet.getColorScheme());
+
 		themeDisplay.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(TestPropsValues.getUser()));
-		themeDisplay.setPortalDomain(company.getVirtualHostname());
-		themeDisplay.setPortalURL(company.getPortalURL(group.getGroupId()));
-		themeDisplay.setRealUser(TestPropsValues.getUser());
-		themeDisplay.setRequest(httpServletRequest);
-		themeDisplay.setResponse(httpServletResponse);
-		themeDisplay.setScopeGroupId(group.getGroupId());
-		themeDisplay.setServerPort(8080);
-		themeDisplay.setSignedIn(true);
-		themeDisplay.setSiteGroupId(group.getGroupId());
-		themeDisplay.setUser(TestPropsValues.getUser());
-
-		httpServletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
-
-		httpServletRequest.setMethod(HttpMethods.GET);
 
 		return httpServletRequest;
 	}
@@ -191,8 +164,7 @@ public class EmbeddedPortletWhenEmbeddingPortletInLayoutTemplateTest
 
 		HttpServletResponse httpServletResponse = new MockHttpServletResponse();
 
-		HttpServletRequest httpServletRequest = _getHttpServletRequest(
-			httpServletResponse);
+		HttpServletRequest httpServletRequest = _getHttpServletRequest();
 
 		RuntimePageUtil.processTemplate(
 			httpServletRequest, httpServletResponse, null,
@@ -226,8 +198,5 @@ public class EmbeddedPortletWhenEmbeddingPortletInLayoutTemplateTest
 			).build(),
 			portletName, addToLayout);
 	}
-
-	@Inject
-	private CompanyLocalService _companyLocalService;
 
 }

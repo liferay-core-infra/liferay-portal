@@ -14,12 +14,15 @@
 
 package com.liferay.portal.background.task.internal;
 
+import com.liferay.portal.background.task.configuration.BackgroundTaskManagerConfiguration;
 import com.liferay.portal.background.task.internal.messaging.BackgroundTaskGlobalStatusMessageListener;
 import com.liferay.portal.background.task.internal.messaging.BackgroundTaskMessageListener;
 import com.liferay.portal.background.task.service.BackgroundTaskLocalService;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutorRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskStatusRegistry;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocalManager;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.lock.LockManager;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -30,6 +33,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -42,15 +46,25 @@ import org.osgi.service.component.annotations.Reference;
  * @author Vendel Toreki
  */
 @Component(
+	configurationPid = "com.liferay.portal.background.task.configuration.BackgroundTaskManagerConfiguration",
 	immediate = true, service = BackgroundTaskMessagingConfigurator.class
 )
 public class BackgroundTaskMessagingConfigurator {
 
 	@Activate
-	protected void activate(BundleContext bundleContext) {
+	protected void activate(
+			BundleContext bundleContext, Map<String, Object> properties)
+		throws PortalException {
+
+		BackgroundTaskManagerConfiguration backgroundTaskManagerConfiguration =
+			ConfigurableUtil.createConfigurable(
+				BackgroundTaskManagerConfiguration.class, properties);
+
 		Destination backgroundTaskDestination = _registerDestination(
 			bundleContext, DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-			DestinationNames.BACKGROUND_TASK, 5, 10);
+			DestinationNames.BACKGROUND_TASK,
+			backgroundTaskManagerConfiguration.workersCoreSize(),
+			backgroundTaskManagerConfiguration.workersMaxSize());
 
 		backgroundTaskDestination.register(
 			new BackgroundTaskMessageListener(

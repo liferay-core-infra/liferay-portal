@@ -14,7 +14,13 @@
 
 package com.liferay.exportimport.internal.background.task;
 
+import com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeSystemConfiguration;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
+import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
 import java.util.HashSet;
@@ -25,11 +31,15 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
  */
-@Component(immediate = true, service = BackgroundTaskExecutorConfigurator.class)
+@Component(
+	configurationPid = "com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeSystemConfiguration",
+	immediate = true, service = BackgroundTaskExecutorConfigurator.class
+)
 public class BackgroundTaskExecutorConfigurator {
 
 	@Activate
@@ -45,7 +55,8 @@ public class BackgroundTaskExecutorConfigurator {
 
 		_registerBackgroundTaskExecutor(
 			bundleContext,
-			new LayoutSetPrototypeImportBackgroundTaskExecutor());
+			new LayoutSetPrototypeImportBackgroundTaskExecutor(
+				_getImportTaskIsolationLevel()));
 
 		_registerBackgroundTaskExecutor(
 			bundleContext, new LayoutStagingBackgroundTaskExecutor());
@@ -72,6 +83,29 @@ public class BackgroundTaskExecutorConfigurator {
 		}
 	}
 
+	private int _getImportTaskIsolationLevel() {
+		try {
+			LayoutSetPrototypeSystemConfiguration
+				layoutSetPrototypeSystemConfiguration =
+					_configurationProvider.getSystemConfiguration(
+						LayoutSetPrototypeSystemConfiguration.class);
+
+			String importTaskIsolation =
+				layoutSetPrototypeSystemConfiguration.importTaskIsolation();
+
+			if ((importTaskIsolation != null) &&
+				importTaskIsolation.equals("company")) {
+
+				return BackgroundTaskConstants.ISOLATION_LEVEL_COMPANY;
+			}
+		}
+		catch (ConfigurationException configurationException) {
+			_log.error(configurationException);
+		}
+
+		return BackgroundTaskConstants.ISOLATION_LEVEL_GROUP;
+	}
+
 	private void _registerBackgroundTaskExecutor(
 		BundleContext bundleContext,
 		BackgroundTaskExecutor backgroundTaskExecutor) {
@@ -87,6 +121,12 @@ public class BackgroundTaskExecutorConfigurator {
 
 		_serviceRegistrations.add(serviceRegistration);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BackgroundTaskExecutorConfigurator.class);
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	private final Set<ServiceRegistration<BackgroundTaskExecutor>>
 		_serviceRegistrations = new HashSet<>();

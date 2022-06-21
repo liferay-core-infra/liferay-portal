@@ -55,20 +55,23 @@ import java.util.concurrent.Callable;
 public class LayoutSetPrototypeImportBackgroundTaskExecutor
 	extends BaseExportImportBackgroundTaskExecutor {
 
-	public LayoutSetPrototypeImportBackgroundTaskExecutor() {
+	public LayoutSetPrototypeImportBackgroundTaskExecutor(
+		int importTaskIsolationLevel) {
+
+		_importTaskIsolationLevel = importTaskIsolationLevel;
+
 		setBackgroundTaskStatusMessageTranslator(
 			new LayoutExportImportBackgroundTaskStatusMessageTranslator());
 
-		// Isolation level guarantees this will be serial in a group
-
-		setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_GROUP);
+		setIsolationLevel(_importTaskIsolationLevel);
 	}
 
 	@Override
 	public BackgroundTaskExecutor clone() {
 		LayoutSetPrototypeImportBackgroundTaskExecutor
 			layoutSetPrototypeImportBackgroundTaskExecutor =
-				new LayoutSetPrototypeImportBackgroundTaskExecutor();
+				new LayoutSetPrototypeImportBackgroundTaskExecutor(
+					_importTaskIsolationLevel);
 
 		layoutSetPrototypeImportBackgroundTaskExecutor.
 			setBackgroundTaskStatusMessageTranslator(
@@ -226,6 +229,9 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutSetPrototypeImportBackgroundTaskExecutor.class);
+
+	private int _importTaskIsolationLevel =
+		BackgroundTaskConstants.ISOLATION_LEVEL_GROUP;
 
 	private static class LayoutImportCallable implements Callable<Void> {
 

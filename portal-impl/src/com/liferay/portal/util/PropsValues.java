@@ -2092,6 +2092,15 @@ public class PropsValues {
 			PropsUtil.get(PropsKeys.SEARCH_CONTAINER_SHOW_PAGINATION_TOP_DELTA),
 			10);
 
+	public static final int SERVER_INET_SOCKET_ADDRESS_DEFAULT_PORT =
+		GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.SERVER_INET_SOCKET_ADDRESS_DEFAULT_PORT));
+
+	public static final int SERVER_INET_SOCKET_ADDRESS_DEFAULT_SECURE_PORT =
+		GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.SERVER_INET_SOCKET_ADDRESS_DEFAULT_SECURE_PORT));
+
 	public static final String[] SERVLET_SERVICE_EVENTS_POST =
 		PropsUtil.getArray(PropsKeys.SERVLET_SERVICE_EVENTS_POST);
 

@@ -2379,6 +2379,12 @@ public interface PropsKeys {
 	public static final String SEARCH_CONTAINER_SHOW_PAGINATION_TOP_DELTA =
 		"search.container.show.pagination.top.delta";
 
+	public static final String SERVER_INET_SOCKET_ADDRESS_DEFAULT_PORT =
+		"server.inet.socket.address.default.port";
+
+	public static final String SERVER_INET_SOCKET_ADDRESS_DEFAULT_SECURE_PORT =
+		"server.inet.socket.address.default.secure.port";
+
 	public static final String SERVLET_CONTEXT_CLASS_LOADER_POOL_FALLBACK =
 		"servlet.context.class.loader.pool.fallback";
 

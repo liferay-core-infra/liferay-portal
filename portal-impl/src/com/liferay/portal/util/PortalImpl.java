@@ -6779,10 +6779,31 @@ public class PortalImpl implements Portal {
 			return;
 		}
 
+		int serverPort = httpServletRequest.getServerPort();
+
+		if (secure) {
+			int serverInetSocketAddressDefaultSecurePort =
+				PrefsPropsUtil.getInteger(
+					PropsKeys.SERVER_INET_SOCKET_ADDRESS_DEFAULT_SECURE_PORT,
+					0);
+
+			if (serverInetSocketAddressDefaultSecurePort != 0) {
+				serverPort = serverInetSocketAddressDefaultSecurePort;
+			}
+		}
+		else {
+			int serverInetSocketAddressDefaultPort = PrefsPropsUtil.getInteger(
+				PropsKeys.SERVER_INET_SOCKET_ADDRESS_DEFAULT_PORT, 0);
+
+			if (serverInetSocketAddressDefaultPort != 0) {
+				serverPort = serverInetSocketAddressDefaultPort;
+			}
+		}
+
 		InetSocketAddress localInetSocketAddress = new InetSocketAddress(
 			localInetAddress, httpServletRequest.getLocalPort());
 		InetSocketAddress serverInetSocketAddress = new InetSocketAddress(
-			serverInetAddress, httpServletRequest.getServerPort());
+			serverInetAddress, serverPort);
 
 		if (secure) {
 			if (_securePortalLocalInetSocketAddress.compareAndSet(

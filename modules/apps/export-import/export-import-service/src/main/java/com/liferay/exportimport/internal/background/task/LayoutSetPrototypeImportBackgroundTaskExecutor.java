@@ -17,6 +17,7 @@ package com.liferay.exportimport.internal.background.task;
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
 import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeConfiguration;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
@@ -27,7 +28,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
@@ -56,7 +60,7 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 		// Isolation level guarantees this will be serial in a group
 
-		setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_GROUP);
+		setIsolationLevel(_getImportTaskIsolationLevel());
 	}
 
 	@Override
@@ -143,6 +147,29 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 		}
 
 		return BackgroundTaskResult.SUCCESS;
+	}
+
+	private int _getImportTaskIsolationLevel() {
+		try {
+			LayoutSetPrototypeConfiguration layoutSetPrototypeConfiguration =
+				ConfigurationProviderUtil.getCompanyConfiguration(
+					LayoutSetPrototypeConfiguration.class,
+					CompanyThreadLocal.getCompanyId());
+
+			String importTaskIsolation =
+				layoutSetPrototypeConfiguration.importTaskIsolation();
+
+			if ((importTaskIsolation != null) &&
+				importTaskIsolation.equals("company")) {
+
+				return BackgroundTaskConstants.ISOLATION_LEVEL_COMPANY;
+			}
+		}
+		catch (ConfigurationException configurationException) {
+			_log.error(configurationException);
+		}
+
+		return BackgroundTaskConstants.ISOLATION_LEVEL_GROUP;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

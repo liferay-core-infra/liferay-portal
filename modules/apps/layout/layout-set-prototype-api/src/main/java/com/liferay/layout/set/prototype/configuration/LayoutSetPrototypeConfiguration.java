@@ -39,4 +39,11 @@ public interface LayoutSetPrototypeConfiguration {
 	)
 	public boolean triggerPropagation();
 
+	@Meta.AD(
+		deflt = "group", description = "import-task-isolation-help",
+		name = "import-task-isolation", optionLabels = {"Group", "Company"},
+		optionValues = {"group", "company"}, required = false
+	)
+	public String importTaskIsolation();
+
 }

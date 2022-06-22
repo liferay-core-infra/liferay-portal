@@ -714,6 +714,22 @@ public class JournalArticlePersistenceTest {
 		Assert.assertEquals(existingJournalArticle, newJournalArticle);
 	}
 
+	@Test
+	public void testFindByG_A_VWithNonZeroDecimalVersion() throws Exception {
+		JournalArticle newJournalArticle = addJournalArticle();
+
+		newJournalArticle.setVersion(newJournalArticle.getVersion() + 0.1);
+
+		_persistence.update(newJournalArticle);
+
+		Assert.assertEquals(
+			newJournalArticle,
+			_persistence.findByG_A_V(
+				newJournalArticle.getGroupId(),
+				newJournalArticle.getArticleId(),
+				newJournalArticle.getVersion()));
+	}
+
 	@Test(expected = NoSuchArticleException.class)
 	public void testFindByPrimaryKeyMissing() throws Exception {
 		long pk = RandomTestUtil.nextLong();

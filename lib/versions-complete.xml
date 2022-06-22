@@ -1973,17 +1973,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>com.liferay.fragment.entry.processor.portlet.jar!org.jsoup.jar</file-name>
-				<version>1.10.2.LIFERAY-PATCHED-3</version>
-				<project-name>org.jsoup</project-name>
-				<licenses>
-					<license>
-						<license-name>LGPL 2.1</license-name>
-						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>com.liferay.frontend.css.rtl.servlet.jar!annotations.jar</file-name>
 				<version>2.0.3</version>
 				<project-name>FindBugs-Annotations</project-name>
@@ -2370,17 +2359,6 @@
 					<license>
 						<license-name>GNU Lesser General Public License (LGPL)</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.layout.content.page.editor.web.jar!org.jsoup.jar</file-name>
-				<version>1.10.2.LIFERAY-PATCHED-3</version>
-				<project-name>org.jsoup</project-name>
-				<licenses>
-					<license>
-						<license-name>LGPL 2.1</license-name>
-						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -3411,6 +3389,18 @@
 					<license>
 						<license-name>CPL</license-name>
 						<license-url>http://www.opensource.org/licenses/cpl1.0.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.remote.json.web.service.web.jar!jodd-proxetta.jar</file-name>
+				<version>6.0.0</version>
+				<project-name>Jodd Proxetta</project-name>
+				<project-url>https://http.jodd.org</project-url>
+				<licenses>
+					<license>
+						<license-name>BSD-2-Clause</license-name>
+						<license-url>https://github.com/oblac/jodd-proxetta/blob/master/LICENSE</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -6147,17 +6137,6 @@
 					<license>
 						<license-name>BSD-3-Clause</license-name>
 						<license-url>http://x-stream.github.io/license.html</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.style.book.web.jar!org.jsoup.jar</file-name>
-				<version>1.10.2.LIFERAY-PATCHED-3</version>
-				<project-name>org.jsoup</project-name>
-				<licenses>
-					<license>
-						<license-name>LGPL 2.1</license-name>
-						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
 					</license>
 				</licenses>
 			</library>

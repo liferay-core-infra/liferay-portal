@@ -37,7 +37,7 @@ import com.liferay.journal.exception.DuplicateArticleIdException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalService;
-import com.liferay.journal.service.persistence.JournalArticleUtil;
+import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.journal.util.JournalConverter;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
@@ -64,7 +64,6 @@ import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionService;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -80,7 +79,6 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Tuple;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.Inject;
@@ -402,7 +400,7 @@ public class JournalArticleLocalServiceTest {
 
 		_journalArticleLocalService.updateJournalArticle(article);
 
-		JournalArticleUtil.clearCache(article);
+		_journalArticlePersistence.clearCache(article);
 
 		Assert.assertEquals(
 			article,
@@ -443,7 +441,7 @@ public class JournalArticleLocalServiceTest {
 				curArticle.getResourcePrimKey());
 
 			_ddmTemplateLinkLocalService.deleteTemplateLink(
-				PortalUtil.getClassNameId(JournalArticle.class),
+				_portal.getClassNameId(JournalArticle.class),
 				curArticle.getPrimaryKey());
 		}
 	}
@@ -498,7 +496,7 @@ public class JournalArticleLocalServiceTest {
 
 			_assertArticleUser(journalArticle, ownerUser, ownerUser);
 
-			Role siteMemberRole = RoleLocalServiceUtil.getRole(
+			Role siteMemberRole = _roleLocalService.getRole(
 				_group.getCompanyId(), RoleConstants.SITE_MEMBER);
 
 			_resourcePermissionLocalService.setResourcePermissions(
@@ -642,7 +640,7 @@ public class JournalArticleLocalServiceTest {
 
 		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
 			_group.getGroupId(), ddmStructure.getStructureId(),
-			PortalUtil.getClassNameId(JournalArticle.class),
+			_portal.getClassNameId(JournalArticle.class),
 			TemplateConstants.LANG_TYPE_FTL,
 			JournalTestUtil.getSampleTemplateFTL(), LocaleUtil.US);
 
@@ -706,6 +704,9 @@ public class JournalArticleLocalServiceTest {
 
 	@Inject
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Inject
+	private JournalArticlePersistence _journalArticlePersistence;
 
 	@Inject
 	private JournalConverter _journalConverter;

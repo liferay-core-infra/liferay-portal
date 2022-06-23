@@ -391,7 +391,7 @@ public class JournalArticleLocalServiceTest {
 	}
 
 	@Test
-	public void testGetArticleWithDecimalVersion() throws Exception {
+	public void testGetArticleWithNonzeroDecimalVersion() throws Exception {
 		JournalArticle article = JournalTestUtil.addArticle(
 			_group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);

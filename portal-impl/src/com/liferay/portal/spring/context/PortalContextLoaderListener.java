@@ -43,10 +43,12 @@ import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.ClearThreadLocalUtil;
 import com.liferay.portal.kernel.util.ClearTimerThreadUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.log4j.Log4JUtil;
 import com.liferay.portal.module.framework.ModuleFrameworkUtil;
 import com.liferay.portal.spring.aop.DynamicProxyCreator;
@@ -264,7 +266,11 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
 		FutureTask<Void> springInitTask = null;
 
-		if (PropsValues.MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED) {
+		if (GetterUtil.getBoolean(
+				SystemProperties.get(
+					SystemPropsKeys.
+						MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED))) {
+
 			springInitTask = new FutureTask<>(
 				() -> {
 					super.contextInitialized(servletContextEvent);

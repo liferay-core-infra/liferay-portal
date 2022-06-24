@@ -15,6 +15,9 @@
 package com.liferay.petra.log4j.internal;
 
 import com.liferay.petra.reflect.ReflectionUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.lang.reflect.Field;
 
@@ -66,6 +69,17 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		loggerContext.updateLoggers();
 	}
 
+	public String getCompanyLogDirectory(long companyId) {
+		CompanyLogRoutingAppender companyLogRoutingAppender =
+			_companyLogRoutingAppender;
+
+		if (companyLogRoutingAppender == null) {
+			return null;
+		}
+
+		return companyLogRoutingAppender.getCompanyLogDirectory(companyId);
+	}
+
 	@Override
 	public void start() {
 		LoggerConfig rootLoggerConfig = getRootLogger();
@@ -85,10 +99,31 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		Map<String, Appender> newAppenders =
 			abstractConfiguration.getAppenders();
 
-		for (Appender newAppender : newAppenders.values()) {
-			newAppender.start();
+		CompanyLogRoutingAppender companyLogRoutingAppender = null;
 
+		for (Appender newAppender : newAppenders.values()) {
 			String appenderName = newAppender.getName();
+
+			if (_isNewCompanyLogRoutingAppender(newAppender)) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(
+						StringBundler.concat(
+							"Ignore appender ", appenderName,
+							", as there is already a ",
+							CompanyLogRoutingAppender.PLUGIN_NAME,
+							" type appender ",
+							_companyLogRoutingAppender.getName()));
+				}
+
+				continue;
+			}
+
+			if (newAppender instanceof CompanyLogRoutingAppender) {
+				companyLogRoutingAppender =
+					(CompanyLogRoutingAppender)newAppender;
+			}
+
+			newAppender.start();
 
 			Appender currentAppender = currentAppenders.put(
 				appenderName, newAppender);
@@ -122,6 +157,10 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			}
 
 			currentAppender.stop();
+		}
+
+		if (companyLogRoutingAppender != null) {
+			_companyLogRoutingAppender = companyLogRoutingAppender;
 		}
 	}
 
@@ -184,6 +223,22 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		return null;
 	}
 
+	private boolean _isNewCompanyLogRoutingAppender(Appender newAppender) {
+		if (!(newAppender instanceof CompanyLogRoutingAppender)) {
+			return false;
+		}
+
+		String appenderName = newAppender.getName();
+
+		if ((_companyLogRoutingAppender == null) ||
+			appenderName.equals(_companyLogRoutingAppender.getName())) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	private void _mergeLoggerConfig(
 		LoggerConfig currentLoggerConfig, LoggerConfig newLoggerConfig) {
 
@@ -209,6 +264,10 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 
 		for (Appender newAppender : newAppenders.values()) {
 			String name = newAppender.getName();
+
+			if (_isNewCompanyLogRoutingAppender(newAppender)) {
+				continue;
+			}
 
 			AppenderRef newAppenderRef = _getAppenderRef(name, newLoggerConfig);
 
@@ -243,6 +302,9 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		CentralizedConfiguration.class);
+
 	private static final Field _appenderRefsField;
 
 	static {
@@ -254,5 +316,7 @@ public class CentralizedConfiguration extends AbstractConfiguration {
 			throw new ExceptionInInitializerError(exception);
 		}
 	}
+
+	private volatile CompanyLogRoutingAppender _companyLogRoutingAppender;
 
 }

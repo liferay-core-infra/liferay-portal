@@ -1,0 +1,267 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.portal.company.log.internal.servlet;
+
+import com.liferay.petra.log4j.Log4JUtil;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.NoSuchCompanyException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
+import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.ServletResponseUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Hai Yu
+ */
+@Component(
+	enabled = false, immediate = true,
+	property = {
+		"osgi.http.whiteboard.servlet.name=com.liferay.portal.company.log.internal.servlet.CompanyLogServlet",
+		"osgi.http.whiteboard.servlet.pattern=/company-log/*",
+		"servlet.init.httpMethods=GET"
+	},
+	service = Servlet.class
+)
+public class CompanyLogServlet extends HttpServlet {
+
+	@Override
+	protected void doGet(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws IOException, ServletException {
+
+		try {
+			PermissionChecker permissionChecker = _getPermissionChecker(
+				httpServletRequest);
+
+			String path = HttpComponentsUtil.fixPath(
+				httpServletRequest.getPathInfo());
+
+			String[] pathArray = StringUtil.split(path, CharPool.SLASH);
+
+			if (pathArray.length == 0) {
+				_listCompaniesLogFiles(
+					permissionChecker, httpServletRequest, httpServletResponse);
+			}
+			else if (pathArray.length == 2) {
+				_downloadLogFile(
+					permissionChecker, httpServletRequest, httpServletResponse,
+					pathArray);
+			}
+		}
+		catch (FileNotFoundException fileNotFoundException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(fileNotFoundException);
+			}
+
+			_portal.sendError(
+				HttpServletResponse.SC_NOT_FOUND, fileNotFoundException,
+				httpServletRequest, httpServletResponse);
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception);
+			}
+
+			_portal.sendError(
+				exception, httpServletRequest, httpServletResponse);
+		}
+	}
+
+	private void _downloadLogFile(
+			PermissionChecker permissionChecker,
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, String[] pathArray)
+		throws Exception {
+
+		long companyId = GetterUtil.getLongStrict(pathArray[0]);
+
+		if (_companyLocalService.fetchCompanyById(companyId) == null) {
+			throw new NoSuchCompanyException(
+				"No Company exists with the primary key " + companyId);
+		}
+
+		if (!permissionChecker.isCompanyAdmin(companyId)) {
+			throw new PrincipalException.MustBeCompanyAdmin(
+				permissionChecker.getUserId());
+		}
+
+		String logFilesDirPath = Log4JUtil.getCompanyLogDirectory(companyId);
+
+		if (logFilesDirPath == null) {
+			return;
+		}
+
+		String fileName = pathArray[1];
+
+		String path = StringBundler.concat(
+			logFilesDirPath, StringPool.SLASH, fileName);
+
+		File logFile = new File(path);
+
+		String canonicalPath = logFile.getCanonicalPath();
+
+		if (File.separatorChar != CharPool.SLASH) {
+			canonicalPath = StringUtil.replace(
+				canonicalPath, File.separatorChar, CharPool.SLASH);
+		}
+
+		if (!path.equals(canonicalPath)) {
+			throw new PrincipalException("Unauthorized access");
+		}
+
+		if (logFile.exists()) {
+			ServletResponseUtil.sendFile(
+				httpServletRequest, httpServletResponse, fileName,
+				new FileInputStream(logFile), logFile.length(),
+				MimeTypesUtil.getContentType(fileName),
+				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+		}
+		else {
+			throw new FileNotFoundException();
+		}
+	}
+
+	private PermissionChecker _getPermissionChecker(
+			HttpServletRequest httpServletRequest)
+		throws Exception {
+
+		User user = _portal.getUser(httpServletRequest);
+
+		if (user == null) {
+			throw new PrincipalException(
+				"The current user is not authenticated");
+		}
+
+		return _permissionCheckerFactory.create(user);
+	}
+
+	private void _listCompaniesLogFiles(
+			PermissionChecker permissionChecker,
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse)
+		throws Exception {
+
+		httpServletResponse.setContentType("text/html");
+
+		PrintWriter printWriter = httpServletResponse.getWriter();
+
+		printWriter.println("<html><body>");
+
+		StringBundler sb = new StringBundler();
+
+		if (permissionChecker.isOmniadmin()) {
+			_companyLocalService.forEachCompany(
+				company -> _listCompanyLogFiles(
+					httpServletRequest, sb, company));
+		}
+		else if (permissionChecker.isCompanyAdmin()) {
+			User user = permissionChecker.getUser();
+
+			_listCompanyLogFiles(
+				httpServletRequest, sb,
+				_companyLocalService.getCompany(user.getCompanyId()));
+		}
+		else {
+			throw new PrincipalException.MustBeCompanyAdmin(
+				permissionChecker.getUserId());
+		}
+
+		if (sb.length() == 0) {
+			sb.append("No log is avaiable.");
+		}
+
+		printWriter.println(sb.toString());
+		printWriter.println("</body></html>");
+	}
+
+	private void _listCompanyLogFiles(
+		HttpServletRequest httpServletRequest, StringBundler sb,
+		Company company) {
+
+		String logFilesDirPath = Log4JUtil.getCompanyLogDirectory(
+			company.getCompanyId());
+
+		if (logFilesDirPath == null) {
+			return;
+		}
+
+		File logFilesDir = new File(logFilesDirPath);
+
+		if (!logFilesDir.isDirectory()) {
+			return;
+		}
+
+		sb.append("<h1>");
+		sb.append(company.getWebId());
+		sb.append("</h1><ul>");
+
+		for (File file : logFilesDir.listFiles()) {
+			String href = StringBundler.concat(
+				_portal.getPortalURL(httpServletRequest),
+				_portal.getPathContext(), "/o/company-log/",
+				company.getCompanyId(), StringPool.SLASH, file.getName());
+
+			sb.append("<li><a target=\"_self\" href=\"");
+			sb.append(href);
+			sb.append("\">");
+			sb.append(file.getName());
+			sb.append("</a></li>");
+		}
+
+		sb.append("</ul>");
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CompanyLogServlet.class);
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private PermissionCheckerFactory _permissionCheckerFactory;
+
+	@Reference
+	private Portal _portal;
+
+}

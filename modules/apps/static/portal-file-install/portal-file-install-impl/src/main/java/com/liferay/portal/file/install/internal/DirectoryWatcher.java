@@ -24,6 +24,9 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.file.install.FileInstaller;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
@@ -832,15 +835,17 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 			BundleStartLevel bundleStartLevel = bundle.adapt(
 				BundleStartLevel.class);
 
+			int dynamicInstallStartLevel = GetterUtil.getInteger(
+				SystemProperties.get(
+					SystemPropsKeys.
+						MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL));
+
 			if (header != null) {
 				bundleStartLevel.setStartLevel(
 					PropsValues.MODULE_FRAMEWORK_WEB_START_LEVEL);
 			}
-			else if (PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL !=
-						0) {
-
-				bundleStartLevel.setStartLevel(
-					PropsValues.MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL);
+			else if (dynamicInstallStartLevel != 0) {
+				bundleStartLevel.setStartLevel(dynamicInstallStartLevel);
 			}
 
 			return bundle;

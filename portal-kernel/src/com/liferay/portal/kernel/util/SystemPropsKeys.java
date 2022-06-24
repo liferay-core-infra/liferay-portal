@@ -25,6 +25,9 @@ public interface SystemPropsKeys {
 	public static final String MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED =
 		"module.framework.concurrent.startup.enabled";
 
+	public static final String MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL =
+		"module.framework.dynamic.install.start.level";
+
 	public static final String MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING =
 		"module.framework.file.install.config.encoding";
 

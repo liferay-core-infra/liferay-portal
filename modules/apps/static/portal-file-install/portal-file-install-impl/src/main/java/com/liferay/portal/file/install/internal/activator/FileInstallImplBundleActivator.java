@@ -20,7 +20,8 @@ import com.liferay.portal.file.install.internal.DirectoryWatcher;
 import com.liferay.portal.file.install.internal.Scanner;
 import com.liferay.portal.file.install.internal.configuration.ConfigurationFileInstaller;
 import com.liferay.portal.file.install.internal.configuration.FileSyncConfigurationListener;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 
 import java.io.File;
 
@@ -65,16 +66,18 @@ public class FileInstallImplBundleActivator implements BundleActivator {
 							FileInstaller.class.getName(),
 							new ConfigurationFileInstaller(
 								configurationAdmin,
-								PropsValues.
-									MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING),
+								SystemProperties.get(
+									SystemPropsKeys.
+										MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING)),
 							null),
 						_bundleContext.registerService(
 							ConfigurationListener.class.getName(),
 							new FileSyncConfigurationListener(
 								configurationAdmin,
 								FileInstallImplBundleActivator.this,
-								PropsValues.
-									MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING),
+								SystemProperties.get(
+									SystemPropsKeys.
+										MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING)),
 							null));
 				}
 

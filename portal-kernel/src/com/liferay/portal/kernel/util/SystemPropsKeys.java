@@ -31,6 +31,9 @@ public interface SystemPropsKeys {
 	public static final String MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING =
 		"module.framework.file.install.config.encoding";
 
+	public static final String MODULE_FRAMEWORK_RUNTIME_START_LEVEL =
+		"module.framework.runtime.start.level";
+
 	public static final String MODULE_FRAMEWORK_WEB_START_LEVEL =
 		"module.framework.web.start.level";
 

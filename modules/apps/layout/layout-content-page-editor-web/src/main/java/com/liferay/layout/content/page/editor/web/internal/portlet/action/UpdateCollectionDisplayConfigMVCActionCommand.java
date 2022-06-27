@@ -107,16 +107,12 @@ public class UpdateCollectionDisplayConfigMVCActionCommand
 				FragmentEntryProcessorConstants.
 					KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
 
-			if ((configuration == null) || !JSONUtil.isValid(configuration)) {
-				continue;
-			}
+			JSONObject configurationJSONObject = JSONUtil.createJSONObject(
+				configuration);
 
-			JSONObject configurationJSONObject =
-				editableValuesJSONObject.getJSONObject(
-					FragmentEntryProcessorConstants.
-						KEY_FREEMARKER_FRAGMENT_ENTRY_PROCESSOR);
+			if ((configurationJSONObject == null) ||
+				!configurationJSONObject.has("targetCollections")) {
 
-			if (!configurationJSONObject.has("targetCollections")) {
 				continue;
 			}
 

@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -71,23 +71,23 @@ public class FileInstallCfgTest {
 		Bundle bundle = FrameworkUtil.getBundle(FileInstallCfgTest.class);
 
 		_bundleContext = bundle.getBundleContext();
+	}
 
+	@Before
+	public void setUp() {
 		_originalModuleFrameworkFileInstallCfgEnabled =
 			ReflectionTestUtil.getAndSetFieldValue(
 				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
 				true);
 	}
 
-	@AfterClass
-	public static void tearDownClass() {
-		ReflectionTestUtil.setFieldValue(
-			PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
-			_originalModuleFrameworkFileInstallCfgEnabled);
-	}
-
 	@After
 	public void tearDown() throws Exception {
 		_deleteConfiguration();
+
+		ReflectionTestUtil.setFieldValue(
+			PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
+			_originalModuleFrameworkFileInstallCfgEnabled);
 	}
 
 	@Test
@@ -112,10 +112,9 @@ public class FileInstallCfgTest {
 
 	@Test
 	public void testConfigurationDeprecatedFileExtension() throws Exception {
-		Boolean originalModuleFrameworkFileInstallCfgEnabled =
-			ReflectionTestUtil.getAndSetFieldValue(
-				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
-				false);
+		ReflectionTestUtil.setFieldValue(
+			PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
+			false);
 
 		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
 			".testDummy");
@@ -162,10 +161,6 @@ public class FileInstallCfgTest {
 		}
 		finally {
 			Files.deleteIfExists(configPathDeprecated);
-
-			ReflectionTestUtil.setFieldValue(
-				PropsValues.class, "MODULE_FRAMEWORK_FILE_INSTALL_CFG_ENABLED",
-				originalModuleFrameworkFileInstallCfgEnabled);
 		}
 	}
 
@@ -220,9 +215,8 @@ public class FileInstallCfgTest {
 	@Inject
 	private static ConfigurationAdmin _configurationAdmin;
 
-	private static boolean _originalModuleFrameworkFileInstallCfgEnabled;
-
 	private Configuration _configuration;
 	private Path _configurationPath;
+	private boolean _originalModuleFrameworkFileInstallCfgEnabled;
 
 }

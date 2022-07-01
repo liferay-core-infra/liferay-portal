@@ -38,6 +38,7 @@ import java.io.Serializable;
 import java.net.URL;
 
 import java.util.Map;
+import java.util.Objects;
 
 import javax.management.MBeanServer;
 
@@ -90,28 +91,60 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 		_defaultConfigFile = defaultConfigFile;
 	}
 
-	@Override
 	protected PortalCache<K, V> createPortalCache(
-		PortalCacheConfiguration portalCacheConfiguration) {
+		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration,
+		String parentPortalCacheName) {
 
-		String portalCacheName = portalCacheConfiguration.getPortalCacheName();
+		String portalCacheName =
+			ehcachePortalCacheConfiguration.getPortalCacheName();
 
 		synchronized (_cacheManager) {
 			if (!_cacheManager.cacheExists(portalCacheName)) {
-				_cacheManager.addCache(portalCacheName);
+				if (Validator.isNotNull(parentPortalCacheName) &&
+					!Objects.equals(portalCacheName, parentPortalCacheName) &&
+					_cacheManager.cacheExists(parentPortalCacheName)) {
+
+					Cache parentCache = _cacheManager.getCache(
+						parentPortalCacheName);
+
+					CacheConfiguration cacheConfiguration =
+						parentCache.getCacheConfiguration();
+
+					CacheConfiguration clonedCacheConfiguration =
+						cacheConfiguration.clone();
+
+					clonedCacheConfiguration.setName(portalCacheName);
+
+					_cacheManager.addCache(new Cache(clonedCacheConfiguration));
+				}
+				else {
+					_cacheManager.addCache(portalCacheName);
+				}
 			}
 		}
 
 		Cache cache = _cacheManager.getCache(portalCacheName);
-
-		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration =
-			(EhcachePortalCacheConfiguration)portalCacheConfiguration;
 
 		if (ehcachePortalCacheConfiguration.isRequireSerialization()) {
 			return new SerializableEhcachePortalCache<>(this, cache);
 		}
 
 		return new EhcachePortalCache<>(this, cache);
+	}
+
+	@Override
+	protected PortalCache<K, V> createPortalCache(
+		PortalCacheConfiguration portalCacheConfiguration) {
+
+		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration =
+			(EhcachePortalCacheConfiguration)portalCacheConfiguration;
+
+		if (_dbPartitionEnabled) {
+			return new DBPartitionPortalCache<>(
+				this, ehcachePortalCacheConfiguration);
+		}
+
+		return createPortalCache(ehcachePortalCacheConfiguration, null);
 	}
 
 	@Override
@@ -160,6 +193,9 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 		setTransactionalPortalCacheNames(
 			GetterUtil.getStringValues(
 				props.getArray(PropsKeys.TRANSACTIONAL_CACHE_NAMES)));
+
+		_dbPartitionEnabled = GetterUtil.getBoolean(
+			props.get("database.partition.enabled"));
 
 		if (Validator.isNull(_configFile)) {
 			_configFile = _defaultConfigFile;
@@ -316,6 +352,7 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 	private CacheManager _cacheManager;
 	private String _configFile;
 	private ServiceTracker<?, ?> _configuratorSettingsServiceTracker;
+	private boolean _dbPartitionEnabled;
 	private String _defaultConfigFile;
 	private ServiceTracker<MBeanServer, ManagementService>
 		_mBeanServerServiceTracker;

@@ -39,13 +39,17 @@ public class PortalDirTest {
 
 	@Test
 	public void testPortalDir() {
-		File portalWebInfDir = new File(
-			PropsValues.LIFERAY_WEB_PORTAL_DIR, "WEB-INF");
+		String shieldedContainerLibPortalDir =
+			PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR;
+
+		File shieldedContainerLibDir = new File(shieldedContainerLibPortalDir);
+
+		File portalWebInfDir = shieldedContainerLibDir.getParentFile();
 
 		Assert.assertTrue(portalWebInfDir.isDirectory());
 
 		Assert.assertTrue(
-			PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR.endsWith(
+			shieldedContainerLibPortalDir.endsWith(
 				"WEB-INF/shielded-container-lib/"));
 	}
 

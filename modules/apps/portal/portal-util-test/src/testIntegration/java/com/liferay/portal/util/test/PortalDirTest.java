@@ -15,10 +15,15 @@
 package com.liferay.portal.util.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.servlet.ServletContextPool;
+import com.liferay.portal.spring.context.PortalContextLoaderListener;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
+
+import javax.servlet.ServletContext;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -39,8 +44,11 @@ public class PortalDirTest {
 
 	@Test
 	public void testPortalDir() {
+		ServletContext servletContext = ServletContextPool.get(
+			PortalContextLoaderListener.getPortalServletContextName());
+
 		File portalWebInfDir = new File(
-			PropsValues.LIFERAY_WEB_PORTAL_DIR, "WEB-INF");
+			servletContext.getRealPath(StringPool.SLASH), "WEB-INF");
 
 		Assert.assertTrue(portalWebInfDir.isDirectory());
 

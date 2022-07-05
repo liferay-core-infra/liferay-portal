@@ -19,6 +19,5 @@ Require-Capability:\
 	OSGI-INF/configurator=configurator,\
 	@com.liferay.petra.apache.http.components-[0-9.]*.jar,\
 	@google-collections-[0-9.]*.jar,\
-	@gson-[0-9.]*.jar,\
 	@joda-time-[0-9.]*.jar,\
 	@jsontoken-[0-9.]*.jar

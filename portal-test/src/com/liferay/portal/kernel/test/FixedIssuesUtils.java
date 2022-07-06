@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.test;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import org.junit.Assume;
 
@@ -41,7 +42,7 @@ public class FixedIssuesUtils {
 
 	private FixedIssuesUtils() {
 		_fixedIssues = StringUtil.split(
-			GetterUtil.getString(System.getProperty("fixed.issues")));
+			GetterUtil.getString(SystemProperties.get("fixed.issues")));
 	}
 
 	private static final FixedIssuesUtils _fixedIssuesUtils =

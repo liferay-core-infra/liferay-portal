@@ -72,7 +72,8 @@ public class LPKGVersionChangeLogAssertorTest {
 		}
 
 		Path logsPath = Paths.get(
-			System.getProperty("liferay.log.dir", liferayHome.concat("/logs")));
+			SystemProperties.get(
+				"liferay.log.dir", liferayHome.concat("/logs")));
 
 		boolean hasLog = false;
 

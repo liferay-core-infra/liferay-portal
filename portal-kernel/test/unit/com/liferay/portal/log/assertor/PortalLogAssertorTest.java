@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.IOException;
 
@@ -60,7 +61,7 @@ public class PortalLogAssertorTest {
 		StringBundler sb = new StringBundler();
 
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-				Paths.get(System.getProperty("osgi.state.dir")), "*.log")) {
+				Paths.get(SystemProperties.get("osgi.state.dir")), "*.log")) {
 
 			for (Path path : directoryStream) {
 				if (!Files.isRegularFile(path)) {
@@ -84,7 +85,7 @@ public class PortalLogAssertorTest {
 	@Test
 	public void testScanXMLLog() throws IOException {
 		Files.walkFileTree(
-			Paths.get(System.getProperty("liferay.log.dir")),
+			Paths.get(SystemProperties.get("liferay.log.dir")),
 			new SimpleFileVisitor<Path>() {
 
 				@Override

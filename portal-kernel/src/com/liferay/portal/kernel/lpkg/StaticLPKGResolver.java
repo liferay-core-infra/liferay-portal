@@ -61,7 +61,7 @@ public class StaticLPKGResolver {
 
 		_staticLPKGBundleSymbolicNames = staticLPKGBundleSymbolicNameList;
 
-		String staticLPKGFileNames = System.getProperty(
+		String staticLPKGFileNames = SystemProperties.get(
 			"static.lpkg.file.names");
 
 		List<String> staticLPKGFileNameList = new ArrayList<>(

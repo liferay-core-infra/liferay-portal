@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.ServerDetector;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.util.PropsValues;
 
@@ -74,7 +75,7 @@ public class StartupAction extends SimpleAction {
 
 		if (ServerDetector.isTomcat()) {
 			Path libPath = Paths.get(
-				System.getProperty("catalina.base"), "lib");
+				SystemProperties.get("catalina.base"), "lib");
 
 			Path extPath = libPath.resolve("ext");
 

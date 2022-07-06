@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import org.junit.BeforeClass;
 
@@ -30,11 +31,11 @@ public abstract class AutoBalanceTestCase {
 	@BeforeClass
 	public static void setUpClass() {
 		testClassGroupIndex = GetterUtil.getInteger(
-			System.getProperty("test.class.group.index"), -1);
+			SystemProperties.get("test.class.group.index"), -1);
 
 		if (testClassGroupIndex >= 0) {
 			String[] testClassGroupArray = StringUtil.split(
-				System.getProperty("test.class.groups"), CharPool.SPACE);
+				SystemProperties.get("test.class.groups"), CharPool.SPACE);
 
 			testClassGroupsSize = testClassGroupArray.length;
 		}

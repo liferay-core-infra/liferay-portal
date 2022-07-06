@@ -15,7 +15,6 @@
 package com.liferay.portal.kernel.util;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 
 import java.text.DateFormat;
 
@@ -167,11 +166,11 @@ public class ReleaseInfo {
 
 	private static final int _PARENT_BUILD_NUMBER = _BUILD_NUMBER;
 
-	private static final String _RELEASE_INFO_PREFIX = System.getProperty(
-		"liferay.release.info.prefix", StringPool.BLANK);
+	private static final String _RELEASE_INFO_PREFIX = GetterUtil.getString(
+		SystemProperties.get("liferay.release.info.prefix"));
 
-	private static final String _RELEASE_INFO_SUFFIX = System.getProperty(
-		"liferay.release.info.suffix", StringPool.BLANK);
+	private static final String _RELEASE_INFO_SUFFIX = GetterUtil.getString(
+		SystemProperties.get("liferay.release.info.suffix"));
 
 	private static final String _VENDOR = "Liferay, Inc.";
 

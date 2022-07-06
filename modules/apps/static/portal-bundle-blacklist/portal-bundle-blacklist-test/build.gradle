@@ -1,3 +1,5 @@
+import com.liferay.portal.kernel.util.SystemProperties
+
 dependencies {
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	testCompile group: "org.osgi", name: "osgi.core", version: "6.0.0"
@@ -13,5 +15,5 @@ dependencies {
 
 test {
 	systemProperty "blacklist.config.name", System.getProperty("blacklist.config.name")
-	systemProperty "liferay.home", System.getProperty("liferay.home")
+	systemProperty "liferay.home", SystemProperties.get("liferay.home")
 }

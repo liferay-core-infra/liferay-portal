@@ -96,7 +96,7 @@ public class WabGenerator
 
 		final Set<String> requiredForStartupContextPaths =
 			_getRequiredForStartupContextPaths(
-				Paths.get(PropsValues.LIFERAY_HOME, "osgi/war"));
+				Paths.get(PropsValues.MODULE_FRAMEWORK_WAR_DIR));
 
 		if (requiredForStartupContextPaths.isEmpty()) {
 			return;

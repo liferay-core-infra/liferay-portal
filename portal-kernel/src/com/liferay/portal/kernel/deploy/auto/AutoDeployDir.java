@@ -82,7 +82,10 @@ public class AutoDeployDir {
 
 		if (StringUtil.endsWith(fileName, ".cfg")) {
 			for (String curDirName : dirNames) {
-				if (curDirName.endsWith("/configs")) {
+				if (curDirName.equals(
+						PropsUtil.get(
+							PropsKeys.MODULE_FRAMEWORK_CONFIGS_DIR))) {
+
 					dirName = curDirName;
 
 					break;
@@ -94,7 +97,10 @@ public class AutoDeployDir {
 		}
 		else if (StringUtil.endsWith(fileName, ".lpkg")) {
 			for (String curDirName : dirNames) {
-				if (curDirName.endsWith("/marketplace")) {
+				if (curDirName.equals(
+						PropsUtil.get(
+							PropsKeys.MODULE_FRAMEWORK_MARKETPLACE_DIR))) {
+
 					dirName = curDirName;
 
 					break;
@@ -103,7 +109,9 @@ public class AutoDeployDir {
 		}
 		else if (StringUtil.endsWith(fileName, ".war")) {
 			for (String curDirName : dirNames) {
-				if (curDirName.endsWith("/war")) {
+				if (curDirName.equals(
+						PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_WAR_DIR))) {
+
 					dirName = curDirName;
 
 					break;
@@ -118,7 +126,10 @@ public class AutoDeployDir {
 		}
 		else {
 			for (String curDirName : dirNames) {
-				if (curDirName.endsWith("/modules")) {
+				if (curDirName.equals(
+						PropsUtil.get(
+							PropsKeys.MODULE_FRAMEWORK_MODULES_DIR))) {
+
 					dirName = curDirName;
 
 					break;

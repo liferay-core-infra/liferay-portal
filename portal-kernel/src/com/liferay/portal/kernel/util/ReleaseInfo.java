@@ -167,10 +167,10 @@ public class ReleaseInfo {
 
 	private static final int _PARENT_BUILD_NUMBER = _BUILD_NUMBER;
 
-	private static final String _RELEASE_INFO_PREFIX = System.getProperty(
+	private static final String _RELEASE_INFO_PREFIX = SystemProperties.get(
 		"liferay.release.info.prefix", StringPool.BLANK);
 
-	private static final String _RELEASE_INFO_SUFFIX = System.getProperty(
+	private static final String _RELEASE_INFO_SUFFIX = SystemProperties.get(
 		"liferay.release.info.suffix", StringPool.BLANK);
 
 	private static final String _VENDOR = "Liferay, Inc.";

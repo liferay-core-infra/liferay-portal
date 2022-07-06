@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.test.rule;
 import com.liferay.petra.process.ClassPathUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -72,7 +73,7 @@ public class CodeCoverageAssertor implements TestRule {
 			public void evaluate() throws Throwable {
 				String className = beforeClass(description);
 
-				String whipStaticInstrument = System.getProperty(
+				String whipStaticInstrument = SystemProperties.get(
 					"whip.static.instrument");
 
 				System.setProperty("whip.static.instrument", StringPool.TRUE);

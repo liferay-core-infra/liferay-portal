@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools;
 
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class ArgumentsMap extends HashMap<String, String> {
 		String value = super.get(key);
 
 		if (Validator.isNull(value)) {
-			value = System.getProperty((String)key);
+			value = SystemProperties.get((String)key);
 		}
 
 		return value;

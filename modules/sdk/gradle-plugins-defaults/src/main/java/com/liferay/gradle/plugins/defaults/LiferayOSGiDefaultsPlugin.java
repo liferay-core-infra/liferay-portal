@@ -89,8 +89,11 @@ import com.liferay.gradle.util.copy.ExcludeExistingFileAction;
 import com.liferay.gradle.util.copy.RenameDependencyClosure;
 import com.liferay.gradle.util.copy.ReplaceLeadingPathAction;
 import com.liferay.gradle.util.copy.StripPathSegmentsAction;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.tools.wsdd.builder.WSDDBuilderArgs;
 
+import com.liferay.portal.util.PropsUtil;
+import com.liferay.portal.util.PropsValues;
 import groovy.lang.Closure;
 
 import groovy.time.Duration;
@@ -964,7 +967,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 				@Override
 				public File call() throws Exception {
 					return new File(
-						liferayExtension.getLiferayHome(), "osgi/configs");
+						PropsUtil.get(
+							PropsKeys.MODULE_FRAMEWORK_CONFIGS_DIR));
 				}
 
 			});

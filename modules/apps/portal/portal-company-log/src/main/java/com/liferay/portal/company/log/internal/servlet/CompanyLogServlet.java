@@ -19,6 +19,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchCompanyException;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -246,6 +247,12 @@ public class CompanyLogServlet extends HttpServlet {
 			sb.append(href);
 			sb.append("\">");
 			sb.append(file.getName());
+			sb.append(StringPool.SPACE);
+			sb.append(StringPool.OPEN_PARENTHESIS);
+			sb.append(
+				_language.formatStorageSize(
+					file.length(), httpServletRequest.getLocale()));
+			sb.append(StringPool.CLOSE_PARENTHESIS);
 			sb.append("</a></li>");
 		}
 
@@ -257,6 +264,9 @@ public class CompanyLogServlet extends HttpServlet {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private MimeTypes _mimeTypes;

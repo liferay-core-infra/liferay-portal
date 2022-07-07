@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypes;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -116,7 +117,7 @@ public class CompanyLogServlet extends HttpServlet {
 		sb.append(StringPool.TAB);
 		sb.append("<a target=\"_blank\" href=\"");
 		sb.append(href);
-		sb.append("\">View File Content");
+		sb.append("?download=false\">View File Content");
 		sb.append("</a>");
 	}
 
@@ -156,7 +157,16 @@ public class CompanyLogServlet extends HttpServlet {
 
 		File logFile = path.toFile();
 
-		if (logFile.exists()) {
+		if (!logFile.exists()) {
+			throw new FileNotFoundException(
+				StringBundler.concat(
+					"Unable to find log file ", fileName, " for company ",
+					companyId));
+		}
+
+		boolean download = ParamUtil.getBoolean(httpServletRequest, "download");
+
+		if (download) {
 			ServletResponseUtil.sendFile(
 				httpServletRequest, httpServletResponse, fileName,
 				new FileInputStream(logFile), logFile.length(),
@@ -164,10 +174,11 @@ public class CompanyLogServlet extends HttpServlet {
 				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 		}
 		else {
-			throw new FileNotFoundException(
-				StringBundler.concat(
-					"Unable to find log file ", fileName, " for company ",
-					companyId));
+			ServletResponseUtil.sendFile(
+				httpServletRequest, httpServletResponse, fileName,
+				new FileInputStream(logFile), logFile.length(),
+				_mimeTypes.getContentType(fileName),
+				HttpHeaders.CONTENT_DISPOSITION_INLINE);
 		}
 	}
 
@@ -253,7 +264,7 @@ public class CompanyLogServlet extends HttpServlet {
 
 			sb.append("<li><a target=\"_self\" href=\"");
 			sb.append(href);
-			sb.append("\">");
+			sb.append("?download=true\">");
 			sb.append(file.getName());
 			sb.append(StringPool.SPACE);
 			sb.append(StringPool.OPEN_PARENTHESIS);

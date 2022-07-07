@@ -112,6 +112,14 @@ public class CompanyLogServlet extends HttpServlet {
 		}
 	}
 
+	private void _displayViewFileContentLink(StringBundler sb, String href) {
+		sb.append(StringPool.TAB);
+		sb.append("<a target=\"_blank\" href=\"");
+		sb.append(href);
+		sb.append("\">View File Content");
+		sb.append("</a>");
+	}
+
 	private void _downloadLogFile(
 			PermissionChecker permissionChecker,
 			HttpServletRequest httpServletRequest,
@@ -253,6 +261,9 @@ public class CompanyLogServlet extends HttpServlet {
 				_language.formatStorageSize(
 					file.length(), httpServletRequest.getLocale()));
 			sb.append(StringPool.CLOSE_PARENTHESIS);
+
+			_displayViewFileContentLink(sb, href);
+
 			sb.append("</a></li>");
 		}
 

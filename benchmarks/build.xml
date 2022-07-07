@@ -27,6 +27,21 @@
 			<sysproperty key="external-properties" value="com/liferay/portal/tools/dependencies/portal-tools.properties" />
 			<sysproperty key="sample-sql-properties" value="${basedir}/benchmarks-actual.properties" />
 		</java>
+
+		<if>
+			<istrue value="${sample.sql.output.merge}" />
+			<then>
+				<echo>
+Sample SQL Build Successful
+Use ${sample.sql.output.dir}/sample-${sample.sql.db.type}.sql to insert into database.</echo>
+			</then>
+
+			<else>
+				<echo>
+Sample SQL Build Successful
+Use sql files in ${sample.sql.output.dir}/sqlfiles to insert into database.</echo>
+			</else>
+		</if>
 	</target>
 
 	<target name="clean">

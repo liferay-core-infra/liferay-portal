@@ -115,6 +115,14 @@ public class SampleSQLBuilder {
 			Map<String, StringBundler> sqls, String insertSQL)
 		throws IOException, SQLException {
 
+		if (insertSQL.startsWith("create")) {
+			compressSQLTemplate(db, directory, insertSQLWriters, insertSQL);
+
+			return;
+		}
+
+		insertSQL = insertSQL.substring(12);
+
 		String tableName = insertSQL.substring(0, insertSQL.indexOf(' '));
 
 		int index = insertSQL.indexOf(" values ") + 8;
@@ -176,7 +184,9 @@ public class SampleSQLBuilder {
 				s = s.trim();
 
 				if (s.length() > 0) {
-					if (s.startsWith("insert into ")) {
+					if (s.startsWith("create") ||
+						s.startsWith("insert into ")) {
+
 						if (!s.endsWith(");")) {
 							StringBundler sb = new StringBundler();
 
@@ -192,11 +202,9 @@ public class SampleSQLBuilder {
 							s = sb.toString();
 						}
 
-						compressSQL(
-							db, dir, insertSQLWriters, insertSQLs,
-							s.substring(12));
+						compressSQL(db, dir, insertSQLWriters, insertSQLs, s);
 					}
-					else {
+					else if (!s.contains("##")) {
 						miscSQLs.add(s);
 					}
 				}
@@ -234,6 +242,32 @@ public class SampleSQLBuilder {
 				miscSQLWriter.write(StringPool.NEW_LINE);
 			}
 		}
+	}
+
+	protected void compressSQLTemplate(
+			DB db, File directory, Map<String, Writer> sqlWriters,
+			String createSQLTemplate)
+		throws IOException, SQLException {
+
+		String tableName = null;
+
+		if (createSQLTemplate.startsWith("create table ")) {
+			tableName = createSQLTemplate.substring(
+				13, createSQLTemplate.indexOf(StringPool.OPEN_PARENTHESIS) - 1);
+		}
+		else {
+			int index = createSQLTemplate.indexOf(" on ");
+
+			tableName = createSQLTemplate.substring(
+				index + 4,
+				createSQLTemplate.indexOf(StringPool.OPEN_PARENTHESIS) - 1);
+		}
+
+		createSQLTemplate =
+			db.buildSQL(createSQLTemplate) + StringPool.NEW_LINE;
+
+		writeToInsertSQLFile(
+			directory, tableName, sqlWriters, createSQLTemplate);
 	}
 
 	protected Writer createFileWriter(File file) throws IOException {

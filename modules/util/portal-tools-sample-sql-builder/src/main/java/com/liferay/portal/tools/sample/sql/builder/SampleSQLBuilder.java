@@ -260,14 +260,7 @@ public class SampleSQLBuilder {
 
 					_loadCreateSQLTemplates(sampleSQLWriter);
 
-					FreeMarkerUtil.process(
-						BenchmarksPropsValues.SCRIPT,
-						HashMapBuilder.<String, Object>put(
-							"csvFileWriter", csvFileWriter
-						).put(
-							"dataFactory", new DataFactory()
-						).build(),
-						sampleSQLWriter);
+					_generateEditSQLTemplates(csvFileWriter, sampleSQLWriter);
 				}
 				catch (Throwable throwable) {
 					_freeMarkerThrowable = throwable;
@@ -340,6 +333,20 @@ public class SampleSQLBuilder {
 		}
 
 		insertSQLWriter.write(insertSQL);
+	}
+
+	private void _generateEditSQLTemplates(
+			CSVFileWriter csvFileWriter, Writer sampleSQLWriter)
+		throws Exception {
+
+		FreeMarkerUtil.process(
+			BenchmarksPropsValues.SCRIPT,
+			HashMapBuilder.<String, Object>put(
+				"csvFileWriter", csvFileWriter
+			).put(
+				"dataFactory", new DataFactory()
+			).build(),
+			sampleSQLWriter);
 	}
 
 	private void _loadCreateSQLTemplate(InputStream inputStream, Writer writer)

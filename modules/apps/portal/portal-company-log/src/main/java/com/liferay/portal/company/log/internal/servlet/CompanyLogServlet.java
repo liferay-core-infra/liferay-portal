@@ -94,6 +94,15 @@ public class CompanyLogServlet extends HttpServlet {
 					permissionChecker, httpServletRequest, httpServletResponse,
 					pathArray);
 			}
+			else if ((pathArray.length == 3) &&
+					 pathArray[2].equals("view-file-content")) {
+
+				_sendFile(
+					permissionChecker, httpServletRequest, httpServletResponse,
+					pathArray,
+					ParamUtil.getInteger(httpServletRequest, "startIndex"),
+					ParamUtil.getInteger(httpServletRequest, "endIndex"));
+			}
 		}
 		catch (FileNotFoundException fileNotFoundException) {
 			if (_log.isWarnEnabled()) {
@@ -309,6 +318,46 @@ public class CompanyLogServlet extends HttpServlet {
 
 			printWriter.println(sb.toString());
 		}
+	}
+
+	private void _sendFile(
+			PermissionChecker permissionChecker,
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, String[] pathArray,
+			int startIndex, int endIndex)
+		throws Exception {
+
+		if ((startIndex < 0) || (endIndex < 0) ||
+			((startIndex == 0) && (endIndex == 0)) ||
+			((endIndex != 0) && (startIndex >= endIndex))) {
+
+			throw new PrincipalException(
+				"startIndex or endIndex can not be less than 0, and " +
+					"startIndex can not be greater than or equal to endIndex");
+		}
+
+		File logFile = _getLogFile(permissionChecker, pathArray);
+
+		int logFileLength = (int)logFile.length();
+
+		if ((endIndex == 0) || (endIndex > logFileLength)) {
+			endIndex = logFileLength;
+		}
+
+		if (startIndex != 0) {
+			--startIndex;
+		}
+
+		String logFileContent = new String(
+			Files.readAllBytes(logFile.toPath()));
+
+		logFileContent = logFileContent.substring(startIndex, endIndex);
+
+		ServletResponseUtil.sendFile(
+			httpServletRequest, httpServletResponse, logFile.getName(),
+			logFileContent.getBytes(),
+			_mimeTypes.getContentType(logFile.getName()),
+			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

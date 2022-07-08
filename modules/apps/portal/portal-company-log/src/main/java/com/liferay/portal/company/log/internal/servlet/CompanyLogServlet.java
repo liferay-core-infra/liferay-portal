@@ -43,6 +43,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -282,11 +283,31 @@ public class CompanyLogServlet extends HttpServlet {
 				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 		}
 		else {
-			ServletResponseUtil.sendFile(
-				httpServletRequest, httpServletResponse, logFile.getName(),
-				new FileInputStream(logFile), logFile.length(),
-				_mimeTypes.getContentType(logFile.getName()),
-				HttpHeaders.CONTENT_DISPOSITION_INLINE);
+			String href = StringBundler.concat(
+				_portal.getPortalURL(httpServletRequest),
+				_portal.getPathContext(), "/o/company-log/",
+				GetterUtil.getLongStrict(pathArray[0]), StringPool.SLASH,
+				logFile.getName(), "/view-file-content");
+
+			httpServletResponse.setContentType("text/html");
+
+			PrintWriter printWriter = httpServletResponse.getWriter();
+
+			StringBundler sb = new StringBundler(11);
+
+			sb.append("<html><body><form action = \"");
+			sb.append(href);
+			sb.append("\" method = \"GET\">");
+			sb.append("StartIndex: <input name = \"startIndex\" type = \"text");
+			sb.append("\" />");
+			sb.append(StringPool.TAB);
+			sb.append("EndIndex: <input name = \"endIndex\" type = \"text\" ");
+			sb.append("/> <input type = \"submit\" value = \"download\" />");
+			sb.append("</form>");
+			sb.append(new String(Files.readAllBytes(logFile.toPath())));
+			sb.append("</body></html>");
+
+			printWriter.println(sb.toString());
 		}
 	}
 

@@ -89,7 +89,7 @@ public class CompanyLogServlet extends HttpServlet {
 					permissionChecker, httpServletRequest, httpServletResponse);
 			}
 			else if (pathArray.length == 2) {
-				_downloadLogFile(
+				_sendFile(
 					permissionChecker, httpServletRequest, httpServletResponse,
 					pathArray);
 			}
@@ -119,67 +119,6 @@ public class CompanyLogServlet extends HttpServlet {
 		sb.append(href);
 		sb.append("?download=false\">View File Content");
 		sb.append("</a>");
-	}
-
-	private void _downloadLogFile(
-			PermissionChecker permissionChecker,
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String[] pathArray)
-		throws Exception {
-
-		long companyId = GetterUtil.getLongStrict(pathArray[0]);
-
-		if (_companyLocalService.fetchCompanyById(companyId) == null) {
-			throw new NoSuchCompanyException(
-				"No Company exists with the primary key " + companyId);
-		}
-
-		if (!permissionChecker.isCompanyAdmin(companyId)) {
-			throw new PrincipalException.MustBeCompanyAdmin(
-				permissionChecker.getUserId());
-		}
-
-		String logFilesDirPath = Log4JUtil.getCompanyLogDirectory(companyId);
-
-		if (logFilesDirPath == null) {
-			return;
-		}
-
-		String fileName = pathArray[1];
-
-		Path path = Paths.get(logFilesDirPath, fileName);
-
-		path = path.normalize();
-
-		if (!path.startsWith(logFilesDirPath)) {
-			throw new PrincipalException("Unauthorized access");
-		}
-
-		File logFile = path.toFile();
-
-		if (!logFile.exists()) {
-			throw new FileNotFoundException(
-				StringBundler.concat(
-					"Unable to find log file ", fileName, " for company ",
-					companyId));
-		}
-
-		boolean download = ParamUtil.getBoolean(httpServletRequest, "download");
-
-		if (download) {
-			ServletResponseUtil.sendFile(
-				httpServletRequest, httpServletResponse, fileName,
-				new FileInputStream(logFile), logFile.length(),
-				_mimeTypes.getContentType(fileName),
-				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
-		}
-		else {
-			ServletResponseUtil.sendFile(
-				httpServletRequest, httpServletResponse, fileName,
-				new FileInputStream(logFile), logFile.length(),
-				_mimeTypes.getContentType(fileName),
-				HttpHeaders.CONTENT_DISPOSITION_INLINE);
-		}
 	}
 
 	private PermissionChecker _getPermissionChecker(
@@ -279,6 +218,67 @@ public class CompanyLogServlet extends HttpServlet {
 		}
 
 		sb.append("</ul>");
+	}
+
+	private void _sendFile(
+			PermissionChecker permissionChecker,
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, String[] pathArray)
+		throws Exception {
+
+		long companyId = GetterUtil.getLongStrict(pathArray[0]);
+
+		if (_companyLocalService.fetchCompanyById(companyId) == null) {
+			throw new NoSuchCompanyException(
+				"No Company exists with the primary key " + companyId);
+		}
+
+		if (!permissionChecker.isCompanyAdmin(companyId)) {
+			throw new PrincipalException.MustBeCompanyAdmin(
+				permissionChecker.getUserId());
+		}
+
+		String logFilesDirPath = Log4JUtil.getCompanyLogDirectory(companyId);
+
+		if (logFilesDirPath == null) {
+			return;
+		}
+
+		String fileName = pathArray[1];
+
+		Path path = Paths.get(logFilesDirPath, fileName);
+
+		path = path.normalize();
+
+		if (!path.startsWith(logFilesDirPath)) {
+			throw new PrincipalException("Unauthorized access");
+		}
+
+		File logFile = path.toFile();
+
+		if (!logFile.exists()) {
+			throw new FileNotFoundException(
+				StringBundler.concat(
+					"Unable to find log file ", fileName, " for company ",
+					companyId));
+		}
+
+		boolean download = ParamUtil.getBoolean(httpServletRequest, "download");
+
+		if (download) {
+			ServletResponseUtil.sendFile(
+				httpServletRequest, httpServletResponse, fileName,
+				new FileInputStream(logFile), logFile.length(),
+				_mimeTypes.getContentType(fileName),
+				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+		}
+		else {
+			ServletResponseUtil.sendFile(
+				httpServletRequest, httpServletResponse, fileName,
+				new FileInputStream(logFile), logFile.length(),
+				_mimeTypes.getContentType(fileName),
+				HttpHeaders.CONTENT_DISPOSITION_INLINE);
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

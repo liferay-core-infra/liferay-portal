@@ -68,7 +68,7 @@ public class SampleSQLBuilder {
 
 		tempDir.mkdirs();
 
-		Reader reader = generateSQL();
+		Reader reader = mergeSQLTemplates();
 
 		try {
 
@@ -244,37 +244,6 @@ public class SampleSQLBuilder {
 		return new UnsyncBufferedWriter(writer, _WRITER_BUFFER_SIZE);
 	}
 
-	protected Reader generateSQL() {
-		CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
-
-		Thread thread = new Thread(
-			() -> {
-				try (CSVFileWriter csvFileWriter = new CSVFileWriter();
-					Writer sampleSQLWriter = new UnsyncTeeWriter(
-						new UnsyncBufferedWriter(
-							charPipe.getWriter(), _WRITER_BUFFER_SIZE),
-						createFileWriter(
-							new File(
-								BenchmarksPropsValues.OUTPUT_DIR,
-								"sample.sql")))) {
-
-					_loadCreateSQLTemplates(sampleSQLWriter);
-
-					_generateEditSQLTemplates(csvFileWriter, sampleSQLWriter);
-				}
-				catch (Throwable throwable) {
-					_freeMarkerThrowable = throwable;
-				}
-				finally {
-					charPipe.close();
-				}
-			});
-
-		thread.start();
-
-		return charPipe.getReader();
-	}
-
 	protected void mergeSQL(File inputDir, File outputSQLFile)
 		throws IOException {
 
@@ -315,6 +284,37 @@ public class SampleSQLBuilder {
 		}
 
 		inputFile.delete();
+	}
+
+	protected Reader mergeSQLTemplates() {
+		CharPipe charPipe = new CharPipe(_PIPE_BUFFER_SIZE);
+
+		Thread thread = new Thread(
+			() -> {
+				try (CSVFileWriter csvFileWriter = new CSVFileWriter();
+					Writer sampleSQLWriter = new UnsyncTeeWriter(
+						new UnsyncBufferedWriter(
+							charPipe.getWriter(), _WRITER_BUFFER_SIZE),
+						createFileWriter(
+							new File(
+								BenchmarksPropsValues.OUTPUT_DIR,
+								"sample.sql")))) {
+
+					_loadCreateSQLTemplates(sampleSQLWriter);
+
+					_generateEditSQLTemplates(csvFileWriter, sampleSQLWriter);
+				}
+				catch (Throwable throwable) {
+					_freeMarkerThrowable = throwable;
+				}
+				finally {
+					charPipe.close();
+				}
+			});
+
+		thread.start();
+
+		return charPipe.getReader();
 	}
 
 	protected void writeToInsertSQLFile(

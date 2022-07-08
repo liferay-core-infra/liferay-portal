@@ -121,6 +121,50 @@ public class CompanyLogServlet extends HttpServlet {
 		sb.append("</a>");
 	}
 
+	private File _getLogFile(
+			PermissionChecker permissionChecker, String[] pathArray)
+		throws Exception {
+
+		long companyId = GetterUtil.getLongStrict(pathArray[0]);
+
+		if (_companyLocalService.fetchCompanyById(companyId) == null) {
+			throw new NoSuchCompanyException(
+				"No Company exists with the primary key " + companyId);
+		}
+
+		if (!permissionChecker.isCompanyAdmin(companyId)) {
+			throw new PrincipalException.MustBeCompanyAdmin(
+				permissionChecker.getUserId());
+		}
+
+		String logFilesDirPath = Log4JUtil.getCompanyLogDirectory(companyId);
+
+		if (logFilesDirPath == null) {
+			return null;
+		}
+
+		String fileName = pathArray[1];
+
+		Path path = Paths.get(logFilesDirPath, fileName);
+
+		path = path.normalize();
+
+		if (!path.startsWith(logFilesDirPath)) {
+			throw new PrincipalException("Unauthorized access");
+		}
+
+		File logFile = path.toFile();
+
+		if (!logFile.exists()) {
+			throw new FileNotFoundException(
+				StringBundler.concat(
+					"Unable to find log file ", fileName, " for company ",
+					companyId));
+		}
+
+		return logFile;
+	}
+
 	private PermissionChecker _getPermissionChecker(
 			HttpServletRequest httpServletRequest)
 		throws Exception {
@@ -226,57 +270,22 @@ public class CompanyLogServlet extends HttpServlet {
 			HttpServletResponse httpServletResponse, String[] pathArray)
 		throws Exception {
 
-		long companyId = GetterUtil.getLongStrict(pathArray[0]);
-
-		if (_companyLocalService.fetchCompanyById(companyId) == null) {
-			throw new NoSuchCompanyException(
-				"No Company exists with the primary key " + companyId);
-		}
-
-		if (!permissionChecker.isCompanyAdmin(companyId)) {
-			throw new PrincipalException.MustBeCompanyAdmin(
-				permissionChecker.getUserId());
-		}
-
-		String logFilesDirPath = Log4JUtil.getCompanyLogDirectory(companyId);
-
-		if (logFilesDirPath == null) {
-			return;
-		}
-
-		String fileName = pathArray[1];
-
-		Path path = Paths.get(logFilesDirPath, fileName);
-
-		path = path.normalize();
-
-		if (!path.startsWith(logFilesDirPath)) {
-			throw new PrincipalException("Unauthorized access");
-		}
-
-		File logFile = path.toFile();
-
-		if (!logFile.exists()) {
-			throw new FileNotFoundException(
-				StringBundler.concat(
-					"Unable to find log file ", fileName, " for company ",
-					companyId));
-		}
+		File logFile = _getLogFile(permissionChecker, pathArray);
 
 		boolean download = ParamUtil.getBoolean(httpServletRequest, "download");
 
 		if (download) {
 			ServletResponseUtil.sendFile(
-				httpServletRequest, httpServletResponse, fileName,
+				httpServletRequest, httpServletResponse, logFile.getName(),
 				new FileInputStream(logFile), logFile.length(),
-				_mimeTypes.getContentType(fileName),
+				_mimeTypes.getContentType(logFile.getName()),
 				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 		}
 		else {
 			ServletResponseUtil.sendFile(
-				httpServletRequest, httpServletResponse, fileName,
+				httpServletRequest, httpServletResponse, logFile.getName(),
 				new FileInputStream(logFile), logFile.length(),
-				_mimeTypes.getContentType(fileName),
+				_mimeTypes.getContentType(logFile.getName()),
 				HttpHeaders.CONTENT_DISPOSITION_INLINE);
 		}
 	}

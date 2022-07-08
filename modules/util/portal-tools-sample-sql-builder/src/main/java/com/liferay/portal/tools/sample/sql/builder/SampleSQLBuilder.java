@@ -366,6 +366,8 @@ public class SampleSQLBuilder {
 		}
 
 		sqlWriter.write(sql);
+
+		sqlWriter.flush();
 	}
 
 	private void _generateEditSQLTemplates(

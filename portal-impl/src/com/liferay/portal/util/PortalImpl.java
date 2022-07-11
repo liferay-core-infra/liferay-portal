@@ -8697,7 +8697,11 @@ public class PortalImpl implements Portal {
 
 		PortletPreferences portletSetup = null;
 
-		if (themeDisplay == null) {
+		if ((themeDisplay == null) ||
+			_isConfiguringPortletEmbedded(
+				themeDisplay.getLayoutTypePortlet(),
+				themeDisplay.getPortletDisplay(), portletId)) {
+
 			portletSetup =
 				PortletPreferencesFactoryUtil.getStrictLayoutPortletSetup(
 					layout, portletId);
@@ -8774,6 +8778,19 @@ public class PortalImpl implements Portal {
 		}
 
 		return virtualHostnames.firstKey();
+	}
+
+	private boolean _isConfiguringPortletEmbedded(
+		LayoutTypePortlet layoutTypePortlet, PortletDisplay portletDisplay,
+		String portletId) {
+
+		if (layoutTypePortlet.isPortletEmbedded(portletId) &&
+			!portletDisplay.isModeView()) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private boolean _layoutContainsPortletId(Layout layout, String portletId) {

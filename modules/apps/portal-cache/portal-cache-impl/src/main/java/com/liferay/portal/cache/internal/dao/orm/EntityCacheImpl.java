@@ -32,17 +32,20 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
+import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LRUMap;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.model.impl.VirtualHostImpl;
 import com.liferay.portal.servlet.filters.threadlocal.ThreadLocalFilterThreadLocal;
 
 import java.io.Serializable;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -119,9 +122,17 @@ public class EntityCacheImpl
 			mvcc = true;
 		}
 
+		boolean sharded = false;
+
+		if (_dbPartitionEnabled && ShardedModel.class.isAssignableFrom(clazz) &&
+			!Objects.equals(className, VirtualHostImpl.class.getName())) {
+
+			sharded = true;
+		}
+
 		portalCache =
 			(PortalCache<Serializable, Serializable>)
-				_multiVMPool.getPortalCache(groupKey, mvcc);
+				_multiVMPool.getPortalCache(groupKey, mvcc, sharded);
 
 		PortalCache<Serializable, Serializable> previousPortalCache =
 			_portalCaches.putIfAbsent(className, portalCache);
@@ -242,6 +253,8 @@ public class EntityCacheImpl
 
 	@Activate
 	protected void activate() {
+		_dbPartitionEnabled = GetterUtil.getBoolean(
+			_props.get("database.partition.enabled"));
 		_valueObjectEntityCacheEnabled = GetterUtil.getBoolean(
 			_props.get(PropsKeys.VALUE_OBJECT_ENTITY_CACHE_ENABLED));
 		_valueObjectMVCCEntityCacheEnabled = GetterUtil.getBoolean(
@@ -251,7 +264,7 @@ public class EntityCacheImpl
 			_props.get(
 				PropsKeys.VALUE_OBJECT_ENTITY_THREAD_LOCAL_CACHE_MAX_SIZE));
 
-		if (localCacheMaxSize > 0) {
+		if (!_dbPartitionEnabled && (localCacheMaxSize > 0)) {
 			_localCache = new CentralizedThreadLocal<>(
 				EntityCacheImpl.class + "._localCache",
 				() -> new LRUMap<>(localCacheMaxSize));
@@ -431,6 +444,7 @@ public class EntityCacheImpl
 	@Reference
 	private ClusterExecutor _clusterExecutor;
 
+	private boolean _dbPartitionEnabled;
 	private ThreadLocal<LRUMap<Serializable, Serializable>> _localCache;
 
 	@Reference

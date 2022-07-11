@@ -20,6 +20,8 @@ import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
+import java.util.Map;
+
 /**
  * @author Tina Tian
  */
@@ -39,6 +41,12 @@ public abstract class BasePortalCache<K extends Serializable, V>
 		return doGet(key);
 	}
 
+	public Map<PortalCacheListener<K, V>, PortalCacheListenerScope>
+		getPortalCacheListeners() {
+
+		return aggregatedPortalCacheListener.getPortalCacheListeners();
+	}
+
 	@Override
 	public PortalCacheManager<K, V> getPortalCacheManager() {
 		return _portalCacheManager;
@@ -46,6 +54,11 @@ public abstract class BasePortalCache<K extends Serializable, V>
 
 	@Override
 	public boolean isMVCC() {
+		return false;
+	}
+
+	@Override
+	public boolean isSharded() {
 		return false;
 	}
 

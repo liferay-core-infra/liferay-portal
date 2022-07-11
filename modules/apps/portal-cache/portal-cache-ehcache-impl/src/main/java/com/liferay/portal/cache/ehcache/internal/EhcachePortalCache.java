@@ -16,15 +16,11 @@ package com.liferay.portal.cache.ehcache.internal;
 
 import com.liferay.portal.cache.BasePortalCache;
 import com.liferay.portal.cache.ehcache.internal.event.PortalCacheCacheEventListener;
-import com.liferay.portal.kernel.cache.PortalCacheListener;
-import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.sf.ehcache.Ehcache;
@@ -156,13 +152,6 @@ public class EhcachePortalCache<K extends Serializable, V>
 		}
 
 		return ehcache.replace(oldElement, newElement);
-	}
-
-	protected Map<PortalCacheListener<K, V>, PortalCacheListenerScope>
-		getPortalCacheListeners() {
-
-		return Collections.unmodifiableMap(
-			aggregatedPortalCacheListener.getPortalCacheListeners());
 	}
 
 	protected void reconfigEhcache(Ehcache ehcache) {

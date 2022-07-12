@@ -8784,6 +8784,10 @@ public class PortalImpl implements Portal {
 		LayoutTypePortlet layoutTypePortlet, PortletDisplay portletDisplay,
 		String portletId) {
 
+		if ((layoutTypePortlet == null) || (portletDisplay == null)) {
+			return false;
+		}
+
 		if (layoutTypePortlet.isPortletEmbedded(portletId) &&
 			!portletDisplay.isModeView()) {
 

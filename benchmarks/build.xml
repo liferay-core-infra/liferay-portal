@@ -48,7 +48,7 @@ Use sql files in ${sample.sql.output.dir}/sqlfiles to insert into database.</ech
 		<delete includeemptydirs="true">
 			<fileset
 				dir="."
-				includes="*.sql,benchmarks-actual.properties, liferay/**, ${build.dir}/**"
+				includes="benchmarks-actual.properties, liferay/**, ${build.dir}/**"
 			/>
 		</delete>
 	</target>

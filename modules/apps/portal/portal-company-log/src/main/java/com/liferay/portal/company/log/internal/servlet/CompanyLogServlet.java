@@ -33,8 +33,10 @@ import com.liferay.portal.kernel.servlet.ServletResponseUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypes;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -155,11 +158,60 @@ public class CompanyLogServlet extends HttpServlet {
 					companyId));
 		}
 
-		ServletResponseUtil.sendFile(
-			httpServletRequest, httpServletResponse, fileName,
-			new FileInputStream(logFile), logFile.length(),
-			_mimeTypes.getContentType(fileName),
-			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+		String startIndex = ParamUtil.getString(
+			httpServletRequest, "startIndex");
+		String endIndex = ParamUtil.getString(httpServletRequest, "endIndex");
+
+		if (Validator.isNull(startIndex) && Validator.isNull(endIndex)) {
+			ServletResponseUtil.sendFile(
+				httpServletRequest, httpServletResponse, fileName,
+				new FileInputStream(logFile), logFile.length(),
+				_mimeTypes.getContentType(fileName),
+				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+		}
+		else {
+			if (Validator.isNull(startIndex)) {
+				startIndex = "0";
+			}
+
+			int start = GetterUtil.getIntegerStrict(startIndex);
+
+			int logFileLength = (int)logFile.length();
+
+			if (Validator.isNull(endIndex) && (start >= 0)) {
+				endIndex = String.valueOf(logFileLength);
+			}
+
+			int end = GetterUtil.getIntegerStrict(endIndex);
+
+			if ((start < 0) || (end < 0) || ((start == 0) && (end == 0)) ||
+				(start >= end)) {
+
+				throw new PrincipalException(
+					"startIndex or endIndex can not be less than 0, and " +
+						"startIndex can not be greater than or equal to " +
+							"endIndex");
+			}
+
+			if (end > logFileLength) {
+				end = logFileLength;
+			}
+
+			if (start != 0) {
+				--start;
+			}
+
+			String logFileContent = new String(
+				Files.readAllBytes(logFile.toPath()));
+
+			logFileContent = logFileContent.substring(start, end);
+
+			ServletResponseUtil.sendFile(
+				httpServletRequest, httpServletResponse, logFile.getName(),
+				logFileContent.getBytes(),
+				_mimeTypes.getContentType(logFile.getName()),
+				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+		}
 	}
 
 	private PermissionChecker _getPermissionChecker(

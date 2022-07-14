@@ -62,7 +62,6 @@ public class SystemPropertiesTest {
 		Properties properties = SystemProperties.getProperties();
 
 		Assert.assertEquals(1, properties.size());
-
 		Assert.assertEquals(_TEST_VALUE, properties.get(_TEST_KEY));
 	}
 
@@ -70,13 +69,34 @@ public class SystemPropertiesTest {
 	public void testGetSetAndClear() {
 		Assert.assertNull(SystemProperties.get(_TEST_KEY));
 
+		// Property set via SystemProperties is also set to System.props
+
 		SystemProperties.set(_TEST_KEY, _TEST_VALUE);
 
 		Assert.assertEquals(_TEST_VALUE, SystemProperties.get(_TEST_KEY));
+		Assert.assertEquals(_TEST_VALUE, System.getProperty(_TEST_KEY));
+
+		// Property cleared via SystemProperties is also removed from
+		// System.props
 
 		SystemProperties.clear(_TEST_KEY);
 
 		Assert.assertNull(SystemProperties.get(_TEST_KEY));
+		Assert.assertNull(System.getProperty(_TEST_KEY));
+
+		// Property in System.props is also accessible via SystemProperties
+
+		System.setProperty(_TEST_KEY, _TEST_VALUE);
+
+		try {
+			Assert.assertTrue(
+				MapUtil.isEmpty(SystemProperties.getProperties()));
+			Assert.assertEquals(_TEST_VALUE, SystemProperties.get(_TEST_KEY));
+			Assert.assertEquals(_TEST_VALUE, System.getProperty(_TEST_KEY));
+		}
+		finally {
+			System.clearProperty(_TEST_KEY);
+		}
 	}
 
 	@Test

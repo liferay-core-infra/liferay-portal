@@ -55,11 +55,13 @@ public class SystemPropertiesTest {
 
 	@Test
 	public void testGetProperties() {
-		Assert.assertNull(SystemProperties.get(_TEST_KEY));
+		Assert.assertTrue(MapUtil.isEmpty(SystemProperties.getProperties()));
 
 		SystemProperties.set(_TEST_KEY, _TEST_VALUE);
 
 		Properties properties = SystemProperties.getProperties();
+
+		Assert.assertEquals(1, properties.size());
 
 		Assert.assertEquals(_TEST_VALUE, properties.get(_TEST_KEY));
 	}

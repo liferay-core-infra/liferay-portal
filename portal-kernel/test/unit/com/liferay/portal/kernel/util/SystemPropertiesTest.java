@@ -67,6 +67,11 @@ public class SystemPropertiesTest {
 
 		Assert.assertEquals(
 			"defaultValue", SystemProperties.get(_TEST_KEY, "defaultValue"));
+
+		SystemProperties.set(_TEST_KEY, _TEST_VALUE);
+
+		Assert.assertEquals(
+			_TEST_VALUE, SystemProperties.get(_TEST_KEY, "defaultValue"));
 	}
 
 	private static final String _TEST_KEY = "test.key";

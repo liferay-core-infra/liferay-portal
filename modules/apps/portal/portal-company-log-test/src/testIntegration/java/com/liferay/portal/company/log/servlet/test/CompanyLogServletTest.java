@@ -106,78 +106,32 @@ public class CompanyLogServletTest {
 	public void testDownloadLogFileWithFileNotFound() throws Exception {
 		String fileName = StringUtil.randomString() + ".log";
 
-		MockHttpServletRequest mockHttpServletRequest =
+		_assertHttpServletResponseStatusAndLogInfo(
 			_createMockHttpServletRequest(
 				StringBundler.concat(
 					StringPool.SLASH, _newCompany.getCompanyId(),
 					StringPool.SLASH, fileName),
-				_adminUser);
-
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.company.log.internal.servlet." +
-					"CompanyLogServlet",
-				LoggerTestUtil.WARN)) {
-
-			_servlet.service(mockHttpServletRequest, _mockHttpServletResponse);
-
-			Assert.assertEquals(
-				HttpServletResponse.SC_NOT_FOUND,
-				_mockHttpServletResponse.getStatus());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Throwable throwable = logEntry.getThrowable();
-
-			Assert.assertEquals(
-				FileNotFoundException.class, throwable.getClass());
-			Assert.assertEquals(
-				StringBundler.concat(
-					"Unable to find log file ", fileName, " for company ",
-					_newCompany.getCompanyId()),
-				throwable.getMessage());
-		}
+				_adminUser),
+			FileNotFoundException.class,
+			StringBundler.concat(
+				"Unable to find log file ", fileName, " for company ",
+				_newCompany.getCompanyId()),
+			HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@Test
 	public void testDownloadLogFileWithNoSuchCompany() throws Exception {
 		long companyId = 1;
 
-		MockHttpServletRequest mockHttpServletRequest =
+		_assertHttpServletResponseStatusAndLogInfo(
 			_createMockHttpServletRequest(
 				StringBundler.concat(
 					StringPool.SLASH, companyId, StringPool.SLASH,
 					_logFile.getName()),
-				_adminUser);
-
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.company.log.internal.servlet." +
-					"CompanyLogServlet",
-				LoggerTestUtil.WARN)) {
-
-			_servlet.service(mockHttpServletRequest, _mockHttpServletResponse);
-
-			Assert.assertEquals(
-				HttpServletResponse.SC_NOT_FOUND,
-				_mockHttpServletResponse.getStatus());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Throwable throwable = logEntry.getThrowable();
-
-			Assert.assertEquals(
-				NoSuchCompanyException.class, throwable.getClass());
-			Assert.assertEquals(
-				"No Company exists with the primary key " + companyId,
-				throwable.getMessage());
-		}
+				_adminUser),
+			NoSuchCompanyException.class,
+			"No Company exists with the primary key " + companyId,
+			HttpServletResponse.SC_NOT_FOUND);
 	}
 
 	@Test
@@ -241,34 +195,13 @@ public class CompanyLogServletTest {
 
 	@Test
 	public void testDownloadLogFileWithUnauthorizedAccess() throws Exception {
-		MockHttpServletRequest mockHttpServletRequest =
+		_assertHttpServletResponseStatusAndLogInfo(
 			_createMockHttpServletRequest(
 				StringBundler.concat(
 					StringPool.SLASH, _newCompany.getCompanyId(), "/../"),
-				_adminUser);
-
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.company.log.internal.servlet." +
-					"CompanyLogServlet",
-				LoggerTestUtil.WARN)) {
-
-			_servlet.service(mockHttpServletRequest, _mockHttpServletResponse);
-
-			Assert.assertEquals(
-				HttpServletResponse.SC_FORBIDDEN,
-				_mockHttpServletResponse.getStatus());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Throwable throwable = logEntry.getThrowable();
-
-			Assert.assertEquals(PrincipalException.class, throwable.getClass());
-			Assert.assertEquals("Unauthorized access", throwable.getMessage());
-		}
+				_adminUser),
+			PrincipalException.class, "Unauthorized access",
+			HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -296,31 +229,13 @@ public class CompanyLogServletTest {
 	public void testListCompaniesLogFilesWithCompanyUser() throws Exception {
 		User user = UserTestUtil.addUser(_newCompany);
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.company.log.internal.servlet." +
-					"CompanyLogServlet",
-				LoggerTestUtil.WARN)) {
-
-			_servlet.service(
-				_createMockHttpServletRequest("/", user),
-				_mockHttpServletResponse);
-
-			Assert.assertEquals(
-				HttpServletResponse.SC_FORBIDDEN,
-				_mockHttpServletResponse.getStatus());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Throwable throwable = logEntry.getThrowable();
-
-			Assert.assertEquals(
-				PrincipalException.MustBeCompanyAdmin.class,
-				throwable.getClass());
-		}
+		_assertHttpServletResponseStatusAndLogInfo(
+			_createMockHttpServletRequest("/", user),
+			PrincipalException.MustBeCompanyAdmin.class,
+			StringBundler.concat(
+				"User ", user.getUserId(), " must be the company ",
+				"administrator to perform the action"),
+			HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	@Test
@@ -358,32 +273,10 @@ public class CompanyLogServletTest {
 
 	@Test
 	public void testUserUnauthenticated() throws Exception {
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.company.log.internal.servlet." +
-					"CompanyLogServlet",
-				LoggerTestUtil.WARN)) {
-
-			_servlet.service(
-				_createMockHttpServletRequest("/", (User)null),
-				_mockHttpServletResponse);
-
-			Assert.assertEquals(
-				HttpServletResponse.SC_FORBIDDEN,
-				_mockHttpServletResponse.getStatus());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Throwable throwable = logEntry.getThrowable();
-
-			Assert.assertEquals(PrincipalException.class, throwable.getClass());
-			Assert.assertEquals(
-				"The current user is not authenticated",
-				throwable.getMessage());
-		}
+		_assertHttpServletResponseStatusAndLogInfo(
+			_createMockHttpServletRequest("/", (User)null),
+			PrincipalException.class, "The current user is not authenticated",
+			HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	private void _assertCompanyLogFilesDisplay(
@@ -412,32 +305,13 @@ public class CompanyLogServletTest {
 			String startIndex, String endIndex)
 		throws Exception {
 
-		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				"com.liferay.portal.company.log.internal.servlet." +
-					"CompanyLogServlet",
-				LoggerTestUtil.WARN)) {
-
-			_servlet.service(
+		try {
+			_assertHttpServletResponseStatusAndLogInfo(
 				_createMockHttpServletRequest(startIndex, endIndex),
-				_mockHttpServletResponse);
-
-			Assert.assertEquals(
-				HttpServletResponse.SC_FORBIDDEN,
-				_mockHttpServletResponse.getStatus());
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Throwable throwable = logEntry.getThrowable();
-
-			Assert.assertEquals(PrincipalException.class, throwable.getClass());
-			Assert.assertEquals(
+				PrincipalException.class,
 				"startIndex or endIndex can not be less than 0, and " +
 					"startIndex can not be greater than or equal to endIndex",
-				throwable.getMessage());
+				HttpServletResponse.SC_FORBIDDEN);
 		}
 		finally {
 			_mockHttpServletResponse.setCommitted(false);
@@ -514,6 +388,33 @@ public class CompanyLogServletTest {
 
 		Assert.assertEquals(
 			logFileContent, _mockHttpServletResponse.getContentAsString());
+	}
+
+	private void _assertHttpServletResponseStatusAndLogInfo(
+			MockHttpServletRequest mockHttpServletRequest, Class<?> clazz,
+			String message, int status)
+		throws Exception {
+
+		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
+				"com.liferay.portal.company.log.internal.servlet." +
+					"CompanyLogServlet",
+				LoggerTestUtil.WARN)) {
+
+			_servlet.service(mockHttpServletRequest, _mockHttpServletResponse);
+
+			Assert.assertEquals(status, _mockHttpServletResponse.getStatus());
+
+			List<LogEntry> logEntries = logCapture.getLogEntries();
+
+			Assert.assertEquals(logEntries.toString(), 1, logEntries.size());
+
+			LogEntry logEntry = logEntries.get(0);
+
+			Throwable throwable = logEntry.getThrowable();
+
+			Assert.assertEquals(clazz, throwable.getClass());
+			Assert.assertEquals(message, throwable.getMessage());
+		}
 	}
 
 	private MockHttpServletRequest _createMockHttpServletRequest(

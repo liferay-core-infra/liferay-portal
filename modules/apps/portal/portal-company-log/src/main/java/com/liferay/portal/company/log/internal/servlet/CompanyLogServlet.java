@@ -14,6 +14,8 @@
 
 package com.liferay.portal.company.log.internal.servlet;
 
+import com.liferay.petra.io.unsync.UnsyncBufferedInputStream;
+import com.liferay.petra.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.petra.log4j.Log4JUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -44,7 +46,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -201,16 +202,23 @@ public class CompanyLogServlet extends HttpServlet {
 				--start;
 			}
 
-			String logFileContent = new String(
-				Files.readAllBytes(logFile.toPath()));
+			byte[] bytes = new byte[logFileLength];
 
-			logFileContent = logFileContent.substring(start, end);
+			try (UnsyncBufferedInputStream unsyncBufferedInputStream =
+					new UnsyncBufferedInputStream(new FileInputStream(logFile));
+				UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+					new UnsyncByteArrayOutputStream()) {
 
-			ServletResponseUtil.sendFile(
-				httpServletRequest, httpServletResponse, logFile.getName(),
-				logFileContent.getBytes(),
-				_mimeTypes.getContentType(logFile.getName()),
-				HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+				unsyncBufferedInputStream.read(bytes);
+
+				unsyncByteArrayOutputStream.write(bytes, start, end - start);
+
+				ServletResponseUtil.sendFile(
+					httpServletRequest, httpServletResponse, logFile.getName(),
+					unsyncByteArrayOutputStream.toByteArray(),
+					_mimeTypes.getContentType(logFile.getName()),
+					HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
+			}
 		}
 	}
 

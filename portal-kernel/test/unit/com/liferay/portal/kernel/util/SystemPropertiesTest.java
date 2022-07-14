@@ -14,15 +14,31 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author Jiaxu Wei
  */
 public class SystemPropertiesTest {
+
+	@Before
+	public void setUp() {
+		Map<String, String> properties = ReflectionTestUtil.getFieldValue(
+			SystemProperties.class, "_properties");
+
+		for (String key : properties.keySet()) {
+			System.clearProperty(key);
+		}
+
+		properties.clear();
+	}
 
 	@Test
 	public void testGetArray() {

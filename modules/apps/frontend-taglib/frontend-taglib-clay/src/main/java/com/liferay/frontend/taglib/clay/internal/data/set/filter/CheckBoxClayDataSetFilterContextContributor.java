@@ -21,7 +21,7 @@ import com.liferay.frontend.taglib.clay.data.set.filter.ClayDataSetFilterContext
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
@@ -75,7 +75,7 @@ public class CheckBoxClayDataSetFilterContextContributor
 			jsonArray.put(
 				JSONUtil.put(
 					"label",
-					LanguageUtil.get(
+					_language.get(
 						resourceBundle,
 						checkBoxClayDataSetFilterItem.getLabel())
 				).put(
@@ -90,5 +90,8 @@ public class CheckBoxClayDataSetFilterContextContributor
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 }

@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -81,10 +82,8 @@ public class CheckboxDDMFormFieldValueRendererTest {
 
 		LanguageUtil languageUtil = new LanguageUtil();
 
-		languageUtil.setLanguage(language);
+		languageUtil.setLanguage(_language);
 	}
-
-	protected Language language = Mockito.mock(Language.class);
 
 	private CheckboxDDMFormFieldValueRenderer
 		_createCheckboxDDMFormFieldValueRenderer() {
@@ -95,6 +94,9 @@ public class CheckboxDDMFormFieldValueRendererTest {
 		checkboxDDMFormFieldValueRenderer.checkboxDDMFormFieldValueAccessor =
 			new CheckboxDDMFormFieldValueAccessor();
 
+		ReflectionTestUtil.setFieldValue(
+			checkboxDDMFormFieldValueRenderer, "_language", _language);
+
 		return checkboxDDMFormFieldValueRenderer;
 	}
 
@@ -102,10 +104,12 @@ public class CheckboxDDMFormFieldValueRendererTest {
 		Locale locale, String key, String returnValue) {
 
 		Mockito.when(
-			language.get(Mockito.eq(locale), Mockito.eq(key))
+			_language.get(Mockito.eq(locale), Mockito.eq(key))
 		).thenReturn(
 			returnValue
 		);
 	}
+
+	private final Language _language = Mockito.mock(Language.class);
 
 }

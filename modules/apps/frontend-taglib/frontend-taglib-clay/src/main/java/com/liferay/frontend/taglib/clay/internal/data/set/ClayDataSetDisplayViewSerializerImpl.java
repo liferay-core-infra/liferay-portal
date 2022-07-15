@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class ClayDataSetDisplayViewSerializerImpl
 				clayDataSetDisplayView.getContentRendererModuleURL()
 			).put(
 				"label",
-				LanguageUtil.get(
+				_language.get(
 					ResourceBundleUtil.getBundle(
 						"content.Language", locale, getClass()),
 					clayDataSetDisplayView.getLabel())
@@ -111,5 +111,8 @@ public class ClayDataSetDisplayViewSerializerImpl
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 }

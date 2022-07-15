@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class ClayDataSetFilterSerializerImpl
 				clayDataSetDisplayName);
 
 		for (ClayDataSetFilter clayDataSetFilter : clayDataSetFilters) {
-			String label = LanguageUtil.get(
+			String label = _language.get(
 				resourceBundle, clayDataSetFilter.getLabel());
 
 			JSONObject jsonObject = JSONUtil.put(
@@ -106,5 +106,8 @@ public class ClayDataSetFilterSerializerImpl
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 }

@@ -17,7 +17,7 @@ package com.liferay.frontend.taglib.clay.internal.data.set.filter;
 import com.liferay.frontend.taglib.clay.data.set.filter.BaseAutocompleteClayDataSetFilter;
 import com.liferay.frontend.taglib.clay.data.set.filter.ClayDataSetFilter;
 import com.liferay.frontend.taglib.clay.data.set.filter.ClayDataSetFilterContextContributor;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.util.Collections;
@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marco Leo
@@ -56,7 +57,7 @@ public class AutocompleteClayDataSetFilterContextContributor
 			"apiURL", baseAutocompleteClayDataSetFilter.getAPIURL()
 		).put(
 			"inputPlaceholder",
-			LanguageUtil.get(
+			_language.get(
 				locale, baseAutocompleteClayDataSetFilter.getPlaceholder())
 		).put(
 			"itemKey", baseAutocompleteClayDataSetFilter.getItemKey()
@@ -73,5 +74,8 @@ public class AutocompleteClayDataSetFilterContextContributor
 			}
 		).build();
 	}
+
+	@Reference
+	private Language _language;
 
 }

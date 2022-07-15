@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -49,7 +48,7 @@ public class OptionsDDMFormFieldValueAccessorTest {
 	@BeforeClass
 	public static void setUpClass() {
 		_setUpJSONFactory(new JSONFactoryImpl());
-		_setUpLanguageUtil();
+		_setLanguage();
 	}
 
 	@Test
@@ -99,6 +98,17 @@ public class OptionsDDMFormFieldValueAccessorTest {
 				LocaleUtil.US));
 	}
 
+	private static void _setLanguage() {
+		Mockito.when(
+			_language.getLanguageId(Matchers.eq(LocaleUtil.US))
+		).thenReturn(
+			"en_US"
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_optionsDDMFormFieldValueAccessor, "_language", _language);
+	}
+
 	private static void _setUpJSONFactory(JSONFactory jsonFactory) {
 		JSONFactoryUtil jsonFactoryUtil = new JSONFactoryUtil();
 
@@ -108,20 +118,7 @@ public class OptionsDDMFormFieldValueAccessorTest {
 			_optionsDDMFormFieldValueAccessor, "_jsonFactory", jsonFactory);
 	}
 
-	private static void _setUpLanguageUtil() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		Language language = Mockito.mock(Language.class);
-
-		Mockito.when(
-			language.getLanguageId(Matchers.eq(LocaleUtil.US))
-		).thenReturn(
-			"en_US"
-		);
-
-		languageUtil.setLanguage(language);
-	}
-
+	private static final Language _language = Mockito.mock(Language.class);
 	private static final OptionsDDMFormFieldValueAccessor
 		_optionsDDMFormFieldValueAccessor =
 			new OptionsDDMFormFieldValueAccessor();

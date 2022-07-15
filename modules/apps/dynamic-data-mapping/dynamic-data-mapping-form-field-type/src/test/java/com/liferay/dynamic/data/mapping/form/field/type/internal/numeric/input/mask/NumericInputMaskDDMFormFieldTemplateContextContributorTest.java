@@ -21,7 +21,6 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -40,7 +39,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Matchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 /**
  * @author Carolina Barbosa
@@ -58,10 +59,13 @@ public class NumericInputMaskDDMFormFieldTemplateContextContributorTest
 	public void setUp() throws Exception {
 		super.setUp();
 
+		MockitoAnnotations.initMocks(this);
+
 		_setUpJSONFactory();
 		_setUpJSONFactoryUtil();
-		_setUpLanguageUtil();
 		_setUpPortal();
+
+		_setLanguage();
 	}
 
 	@Test
@@ -182,6 +186,31 @@ public class NumericInputMaskDDMFormFieldTemplateContextContributorTest
 		return ddmFormFieldRenderingContext;
 	}
 
+	private void _setLanguage() {
+		Mockito.when(
+			_language.get(
+				Matchers.any(ResourceBundle.class), Matchers.eq("none"))
+		).thenReturn(
+			"None"
+		);
+
+		Mockito.when(
+			_language.getAvailableLocales()
+		).thenReturn(
+			SetUtil.fromArray(LocaleUtil.US)
+		);
+
+		Mockito.when(
+			_language.getLanguageId(LocaleUtil.US)
+		).thenReturn(
+			"en_US"
+		);
+
+		ReflectionTestUtil.setFieldValue(
+			_numericInputMaskDDMFormFieldTemplateContextContributor,
+			"_language", _language);
+	}
+
 	private void _setUpJSONFactory() {
 		ReflectionTestUtil.setFieldValue(
 			_numericInputMaskDDMFormFieldTemplateContextContributor,
@@ -194,33 +223,6 @@ public class NumericInputMaskDDMFormFieldTemplateContextContributorTest
 		jsonFactoryUtil.setJSONFactory(new JSONFactoryImpl());
 	}
 
-	private void _setUpLanguageUtil() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
-		Language language = Mockito.mock(Language.class);
-
-		Mockito.when(
-			language.get(
-				Matchers.any(ResourceBundle.class), Matchers.eq("none"))
-		).thenReturn(
-			"None"
-		);
-
-		Mockito.when(
-			language.getAvailableLocales()
-		).thenReturn(
-			SetUtil.fromArray(LocaleUtil.US)
-		);
-
-		Mockito.when(
-			language.getLanguageId(LocaleUtil.US)
-		).thenReturn(
-			"en_US"
-		);
-
-		languageUtil.setLanguage(language);
-	}
-
 	private void _setUpPortal() {
 		Portal portal = Mockito.mock(Portal.class);
 
@@ -228,6 +230,9 @@ public class NumericInputMaskDDMFormFieldTemplateContextContributorTest
 			_numericInputMaskDDMFormFieldTemplateContextContributor, "_portal",
 			portal);
 	}
+
+	@Mock
+	private Language _language;
 
 	private final NumericInputMaskDDMFormFieldTemplateContextContributor
 		_numericInputMaskDDMFormFieldTemplateContextContributor =

@@ -22,7 +22,6 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -141,8 +140,6 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 		).thenReturn(
 			message
 		);
-
-		_languageUtil.setLanguage(_language);
 	}
 
 	private static void _setUpGooglePlacesUtil() {
@@ -195,6 +192,10 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 		_mockGet("country", "Country");
 		_mockGet("postal-code", "Postal Code");
 		_mockGet("state", "State");
+
+		ReflectionTestUtil.setFieldValue(
+			_searchLocationDDMFormFieldTemplateContextContributor, "_language",
+			_language);
 	}
 
 	private static void _setUpResourceBundleUtil() {
@@ -244,7 +245,6 @@ public class SearchLocationDDMFormFieldTemplateContextContributorTest {
 	private static final long _GROUP_ID = RandomTestUtil.randomLong();
 
 	private static Language _language;
-	private static final LanguageUtil _languageUtil = new LanguageUtil();
 	private static final SearchLocationDDMFormFieldTemplateContextContributor
 		_searchLocationDDMFormFieldTemplateContextContributor =
 			new SearchLocationDDMFormFieldTemplateContextContributor();

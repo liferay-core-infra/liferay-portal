@@ -45,7 +45,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -531,10 +531,10 @@ public class DDMDataDefinitionConverterImpl
 			localizedValue = new LocalizedValue();
 
 			localizedValue.addString(
-				defaultLocale, LanguageUtil.get(defaultLocale, key));
+				defaultLocale, _language.get(defaultLocale, key));
 
 			for (Locale locale : availableLocales) {
-				localizedValue.addString(locale, LanguageUtil.get(locale, key));
+				localizedValue.addString(locale, _language.get(locale, key));
 			}
 
 			return localizedValue;
@@ -542,7 +542,7 @@ public class DDMDataDefinitionConverterImpl
 
 		if (Validator.isNull(localizedValue.getString(defaultLocale))) {
 			localizedValue.addString(
-				defaultLocale, LanguageUtil.get(defaultLocale, key));
+				defaultLocale, _language.get(defaultLocale, key));
 		}
 
 		return localizedValue;
@@ -722,6 +722,9 @@ public class DDMDataDefinitionConverterImpl
 	@Reference
 	private DEDataDefinitionFieldLinkLocalService
 		_deDataDefinitionFieldLinkLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

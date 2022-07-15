@@ -18,7 +18,6 @@ import com.liferay.dynamic.data.mapping.form.field.type.internal.select.SelectDD
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.render.DDMFormFieldRenderingContext;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -57,7 +56,7 @@ public class
 
 	@Before
 	public void setUp() throws Exception {
-		_setUpLanguageUtil();
+		_setLanguage();
 		_setUpResourceBundle();
 	}
 
@@ -131,9 +130,7 @@ public class
 			mockSelectDDMFormFieldTemplateContextContributor);
 	}
 
-	private void _setUpLanguageUtil() {
-		LanguageUtil languageUtil = new LanguageUtil();
-
+	private void _setLanguage() {
 		Mockito.when(
 			_language.getAvailableLocales()
 		).thenReturn(
@@ -152,7 +149,9 @@ public class
 			LocaleUtil.toLanguageId(LocaleUtil.US)
 		);
 
-		languageUtil.setLanguage(_language);
+		ReflectionTestUtil.setFieldValue(
+			_multiLanguageOptionSelectDDMFormFieldTemplateContextContributor,
+			"_language", _language);
 	}
 
 	private void _setUpResourceBundle() {

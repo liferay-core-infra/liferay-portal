@@ -119,6 +119,9 @@ public class OptionsDDMFormFieldValueAccessorTest {
 		);
 
 		languageUtil.setLanguage(language);
+
+		ReflectionTestUtil.setFieldValue(
+			_optionsDDMFormFieldValueAccessor, "_language", language);
 	}
 
 	private static final OptionsDDMFormFieldValueAccessor

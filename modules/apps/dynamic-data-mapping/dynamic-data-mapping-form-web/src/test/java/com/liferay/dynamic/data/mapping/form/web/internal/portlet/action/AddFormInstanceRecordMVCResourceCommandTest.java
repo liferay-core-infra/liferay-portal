@@ -140,6 +140,9 @@ public class AddFormInstanceRecordMVCResourceCommandTest {
 		LanguageUtil languageUtil = new LanguageUtil();
 
 		languageUtil.setLanguage(_language);
+
+		ReflectionTestUtil.setFieldValue(
+			_addFormInstanceRecordMVCResourceCommand, "_language", _language);
 	}
 
 	private static void _setUpAddFormInstanceRecordMVCResourceCommand() {

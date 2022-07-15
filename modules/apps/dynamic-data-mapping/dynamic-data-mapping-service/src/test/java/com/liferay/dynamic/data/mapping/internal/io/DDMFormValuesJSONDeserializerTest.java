@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
+import com.liferay.portal.language.LanguageImpl;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.util.List;
@@ -65,6 +66,8 @@ public class DDMFormValuesJSONDeserializerTest extends BaseDDMTestCase {
 		super.setUp();
 
 		_setUpDDMFormValuesJSONDeserializer();
+		ReflectionTestUtil.setFieldValue(
+			_ddmFormValuesDeserializer, "_language", new LanguageImpl());
 	}
 
 	@Test

@@ -15,7 +15,7 @@
 package com.liferay.mentions.web.internal.portal.settings.configuration.admin.display;
 
 import com.liferay.mentions.constants.MentionsWebKeys;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
@@ -62,7 +62,7 @@ public class MentionsSiteSettingsConfigurationScreenContributor
 
 	@Override
 	public String getName(Locale locale) {
-		return LanguageUtil.get(locale, "mentions");
+		return _language.get(locale, "mentions");
 	}
 
 	@Override
@@ -111,5 +111,8 @@ public class MentionsSiteSettingsConfigurationScreenContributor
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.mentions.web)")
 	private ServletContext _servletContext;
+
+	@Reference
+	private Language _language;
 
 }

@@ -25,7 +25,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -76,7 +76,7 @@ public class TableClayDataSetContentRendererContextContributor
 			baseTableClayDataSetDisplayView.getResourceBundle(locale);
 
 		for (ClayTableSchemaField clayTableSchemaField : fieldsMap.values()) {
-			String label = LanguageUtil.get(
+			String label = _language.get(
 				resourceBundle, clayTableSchemaField.getLabel());
 
 			if (Validator.isNull(label)) {
@@ -97,5 +97,8 @@ public class TableClayDataSetContentRendererContextContributor
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 }

@@ -21,7 +21,7 @@ import com.liferay.frontend.taglib.clay.data.set.filter.RadioClayDataSetFilterIt
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
@@ -73,7 +73,7 @@ public class RadioClayDataSetFilterContextContributor
 			jsonArray.put(
 				JSONUtil.put(
 					"label",
-					LanguageUtil.get(
+					_language.get(
 						resourceBundle, radioClayDataSetFilterItem.getLabel())
 				).put(
 					"value", radioClayDataSetFilterItem.getValue()
@@ -87,5 +87,8 @@ public class RadioClayDataSetFilterContextContributor
 
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private Language _language;
 
 }

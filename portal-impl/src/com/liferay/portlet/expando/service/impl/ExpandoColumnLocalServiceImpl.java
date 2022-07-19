@@ -17,6 +17,7 @@ package com.liferay.portlet.expando.service.impl;
 import com.liferay.expando.kernel.exception.ColumnNameException;
 import com.liferay.expando.kernel.exception.ColumnTypeException;
 import com.liferay.expando.kernel.exception.DuplicateColumnNameException;
+import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoTable;
@@ -536,8 +537,23 @@ public class ExpandoColumnLocalServiceImpl
 				(Map<Locale, String[]>)defaultData, LocaleUtil.getDefault());
 		}
 		else if (type == ExpandoColumnConstants.STRING_LOCALIZED) {
-			value.setStringMap(
-				(Map<Locale, String>)defaultData, LocaleUtil.getDefault());
+			Map<Locale, String> defaultValuesMap =
+				(Map<Locale, String>)defaultData;
+
+			Locale defaultLocale = LocaleUtil.getDefault();
+
+			String valueDefaultLocale = defaultValuesMap.get(defaultLocale);
+
+			if (Validator.isNull(valueDefaultLocale)) {
+				for (String defaultValue : defaultValuesMap.values()) {
+					if (Validator.isNotNull(defaultValue)) {
+						throw new ValueDataException.MustInformDefaultLocale(
+							LocaleUtil.getDefault());
+					}
+				}
+			}
+
+			value.setStringMap((Map<Locale, String>)defaultData, defaultLocale);
 		}
 
 		return value;

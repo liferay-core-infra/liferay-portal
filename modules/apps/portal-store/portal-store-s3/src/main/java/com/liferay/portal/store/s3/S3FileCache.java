@@ -49,6 +49,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 import org.osgi.service.component.annotations.Activate;
@@ -77,20 +79,25 @@ public class S3FileCache {
 			return;
 		}
 
-		synchronized (this) {
-			if (_calledCleanUpCacheFilesCount == 0) {
-				return;
+		if (_lock.tryLock()) {
+			try {
+				if (_calledCleanUpCacheFilesCount == 0) {
+					return;
+				}
+
+				_calledCleanUpCacheFilesCount = 0;
+
+				Path cacheDirPath = Paths.get(getCacheDirName());
+
+				long lastModified = System.currentTimeMillis();
+
+				lastModified -= _cacheDirCleanUpExpunge.intValue() * Time.DAY;
+
+				cleanUpCacheFiles(cacheDirPath, lastModified);
 			}
-
-			_calledCleanUpCacheFilesCount = 0;
-
-			Path cacheDirPath = Paths.get(getCacheDirName());
-
-			long lastModified = System.currentTimeMillis();
-
-			lastModified -= _cacheDirCleanUpExpunge.intValue() * Time.DAY;
-
-			cleanUpCacheFiles(cacheDirPath, lastModified);
+			finally {
+				_lock.unlock();
+			}
 		}
 	}
 
@@ -249,6 +256,7 @@ public class S3FileCache {
 	private volatile AtomicInteger _cacheDirCleanUpExpunge;
 	private volatile AtomicInteger _cacheDirCleanUpFrequency;
 	private int _calledCleanUpCacheFilesCount;
+	private final Lock _lock = new ReentrantLock();
 	private S3KeyTransformer _s3KeyTransformer;
 	private volatile S3StoreConfiguration _s3StoreConfiguration;
 

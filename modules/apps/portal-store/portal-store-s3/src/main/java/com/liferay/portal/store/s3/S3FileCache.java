@@ -81,12 +81,6 @@ public class S3FileCache {
 
 		if (_lock.tryLock()) {
 			try {
-				if (_calledCleanUpCacheFilesCount == 0) {
-					return;
-				}
-
-				_calledCleanUpCacheFilesCount = 0;
-
 				Path cacheDirPath = Paths.get(getCacheDirName());
 
 				long lastModified = System.currentTimeMillis();
@@ -94,6 +88,8 @@ public class S3FileCache {
 				lastModified -= _cacheDirCleanUpExpunge.intValue() * Time.DAY;
 
 				cleanUpCacheFiles(cacheDirPath, lastModified);
+
+				_calledCleanUpCacheFilesCount = 0;
 			}
 			finally {
 				_lock.unlock();

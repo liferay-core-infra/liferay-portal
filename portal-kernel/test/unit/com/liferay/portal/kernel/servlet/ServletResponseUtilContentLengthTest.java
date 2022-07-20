@@ -41,28 +41,79 @@ public class ServletResponseUtilContentLengthTest {
 	}
 
 	@Test
+	public void testContentLengthGreaterThanOrEqualsToBufferSizeOfStreamUtil()
+		throws Exception {
+
+		_assertContentLength(
+			StreamUtil.BUFFER_SIZE + 1, StreamUtil.BUFFER_SIZE + 1);
+
+		_assertContentLength(StreamUtil.BUFFER_SIZE, StreamUtil.BUFFER_SIZE);
+	}
+
+	@Test
+	public void testContentLengthGreatorThanInputStreamLength()
+		throws Exception {
+
+		_assertContentLength(100, 50);
+	}
+
+	@Test
 	public void testContentLengthLowerThanBufferSizeOfStreamUtil()
 		throws Exception {
 
-		byte[] bytes = new byte[StreamUtil.BUFFER_SIZE];
+		_assertContentLength(
+			StreamUtil.BUFFER_SIZE - 1, StreamUtil.BUFFER_SIZE);
+	}
+
+	@Test
+	public void testContentLengthLowerThanOrEqualsToZero() throws Exception {
+		_assertContentLength(0, 100);
+		_assertContentLength(-1, 100);
+	}
+
+	private void _assertContentLength(
+			int expectedContentLength, int arrayLength)
+		throws Exception {
+
+		byte[] bytes = new byte[arrayLength];
 
 		Arrays.fill(bytes, (byte)48);
 
-		int contentLength = StreamUtil.BUFFER_SIZE - 1;
+		try {
+			ServletResponseUtil.write(
+				_mockHttpServletResponse, new ByteArrayInputStream(bytes),
+				expectedContentLength);
 
-		ServletResponseUtil.write(
-			_mockHttpServletResponse, new ByteArrayInputStream(bytes),
-			(long)contentLength);
+			String content = new String(bytes);
 
-		String content = new String(bytes);
+			if (expectedContentLength <= 0) {
+				Assert.assertNull(
+					_mockHttpServletResponse.getHeader(
+						HttpHeaders.CONTENT_LENGTH));
+				Assert.assertEquals(
+					content, _mockHttpServletResponse.getContentAsString());
+			}
+			else {
+				Assert.assertEquals(
+					String.valueOf(expectedContentLength),
+					_mockHttpServletResponse.getHeader(
+						HttpHeaders.CONTENT_LENGTH));
 
-		Assert.assertEquals(
-			String.valueOf(contentLength),
-			_mockHttpServletResponse.getHeader(HttpHeaders.CONTENT_LENGTH));
-
-		Assert.assertEquals(
-			content.substring(0, contentLength),
-			_mockHttpServletResponse.getContentAsString());
+				if (expectedContentLength >= arrayLength) {
+					Assert.assertEquals(
+						content, _mockHttpServletResponse.getContentAsString());
+				}
+				else {
+					Assert.assertEquals(
+						content.substring(0, expectedContentLength),
+						_mockHttpServletResponse.getContentAsString());
+				}
+			}
+		}
+		finally {
+			_mockHttpServletResponse.setCommitted(false);
+			_mockHttpServletResponse.reset();
+		}
 	}
 
 	private final MockHttpServletResponse _mockHttpServletResponse =

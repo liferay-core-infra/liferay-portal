@@ -19,7 +19,6 @@ import com.liferay.portal.cache.ehcache.internal.event.PortalCacheCacheEventList
 import com.liferay.portal.cache.io.SerializableObjectWrapper;
 import com.liferay.portal.kernel.cache.PortalCacheListener;
 import com.liferay.portal.kernel.cache.PortalCacheListenerScope;
-import com.liferay.portal.kernel.cache.PortalCacheManager;
 
 import java.io.Serializable;
 
@@ -29,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.sf.ehcache.event.CacheEventListener;
@@ -44,16 +44,30 @@ public class EhcachePortalCache<K extends Serializable, V>
 	extends BasePortalCache<K, V> implements EhcacheWrapper {
 
 	public EhcachePortalCache(
-		PortalCacheManager<K, V> portalCacheManager, Ehcache ehcache,
-		boolean serializable) {
+		EhcachePortalCacheManager<K, V> ehcachePortalCacheManager,
+		EhcachePortalCacheConfiguration ehcachePortalCacheConfiguration) {
 
-		super(portalCacheManager);
+		super(ehcachePortalCacheManager);
 
-		_ehcache = ehcache;
-		_serializable = serializable;
+		String portalCacheName =
+			ehcachePortalCacheConfiguration.getPortalCacheName();
+
+		CacheManager cacheManager =
+			ehcachePortalCacheManager.getEhcacheManager();
+
+		synchronized (cacheManager) {
+			if (!cacheManager.cacheExists(portalCacheName)) {
+				cacheManager.addCache(portalCacheName);
+			}
+		}
+
+		_ehcache = cacheManager.getCache(portalCacheName);
+
+		_serializable =
+			ehcachePortalCacheConfiguration.isRequireSerialization();
 
 		RegisteredEventListeners registeredEventListeners =
-			ehcache.getCacheEventNotificationService();
+			_ehcache.getCacheEventNotificationService();
 
 		registeredEventListeners.registerListener(
 			new PortalCacheCacheEventListener<>(

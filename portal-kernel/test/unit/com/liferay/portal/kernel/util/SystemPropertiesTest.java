@@ -51,6 +51,20 @@ public class SystemPropertiesTest {
 	}
 
 	@Test
+	public void testGetArray() {
+		String testArrayKey = _PREFIX + "array.key";
+
+		Assert.assertTrue(
+			ArrayUtil.isEmpty(SystemProperties.getArray(testArrayKey)));
+
+		SystemProperties.set(testArrayKey, "test.array.value,test.array.value");
+
+		Assert.assertArrayEquals(
+			new String[] {"test.array.value", "test.array.value"},
+			SystemProperties.getArray(testArrayKey));
+	}
+
+	@Test
 	public void testGetProperties() {
 		Map<String, String> propertiesMap = ReflectionTestUtil.getFieldValue(
 			SystemProperties.class, "_properties");

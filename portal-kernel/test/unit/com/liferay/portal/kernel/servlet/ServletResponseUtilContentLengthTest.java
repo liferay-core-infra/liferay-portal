@@ -41,13 +41,16 @@ public class ServletResponseUtilContentLengthTest {
 	}
 
 	@Test
-	public void testContentLengthGreaterThanOrEqualsToBufferSizeOfStreamUtil()
+	public void testContentLengthCompareWithBufferSizeOfStreamUtil()
 		throws Exception {
 
 		_assertContentLength(
 			StreamUtil.BUFFER_SIZE + 1, StreamUtil.BUFFER_SIZE + 1);
 
 		_assertContentLength(StreamUtil.BUFFER_SIZE, StreamUtil.BUFFER_SIZE);
+
+		_assertContentLength(
+			StreamUtil.BUFFER_SIZE - 1, StreamUtil.BUFFER_SIZE);
 	}
 
 	@Test
@@ -55,14 +58,6 @@ public class ServletResponseUtilContentLengthTest {
 		throws Exception {
 
 		_assertContentLength(100, 50);
-	}
-
-	@Test
-	public void testContentLengthLowerThanBufferSizeOfStreamUtil()
-		throws Exception {
-
-		_assertContentLength(
-			StreamUtil.BUFFER_SIZE - 1, StreamUtil.BUFFER_SIZE);
 	}
 
 	@Test

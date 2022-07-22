@@ -932,6 +932,8 @@ public class PortalImpl implements Portal {
 
 			// https://datatracker.ietf.org/doc/html/rfc3986#section-4.2
 
+			url = url.trim();
+
 			if (url.startsWith(StringPool.DOUBLE_SLASH)) {
 
 				// "//" authority path-abempty

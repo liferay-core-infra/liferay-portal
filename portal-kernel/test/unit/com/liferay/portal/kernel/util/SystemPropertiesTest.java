@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.util;
 
 import java.util.Properties;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,6 +24,11 @@ import org.junit.Test;
  * @author Jiaxu Wei
  */
 public class SystemPropertiesTest {
+
+	@After
+	public void tearDown() {
+		SystemProperties.clear(_TEST_KEY);
+	}
 
 	@Test
 	public void testGetArray() {
@@ -77,8 +83,6 @@ public class SystemPropertiesTest {
 
 		Assert.assertEquals(_TEST_VALUE, SystemProperties.get(_TEST_KEY));
 		Assert.assertEquals(_TEST_VALUE, System.getProperty(_TEST_KEY));
-
-		System.clearProperty(_TEST_KEY);
 	}
 
 	@Test

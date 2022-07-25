@@ -55,7 +55,8 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class ClusterSampleCacheReplicationPortlet extends MVCPortlet {
 
-	public static final String PORTAL_CACHE_NAME = "test.cache";
+	public static final String PORTAL_CACHE_NAME =
+		ClusterSampleCacheReplicationPortlet.class.getName();
 
 	@Override
 	public void render(

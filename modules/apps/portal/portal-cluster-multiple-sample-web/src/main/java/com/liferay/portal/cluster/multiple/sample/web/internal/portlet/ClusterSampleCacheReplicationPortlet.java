@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"com.liferay.portlet.display-category=category.sample",
 		"com.liferay.portlet.instanceable=true",
-		"javax.portlet.display-name=Cluster Sample Cache",
+		"javax.portlet.display-name=ClusterSampleCacheReplication",
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=/cache_replication/view.jsp",
 		"javax.portlet.name=" + ClusterSamplePortletKeys.CLUSTER_SAMPLE_CACHE_REPLICATION,

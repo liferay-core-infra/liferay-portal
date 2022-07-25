@@ -14,7 +14,6 @@
 
 package com.liferay.portal.cluster.multiple.sample.web.internal.portlet;
 
-import com.liferay.portal.cluster.multiple.sample.web.internal.constants.ClusterSampleConstants;
 import com.liferay.portal.cluster.multiple.sample.web.internal.constants.ClusterSamplePortletKeys;
 import com.liferay.portal.cluster.multiple.sample.web.internal.constants.ClusterSampleWebKeys;
 import com.liferay.portal.kernel.cache.MultiVMPool;
@@ -56,6 +55,8 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class ClusterSampleCacheReplicationPortlet extends MVCPortlet {
 
+	public static final String PORTAL_CACHE_NAME = "test.cache";
+
 	@Override
 	public void render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
@@ -78,7 +79,7 @@ public class ClusterSampleCacheReplicationPortlet extends MVCPortlet {
 	@Activate
 	protected void activate() {
 		_portalCache = (PortalCache<String, String>)_multiVMPool.getPortalCache(
-			ClusterSampleConstants.PORTAL_CACHE_NAME);
+			PORTAL_CACHE_NAME);
 	}
 
 	@Reference

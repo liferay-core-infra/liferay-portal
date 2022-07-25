@@ -71,9 +71,7 @@ import org.osgi.service.component.annotations.Reference;
 public class S3FileCache {
 
 	public void cleanUpCacheFiles() {
-		_calledCleanUpCacheFilesCount++;
-
-		if (_calledCleanUpCacheFilesCount <
+		if (_calledCleanUpCacheFilesCount.incrementAndGet() <
 				_cacheDirCleanUpFrequency.intValue()) {
 
 			return;
@@ -89,7 +87,7 @@ public class S3FileCache {
 
 				cleanUpCacheFiles(cacheDirPath, lastModified);
 
-				_calledCleanUpCacheFilesCount = 0;
+				_calledCleanUpCacheFilesCount.set(0);
 			}
 			finally {
 				_lock.unlock();
@@ -251,7 +249,8 @@ public class S3FileCache {
 
 	private volatile AtomicInteger _cacheDirCleanUpExpunge;
 	private volatile AtomicInteger _cacheDirCleanUpFrequency;
-	private int _calledCleanUpCacheFilesCount;
+	private volatile AtomicInteger _calledCleanUpCacheFilesCount =
+		new AtomicInteger(0);
 	private final Lock _lock = new ReentrantLock();
 	private S3KeyTransformer _s3KeyTransformer;
 	private volatile S3StoreConfiguration _s3StoreConfiguration;

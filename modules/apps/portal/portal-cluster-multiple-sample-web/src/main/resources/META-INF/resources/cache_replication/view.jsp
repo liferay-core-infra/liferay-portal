@@ -33,56 +33,54 @@ ClusterSampleData clusterSampleData = new ClusterSampleData();
 </ul>
 
 <c:if test="<%= cacheEntries.isEmpty() %>">
-	<br />
-
-	<span>test.cache is empty! </span>
-	<br />
+	<h1>There is no entry in the cache</h1>
 </c:if>
 
 <c:if test="<%= !cacheEntries.isEmpty() %>">
-	<span>Following data is cache get </span>
-	<br />
-
-	<liferay-portlet:actionURL name="/cluster_sample_cache_replication/edit_cache" var="removeAllCacheEntriesURL">
-		<portlet:param name="<%= Constants.CMD %>" value="<%= "remove_all_cache_entries" %>" />
-	</liferay-portlet:actionURL>
-
-	<aui:button href="<%= removeAllCacheEntriesURL %>" value="Remove All" />
-
-	<br /><br />
-
-	<table class="border">
-		<tr class="table-list-title">
-			<td class="border">CACHE KEY</td>
-			<td class="border">CACHE VALUE</td>
-			<td class="border">ACTION</td>
-		</tr>
-
-		<c:forEach items="<%= cacheEntries %>" var="cacheEntry">
+	<table class="table table-autofit table-bordered table-sm">
+		<thead>
 			<tr>
-				<td>
-					${cacheEntry.key}
-				</td>
-				<td>
-					${cacheEntry.value}
-				</td>
-				<td>
-					<aui:button-row>
-						<liferay-portlet:actionURL name="/cluster_sample_cache_replication/edit_cache" var="removeCacheEntryURL">
-							<portlet:param name="currentKey" value="${cacheEntry.key}" />
-							<portlet:param name="<%= Constants.CMD %>" value="<%= "remove_cache_entry" %>" />
-						</liferay-portlet:actionURL>
+				<th colspan="2">
+					<h1>Cache Entries</h1>
+				</th>
+				<th>
+					<liferay-portlet:actionURL name="/cluster_sample_cache_replication/edit_cache" var="removeAllCacheEntriesURL">
+						<portlet:param name="<%= Constants.CMD %>" value="remove_all_cache_entries" />
+					</liferay-portlet:actionURL>
 
-						<aui:button href="<%= removeCacheEntryURL %>" value="remove" />
-					</aui:button-row>
-				</td>
+					<aui:button href="<%= removeAllCacheEntriesURL %>" value="Remove All" />
+				</th>
 			</tr>
-		</c:forEach>
+			<tr>
+				<th class="table-head-title">CACHE KEY</th>
+				<th class="table-head-title">CACHE VALUE</th>
+				<th class="table-head-title">ACTION</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<c:forEach items="<%= cacheEntries %>" var="cacheEntry">
+				<tr>
+					<td>${cacheEntry.key}</td>
+					<td>${cacheEntry.value}</td>
+					<td>
+						<aui:button-row>
+							<liferay-portlet:actionURL name="/cluster_sample_cache_replication/edit_cache" var="removeCacheEntryURL">
+								<portlet:param name="currentKey" value="${cacheEntry.key}" />
+								<portlet:param name="<%= Constants.CMD %>" value="remove_cache_entry" />
+							</liferay-portlet:actionURL>
+
+							<aui:button href="<%= removeCacheEntryURL %>" value="remove" />
+						</aui:button-row>
+					</td>
+				</tr>
+			</c:forEach>
+		</tbody>
 	</table>
 </c:if>
 
 <liferay-portlet:actionURL name="/cluster_sample_cache_replication/edit_cache" var="putCacheEntryURL">
-	<portlet:param name="<%= Constants.CMD %>" value="<%= "put_cache_entry" %>" />
+	<portlet:param name="<%= Constants.CMD %>" value="put_cache_entry" />
 </liferay-portlet:actionURL>
 
 <aui:form action="<%= putCacheEntryURL %>" method="post" name="fm">

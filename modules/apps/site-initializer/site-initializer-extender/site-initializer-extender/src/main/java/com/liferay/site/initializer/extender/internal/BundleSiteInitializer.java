@@ -1139,7 +1139,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		_fragmentsImporter.importFragmentEntries(
-			serviceContext.getUserId(), groupId, 0, zipWriter.getFile(), false);
+			serviceContext.getUserId(), groupId, 0, zipWriter.getFile(), true);
 	}
 
 	private void _addFragmentEntries(

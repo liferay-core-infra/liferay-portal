@@ -13,9 +13,14 @@
  */
 
 import {PortletBase, sub} from 'frontend-js-web';
-import {Config} from 'metal-state';
 
 class AccountUserEmailDomainValidator extends PortletBase {
+	created(props) {
+		this.accountEntryNames = props.accountEntryNames;
+		this.blockedDomains = props.blockedDomains;
+		this.validDomains = props.validDomains;
+		this.viewValidDomainsURL = props.viewValidDomainsURL;
+	}
 	attached() {
 		const form = this.getForm_(this.ns('fm'));
 
@@ -216,12 +221,5 @@ class AccountUserEmailDomainValidator extends PortletBase {
 		);
 	}
 }
-
-AccountUserEmailDomainValidator.STATE = {
-	accountEntryNames: Config.string,
-	blockedDomains: Config.string,
-	validDomains: Config.string,
-	viewValidDomainsURL: Config.string,
-};
 
 export default AccountUserEmailDomainValidator;

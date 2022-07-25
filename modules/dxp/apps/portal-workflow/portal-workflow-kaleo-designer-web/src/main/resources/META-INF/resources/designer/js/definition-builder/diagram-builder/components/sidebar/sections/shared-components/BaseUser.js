@@ -106,7 +106,6 @@ const BaseUser = ({
 		});
 	};
 
-	const initialLoading = networkStatus === 1;
 	const loading = networkStatus < 4;
 	const error = networkStatus === 5;
 
@@ -129,9 +128,7 @@ const BaseUser = ({
 						value={search}
 					/>
 
-					<ClayAutocomplete.DropDown
-						active={(!!resource && !!search) || initialLoading}
-					>
+					<ClayAutocomplete.DropDown active={!!resource && !!search}>
 						<ClayDropDown.ItemList>
 							{(error || !resource?.items?.length) && (
 								<ClayDropDown.Item className="disabled">

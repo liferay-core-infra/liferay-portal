@@ -28,7 +28,6 @@ const BaseActionsInfo = ({
 	script,
 	scriptLabel,
 	scriptLabelSecondary,
-	selectedItem,
 	setDescription,
 	setExecutionType,
 	setExecutionTypeOptions,
@@ -38,18 +37,6 @@ const BaseActionsInfo = ({
 	updateActionInfo,
 }) => {
 	useEffect(() => {
-		if (
-			selectedItem.type === 'task' &&
-			executionTypeOptions &&
-			!executionTypeOptions
-				.map((option) => option.value)
-				.includes('onAssignment')
-		) {
-			executionTypeOptions.push({
-				label: Liferay.Language.get('on-assignment'),
-				value: 'onAssignment',
-			});
-		}
 		if (executionTypeOptions) {
 			sortElements(executionTypeOptions, 'value');
 

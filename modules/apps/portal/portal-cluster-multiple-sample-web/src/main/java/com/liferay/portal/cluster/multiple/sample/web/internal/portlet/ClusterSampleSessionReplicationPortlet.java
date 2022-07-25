@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Component;
 		"com.liferay.portlet.instanceable=true",
 		"javax.portlet.display-name=ClusterSampleSessionReplication",
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
-		"javax.portlet.init-param.view-template=/view.jsp",
+		"javax.portlet.init-param.view-template=/session_replication/view.jsp",
 		"javax.portlet.name=com_liferay_portal_cluster_multiple_sample_web_internal_portlet_ClusterSampleSessionReplicationPortlet",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user",

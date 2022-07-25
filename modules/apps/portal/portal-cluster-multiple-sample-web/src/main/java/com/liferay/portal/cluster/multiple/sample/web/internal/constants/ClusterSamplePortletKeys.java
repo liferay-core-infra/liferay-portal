@@ -23,4 +23,8 @@ public interface ClusterSamplePortletKeys {
 		"com_liferay_portal_cluster_multiple_sample_web_internal_portlet_" +
 			"ClusterSampleCacheReplicationPortlet";
 
+	public static final String CLUSTER_SAMPLE_SESSION_REPLICATION =
+		"com_liferay_portal_cluster_multiple_sample_web_internal_portlet_" +
+			"ClusterSampleSessionReplicationPortlet";
+
 }

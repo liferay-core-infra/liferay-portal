@@ -53,6 +53,13 @@ public class PortalImplUnitTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
+	public void testEscapeRedirectWithEscapingSequenceCharacter() {
+		String url = "\t//example.com";
+
+		Assert.assertEquals(null, _portalImpl.escapeRedirect(url));
+	}
+
+	@Test
 	public void testGetForwardedHost() {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();

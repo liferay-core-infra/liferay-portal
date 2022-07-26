@@ -14,7 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.designer.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -35,6 +35,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jeyvison Nascimento
@@ -98,7 +99,7 @@ public class DuplicateWorkflowDefinitionMVCActionCommand
 		String duplicatedDefinitionTitle = ParamUtil.getString(
 			actionRequest, "duplicatedDefinitionTitle");
 
-		return LanguageUtil.format(
+		return _language.format(
 			getResourceBundle(actionRequest), "duplicated-from-x",
 			StringUtil.quote(duplicatedDefinitionTitle));
 	}
@@ -121,5 +122,8 @@ public class DuplicateWorkflowDefinitionMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DuplicateWorkflowDefinitionMVCActionCommand.class);
+
+	@Reference
+	private Language _language;
 
 }

@@ -17,7 +17,7 @@ package com.liferay.portal.inactive.request.handler.internal;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.inactive.request.handler.configuration.InactiveRequestHandlerConfiguration;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.InactiveRequestHandler;
@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,10 +80,9 @@ public class InactiveRequestHandlerImpl implements InactiveRequestHandler {
 
 		String message = null;
 
-		if (LanguageUtil.isValidLanguageKey(locale, messageKey)) {
-			message = LanguageUtil.get(locale, messageKey);
-		}
-		else {
+		message = _language.get(locale, messageKey, StringPool.BLANK);
+
+		if (Validator.isNull(message)) {
 			message = HtmlUtil.escape(messageKey);
 		}
 
@@ -138,6 +138,9 @@ public class InactiveRequestHandlerImpl implements InactiveRequestHandler {
 		InactiveRequestHandlerImpl.class);
 
 	private String _content = StringPool.BLANK;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private Portal _portal;

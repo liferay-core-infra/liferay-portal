@@ -14,7 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.designer.web.internal.portlet.action;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -133,12 +133,11 @@ public class PublishKaleoDefinitionVersionMVCActionCommand
 				KaleoDesignerWebKeys.PUBLISH_DEFINITION_ACTION));
 
 		if (definitionPublishing) {
-			return LanguageUtil.get(
+			return _language.get(
 				resourceBundle, "workflow-published-successfully");
 		}
 
-		return LanguageUtil.get(
-			resourceBundle, "workflow-updated-successfully");
+		return _language.get(resourceBundle, "workflow-updated-successfully");
 	}
 
 	protected void validateTitle(
@@ -161,7 +160,7 @@ public class PublishKaleoDefinitionVersionMVCActionCommand
 				bytes);
 		}
 		catch (WorkflowException workflowException) {
-			String message = LanguageUtil.get(
+			String message = _language.get(
 				getResourceBundle(actionRequest),
 				"please-enter-a-valid-definition-before-publishing");
 
@@ -175,5 +174,8 @@ public class PublishKaleoDefinitionVersionMVCActionCommand
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PublishKaleoDefinitionVersionMVCActionCommand.class);
+
+	@Reference
+	private Language _language;
 
 }

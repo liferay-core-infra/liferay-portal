@@ -216,6 +216,10 @@ public class NumericInputMaskDDMFormFieldTemplateContextContributorTest
 			"en_US"
 		);
 
+		ReflectionTestUtil.setFieldValue(
+			_numericInputMaskDDMFormFieldTemplateContextContributor,
+			"_language", language);
+
 		languageUtil.setLanguage(language);
 	}
 

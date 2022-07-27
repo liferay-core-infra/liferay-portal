@@ -1076,6 +1076,9 @@ public class DDMFormValuesFactoryTest {
 		LanguageUtil languageUtil = new LanguageUtil();
 
 		languageUtil.setLanguage(_language);
+
+		ReflectionTestUtil.setFieldValue(
+			_ddmFormValuesFactory, "_language", _language);
 	}
 
 	protected void setUpLocaleThreadLocal() {

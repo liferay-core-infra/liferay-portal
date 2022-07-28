@@ -22,7 +22,6 @@ import com.liferay.commerce.currency.constants.RoundingTypeConstants;
 import com.liferay.commerce.currency.exception.CommerceCurrencyCodeException;
 import com.liferay.commerce.currency.exception.CommerceCurrencyNameException;
 import com.liferay.commerce.currency.exception.NoSuchCurrencyException;
-import com.liferay.commerce.currency.internal.model.listener.PortalInstanceLifecycleListenerImpl;
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.base.CommerceCurrencyLocalServiceBaseImpl;
 import com.liferay.commerce.currency.util.ExchangeRateProvider;
@@ -30,7 +29,7 @@ import com.liferay.commerce.currency.util.ExchangeRateProviderRegistry;
 import com.liferay.commerce.currency.util.comparator.CommerceCurrencyPriorityComparator;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -51,7 +50,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -60,16 +58,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Andrea Di Giorgi
  * @author Marco Leo
  * @author Alessio Antonio Rendina
  */
+@Component(
+	enabled = false,
+	property = "model.class.name=com.liferay.commerce.currency.model.CommerceCurrency",
+	service = AopService.class
+)
 public class CommerceCurrencyLocalServiceImpl
 	extends CommerceCurrencyLocalServiceBaseImpl {
 
@@ -133,21 +134,6 @@ public class CommerceCurrencyLocalServiceImpl
 	}
 
 	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		_serviceRegistration = bundleContext.registerService(
-			PortalInstanceLifecycleListener.class,
-			new PortalInstanceLifecycleListenerImpl(
-				commerceCurrencyLocalService),
-			null);
-	}
-
-	@Override
 	public void deleteCommerceCurrencies(long companyId) {
 		commerceCurrencyPersistence.removeByCompanyId(companyId);
 	}
@@ -169,13 +155,6 @@ public class CommerceCurrencyLocalServiceImpl
 
 		return commerceCurrencyLocalService.deleteCommerceCurrency(
 			commerceCurrency);
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-
-		_serviceRegistration.unregister();
 	}
 
 	@Override
@@ -504,15 +483,13 @@ public class CommerceCurrencyLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceCurrencyLocalServiceImpl.class);
 
-	@ServiceReference(type = CompanyLocalService.class)
+	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	@ServiceReference(type = ConfigurationProvider.class)
+	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	@ServiceReference(type = ExchangeRateProviderRegistry.class)
+	@Reference
 	private ExchangeRateProviderRegistry _exchangeRateProviderRegistry;
-
-	private ServiceRegistration<?> _serviceRegistration;
 
 }

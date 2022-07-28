@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.StringPool;
+
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.After;
@@ -56,6 +59,31 @@ public class SystemPropertiesTest {
 
 		Assert.assertNull(properties1.getProperty(_TEST_KEY));
 		Assert.assertEquals(_TEST_VALUE, properties2.get(_TEST_KEY));
+	}
+
+	@Test
+	public void testGetPropertiesWithPrefix() {
+		String prefix =
+			SystemPropertiesTest.class.getName() + StringPool.PERIOD;
+
+		Map<String, String> propertiesWithPrefix =
+			SystemProperties.getProperties(prefix, false);
+
+		Assert.assertTrue(propertiesWithPrefix.isEmpty());
+
+		SystemProperties.set(_TEST_KEY, _TEST_VALUE);
+
+		Map<String, String> propertiesWithoutPrefix =
+			SystemProperties.getProperties(prefix, true);
+
+		Assert.assertTrue(propertiesWithoutPrefix.size() == 1);
+		Assert.assertEquals(
+			_TEST_VALUE, propertiesWithoutPrefix.get("test.key"));
+
+		propertiesWithPrefix = SystemProperties.getProperties(prefix, false);
+
+		Assert.assertTrue(propertiesWithPrefix.size() == 1);
+		Assert.assertEquals(_TEST_VALUE, propertiesWithPrefix.get(_TEST_KEY));
 	}
 
 	@Test

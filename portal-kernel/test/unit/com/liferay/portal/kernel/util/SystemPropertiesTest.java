@@ -14,6 +14,14 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.petra.string.StringUtil;
+
+import java.io.File;
+import java.io.FileWriter;
+
 import java.util.Properties;
 
 import org.junit.After;
@@ -96,6 +104,37 @@ public class SystemPropertiesTest {
 
 		Assert.assertEquals(
 			_TEST_VALUE, SystemProperties.get(_TEST_KEY, "defaultValue"));
+	}
+
+	@Test
+	public void testLoad() throws Exception {
+		String userDir = StringUtil.replace(
+			System.getProperty("user.dir"), CharPool.BACK_SLASH,
+			CharPool.FORWARD_SLASH);
+
+		File systemPropertiesFile = new File(
+			userDir + "/portal-kernel/test-classes/unit/system.properties");
+
+		try {
+			systemPropertiesFile.createNewFile();
+
+			try (FileWriter fileWriter = new FileWriter(systemPropertiesFile)) {
+				fileWriter.write(
+					StringBundler.concat(
+						"#test case", StringPool.NEW_LINE, _TEST_KEY, "=\\",
+						StringPool.NEW_LINE, "\\", StringPool.NEW_LINE, "#",
+						StringPool.NEW_LINE, _TEST_VALUE, StringPool.NEW_LINE));
+
+				fileWriter.flush();
+			}
+
+			SystemProperties.load(SystemPropertiesTest.class.getClassLoader());
+
+			Assert.assertEquals(_TEST_VALUE, SystemProperties.get(_TEST_KEY));
+		}
+		finally {
+			systemPropertiesFile.delete();
+		}
 	}
 
 	private static final String _TEST_KEY =

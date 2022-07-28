@@ -445,6 +445,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		properties.put(
 			"ds.lock.timeout.milliseconds",
 			SystemProperties.get("ds.lock.timeout.milliseconds", "1800000"));
+		properties.put(
+			"ds.stop.timeout.milliseconds",
+			SystemProperties.get("ds.stop.timeout.milliseconds", "1800000"));
 		properties.put("eclipse.security", null);
 		properties.put("java.security.manager", null);
 		properties.put("org.osgi.framework.security", null);

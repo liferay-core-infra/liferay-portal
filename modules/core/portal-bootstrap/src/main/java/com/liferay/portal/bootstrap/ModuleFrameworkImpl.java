@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.module.framework.ModuleFramework;
 import com.liferay.portal.util.PropsValues;
 
@@ -441,6 +442,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			Constants.FRAMEWORK_STORAGE,
 			PropsValues.MODULE_FRAMEWORK_STATE_DIR);
 
+		properties.put(
+			"ds.lock.timeout.milliseconds",
+			SystemProperties.get("ds.lock.timeout.milliseconds", "1800000"));
 		properties.put("eclipse.security", null);
 		properties.put("java.security.manager", null);
 		properties.put("org.osgi.framework.security", null);

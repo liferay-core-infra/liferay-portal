@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -64,7 +67,7 @@ public class SystemProperties {
 			value = System.getProperty(key, defaultValue);
 		}
 
-		return value;
+		return _resolveReference(value);
 	}
 
 	public static String[] getArray(String key) {
@@ -88,7 +91,7 @@ public class SystemProperties {
 					key = key.substring(prefix.length());
 				}
 
-				properties.put(key, entry.getValue());
+				properties.put(key, _resolveReference(entry.getValue()));
 			}
 		}
 
@@ -206,6 +209,57 @@ public class SystemProperties {
 		System.setProperty(key, value);
 
 		_properties.put(key, value);
+	}
+
+	private static String _resolveReference(String value) {
+		if (value == null) {
+			return null;
+		}
+
+		int startIndex = 0;
+
+		StringBundler sb = new StringBundler();
+
+		while ((startIndex = value.indexOf(
+					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE)) != -1) {
+
+			int endIndex = value.indexOf(
+				StringPool.CLOSE_CURLY_BRACE, startIndex);
+
+			if (endIndex == -1) {
+				break;
+			}
+
+			sb.append(value.substring(0, startIndex));
+
+			String placeholderKey = value.substring(
+				startIndex + StringPool.DOLLAR_AND_OPEN_CURLY_BRACE.length(),
+				endIndex);
+
+			if (StringPool.BLANK.equals(placeholderKey)) {
+				sb.append(value.substring(startIndex, endIndex + 1));
+			}
+			else {
+				String placeholderValue = get(placeholderKey);
+
+				if (placeholderValue == null) {
+					sb.append(value.substring(startIndex, endIndex + 1));
+				}
+				else {
+					sb.append(placeholderValue);
+				}
+			}
+
+			value = value.substring(endIndex + 1);
+		}
+
+		if (sb.index() > 0) {
+			sb.append(value);
+
+			return sb.toString();
+		}
+
+		return value;
 	}
 
 	private static final Map<String, String> _properties =

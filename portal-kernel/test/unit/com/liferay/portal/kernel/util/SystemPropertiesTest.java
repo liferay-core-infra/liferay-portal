@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.util;
 
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 
 import java.io.IOException;
@@ -35,7 +34,12 @@ public class SystemPropertiesTest {
 
 	@After
 	public void tearDown() {
-		SystemProperties.clear(_TEST_KEY);
+		Map<String, String> properties = SystemProperties.getProperties(
+			_PREFIX, false);
+
+		for (String propertyKey : properties.keySet()) {
+			SystemProperties.clear(propertyKey);
+		}
 	}
 
 	@Test
@@ -113,6 +117,8 @@ public class SystemPropertiesTest {
 
 		Assert.assertEquals(_TEST_VALUE, SystemProperties.get(_TEST_KEY));
 		Assert.assertEquals(_TEST_VALUE, System.getProperty(_TEST_KEY));
+
+		System.clearProperty(_TEST_KEY);
 	}
 
 	@Test
@@ -142,10 +148,120 @@ public class SystemPropertiesTest {
 		Assert.assertEquals(_TEST_VALUE, properties.get(_TEST_KEY));
 	}
 
+	@Test
+	public void testReference() {
+
+		// Properties that refer to other Properties can also be parsed
+		// by SystemProperties
+
+		SystemProperties.set("test.SystemProperties.test.key", "test.value");
+		Assert.assertEquals(
+			"test.value",
+			SystemProperties.get("test.SystemProperties.test.key"));
+
+		// Simple reference
+
+		Assert.assertNull(
+			SystemProperties.get("test.SystemProperties.test.reference.key"));
+
+		SystemProperties.set(
+			"test.SystemProperties.test.reference.key",
+			"${test.SystemProperties.test.key}");
+
+		Assert.assertEquals(
+			"test.value",
+			SystemProperties.get("test.SystemProperties.test.reference.key"));
+
+		// Blank reference
+
+		Assert.assertNull(
+			SystemProperties.get(
+				"test.SystemProperties.test.blank.reference.key"));
+
+		SystemProperties.set(
+			"test.SystemProperties.test.blank.reference.key", "${}");
+
+		Assert.assertEquals(
+			"${}",
+			SystemProperties.get(
+				"test.SystemProperties.test.blank.reference.key"));
+
+		// Value contains a single symbol "}"
+
+		Assert.assertNull(
+			SystemProperties.get(
+				"test.SystemProperties.test.right.part.reference.key"));
+
+		SystemProperties.set(
+			"test.SystemProperties.test.right.part.reference.key",
+			"test.SystemProperties.test.key}${test.SystemProperties.test.key}");
+
+		Assert.assertEquals(
+			"test.SystemProperties.test.key}test.value",
+			SystemProperties.get(
+				"test.SystemProperties.test.right.part.reference.key"));
+
+		// Value contains a single symbol "${"
+
+		Assert.assertNull(
+			SystemProperties.get(
+				"test.SystemProperties.test.left.part.reference.key"));
+
+		SystemProperties.set(
+			"test.SystemProperties.test.left.part.reference.key",
+			"test.SystemProperties.test.key${test.SystemProperties.test." +
+				"key}${");
+
+		Assert.assertEquals(
+			"test.SystemProperties.test.keytest.value${",
+			SystemProperties.get(
+				"test.SystemProperties.test.left.part.reference.key"));
+
+		// Multiple reference
+
+		Assert.assertNull(
+			SystemProperties.get(
+				"test.SystemProperties.test.double.reference.key"));
+
+		SystemProperties.set(
+			"test.SystemProperties.test.double.reference.key",
+			"${test.SystemProperties.test.key}${test.SystemProperties.test." +
+				"key}");
+
+		Assert.assertEquals(
+			"test.valuetest.value",
+			SystemProperties.get(
+				"test.SystemProperties.test.double.reference.key"));
+
+		// Nested references
+
+		Assert.assertNull(
+			SystemProperties.get(
+				"test.SystemProperties.test.nested.reference.key"));
+
+		SystemProperties.set(
+			"test.SystemProperties.test.nested.reference.key",
+			"${test.SystemProperties.test.key${test.SystemProperties.test." +
+				"key}}");
+
+		Assert.assertEquals(
+			"${test.SystemProperties.test.key${test.SystemProperties.test." +
+				"key}}",
+			SystemProperties.get(
+				"test.SystemProperties.test.nested.reference.key"));
+
+		// The referenced property does not exist
+
+		SystemProperties.clear("test.SystemProperties.test.key");
+
+		Assert.assertEquals(
+			"${test.SystemProperties.test.key}",
+			SystemProperties.get("test.SystemProperties.test.reference.key"));
+	}
+
 	private static final String _KEY = "test.key";
 
-	private static final String _PREFIX =
-		SystemPropertiesTest.class.getName() + StringPool.PERIOD;
+	private static final String _PREFIX = "test.SystemProperties.";
 
 	private static final String _TEST_KEY = _PREFIX + _KEY;
 

@@ -16,6 +16,7 @@ package com.liferay.commerce.payment.service.impl;
 
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel;
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRelQualifier;
+import com.liferay.commerce.payment.service.CommercePaymentMethodGroupRelLocalService;
 import com.liferay.commerce.payment.service.base.CommercePaymentMethodGroupRelQualifierServiceBaseImpl;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
@@ -233,7 +234,7 @@ public class CommercePaymentMethodGroupRelQualifierServiceImpl
 		throws PortalException {
 
 		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel =
-			commercePaymentMethodGroupRelLocalService.
+			_commercePaymentMethodGroupRelLocalService.
 				getCommercePaymentMethodGroupRel(
 					commercePaymentMethodGroupRelId);
 
@@ -253,5 +254,9 @@ public class CommercePaymentMethodGroupRelQualifierServiceImpl
 	)
 	private ModelResourcePermission<CommerceChannel>
 		_commerceChannelModelResourcePermission;
+
+	@Reference
+	private CommercePaymentMethodGroupRelLocalService
+		_commercePaymentMethodGroupRelLocalService;
 
 }

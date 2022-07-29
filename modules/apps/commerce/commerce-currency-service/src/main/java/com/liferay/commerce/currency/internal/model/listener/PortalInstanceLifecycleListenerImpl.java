@@ -18,19 +18,21 @@ import com.liferay.commerce.currency.internal.model.listener.util.ImportDefaultV
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
+import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.model.Company;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marco Leo
  */
+@Component(
+	enabled = false, immediate = true,
+	service = PortalInstanceLifecycleListener.class
+)
 public class PortalInstanceLifecycleListenerImpl
 	extends BasePortalInstanceLifecycleListener {
-
-	public PortalInstanceLifecycleListenerImpl(
-		CommerceCurrencyLocalService commerceCurrencyLocalService) {
-
-		_commerceCurrencyLocalService = commerceCurrencyLocalService;
-	}
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
@@ -46,6 +48,7 @@ public class PortalInstanceLifecycleListenerImpl
 			_commerceCurrencyLocalService, company);
 	}
 
-	private final CommerceCurrencyLocalService _commerceCurrencyLocalService;
+	@Reference
+	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
 
 }

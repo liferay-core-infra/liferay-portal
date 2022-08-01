@@ -40,14 +40,14 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
+import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.search.SortFactoryUtil;
+import com.liferay.portal.kernel.search.SortFactory;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
-import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleThreadLocal;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -94,7 +94,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 			key = _getKey(user.getCompanyId(), nameMap);
 		}
 		else {
-			key = FriendlyURLNormalizerUtil.normalize(key);
+			key = _friendlyURLNormalizer.normalize(key);
 		}
 
 		_validate(commerceShippingFixedOptionId, user.getCompanyId(), key);
@@ -235,7 +235,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 			companyId, groupId, commerceShippingMethodId, keywords, 0, 0);
 
 		Indexer<CommerceShippingFixedOption> indexer =
-			IndexerRegistryUtil.nullSafeGetIndexer(
+			_indexerRegistry.nullSafeGetIndexer(
 				CommerceShippingFixedOption.class.getName());
 
 		return indexer.searchCount(searchContext);
@@ -248,7 +248,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 		throws PortalException {
 
 		Indexer<CommerceShippingFixedOption> indexer =
-			IndexerRegistryUtil.nullSafeGetIndexer(
+			_indexerRegistry.nullSafeGetIndexer(
 				CommerceShippingFixedOption.class.getName());
 
 		for (int i = 0; i < 10; i++) {
@@ -278,7 +278,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 			commerceShippingFixedOptionPersistence.findByPrimaryKey(
 				commerceShippingFixedOptionId);
 
-		key = FriendlyURLNormalizerUtil.normalize(key);
+		key = _friendlyURLNormalizer.normalize(key);
 
 		_validate(
 			commerceShippingFixedOptionId,
@@ -307,7 +307,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 		searchContext.setGroupIds(new long[] {groupId});
 		searchContext.setKeywords(keywords);
 		searchContext.setSorts(
-			SortFactoryUtil.getSort(
+			_sortFactory.getSort(
 				CommerceShippingFixedOption.class, Sort.LONG_TYPE,
 				Field.CREATE_DATE, "DESC"));
 		searchContext.setStart(start);
@@ -338,7 +338,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 
 			if (commerceShippingFixedOption == null) {
 				Indexer<CommerceShippingFixedOption> indexer =
-					IndexerRegistryUtil.getIndexer(
+					_indexerRegistry.getIndexer(
 						CommerceShippingFixedOption.class);
 
 				long companyId = GetterUtil.getLong(
@@ -400,7 +400,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 	}
 
 	private String _getKey(long companyId, Map<Locale, String> nameMap) {
-		String key = FriendlyURLNormalizerUtil.normalize(
+		String key = _friendlyURLNormalizer.normalize(
 			nameMap.get(LocaleThreadLocal.getDefaultLocale()));
 
 		if (Validator.isNull(key)) {
@@ -412,7 +412,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 				value -> Validator.isNotNull(value)
 			).findFirst();
 
-			key = FriendlyURLNormalizerUtil.normalize(firstOptional.get());
+			key = _friendlyURLNormalizer.normalize(firstOptional.get());
 		}
 
 		CommerceShippingFixedOption commerceShippingFixedOption =
@@ -468,5 +468,14 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 	@Reference
 	private CommerceShippingOptionAccountEntryRelLocalService
 		_commerceShippingOptionAccountEntryRelLocalService;
+
+	@Reference
+	private FriendlyURLNormalizer _friendlyURLNormalizer;
+
+	@Reference
+	private IndexerRegistry _indexerRegistry;
+
+	@Reference
+	private SortFactory _sortFactory;
 
 }

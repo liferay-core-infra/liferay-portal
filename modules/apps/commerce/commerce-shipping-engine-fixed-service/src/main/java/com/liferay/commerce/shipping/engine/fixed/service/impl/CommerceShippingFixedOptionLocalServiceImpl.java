@@ -21,6 +21,7 @@ import com.liferay.commerce.shipping.engine.fixed.exception.CommerceShippingFixe
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOption;
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionQualifierTable;
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionTable;
+import com.liferay.commerce.shipping.engine.fixed.service.CommerceShippingFixedOptionRelLocalService;
 import com.liferay.commerce.shipping.engine.fixed.service.base.CommerceShippingFixedOptionLocalServiceBaseImpl;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
@@ -131,7 +132,7 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 
 		// Commerce shipping fixed option rels
 
-		commerceShippingFixedOptionRelLocalService.
+		_commerceShippingFixedOptionRelLocalService.
 			deleteCommerceShippingFixedOptionRels(
 				commerceShippingFixedOption.getCommerceShippingFixedOptionId());
 
@@ -459,6 +460,10 @@ public class CommerceShippingFixedOptionLocalServiceImpl
 			throw new CommerceShippingFixedOptionKeyException();
 		}
 	}
+
+	@Reference
+	private CommerceShippingFixedOptionRelLocalService
+		_commerceShippingFixedOptionRelLocalService;
 
 	@Reference
 	private CommerceShippingOptionAccountEntryRelLocalService

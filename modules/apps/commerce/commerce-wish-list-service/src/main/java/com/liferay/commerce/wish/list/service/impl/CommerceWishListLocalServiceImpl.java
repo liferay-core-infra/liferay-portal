@@ -20,6 +20,7 @@ import com.liferay.commerce.wish.list.exception.GuestWishListMaxAllowedException
 import com.liferay.commerce.wish.list.internal.configuration.CommerceWishListConfiguration;
 import com.liferay.commerce.wish.list.model.CommerceWishList;
 import com.liferay.commerce.wish.list.model.CommerceWishListItem;
+import com.liferay.commerce.wish.list.service.CommerceWishListItemLocalService;
 import com.liferay.commerce.wish.list.service.base.CommerceWishListLocalServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
@@ -92,7 +93,7 @@ public class CommerceWishListLocalServiceImpl
 
 		// Commerce wish list items
 
-		commerceWishListItemLocalService.deleteCommerceWishListItems(
+		_commerceWishListItemLocalService.deleteCommerceWishListItems(
 			commerceWishList.getCommerceWishListId());
 
 		return commerceWishList;
@@ -260,12 +261,12 @@ public class CommerceWishListLocalServiceImpl
 		// Commerce wish list items
 
 		List<CommerceWishListItem> fromCommerceWishListItems =
-			commerceWishListItemLocalService.getCommerceWishListItems(
+			_commerceWishListItemLocalService.getCommerceWishListItems(
 				fromCommerceWishListId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				null);
 
 		List<CommerceWishListItem> toCommerceWishListItems =
-			commerceWishListItemLocalService.getCommerceWishListItems(
+			_commerceWishListItemLocalService.getCommerceWishListItems(
 				toCommerceWishListId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				null);
 
@@ -293,7 +294,7 @@ public class CommerceWishListLocalServiceImpl
 			}
 
 			if (!found) {
-				commerceWishListItemLocalService.addCommerceWishListItem(
+				_commerceWishListItemLocalService.addCommerceWishListItem(
 					toCommerceWishListId,
 					fromCommerceWishListItem.getCProductId(),
 					fromCommerceWishListItem.getCPInstanceUuid(), json,
@@ -343,6 +344,9 @@ public class CommerceWishListLocalServiceImpl
 
 	@Reference
 	private CommerceWishListConfiguration _commerceWishListConfiguration;
+
+	@Reference
+	private CommerceWishListItemLocalService _commerceWishListItemLocalService;
 
 	@Reference
 	private DDMFormValuesHelper _ddmFormValuesHelper;

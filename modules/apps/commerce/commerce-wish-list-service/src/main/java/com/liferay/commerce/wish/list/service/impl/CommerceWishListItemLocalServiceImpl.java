@@ -25,6 +25,7 @@ import com.liferay.commerce.wish.list.exception.GuestWishListItemMaxAllowedExcep
 import com.liferay.commerce.wish.list.internal.configuration.CommerceWishListConfiguration;
 import com.liferay.commerce.wish.list.model.CommerceWishList;
 import com.liferay.commerce.wish.list.model.CommerceWishListItem;
+import com.liferay.commerce.wish.list.service.CommerceWishListLocalService;
 import com.liferay.commerce.wish.list.service.base.CommerceWishListItemLocalServiceBaseImpl;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.aop.AopService;
@@ -84,7 +85,7 @@ public class CommerceWishListItemLocalServiceImpl
 		throws PortalException {
 
 		CommerceWishList commerceWishList =
-			commerceWishListLocalService.getCommerceWishList(
+			_commerceWishListLocalService.getCommerceWishList(
 				commerceWishListId);
 		User user = userLocalService.getUser(serviceContext.getUserId());
 
@@ -223,6 +224,9 @@ public class CommerceWishListItemLocalServiceImpl
 
 	@Reference
 	private CommerceWishListConfiguration _commerceWishListConfiguration;
+
+	@Reference
+	private CommerceWishListLocalService _commerceWishListLocalService;
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;

@@ -23,9 +23,9 @@ import com.liferay.commerce.price.list.exception.NoSuchPriceEntryException;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
 import com.liferay.commerce.price.list.model.CommercePriceEntryTable;
 import com.liferay.commerce.price.list.model.CommercePriceList;
-import com.liferay.commerce.price.list.service.CommercePriceListLocalService;
 import com.liferay.commerce.price.list.service.CommerceTierPriceEntryLocalService;
 import com.liferay.commerce.price.list.service.base.CommercePriceEntryLocalServiceBaseImpl;
+import com.liferay.commerce.price.list.service.persistence.CommercePriceListPersistence;
 import com.liferay.commerce.product.exception.NoSuchCPInstanceException;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
@@ -716,7 +716,7 @@ public class CommercePriceEntryLocalServiceImpl
 		}
 
 		CommercePriceList commercePriceList =
-			_commercePriceListLocalService.fetchCommercePriceList(
+			_commercePriceListPersistence.fetchByPrimaryKey(
 				commercePriceListId);
 
 		if ((commercePriceList == null) ||
@@ -1524,8 +1524,7 @@ public class CommercePriceEntryLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommercePriceEntryLocalServiceImpl.class);
 
-	@Reference
-	private CommercePriceListLocalService _commercePriceListLocalService;
+	private CommercePriceListPersistence _commercePriceListPersistence;
 
 	@Reference
 	private CommerceTierPriceEntryLocalService

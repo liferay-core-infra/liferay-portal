@@ -22,6 +22,7 @@ import com.liferay.commerce.notification.service.base.CommerceNotificationTempla
 import com.liferay.commerce.notification.type.CommerceNotificationType;
 import com.liferay.commerce.notification.type.CommerceNotificationTypeRegistry;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -30,15 +31,22 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Alessio Antonio Rendina
  */
+@Component(
+	enabled = false,
+	property = "model.class.name=com.liferay.commerce.notification.model.CommerceNotificationTemplate",
+	service = AopService.class
+)
 public class CommerceNotificationTemplateLocalServiceImpl
 	extends CommerceNotificationTemplateLocalServiceBaseImpl {
 
@@ -271,10 +279,10 @@ public class CommerceNotificationTemplateLocalServiceImpl
 		}
 	}
 
-	@ServiceReference(type = CommerceNotificationTypeRegistry.class)
+	@Reference
 	private CommerceNotificationTypeRegistry _commerceNotificationTypeRegistry;
 
-	@ServiceReference(type = ExpandoRowLocalService.class)
+	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;
 
 }

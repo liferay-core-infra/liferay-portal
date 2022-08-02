@@ -18,6 +18,8 @@ import com.liferay.commerce.notification.exception.CommerceNotificationTemplateF
 import com.liferay.commerce.notification.exception.CommerceNotificationTemplateNameException;
 import com.liferay.commerce.notification.exception.CommerceNotificationTemplateTypeException;
 import com.liferay.commerce.notification.model.CommerceNotificationTemplate;
+import com.liferay.commerce.notification.service.CommerceNotificationQueueEntryLocalService;
+import com.liferay.commerce.notification.service.CommerceNotificationTemplateCommerceAccountGroupRelLocalService;
 import com.liferay.commerce.notification.service.base.CommerceNotificationTemplateLocalServiceBaseImpl;
 import com.liferay.commerce.notification.type.CommerceNotificationType;
 import com.liferay.commerce.notification.type.CommerceNotificationTypeRegistry;
@@ -127,14 +129,14 @@ public class CommerceNotificationTemplateLocalServiceImpl
 
 		// Commerce notification queues
 
-		commerceNotificationQueueEntryLocalService.
+		_commerceNotificationQueueEntryLocalService.
 			updateCommerceNotificationQueueEntriesTemplateIds(
 				commerceNotificationTemplate.
 					getCommerceNotificationTemplateId());
 
 		// Commerce notification template account groups rels
 
-		commerceNotificationTemplateCommerceAccountGroupRelLocalService.
+		_commerceNotificationTemplateCommerceAccountGroupRelLocalService.
 			deleteCNTemplateCommerceAccountGroupRelsByCommerceNotificationTemplateId(
 				commerceNotificationTemplate.
 					getCommerceNotificationTemplateId());
@@ -278,6 +280,14 @@ public class CommerceNotificationTemplateLocalServiceImpl
 			throw new CommerceNotificationTemplateTypeException();
 		}
 	}
+
+	@Reference
+	private CommerceNotificationQueueEntryLocalService
+		_commerceNotificationQueueEntryLocalService;
+
+	@Reference
+	private CommerceNotificationTemplateCommerceAccountGroupRelLocalService
+		_commerceNotificationTemplateCommerceAccountGroupRelLocalService;
 
 	@Reference
 	private CommerceNotificationTypeRegistry _commerceNotificationTypeRegistry;

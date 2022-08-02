@@ -16,6 +16,7 @@ package com.liferay.commerce.notification.service.impl;
 
 import com.liferay.commerce.notification.model.CommerceNotificationTemplate;
 import com.liferay.commerce.notification.model.CommerceNotificationTemplateCommerceAccountGroupRel;
+import com.liferay.commerce.notification.service.CommerceNotificationTemplateLocalService;
 import com.liferay.commerce.notification.service.base.CommerceNotificationTemplateCommerceAccountGroupRelServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -108,7 +109,7 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelServiceImpl
 		throws PortalException {
 
 		CommerceNotificationTemplate commerceNotificationTemplate =
-			commerceNotificationTemplateLocalService.
+			_commerceNotificationTemplateLocalService.
 				fetchCommerceNotificationTemplate(
 					commerceNotificationTemplateId);
 
@@ -122,6 +123,10 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelServiceImpl
 			getCommerceNotificationTemplateCommerceAccountGroupRels(
 				commerceNotificationTemplateId, start, end, orderByComparator);
 	}
+
+	@Reference
+	private CommerceNotificationTemplateLocalService
+		_commerceNotificationTemplateLocalService;
 
 	@Reference(
 		target = "(model.class.name=com.liferay.commerce.notification.model.CommerceNotificationTemplate)"

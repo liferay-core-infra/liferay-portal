@@ -135,8 +135,8 @@ public class CommerceNotificationTemplateLocalServiceImpl
 
 		// Commerce notification template account groups rels
 
-		commerceNotificationTemplateCommerceAccountGroupRelLocalService.
-			deleteCNTemplateCommerceAccountGroupRelsByCommerceNotificationTemplateId(
+		commerceNotificationTemplateCommerceAccountGroupRelPersistence.
+			removeByCommerceNotificationTemplateId(
 				commerceNotificationTemplate.
 					getCommerceNotificationTemplateId());
 

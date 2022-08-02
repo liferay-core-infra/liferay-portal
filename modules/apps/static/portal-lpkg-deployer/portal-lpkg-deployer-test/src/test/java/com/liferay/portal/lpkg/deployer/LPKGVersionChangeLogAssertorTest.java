@@ -14,6 +14,7 @@
 
 package com.liferay.portal.lpkg.deployer;
 
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;
@@ -71,7 +72,8 @@ public class LPKGVersionChangeLogAssertorTest {
 		}
 
 		Path logsPath = Paths.get(
-			System.getProperty("liferay.log.dir", liferayHome.concat("/logs")));
+			SystemProperties.get("liferay.log.dir"),
+			liferayHome.concat("/logs"));
 
 		boolean hasLog = false;
 

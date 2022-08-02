@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.lang.reflect.Field;
 
@@ -93,7 +94,7 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 		Object value = null;
 
 		if (value == null) {
-			value = System.getProperty(_getPrefix().concat(key));
+			value = SystemProperties.get(_getPrefix().concat(key));
 		}
 
 		if (value == null) {
@@ -114,7 +115,7 @@ public class ClassLoaderAggregateProperties extends CompositeConfiguration {
 		}
 
 		if (value == null) {
-			value = System.getProperty(key);
+			value = SystemProperties.get(key);
 		}
 
 		return value;

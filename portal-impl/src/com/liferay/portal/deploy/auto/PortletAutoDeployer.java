@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -203,7 +204,7 @@ public class PortletAutoDeployer
 		boolean customPortletXML = PropsValues.AUTO_DEPLOY_CUSTOM_PORTLET_XML;
 
 		customPortletXML = GetterUtil.getBoolean(
-			System.getProperty("deployer.custom.portlet.xml"),
+			SystemProperties.get("deployer.custom.portlet.xml"),
 			customPortletXML);
 
 		if (!customPortletXML) {

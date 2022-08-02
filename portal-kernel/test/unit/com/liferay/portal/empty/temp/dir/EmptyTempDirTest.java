@@ -15,6 +15,7 @@
 package com.liferay.portal.empty.temp.dir;
 
 import com.liferay.portal.kernel.util.OSDetector;
+import com.liferay.portal.kernel.util.SystemProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class EmptyTempDirTest {
 
 	@Test
 	public void testEmptyTempDir() throws IOException {
-		File tempDir = new File(System.getProperty("liferay.temp.dir"));
+		File tempDir = new File(SystemProperties.get("liferay.temp.dir"));
 
 		List<String> fileNames = Arrays.asList(tempDir.list());
 
@@ -61,7 +62,7 @@ public class EmptyTempDirTest {
 				Date date = calendar.getTime();
 
 				Path logFilePath = Paths.get(
-					System.getProperty("liferay.log.dir"),
+					SystemProperties.get("liferay.log.dir"),
 					"liferay." + dateFormat.format(date) + ".xml");
 
 				if (Files.exists(logFilePath)) {

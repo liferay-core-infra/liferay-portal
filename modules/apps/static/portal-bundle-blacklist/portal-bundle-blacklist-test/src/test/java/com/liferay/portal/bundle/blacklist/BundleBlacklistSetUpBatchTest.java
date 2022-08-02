@@ -46,7 +46,7 @@ public class BundleBlacklistSetUpBatchTest {
 		Assert.assertNotNull(
 			"Missing system property \"liferay.home\"", liferayHome);
 
-		String blacklistConfigName = System.getProperty(
+		String blacklistConfigName = SystemProperties.get(
 			"blacklist.config.name");
 
 		Assert.assertNotNull(

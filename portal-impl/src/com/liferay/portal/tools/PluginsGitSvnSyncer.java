@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.FileImpl;
 
@@ -38,9 +39,9 @@ import java.util.List;
 public class PluginsGitSvnSyncer {
 
 	public static void main(String[] args) {
-		String gitPluginsDirName = System.getProperty("git.plugins.dir");
-		String svnPluginsDirName = System.getProperty("svn.plugins.dir");
-		String syncTo = System.getProperty("sync.to");
+		String gitPluginsDirName = SystemProperties.get("git.plugins.dir");
+		String svnPluginsDirName = SystemProperties.get("svn.plugins.dir");
+		String syncTo = SystemProperties.get("sync.to");
 
 		new PluginsGitSvnSyncer(gitPluginsDirName, svnPluginsDirName, syncTo);
 	}

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.reflect.Field;
@@ -322,7 +323,7 @@ public class ConfigurationImpl
 
 	protected void printSources(long companyId, String webId) {
 		if (GetterUtil.getBoolean(
-				System.getProperty("configuration.impl.quiet"))) {
+				SystemProperties.get("configuration.impl.quiet"))) {
 
 			return;
 		}

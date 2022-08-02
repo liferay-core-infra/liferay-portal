@@ -84,8 +84,7 @@ public class CommerceWishListItemLocalServiceImpl
 		throws PortalException {
 
 		CommerceWishList commerceWishList =
-			commerceWishListLocalService.getCommerceWishList(
-				commerceWishListId);
+			commerceWishListPersistence.findByPrimaryKey(commerceWishListId);
 		User user = userLocalService.getUser(serviceContext.getUserId());
 
 		validate(commerceWishList, cProductId, cpInstanceUuid);

@@ -24,6 +24,7 @@ import com.liferay.commerce.price.list.exception.NoSuchTierPriceEntryException;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.price.list.model.CommerceTierPriceEntry;
+import com.liferay.commerce.price.list.service.CommercePriceEntryLocalService;
 import com.liferay.commerce.price.list.service.base.CommerceTierPriceEntryLocalServiceBaseImpl;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceEntryPersistence;
 import com.liferay.commerce.price.list.util.comparator.CommerceTierPriceEntryMinQuantityComparator;
@@ -209,7 +210,7 @@ public class CommerceTierPriceEntryLocalServiceImpl
 
 		// Commerce price entry
 
-		commercePriceEntryLocalService.setHasTierPrice(
+		_commercePriceEntryLocalService.setHasTierPrice(
 			commercePriceEntryId, true, bulkPricing);
 
 		return startWorkflowInstance(
@@ -482,7 +483,7 @@ public class CommerceTierPriceEntryLocalServiceImpl
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		if (commerceTierPriceEntries.isEmpty()) {
-			commercePriceEntryLocalService.setHasTierPrice(
+			_commercePriceEntryLocalService.setHasTierPrice(
 				commerceTierPriceEntry.getCommercePriceEntryId(), false);
 		}
 
@@ -691,7 +692,7 @@ public class CommerceTierPriceEntryLocalServiceImpl
 
 		// Commerce price entry
 
-		commercePriceEntryLocalService.setHasTierPrice(
+		_commercePriceEntryLocalService.setHasTierPrice(
 			commerceTierPriceEntry.getCommercePriceEntryId(), true,
 			bulkPricing);
 
@@ -1049,6 +1050,9 @@ public class CommerceTierPriceEntryLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceTierPriceEntryLocalServiceImpl.class);
+
+	@Reference
+	private CommercePriceEntryLocalService _commercePriceEntryLocalService;
 
 	@Reference
 	private CommercePriceEntryPersistence _commercePriceEntryPersistence;

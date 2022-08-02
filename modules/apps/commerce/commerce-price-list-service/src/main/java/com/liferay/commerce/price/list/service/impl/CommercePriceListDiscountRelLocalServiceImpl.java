@@ -16,6 +16,7 @@ package com.liferay.commerce.price.list.service.impl;
 
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.price.list.model.CommercePriceListDiscountRel;
+import com.liferay.commerce.price.list.service.CommercePriceListLocalService;
 import com.liferay.commerce.price.list.service.base.CommercePriceListDiscountRelLocalServiceBaseImpl;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.portal.aop.AopService;
@@ -66,7 +67,7 @@ public class CommercePriceListDiscountRelLocalServiceImpl
 		commercePriceListDiscountRel.setOrder(order);
 		commercePriceListDiscountRel.setExpandoBridgeAttributes(serviceContext);
 
-		commercePriceListLocalService.cleanPriceListCache(
+		_commercePriceListLocalService.cleanPriceListCache(
 			serviceContext.getCompanyId());
 
 		return commercePriceListDiscountRelPersistence.update(
@@ -87,7 +88,7 @@ public class CommercePriceListDiscountRelLocalServiceImpl
 
 		reindexPriceList(commercePriceListDiscountRel.getCommercePriceListId());
 
-		commercePriceListLocalService.cleanPriceListCache(
+		_commercePriceListLocalService.cleanPriceListCache(
 			commercePriceListDiscountRel.getCompanyId());
 
 		return commercePriceListDiscountRel;
@@ -152,6 +153,9 @@ public class CommercePriceListDiscountRelLocalServiceImpl
 
 		indexer.reindex(CommercePriceList.class.getName(), commercePriceListId);
 	}
+
+	@Reference
+	private CommercePriceListLocalService _commercePriceListLocalService;
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;

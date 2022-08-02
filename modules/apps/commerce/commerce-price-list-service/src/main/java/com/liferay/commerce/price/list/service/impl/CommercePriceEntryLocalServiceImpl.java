@@ -23,6 +23,8 @@ import com.liferay.commerce.price.list.exception.NoSuchPriceEntryException;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
 import com.liferay.commerce.price.list.model.CommercePriceEntryTable;
 import com.liferay.commerce.price.list.model.CommercePriceList;
+import com.liferay.commerce.price.list.service.CommercePriceListLocalService;
+import com.liferay.commerce.price.list.service.CommerceTierPriceEntryLocalService;
 import com.liferay.commerce.price.list.service.base.CommercePriceEntryLocalServiceBaseImpl;
 import com.liferay.commerce.product.exception.NoSuchCPInstanceException;
 import com.liferay.commerce.product.model.CPDefinition;
@@ -586,7 +588,7 @@ public class CommercePriceEntryLocalServiceImpl
 
 		// Commerce tier price entries
 
-		commerceTierPriceEntryLocalService.deleteCommerceTierPriceEntries(
+		_commerceTierPriceEntryLocalService.deleteCommerceTierPriceEntries(
 			commercePriceEntry.getCommercePriceEntryId());
 
 		// Commerce price entry
@@ -714,7 +716,7 @@ public class CommercePriceEntryLocalServiceImpl
 		}
 
 		CommercePriceList commercePriceList =
-			commercePriceListLocalService.fetchCommercePriceList(
+			_commercePriceListLocalService.fetchCommercePriceList(
 				commercePriceListId);
 
 		if ((commercePriceList == null) ||
@@ -1521,6 +1523,13 @@ public class CommercePriceEntryLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommercePriceEntryLocalServiceImpl.class);
+
+	@Reference
+	private CommercePriceListLocalService _commercePriceListLocalService;
+
+	@Reference
+	private CommerceTierPriceEntryLocalService
+		_commerceTierPriceEntryLocalService;
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;

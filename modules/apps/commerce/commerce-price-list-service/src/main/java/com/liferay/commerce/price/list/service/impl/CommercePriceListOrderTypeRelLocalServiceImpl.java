@@ -15,10 +15,10 @@
 package com.liferay.commerce.price.list.service.impl;
 
 import com.liferay.commerce.model.CommerceOrderTypeTable;
+import com.liferay.commerce.price.list.internal.helper.CommercePriceListCacheHelper;
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.price.list.model.CommercePriceListOrderTypeRel;
 import com.liferay.commerce.price.list.model.CommercePriceListOrderTypeRelTable;
-import com.liferay.commerce.price.list.service.CommercePriceListLocalService;
 import com.liferay.commerce.price.list.service.base.CommercePriceListOrderTypeRelLocalServiceBaseImpl;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
@@ -84,7 +84,7 @@ public class CommercePriceListOrderTypeRelLocalServiceImpl
 
 		reindexCommercePriceList(commercePriceListId);
 
-		_commercePriceListLocalService.cleanPriceListCache(
+		_commercePriceListCacheHelper.cleanPriceListCache(
 			serviceContext.getCompanyId());
 
 		return commercePriceListOrderTypeRel;
@@ -105,7 +105,7 @@ public class CommercePriceListOrderTypeRelLocalServiceImpl
 		reindexCommercePriceList(
 			commercePriceListOrderTypeRel.getCommercePriceListId());
 
-		_commercePriceListLocalService.cleanPriceListCache(
+		_commercePriceListCacheHelper.cleanPriceListCache(
 			commercePriceListOrderTypeRel.getCompanyId());
 
 		return commercePriceListOrderTypeRel;
@@ -229,7 +229,7 @@ public class CommercePriceListOrderTypeRelLocalServiceImpl
 	}
 
 	@Reference
-	private CommercePriceListLocalService _commercePriceListLocalService;
+	private CommercePriceListCacheHelper _commercePriceListCacheHelper;
 
 	@Reference
 	private CustomSQL _customSQL;

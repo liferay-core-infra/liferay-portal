@@ -14,9 +14,9 @@
 
 package com.liferay.commerce.price.list.service.impl;
 
+import com.liferay.commerce.price.list.internal.helper.CommercePriceListCacheHelper;
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.price.list.model.CommercePriceListAccountRel;
-import com.liferay.commerce.price.list.service.CommercePriceListLocalService;
 import com.liferay.commerce.price.list.service.base.CommercePriceListAccountRelLocalServiceBaseImpl;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.portal.aop.AopService;
@@ -72,7 +72,7 @@ public class CommercePriceListAccountRelLocalServiceImpl
 
 		reindexCommercePriceList(commercePriceListId);
 
-		_commercePriceListLocalService.cleanPriceListCache(
+		_commercePriceListCacheHelper.cleanPriceListCache(
 			serviceContext.getCompanyId());
 
 		return commercePriceListAccountRel;
@@ -93,7 +93,7 @@ public class CommercePriceListAccountRelLocalServiceImpl
 		reindexCommercePriceList(
 			commercePriceListAccountRel.getCommercePriceListId());
 
-		_commercePriceListLocalService.cleanPriceListCache(
+		_commercePriceListCacheHelper.cleanPriceListCache(
 			commercePriceListAccountRel.getCompanyId());
 
 		return commercePriceListAccountRel;
@@ -202,7 +202,7 @@ public class CommercePriceListAccountRelLocalServiceImpl
 	}
 
 	@Reference
-	private CommercePriceListLocalService _commercePriceListLocalService;
+	private CommercePriceListCacheHelper _commercePriceListCacheHelper;
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;

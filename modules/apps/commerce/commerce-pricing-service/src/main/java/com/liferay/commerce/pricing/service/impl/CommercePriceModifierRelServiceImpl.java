@@ -17,6 +17,7 @@ package com.liferay.commerce.pricing.service.impl;
 import com.liferay.commerce.price.list.model.CommercePriceList;
 import com.liferay.commerce.pricing.model.CommercePriceModifier;
 import com.liferay.commerce.pricing.model.CommercePriceModifierRel;
+import com.liferay.commerce.pricing.service.CommercePriceModifierLocalService;
 import com.liferay.commerce.pricing.service.base.CommercePriceModifierRelServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,7 +52,7 @@ public class CommercePriceModifierRelServiceImpl
 		throws PortalException {
 
 		CommercePriceModifier commercePriceModifier =
-			commercePriceModifierLocalService.getCommercePriceModifier(
+			_commercePriceModifierLocalService.getCommercePriceModifier(
 				commercePriceModifierId);
 
 		_commercePriceListModelResourcePermission.check(
@@ -274,5 +275,9 @@ public class CommercePriceModifierRelServiceImpl
 	)
 	private ModelResourcePermission<CommercePriceList>
 		_commercePriceListModelResourcePermission;
+
+	@Reference
+	private CommercePriceModifierLocalService
+		_commercePriceModifierLocalService;
 
 }

@@ -27,6 +27,7 @@ import com.liferay.commerce.pricing.exception.CommercePriceModifierTypeException
 import com.liferay.commerce.pricing.exception.DuplicateCommercePriceModifierException;
 import com.liferay.commerce.pricing.exception.NoSuchPriceModifierException;
 import com.liferay.commerce.pricing.model.CommercePriceModifier;
+import com.liferay.commerce.pricing.service.CommercePriceModifierRelLocalService;
 import com.liferay.commerce.pricing.service.CommercePricingClassLocalService;
 import com.liferay.commerce.pricing.service.base.CommercePriceModifierLocalServiceBaseImpl;
 import com.liferay.commerce.pricing.type.CommercePriceModifierType;
@@ -280,7 +281,7 @@ public class CommercePriceModifierLocalServiceImpl
 
 		// Commerce price modifier rels
 
-		commercePriceModifierRelLocalService.deleteCommercePriceModifierRels(
+		_commercePriceModifierRelLocalService.deleteCommercePriceModifierRels(
 			commercePriceModifier.getCommercePriceModifierId());
 
 		// Commerce price modifier
@@ -423,7 +424,7 @@ public class CommercePriceModifierLocalServiceImpl
 		String currentTarget = commercePriceModifier.getTarget();
 
 		if (!currentTarget.equals(target)) {
-			commercePriceModifierRelLocalService.
+			_commercePriceModifierRelLocalService.
 				deleteCommercePriceModifierRels(
 					commercePriceModifier.getCommercePriceModifierId());
 		}
@@ -683,6 +684,10 @@ public class CommercePriceModifierLocalServiceImpl
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private CommercePriceModifierRelLocalService
+		_commercePriceModifierRelLocalService;
 
 	@Reference
 	private CommercePriceModifierTypeRegistry

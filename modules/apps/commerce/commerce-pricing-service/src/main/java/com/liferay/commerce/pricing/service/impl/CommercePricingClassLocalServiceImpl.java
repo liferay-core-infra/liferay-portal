@@ -18,6 +18,7 @@ import com.liferay.commerce.pricing.exception.CommercePricingClassTitleException
 import com.liferay.commerce.pricing.exception.NoSuchPricingClassException;
 import com.liferay.commerce.pricing.model.CommercePricingClass;
 import com.liferay.commerce.pricing.model.CommercePricingClassCPDefinitionRel;
+import com.liferay.commerce.pricing.service.CommercePricingClassCPDefinitionRelLocalService;
 import com.liferay.commerce.pricing.service.base.CommercePricingClassLocalServiceBaseImpl;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.portal.aop.AopService;
@@ -179,7 +180,7 @@ public class CommercePricingClassLocalServiceImpl
 		long commercePricingClassId =
 			commercePricingClass.getCommercePricingClassId();
 
-		commercePricingClassCPDefinitionRelLocalService.
+		_commercePricingClassCPDefinitionRelLocalService.
 			deleteCommercePricingClassCPDefinitionRels(commercePricingClassId);
 
 		commercePricingClassPersistence.remove(commercePricingClass);
@@ -240,7 +241,7 @@ public class CommercePricingClassLocalServiceImpl
 	public long[] getCommercePricingClassByCPDefinition(long cpDefinitionId) {
 		List<CommercePricingClassCPDefinitionRel>
 			commercePricingClassCPDefinitionRels =
-				commercePricingClassCPDefinitionRelLocalService.
+				_commercePricingClassCPDefinitionRelLocalService.
 					getCommercePricingClassByCPDefinitionId(cpDefinitionId);
 
 		Stream<CommercePricingClassCPDefinitionRel> stream =
@@ -463,6 +464,10 @@ public class CommercePricingClassLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommercePricingClassLocalServiceImpl.class);
+
+	@Reference
+	private CommercePricingClassCPDefinitionRelLocalService
+		_commercePricingClassCPDefinitionRelLocalService;
 
 	@Reference
 	private ExpandoRowLocalService _expandoRowLocalService;

@@ -16,6 +16,7 @@ package com.liferay.commerce.notification.service.impl;
 
 import com.liferay.commerce.notification.model.CommerceNotificationAttachment;
 import com.liferay.commerce.notification.model.CommerceNotificationQueueEntry;
+import com.liferay.commerce.notification.service.CommerceNotificationAttachmentLocalService;
 import com.liferay.commerce.notification.service.base.CommerceNotificationQueueEntryLocalServiceBaseImpl;
 import com.liferay.commerce.notification.util.comparator.CommerceNotificationAttachmentCreateDateComparator;
 import com.liferay.mail.kernel.model.MailMessage;
@@ -122,7 +123,7 @@ public class CommerceNotificationQueueEntryLocalServiceImpl
 
 		// Commerce notification attachments
 
-		commerceNotificationAttachmentLocalService.
+		_commerceNotificationAttachmentLocalService.
 			deleteCommerceNotificationAttachments(
 				commerceNotificationQueueEntry.
 					getCommerceNotificationQueueEntryId());
@@ -244,7 +245,7 @@ public class CommerceNotificationQueueEntryLocalServiceImpl
 
 			List<CommerceNotificationAttachment>
 				commerceNotificationAttachments =
-					commerceNotificationAttachmentLocalService.
+					_commerceNotificationAttachmentLocalService.
 						getCommerceNotificationAttachments(
 							commerceNotificationQueueEntry.
 								getCommerceNotificationQueueEntryId(),
@@ -354,6 +355,10 @@ public class CommerceNotificationQueueEntryLocalServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceNotificationQueueEntryLocalServiceImpl.class);
+
+	@Reference
+	private CommerceNotificationAttachmentLocalService
+		_commerceNotificationAttachmentLocalService;
 
 	@Reference
 	private MailService _mailService;

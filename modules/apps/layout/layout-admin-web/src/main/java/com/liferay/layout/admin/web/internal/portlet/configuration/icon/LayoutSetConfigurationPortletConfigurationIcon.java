@@ -15,7 +15,6 @@
 package com.liferay.layout.admin.web.internal.portlet.configuration.icon;
 
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfiguration
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;

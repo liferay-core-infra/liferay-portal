@@ -37,7 +37,6 @@ import com.liferay.layout.service.LayoutClassedModelUsageLocalServiceUtil;
 import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -67,6 +66,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.taglib.security.PermissionsURLTag;
 

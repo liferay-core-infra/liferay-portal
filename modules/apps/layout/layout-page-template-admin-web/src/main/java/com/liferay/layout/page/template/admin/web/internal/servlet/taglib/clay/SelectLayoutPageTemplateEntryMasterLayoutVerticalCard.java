@@ -16,11 +16,11 @@ package com.liferay.layout.page.template.admin.web.internal.servlet.taglib.clay;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.VerticalCard;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;

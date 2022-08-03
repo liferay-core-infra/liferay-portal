@@ -27,7 +27,6 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.layout.admin.constants.LayoutAdminPortletKeys" %><%@
 page import="com.liferay.layout.admin.web.internal.display.context.LayoutInformationMessagesDisplayContext" %><%@
 page import="com.liferay.layout.admin.web.internal.servlet.taglib.ui.CustomizationSettingsControlMenuJSPDynamicInclude" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
@@ -36,7 +35,8 @@ page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HashMapBuilder" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.HttpComponentsUtil" %><%@
-page import="com.liferay.portal.kernel.util.PortalUtil" %>
+page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="javax.portlet.PortletRequest" %>
 

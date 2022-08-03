@@ -15,7 +15,6 @@
 package com.liferay.layout.admin.web.internal.servlet.taglib.clay;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.soy.NavigationCard;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.util.LayoutTypeControllerTracker;
 
 import java.util.HashMap;

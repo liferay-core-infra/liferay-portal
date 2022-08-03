@@ -95,8 +95,8 @@ dependencies {
 	compileOnly group: "org.springframework", name: "spring-core", version: "5.2.22.RELEASE"
 	compileOnly project(":apps:petra:petra-log4j")
 	compileOnly project(":apps:petra:petra-mail")
-	compileOnly project(":apps:petra:petra-portlet-url-builder")
 	compileOnly project(":apps:petra:petra-xml")
+	compileOnly project(":apps:portal:portal-portlet-url-builder")
 	compileOnly project(":core:jaxws-osgi-bridge")
 	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":core:petra:petra-concurrent")

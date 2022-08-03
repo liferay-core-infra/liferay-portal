@@ -16,7 +16,6 @@ package com.liferay.contacts.web.internal.asset.model;
 
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.contacts.constants.ContactsWebKeys;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.Locale;
 

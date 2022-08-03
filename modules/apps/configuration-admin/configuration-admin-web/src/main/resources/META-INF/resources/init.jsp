@@ -46,7 +46,6 @@ page import="com.liferay.configuration.admin.web.internal.util.ConfigurationEntr
 page import="com.liferay.configuration.admin.web.internal.util.ConfigurationEntryRetriever" %><%@
 page import="com.liferay.configuration.admin.web.internal.util.ConfigurationModelIterator" %><%@
 page import="com.liferay.configuration.admin.web.internal.util.ResourceBundleLoaderProvider" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition" %><%@
 page import="com.liferay.portal.configuration.persistence.listener.ConfigurationModelListenerException" %><%@
@@ -57,6 +56,7 @@ page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.taglib.servlet.PipingServletResponseFactory" %>
 
 <%@ page import="java.util.List" %><%@

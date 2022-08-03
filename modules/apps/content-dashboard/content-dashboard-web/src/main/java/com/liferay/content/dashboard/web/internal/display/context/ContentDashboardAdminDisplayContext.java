@@ -31,8 +31,6 @@ import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.URLItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
-import com.liferay.petra.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.petra.reflect.GenericUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -55,6 +53,8 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.users.admin.item.selector.UserItemSelectorCriterion;
 
 import java.util.Arrays;

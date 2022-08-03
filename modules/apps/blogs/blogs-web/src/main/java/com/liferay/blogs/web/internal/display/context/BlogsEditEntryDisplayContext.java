@@ -20,7 +20,6 @@ import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.settings.BlogsGroupServiceSettings;
 import com.liferay.blogs.web.internal.helper.BlogsItemSelectorHelper;
 import com.liferay.blogs.web.internal.util.BlogsEntryUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -38,6 +37,7 @@ import com.liferay.portal.kernel.util.UnicodeFormatter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Map;

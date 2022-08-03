@@ -16,7 +16,6 @@ package com.liferay.user.groups.admin.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -31,6 +30,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portlet.usergroupsadmin.search.UserGroupDisplayTerms;
 import com.liferay.portlet.usergroupsadmin.search.UserGroupSearch;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;

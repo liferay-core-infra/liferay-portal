@@ -24,7 +24,6 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.asset.util.AssetHelper" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.reflect.ReflectionUtil" %><%@
 page import="com.liferay.petra.string.StringBundler" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLFactoryUtil" %><%@
@@ -37,6 +36,7 @@ page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.URLCodec" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.wiki.constants.WikiPortletKeys" %><%@
 page import="com.liferay.wiki.constants.WikiWebKeys" %><%@
 page import="com.liferay.wiki.model.WikiPage" %><%@

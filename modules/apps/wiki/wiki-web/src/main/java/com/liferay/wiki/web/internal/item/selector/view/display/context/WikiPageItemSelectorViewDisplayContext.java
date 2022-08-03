@@ -15,7 +15,6 @@
 package com.liferay.wiki.web.internal.item.selector.view.display.context;
 
 import com.liferay.item.selector.ItemSelectorReturnTypeResolverHandler;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -32,6 +31,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.wiki.item.selector.criterion.WikiPageItemSelectorCriterion;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;

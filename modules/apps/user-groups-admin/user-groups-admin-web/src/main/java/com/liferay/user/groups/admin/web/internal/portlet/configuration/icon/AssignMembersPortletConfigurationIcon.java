@@ -14,7 +14,6 @@
 
 package com.liferay.user.groups.admin.web.internal.portlet.configuration.icon;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.service.permission.UserGroupPermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.user.groups.admin.constants.UserGroupsAdminPortletKeys;
 import com.liferay.user.groups.admin.web.internal.portlet.action.ActionUtil;
 

@@ -16,16 +16,24 @@ package com.liferay.commerce.inventory.service.impl;
 
 import com.liferay.commerce.inventory.model.CommerceInventoryAudit;
 import com.liferay.commerce.inventory.service.base.CommerceInventoryAuditLocalServiceBaseImpl;
+import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 
 import java.util.Date;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Luca Pellizzon
  * @author Alessio Antonio Rendina
  */
+@Component(
+	enabled = false,
+	property = "model.class.name=com.liferay.commerce.inventory.model.CommerceInventoryAudit",
+	service = AopService.class
+)
 public class CommerceInventoryAuditLocalServiceImpl
 	extends CommerceInventoryAuditLocalServiceBaseImpl {
 

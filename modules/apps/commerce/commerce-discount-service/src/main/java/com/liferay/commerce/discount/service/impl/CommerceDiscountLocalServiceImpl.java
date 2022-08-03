@@ -35,6 +35,11 @@ import com.liferay.commerce.discount.model.CommerceDiscountCommerceAccountGroupR
 import com.liferay.commerce.discount.model.CommerceDiscountOrderTypeRelTable;
 import com.liferay.commerce.discount.model.CommerceDiscountRelTable;
 import com.liferay.commerce.discount.model.CommerceDiscountTable;
+import com.liferay.commerce.discount.service.CommerceDiscountCommerceAccountGroupRelLocalService;
+import com.liferay.commerce.discount.service.CommerceDiscountOrderTypeRelLocalService;
+import com.liferay.commerce.discount.service.CommerceDiscountRelLocalService;
+import com.liferay.commerce.discount.service.CommerceDiscountRuleLocalService;
+import com.liferay.commerce.discount.service.CommerceDiscountUsageEntryLocalService;
 import com.liferay.commerce.discount.service.base.CommerceDiscountLocalServiceBaseImpl;
 import com.liferay.commerce.discount.target.CommerceDiscountTarget;
 import com.liferay.commerce.discount.target.CommerceDiscountTargetRegistry;
@@ -573,29 +578,29 @@ public class CommerceDiscountLocalServiceImpl
 
 		// Commerce discount usage entries
 
-		commerceDiscountUsageEntryLocalService.
+		_commerceDiscountUsageEntryLocalService.
 			deleteCommerceUsageEntryByDiscountId(
 				commerceDiscount.getCommerceDiscountId());
 
 		// Commerce discount rels
 
-		commerceDiscountRelLocalService.deleteCommerceDiscountRels(
+		_commerceDiscountRelLocalService.deleteCommerceDiscountRels(
 			commerceDiscount.getCommerceDiscountId());
 
 		// Commerce discount rules
 
-		commerceDiscountRuleLocalService.deleteCommerceDiscountRules(
+		_commerceDiscountRuleLocalService.deleteCommerceDiscountRules(
 			commerceDiscount.getCommerceDiscountId());
 
 		// Commerce discount account groups rels
 
-		commerceDiscountCommerceAccountGroupRelLocalService.
+		_commerceDiscountCommerceAccountGroupRelLocalService.
 			deleteCommerceDiscountCommerceAccountGroupRelsByCommerceDiscountId(
 				commerceDiscount.getCommerceDiscountId());
 
 		// Commerce discount order type rels
 
-		commerceDiscountOrderTypeRelLocalService.
+		_commerceDiscountOrderTypeRelLocalService.
 			deleteCommerceDiscountOrderTypeRels(
 				commerceDiscount.getCommerceDiscountId());
 
@@ -1966,7 +1971,25 @@ public class CommerceDiscountLocalServiceImpl
 	private AssetEntryLocalService _assetEntryLocalService;
 
 	@Reference
+	private CommerceDiscountCommerceAccountGroupRelLocalService
+		_commerceDiscountCommerceAccountGroupRelLocalService;
+
+	@Reference
+	private CommerceDiscountOrderTypeRelLocalService
+		_commerceDiscountOrderTypeRelLocalService;
+
+	@Reference
+	private CommerceDiscountRelLocalService _commerceDiscountRelLocalService;
+
+	@Reference
+	private CommerceDiscountRuleLocalService _commerceDiscountRuleLocalService;
+
+	@Reference
 	private CommerceDiscountTargetRegistry _commerceDiscountTargetRegistry;
+
+	@Reference
+	private CommerceDiscountUsageEntryLocalService
+		_commerceDiscountUsageEntryLocalService;
 
 	@Reference
 	private CommercePricingClassLocalService _commercePricingClassLocalService;

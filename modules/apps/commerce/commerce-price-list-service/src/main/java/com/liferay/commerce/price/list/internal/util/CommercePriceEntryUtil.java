@@ -28,14 +28,9 @@ public class CommercePriceEntryUtil {
 			long commercePriceEntryId, boolean hasTierPrice)
 		throws PortalException {
 
-		CommercePriceEntry commercePriceEntry =
-			commercePriceEntryPersistence.findByPrimaryKey(
-				commercePriceEntryId);
-
-		commercePriceEntry.setHasTierPrice(hasTierPrice);
-		commercePriceEntry.setBulkPricing(true);
-
-		return commercePriceEntryPersistence.update(commercePriceEntry);
+		return setHasTierPrice(
+			commercePriceEntryPersistence, commercePriceEntryId, hasTierPrice,
+			true);
 	}
 
 	public static CommercePriceEntry setHasTierPrice(

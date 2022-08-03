@@ -42,7 +42,6 @@ page import="com.liferay.oauth.client.persistence.service.OAuthClientASLocalMeta
 page import="com.liferay.oauth.client.persistence.service.OAuthClientASLocalMetadataServiceUtil" %><%@
 page import="com.liferay.oauth.client.persistence.service.OAuthClientEntryLocalServiceUtil" %><%@
 page import="com.liferay.oauth.client.persistence.service.OAuthClientEntryServiceUtil" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
@@ -50,7 +49,8 @@ page import="com.liferay.portal.kernel.json.JSONUtil" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %>
+page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 

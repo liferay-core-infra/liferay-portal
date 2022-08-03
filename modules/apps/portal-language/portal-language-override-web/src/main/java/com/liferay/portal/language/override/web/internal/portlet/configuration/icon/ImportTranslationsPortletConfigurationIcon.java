@@ -14,7 +14,6 @@
 
 package com.liferay.portal.language.override.web.internal.portlet.configuration.icon;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.language.override.constants.PLOActionKeys;
 import com.liferay.portal.language.override.web.internal.constants.PLOPortletKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.ResourceBundle;
 

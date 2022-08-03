@@ -23,8 +23,7 @@ taglib uri="http://liferay.com/tld/clay" prefix="clay" %><%@
 taglib uri="http://liferay.com/tld/react" prefix="react" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
-page import="com.liferay.petra.string.StringPool" %><%@
+<%@ page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTask" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil" %><%@
 page import="com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants" %><%@
@@ -36,6 +35,7 @@ page import="com.liferay.portal.kernel.search.IndexerClassNameComparator" %><%@
 page import="com.liferay.portal.kernel.search.IndexerRegistryUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portal.search.admin.web.internal.constants.SearchAdminWebKeys" %><%@
 page import="com.liferay.portal.search.admin.web.internal.display.context.IndexActionsDisplayContext" %><%@
 page import="com.liferay.portal.search.admin.web.internal.display.context.SearchAdminDisplayContext" %><%@

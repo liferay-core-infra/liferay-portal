@@ -125,8 +125,7 @@ public class CommerceDiscountUsageEntryLocalServiceImpl
 		throws PortalException {
 
 		CommerceDiscount commerceDiscount =
-			commerceDiscountLocalService.getCommerceDiscount(
-				commerceDiscountId);
+			commerceDiscountPersistence.findByPrimaryKey(commerceDiscountId);
 
 		if (Objects.equals(
 				commerceDiscount.getLimitationType(),

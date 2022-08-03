@@ -386,8 +386,7 @@ public class CommerceDiscountRelLocalServiceImpl
 		throws PortalException {
 
 		CommerceDiscount commerceDiscount =
-			commerceDiscountLocalService.getCommerceDiscount(
-				commerceDiscountId);
+			commerceDiscountPersistence.findByPrimaryKey(commerceDiscountId);
 
 		Indexer<CommerceDiscount> indexer =
 			IndexerRegistryUtil.nullSafeGetIndexer(CommerceDiscount.class);

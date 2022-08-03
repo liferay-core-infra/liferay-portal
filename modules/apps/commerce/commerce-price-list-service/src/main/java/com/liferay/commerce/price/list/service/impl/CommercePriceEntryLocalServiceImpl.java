@@ -20,6 +20,7 @@ import com.liferay.commerce.price.list.exception.CommercePriceEntryExpirationDat
 import com.liferay.commerce.price.list.exception.CommercePriceListMaxPriceValueException;
 import com.liferay.commerce.price.list.exception.DuplicateCommercePriceEntryException;
 import com.liferay.commerce.price.list.exception.NoSuchPriceEntryException;
+import com.liferay.commerce.price.list.internal.util.CommercePriceEntryUtil;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
 import com.liferay.commerce.price.list.model.CommercePriceEntryTable;
 import com.liferay.commerce.price.list.model.CommercePriceList;
@@ -920,14 +921,8 @@ public class CommercePriceEntryLocalServiceImpl
 			long commercePriceEntryId, boolean hasTierPrice)
 		throws PortalException {
 
-		CommercePriceEntry commercePriceEntry =
-			commercePriceEntryPersistence.findByPrimaryKey(
-				commercePriceEntryId);
-
-		commercePriceEntry.setHasTierPrice(hasTierPrice);
-		commercePriceEntry.setBulkPricing(true);
-
-		return commercePriceEntryPersistence.update(commercePriceEntry);
+		return CommercePriceEntryUtil.setHasTierPrice(
+			commercePriceEntryPersistence, commercePriceEntryId, hasTierPrice);
 	}
 
 	@Override
@@ -936,14 +931,9 @@ public class CommercePriceEntryLocalServiceImpl
 			boolean bulkPricing)
 		throws PortalException {
 
-		CommercePriceEntry commercePriceEntry =
-			commercePriceEntryPersistence.findByPrimaryKey(
-				commercePriceEntryId);
-
-		commercePriceEntry.setHasTierPrice(hasTierPrice);
-		commercePriceEntry.setBulkPricing(bulkPricing);
-
-		return commercePriceEntryPersistence.update(commercePriceEntry);
+		return CommercePriceEntryUtil.setHasTierPrice(
+			commercePriceEntryPersistence, commercePriceEntryId, hasTierPrice,
+			bulkPricing);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)

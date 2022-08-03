@@ -17,7 +17,6 @@ package com.liferay.analytics.settings.web.internal.display.context;
 import com.liferay.analytics.settings.web.internal.model.Channel;
 import com.liferay.analytics.settings.web.internal.search.ChannelSearch;
 import com.liferay.analytics.settings.web.internal.util.AnalyticsSettingsUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -29,6 +28,7 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import java.util.ArrayList;
 import java.util.List;

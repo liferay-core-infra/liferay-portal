@@ -17,7 +17,6 @@ package com.liferay.announcements.web.internal.portlet.configuration.icon;
 import com.liferay.announcements.constants.AnnouncementsPortletKeys;
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.announcements.web.internal.portlet.action.ActionUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portlet.announcements.service.permission.AnnouncementsEntryPermission;
 
 import javax.portlet.PortletRequest;

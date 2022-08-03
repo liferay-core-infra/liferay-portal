@@ -62,7 +62,6 @@ page import="com.liferay.asset.kernel.model.ClassTypeReader" %><%@
 page import="com.liferay.asset.kernel.service.AssetCategoryLocalServiceUtil" %><%@
 page import="com.liferay.asset.kernel.service.AssetVocabularyServiceUtil" %><%@
 page import="com.liferay.frontend.taglib.servlet.taglib.util.EmptyResultMessageKeys" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringBundler" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
@@ -81,6 +80,7 @@ page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.portlet.asset.util.AssetVocabularySettingsHelper" %>
 
 <%@ page import="java.util.ArrayList" %><%@

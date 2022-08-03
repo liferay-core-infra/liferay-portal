@@ -14,9 +14,9 @@
 
 package com.liferay.analytics.settings.web.internal.util;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;

@@ -16,7 +16,6 @@ package com.liferay.asset.publisher.web.internal.display.context;
 
 import com.liferay.asset.publisher.util.AssetPublisherHelper;
 import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -26,6 +25,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;

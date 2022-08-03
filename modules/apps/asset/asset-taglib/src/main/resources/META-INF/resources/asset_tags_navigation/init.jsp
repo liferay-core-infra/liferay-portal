@@ -25,7 +25,6 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <%@ page import="com.liferay.asset.kernel.model.AssetTag" %><%@
 page import="com.liferay.asset.kernel.service.AssetTagServiceUtil" %><%@
 page import="com.liferay.asset.util.comparator.AssetTagCountComparator" %><%@
-page import="com.liferay.petra.portlet.url.builder.PortletURLBuilder" %><%@
 page import="com.liferay.petra.string.StringBundler" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
@@ -34,7 +33,8 @@ page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %>
+page import="com.liferay.portal.kernel.util.WebKeys" %><%@
+page import="com.liferay.portal.portlet.url.builder.PortletURLBuilder" %>
 
 <%@ page import="java.util.List" %>
 

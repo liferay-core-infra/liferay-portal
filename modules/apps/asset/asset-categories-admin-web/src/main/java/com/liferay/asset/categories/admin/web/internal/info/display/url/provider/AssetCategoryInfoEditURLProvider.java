@@ -17,7 +17,6 @@ package com.liferay.asset.categories.admin.web.internal.info.display.url.provide
 import com.liferay.asset.categories.admin.web.constants.AssetCategoriesAdminPortletKeys;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.info.display.url.provider.InfoEditURLProvider;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -25,6 +24,7 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.portlet.url.builder.PortletURLBuilder;
 
 import javax.portlet.PortletRequest;
 

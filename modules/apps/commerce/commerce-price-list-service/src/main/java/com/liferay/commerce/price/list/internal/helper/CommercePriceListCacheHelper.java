@@ -36,6 +36,11 @@ public class CommercePriceListCacheHelper {
 		portalCache.removeAll();
 	}
 
+	public PortalCache<String, Serializable> getPriceListCache(long companyId) {
+		return (PortalCache<String, Serializable>)_multiVMPool.getPortalCache(
+			"PRICE_LISTS_" + companyId);
+	}
+
 	@Reference
 	private MultiVMPool _multiVMPool;
 

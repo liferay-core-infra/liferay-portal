@@ -18,8 +18,8 @@ import com.liferay.commerce.exception.CommerceOrderNoteContentException;
 import com.liferay.commerce.exception.DuplicateCommerceOrderNoteException;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderNote;
-import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.base.CommerceOrderNoteLocalServiceBaseImpl;
+import com.liferay.commerce.service.persistence.CommerceOrderPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -60,7 +60,7 @@ public class CommerceOrderNoteLocalServiceImpl
 		throws PortalException {
 
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			_commerceOrderPersistence.findByPrimaryKey(commerceOrderId);
 		User user = _userLocalService.getUser(serviceContext.getUserId());
 
 		validate(content);
@@ -238,7 +238,7 @@ public class CommerceOrderNoteLocalServiceImpl
 	}
 
 	@Reference
-	private CommerceOrderLocalService _commerceOrderLocalService;
+	private CommerceOrderPersistence _commerceOrderPersistence;
 
 	@Reference
 	private UserLocalService _userLocalService;

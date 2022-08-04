@@ -20,8 +20,11 @@ import com.liferay.commerce.inventory.exception.DuplicateCommerceInventoryWareho
 import com.liferay.commerce.inventory.exception.MVCCException;
 import com.liferay.commerce.inventory.internal.search.CommerceInventoryWarehouseIndexer;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
+import com.liferay.commerce.inventory.service.CommerceInventoryReplenishmentItemLocalService;
+import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseItemLocalService;
 import com.liferay.commerce.inventory.service.base.CommerceInventoryWarehouseLocalServiceBaseImpl;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
@@ -143,11 +146,11 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 			commerceInventoryWarehousePersistence.remove(
 				commerceInventoryWarehouse);
 
-		commerceInventoryWarehouseItemLocalService.
+		_commerceInventoryWarehouseItemLocalService.
 			deleteCommerceInventoryWarehouseItems(
 				commerceInventoryWarehouse.getCommerceInventoryWarehouseId());
 
-		commerceInventoryReplenishmentItemLocalService.
+		_commerceInventoryReplenishmentItemLocalService.
 			deleteCommerceInventoryReplenishmentItems(
 				commerceInventoryWarehouse.getCommerceInventoryWarehouseId());
 
@@ -500,6 +503,14 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 	private static final String[] _SELECTED_FIELD_NAMES = {
 		Field.ENTRY_CLASS_PK, Field.COMPANY_ID
 	};
+
+	@BeanReference(type = CommerceInventoryReplenishmentItemLocalService.class)
+	private CommerceInventoryReplenishmentItemLocalService
+		_commerceInventoryReplenishmentItemLocalService;
+
+	@BeanReference(type = CommerceInventoryWarehouseItemLocalService.class)
+	private CommerceInventoryWarehouseItemLocalService
+		_commerceInventoryWarehouseItemLocalService;
 
 	@ServiceReference(type = CompanyLocalService.class)
 	private CompanyLocalService _companyLocalService;

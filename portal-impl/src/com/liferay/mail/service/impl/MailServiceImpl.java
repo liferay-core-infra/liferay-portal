@@ -349,6 +349,52 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		return session;
 	}
 
+	public static Session getSession(Account account) {
+		Session session = Session.getInstance(_getProperties(account));
+
+		if (_log.isDebugEnabled()) {
+			session.setDebug(true);
+
+			Properties sessionProperties = session.getProperties();
+
+			sessionProperties.list(System.out);
+		}
+
+		return session;
+	}
+
+	private static Properties _getProperties(Account account) {
+		Properties properties = new Properties();
+
+		String protocol = account.getProtocol();
+
+		properties.setProperty("mail.transport.protocol", protocol);
+		properties.setProperty("mail." + protocol + ".host", account.getHost());
+		properties.setProperty(
+			"mail." + protocol + ".port", String.valueOf(account.getPort()));
+
+		if (account.isRequiresAuthentication()) {
+			properties.setProperty("mail." + protocol + ".auth", "true");
+			properties.setProperty(
+				"mail." + protocol + ".user", account.getUser());
+			properties.setProperty(
+				"mail." + protocol + ".password", account.getPassword());
+		}
+
+		if (account.isSecure()) {
+			properties.setProperty(
+				"mail." + protocol + ".socketFactory.class",
+				"javax.net.ssl.SSLSocketFactory");
+			properties.setProperty(
+				"mail." + protocol + ".socketFactory.fallback", "false");
+			properties.setProperty(
+				"mail." + protocol + ".socketFactory.port",
+				String.valueOf(account.getPort()));
+		}
+
+		return properties;
+	}
+
 	@Override
 	public void sendEmail(MailMessage mailMessage) {
 		TransactionCommitCallbackUtil.registerCallback(

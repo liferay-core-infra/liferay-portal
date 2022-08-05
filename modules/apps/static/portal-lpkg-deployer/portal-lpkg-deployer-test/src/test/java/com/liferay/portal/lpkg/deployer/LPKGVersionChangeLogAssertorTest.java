@@ -14,6 +14,7 @@
 
 package com.liferay.portal.lpkg.deployer;
 
+import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;

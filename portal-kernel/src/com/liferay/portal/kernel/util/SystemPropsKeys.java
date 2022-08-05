@@ -21,4 +21,7 @@ public interface SystemPropsKeys {
 
 	public static final String DEFAULT_LIFERAY_HOME = "default.liferay.home";
 
+	public static final String RESOURCE_REPOSITORIES_ROOT =
+		"resource.repositories.root";
+
 }

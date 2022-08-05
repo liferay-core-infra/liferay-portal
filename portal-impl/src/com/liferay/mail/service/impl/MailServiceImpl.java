@@ -20,6 +20,7 @@ import com.liferay.mail.kernel.model.MailMessage;
 import com.liferay.mail.kernel.service.MailService;
 import com.liferay.mail.kernel.util.Hook;
 import com.liferay.portal.kernel.cluster.Clusterable;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
@@ -182,140 +183,165 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 
 	@Override
 	public Session getSession() {
+		Session session = null;
+
 		long companyId = CompanyThreadLocal.getCompanyId();
 
-		Session session = _sessions.get(companyId);
+		try {
+			session = _sessions.get(companyId);
 
-		if (session != null) {
-			return session;
-		}
+			if (session != null) {
+				return session;
+			}
 
-		session = InfrastructureUtil.getMailSession();
+			session = InfrastructureUtil.getMailSession();
 
-		PortletPreferences companyPortletPreferences =
-			PrefsPropsUtil.getPreferences(companyId);
-		PortletPreferences systemPortletPreferences =
-			PrefsPropsUtil.getPreferences();
+			PortletPreferences companyPortletPreferences =
+				PrefsPropsUtil.getPreferences(companyId);
+			PortletPreferences systemPortletPreferences =
+				PrefsPropsUtil.getPreferences();
 
-		Function<String, String> function =
-			(String key) -> companyPortletPreferences.getValue(
-				key,
-				systemPortletPreferences.getValue(key, PropsUtil.get(key)));
+			Function<String, String> function =
+				(String key) -> companyPortletPreferences.getValue(
+					key,
+					systemPortletPreferences.getValue(key, PropsUtil.get(key)));
 
-		if (!GetterUtil.getBoolean(
+			if (!GetterUtil.getBoolean(
 				function.apply(PropsKeys.MAIL_SESSION_MAIL))) {
 
-			_sessions.put(companyId, session);
+				_sessions.put(companyId, session);
 
-			return session;
-		}
+				return session;
+			}
 
-		String advancedPropertiesString = function.apply(
-			PropsKeys.MAIL_SESSION_MAIL_ADVANCED_PROPERTIES);
-		String pop3Host = function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
-		String pop3Password = function.apply(
-			PropsKeys.MAIL_SESSION_MAIL_POP3_PASSWORD);
-		int pop3Port = GetterUtil.getInteger(
-			function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT));
-		String pop3User = function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
-		String smtpHost = function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
-		String smtpPassword = function.apply(
-			PropsKeys.MAIL_SESSION_MAIL_SMTP_PASSWORD);
-		int smtpPort = GetterUtil.getInteger(
-			function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT));
-		boolean smtpStartTLSEnable = GetterUtil.getBoolean(
-			function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE));
-		String smtpUser = function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
-		String storeProtocol = function.apply(
-			PropsKeys.MAIL_SESSION_MAIL_STORE_PROTOCOL);
-		String transportProtocol = function.apply(
-			PropsKeys.MAIL_SESSION_MAIL_TRANSPORT_PROTOCOL);
+			String advancedPropertiesString = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_ADVANCED_PROPERTIES);
+			String pop3Host =
+				function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
+			String pop3Password = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_POP3_PASSWORD);
+			int pop3Port = GetterUtil.getInteger(
+				function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT));
+			String pop3User =
+				function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
+			String smtpHost =
+				function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
+			String smtpPassword = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_SMTP_PASSWORD);
+			int smtpPort = GetterUtil.getInteger(
+				function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT));
+			boolean smtpStartTLSEnable = GetterUtil.getBoolean(
+				function.apply(
+					PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE));
+			String smtpUser =
+				function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
+			String storeProtocol = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_STORE_PROTOCOL);
+			String transportProtocol = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_TRANSPORT_PROTOCOL);
 
-		Properties properties = session.getProperties();
+			Properties properties = session.getProperties();
 
-		// Incoming
+			// Incoming
 
-		if (!storeProtocol.equals(Account.PROTOCOL_POPS)) {
-			storeProtocol = Account.PROTOCOL_POP;
-		}
+			if (!storeProtocol.equals(Account.PROTOCOL_POPS)) {
+				storeProtocol = Account.PROTOCOL_POP;
+			}
 
-		properties.setProperty("mail.store.protocol", storeProtocol);
+			properties.setProperty("mail.store.protocol", storeProtocol);
 
-		String storePrefix = "mail." + storeProtocol + ".";
+			String storePrefix = "mail." + storeProtocol + ".";
 
-		properties.setProperty(storePrefix + "host", pop3Host);
-		properties.setProperty(storePrefix + "password", pop3Password);
-		properties.setProperty(storePrefix + "port", String.valueOf(pop3Port));
-		properties.setProperty(storePrefix + "user", pop3User);
+			properties.setProperty(storePrefix + "host", pop3Host);
+			properties.setProperty(storePrefix + "password", pop3Password);
+			properties.setProperty(
+				storePrefix + "port", String.valueOf(pop3Port));
+			properties.setProperty(storePrefix + "user", pop3User);
 
-		// Outgoing
+			// Outgoing
 
-		if (!transportProtocol.equals(Account.PROTOCOL_SMTPS)) {
-			transportProtocol = Account.PROTOCOL_SMTP;
-		}
+			if (!transportProtocol.equals(Account.PROTOCOL_SMTPS)) {
+				transportProtocol = Account.PROTOCOL_SMTP;
+			}
 
-		properties.setProperty("mail.transport.protocol", transportProtocol);
+			properties.setProperty(
+				"mail.transport.protocol", transportProtocol);
 
-		String transportPrefix = "mail." + transportProtocol + ".";
+			String transportPrefix = "mail." + transportProtocol + ".";
 
-		boolean smtpAuth = false;
+			boolean smtpAuth = false;
 
-		if (Validator.isNotNull(smtpPassword) ||
-			Validator.isNotNull(smtpUser)) {
+			if (Validator.isNotNull(smtpPassword) ||
+				Validator.isNotNull(smtpUser)) {
 
-			smtpAuth = true;
-		}
+				smtpAuth = true;
+			}
 
-		properties.setProperty(
-			transportPrefix + "auth", String.valueOf(smtpAuth));
-		properties.setProperty(transportPrefix + "host", smtpHost);
-		properties.setProperty(transportPrefix + "password", smtpPassword);
-		properties.setProperty(
-			transportPrefix + "port", String.valueOf(smtpPort));
-		properties.setProperty(
-			transportPrefix + "starttls.enable",
-			String.valueOf(smtpStartTLSEnable));
-		properties.setProperty(transportPrefix + "user", smtpUser);
+			properties.setProperty(
+				transportPrefix + "auth", String.valueOf(smtpAuth));
+			properties.setProperty(transportPrefix + "host", smtpHost);
+			properties.setProperty(transportPrefix + "password", smtpPassword);
+			properties.setProperty(
+				transportPrefix + "port", String.valueOf(smtpPort));
+			properties.setProperty(
+				transportPrefix + "starttls.enable",
+				String.valueOf(smtpStartTLSEnable));
+			properties.setProperty(transportPrefix + "user", smtpUser);
 
-		// Advanced
+			// Advanced
 
-		try {
-			if (Validator.isNotNull(advancedPropertiesString)) {
-				Properties advancedProperties = PropertiesUtil.load(
-					advancedPropertiesString);
+			try {
+				if (Validator.isNotNull(advancedPropertiesString)) {
+					Properties advancedProperties = PropertiesUtil.load(
+						advancedPropertiesString);
 
-				for (Map.Entry<Object, Object> entry :
+					for (Map.Entry<Object, Object> entry :
 						advancedProperties.entrySet()) {
 
-					String key = (String)entry.getKey();
-					String value = (String)entry.getValue();
+						String key = (String) entry.getKey();
+						String value = (String) entry.getValue();
 
-					properties.setProperty(key, value);
+						properties.setProperty(key, value);
+					}
 				}
 			}
-		}
-		catch (IOException ioException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(ioException);
+			catch (IOException ioException) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(ioException);
+				}
 			}
-		}
 
-		if (smtpAuth) {
-			session = Session.getInstance(
-				properties,
-				new Authenticator() {
+			if (smtpAuth) {
+				session = Session.getInstance(
+					properties,
+					new Authenticator() {
 
-					protected PasswordAuthentication
+						protected PasswordAuthentication
 						getPasswordAuthentication() {
 
-						return new PasswordAuthentication(
-							smtpUser, smtpPassword);
-					}
+							return new PasswordAuthentication(
+								smtpUser, smtpPassword);
+						}
 
-				});
+					});
+			}
+			else {
+				session = Session.getInstance(properties);
+			}
+		} catch (SystemException systemException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(systemException);
+			}
+
+			session = InfrastructureUtil.getMailSession();
 		}
-		else {
-			session = Session.getInstance(properties);
+
+		if (_log.isDebugEnabled()) {
+			session.setDebug(true);
+
+			Properties properties = session.getProperties();
+
+			properties.list(System.out);
 		}
 
 		_sessions.put(companyId, session);

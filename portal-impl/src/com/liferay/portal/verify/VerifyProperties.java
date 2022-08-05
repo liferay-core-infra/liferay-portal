@@ -328,7 +328,11 @@ public class VerifyProperties {
 			"module.framework.runtime.start.level",
 			"module.framework.runtime.start.level"
 		},
-		{"module.framework.web.start.level", "module.framework.web.start.level"}
+		{
+			"module.framework.web.start.level",
+			"module.framework.web.start.level"
+		},
+		{"resource.repositories.root", "resource.repositories.root"}
 	};
 
 	private static final String[][] _MIGRATED_SYSTEM_KEYS = {

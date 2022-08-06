@@ -12,14 +12,14 @@
  * details.
  */
 
-export function isFormRequiredField(fieldId, formFields) {
-	if (!fieldId || !formFields) {
-		return false;
-	}
+import {FREEMARKER_FRAGMENT_ENTRY_PROCESSOR} from '../config/constants/freemarkerFragmentEntryProcessor';
+import {isRequiredFormField} from './isRequiredFormField';
 
-	const flattenedFields = formFields.flatMap((fieldSet) => fieldSet.fields);
+export function isRequiredFormInput(item, fragmentEntryLinks, formFields) {
+	const {inputFieldId, inputRequired} =
+		fragmentEntryLinks[item.config.fragmentEntryLinkId].editableValues[
+			FREEMARKER_FRAGMENT_ENTRY_PROCESSOR
+		] || {};
 
-	return flattenedFields.some(
-		(field) => field.key === fieldId && field.required
-	);
+	return inputRequired || isRequiredFormField(inputFieldId, formFields);
 }

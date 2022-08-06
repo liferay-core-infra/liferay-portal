@@ -12,18 +12,18 @@
  * details.
  */
 
-export const REQUIRED_FIELD_DATA = {
-	actionLabel: Liferay.Language.get('hide'),
-	message: Liferay.Language.get(
-		'this-fragment-contains-a-required-form-field-or-a-submit-element.-are-you-sure-you-want-to-hide-it'
-	),
-	title: Liferay.Language.get('required-form-fragment'),
-};
+import {LAYOUT_DATA_ITEM_TYPES} from '../config/constants/layoutDataItemTypes';
 
-export const MISSING_FIELD_DATA = {
-	actionLabel: Liferay.Language.get('publish'),
-	message: Liferay.Language.get(
-		'this-page-contains-one-or-several-forms-with-a-missing-or-hidden-form-components'
-	),
-	title: Liferay.Language.get('required-form-components'),
-};
+export function hasFormParent(item, layoutData) {
+	if (item.type === LAYOUT_DATA_ITEM_TYPES.form) {
+		return true;
+	}
+
+	const parent = layoutData?.items?.[item.parentId];
+
+	if (!parent) {
+		return false;
+	}
+
+	return hasFormParent(parent, layoutData);
+}

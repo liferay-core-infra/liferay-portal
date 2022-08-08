@@ -207,7 +207,7 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 					systemPortletPreferences.getValue(key, PropsUtil.get(key)));
 
 			if (!GetterUtil.getBoolean(
-				function.apply(PropsKeys.MAIL_SESSION_MAIL))) {
+					function.apply(PropsKeys.MAIL_SESSION_MAIL))) {
 
 				_sessions.put(companyId, session);
 
@@ -216,16 +216,16 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 
 			String advancedPropertiesString = function.apply(
 				PropsKeys.MAIL_SESSION_MAIL_ADVANCED_PROPERTIES);
-			String pop3Host =
-				function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
+			String pop3Host = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
 			String pop3Password = function.apply(
 				PropsKeys.MAIL_SESSION_MAIL_POP3_PASSWORD);
 			int pop3Port = GetterUtil.getInteger(
 				function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT));
-			String pop3User =
-				function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
-			String smtpHost =
-				function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
+			String pop3User = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
+			String smtpHost = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
 			String smtpPassword = function.apply(
 				PropsKeys.MAIL_SESSION_MAIL_SMTP_PASSWORD);
 			int smtpPort = GetterUtil.getInteger(
@@ -233,8 +233,8 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			boolean smtpStartTLSEnable = GetterUtil.getBoolean(
 				function.apply(
 					PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE));
-			String smtpUser =
-				function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
+			String smtpUser = function.apply(
+				PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
 			String storeProtocol = function.apply(
 				PropsKeys.MAIL_SESSION_MAIL_STORE_PROTOCOL);
 			String transportProtocol = function.apply(
@@ -296,10 +296,10 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 						advancedPropertiesString);
 
 					for (Map.Entry<Object, Object> entry :
-						advancedProperties.entrySet()) {
+							advancedProperties.entrySet()) {
 
-						String key = (String) entry.getKey();
-						String value = (String) entry.getValue();
+						String key = (String)entry.getKey();
+						String value = (String)entry.getValue();
 
 						properties.setProperty(key, value);
 					}
@@ -317,7 +317,7 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 					new Authenticator() {
 
 						protected PasswordAuthentication
-						getPasswordAuthentication() {
+							getPasswordAuthentication() {
 
 							return new PasswordAuthentication(
 								smtpUser, smtpPassword);
@@ -328,7 +328,8 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 			else {
 				session = Session.getInstance(properties);
 			}
-		} catch (SystemException systemException) {
+		}
+		catch (SystemException systemException) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(systemException);
 			}
@@ -361,38 +362,6 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		}
 
 		return session;
-	}
-
-	private static Properties _getProperties(Account account) {
-		Properties properties = new Properties();
-
-		String protocol = account.getProtocol();
-
-		properties.setProperty("mail.transport.protocol", protocol);
-		properties.setProperty("mail." + protocol + ".host", account.getHost());
-		properties.setProperty(
-			"mail." + protocol + ".port", String.valueOf(account.getPort()));
-
-		if (account.isRequiresAuthentication()) {
-			properties.setProperty("mail." + protocol + ".auth", "true");
-			properties.setProperty(
-				"mail." + protocol + ".user", account.getUser());
-			properties.setProperty(
-				"mail." + protocol + ".password", account.getPassword());
-		}
-
-		if (account.isSecure()) {
-			properties.setProperty(
-				"mail." + protocol + ".socketFactory.class",
-				"javax.net.ssl.SSLSocketFactory");
-			properties.setProperty(
-				"mail." + protocol + ".socketFactory.fallback", "false");
-			properties.setProperty(
-				"mail." + protocol + ".socketFactory.port",
-				String.valueOf(account.getPort()));
-		}
-
-		return properties;
 	}
 
 	@Override
@@ -466,6 +435,38 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 
 				return null;
 			});
+	}
+
+	private Properties _getProperties(Account account) {
+		Properties properties = new Properties();
+
+		String protocol = account.getProtocol();
+
+		properties.setProperty("mail.transport.protocol", protocol);
+		properties.setProperty("mail." + protocol + ".host", account.getHost());
+		properties.setProperty(
+			"mail." + protocol + ".port", String.valueOf(account.getPort()));
+
+		if (account.isRequiresAuthentication()) {
+			properties.setProperty("mail." + protocol + ".auth", "true");
+			properties.setProperty(
+				"mail." + protocol + ".user", account.getUser());
+			properties.setProperty(
+				"mail." + protocol + ".password", account.getPassword());
+		}
+
+		if (account.isSecure()) {
+			properties.setProperty(
+				"mail." + protocol + ".socketFactory.class",
+				"javax.net.ssl.SSLSocketFactory");
+			properties.setProperty(
+				"mail." + protocol + ".socketFactory.fallback", "false");
+			properties.setProperty(
+				"mail." + protocol + ".socketFactory.port",
+				String.valueOf(account.getPort()));
+		}
+
+		return properties;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -34,9 +34,22 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.io.File;
+
+import java.net.SocketException;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+
 import javax.mail.Address;
 import javax.mail.Header;
 import javax.mail.Message;
@@ -51,15 +64,6 @@ import javax.mail.internet.InternetHeaders;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.File;
-import java.net.SocketException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Brian Wing Shun Chan
@@ -71,13 +75,14 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author Julius Lee
  */
 public class MailEngine {
+
 	public static void send(
-		InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
-		InternetAddress[] bcc, InternetAddress[] bulkAddresses,
-		String subject, String body, boolean htmlFormat,
-		InternetAddress[] replyTo, String messageId, String inReplyTo,
-		List<FileAttachment> fileAttachments, SMTPAccount smtpAccount,
-		InternetHeaders internetHeaders)
+			InternetAddress from, InternetAddress[] to, InternetAddress[] cc,
+			InternetAddress[] bcc, InternetAddress[] bulkAddresses,
+			String subject, String body, boolean htmlFormat,
+			InternetAddress[] replyTo, String messageId, String inReplyTo,
+			List<FileAttachment> fileAttachments, SMTPAccount smtpAccount,
+			InternetHeaders internetHeaders)
 		throws PortalException {
 
 		long startTime = System.currentTimeMillis();
@@ -342,8 +347,8 @@ public class MailEngine {
 	}
 
 	private static void _send(
-		Session session, Message message, InternetAddress[] bulkAddresses,
-		int batchSize)
+			Session session, Message message, InternetAddress[] bulkAddresses,
+			int batchSize)
 		throws PortalException {
 
 		if ((_DATA_LIMIT_MAIL_MESSAGE_MAX_PERIOD > 0) &&
@@ -435,7 +440,7 @@ public class MailEngine {
 		}
 		catch (MessagingException messagingException) {
 			if (messagingException.getNextException() instanceof
-				SocketException) {
+					SocketException) {
 
 				if (_log.isWarnEnabled()) {
 					_log.warn(

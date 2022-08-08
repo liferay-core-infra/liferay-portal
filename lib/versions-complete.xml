@@ -225,7 +225,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-04-15 22:53:24</current-version-publish-date>
-				<latest-version-publish-date>2022-07-08 21:07:00</latest-version-publish-date>
+				<latest-version-publish-date>2022-08-17 22:08:36</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.calendar.service.jar!joda-convert.jar</file-name>
@@ -1345,7 +1345,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.document.library.google.docs.jar!org.freemarker.jar</file-name>
-				<version>2.3.29.LIFERAY-PATCHED-2</version>
+				<version>2.3.29.LIFERAY-PATCHED-3</version>
 				<project-name>org.freemarker.freemarker</project-name>
 				<licenses>
 					<license>
@@ -1353,7 +1353,7 @@
 						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2020-12-24 16:24:37</current-version-publish-date>
+				<current-version-publish-date>2015-01-09 19:29:00</current-version-publish-date>
 				<latest-version-publish-date>2020-12-24 16:24:37</latest-version-publish-date>
 			</library>
 			<library>
@@ -1431,8 +1431,8 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2019-05-03 06:34:51</current-version-publish-date>
-				<latest-version-publish-date>2022-08-02 05:34:30</latest-version-publish-date>
+				<current-version-publish-date>2019-05-06 17:05:13</current-version-publish-date>
+				<latest-version-publish-date>2022-08-18 05:11:22</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.document.library.opener.google.drive.web.jar!google-api-services-oauth2.jar</file-name>
@@ -5267,7 +5267,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 17:54:32</current-version-publish-date>
-				<latest-version-publish-date>2022-08-16 17:15:41</latest-version-publish-date>
+				<latest-version-publish-date>2022-08-18 17:21:17</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
@@ -5281,7 +5281,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 17:54:29</current-version-publish-date>
-				<latest-version-publish-date>2022-08-16 17:14:14</latest-version-publish-date>
+				<latest-version-publish-date>2022-08-18 17:22:18</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
@@ -5295,7 +5295,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2022-07-15 17:53:45</current-version-publish-date>
-				<latest-version-publish-date>2022-08-16 17:14:18</latest-version-publish-date>
+				<latest-version-publish-date>2022-08-18 17:21:31</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-codec.jar</file-name>
@@ -5439,7 +5439,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.template.freemarker.jar!org.freemarker.jar</file-name>
-				<version>2.3.29.LIFERAY-PATCHED-2</version>
+				<version>2.3.29.LIFERAY-PATCHED-3</version>
 				<project-name>org.freemarker.freemarker</project-name>
 				<licenses>
 					<license>
@@ -5447,7 +5447,7 @@
 						<license-url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2020-12-24 16:24:37</current-version-publish-date>
+				<current-version-publish-date>2015-01-09 19:29:00</current-version-publish-date>
 				<latest-version-publish-date>2020-12-24 16:24:37</latest-version-publish-date>
 			</library>
 			<library>
@@ -6042,8 +6042,8 @@
 						<license-url>https://github.com/graphql-java/graphql-java/blob/master/LICENSE.md</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-07-13 02:18:49</current-version-publish-date>
-				<latest-version-publish-date>2022-08-16 21:20:15</latest-version-publish-date>
+				<current-version-publish-date>2021-07-13 02:27:00</current-version-publish-date>
+				<latest-version-publish-date>2022-08-19 02:12:05</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.vulcan.impl.jar!guava.jar</file-name>

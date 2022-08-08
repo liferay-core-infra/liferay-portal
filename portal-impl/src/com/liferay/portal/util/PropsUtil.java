@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.HashMap;
@@ -334,17 +335,11 @@ public class PropsUtil {
 
 		// Liferay home directory
 
-		_configuration = ConfigurationFactoryImpl.CONFIGURATION_PORTAL;
-
-		String liferayHome = _configuration.get(PropsKeys.LIFERAY_HOME);
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Configured Liferay home " + liferayHome);
-		}
-
-		SystemProperties.set(PropsKeys.LIFERAY_HOME, liferayHome);
+		String liferayHome = SystemProperties.get(SystemPropsKeys.LIFERAY_HOME);
 
 		// Ehcache disk directory
+
+		_configuration = ConfigurationFactoryImpl.CONFIGURATION_PORTAL;
 
 		SystemProperties.set(
 			"ehcache.disk.store.dir", liferayHome + "/data/ehcache");

@@ -15,7 +15,7 @@
 package com.liferay.portal.xml;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.Dom4jUtil;
+import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
@@ -116,19 +116,19 @@ public class NodeImpl implements Node {
 
 	@Override
 	public String formattedString() throws IOException {
-		return Dom4jUtil.toString(_node);
+		return XMLUtil.toString(_node);
 	}
 
 	@Override
 	public String formattedString(String indent) throws IOException {
-		return Dom4jUtil.toString(_node, indent);
+		return XMLUtil.toString(_node, indent);
 	}
 
 	@Override
 	public String formattedString(String indent, boolean expandEmptyElements)
 		throws IOException {
 
-		return Dom4jUtil.toString(_node, indent, expandEmptyElements);
+		return XMLUtil.toString(_node, indent, expandEmptyElements);
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class NodeImpl implements Node {
 			String indent, boolean expandEmptyElements, boolean trimText)
 		throws IOException {
 
-		return Dom4jUtil.toString(_node, indent, expandEmptyElements, trimText);
+		return XMLUtil.toString(_node, indent, expandEmptyElements, trimText);
 	}
 
 	@Override

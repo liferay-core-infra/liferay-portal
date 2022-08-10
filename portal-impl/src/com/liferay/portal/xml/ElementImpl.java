@@ -14,7 +14,7 @@
 
 package com.liferay.portal.xml;
 
-import com.liferay.petra.xml.Dom4jUtil;
+import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.xml.Attribute;
 import com.liferay.portal.kernel.xml.CDATA;
@@ -363,19 +363,19 @@ public class ElementImpl extends BranchImpl implements Element {
 
 	@Override
 	public String formattedString() throws IOException {
-		return Dom4jUtil.toString(_element);
+		return XMLUtil.toString(_element);
 	}
 
 	@Override
 	public String formattedString(String indent) throws IOException {
-		return Dom4jUtil.toString(_element, indent);
+		return XMLUtil.toString(_element, indent);
 	}
 
 	@Override
 	public String formattedString(String indent, boolean expandEmptyElements)
 		throws IOException {
 
-		return Dom4jUtil.toString(_element, indent, expandEmptyElements);
+		return XMLUtil.toString(_element, indent, expandEmptyElements);
 	}
 
 	@Override

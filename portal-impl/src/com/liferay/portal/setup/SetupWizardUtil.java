@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -49,6 +50,7 @@ import java.sql.Connection;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -292,6 +294,11 @@ public class SetupWizardUtil {
 		throws Exception {
 
 		if (Validator.isNull(jndiName)) {
+			if (!_driverClassNameWhiteList.contains(driverClassName)) {
+				throw new Exception(
+					driverClassName + " is not a valid driver class name!");
+			}
+
 			Class.forName(driverClassName);
 		}
 
@@ -510,5 +517,16 @@ public class SetupWizardUtil {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SetupWizardUtil.class);
+
+	private static final Set<String> _driverClassNameWhiteList =
+		SetUtil.fromArray(
+			new String[] {
+				"com.ibm.db2.jcc.DB2Driver",
+				"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+				"com.mysql.cj.jdbc.Driver", "com.p6spy.engine.spy.P6SpyDriver",
+				"com.sybase.jdbc4.jdbc.SybDriver", "oracle.jdbc.OracleDriver",
+				"org.hsqldb.jdbc.JDBCDriver", "org.mariadb.jdbc.Driver",
+				"org.postgresql.Driver"
+			});
 
 }

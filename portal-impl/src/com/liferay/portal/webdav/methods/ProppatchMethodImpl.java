@@ -130,7 +130,7 @@ public class ProppatchMethodImpl extends BasePropMethodImpl {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Request XML: \n" +
-					XMLUtil.toString(xml, StringPool.FOUR_SPACES));
+						XMLUtil.toString(xml, StringPool.FOUR_SPACES));
 			}
 
 			WebDAVProps webDAVProps = getStoredProperties(webDAVRequest);

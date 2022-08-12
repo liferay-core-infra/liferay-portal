@@ -30,6 +30,7 @@ import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+
 import org.xml.sax.XMLReader;
 
 /**
@@ -127,8 +128,6 @@ public class XMLUtil {
 			new String[] {"[$NEW_LINE$]", "[$NEW_LINE$]", "[$NEW_LINE$]"});
 	}
 
-	private static final String _XML_INDENT = "  ";
-
 	public static String toString(Node node) throws IOException {
 		return toString(node, StringPool.TAB);
 	}
@@ -203,15 +202,19 @@ public class XMLUtil {
 		XMLReader xmlReader = null;
 
 		if (SecureXMLFactoryProviderUtil.getSecureXMLFactoryProvider() !=
-			null) {
+				null) {
 
 			xmlReader = SecureXMLFactoryProviderUtil.newXMLReader();
 		}
 
 		SAXReader saxReader = new SAXReader(xmlReader);
 
-		org.dom4j.Document document = saxReader.read(new UnsyncStringReader(xml));
+		org.dom4j.Document document = saxReader.read(
+			new UnsyncStringReader(xml));
 
 		return toString(document, indent);
 	}
+
+	private static final String _XML_INDENT = "  ";
+
 }

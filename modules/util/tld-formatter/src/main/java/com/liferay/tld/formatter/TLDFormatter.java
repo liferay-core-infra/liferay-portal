@@ -14,7 +14,7 @@
 
 package com.liferay.tld.formatter;
 
-import com.liferay.petra.xml.Dom4jUtil;
+import com.liferay.portal.tools.Dom4jUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.tools.ArgumentsUtil;

@@ -40,13 +40,13 @@ import com.liferay.gradle.plugins.workspace.internal.util.GradleUtil;
 import com.liferay.gradle.plugins.workspace.internal.util.StringUtil;
 import com.liferay.gradle.plugins.workspace.task.CreateTokenTask;
 import com.liferay.gradle.plugins.workspace.task.InitBundleTask;
+import com.liferay.gradle.plugins.workspace.task.VerifyBundleTask;
 import com.liferay.gradle.plugins.workspace.task.VerifyProductTask;
 import com.liferay.gradle.util.OSDetector;
 import com.liferay.gradle.util.Validator;
 import com.liferay.gradle.util.copy.StripPathSegmentsAction;
 
 import de.undercouch.gradle.tasks.download.Download;
-import de.undercouch.gradle.tasks.download.Verify;
 
 import groovy.lang.Closure;
 
@@ -245,7 +245,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		Download downloadBundleTask = _addTaskDownloadBundle(
 			project, verifyProductTask, workspaceExtension);
 
-		Verify verifyBundleTask = _addTaskVerifyBundle(
+		VerifyBundleTask verifyBundleTask = _addTaskVerifyBundle(
 			project, verifyProductTask, downloadBundleTask, workspaceExtension);
 
 		Copy distBundleTask = _addTaskDistBundle(
@@ -1047,9 +1047,13 @@ public class RootProjectConfigurator implements Plugin<Project> {
 						File file = null;
 
 						try {
-							URI uri = project.uri(src);
+							URL srcURL = (URL)src;
 
-							file = project.file(uri);
+							if (Objects.equals("file", srcURL.getProtocol())) {
+								URI uri = project.uri(src);
+
+								file = project.file(uri);
+							}
 						}
 						catch (Exception exception) {
 							if (logger.isDebugEnabled()) {
@@ -1087,48 +1091,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 				@Override
 				public void execute(Project project) {
-					File destinationDir =
-						workspaceExtension.getBundleCacheDir();
-
-					destinationDir.mkdirs();
-
-					download.dest(destinationDir);
-
-					List<?> srcList = _getSrcList(download);
-
-					if (!srcList.isEmpty()) {
-						return;
-					}
-
-					String bundleUrl = workspaceExtension.getBundleUrl();
-
-					if (Objects.isNull(bundleUrl)) {
-						return;
-					}
-
-					try {
-						if (bundleUrl.startsWith("file:")) {
-							URL url = new URL(bundleUrl);
-
-							File file = new File(url.getFile());
-
-							file = file.getAbsoluteFile();
-
-							URI uri = file.toURI();
-
-							bundleUrl = uri.toASCIIString();
-						}
-						else {
-							bundleUrl = bundleUrl.replace(" ", "%20");
-						}
-
-						download.src(bundleUrl);
-					}
-					catch (MalformedURLException malformedURLException) {
-						throw new GradleException(
-							malformedURLException.getMessage(),
-							malformedURLException);
-					}
+					_configureDownloadTask(download, workspaceExtension);
 				}
 
 			});
@@ -1138,7 +1101,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 	private InitBundleTask _addTaskInitBundle(
 		Project project, VerifyProductTask verifyProductTask,
-		Download downloadBundleTask, Verify verifyBundleTask,
+		Download downloadBundleTask, VerifyBundleTask verifyBundleTask,
 		final WorkspaceExtension workspaceExtension,
 		Configuration configurationBundleSupport,
 		Configuration configurationOsgiModules) {
@@ -1589,18 +1552,19 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		return dockerStopContainer;
 	}
 
-	private Verify _addTaskVerifyBundle(
+	private VerifyBundleTask _addTaskVerifyBundle(
 		Project project, VerifyProductTask verifyProductTask,
 		Download downloadBundleTask, WorkspaceExtension workspaceExtension) {
 
-		Verify verify = GradleUtil.addTask(
-			project, VERIFY_BUNDLE_TASK_NAME, Verify.class);
+		VerifyBundleTask verifyBundleTask = GradleUtil.addTask(
+			project, VERIFY_BUNDLE_TASK_NAME, VerifyBundleTask.class);
 
-		verify.algorithm("MD5");
-		verify.dependsOn(verifyProductTask, downloadBundleTask);
-		verify.setDescription("Verifies the Liferay bundle zip file.");
+		verifyBundleTask.algorithm("MD5");
+		verifyBundleTask.dependsOn(verifyProductTask, downloadBundleTask);
+		verifyBundleTask.setDescription(
+			"Verifies the Liferay bundle zip file.");
 
-		verify.onlyIf(
+		verifyBundleTask.onlyIf(
 			new Spec<Task>() {
 
 				@Override
@@ -1616,12 +1580,12 @@ public class RootProjectConfigurator implements Plugin<Project> {
 						return false;
 					}
 
-					return Validator.isNotNull(verify.getChecksum());
+					return Validator.isNotNull(verifyBundleTask.getChecksum());
 				}
 
 			});
 
-		downloadBundleTask.finalizedBy(verify);
+		downloadBundleTask.finalizedBy(verifyBundleTask);
 
 		project.afterEvaluate(
 			new Action<Project>() {
@@ -1631,7 +1595,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 					if (Validator.isNotNull(
 							workspaceExtension.getBundleUrl())) {
 
-						verify.checksum(
+						verifyBundleTask.checksum(
 							workspaceExtension.getBundleChecksumMD5());
 
 						TaskOutputs taskOutputs =
@@ -1639,13 +1603,13 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 						FileCollection fileCollection = taskOutputs.getFiles();
 
-						verify.src(fileCollection.getSingleFile());
+						verifyBundleTask.src(fileCollection.getSingleFile());
 					}
 				}
 
 			});
 
-		return verify;
+		return verifyBundleTask;
 	}
 
 	private VerifyProductTask _addTaskVerifyProduct(
@@ -1723,6 +1687,45 @@ public class RootProjectConfigurator implements Plugin<Project> {
 					}
 
 				}));
+	}
+
+	private void _configureDownloadTask(
+		Download download, WorkspaceExtension workspaceExtension) {
+
+		File destinationDir = workspaceExtension.getBundleCacheDir();
+
+		destinationDir.mkdirs();
+
+		download.dest(destinationDir);
+
+		String bundleURLString = workspaceExtension.getBundleUrl();
+
+		if (Objects.isNull(bundleURLString)) {
+			return;
+		}
+
+		try {
+			if (bundleURLString.startsWith("file:")) {
+				URL url = new URL(bundleURLString);
+
+				File file = new File(url.getFile());
+
+				file = file.getAbsoluteFile();
+
+				URI uri = file.toURI();
+
+				bundleURLString = uri.toASCIIString();
+			}
+			else {
+				bundleURLString = bundleURLString.replace(" ", "%20");
+			}
+
+			download.src(bundleURLString);
+		}
+		catch (MalformedURLException malformedURLException) {
+			throw new GradleException(
+				malformedURLException.getMessage(), malformedURLException);
+		}
 	}
 
 	private void _configureNpmProject(Project project) {

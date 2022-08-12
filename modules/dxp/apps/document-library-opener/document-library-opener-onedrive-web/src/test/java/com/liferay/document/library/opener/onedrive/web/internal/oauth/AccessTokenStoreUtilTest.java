@@ -29,7 +29,7 @@ import org.junit.Test;
 /**
  * @author Cristina González
  */
-public class AccessTokenStoreTest {
+public class AccessTokenStoreUtilTest {
 
 	@ClassRule
 	@Rule
@@ -38,52 +38,46 @@ public class AccessTokenStoreTest {
 
 	@Test
 	public void testAdd() {
-		AccessTokenStore accessTokenStore = new AccessTokenStore();
-
 		AccessToken initialAccessToken = new AccessToken(
 			new OAuth2AccessToken(RandomTestUtil.randomString()));
 
 		long companyId = RandomTestUtil.randomInt();
 		long userId = RandomTestUtil.randomInt();
 
-		accessTokenStore.add(companyId, userId, initialAccessToken);
+		AccessTokenStoreUtil.add(companyId, userId, initialAccessToken);
 
 		Optional<AccessToken> accessTokenOptional =
-			accessTokenStore.getAccessTokenOptional(companyId, userId);
+			AccessTokenStoreUtil.getAccessTokenOptional(companyId, userId);
 
 		AccessToken actualAccessToken = accessTokenOptional.get();
 
-		Assert.assertEquals(
+		Assert.assertArrayEquals(
 			initialAccessToken.getAccessToken(),
 			actualAccessToken.getAccessToken());
 	}
 
 	@Test
 	public void testDelete() {
-		AccessTokenStore accessTokenStore = new AccessTokenStore();
-
 		AccessToken initialAccessToken = new AccessToken(
 			new OAuth2AccessToken(RandomTestUtil.randomString()));
 
 		long companyId = RandomTestUtil.randomInt();
 		long userId = RandomTestUtil.randomInt();
 
-		accessTokenStore.add(companyId, userId, initialAccessToken);
+		AccessTokenStoreUtil.add(companyId, userId, initialAccessToken);
 
-		accessTokenStore.delete(companyId, userId);
+		AccessTokenStoreUtil.delete(companyId, userId);
 
 		Optional<AccessToken> accessTokenOptional =
-			accessTokenStore.getAccessTokenOptional(companyId, userId);
+			AccessTokenStoreUtil.getAccessTokenOptional(companyId, userId);
 
 		Assert.assertTrue(!accessTokenOptional.isPresent());
 	}
 
 	@Test
 	public void testGetWithEmptyAccessTokenStore() {
-		AccessTokenStore accessTokenStore = new AccessTokenStore();
-
 		Optional<AccessToken> accessTokenOptional =
-			accessTokenStore.getAccessTokenOptional(
+			AccessTokenStoreUtil.getAccessTokenOptional(
 				RandomTestUtil.randomInt(), RandomTestUtil.randomInt());
 
 		Assert.assertTrue(!accessTokenOptional.isPresent());

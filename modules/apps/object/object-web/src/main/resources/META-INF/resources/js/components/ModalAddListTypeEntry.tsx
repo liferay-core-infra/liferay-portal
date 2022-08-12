@@ -44,6 +44,20 @@ const ModalAddListTypeEntry: React.FC<IProps> = ({
 		name_i18n: {[defaultLanguageId]: ''},
 	};
 
+	const handleLocaleChange = (value: {label: Locale; symbol: string}) => {
+		setSelectedLocale(value);
+
+		const localeDropdown = document.querySelector('.dropdown-menu.show');
+
+		localeDropdown?.classList.add('hide');
+
+		const inputLocale = document.querySelector('#locale');
+
+		if (inputLocale instanceof HTMLElement) {
+			inputLocale.focus();
+		}
+	};
+
 	const onSubmit = async ({key, name_i18n}: TInitialValues) => {
 		const response = await fetch(apiURL, {
 			body: JSON.stringify({
@@ -109,7 +123,8 @@ const ModalAddListTypeEntry: React.FC<IProps> = ({
 						label={Liferay.Language.get('name')}
 						onChange={(value, locale) => {
 							setValues({name_i18n: value});
-							setSelectedLocale(locale);
+
+							handleLocaleChange(locale);
 						}}
 						required
 						translations={values.name_i18n}

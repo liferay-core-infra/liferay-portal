@@ -130,19 +130,25 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 		Map<String, String[]> parameterMap = actionRequest.getParameterMap();
 
 		for (int i = 0; parameterMap.containsKey("mimeType_" + i); i++) {
-			String[] mimeType = parameterMap.get("mimeType_" + i);
+			String mimeType = null;
 
-			if ((mimeType.length == 0) || Validator.isNull(mimeType[0])) {
-				continue;
+			String[] mimeTypes = parameterMap.get("mimeType_" + i);
+
+			if ((mimeTypes.length != 0) && Validator.isNotNull(mimeTypes[0])) {
+				mimeType = mimeTypes[0];
 			}
 
-			String[] size = parameterMap.get("size_" + i);
+			Long size = null;
 
-			if ((size.length == 0) || Validator.isNull(size[0])) {
-				continue;
+			String[] sizes = parameterMap.get("size_" + i);
+
+			if ((sizes.length != 0) && Validator.isNotNull(sizes[0])) {
+				size = GetterUtil.getLong(sizes[0]);
 			}
 
-			mimeTypeSizeLimits.put(mimeType[0], GetterUtil.getLong(size[0]));
+			if ((mimeType != null) || (size != null)) {
+				mimeTypeSizeLimits.put(mimeType, size);
+			}
 		}
 
 		_dlSizeLimitConfigurationProvider.updateGroupSizeLimit(

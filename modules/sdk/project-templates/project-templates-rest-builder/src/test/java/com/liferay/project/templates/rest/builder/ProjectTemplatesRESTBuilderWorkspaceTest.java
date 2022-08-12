@@ -56,15 +56,33 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 	public static Iterable<Object[]> data() {
 		return Arrays.asList(
 			new Object[][] {
-				{"guestbook", "com.liferay.docs.guestbook", "7.3.7"},
-				{"guestbook", "com.liferay.docs.guestbook", "7.4.3.16"},
-				{"backend-integration", "com.liferay.docs.guestbook", "7.3.7"},
+				{"guestbook", "com.liferay.docs.guestbook", "7.1.10.7", "dxp"},
+				{"guestbook", "com.liferay.docs.guestbook", "7.2.10.7", "dxp"},
+				{"guestbook", "com.liferay.docs.guestbook", "7.3.7", "portal"},
+				{
+					"guestbook", "com.liferay.docs.guestbook", "7.4.3.16",
+					"portal"
+				},
 				{
 					"backend-integration", "com.liferay.docs.guestbook",
-					"7.4.3.16"
+					"7.1.10.7", "dxp"
 				},
-				{"sample", "com.test.sample", "7.3.7"},
-				{"sample", "com.test.sample", "7.4.3.16"}
+				{
+					"backend-integration", "com.liferay.docs.guestbook",
+					"7.2.10.7", "dxp"
+				},
+				{
+					"backend-integration", "com.liferay.docs.guestbook",
+					"7.3.7", "portal"
+				},
+				{
+					"backend-integration", "com.liferay.docs.guestbook",
+					"7.4.3.36", "portal"
+				},
+				{"sample", "com.test.sample", "7.1.10.7", "dxp"},
+				{"sample", "com.test.sample", "7.2.10.7", "dxp"},
+				{"sample", "com.test.sample", "7.3.7", "portal"},
+				{"sample", "com.test.sample", "7.4.3.16", "portal"}
 			});
 	}
 
@@ -85,11 +103,13 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 	}
 
 	public ProjectTemplatesRESTBuilderWorkspaceTest(
-		String name, String packageName, String liferayVersion) {
+		String name, String packageName, String liferayVersion,
+		String product) {
 
 		_name = name;
 		_packageName = packageName;
 		_liferayVersion = liferayVersion;
+		_product = product;
 	}
 
 	@Test
@@ -100,9 +120,23 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 			temporaryFolder, "gradle", "gradleWS", _liferayVersion,
 			mavenExecutor);
 
-		if (_liferayVersion.startsWith("7.2")) {
+		if (_liferayVersion.startsWith("7.0")) {
 			writeGradlePropertiesInWorkspace(
-				gradleWorkspaceDir, "liferay.workspace.product=portal-7.2-ga2");
+				gradleWorkspaceDir, "liferay.workspace.product=portal-7.0-ga7");
+		}
+		else if (_liferayVersion.startsWith("7.1")) {
+			writeGradlePropertiesInWorkspace(
+				gradleWorkspaceDir, "liferay.workspace.product=dxp-7.1-sp7");
+			updateGradlePropertiesInWorkspace(
+				gradleWorkspaceDir, "liferay.workspace.target.platform.version",
+				"7.1.10.7");
+		}
+		else if (_liferayVersion.startsWith("7.2")) {
+			writeGradlePropertiesInWorkspace(
+				gradleWorkspaceDir, "liferay.workspace.product=dxp-7.2-sp7");
+			updateGradlePropertiesInWorkspace(
+				gradleWorkspaceDir, "liferay.workspace.target.platform.version",
+				"7.2.10.7");
 		}
 		else if (_liferayVersion.startsWith("7.3")) {
 			writeGradlePropertiesInWorkspace(
@@ -126,7 +160,8 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 
 		File gradleProjectDir = buildTemplateWithGradle(
 			gradleWorkspaceModulesDir, template, _name, "--package-name",
-			_packageName, "--liferay-version", _liferayVersion);
+			_packageName, "--liferay-version", _liferayVersion, "--product",
+			_product);
 
 		if (_name.contains("sample")) {
 			testContains(
@@ -134,16 +169,85 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 				"compile project(\":modules:nested:path:sample:sample-api\")");
 		}
 
-		testContains(
-			gradleProjectDir, _name + "-api/build.gradle",
-			DEPENDENCY_RELEASE_PORTAL_API);
-		testContains(
-			gradleProjectDir, _name + "-impl/build.gradle",
-			DEPENDENCY_RELEASE_PORTAL_API);
+		if (_liferayVersion.startsWith("7.1")) {
+			testContains(
+				gradleProjectDir, _name + "-api/build.gradle",
+				DEPENDENCY_RELEASE_DXP_API);
+			testContains(
+				gradleProjectDir, _name + "-impl/build.gradle",
+				DEPENDENCY_RELEASE_DXP_API);
+
+			testNotContains(
+				gradleProjectDir, _name + "-api/build.gradle",
+				"compileOnly group: \"org.apache.felix\", name: \"org.apache." +
+					"felix.http.servlet-api\", version: \"1.1.2\"");
+			testNotContains(
+				gradleProjectDir, _name + "-impl/build.gradle",
+				"compileOnly group: \"org.apache.felix\", name: \"org.apache." +
+					"felix.http.servlet-api\", version: \"1.1.2\"");
+		}
+		else if (_liferayVersion.startsWith("7.2")) {
+			testContains(
+				gradleProjectDir, _name + "-api/build.gradle",
+				DEPENDENCY_RELEASE_DXP_API);
+			testContains(
+				gradleProjectDir, _name + "-impl/build.gradle",
+				DEPENDENCY_RELEASE_DXP_API);
+
+			testNotContains(
+				gradleProjectDir, _name + "-api/build.gradle",
+				"compileOnly group: \"javax.servlet\", name: " +
+					"\"javax.servlet-api\"");
+			testNotContains(
+				gradleProjectDir, _name + "-impl/build.gradle",
+				"compileOnly group: \"javax.servlet\", name: " +
+					"\"javax.servlet-api\"");
+		}
+		else {
+			testContains(
+				gradleProjectDir, _name + "-api/build.gradle",
+				DEPENDENCY_RELEASE_PORTAL_API);
+			testContains(
+				gradleProjectDir, _name + "-impl/build.gradle",
+				DEPENDENCY_RELEASE_PORTAL_API);
+		}
 
 		File mavenWorkspaceDir = buildWorkspace(
 			temporaryFolder, "maven", "mavenWS", _liferayVersion,
 			mavenExecutor);
+
+		if (_liferayVersion.startsWith("7.1")) {
+			updateMavenPomProperties(
+				mavenWorkspaceDir, "liferay.bom.version", "liferay.bom.version",
+				"7.1.10.7");
+			updateMavenPomElementText(
+				mavenWorkspaceDir, "//artifactId[text()='release.portal.bom']",
+				"release.dxp.bom");
+			updateMavenPomElementText(
+				mavenWorkspaceDir,
+				"//artifactId[text()='release.portal.bom.compile.only']",
+				"release.dxp.bom.compile.only");
+			updateMavenPomElementText(
+				mavenWorkspaceDir,
+				"//artifactId[text()='release.portal.bom.third.party']",
+				"release.dxp.bom.third.party");
+		}
+		else if (_liferayVersion.startsWith("7.2")) {
+			updateMavenPomProperties(
+				mavenWorkspaceDir, "liferay.bom.version", "liferay.bom.version",
+				"7.2.10.7");
+			updateMavenPomElementText(
+				mavenWorkspaceDir, "//artifactId[text()='release.portal.bom']",
+				"release.dxp.bom");
+			updateMavenPomElementText(
+				mavenWorkspaceDir,
+				"//artifactId[text()='release.portal.bom.compile.only']",
+				"release.dxp.bom.compile.only");
+			updateMavenPomElementText(
+				mavenWorkspaceDir,
+				"//artifactId[text()='release.portal.bom.third.party']",
+				"release.dxp.bom.third.party");
+		}
 
 		File mavenModulesDir = new File(mavenWorkspaceDir, "modules");
 
@@ -157,7 +261,21 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 		File mavenProjectDir = buildTemplateWithMaven(
 			mavenModulesDir, mavenModulesDir, template, _name, "com.test",
 			mavenExecutor, "-Dpackage=" + _packageName,
-			"-DliferayVersion=" + _liferayVersion, "-DbuildType=maven");
+			"-DliferayVersion=" + _liferayVersion, "-DbuildType=maven",
+			"-Dproduct=" + _product);
+
+		File projectDir = new File(mavenModulesDir, _name);
+
+		if (_liferayVersion.startsWith("7.1")) {
+			updateMavenPomProperties(
+				projectDir, "liferay.bom.version", "liferay.bom.version",
+				"7.1.10.7");
+		}
+		else if (_liferayVersion.startsWith("7.2")) {
+			updateMavenPomProperties(
+				projectDir, "liferay.bom.version", "liferay.bom.version",
+				"7.2.10.7");
+		}
 
 		if (isBuildProjects()) {
 			String projectPath;
@@ -283,5 +401,6 @@ public class ProjectTemplatesRESTBuilderWorkspaceTest
 	private final String _liferayVersion;
 	private final String _name;
 	private final String _packageName;
+	private final String _product;
 
 }

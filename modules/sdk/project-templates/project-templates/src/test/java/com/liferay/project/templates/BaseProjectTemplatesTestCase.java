@@ -34,6 +34,8 @@ import difflib.Patch;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -128,9 +131,8 @@ public interface BaseProjectTemplatesTestCase {
 		"compileOnly group: \"com.liferay.portal\", name: " +
 			"\"com.liferay.portal.kernel\"";
 
-	public static final String DEPENDENCY_PORTAL_RELEASE_API =
-		"compileOnly group: \"com.liferay.portal\", name: " +
-			"\"release.portal.api\"";
+	public static final String DEPENDENCY_RELEASE_DXP_API =
+		"compileOnly group: \"com.liferay.portal\", name: \"release.dxp.api\"";
 
 	public static final String DEPENDENCY_RELEASE_PORTAL_API =
 		"compileOnly group: \"com.liferay.portal\", name: " +
@@ -2044,6 +2046,75 @@ public interface BaseProjectTemplatesTestCase {
 		}
 
 		Assert.assertFalse(message.toString() + differences, realChange);
+	}
+
+	public default File updateGradlePropertiesInWorkspace(
+			File workspaceDir, String propertyKey, String propertyValue)
+		throws IOException {
+
+		File gradlePropertiesFile = new File(workspaceDir, "gradle.properties");
+
+		Properties gradleProperties = new Properties();
+
+		gradleProperties.load(new FileInputStream(gradlePropertiesFile));
+
+		if (gradleProperties.get(propertyKey) != null) {
+			gradleProperties.setProperty(propertyKey, propertyValue);
+
+			try (FileOutputStream fileOutputStream = new FileOutputStream(
+					gradlePropertiesFile)) {
+
+				gradleProperties.store(fileOutputStream, null);
+			}
+		}
+		else {
+			gradlePropertiesFile = writeGradlePropertiesInWorkspace(
+				workspaceDir, propertyKey + "=" + propertyValue);
+		}
+
+		return gradlePropertiesFile;
+	}
+
+	public default File updateMavenPomElementText(
+			File projectDir, String expression, String newText)
+		throws Exception {
+
+		File mavenPomFile = new File(projectDir, "pom.xml");
+
+		editXml(
+			mavenPomFile,
+			document -> {
+				try {
+					modifyElementText(document, expression, newText);
+				}
+				catch (XPathExpressionException xPathExpressionException) {
+					throw new RuntimeException(xPathExpressionException);
+				}
+			});
+
+		return mavenPomFile;
+	}
+
+	public default File updateMavenPomProperties(
+			File projectDir, String oldElementName, String newElementName,
+			String text)
+		throws Exception {
+
+		File mavenPomFile = new File(projectDir, "pom.xml");
+
+		editXml(
+			mavenPomFile,
+			document -> {
+				try {
+					replaceElementByName(
+						document, oldElementName, newElementName, text);
+				}
+				catch (XPathExpressionException xPathExpressionException) {
+					throw new RuntimeException(xPathExpressionException);
+				}
+			});
+
+		return mavenPomFile;
 	}
 
 	public default File writeGradlePropertiesInWorkspace(

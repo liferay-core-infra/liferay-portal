@@ -46,6 +46,7 @@
 		<orderEntry type="module" module-name="petra-url-pattern-mapper" scope="PROVIDED" />
 		<orderEntry type="module" module-name="petra-xml" scope="PROVIDED" />
 		<orderEntry type="module" module-name="portal-kernel" scope="PROVIDED" />
+		<orderEntry type="module" module-name="portal-portlet-url-builder" scope="PROVIDED" />
 		<orderEntry type="module" module-name="portal-impl" />
 		<orderEntry type="module" module-name="util-java" />
 		<orderEntry type="module" module-name="util-taglib" />

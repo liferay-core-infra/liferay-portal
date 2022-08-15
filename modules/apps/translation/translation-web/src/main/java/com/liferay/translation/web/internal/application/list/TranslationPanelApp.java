@@ -38,20 +38,21 @@ import org.osgi.service.component.annotations.Reference;
 public class TranslationPanelApp extends BasePanelApp {
 
 	@Override
+	public Portlet getPortlet() {
+		return _portlet;
+	}
+
+	@Override
 	public String getPortletId() {
 		return TranslationPortletKeys.TRANSLATION;
 	}
 
-	@Override
-	@Reference(
-		target = "(javax.portlet.name=" + TranslationPortletKeys.TRANSLATION + ")",
-		unbind = "-"
-	)
-	public void setPortlet(Portlet portlet) {
-		super.setPortlet(portlet);
-	}
-
 	@Reference
 	private Language _language;
+
+	@Reference(
+		target = "(javax.portlet.name=" + TranslationPortletKeys.TRANSLATION + ")"
+	)
+	private Portlet _portlet;
 
 }

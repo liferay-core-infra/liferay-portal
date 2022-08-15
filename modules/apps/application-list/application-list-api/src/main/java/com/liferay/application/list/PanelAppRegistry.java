@@ -380,7 +380,12 @@ public class PanelAppRegistry {
 			if (portlet != null) {
 				portlet.setControlPanelEntryCategory(panelCategoryKey);
 
-				panelApp.setPortlet(portlet);
+				if (panelApp instanceof BasePortletPanelApp) {
+					BasePortletPanelApp basePortletPanelApp =
+						(BasePortletPanelApp)panelApp;
+
+					basePortletPanelApp.setPortlet(portlet);
+				}
 			}
 			else if (_log.isDebugEnabled()) {
 				_log.debug("Unable to get portlet " + panelApp.getPortletId());

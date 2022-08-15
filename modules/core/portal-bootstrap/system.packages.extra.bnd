@@ -297,5 +297,6 @@ Provide-Capability:\
 	@lib/com.liferay.petra.sql.dsl.spi.jar,\
 	@lib/com.liferay.petra.string.jar,\
 	@lib/com.liferay.petra.url.pattern.mapper.jar,\
-	@lib/com.liferay.petra.xml.jar
+	@lib/com.liferay.petra.xml.jar,\
+	@lib/com.liferay.portal.portlet.url.builder.jar
 -removeheaders: Private-Package

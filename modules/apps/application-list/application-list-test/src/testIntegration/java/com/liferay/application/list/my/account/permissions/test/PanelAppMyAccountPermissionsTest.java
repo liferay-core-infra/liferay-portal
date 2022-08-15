@@ -14,7 +14,7 @@
 
 package com.liferay.application.list.my.account.permissions.test;
 
-import com.liferay.application.list.BasePanelApp;
+import com.liferay.application.list.BasePortletPanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
@@ -193,7 +193,7 @@ public class PanelAppMyAccountPermissionsTest {
 
 	private String _testPortletId;
 
-	private class TestPanelApp extends BasePanelApp {
+	private class TestPanelApp extends BasePortletPanelApp {
 
 		public TestPanelApp(String portletId) {
 			_portletId = portletId;

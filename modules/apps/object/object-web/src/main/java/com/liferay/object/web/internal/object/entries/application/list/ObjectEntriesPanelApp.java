@@ -14,7 +14,7 @@
 
 package com.liferay.object.web.internal.object.entries.application.list;
 
-import com.liferay.application.list.BasePanelApp;
+import com.liferay.application.list.BasePanelAppExtension;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Marco Leo
  * @author Brian Wing Shun Chan
  */
-public class ObjectEntriesPanelApp extends BasePanelApp {
+public class ObjectEntriesPanelApp extends BasePanelAppExtension {
 
 	public ObjectEntriesPanelApp(ObjectDefinition objectDefinition) {
 		_objectDefinition = objectDefinition;

@@ -14,7 +14,7 @@
 
 package com.liferay.application.list.adapter;
 
-import com.liferay.application.list.BasePanelApp;
+import com.liferay.application.list.BasePanelAppExtension;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Portlet;
@@ -29,7 +29,7 @@ import javax.portlet.PortletConfig;
 /**
  * @author Adolfo Pérez
  */
-public class PortletPanelAppAdapter extends BasePanelApp {
+public class PortletPanelAppAdapter extends BasePanelAppExtension {
 
 	public PortletPanelAppAdapter(String portletId) {
 		_portletId = portletId;

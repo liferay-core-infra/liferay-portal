@@ -14,6 +14,7 @@
 
 package com.liferay.depot.web.internal.application.list;
 
+import com.liferay.application.list.BasePortletPanelApp;
 import com.liferay.application.list.GroupProvider;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.PanelAppRegistry;
@@ -175,7 +176,7 @@ public class DepotPanelAppController {
 
 	}
 
-	private class PanelAppWrapper implements PanelApp {
+	private class PanelAppWrapper extends BasePortletPanelApp {
 
 		@Override
 		public String getKey() {
@@ -239,7 +240,12 @@ public class DepotPanelAppController {
 
 		@Override
 		public void setPortlet(Portlet portlet) {
-			_panelApp.setPortlet(portlet);
+			if (_panelApp instanceof BasePortletPanelApp) {
+				BasePortletPanelApp basePortletPanelApp =
+					(BasePortletPanelApp)_panelApp;
+
+				basePortletPanelApp.setPortlet(portlet);
+			}
 		}
 
 		private PanelAppWrapper(PanelApp panelApp) {

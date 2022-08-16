@@ -1752,9 +1752,6 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_PORTAL_DIR =
 		"module.framework.portal.dir";
 
-	public static final String MODULE_FRAMEWORK_PROPERTIES =
-		"module.framework.properties.";
-
 	public static final String MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES =
 		"module.framework.services.ignored.interfaces";
 

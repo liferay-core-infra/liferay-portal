@@ -335,6 +335,82 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir"
 		},
 		{
+			"module.framework.properties.eclipse.stateSaveDelayInterval",
+			"module.framework.properties.eclipse.stateSaveDelayInterval"
+		},
+		{
+			"module.framework.properties.felix.cm.config.plugins",
+			"module.framework.properties.felix.cm.config.plugins"
+		},
+		{
+			"module.framework.properties.felix.cm.pm",
+			"module.framework.properties.felix.cm.pm"
+		},
+		{
+			"module.framework.properties.gosh.args",
+			"module.framework.properties.gosh.args"
+		},
+		{
+			"module.framework.properties.org.apache.cxf.osgi.http.transport." +
+				"disable",
+			"module.framework.properties.org.apache.cxf.osgi.http.transport." +
+				"disable"
+		},
+		{
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.file.encoding",
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.file.encoding"
+		},
+		{
+			"module.framework.properties.org.apache.felix.eventadmin." +
+				"ThreadPoolSize",
+			"module.framework.properties.org.apache.felix.eventadmin." +
+				"ThreadPoolSize"
+		},
+		{
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.secretsdir",
+			"module.framework.properties.org.apache.felix.configadmin.plugin." +
+				"interpolation.secretsdir"
+		},
+		{
+			"module.framework.properties.org.osgi.framework.bootdelegation",
+			"module.framework.properties.org.osgi.framework.bootdelegation"
+		},
+		{
+			"module.framework.properties.org.osgi.framework.bundle.parent",
+			"module.framework.properties.org.osgi.framework.bundle.parent"
+		},
+		{
+			"module.framework.properties.org.osgi.framework.system." +
+				"capabilities.extra",
+			"module.framework.properties.org.osgi.framework.system." +
+				"capabilities.extra"
+		},
+		{
+			"module.framework.properties.osgi.bundlefile.limit",
+			"module.framework.properties.osgi.bundlefile.limit"
+		},
+		{
+			"module.framework.properties.osgi.compatibility.eagerStart." +
+				"LazyActivation",
+			"module.framework.properties.osgi.compatibility.eagerStart." +
+				"LazyActivation"
+		},
+		{
+			"module.framework.properties.osgi.context.bootdelegation",
+			"module.framework.properties.osgi.context.bootdelegation"
+		},
+		{
+			"module.framework.properties.osgi.module.lock.timeout",
+			"module.framework.properties.osgi.module.lock.timeout"
+		},
+		{
+			"module.framework.properties.spifly.spi.consumer.header.enabled",
+			"module.framework.properties.spifly.spi.consumer.header.enabled"
+		},
+		{
 			"module.framework.system.packages.extra",
 			"module.framework.system.packages.extra"
 		},

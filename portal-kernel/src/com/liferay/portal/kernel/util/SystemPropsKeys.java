@@ -26,4 +26,7 @@ public interface SystemPropsKeys {
 	public static final String MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS =
 		"module.framework.auto.deploy.dirs";
 
+	public static final String MODULE_FRAMEWORK_PROPERTIES =
+		"module.framework.properties.";
+
 }

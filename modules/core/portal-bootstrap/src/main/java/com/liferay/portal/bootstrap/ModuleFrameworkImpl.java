@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.NamedThreadFactory;
 import com.liferay.portal.kernel.util.Props;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -483,10 +482,10 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		// Overrides
 
-		Properties extraProperties = PropsUtil.getProperties(
-			PropsKeys.MODULE_FRAMEWORK_PROPERTIES, true);
+		Map<String, String> extraProperties = SystemProperties.getProperties(
+			SystemPropsKeys.MODULE_FRAMEWORK_PROPERTIES, true);
 
-		String extraCapabilities = extraProperties.getProperty(
+		String extraCapabilities = extraProperties.get(
 			Constants.FRAMEWORK_SYSTEMCAPABILITIES_EXTRA);
 
 		Attributes attributes = _getExtraManifestAttributes();
@@ -499,13 +498,13 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 				",".concat(extraCapabilities));
 		}
 
-		extraProperties.setProperty(
+		extraProperties.put(
 			Constants.FRAMEWORK_SYSTEMCAPABILITIES_EXTRA, provideCapability);
 
-		for (Map.Entry<Object, Object> entry : extraProperties.entrySet()) {
-			String key = (String)entry.getKey();
+		for (Map.Entry<String, String> entry : extraProperties.entrySet()) {
+			String key = entry.getKey();
 
-			String value = (String)entry.getValue();
+			String value = entry.getValue();
 
 			// We need to support an empty string and a null value distinctly.
 			// This is due to some different behaviors between OSGi

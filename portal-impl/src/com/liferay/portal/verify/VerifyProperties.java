@@ -335,6 +335,10 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir"
 		},
 		{
+			"module.framework.system.packages.extra",
+			"module.framework.system.packages.extra"
+		},
+		{
 			"module.framework.runtime.start.level",
 			"module.framework.runtime.start.level"
 		},

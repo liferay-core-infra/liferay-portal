@@ -29,6 +29,10 @@ public class DataSourceFactoryUtil {
 		_dataSourceFactory.destroyDataSource(dataSource);
 	}
 
+	public static DataSource getDataSource(ClassLoader extendeeClassLoader) {
+		return _dataSourceFactory.getDataSource(extendeeClassLoader);
+	}
+
 	public static DataSourceFactory getDataSourceFactory() {
 		return _dataSourceFactory;
 	}

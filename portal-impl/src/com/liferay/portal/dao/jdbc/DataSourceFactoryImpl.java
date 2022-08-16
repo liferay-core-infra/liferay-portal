@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactory;
+import com.liferay.portal.kernel.dao.jdbc.DataSourceProvider;
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jndi.JNDIUtil;
@@ -32,6 +33,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
+import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.JavaDetector;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -60,9 +62,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -100,6 +104,22 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 			closeable.close();
 		}
+	}
+
+	@Override
+	public DataSource getDataSource(ClassLoader extendeeClassLoader) {
+		ServiceLoader<DataSourceProvider> serviceLoader = ServiceLoader.load(
+			DataSourceProvider.class, extendeeClassLoader);
+
+		Iterator<DataSourceProvider> iterator = serviceLoader.iterator();
+
+		if (iterator.hasNext()) {
+			DataSourceProvider dataSourceProvider = iterator.next();
+
+			return dataSourceProvider.getDataSource();
+		}
+
+		return InfrastructureUtil.getDataSource();
 	}
 
 	@Override

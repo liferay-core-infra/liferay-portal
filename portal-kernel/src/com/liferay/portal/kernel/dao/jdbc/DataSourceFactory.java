@@ -25,6 +25,8 @@ public interface DataSourceFactory {
 
 	public void destroyDataSource(DataSource dataSource) throws Exception;
 
+	public DataSource getDataSource(ClassLoader extendeeClassLoader);
+
 	public DataSource initDataSource(Properties properties) throws Exception;
 
 	public DataSource initDataSource(

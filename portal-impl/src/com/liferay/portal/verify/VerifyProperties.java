@@ -319,6 +319,10 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir",
 			"module.framework.marketplace.dir"
 		},
+		{
+			"module.framework.system.packages.extra",
+			"module.framework.system.packages.extra"
+		},
 		{"resource.repositories.root", "resource.repositories.root"}
 	};
 

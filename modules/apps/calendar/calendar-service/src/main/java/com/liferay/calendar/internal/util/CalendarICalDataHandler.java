@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.model.impl.UserImpl;
 
 import java.net.URI;
 
@@ -699,7 +700,11 @@ public class CalendarICalDataHandler implements CalendarDataHandler {
 
 		// Title
 
-		User user = UserLocalServiceUtil.getUser(calendarBooking.getUserId());
+		User user = UserLocalServiceUtil.fetchUser(calendarBooking.getUserId());
+
+		if (user == null) {
+			user = new UserImpl();
+		}
 
 		Summary summary = new Summary(
 			calendarBooking.getTitle(user.getLocale()));

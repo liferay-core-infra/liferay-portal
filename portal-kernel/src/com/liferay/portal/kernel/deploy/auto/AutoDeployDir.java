@@ -24,9 +24,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,13 +64,13 @@ public class AutoDeployDir {
 			}
 		}
 
-		String[] dirNames = PropsUtil.getArray(
-			PropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
+		String[] dirNames = SystemProperties.getArray(
+			SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
 
 		if (ArrayUtil.isEmpty(dirNames)) {
 			throw new AutoDeployException(
 				"The portal property \"" +
-					PropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS +
+					SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS +
 						"\" is not set");
 		}
 

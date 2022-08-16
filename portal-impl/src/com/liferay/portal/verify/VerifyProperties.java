@@ -310,6 +310,10 @@ public class VerifyProperties {
 			"http.header.secure.x.frame.options.255"
 		},
 		{"liferay.home", "liferay.home"},
+		{
+			"module.framework.auto.deploy.dirs",
+			"module.framework.auto.deploy.dirs"
+		},
 		{"resource.repositories.root", "resource.repositories.root"}
 	};
 

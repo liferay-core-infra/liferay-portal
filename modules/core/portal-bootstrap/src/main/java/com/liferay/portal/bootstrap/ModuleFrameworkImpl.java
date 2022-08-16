@@ -887,8 +887,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		FileUtil.mkdirs(
 			SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_BASE_DIR) +
 				"/static");
-		FileUtil.mkdirs(
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR + "/override");
+
+		String marketplaceDir = SystemProperties.get(
+			SystemPropsKeys.MODULE_FRAMEWORK_MARKETPLACE_DIR);
+
+		FileUtil.mkdirs(marketplaceDir + "/override");
 	}
 
 	private void _installBundlesFromDir(
@@ -1418,7 +1421,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			}
 		}
 
-		String deployDir = PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR;
+		String deployDir = SystemProperties.get(
+			SystemPropsKeys.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 
 		for (String staticFileName :
 				StaticLPKGResolver.getStaticLPKGFileNames()) {

@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ThrowableCollector;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
@@ -413,7 +415,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 	private Path _getDeploymentDirPath() throws Exception {
 		File deploymentDir = new File(
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
+			SystemProperties.get(
+				SystemPropsKeys.MODULE_FRAMEWORK_MARKETPLACE_DIR));
 
 		deploymentDir = deploymentDir.getCanonicalFile();
 

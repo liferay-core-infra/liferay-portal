@@ -1755,9 +1755,6 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_FILE_INSTALL_SUBDIR_MODE =
 		"module.framework.file.install.subdir.mode";
 
-	public static final String MODULE_FRAMEWORK_MARKETPLACE_DIR =
-		"module.framework.marketplace.dir";
-
 	public static final String MODULE_FRAMEWORK_MODULES_DIR =
 		"module.framework.modules.dir";
 

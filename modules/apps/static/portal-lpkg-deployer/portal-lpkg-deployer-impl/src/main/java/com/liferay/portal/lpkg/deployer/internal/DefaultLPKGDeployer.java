@@ -339,25 +339,6 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 			return;
 		}
 
-		List<File> explodedLPKGFiles = new ArrayList<>();
-
-		Iterator<File> iterator = lpkgFiles.iterator();
-
-		while (iterator.hasNext()) {
-			File lpkgFile = iterator.next();
-
-			List<File> innerLPKGFiles = ContainerLPKGUtil.deploy(
-				lpkgFile, bundleContext, null);
-
-			if (innerLPKGFiles != null) {
-				iterator.remove();
-
-				explodedLPKGFiles.addAll(innerLPKGFiles);
-			}
-		}
-
-		lpkgFiles.addAll(explodedLPKGFiles);
-
 		_installLPKGs(bundleContext, lpkgFiles);
 
 		_installOverrideJars(bundleContext, jarFiles);

@@ -14,8 +14,6 @@
 
 package com.liferay.portal.lpkg.deployer.internal;
 
-import com.liferay.osgi.util.bundle.BundleStartLevelUtil;
-import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.file.install.FileInstaller;
@@ -25,7 +23,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.InputStream;
@@ -34,7 +31,6 @@ import java.net.URL;
 
 import java.util.Collections;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -81,22 +77,7 @@ public class LPKGArtifactInstaller implements FileInstaller {
 			return null;
 		}
 
-		Properties properties = new Properties();
-
-		List<File> lpkgFiles = ContainerLPKGUtil.deploy(
-			file, _bundleContext, properties);
-
-		if (lpkgFiles == null) {
-			_install(file, properties);
-
-			return null;
-		}
-
-		try (SafeCloseable safeCloseable =
-				LPKGBatchInstallThreadLocal.setBatchInstallInProcess(true)) {
-
-			_batchInstall(lpkgFiles);
-		}
+		_install(file, new Properties());
 
 		return null;
 	}
@@ -114,71 +95,6 @@ public class LPKGArtifactInstaller implements FileInstaller {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
-	}
-
-	private void _batchInstall(List<File> lpkgFiles) throws Exception {
-		Map<Bundle, List<Bundle>> lpkgBundles = new HashMap<>();
-
-		for (File file : lpkgFiles) {
-			Properties properties = new Properties();
-
-			try (ZipFile zipFile = new ZipFile(file)) {
-				ZipEntry zipEntry = zipFile.getEntry(
-					"liferay-marketplace.properties");
-
-				if (zipEntry != null) {
-					try (InputStream inputStream = zipFile.getInputStream(
-							zipEntry)) {
-
-						properties.load(inputStream);
-					}
-				}
-			}
-
-			List<Bundle> bundles = _install(file, properties);
-
-			if (!bundles.isEmpty()) {
-				lpkgBundles.put(bundles.remove(0), bundles);
-			}
-		}
-
-		for (Map.Entry<Bundle, List<Bundle>> entry : lpkgBundles.entrySet()) {
-			List<Bundle> bundles = entry.getValue();
-
-			for (Bundle bundle : bundles) {
-				Dictionary<String, String> headers = bundle.getHeaders(
-					StringPool.BLANK);
-
-				String header = headers.get("Web-ContextPath");
-
-				try {
-					if (header == null) {
-						BundleStartLevelUtil.setStartLevelAndStart(
-							bundle,
-							PropsValues.
-								MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL,
-							_bundleContext);
-					}
-					else {
-						BundleStartLevelUtil.setStartLevelAndStart(
-							bundle,
-							PropsValues.MODULE_FRAMEWORK_WEB_START_LEVEL,
-							_bundleContext);
-					}
-				}
-				catch (BundleException bundleException) {
-					_log.error(
-						"Rollback bundle installation for " + bundles,
-						bundleException);
-
-					Bundle lpkgBundle = entry.getKey();
-
-					lpkgBundle.uninstall();
-
-					break;
-				}
-			}
-		}
 	}
 
 	private List<Bundle> _install(File file, Properties properties)

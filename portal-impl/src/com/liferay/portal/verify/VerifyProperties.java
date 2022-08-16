@@ -313,6 +313,7 @@ public class VerifyProperties {
 			"module.framework.auto.deploy.dirs",
 			"module.framework.auto.deploy.dirs"
 		},
+		{"module.framework.base.dir", "module.framework.base.dir"},
 		{
 			"module.framework.beginning.start.level",
 			"module.framework.beginning.start.level"

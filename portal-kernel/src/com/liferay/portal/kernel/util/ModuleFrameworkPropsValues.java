@@ -23,6 +23,9 @@ public class ModuleFrameworkPropsValues {
 		SystemProperties.getArray(
 			SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
 
+	public static final String MODULE_FRAMEWORK_BASE_DIR = SystemProperties.get(
+		"module.framework.base.dir");
+
 	public static final int MODULE_FRAMEWORK_BEGINNING_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get("module.framework.beginning.start.level"));

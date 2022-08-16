@@ -479,7 +479,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		properties.put(
 			FrameworkPropsKeys.OSGI_INSTALL_AREA,
-			PropsValues.MODULE_FRAMEWORK_BASE_DIR);
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_BASE_DIR);
 
 		// Overrides
 
@@ -666,7 +666,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 								StringBundler.concat(
 									zipFile.getName(), StringPool.COLON,
 									zipEntry, " is overridden by ",
-									PropsValues.MODULE_FRAMEWORK_BASE_DIR,
+									ModuleFrameworkPropsValues.
+										MODULE_FRAMEWORK_BASE_DIR,
 									"/static/", fileName));
 						}
 
@@ -882,7 +883,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			FileUtil.mkdirs(dirName);
 		}
 
-		FileUtil.mkdirs(PropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static");
+		FileUtil.mkdirs(
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static");
 		FileUtil.mkdirs(
 			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR + "/override");
 	}
@@ -1304,7 +1306,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		final List<Path> jarPaths = new ArrayList<>();
 
 		Files.walkFileTree(
-			Paths.get(PropsValues.MODULE_FRAMEWORK_BASE_DIR, "static"),
+			Paths.get(
+				ModuleFrameworkPropsValues.MODULE_FRAMEWORK_BASE_DIR, "static"),
 			new SimpleFileVisitor<Path>() {
 
 				@Override
@@ -1750,7 +1753,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	@SuppressWarnings("deprecation")
 	private void _validateModuleFrameworkBaseDirForEquinox() throws Exception {
-		File baseDir = new File(PropsValues.MODULE_FRAMEWORK_BASE_DIR);
+		File baseDir = new File(
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_BASE_DIR);
 
 		baseDir = baseDir.getAbsoluteFile();
 

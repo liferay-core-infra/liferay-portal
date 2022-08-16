@@ -886,7 +886,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		FileUtil.mkdirs(
 			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_BASE_DIR + "/static");
 		FileUtil.mkdirs(
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR + "/override");
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR +
+				"/override");
 	}
 
 	private void _installBundlesFromDir(
@@ -1419,12 +1420,12 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			}
 		}
 
-		String deployDir = PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR;
-
 		for (String staticFileName :
 				StaticLPKGResolver.getStaticLPKGFileNames()) {
 
-			File file = new File(deployDir + StringPool.SLASH + staticFileName);
+			File file = new File(
+				ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR +
+					StringPool.SLASH + staticFileName);
 
 			file = file.getCanonicalFile();
 
@@ -1438,7 +1439,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		Set<String> overrideLPKGFileNames = new HashSet<>();
 
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-				Paths.get(deployDir, "override"))) {
+				Paths.get(
+					ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR,
+					"override"))) {
 
 			for (Path path : directoryStream) {
 				String fileName = String.valueOf(path.getFileName());

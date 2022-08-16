@@ -43,6 +43,9 @@ public class ModuleFrameworkPropsValues {
 	public static final String MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING =
 		SystemProperties.get("module.framework.file.install.config.encoding");
 
+	public static final String MODULE_FRAMEWORK_MARKETPLACE_DIR =
+		SystemProperties.get("module.framework.marketplace.dir");
+
 	public static final int MODULE_FRAMEWORK_RUNTIME_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get("module.framework.runtime.start.level"));

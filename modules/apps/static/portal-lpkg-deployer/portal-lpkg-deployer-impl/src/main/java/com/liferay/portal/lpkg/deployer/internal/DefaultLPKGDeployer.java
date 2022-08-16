@@ -415,7 +415,7 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 	private Path _getDeploymentDirPath() throws Exception {
 		File deploymentDir = new File(
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 
 		deploymentDir = deploymentDir.getCanonicalFile();
 

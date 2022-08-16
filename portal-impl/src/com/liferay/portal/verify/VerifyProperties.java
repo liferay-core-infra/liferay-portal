@@ -331,6 +331,10 @@ public class VerifyProperties {
 			"module.framework.concurrent.startup.enabled"
 		},
 		{
+			"module.framework.marketplace.dir",
+			"module.framework.marketplace.dir"
+		},
+		{
 			"module.framework.runtime.start.level",
 			"module.framework.runtime.start.level"
 		},

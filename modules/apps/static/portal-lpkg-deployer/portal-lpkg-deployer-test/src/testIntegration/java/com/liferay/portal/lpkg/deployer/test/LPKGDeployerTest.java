@@ -17,11 +17,11 @@ package com.liferay.portal.lpkg.deployer.test;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.lpkg.StaticLPKGResolver;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class LPKGDeployerTest {
 		BundleContext bundleContext = testBundle.getBundleContext();
 
 		final String lpkgDeployerDirString =
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR;
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR;
 
 		Assert.assertNotNull(
 			"The property \"module.framework.marketplace.dir\" is null",

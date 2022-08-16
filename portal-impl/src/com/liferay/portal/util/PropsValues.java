@@ -1423,9 +1423,6 @@ public class PropsValues {
 	public static final String MODULE_FRAMEWORK_FILE_INSTALL_SUBDIR_MODE =
 		PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_FILE_INSTALL_SUBDIR_MODE);
 
-	public static final String MODULE_FRAMEWORK_MARKETPLACE_DIR = PropsUtil.get(
-		PropsKeys.MODULE_FRAMEWORK_MARKETPLACE_DIR);
-
 	public static final String MODULE_FRAMEWORK_MODULES_DIR = PropsUtil.get(
 		PropsKeys.MODULE_FRAMEWORK_MODULES_DIR);
 

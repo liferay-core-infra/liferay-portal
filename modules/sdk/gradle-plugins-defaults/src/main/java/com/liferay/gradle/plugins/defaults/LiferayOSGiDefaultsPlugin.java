@@ -438,8 +438,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		_addTaskCopyLibs(project);
 
-		Copy deployConfigsTask = _addTaskDeployConfigs(
-			project, liferayExtension);
+		Copy deployConfigsTask = _addTaskDeployConfigs(project);
 
 		if (deployToAppServerLibs) {
 			_addTaskAlias(
@@ -950,9 +949,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		return copy;
 	}
 
-	private Copy _addTaskDeployConfigs(
-		Project project, LiferayExtension liferayExtension) {
-
+	private Copy _addTaskDeployConfigs(Project project) {
 		Copy copy = GradleUtil.addTask(
 			project, DEPLOY_CONFIGS_TASK_NAME, Copy.class);
 

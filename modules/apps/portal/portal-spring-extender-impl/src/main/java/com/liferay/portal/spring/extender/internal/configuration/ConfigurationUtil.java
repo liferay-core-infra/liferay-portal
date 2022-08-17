@@ -14,21 +14,12 @@
 
 package com.liferay.portal.spring.extender.internal.configuration;
 
-import com.liferay.portal.kernel.configuration.Configuration;
-import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
-
 import java.net.URL;
 
 /**
  * @author Preston Crary
  */
 public class ConfigurationUtil {
-
-	public static Configuration getConfiguration(
-		ClassLoader classLoader, String name) {
-
-		return ConfigurationFactoryUtil.getConfiguration(classLoader, name);
-	}
 
 	public static boolean hasConfiguration(
 		ClassLoader classLoader, String name) {

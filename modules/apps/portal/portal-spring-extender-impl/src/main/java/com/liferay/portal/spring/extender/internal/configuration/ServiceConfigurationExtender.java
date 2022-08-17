@@ -17,6 +17,7 @@ package com.liferay.portal.spring.extender.internal.configuration;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
@@ -67,8 +68,8 @@ public class ServiceConfigurationExtender
 			return null;
 		}
 
-		Configuration serviceConfiguration = ConfigurationUtil.getConfiguration(
-			classLoader, "service");
+		Configuration serviceConfiguration =
+			ConfigurationFactoryUtil.getConfiguration(classLoader, "service");
 
 		String requireSchemaVersion = headers.get(
 			"Liferay-Require-SchemaVersion");

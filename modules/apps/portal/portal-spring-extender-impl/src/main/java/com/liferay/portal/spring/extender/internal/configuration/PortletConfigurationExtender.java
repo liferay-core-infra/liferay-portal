@@ -15,6 +15,7 @@
 package com.liferay.portal.spring.extender.internal.configuration;
 
 import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActions;
@@ -60,8 +61,8 @@ public class PortletConfigurationExtender
 			return null;
 		}
 
-		Configuration portletConfiguration = ConfigurationUtil.getConfiguration(
-			classLoader, "portlet");
+		Configuration portletConfiguration =
+			ConfigurationFactoryUtil.getConfiguration(classLoader, "portlet");
 
 		PortletConfigurationExtension portletConfigurationExtension =
 			new PortletConfigurationExtension(

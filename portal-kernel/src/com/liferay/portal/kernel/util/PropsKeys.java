@@ -1743,9 +1743,6 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_FILE_INSTALL_SUBDIR_MODE =
 		"module.framework.file.install.subdir.mode";
 
-	public static final String MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES =
-		"module.framework.services.ignored.interfaces";
-
 	public static final String MODULE_FRAMEWORK_STATIC_JARS =
 		"module.framework.static.jars";
 

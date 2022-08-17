@@ -413,6 +413,10 @@ public class VerifyProperties {
 			"module.framework.properties.spifly.spi.consumer.header.enabled",
 			"module.framework.properties.spifly.spi.consumer.header.enabled"
 		},
+		{
+			"module.framework.services.ignored.interfaces",
+			"module.framework.services.ignored.interfaces"
+		},
 		{"module.framework.state.dir", "module.framework.state.dir"},
 		{
 			"module.framework.system.packages.extra",

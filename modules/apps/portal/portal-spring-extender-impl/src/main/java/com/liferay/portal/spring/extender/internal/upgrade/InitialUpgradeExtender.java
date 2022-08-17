@@ -137,10 +137,13 @@ public class InitialUpgradeExtender
 
 			BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
-			Configuration configuration = ConfigurationUtil.getConfiguration(
-				bundleWiring.getClassLoader(), "service");
+			if (ConfigurationUtil.hasConfiguration(
+					bundleWiring.getClassLoader(), "service")) {
 
-			if (configuration != null) {
+				Configuration configuration =
+					ConfigurationUtil.getConfiguration(
+						bundleWiring.getClassLoader(), "service");
+
 				String buildNumber = configuration.get("build.number");
 
 				if (buildNumber != null) {

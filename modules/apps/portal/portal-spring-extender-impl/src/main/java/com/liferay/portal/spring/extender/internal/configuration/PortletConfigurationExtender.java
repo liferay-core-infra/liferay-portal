@@ -56,12 +56,12 @@ public class PortletConfigurationExtender
 
 		ClassLoader classLoader = bundleWiring.getClassLoader();
 
-		Configuration portletConfiguration = ConfigurationUtil.getConfiguration(
-			classLoader, "portlet");
-
-		if (portletConfiguration == null) {
+		if (!ConfigurationUtil.hasConfiguration(classLoader, "portlet")) {
 			return null;
 		}
+
+		Configuration portletConfiguration = ConfigurationUtil.getConfiguration(
+			classLoader, "portlet");
 
 		PortletConfigurationExtension portletConfigurationExtension =
 			new PortletConfigurationExtension(

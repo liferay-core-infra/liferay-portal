@@ -63,12 +63,12 @@ public class ServiceConfigurationExtender
 
 		ClassLoader classLoader = bundleWiring.getClassLoader();
 
-		Configuration serviceConfiguration = ConfigurationUtil.getConfiguration(
-			classLoader, "service");
-
-		if (serviceConfiguration == null) {
+		if (!ConfigurationUtil.hasConfiguration(classLoader, "service")) {
 			return null;
 		}
+
+		Configuration serviceConfiguration = ConfigurationUtil.getConfiguration(
+			classLoader, "service");
 
 		String requireSchemaVersion = headers.get(
 			"Liferay-Require-SchemaVersion");

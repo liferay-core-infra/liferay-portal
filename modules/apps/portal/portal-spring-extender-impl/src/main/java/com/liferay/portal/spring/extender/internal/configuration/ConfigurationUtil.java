@@ -27,11 +27,7 @@ public class ConfigurationUtil {
 	public static Configuration getConfiguration(
 		ClassLoader classLoader, String name) {
 
-		if (hasConfiguration(classLoader, name)) {
-			return ConfigurationFactoryUtil.getConfiguration(classLoader, name);
-		}
-
-		return null;
+		return ConfigurationFactoryUtil.getConfiguration(classLoader, name);
 	}
 
 	public static boolean hasConfiguration(

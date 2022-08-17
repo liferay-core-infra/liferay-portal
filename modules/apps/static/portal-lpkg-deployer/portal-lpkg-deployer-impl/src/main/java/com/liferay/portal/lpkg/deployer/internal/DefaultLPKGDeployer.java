@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.lpkg.deployer.LPKGDeployer;
 import com.liferay.portal.lpkg.deployer.LPKGVerifier;
 import com.liferay.portal.lpkg.deployer.LPKGVerifyException;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -482,7 +481,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 		Properties properties = _loadOverrideWarsProperties(bundleContext);
 
-		Path osgiWarDir = Paths.get(PropsValues.MODULE_FRAMEWORK_WAR_DIR);
+		Path osgiWarDir = Paths.get(
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_WAR_DIR);
 
 		boolean modified = false;
 

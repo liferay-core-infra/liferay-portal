@@ -62,6 +62,9 @@ public class ModuleFrameworkPropsValues {
 	public static final String[] MODULE_FRAMEWORK_SYSTEM_PACKAGES_EXTRA =
 		SystemProperties.getArray("module.framework.system.packages.extra");
 
+	public static final String MODULE_FRAMEWORK_WAR_DIR = SystemProperties.get(
+		"module.framework.war.dir");
+
 	public static final int MODULE_FRAMEWORK_WEB_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get("module.framework.web.start.level"));

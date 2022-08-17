@@ -421,6 +421,7 @@ public class VerifyProperties {
 			"module.framework.runtime.start.level",
 			"module.framework.runtime.start.level"
 		},
+		{"module.framework.war.dir", "module.framework.war.dir"},
 		{
 			"module.framework.web.start.level",
 			"module.framework.web.start.level"

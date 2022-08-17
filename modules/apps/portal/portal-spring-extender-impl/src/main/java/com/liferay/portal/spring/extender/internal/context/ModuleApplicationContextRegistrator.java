@@ -18,13 +18,13 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.module.loader.ModuleAggregareClassLoader;
 import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.configurator.ConfigurableApplicationContextConfigurator;
 import com.liferay.portal.spring.extender.internal.bean.ApplicationContextServicePublisherUtil;
-import com.liferay.portal.spring.extender.internal.loader.ModuleAggregareClassLoader;
 
 import java.beans.Introspector;
 

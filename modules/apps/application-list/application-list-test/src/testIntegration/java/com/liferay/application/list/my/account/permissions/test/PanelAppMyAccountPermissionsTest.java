@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -154,9 +155,14 @@ public class PanelAppMyAccountPermissionsTest {
 	}
 
 	private void _registerTestPanelApp(String portletId) {
+		TestPanelApp testPanelApp = new TestPanelApp(portletId);
+
+		testPanelApp.setPortlet(
+			PortletLocalServiceUtil.getPortletById(portletId));
+
 		_serviceRegistrations.add(
 			_bundleContext.registerService(
-				PanelApp.class, new TestPanelApp(portletId),
+				PanelApp.class, testPanelApp,
 				HashMapDictionaryBuilder.put(
 					"panel.category.key", PanelCategoryKeys.USER_MY_ACCOUNT
 				).build()));
@@ -199,10 +205,22 @@ public class PanelAppMyAccountPermissionsTest {
 			_portletId = portletId;
 		}
 
+		@Override
+		public com.liferay.portal.kernel.model.Portlet getPortlet() {
+			return _portlet;
+		}
+
 		public String getPortletId() {
 			return _portletId;
 		}
 
+		public void setPortlet(
+			com.liferay.portal.kernel.model.Portlet portlet) {
+
+			_portlet = portlet;
+		}
+
+		private com.liferay.portal.kernel.model.Portlet _portlet;
 		private final String _portletId;
 
 	}

@@ -57,7 +57,9 @@ public class PortletConfigurationExtender
 
 		ClassLoader classLoader = bundleWiring.getClassLoader();
 
-		if (!ConfigurationUtil.hasConfiguration(classLoader, "portlet")) {
+		if (!ConfigurationFactoryUtil.hasConfiguration(
+				classLoader, "portlet")) {
+
 			return null;
 		}
 

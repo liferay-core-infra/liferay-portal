@@ -64,7 +64,9 @@ public class ServiceConfigurationExtender
 
 		ClassLoader classLoader = bundleWiring.getClassLoader();
 
-		if (!ConfigurationUtil.hasConfiguration(classLoader, "service")) {
+		if (!ConfigurationFactoryUtil.hasConfiguration(
+				classLoader, "service")) {
+
 			return null;
 		}
 

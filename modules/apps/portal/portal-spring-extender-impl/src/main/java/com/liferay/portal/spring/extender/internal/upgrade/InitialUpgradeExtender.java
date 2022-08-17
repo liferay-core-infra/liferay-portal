@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.module.util.BundleUtil;
-import com.liferay.portal.spring.extender.internal.configuration.ConfigurationUtil;
 import com.liferay.portal.spring.extender.internal.upgrade.InitialUpgradeExtender.InitialUpgradeExtension;
 import com.liferay.portal.spring.hibernate.DialectDetector;
 
@@ -138,7 +137,7 @@ public class InitialUpgradeExtender
 
 			BundleWiring bundleWiring = _bundle.adapt(BundleWiring.class);
 
-			if (ConfigurationUtil.hasConfiguration(
+			if (ConfigurationFactoryUtil.hasConfiguration(
 					bundleWiring.getClassLoader(), "service")) {
 
 				Configuration configuration =

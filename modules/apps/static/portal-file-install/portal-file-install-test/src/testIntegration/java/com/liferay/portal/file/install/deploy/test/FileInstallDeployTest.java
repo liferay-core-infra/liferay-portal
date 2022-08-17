@@ -24,7 +24,6 @@ import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,8 +177,7 @@ public class FileInstallDeployTest {
 
 	@Test
 	public void testDeployAndDelete() throws Exception {
-		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+		Path path = Paths.get(_MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
 
 		CountDownLatch installCountDownLatch = new CountDownLatch(1);
 
@@ -269,11 +267,10 @@ public class FileInstallDeployTest {
 		String testFragmentSymbolicName = _TEST_JAR_SYMBOLIC_NAME.concat(
 			".fragment");
 
-		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+		Path path = Paths.get(_MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
 
 		Path fragmentPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			_MODULE_FRAMEWORK_MODULES_DIR,
 			testFragmentSymbolicName.concat(".jar"));
 
 		CountDownLatch installCountDownLatch = new CountDownLatch(1);
@@ -410,11 +407,10 @@ public class FileInstallDeployTest {
 
 		_bundleContext.addBundleListener(bundleListener);
 
-		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+		Path path = Paths.get(_MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
 
 		Path optionalProviderPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			_MODULE_FRAMEWORK_MODULES_DIR,
 			testOptionalProviderSymbolicName.concat(".jar"));
 
 		try {
@@ -554,6 +550,9 @@ public class FileInstallDeployTest {
 
 	private static final String _CONFIGURATION_PID =
 		FileInstallDeployTest.class.getName() + "Configuration";
+
+	private static final String _MODULE_FRAMEWORK_MODULES_DIR =
+		SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_MODULES_DIR);
 
 	private static final String _TEST_JAR_NAME;
 

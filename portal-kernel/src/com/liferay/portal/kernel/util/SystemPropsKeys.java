@@ -35,6 +35,9 @@ public interface SystemPropsKeys {
 	public static final String MODULE_FRAMEWORK_MARKETPLACE_DIR =
 		"module.framework.marketplace.dir";
 
+	public static final String MODULE_FRAMEWORK_MODULES_DIR =
+		"module.framework.modules.dir";
+
 	public static final String MODULE_FRAMEWORK_PROPERTIES =
 		"module.framework.properties.";
 

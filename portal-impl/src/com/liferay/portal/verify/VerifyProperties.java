@@ -327,6 +327,10 @@ public class VerifyProperties {
 		{"module.framework.modules.dir", "module.framework.modules.dir"},
 		{"module.framework.portal.dir", "module.framework.portal.dir"},
 		{
+			"module.framework.properties.blacklist.portal.profile.names",
+			"module.framework.properties.blacklist.portal.profile.names"
+		},
+		{
 			"module.framework.properties.eclipse.stateSaveDelayInterval",
 			"module.framework.properties.eclipse.stateSaveDelayInterval"
 		},
@@ -393,6 +397,10 @@ public class VerifyProperties {
 		{
 			"module.framework.properties.osgi.context.bootdelegation",
 			"module.framework.properties.osgi.context.bootdelegation"
+		},
+		{
+			"module.framework.properties.osgi.console",
+			"module.framework.properties.osgi.console"
 		},
 		{
 			"module.framework.properties.osgi.module.lock.timeout",

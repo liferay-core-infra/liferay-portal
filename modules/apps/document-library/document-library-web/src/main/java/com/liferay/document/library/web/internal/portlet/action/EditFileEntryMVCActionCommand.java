@@ -55,6 +55,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMBeanTranslator;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidationException;
+import com.liferay.expando.kernel.exception.ValueDataException;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.petra.string.StringPool;
@@ -106,6 +107,7 @@ import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -121,6 +123,7 @@ import com.liferay.upload.UploadResponseHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,6 +132,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -239,6 +243,8 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 				try (AutoCloseable autoCloseable = _pushServiceContext(
 						serviceContext)) {
+
+					_validateCustomAttributesValues(serviceContext);
 
 					fileEntry = _updateFileEntry(
 						portletConfig, actionRequest, actionResponse,
@@ -382,6 +388,8 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 			DLFileEntry.class.getName(), actionRequest);
 
 		_setUpDDMFormValues(serviceContext);
+
+		_validateCustomAttributesValues(serviceContext);
 
 		UploadPortletRequest uploadPortletRequest =
 			_portal.getUploadPortletRequest(actionRequest);
@@ -1401,6 +1409,29 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 			}
 
 			return fileEntry;
+		}
+	}
+
+	private void _validateCustomAttributesValues(ServiceContext serviceContext)
+		throws PortalException {
+
+		Map<String, Serializable> customAttributes =
+			serviceContext.getExpandoBridgeAttributes();
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		for (Serializable customAttribute : customAttributes.values()) {
+			Map<Locale, String> valuesMap =
+				(Map<Locale, String>)customAttribute;
+
+			if (Validator.isNull(valuesMap.get(defaultLocale))) {
+				for (String defaultValue : valuesMap.values()) {
+					if (Validator.isNotNull(defaultValue)) {
+						throw new ValueDataException.MustInformDefaultLocale(
+							defaultLocale);
+					}
+				}
+			}
 		}
 	}
 

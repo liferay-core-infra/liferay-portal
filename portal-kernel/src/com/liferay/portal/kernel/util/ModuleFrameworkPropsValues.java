@@ -35,6 +35,9 @@ public class ModuleFrameworkPropsValues {
 			SystemProperties.get(
 				"module.framework.concurrent.startup.enabled"));
 
+	public static final String MODULE_FRAMEWORK_CONFIGS_DIR =
+		SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_CONFIGS_DIR);
+
 	public static final int MODULE_FRAMEWORK_DYNAMIC_INSTALL_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get(

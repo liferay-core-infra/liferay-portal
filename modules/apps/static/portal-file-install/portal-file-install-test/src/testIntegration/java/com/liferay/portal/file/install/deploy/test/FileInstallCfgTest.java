@@ -20,6 +20,7 @@ import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -91,7 +92,7 @@ public class FileInstallCfgTest {
 			".testConfiguration");
 
 		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			configurationPid.concat(".cfg"));
 
 		String testKey = "testKey";

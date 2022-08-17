@@ -1710,9 +1710,6 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_AUTO_DEPLOY_INTERVAL =
 		"module.framework.auto.deploy.interval";
 
-	public static final String MODULE_FRAMEWORK_CONFIGS_DIR =
-		"module.framework.configs.dir";
-
 	public static final String
 		MODULE_FRAMEWORK_CONFIGURATION_BUNDLE_SYMBOLIC_NAMES =
 			"module.framework.configuration.bundle.symbolic.names";

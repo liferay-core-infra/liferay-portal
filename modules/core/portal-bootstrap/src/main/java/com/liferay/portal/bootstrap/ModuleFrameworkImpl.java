@@ -990,7 +990,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			ModuleFrameworkPropsValues.
 				MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING);
 
-		File dir = new File(PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
+		File dir = new File(
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
 
 		dir = dir.getCanonicalFile();
 

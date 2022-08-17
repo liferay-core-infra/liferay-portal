@@ -31,9 +31,9 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -408,7 +408,7 @@ public class ConfigurationPersistenceManager
 
 	private File _getCanonicalConfigFile(String fileName) throws IOException {
 		File configFile = new File(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
 
 		return configFile.getCanonicalFile();
 	}

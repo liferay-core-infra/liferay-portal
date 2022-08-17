@@ -20,6 +20,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
@@ -86,7 +87,7 @@ public class FileInstallDeployTest {
 	@Test
 	public void testConfiguration() throws Exception {
 		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			_CONFIGURATION_PID.concat(".config"));
 
 		try {
@@ -142,7 +143,7 @@ public class FileInstallDeployTest {
 	@Test
 	public void testConfigurationSystem() throws Exception {
 		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 			_CONFIGURATION_PID.concat(".config"));
 
 		String systemTestPropertyKey = StringBundler.concat(

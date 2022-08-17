@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
@@ -85,7 +85,7 @@ public class UpgradeConfigurationPid extends UpgradeProcess {
 
 				if (felixFileInstallFilename != null) {
 					File file = new File(
-						PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+						ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
 						felixFileInstallFilename);
 
 					if (file.exists()) {

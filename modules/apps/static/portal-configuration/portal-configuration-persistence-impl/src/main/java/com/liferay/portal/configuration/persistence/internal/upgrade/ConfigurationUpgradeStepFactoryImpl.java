@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class ConfigurationUpgradeStepFactoryImpl
 				}
 
 				File configResourcesDir = new File(
-					PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
+					ModuleFrameworkPropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
 
 				for (File file : configResourcesDir.listFiles()) {
 					String fileName = file.getName();

@@ -6779,6 +6779,9 @@ public class PortalImpl implements Portal {
 			return;
 		}
 
+		InetSocketAddress localInetSocketAddress = new InetSocketAddress(
+			localInetAddress, httpServletRequest.getLocalPort());
+
 		int serverPort = httpServletRequest.getServerPort();
 
 		if (secure) {
@@ -6800,8 +6803,6 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		InetSocketAddress localInetSocketAddress = new InetSocketAddress(
-			localInetAddress, httpServletRequest.getLocalPort());
 		InetSocketAddress serverInetSocketAddress = new InetSocketAddress(
 			serverInetAddress, serverPort);
 

@@ -482,7 +482,8 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 
 		Properties properties = _loadOverrideWarsProperties(bundleContext);
 
-		Path osgiWarDir = Paths.get(PropsValues.MODULE_FRAMEWORK_WAR_DIR);
+		Path osgiWarDir = Paths.get(
+			SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_WAR_DIR));
 
 		boolean modified = false;
 

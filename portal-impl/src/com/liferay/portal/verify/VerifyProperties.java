@@ -402,6 +402,7 @@ public class VerifyProperties {
 			"module.framework.system.packages.extra",
 			"module.framework.system.packages.extra"
 		},
+		{"module.framework.war.dir", "module.framework.war.dir"},
 		{"resource.repositories.root", "resource.repositories.root"}
 	};
 

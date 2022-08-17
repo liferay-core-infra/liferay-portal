@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.spring.extender.internal.configuration;
+package com.liferay.portal.service.extender.internal.configuration;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;

@@ -315,6 +315,7 @@ public class VerifyProperties {
 			"module.framework.auto.deploy.dirs"
 		},
 		{"module.framework.base.dir", "module.framework.base.dir"},
+		{"module.framework.configs.dir", "module.framework.configs.dir"},
 		{
 			"module.framework.marketplace.dir",
 			"module.framework.marketplace.dir"

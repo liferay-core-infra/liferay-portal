@@ -30,8 +30,9 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -402,7 +403,8 @@ public class ConfigurationPersistenceManager
 
 	private File _getCanonicalConfigFile(String fileName) throws IOException {
 		File configFile = new File(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
+			SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_CONFIGS_DIR),
+			fileName);
 
 		return configFile.getCanonicalFile();
 	}

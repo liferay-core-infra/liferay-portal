@@ -1713,9 +1713,6 @@ public interface PropsKeys {
 	public static final String MODULE_FRAMEWORK_CONCURRENT_STARTUP_ENABLED =
 		"module.framework.concurrent.startup.enabled";
 
-	public static final String MODULE_FRAMEWORK_CONFIGS_DIR =
-		"module.framework.configs.dir";
-
 	public static final String
 		MODULE_FRAMEWORK_CONFIGURATION_BUNDLE_SYMBOLIC_NAMES =
 			"module.framework.configuration.bundle.symbolic.names";

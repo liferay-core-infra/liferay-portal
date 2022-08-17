@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.util.AggregateClassLoader;
 import com.liferay.portal.util.PropsFiles;
 import com.liferay.portal.util.PropsUtil;
 
+import java.net.URL;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -50,6 +52,16 @@ public class ConfigurationFactoryImpl implements ConfigurationFactory {
 
 		return new ConfigurationImpl(
 			classLoader, name, CompanyConstants.SYSTEM, null);
+	}
+
+	public boolean hasConfiguration(ClassLoader classLoader, String name) {
+		URL url = classLoader.getResource(name + ".properties");
+
+		if (url == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

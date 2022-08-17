@@ -29,6 +29,12 @@ public class ConfigurationFactoryUtil {
 		return _configurationFactory;
 	}
 
+	public static boolean hasConfiguration(
+		ClassLoader classLoader, String name) {
+
+		return _configurationFactory.hasConfiguration(classLoader, name);
+	}
+
 	public static void setConfigurationFactory(
 		ConfigurationFactory configurationFactory) {
 

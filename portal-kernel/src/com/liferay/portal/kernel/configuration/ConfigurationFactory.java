@@ -21,4 +21,6 @@ public interface ConfigurationFactory {
 
 	public Configuration getConfiguration(ClassLoader classLoader, String name);
 
+	public boolean hasConfiguration(ClassLoader classLoader, String name);
+
 }

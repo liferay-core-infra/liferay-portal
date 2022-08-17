@@ -316,6 +316,10 @@ public class VerifyProperties {
 		{"module.framework.base.dir", "module.framework.base.dir"},
 		{"module.framework.configs.dir", "module.framework.configs.dir"},
 		{
+			"module.framework.client.extensions.dir",
+			"module.framework.client.extensions.dir"
+		},
+		{
 			"module.framework.beginning.start.level",
 			"module.framework.beginning.start.level"
 		},

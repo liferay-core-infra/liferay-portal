@@ -21,7 +21,8 @@ import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -134,7 +135,8 @@ public class ApplicationContextServicePublisherUtil {
 
 		Set<String> names = OSGiBeanProperties.Service.interfaceNames(
 			bean, osgiBeanProperties,
-			PropsValues.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES);
+			SystemProperties.getArray(
+				SystemPropsKeys.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES));
 
 		if (names.isEmpty()) {
 			if (_log.isDebugEnabled()) {

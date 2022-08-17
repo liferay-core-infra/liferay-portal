@@ -1436,10 +1436,6 @@ public class PropsValues {
 		GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.MODULE_FRAMEWORK_RUNTIME_START_LEVEL));
 
-	public static final String[] MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES =
-		PropsUtil.getArray(
-			PropsKeys.MODULE_FRAMEWORK_SERVICES_IGNORED_INTERFACES);
-
 	public static final String[] MODULE_FRAMEWORK_STATIC_JARS =
 		PropsUtil.getArray(PropsKeys.MODULE_FRAMEWORK_STATIC_JARS);
 

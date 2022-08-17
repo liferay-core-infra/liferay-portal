@@ -441,7 +441,7 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			Constants.FRAMEWORK_BUNDLE_PARENT_APP);
 		properties.put(
 			Constants.FRAMEWORK_STORAGE,
-			PropsValues.MODULE_FRAMEWORK_STATE_DIR);
+			SystemProperties.get(SystemPropsKeys.MODULE_FRAMEWORK_STATE_DIR));
 
 		properties.put(
 			"ds.lock.timeout.milliseconds",
@@ -559,7 +559,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private void _cleanOSGiStateFolder() throws Exception {
 		Files.walkFileTree(
-			Paths.get(PropsValues.MODULE_FRAMEWORK_STATE_DIR),
+			Paths.get(
+				SystemProperties.get(
+					SystemPropsKeys.MODULE_FRAMEWORK_STATE_DIR)),
 			new SimpleFileVisitor<Path>() {
 
 				@Override

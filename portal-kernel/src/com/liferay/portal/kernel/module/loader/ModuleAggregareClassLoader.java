@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.spring.extender.internal.loader;
+package com.liferay.portal.kernel.module.loader;
 
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.log.Log;

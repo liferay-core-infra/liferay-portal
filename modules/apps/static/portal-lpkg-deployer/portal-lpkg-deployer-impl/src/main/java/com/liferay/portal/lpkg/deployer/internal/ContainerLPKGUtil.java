@@ -14,6 +14,8 @@
 
 package com.liferay.portal.lpkg.deployer.internal;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -70,13 +72,28 @@ public class ContainerLPKGUtil {
 					return null;
 				}
 
-				Path lpkgPath = deployerDirPath.resolve(name);
+				File innerLPKGFile = new File(deployerDirPath.toFile(), name);
+
+				String innerLPKGCanonicalPath =
+					innerLPKGFile.getCanonicalPath();
+
+				File deployerDirFile = deployerDirPath.toFile();
+
+				if (!innerLPKGCanonicalPath.startsWith(
+						deployerDirFile.getCanonicalPath() + File.separator)) {
+
+					if (_log.isWarnEnabled()) {
+						_log.warn("Invalid LPKG File name: " + name);
+					}
+
+					continue;
+				}
 
 				Files.copy(
-					zipFile.getInputStream(zipEntry), lpkgPath,
+					zipFile.getInputStream(zipEntry), innerLPKGFile.toPath(),
 					StandardCopyOption.REPLACE_EXISTING);
 
-				lpkgFiles.add(lpkgPath.toFile());
+				lpkgFiles.add(innerLPKGFile);
 			}
 		}
 
@@ -88,5 +105,8 @@ public class ContainerLPKGUtil {
 
 		return lpkgFiles;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ContainerLPKGUtil.class);
 
 }

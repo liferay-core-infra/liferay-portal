@@ -33,6 +33,11 @@ public class DefaultCommerceTermEntriesJSPDynamicInclude
 	extends BaseJSPDynamicInclude {
 
 	@Override
+	public ServletContext getServletContext() {
+		return _servletContext;
+	}
+
+	@Override
 	public void register(DynamicIncludeRegistry dynamicIncludeRegistry) {
 		dynamicIncludeRegistry.register(
 			"com.liferay.commerce.account.web#/account_entry" +
@@ -49,19 +54,13 @@ public class DefaultCommerceTermEntriesJSPDynamicInclude
 		return _log;
 	}
 
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.term.web)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultCommerceTermEntriesJSPDynamicInclude.class);
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.commerce.term.web)")
+	private ServletContext _servletContext;
 
 }

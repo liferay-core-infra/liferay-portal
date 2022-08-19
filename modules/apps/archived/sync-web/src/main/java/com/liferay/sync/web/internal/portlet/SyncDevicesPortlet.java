@@ -85,13 +85,6 @@ public class SyncDevicesPortlet extends BaseSyncPortlet {
 		super.updateDevice(actionRequest, actionResponse);
 	}
 
-	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.sync.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))",
-		unbind = "-"
-	)
-	protected void setRelease(Release release) {
-	}
-
 	private void _checkSyncDevice(long syncDeviceId, long userId)
 		throws Exception {
 
@@ -102,5 +95,10 @@ public class SyncDevicesPortlet extends BaseSyncPortlet {
 			throw new PrincipalException();
 		}
 	}
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.sync.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"
+	)
+	private Release _release;
 
 }

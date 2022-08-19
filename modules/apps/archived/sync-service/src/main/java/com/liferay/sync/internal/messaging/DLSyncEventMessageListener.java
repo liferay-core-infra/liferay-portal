@@ -103,39 +103,6 @@ public class DLSyncEventMessageListener extends BaseMessageListener {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDLFileEntryLocalService(
-		DLFileEntryLocalService dlFileEntryLocalService) {
-
-		_dlFileEntryLocalService = dlFileEntryLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLFolderLocalService(
-		DLFolderLocalService dlFolderLocalService) {
-
-		_dlFolderLocalService = dlFolderLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLSyncEventLocalService(
-		DLSyncEventLocalService dlSyncEventLocalService) {
-
-		_dlSyncEventLocalService = dlSyncEventLocalService;
-	}
-
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
-	@Reference(unbind = "-")
-	protected void setSyncDLObjectLocalService(
-		SyncDLObjectLocalService syncDLObjectLocalService) {
-
-		_syncDLObjectLocalService = syncDLObjectLocalService;
-	}
-
 	private void _processDLSyncEvent(
 			long modifiedTime, String event, String type, long typePK,
 			boolean calculateChecksum)
@@ -223,9 +190,19 @@ public class DLSyncEventMessageListener extends BaseMessageListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLSyncEventMessageListener.class);
 
+	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
 	private DLFolderLocalService _dlFolderLocalService;
+
+	@Reference
 	private DLSyncEventLocalService _dlSyncEventLocalService;
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	private ModuleServiceLifecycle _moduleServiceLifecycle;
+
+	@Reference
 	private SyncDLObjectLocalService _syncDLObjectLocalService;
 
 	@Reference

@@ -135,31 +135,22 @@ public class SyncOAuthHelperImpl implements SyncOAuthHelper {
 		return true;
 	}
 
-	@Reference
-	protected void setOAuthApplicationLocalService(
-		OAuthApplicationLocalService oAuthApplicationLocalService) {
-
-		_oAuthApplicationLocalService = oAuthApplicationLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
 	protected void unsetOAuthApplicationLocalService(
 		OAuthApplicationLocalService oAuthApplicationLocalService) {
 
 		_oAuthApplicationLocalService = null;
 	}
 
-	private static OAuthApplicationLocalService _oAuthApplicationLocalService;
-	private static UserLocalService _userLocalService;
-
 	@Reference
 	private OAuth _oAuth;
 
 	@Reference
+	private OAuthApplicationLocalService _oAuthApplicationLocalService;
+
+	@Reference
 	private PortalUUID _portalUUID;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

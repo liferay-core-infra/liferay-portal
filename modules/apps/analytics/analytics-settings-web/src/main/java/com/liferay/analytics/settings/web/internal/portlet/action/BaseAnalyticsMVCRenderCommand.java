@@ -89,6 +89,7 @@ public abstract class BaseAnalyticsMVCRenderCommand
 	@Reference
 	protected ConfigurationProvider configurationProvider;
 
+	@Reference
 	protected volatile ServletContext servletContext;
 
 	private void _setHttpServletRequestAttributes(

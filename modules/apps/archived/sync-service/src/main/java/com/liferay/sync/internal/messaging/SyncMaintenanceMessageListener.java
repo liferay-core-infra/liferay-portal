@@ -155,46 +155,23 @@ public class SyncMaintenanceMessageListener extends BaseMessageListener {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDLSyncEventLocalService(
-		DLSyncEventLocalService dlSyncEventLocalService) {
-
-		_dlSyncEventLocalService = dlSyncEventLocalService;
-	}
-
-	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
-	@Reference(unbind = "-")
-	protected void setSchedulerEngineHelper(
-		SchedulerEngineHelper schedulerEngineHelper) {
-
-		_schedulerEngineHelper = schedulerEngineHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSyncDLFileVersionDiffLocalService(
-		SyncDLFileVersionDiffLocalService syncDLFileVersionDiffLocalService) {
-
-		_syncDLFileVersionDiffLocalService = syncDLFileVersionDiffLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSyncDLObjectLocalService(
-		SyncDLObjectLocalService syncDLObjectLocalService) {
-
-		_syncDLObjectLocalService = syncDLObjectLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		SyncMaintenanceMessageListener.class);
 
+	@Reference
 	private DLSyncEventLocalService _dlSyncEventLocalService;
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
+	private ModuleServiceLifecycle _moduleServiceLifecycle;
+
+	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;
+
+	@Reference
 	private SyncDLFileVersionDiffLocalService
 		_syncDLFileVersionDiffLocalService;
+
+	@Reference
 	private SyncDLObjectLocalService _syncDLObjectLocalService;
 
 	@Reference

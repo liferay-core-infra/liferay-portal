@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.servlet.HttpMethods;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.util.CookieKeys;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -42,6 +44,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -117,6 +120,45 @@ public class PortalImplLocaleTest {
 
 		Assert.assertEquals(
 			HttpServletResponse.SC_NOT_FOUND, httpServletResponse.getStatus());
+	}
+
+	@Test
+	public void testLocaleWithSourceMappingURLForGuestLanguageId() {
+		MockServletContext mockServletContext = new MockServletContext() {
+		};
+
+		mockServletContext.setContextPath(StringPool.BLANK);
+		mockServletContext.setServletContextName(StringPool.BLANK);
+
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest(
+				mockServletContext, HttpMethods.GET, "/workflow.js.map");
+
+		mockHttpServletRequest.setPathInfo("/workflow.js.map");
+		mockHttpServletRequest.setAttribute(
+			WebKeys.CURRENT_URL, "/workflow.js.map");
+
+		mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, _layout);
+
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		mockHttpServletRequest.setCookies(mockHttpServletResponse.getCookies());
+
+		HttpSession httpSession = mockHttpServletRequest.getSession();
+
+		httpSession.setAttribute(WebKeys.LOCALE, LocaleUtil.ITALY);
+
+		LanguageUtil.updateCookie(
+			mockHttpServletRequest, mockHttpServletResponse, LocaleUtil.ITALY);
+
+		_portalImpl.getLocale(
+			mockHttpServletRequest, mockHttpServletResponse, true);
+
+		Assert.assertEquals(
+			LocaleUtil.ITALY.toString(),
+			CookieKeys.getCookie(
+				mockHttpServletRequest, CookieKeys.GUEST_LANGUAGE_ID));
 	}
 
 	@Test

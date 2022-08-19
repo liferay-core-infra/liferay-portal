@@ -197,11 +197,6 @@ public class SyncAuthVerifier implements AuthVerifier {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
 	private String _createToken(long userId) {
 		Signer signer = null;
 
@@ -307,6 +302,7 @@ public class SyncAuthVerifier implements AuthVerifier {
 	@Reference
 	private Portal _portal;
 
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

@@ -209,40 +209,6 @@ public class SyncDownloadServlet extends HttpServlet {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDLAppService(DLAppService dlAppService) {
-		_dlAppService = dlAppService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDlFileEntryLocalService(
-		DLFileEntryLocalService dlFileEntryLocalService) {
-
-		_dlFileEntryLocalService = dlFileEntryLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDlFileVersionLocalService(
-		DLFileVersionLocalService dlFileVersionLocalService) {
-
-		_dlFileVersionLocalService = dlFileVersionLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setImageLocalService(ImageLocalService imageLocalService) {
-		_imageLocalService = imageLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
 	private void _addZipFolderEntry(
 			long userId, long repositoryId, long folderId, String folderPath,
 			ZipWriter zipWriter)
@@ -573,10 +539,19 @@ public class SyncDownloadServlet extends HttpServlet {
 
 	private static final String _ERROR_HEADER = "Sync-Error";
 
+	@Reference
 	private DLAppService _dlAppService;
+
+	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
 	private DLFileVersionLocalService _dlFileVersionLocalService;
+
+	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
 	private ImageLocalService _imageLocalService;
 
 	@Reference
@@ -585,6 +560,7 @@ public class SyncDownloadServlet extends HttpServlet {
 	@Reference
 	private SyncHelper _syncHelper;
 
+	@Reference
 	private UserLocalService _userLocalService;
 
 	@Reference

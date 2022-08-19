@@ -713,23 +713,16 @@ public class SyncHelperImpl implements SyncHelper {
 		throw new PortalException("Folder must be an instance of DLFolder");
 	}
 
-	@Reference(unbind = "-")
-	protected void setDLFileVersionLocalService(
-		DLFileVersionLocalService dlFileVersionLocalService) {
-
-		_dlFileVersionLocalService = dlFileVersionLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(SyncHelperImpl.class);
 
 	private final Map<String, String> _checksums = new ConcurrentHashMap<>();
+
+	@Reference
 	private DLFileVersionLocalService _dlFileVersionLocalService;
+
+	@Reference
 	private GroupLocalService _groupLocalService;
+
 	private final Map<String, String> _lanTokenKeys = new ConcurrentHashMap<>();
 
 	@Reference

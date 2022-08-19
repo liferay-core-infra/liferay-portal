@@ -39,13 +39,7 @@ public class SyncDLObject {
 		return _syncDLObjectService.getSyncContext();
 	}
 
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(
-		SyncDLObjectService syncDLObjectService) {
-
-		_syncDLObjectService = syncDLObjectService;
-	}
-
+	@Reference
 	private SyncDLObjectService _syncDLObjectService;
 
 }

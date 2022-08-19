@@ -112,25 +112,6 @@ public class SyncAdminPortlet extends BaseSyncPortlet {
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
-	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.sync.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))",
-		unbind = "-"
-	)
-	protected void setRelease(Release release) {
-	}
-
-	@Reference(unbind = "-")
-	protected void setSyncOAuthHelperUtil(
-		SyncOAuthHelperUtil syncOAuthHelperUtil) {
-
-		_syncOAuthHelperUtil = syncOAuthHelperUtil;
-	}
-
 	private void _updatePreferences(ActionRequest actionRequest)
 		throws Exception {
 
@@ -222,11 +203,18 @@ public class SyncAdminPortlet extends BaseSyncPortlet {
 		}
 	}
 
+	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.sync.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"
+	)
+	private Release _release;
 
 	@Reference
 	private SyncHelper _syncHelper;
 
+	@Reference
 	private SyncOAuthHelperUtil _syncOAuthHelperUtil;
 
 }

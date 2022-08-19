@@ -50,24 +50,13 @@ public abstract class BaseSyncPortlet extends MVCPortlet {
 		syncDeviceLocalService.updateStatus(syncDeviceId, status);
 	}
 
-	@Reference(unbind = "-")
-	protected void setPortal(Portal portal) {
-		_portal = portal;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSyncDeviceLocalService(
-		SyncDeviceLocalService syncDeviceLocalService) {
-
-		this.syncDeviceLocalService = syncDeviceLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setSyncWebUpgrade(SyncWebUpgrade syncWebUpgrade) {
-	}
-
+	@Reference
 	protected SyncDeviceLocalService syncDeviceLocalService;
 
+	@Reference
 	private Portal _portal;
+
+	@Reference
+	private SyncWebUpgrade _syncWebUpgrade;
 
 }

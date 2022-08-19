@@ -40,11 +40,8 @@ public class AddChannelMVCRenderCommand extends BaseAnalyticsMVCRenderCommand {
 	}
 
 	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.analytics.settings.web)",
-		unbind = "-"
+		target = "(osgi.web.symbolicname=com.liferay.analytics.settings.web)"
 	)
-	protected void setServletContext(ServletContext servletContext) {
-		super.servletContext = servletContext;
-	}
+	private ServletContext _servletContext;
 
 }

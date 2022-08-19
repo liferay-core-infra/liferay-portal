@@ -107,11 +107,9 @@ public class AnalyticsMessageSenderClientImpl
 	}
 
 	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.analytics.settings.web)(release.schema.version>=1.0.1))",
-		unbind = "-"
+		target = "(&(release.bundle.symbolic.name=com.liferay.analytics.settings.web)(release.schema.version>=1.0.1))"
 	)
-	protected void setRelease(Release release) {
-	}
+	protected Release release;
 
 	private HttpUriRequest _buildHttpUriRequest(
 			String body, String dataSourceId,

@@ -14,12 +14,15 @@
 
 package com.liferay.portal.servlet.filters.header;
 
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.TimeZoneUtil;
@@ -30,6 +33,8 @@ import com.liferay.portal.util.PropsValues;
 import java.text.Format;
 
 import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.FilterChain;
@@ -119,6 +124,22 @@ public class HeaderFilter extends BasePortalFilter {
 					}
 				}
 			}
+
+			String existingCacheDirectives = httpServletResponse.getHeader(
+				HttpHeaders.CACHE_CONTROL);
+
+			if ((existingCacheDirectives == null) ||
+				StringUtil.equals(existingCacheDirectives, StringPool.BLANK)) {
+
+				httpServletResponse.setHeader(name, value);
+
+				return;
+			}
+
+			httpServletResponse.setHeader(
+				name, _mergeCacheDirectives(value, existingCacheDirectives));
+
+			return;
 		}
 		else if (StringUtil.equalsIgnoreCase(name, HttpHeaders.EXPIRES)) {
 			if (_isNewSession(httpServletRequest)) {
@@ -131,6 +152,10 @@ public class HeaderFilter extends BasePortalFilter {
 				value = _dateFormat.format(
 					System.currentTimeMillis() + (seconds * Time.SECOND));
 			}
+
+			httpServletResponse.setHeader(name, value);
+
+			return;
 		}
 
 		httpServletResponse.addHeader(name, value);
@@ -144,6 +169,65 @@ public class HeaderFilter extends BasePortalFilter {
 		}
 
 		return false;
+	}
+
+	private String _mergeCacheDirectives(
+		String newCacheDirectives, String existingCacheDirectives) {
+
+		// LPS-159737
+
+		Map<String, String> cacheDirectives = new LinkedHashMap<>();
+
+		for (String existingCacheDirective :
+				StringUtil.split(existingCacheDirectives)) {
+
+			_putCacheDirective(cacheDirectives, existingCacheDirective.trim());
+		}
+
+		for (String newCacheDirective : StringUtil.split(newCacheDirectives)) {
+			newCacheDirective = newCacheDirective.trim();
+
+			if (cacheDirectives.containsKey(newCacheDirective)) {
+				continue;
+			}
+
+			_putCacheDirective(cacheDirectives, newCacheDirective);
+		}
+
+		StringBundler sb = new StringBundler(cacheDirectives.size());
+
+		for (Map.Entry<String, String> cacheDirective :
+				cacheDirectives.entrySet()) {
+
+			sb.append(cacheDirective.getKey());
+
+			if (cacheDirective.getValue() != null) {
+				sb.append(StringPool.EQUAL);
+				sb.append(cacheDirective.getValue());
+			}
+
+			sb.append(StringPool.COMMA_AND_SPACE);
+		}
+
+		if (sb.index() >= 1) {
+			sb.setIndex(sb.index() - 1);
+		}
+
+		return sb.toString();
+	}
+
+	private void _putCacheDirective(
+		Map<String, String> cacheDirectives, String newCacheDirective) {
+
+		if (!newCacheDirective.contains(StringPool.EQUAL)) {
+			cacheDirectives.put(newCacheDirective, null);
+
+			return;
+		}
+
+		String[] parts = StringUtil.split(newCacheDirective, CharPool.EQUAL);
+
+		cacheDirectives.put(parts[0].trim(), parts[1].trim());
 	}
 
 	private static final Format _dateFormat =

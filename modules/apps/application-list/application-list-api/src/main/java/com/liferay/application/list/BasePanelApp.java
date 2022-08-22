@@ -97,11 +97,6 @@ public abstract class BasePanelApp implements PanelApp {
 	}
 
 	@Override
-	public Portlet getPortlet() {
-		return _portlet;
-	}
-
-	@Override
 	public PortletURL getPortletURL(HttpServletRequest httpServletRequest)
 		throws PortalException {
 
@@ -164,11 +159,6 @@ public abstract class BasePanelApp implements PanelApp {
 		this.groupProvider = groupProvider;
 	}
 
-	@Override
-	public void setPortlet(Portlet portlet) {
-		_portlet = portlet;
-	}
-
 	protected ControlPanelEntry getControlPanelEntry() {
 		Portlet portlet = getPortlet();
 
@@ -216,7 +206,6 @@ public abstract class BasePanelApp implements PanelApp {
 
 	private static final Log _log = LogFactoryUtil.getLog(BasePanelApp.class);
 
-	private Portlet _portlet;
 	private PortletLocalService _portletLocalService;
 
 }

@@ -37,6 +37,8 @@ definition {
 			locator1 = "build-test.xml",
 			value1 = "deploy-osgi-module-to-specific-bundle -Dmodule.base.dir=/modules/util/portal-tools-service-builder-test-api -DliferayHome=${liferayHome}");
 
+		WaitForConsoleTextPresent(value1 = "STARTED com.liferay.portal.tools.service.builder.test.api_");
+
 		AntCommand(
 			locator1 = "build-test.xml",
 			value1 = "deploy-osgi-module-to-specific-bundle -Dmodule.base.dir=/modules/util/portal-tools-service-builder-test-service -DliferayHome=${liferayHome}");

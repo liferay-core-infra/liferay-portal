@@ -41,12 +41,13 @@ public class JournalContentSearchConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.journal.content.search.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.journal.content.search.web)"
+	)
+	private ServletContext _servletContext;
 
 }

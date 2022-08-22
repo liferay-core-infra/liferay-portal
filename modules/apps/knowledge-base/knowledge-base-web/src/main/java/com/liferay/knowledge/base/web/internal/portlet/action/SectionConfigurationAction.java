@@ -57,12 +57,8 @@ public class SectionConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private void _updateKBArticlesSections(ActionRequest actionRequest) {
@@ -78,5 +74,10 @@ public class SectionConfigurationAction extends DefaultConfigurationAction {
 				actionRequest, "kbArticlesSections", kbArticlesSections);
 		}
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.knowledge.base.web)"
+	)
+	private ServletContext _servletContext;
 
 }

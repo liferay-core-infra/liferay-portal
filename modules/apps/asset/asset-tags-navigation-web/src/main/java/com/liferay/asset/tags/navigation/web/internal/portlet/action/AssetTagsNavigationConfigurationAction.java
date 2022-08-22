@@ -41,12 +41,13 @@ public class AssetTagsNavigationConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.asset.tags.navigation.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.asset.tags.navigation.web)"
+	)
+	private ServletContext _servletContext;
 
 }

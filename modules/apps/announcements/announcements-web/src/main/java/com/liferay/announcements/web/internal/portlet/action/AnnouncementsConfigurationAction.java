@@ -41,12 +41,11 @@ public class AnnouncementsConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.announcements.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.announcements.web)")
+	private ServletContext _servletContext;
 
 }

@@ -49,15 +49,6 @@ public class SiteNavigationBreadcrumbConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.breadcrumb.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
-	@Override
 	protected void doDispatch(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
@@ -68,6 +59,11 @@ public class SiteNavigationBreadcrumbConfigurationAction
 		super.doDispatch(renderRequest, renderResponse);
 	}
 
+	@Override
+	protected ServletContext getServletContext() {
+		return _servletContext;
+	}
+
 	@Reference(unbind = "-")
 	protected void setPortletDisplayTemplate(
 		PortletDisplayTemplate portletDisplayTemplate) {
@@ -76,5 +72,10 @@ public class SiteNavigationBreadcrumbConfigurationAction
 	}
 
 	private PortletDisplayTemplate _portletDisplayTemplate;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.breadcrumb.web)"
+	)
+	private ServletContext _servletContext;
 
 }

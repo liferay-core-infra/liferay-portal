@@ -68,12 +68,11 @@ public class WebProxyConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.web.proxy.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.web.proxy.web)")
+	private ServletContext _servletContext;
 
 }

@@ -41,12 +41,13 @@ public class SimilarResultsPortletConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.portal.search.similar.results.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.portal.search.similar.results.web)"
+	)
+	private ServletContext _servletContext;
 
 }

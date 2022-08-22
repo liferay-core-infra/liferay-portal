@@ -58,11 +58,11 @@ public class WikiAdminConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.wiki.web)", unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.wiki.web)")
+	private ServletContext _servletContext;
 
 }

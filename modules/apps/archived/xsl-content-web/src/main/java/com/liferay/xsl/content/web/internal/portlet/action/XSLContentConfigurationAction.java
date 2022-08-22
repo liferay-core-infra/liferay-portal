@@ -84,20 +84,16 @@ public class XSLContentConfigurationAction extends DefaultConfigurationAction {
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.xsl.content.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		_xslContentConfiguration = ConfigurableUtil.createConfigurable(
 			XSLContentConfiguration.class, properties);
+	}
+
+	@Override
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private String[] _getValidUrlPrefixes(
@@ -149,6 +145,9 @@ public class XSLContentConfigurationAction extends DefaultConfigurationAction {
 			SessionErrors.add(actionRequest, "xslUrl");
 		}
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.xsl.content.web)")
+	private ServletContext _servletContext;
 
 	private volatile XSLContentConfiguration _xslContentConfiguration;
 

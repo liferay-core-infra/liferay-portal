@@ -320,15 +320,6 @@ public class AssetPublisherConfigurationAction
 		}
 	}
 
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.asset.publisher.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
@@ -339,6 +330,11 @@ public class AssetPublisherConfigurationAction
 	protected String getDefaultSelectionStyle() {
 		return AssetPublisherSelectionStyleConfigurationUtil.
 			defaultSelectionStyle();
+	}
+
+	@Override
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Reference
@@ -893,5 +889,10 @@ public class AssetPublisherConfigurationAction
 				queryRule.getName());
 		}
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.asset.publisher.web)"
+	)
+	private ServletContext _servletContext;
 
 }

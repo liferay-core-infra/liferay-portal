@@ -90,11 +90,8 @@ public class IFrameConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.iframe.web)", unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Override
@@ -120,5 +117,8 @@ public class IFrameConfigurationAction extends DefaultConfigurationAction {
 			}
 		}
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.iframe.web)")
+	private ServletContext _servletContext;
 
 }

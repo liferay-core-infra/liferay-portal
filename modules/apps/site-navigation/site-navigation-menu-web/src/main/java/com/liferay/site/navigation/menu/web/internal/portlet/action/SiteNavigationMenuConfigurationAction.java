@@ -96,15 +96,6 @@ public class SiteNavigationMenuConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.menu.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
-	@Override
 	protected void doDispatch(
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
@@ -113,6 +104,11 @@ public class SiteNavigationMenuConfigurationAction
 			WebKeys.PORTLET_DISPLAY_TEMPLATE, _portletDisplayTemplate);
 
 		super.doDispatch(renderRequest, renderResponse);
+	}
+
+	@Override
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Reference(unbind = "-")
@@ -126,6 +122,11 @@ public class SiteNavigationMenuConfigurationAction
 	private ItemSelector _itemSelector;
 
 	private PortletDisplayTemplate _portletDisplayTemplate;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.menu.web)"
+	)
+	private ServletContext _servletContext;
 
 	@Reference
 	private SiteNavigationMenuItemTypeRegistry

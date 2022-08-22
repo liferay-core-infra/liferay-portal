@@ -41,12 +41,13 @@ public class SitesDirectoryConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.site.navigation.directory.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.site.navigation.directory.web)"
+	)
+	private ServletContext _servletContext;
 
 }

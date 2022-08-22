@@ -41,12 +41,13 @@ public class RecentBloggersConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.blogs.recent.bloggers.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.blogs.recent.bloggers.web)"
+	)
+	private ServletContext _servletContext;
 
 }

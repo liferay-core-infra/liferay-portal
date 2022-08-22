@@ -66,12 +66,8 @@ public class DLConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.document.library.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Override
@@ -97,5 +93,10 @@ public class DLConfigurationAction
 
 	@Reference
 	private ItemSelector _itemSelector;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.document.library.web)"
+	)
+	private ServletContext _servletContext;
 
 }

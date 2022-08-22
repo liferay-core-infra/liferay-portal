@@ -95,15 +95,14 @@ public class SearchConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.portal.search.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Reference
 	protected SearchFacetTracker searchFacetTracker;
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.portal.search.web)")
+	private ServletContext _servletContext;
 
 }

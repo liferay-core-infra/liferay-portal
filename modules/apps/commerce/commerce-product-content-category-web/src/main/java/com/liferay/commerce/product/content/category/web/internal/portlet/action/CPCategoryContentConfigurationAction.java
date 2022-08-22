@@ -64,12 +64,8 @@ public class CPCategoryContentConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.category.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -86,5 +82,10 @@ public class CPCategoryContentConfigurationAction
 
 	@Reference
 	private Portal _portal;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.category.web)"
+	)
+	private ServletContext _servletContext;
 
 }

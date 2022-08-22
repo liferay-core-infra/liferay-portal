@@ -48,12 +48,8 @@ public class SocialGroupStatisticsConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.social.group.statistics.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Override
@@ -83,5 +79,10 @@ public class SocialGroupStatisticsConfigurationAction
 
 		setPreference(actionRequest, key, values.toArray(new String[0]));
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.social.group.statistics.web)"
+	)
+	private ServletContext _servletContext;
 
 }

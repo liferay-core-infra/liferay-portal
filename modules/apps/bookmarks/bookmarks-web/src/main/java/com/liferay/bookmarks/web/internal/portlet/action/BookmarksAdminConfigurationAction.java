@@ -66,12 +66,8 @@ public class BookmarksAdminConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.bookmarks.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private void _validateRootFolder(ActionRequest actionRequest)
@@ -102,5 +98,8 @@ public class BookmarksAdminConfigurationAction
 
 	@Reference
 	private BookmarksFolderLocalService _bookmarksFolderLocalService;
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.bookmarks.web)")
+	private ServletContext _servletContext;
 
 }

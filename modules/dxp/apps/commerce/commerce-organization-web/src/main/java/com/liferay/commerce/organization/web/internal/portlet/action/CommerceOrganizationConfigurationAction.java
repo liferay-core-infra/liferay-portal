@@ -75,12 +75,8 @@ public class CommerceOrganizationConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.organization.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -88,6 +84,11 @@ public class CommerceOrganizationConfigurationAction
 
 	@Reference
 	private OrganizationService _organizationService;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.organization.web)"
+	)
+	private ServletContext _servletContext;
 
 	@Reference
 	private UserLocalService _userLocalService;

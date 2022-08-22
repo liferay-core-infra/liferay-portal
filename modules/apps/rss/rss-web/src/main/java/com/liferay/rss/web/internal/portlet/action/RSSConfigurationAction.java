@@ -64,11 +64,8 @@ public class RSSConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.rss.web)", unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private void _updateSubscriptions(ActionRequest actionRequest)
@@ -120,5 +117,8 @@ public class RSSConfigurationAction extends DefaultConfigurationAction {
 		setPreference(actionRequest, "urls", urls);
 		setPreference(actionRequest, "titles", titles);
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.rss.web)")
+	private ServletContext _servletContext;
 
 }

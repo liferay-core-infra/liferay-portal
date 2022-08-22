@@ -60,12 +60,8 @@ public class WikiNavigationPageMenuConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.wiki.navigation.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	@Reference(unbind = "-")
@@ -84,6 +80,11 @@ public class WikiNavigationPageMenuConfigurationAction
 			SessionErrors.add(actionRequest, noSuchNodeException.getClass());
 		}
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.wiki.navigation.web)"
+	)
+	private ServletContext _servletContext;
 
 	private WikiNodeService _wikiNodeService;
 

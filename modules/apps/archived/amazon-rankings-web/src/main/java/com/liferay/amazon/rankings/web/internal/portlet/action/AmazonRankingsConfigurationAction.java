@@ -86,15 +86,6 @@ public class AmazonRankingsConfigurationAction
 		super.processAction(portletConfig, actionRequest, actionResponse);
 	}
 
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.amazon.rankings.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
-	}
-
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
@@ -102,6 +93,16 @@ public class AmazonRankingsConfigurationAction
 			AmazonRankingsConfiguration.class, properties);
 	}
 
+	@Override
+	protected ServletContext getServletContext() {
+		return _servletContext;
+	}
+
 	private volatile AmazonRankingsConfiguration _amazonRankingsConfiguration;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.amazon.rankings.web)"
+	)
+	private ServletContext _servletContext;
 
 }

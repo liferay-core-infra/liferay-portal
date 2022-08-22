@@ -75,12 +75,8 @@ public class CPPriceRangeFacetsConfigurationAction
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.search.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private String _getPaginationStartParameterName(
@@ -102,5 +98,10 @@ public class CPPriceRangeFacetsConfigurationAction
 
 	@Reference
 	private PortletSharedSearchRequest _portletSharedSearchRequest;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.search.web)"
+	)
+	private ServletContext _servletContext;
 
 }

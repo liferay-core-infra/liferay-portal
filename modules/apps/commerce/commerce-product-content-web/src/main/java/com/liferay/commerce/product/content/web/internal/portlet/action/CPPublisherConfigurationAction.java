@@ -191,12 +191,8 @@ public class CPPublisherConfigurationAction extends DefaultConfigurationAction {
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private void _addSelection(
@@ -511,5 +507,10 @@ public class CPPublisherConfigurationAction extends DefaultConfigurationAction {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.content.web)"
+	)
+	private ServletContext _servletContext;
 
 }

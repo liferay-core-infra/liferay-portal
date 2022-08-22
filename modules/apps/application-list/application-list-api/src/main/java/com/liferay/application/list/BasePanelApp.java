@@ -22,11 +22,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.model.UserNotificationDeliveryConstants;
 import com.liferay.portal.kernel.portlet.ControlPanelEntry;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.PortletLocalService;
-import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -95,16 +93,7 @@ public abstract class BasePanelApp implements PanelApp {
 
 	@Override
 	public int getNotificationsCount(User user) {
-		if (_userNotificationEventLocalService == null) {
-			return 0;
-		}
-
-		Portlet portlet = getPortlet();
-
-		return _userNotificationEventLocalService.
-			getUserNotificationEventsCount(
-				user.getUserId(), portlet.getPortletId(),
-				UserNotificationDeliveryConstants.TYPE_WEBSITE, true, false);
+		return 0;
 	}
 
 	@Override
@@ -222,18 +211,10 @@ public abstract class BasePanelApp implements PanelApp {
 		_portletLocalService = portletLocalService;
 	}
 
-	protected void setUserNotificationEventLocalService(
-		UserNotificationEventLocalService userNotificationEventLocalService) {
-
-		_userNotificationEventLocalService = userNotificationEventLocalService;
-	}
-
 	protected GroupProvider groupProvider;
 
 	private static final Log _log = LogFactoryUtil.getLog(BasePanelApp.class);
 
 	private PortletLocalService _portletLocalService;
-	private UserNotificationEventLocalService
-		_userNotificationEventLocalService;
 
 }

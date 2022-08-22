@@ -20,6 +20,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 
 import java.util.Locale;
@@ -34,8 +35,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ObjectEntriesPanelApp extends BasePanelApp {
 
-	public ObjectEntriesPanelApp(ObjectDefinition objectDefinition) {
+	public ObjectEntriesPanelApp(
+		ObjectDefinition objectDefinition, Portlet portlet) {
+
 		_objectDefinition = objectDefinition;
+		_portlet = portlet;
 	}
 
 	@Override
@@ -47,6 +51,11 @@ public class ObjectEntriesPanelApp extends BasePanelApp {
 	@Override
 	public String getLabel(Locale locale) {
 		return _objectDefinition.getPluralLabel(locale);
+	}
+
+	@Override
+	public Portlet getPortlet() {
+		return _portlet;
 	}
 
 	@Override
@@ -79,5 +88,6 @@ public class ObjectEntriesPanelApp extends BasePanelApp {
 	}
 
 	private final ObjectDefinition _objectDefinition;
+	private final Portlet _portlet;
 
 }

@@ -81,6 +81,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -346,7 +347,11 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 		serviceRegistrations.add(
 			_bundleContext.registerService(
-				PanelApp.class, new ObjectEntriesPanelApp(objectDefinition),
+				PanelApp.class,
+				new ObjectEntriesPanelApp(
+					objectDefinition,
+					_portletLocalService.getPortletById(
+						objectDefinition.getPortletId())),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"panel.app.order:Integer",
 					objectDefinition.getPanelAppOrder()
@@ -466,6 +471,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletLocalService _portletLocalService;
 
 	@Reference
 	private RESTContextPathResolverRegistry _restContextPathResolverRegistry;

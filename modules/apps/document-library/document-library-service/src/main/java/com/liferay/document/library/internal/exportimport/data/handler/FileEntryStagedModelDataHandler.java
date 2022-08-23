@@ -728,13 +728,6 @@ public class FileEntryStagedModelDataHandler
 		return fileEntry.isInTrash();
 	}
 
-	@Reference(
-		target = "(&(verify.process.name=com.liferay.document.library.service))",
-		unbind = "-"
-	)
-	protected void setVerifyProcessCompletionMarker(Object object) {
-	}
-
 	@Override
 	protected void validateExport(
 			PortletDataContext portletDataContext, FileEntry fileEntry)
@@ -1307,6 +1300,11 @@ public class FileEntryStagedModelDataHandler
 
 	@Reference(target = "(ddm.form.values.serializer.type=json)")
 	private DDMFormValuesSerializer _jsonDDMFormValuesSerializer;
+
+	@Reference(
+		target = "(&(verify.process.name=com.liferay.document.library.service))"
+	)
+	private Object _object;
 
 	@Reference
 	private Portal _portal;

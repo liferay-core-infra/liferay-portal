@@ -92,21 +92,13 @@ public abstract class BaseSamlStrutsAction implements StrutsAction {
 		getSamlProviderConfigurationHelper();
 
 	public boolean isEnabled() {
-		return samlProviderConfigurationHelper.isEnabled();
-	}
-
-	public void setSamlProviderConfigurationHelper(
-		SamlProviderConfigurationHelper samlProviderConfigurationHelper) {
-
-		this.samlProviderConfigurationHelper = samlProviderConfigurationHelper;
+		return getSamlProviderConfigurationHelper().isEnabled();
 	}
 
 	protected abstract String doExecute(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws Exception;
-
-	protected SamlProviderConfigurationHelper samlProviderConfigurationHelper;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseSamlStrutsAction.class);

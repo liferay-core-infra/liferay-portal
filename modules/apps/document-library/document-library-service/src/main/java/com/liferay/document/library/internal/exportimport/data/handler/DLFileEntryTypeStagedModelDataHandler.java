@@ -373,32 +373,6 @@ public class DLFileEntryTypeStagedModelDataHandler
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setDDMStructureLocalService(
-		DDMStructureLocalService ddmStructureLocalService) {
-
-		_ddmStructureLocalService = ddmStructureLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLFileEntryTypeLocalService(
-		DLFileEntryTypeLocalService dlFileEntryTypeLocalService) {
-
-		_dlFileEntryTypeLocalService = dlFileEntryTypeLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
-	@Reference(
-		target = "(&(verify.process.name=com.liferay.document.library.service))",
-		unbind = "-"
-	)
-	protected void setVerifyProcessCompletionMarker(Object object) {
-	}
-
 	private DLFileEntryType _fetchExistingFileEntryType(
 		String uuid, long groupId, String fileEntryTypeKey, boolean preloaded) {
 
@@ -454,12 +428,21 @@ public class DLFileEntryTypeStagedModelDataHandler
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLFileEntryTypeStagedModelDataHandler.class);
 
+	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
+
+	@Reference
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
 
+	@Reference(
+		target = "(&(verify.process.name=com.liferay.document.library.service))"
+	)
+	private Object _object;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

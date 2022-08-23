@@ -115,6 +115,9 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	public List<ServiceRegistration<?>> deploy(
 		ObjectDefinition objectDefinition) {
 
+		String portletId = objectDefinition.getPortletId();
+		String className = objectDefinition.getClassName();
+
 		InfoItemFormProvider<ObjectEntry> infoItemFormProvider =
 			new ObjectEntryInfoItemFormProvider(
 				objectDefinition, _infoItemFieldReaderFieldSetProvider,
@@ -131,7 +134,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition, _objectEntryDisplayContextFactory,
 					_objectEntryService, _servletContext),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"javax.portlet.name", objectDefinition.getPortletId()
+					"javax.portlet.name", portletId
 				).build()),
 			_bundleContext.registerService(
 				FDSView.class,
@@ -140,7 +143,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_objectDefinitionLocalService, _objectFieldLocalService,
 					_objectRelationshipLocalService, _objectViewLocalService),
 				HashMapDictionaryBuilder.put(
-					"frontend.data.set.name", objectDefinition.getPortletId()
+					"frontend.data.set.name", portletId
 				).build()),
 			_bundleContext.registerService(
 				InfoItemCapabilitiesProvider.class,
@@ -148,7 +151,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_displayPageInfoItemCapability, _editPageInfoItemCapability,
 					_templatePageInfoItemCapability),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemCreator.class,
@@ -156,7 +159,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_groupLocalService, infoItemFormProvider, objectDefinition,
 					_objectEntryService, _objectScopeProviderRegistry),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemDetailsProvider.class,
@@ -164,7 +167,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				HashMapDictionaryBuilder.<String, Object>put(
 					Constants.SERVICE_RANKING, 10
 				).put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemFieldValuesProvider.class,
@@ -175,14 +178,14 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_objectFieldLocalService, _templateInfoItemFieldSetProvider,
 					_userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemFormProvider.class, infoItemFormProvider,
 				HashMapDictionaryBuilder.<String, Object>put(
 					Constants.SERVICE_RANKING, 10
 				).put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemObjectProvider.class,
@@ -193,14 +196,14 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					"info.item.identifier",
 					"com.liferay.info.item.ClassPKInfoItemIdentifier"
 				).put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemPermissionProvider.class,
 				new ObjectEntryInfoItemPermissionProvider(
 					objectDefinition, _objectEntryService),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				InfoItemRenderer.class,
@@ -212,7 +215,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				HashMapDictionaryBuilder.<String, Object>put(
 					Constants.SERVICE_RANKING, 100
 				).put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).put(
 					"osgi.web.symbolicname", "com.liferay.object.web"
 				).build()),
@@ -221,7 +224,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new ObjectEntryTableInfoListRenderer(
 					_infoItemRendererTracker, _objectFieldLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				ItemSelectorView.class,
@@ -240,7 +243,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition, _objectDefinitionLocalService,
 					_objectEntryLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"item.class.name", objectDefinition.getClassName()
+					"item.class.name", className
 				).build()),
 			_bundleContext.registerService(
 				Portlet.class,
@@ -271,7 +274,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					"javax.portlet.init-param.view-template",
 					"/object_entries/view_object_entries.jsp"
 				).put(
-					"javax.portlet.name", objectDefinition.getPortletId()
+					"javax.portlet.name", portletId
 				).put(
 					"javax.portlet.version", "3.0"
 				).build()),
@@ -283,7 +286,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_objectRelationshipLocalService,
 					_objectScopeProviderRegistry, _portal),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"javax.portlet.name", objectDefinition.getPortletId()
+					"javax.portlet.name", portletId
 				).put(
 					"mvc.command.name", "/object_entries/edit_object_entry"
 				).build()),
@@ -293,7 +296,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_objectDefinitionLocalService,
 					_objectRelationshipLocalService, _portal),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"javax.portlet.name", objectDefinition.getPortletId()
+					"javax.portlet.name", portletId
 				).put(
 					"mvc.command.name",
 					"/object_entries/edit_object_entry_related_model"
@@ -304,7 +307,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_attachmentUploadFileEntryHandler,
 					_attachmentUploadResponseHandler, _uploadHandler),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"javax.portlet.name", objectDefinition.getPortletId()
+					"javax.portlet.name", portletId
 				).put(
 					"mvc.command.name", "/object_entries/upload_attachment"
 				).build()),
@@ -313,7 +316,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				new EditObjectEntryMVCRenderCommand(
 					_objectEntryDisplayContextFactory, _portal),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"javax.portlet.name", objectDefinition.getPortletId()
+					"javax.portlet.name", portletId
 				).put(
 					"mvc.command.name", "/object_entries/edit_object_entry"
 				).build()));
@@ -326,8 +329,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				PanelApp.class,
 				new ObjectEntriesPanelApp(
 					objectDefinition,
-					_portletLocalService.getPortletById(
-						objectDefinition.getPortletId())),
+					_portletLocalService.getPortletById(portletId)),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"panel.app.order:Integer",
 					objectDefinition.getPanelAppOrder()

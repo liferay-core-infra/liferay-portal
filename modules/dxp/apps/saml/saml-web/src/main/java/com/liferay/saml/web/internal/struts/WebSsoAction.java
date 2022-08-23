@@ -34,21 +34,19 @@ import org.osgi.service.component.annotations.Reference;
 public class WebSsoAction extends BaseSamlStrutsAction {
 
 	@Override
+	public SamlProviderConfigurationHelper
+		getSamlProviderConfigurationHelper() {
+
+		return _samlProviderConfigurationHelper;
+	}
+
+	@Override
 	public boolean isEnabled() {
-		if (samlProviderConfigurationHelper.isRoleIdp()) {
+		if (_samlProviderConfigurationHelper.isRoleIdp()) {
 			return super.isEnabled();
 		}
 
 		return false;
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	public void setSamlProviderConfigurationHelper(
-		SamlProviderConfigurationHelper samlProviderConfigurationHelper) {
-
-		super.setSamlProviderConfigurationHelper(
-			samlProviderConfigurationHelper);
 	}
 
 	@Override
@@ -62,6 +60,9 @@ public class WebSsoAction extends BaseSamlStrutsAction {
 
 		return null;
 	}
+
+	@Reference
+	private SamlProviderConfigurationHelper _samlProviderConfigurationHelper;
 
 	@Reference(unbind = "-")
 	private WebSsoProfile _webSsoProfile;

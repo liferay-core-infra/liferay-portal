@@ -55,21 +55,19 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class SamlLoginAction extends BaseSamlStrutsAction {
 
 	@Override
+	public SamlProviderConfigurationHelper
+		getSamlProviderConfigurationHelper() {
+
+		return _samlProviderConfigurationHelper;
+	}
+
+	@Override
 	public boolean isEnabled() {
-		if (samlProviderConfigurationHelper.isRoleSp()) {
+		if (_samlProviderConfigurationHelper.isRoleSp()) {
 			return super.isEnabled();
 		}
 
 		return false;
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	public void setSamlProviderConfigurationHelper(
-		SamlProviderConfigurationHelper samlProviderConfigurationHelper) {
-
-		super.setSamlProviderConfigurationHelper(
-			samlProviderConfigurationHelper);
 	}
 
 	@Override
@@ -116,7 +114,7 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 
 		if (samlSpIdpConnections.isEmpty()) {
 			SamlProviderConfiguration samlProviderConfiguration =
-				samlProviderConfigurationHelper.getSamlProviderConfiguration();
+				_samlProviderConfigurationHelper.getSamlProviderConfiguration();
 
 			if (samlProviderConfiguration.allowShowingTheLoginPortlet()) {
 				return null;
@@ -175,6 +173,9 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private SamlProviderConfigurationHelper _samlProviderConfigurationHelper;
 
 	@Reference
 	private SamlSpIdpConnectionLocalService _samlSpIdpConnectionLocalService;

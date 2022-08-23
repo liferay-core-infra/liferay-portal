@@ -39,21 +39,19 @@ import org.osgi.service.component.annotations.Reference;
 public class AuthRedirectAction extends BaseSamlStrutsAction {
 
 	@Override
+	public SamlProviderConfigurationHelper
+		getSamlProviderConfigurationHelper() {
+
+		return _samlProviderConfigurationHelper;
+	}
+
+	@Override
 	public boolean isEnabled() {
-		if (samlProviderConfigurationHelper.isRoleSp()) {
+		if (_samlProviderConfigurationHelper.isRoleSp()) {
 			return super.isEnabled();
 		}
 
 		return false;
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	public void setSamlProviderConfigurationHelper(
-		SamlProviderConfigurationHelper samlProviderConfigurationHelper) {
-
-		super.setSamlProviderConfigurationHelper(
-			samlProviderConfigurationHelper);
 	}
 
 	@Override
@@ -82,5 +80,8 @@ public class AuthRedirectAction extends BaseSamlStrutsAction {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private SamlProviderConfigurationHelper _samlProviderConfigurationHelper;
 
 }

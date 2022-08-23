@@ -88,6 +88,9 @@ public abstract class BaseSamlStrutsAction implements StrutsAction {
 		return null;
 	}
 
+	public abstract SamlProviderConfigurationHelper
+		getSamlProviderConfigurationHelper();
+
 	public boolean isEnabled() {
 		return samlProviderConfigurationHelper.isEnabled();
 	}

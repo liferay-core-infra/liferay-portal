@@ -14,16 +14,15 @@
 
 package com.liferay.portal.lpkg.deployer.internal;
 
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -39,11 +38,6 @@ public class ContainerLPKGUtil {
 
 	public static List<File> deploy(File lpkgFile, Properties properties)
 		throws IOException {
-
-		Path deployerDirPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
-
-		List<File> lpkgFiles = new ArrayList<>();
 
 		try (ZipFile zipFile = new ZipFile(lpkgFile)) {
 			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
@@ -69,15 +63,20 @@ public class ContainerLPKGUtil {
 
 					return null;
 				}
-
-				Path lpkgPath = deployerDirPath.resolve(name);
-
-				Files.copy(
-					zipFile.getInputStream(zipEntry), lpkgPath,
-					StandardCopyOption.REPLACE_EXISTING);
-
-				lpkgFiles.add(lpkgPath.toFile());
 			}
+		}
+
+		Path deployerDirPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
+
+		File deployerDirFile = deployerDirPath.toFile();
+
+		FileUtil.unzip(lpkgFile, deployerDirPath.toFile());
+
+		List<File> lpkgFiles = new ArrayList<>();
+
+		for (File file : deployerDirFile.listFiles()) {
+			lpkgFiles.add(file);
 		}
 
 		if (lpkgFiles.isEmpty()) {

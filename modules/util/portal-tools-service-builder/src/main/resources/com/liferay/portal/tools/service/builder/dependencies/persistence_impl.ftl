@@ -900,11 +900,18 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 				try {
 					<#list sanitizeTuples as sanitizeTuple>
-						<#assign
-							colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)
-
-							contentType = "\"" + sanitizeTuple.getObject(1) + "\""
-						/>
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							<#assign
+								colVariableName = sanitizeTuple.getObject(0)
+								colMethodName = textFormatter.format(colVariableName, 6)
+								contentType = "\"" + sanitizeTuple.getObject(1) + "\""
+							/>
+						<#else>
+							<#assign
+								colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)
+								contentType = "\"" + sanitizeTuple.getObject(1) + "\""
+							/>
+						</#if>
 
 						<#if contentType == "\"text/html\"">
 							<#assign contentType = "ContentTypes.TEXT_HTML" />
@@ -923,8 +930,17 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 						<#else>
 							<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")" />
 						</#if>
+						<#if serviceBuilder.isVersionGTE_7_4_0() && dependencyInjectorDS>
+							String ${colVariableName} = ${entity.variableName}.get${colMethodName}();
 
-						${entity.variableName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVariableName}, ${contentType}, ${modes}, ${entity.variableName}.get${colMethodName}(), null));
+							for (Sanitizer sanitizer : sanitizers) {
+								${colVariableName} = sanitizer.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVariableName}, ${contentType}, new String[]{${modes}}, ${entity.variableName}.get${colMethodName}(), null);
+							}
+
+							${entity.variableName}.set${colMethodName}(${colVariableName});
+						<#else>
+							${entity.variableName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVariableName}, ${contentType}, ${modes}, ${entity.variableName}.get${colMethodName}(), null));
+						</#if>
 					</#list>
 				}
 				catch (SanitizerException sanitizerException) {
@@ -2946,6 +2962,12 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				@ServiceReference(type = FinderCache.class)
 			</#if>
 			protected FinderCache finderCache;
+		</#if>
+		<#if serviceBuilder.isVersionGTE_7_4_0() && sanitizeTuples?size != 0>
+			<#if dependencyInjectorDS>
+				@Reference
+				protected volatile List<Sanitizer> sanitizers;
+			</#if>
 		</#if>
 	</#if>
 

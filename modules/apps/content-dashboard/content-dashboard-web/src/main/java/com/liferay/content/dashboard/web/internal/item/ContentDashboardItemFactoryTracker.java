@@ -30,8 +30,8 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -50,13 +50,13 @@ public class ContentDashboardItemFactoryTracker {
 	public Collection<Long> getClassNameIds() {
 		Collection<String> classNames = getClassNames();
 
-		Stream<String> stream = classNames.stream();
+		Set<Long> classNameIds = new HashSet<>();
 
-		return stream.map(
-			_classNameLocalService::getClassNameId
-		).collect(
-			Collectors.toSet()
-		);
+		for (String className : classNames) {
+			classNameIds.add(_classNameLocalService.getClassNameId(className));
+		}
+
+		return classNameIds;
 	}
 
 	public Collection<String> getClassNames() {

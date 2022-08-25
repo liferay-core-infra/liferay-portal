@@ -158,7 +158,7 @@ public class CPDefinitionLocalServiceTest {
 			WorkflowConstants.STATUS_APPROVED, cpDefinition.getStatus());
 
 		List<CPInstance> cpInstances =
-			_cpInstanceLocalService.getCPDefinitionInstances(
+			_cpInstanceLocalService.getCPDefinitionApprovedCPInstances(
 				cpDefinition.getCPDefinitionId());
 
 		Assert.assertEquals(cpInstances.toString(), 1, cpInstances.size());
@@ -351,7 +351,7 @@ public class CPDefinitionLocalServiceTest {
 			WorkflowConstants.STATUS_APPROVED, cpDefinition.getStatus());
 
 		List<CPInstance> cpInstances =
-			_cpInstanceLocalService.getCPDefinitionInstances(
+			_cpInstanceLocalService.getCPDefinitionApprovedCPInstances(
 				cpDefinition.getCPDefinitionId());
 
 		int approvedCPInstances = 0;
@@ -391,7 +391,7 @@ public class CPDefinitionLocalServiceTest {
 			WorkflowConstants.STATUS_APPROVED, cpDefinition.getStatus());
 
 		List<CPInstance> cpInstances =
-			_cpInstanceLocalService.getCPDefinitionInstances(
+			_cpInstanceLocalService.getCPDefinitionApprovedCPInstances(
 				cpDefinition.getCPDefinitionId());
 
 		Assert.assertEquals(cpInstances.toString(), 1, cpInstances.size());

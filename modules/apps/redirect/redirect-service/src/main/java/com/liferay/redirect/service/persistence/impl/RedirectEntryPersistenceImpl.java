@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -3918,19 +3917,31 @@ public class RedirectEntryPersistenceImpl
 			}
 
 			try {
-				redirectEntry.setDestinationURL(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId,
-						RedirectEntry.class.getName(), redirectEntryId,
-						ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						redirectEntry.getDestinationURL(), null));
+				String destinationURL = redirectEntry.getDestinationURL();
 
-				redirectEntry.setSourceURL(
-					SanitizerUtil.sanitize(
+				for (Sanitizer sanitizer : sanitizers) {
+					destinationURL = sanitizer.sanitize(
 						companyId, groupId, userId,
 						RedirectEntry.class.getName(), redirectEntryId,
-						ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						redirectEntry.getSourceURL(), null));
+						ContentTypes.TEXT_PLAIN,
+						new String[] {Sanitizer.MODE_ALL},
+						redirectEntry.getDestinationURL(), null);
+				}
+
+				redirectEntry.setDestinationURL(destinationURL);
+
+				String sourceURL = redirectEntry.getSourceURL();
+
+				for (Sanitizer sanitizer : sanitizers) {
+					sourceURL = sanitizer.sanitize(
+						companyId, groupId, userId,
+						RedirectEntry.class.getName(), redirectEntryId,
+						ContentTypes.TEXT_PLAIN,
+						new String[] {Sanitizer.MODE_ALL},
+						redirectEntry.getSourceURL(), null);
+				}
+
+				redirectEntry.setSourceURL(sourceURL);
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -4396,6 +4407,9 @@ public class RedirectEntryPersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	protected volatile List<Sanitizer> sanitizers;
 
 	private static final String _SQL_SELECT_REDIRECTENTRY =
 		"SELECT redirectEntry FROM RedirectEntry redirectEntry";

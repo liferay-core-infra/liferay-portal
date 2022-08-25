@@ -17,10 +17,10 @@ package com.liferay.journal.internal.content.compatibility.converter;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.journal.article.dynamic.data.mapping.form.field.type.constants.JournalArticleDDMFormFieldTypeConstants;
 import com.liferay.journal.content.compatibility.converter.JournalContentCompatibilityConverter;
+import com.liferay.journal.internal.util.JournalUtil;
 import com.liferay.layout.dynamic.data.mapping.form.field.type.constants.LayoutDDMFormFieldTypeConstants;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -57,7 +57,7 @@ public class JournalContentCompatibilityConverterImpl
 		try {
 			Document document = SAXReaderUtil.read(content);
 
-			return XMLUtil.formatXML(_convert(document));
+			return JournalUtil.formatXML(_convert(document));
 		}
 		catch (Exception exception) {
 			return content;

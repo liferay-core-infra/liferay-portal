@@ -16,7 +16,7 @@ package com.liferay.user.associated.data.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
+import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -116,7 +116,7 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 	protected abstract String[] doGetUserIdFieldNames();
 
 	protected String formatXML(String xml) {
-		return XMLUtil.formatXML(xml);
+		return Dom4jUtil.formatXML(xml);
 	}
 
 	/**

@@ -16,11 +16,11 @@ package com.liferay.journal.internal.transformer;
 
 import com.liferay.journal.configuration.JournalServiceConfiguration;
 import com.liferay.journal.constants.JournalPortletKeys;
+import com.liferay.journal.internal.util.JournalUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -168,7 +168,7 @@ public class ContentTransformerListener extends BaseTransformerListener {
 
 			replace(document, tokens);
 
-			xml = XMLUtil.formatXML(document);
+			xml = JournalUtil.formatXML(document);
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {

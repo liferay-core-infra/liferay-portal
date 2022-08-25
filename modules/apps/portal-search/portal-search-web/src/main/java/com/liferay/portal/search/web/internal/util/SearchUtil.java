@@ -22,7 +22,7 @@ import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
+import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -62,7 +62,7 @@ public class SearchUtil {
 		int totalRows = 0;
 
 		try {
-			xml = XMLUtil.stripInvalidChars(xml);
+			xml = Dom4jUtil.stripInvalidChars(xml);
 
 			Document document = SAXReaderUtil.read(xml);
 

@@ -82,7 +82,8 @@ public abstract class BasePropMethodImpl implements Method {
 
 		// Start building multistatus response
 
-		Element responseElement = multistatus.addElement(createQName("response"));
+		Element responseElement = multistatus.addElement(
+			createQName("response"));
 
 		Element hrefElement = responseElement.addElement(createQName("href"));
 
@@ -90,13 +91,17 @@ public abstract class BasePropMethodImpl implements Method {
 
 		// Build success and failure propstat elements
 
-		Element successStatElement = responseElement.addElement(createQName("propstat"));
+		Element successStatElement = responseElement.addElement(
+			createQName("propstat"));
 
-		Element successPropElement = successStatElement.addElement(createQName("prop"));
+		Element successPropElement = successStatElement.addElement(
+			createQName("prop"));
 
-		Element failureStatElement = responseElement.addElement(createQName("propstat"));
+		Element failureStatElement = responseElement.addElement(
+			createQName("propstat"));
 
-		Element failurePropElement = failureStatElement.addElement(createQName("prop"));
+		Element failurePropElement = failureStatElement.addElement(
+			createQName("prop"));
 
 		boolean hasSuccess = false;
 		boolean hasFailure = false;
@@ -117,9 +122,11 @@ public abstract class BasePropMethodImpl implements Method {
 		if (props.contains(CREATIONDATE)) {
 			props.remove(CREATIONDATE);
 
-			Element successCreationDateElement = successPropElement.addElement(CREATIONDATE);
+			Element successCreationDateElement = successPropElement.addElement(
+				CREATIONDATE);
 
-			successCreationDateElement.addText(GetterUtil.getString(resource.getCreateDateString()));
+			successCreationDateElement.addText(
+				GetterUtil.getString(resource.getCreateDateString()));
 
 			hasSuccess = true;
 		}
@@ -127,9 +134,11 @@ public abstract class BasePropMethodImpl implements Method {
 		if (props.contains(DISPLAYNAME)) {
 			props.remove(DISPLAYNAME);
 
-			Element successDisplayNameElement = successPropElement.addElement(DISPLAYNAME);
+			Element successDisplayNameElement = successPropElement.addElement(
+				DISPLAYNAME);
 
-			successDisplayNameElement.addText(GetterUtil.getString(resource.getDisplayName()));
+			successDisplayNameElement.addText(
+				GetterUtil.getString(resource.getDisplayName()));
 
 			hasSuccess = true;
 		}
@@ -137,9 +146,11 @@ public abstract class BasePropMethodImpl implements Method {
 		if (props.contains(GETLASTMODIFIED)) {
 			props.remove(GETLASTMODIFIED);
 
-			Element successGetLastModifiedElement = successPropElement.addElement(GETLASTMODIFIED);
+			Element successGetLastModifiedElement =
+				successPropElement.addElement(GETLASTMODIFIED);
 
-			successGetLastModifiedElement.addText(GetterUtil.getString(resource.getModifiedDate()));
+			successGetLastModifiedElement.addText(
+				GetterUtil.getString(resource.getModifiedDate()));
 
 			hasSuccess = true;
 		}
@@ -147,9 +158,11 @@ public abstract class BasePropMethodImpl implements Method {
 		if (props.contains(GETCONTENTTYPE)) {
 			props.remove(GETCONTENTTYPE);
 
-			Element successGetContentTypeElement = successPropElement.addElement(GETCONTENTTYPE);
+			Element successGetContentTypeElement =
+				successPropElement.addElement(GETCONTENTTYPE);
 
-			successGetContentTypeElement.addText(GetterUtil.getString(resource.getContentType()));
+			successGetContentTypeElement.addText(
+				GetterUtil.getString(resource.getContentType()));
 
 			hasSuccess = true;
 		}
@@ -158,9 +171,11 @@ public abstract class BasePropMethodImpl implements Method {
 			props.remove(GETCONTENTLENGTH);
 
 			if (!resource.isCollection()) {
-				Element successGetContentLengthElement = successPropElement.addElement(GETCONTENTLENGTH);
+				Element successGetContentLengthElement =
+					successPropElement.addElement(GETCONTENTLENGTH);
 
-				successGetContentLengthElement.addText(String.valueOf(resource.getSize()));
+				successGetContentLengthElement.addText(
+					String.valueOf(resource.getSize()));
 
 				hasSuccess = true;
 			}
@@ -176,7 +191,8 @@ public abstract class BasePropMethodImpl implements Method {
 
 			Lock lock = resource.getLock();
 
-			Element successIsReadOnlyElement = successPropElement.addElement(ISREADONLY);
+			Element successIsReadOnlyElement = successPropElement.addElement(
+				ISREADONLY);
 
 			if ((lock == null) || resource.isLocked()) {
 				successIsReadOnlyElement.addText(Boolean.FALSE.toString());
@@ -194,25 +210,31 @@ public abstract class BasePropMethodImpl implements Method {
 			Lock lock = resource.getLock();
 
 			if (lock != null) {
-				Element lockDiscoveryElement = successPropElement.addElement(LOCKDISCOVERY);
+				Element lockDiscoveryElement = successPropElement.addElement(
+					LOCKDISCOVERY);
 
-				Element activeLockElement = lockDiscoveryElement.addElement(createQName("activelock"));
+				Element activeLockElement = lockDiscoveryElement.addElement(
+					createQName("activelock"));
 
-				Element lockTypeElement = activeLockElement.addElement(createQName("locktype"));
+				Element lockTypeElement = activeLockElement.addElement(
+					createQName("locktype"));
 
 				lockTypeElement.addElement(createQName("write"));
 
-				Element lockScopeElement = activeLockElement.addElement(createQName("lockscope"));
+				Element lockScopeElement = activeLockElement.addElement(
+					createQName("lockscope"));
 
 				lockScopeElement.addElement(createQName("exclusive"));
 
 				if (resource.isCollection()) {
-					Element depthElement = activeLockElement.addElement(createQName("depth"));
+					Element depthElement = activeLockElement.addElement(
+						createQName("depth"));
 
 					depthElement.addText("Infinity");
 				}
 
-				Element ownerElement = activeLockElement.addElement(createQName("owner"));
+				Element ownerElement = activeLockElement.addElement(
+					createQName("owner"));
 
 				ownerElement.addText(GetterUtil.getString(lock.getOwner()));
 
@@ -231,21 +253,26 @@ public abstract class BasePropMethodImpl implements Method {
 					}
 				}
 
-				Element timeoutElement = activeLockElement.addElement(createQName("timeout"));
+				Element timeoutElement = activeLockElement.addElement(
+					createQName("timeout"));
 
 				if (timeRemaining > 0) {
 					timeoutElement.addText("Second-" + timeRemaining);
 				}
 				else {
-					 timeoutElement.addText("Infinite");
+					timeoutElement.addText("Infinite");
 				}
 
 				if (webDAVRequest.getUserId() == lock.getUserId()) {
-					Element lockTokenElement = activeLockElement.addElement(createQName("locktoken"));
+					Element lockTokenElement = activeLockElement.addElement(
+						createQName("locktoken"));
 
-					hrefElement = lockTokenElement.addElement(createQName("href"));
+					hrefElement = lockTokenElement.addElement(
+						createQName("href"));
 
-					hrefElement.addText(GetterUtil.getString("opaquelocktoken:" + lock.getUuid()));
+					hrefElement.addText(
+						GetterUtil.getString(
+							"opaquelocktoken:" + lock.getUuid()));
 				}
 
 				hasSuccess = true;
@@ -260,7 +287,8 @@ public abstract class BasePropMethodImpl implements Method {
 		if (props.contains(RESOURCETYPE)) {
 			props.remove(RESOURCETYPE);
 
-			Element resourceTypeElement = successPropElement.addElement(RESOURCETYPE);
+			Element resourceTypeElement = successPropElement.addElement(
+				RESOURCETYPE);
 
 			if (resource.isCollection()) {
 				resourceTypeElement.addElement(createQName("collection"));
@@ -300,7 +328,8 @@ public abstract class BasePropMethodImpl implements Method {
 		// Clean up propstats
 
 		if (hasSuccess) {
-			Element successStatusElement = successStatElement.addElement(createQName("status"));
+			Element successStatusElement = successStatElement.addElement(
+				createQName("status"));
 
 			successStatusElement.addText("HTTP/1.1 200 OK");
 		}
@@ -309,7 +338,8 @@ public abstract class BasePropMethodImpl implements Method {
 		}
 
 		if (!hasSuccess && hasFailure) {
-			Element failureStatusElement = failureStatElement.addElement(createQName("status"));
+			Element failureStatusElement = failureStatElement.addElement(
+				createQName("status"));
 
 			failureStatusElement.addText("HTTP/1.1 404 Not Found");
 		}

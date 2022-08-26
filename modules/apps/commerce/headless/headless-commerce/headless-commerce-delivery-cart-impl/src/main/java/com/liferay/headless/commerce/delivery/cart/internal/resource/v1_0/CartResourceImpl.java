@@ -714,6 +714,12 @@ public class CartResourceImpl extends BaseCartResourceImpl {
 			GetterUtil.get(
 				address.getPhoneNumber(), commerceAddress.getPhoneNumber()),
 			type, serviceContext);
+
+		_commerceOrderService.resetCommerceOrderShipping(
+			commerceOrder.getCommerceOrderId());
+
+		commerceOrder = _commerceOrderService.fetchCommerceOrder(
+			commerceOrder.getCommerceOrderId());
 	}
 
 	private void _updateOrder(CommerceOrder commerceOrder, Cart cart)

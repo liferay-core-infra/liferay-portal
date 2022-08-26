@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.petra.xml;
+package com.liferay.portal.dom4j;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.SystemException;

@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Portal Dom4j
+Bundle-SymbolicName: com.liferay.portal.dom4j
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.portal.dom4j

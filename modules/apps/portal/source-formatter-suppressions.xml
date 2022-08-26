@@ -10,6 +10,7 @@
 	</checkstyle>
 	<source-check>
 		<suppress checks="BNDDefinitionKeysCheck" files="portal-tika/bnd\.bnd" />
+		<suppress checks="JavaXMLSecurityCheck" files="portal-dom4j/src/main/java/com/liferay/portal/dom4j/Dom4jUtil\.java" />
 		<suppress checks="JavaXMLSecurityCheck" files="portal-monitoring/src/main/java/com/liferay/portal/monitoring/internal/MonitoringGateKeeper\.java" />
 	</source-check>
 </suppressions>

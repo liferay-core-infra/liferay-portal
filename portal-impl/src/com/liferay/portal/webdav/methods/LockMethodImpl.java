@@ -15,7 +15,7 @@
 package com.liferay.portal.webdav.methods;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.xml.Dom4jUtil;
+import com.liferay.portal.dom4j.Dom4jUtil;
 import com.liferay.portal.kernel.lock.Lock;
 import com.liferay.portal.kernel.lock.NoSuchLockException;
 import com.liferay.portal.kernel.log.Log;

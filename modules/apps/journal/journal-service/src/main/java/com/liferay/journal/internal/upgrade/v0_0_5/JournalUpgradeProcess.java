@@ -20,10 +20,10 @@ import com.liferay.dynamic.data.mapping.service.DDMStorageLinkLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLinkLocalService;
 import com.liferay.dynamic.data.mapping.util.DefaultDDMStructureHelper;
+import com.liferay.journal.internal.util.JournalUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -326,7 +326,7 @@ public class JournalUpgradeProcess extends UpgradeProcess {
 			dynamicElementElement.add(dynamicContentElement);
 		}
 
-		return XMLUtil.formatXML(newDocument);
+		return JournalUtil.formatXML(newDocument);
 	}
 
 	private String _fixStaticContent(
@@ -572,7 +572,7 @@ public class JournalUpgradeProcess extends UpgradeProcess {
 
 		_transformDateFieldValues(dynamicElementElements);
 
-		return XMLUtil.formatXML(document);
+		return JournalUtil.formatXML(document);
 	}
 
 	private String _transformFieldNames(String content) {

@@ -263,6 +263,9 @@ public interface CommerceOrderService extends BaseService {
 			long commerceOrderId, CommerceContext commerceContext)
 		throws PortalException;
 
+	public void resetCommerceOrderShipping(long commerceOrderId)
+		throws PortalException;
+
 	public CommerceOrder resetTermsAndConditions(
 			long commerceOrderId, boolean deliveryCommerceTermEntry,
 			boolean paymentCommerceTermEntry)

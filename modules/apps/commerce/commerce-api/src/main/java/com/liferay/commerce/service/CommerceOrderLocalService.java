@@ -554,7 +554,10 @@ public interface CommerceOrderLocalService
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
-	public CommerceOrder resetCommerceOrderShipping(long commerceOrderId)
+	public CommerceOrder resetCommerceOrderShipping(CommerceOrder commerceOrder)
+		throws PortalException;
+
+	public void resetCommerceOrderShipping(long shippingAddressId)
 		throws PortalException;
 
 	public CommerceOrder resetTermsAndConditions(

@@ -370,6 +370,12 @@ public class CommerceOrderServiceUtil {
 			commerceOrderId, commerceContext);
 	}
 
+	public static void resetCommerceOrderShipping(long commerceOrderId)
+		throws PortalException {
+
+		getService().resetCommerceOrderShipping(commerceOrderId);
+	}
+
 	public static CommerceOrder resetTermsAndConditions(
 			long commerceOrderId, boolean deliveryCommerceTermEntry,
 			boolean paymentCommerceTermEntry)

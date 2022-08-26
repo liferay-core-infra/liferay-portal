@@ -426,6 +426,13 @@ public class CommerceOrderServiceWrapper
 	}
 
 	@Override
+	public void resetCommerceOrderShipping(long commerceOrderId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_commerceOrderService.resetCommerceOrderShipping(commerceOrderId);
+	}
+
+	@Override
 	public com.liferay.commerce.model.CommerceOrder resetTermsAndConditions(
 			long commerceOrderId, boolean deliveryCommerceTermEntry,
 			boolean paymentCommerceTermEntry)

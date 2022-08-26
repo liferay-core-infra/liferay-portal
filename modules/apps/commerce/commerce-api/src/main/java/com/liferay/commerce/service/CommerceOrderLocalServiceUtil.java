@@ -728,10 +728,17 @@ public class CommerceOrderLocalServiceUtil {
 			userId, commerceOrderId, commerceContext);
 	}
 
-	public static CommerceOrder resetCommerceOrderShipping(long commerceOrderId)
+	public static CommerceOrder resetCommerceOrderShipping(
+			CommerceOrder commerceOrder)
 		throws PortalException {
 
-		return getService().resetCommerceOrderShipping(commerceOrderId);
+		return getService().resetCommerceOrderShipping(commerceOrder);
+	}
+
+	public static void resetCommerceOrderShipping(long shippingAddressId)
+		throws PortalException {
+
+		getService().resetCommerceOrderShipping(shippingAddressId);
 	}
 
 	public static CommerceOrder resetTermsAndConditions(

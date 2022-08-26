@@ -35,24 +35,25 @@ public class RankingIndexNameBuilderImplTest {
 
 	@Test
 	public void testMultiTenancy() {
-		_assertIndexName(
-			2021, companyId -> "liferay-" + companyId,
-			"liferay-2021-search-tuning-rankings");
-	}
-
-	private void _assertIndexName(
-		long companyId, IndexNameBuilder indexNameBuilder, String expected) {
-
 		RankingIndexNameBuilderImpl rankingIndexNameBuilderImpl =
 			new RankingIndexNameBuilderImpl();
 
 		ReflectionTestUtil.setFieldValue(
-			rankingIndexNameBuilderImpl, "_indexNameBuilder", indexNameBuilder);
+			rankingIndexNameBuilderImpl, "_indexNameBuilder",
+			new IndexNameBuilder() {
 
-		RankingIndexName rankingIndexName =
-			rankingIndexNameBuilderImpl.getRankingIndexName(companyId);
+				@Override
+				public String getIndexName(long companyId) {
+					return "liferay-" + companyId;
+				}
 
-		Assert.assertEquals(expected, rankingIndexName.getIndexName());
+			});
+
+		Assert.assertEquals(
+			"liferay-2021-search-tuning-rankings",
+			rankingIndexNameBuilderImpl.getRankingIndexName(
+				2021
+			).getIndexName());
 	}
 
 }

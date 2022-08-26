@@ -90,15 +90,13 @@ public class BaseJSPSettingsConfigurationAction
 		}
 	}
 
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	protected ServletContext getServletContext(
 		HttpServletRequest httpServletRequest) {
 
-		if (_servletContext != null) {
-			return _servletContext;
+		ServletContext servletContext = getServletContext();
+
+		if (servletContext != null) {
+			return servletContext;
 		}
 
 		String portletResource = ParamUtil.getString(
@@ -139,7 +137,5 @@ public class BaseJSPSettingsConfigurationAction
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseJSPSettingsConfigurationAction.class);
-
-	private ServletContext _servletContext;
 
 }

@@ -1581,11 +1581,16 @@ public class CommerceOrderLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		return updateAddress(
+		CommerceOrder commerceOrder = updateAddress(
 			commerceOrderId, name, description, street1, street2, street3, city,
 			zip, regionId, countryId, phoneNumber,
 			CommerceOrder::getShippingAddressId,
 			CommerceOrder::setShippingAddressId, serviceContext);
+
+		resetCommerceOrderShipping(commerceOrder.getShippingAddressId());
+
+		return commerceOrderPersistence.findByPrimaryKey(
+			commerceOrder.getCommerceOrderId());
 	}
 
 	@Indexable(type = IndexableType.REINDEX)

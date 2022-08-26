@@ -1226,7 +1226,8 @@ public class BaseAutoDeployer implements AutoDeployer {
 
 		paramNameElement.addText("portalListenerClasses");
 
-		Element paramValueElement = contextParamElement.addElement("param-value");
+		Element paramValueElement = contextParamElement.addElement(
+			"param-value");
 
 		paramValueElement.addText(StringUtil.merge(listenerClasses));
 

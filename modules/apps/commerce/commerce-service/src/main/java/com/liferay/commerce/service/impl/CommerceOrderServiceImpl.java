@@ -579,6 +579,20 @@ public class CommerceOrderServiceImpl extends CommerceOrderServiceBaseImpl {
 	}
 
 	@Override
+	public void resetCommerceOrderShipping(long commerceOrderId)
+		throws PortalException {
+
+		CommerceOrder commerceOrder =
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+
+		_commerceOrderModelResourcePermission.check(
+			getPermissionChecker(), commerceOrder, ActionKeys.UPDATE);
+
+		commerceOrderLocalService.resetCommerceOrderShipping(
+			commerceOrder.getShippingAddressId());
+	}
+
+	@Override
 	public CommerceOrder resetTermsAndConditions(
 			long commerceOrderId, boolean deliveryCommerceTermEntry,
 			boolean paymentCommerceTermEntry)

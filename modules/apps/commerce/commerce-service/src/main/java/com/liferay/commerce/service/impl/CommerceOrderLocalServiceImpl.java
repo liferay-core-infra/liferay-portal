@@ -987,17 +987,30 @@ public class CommerceOrderLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
-	public CommerceOrder resetCommerceOrderShipping(long commerceOrderId)
+	public CommerceOrder resetCommerceOrderShipping(CommerceOrder commerceOrder)
 		throws PortalException {
-
-		CommerceOrder commerceOrder =
-			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
 
 		commerceOrder.setCommerceShippingMethodId(0);
 		commerceOrder.setShippingAmount(BigDecimal.ZERO);
 		commerceOrder.setShippingOptionName(null);
 
 		return commerceOrderPersistence.update(commerceOrder);
+	}
+
+	@Override
+	public void resetCommerceOrderShipping(long shippingAddressId)
+		throws PortalException {
+
+		if (shippingAddressId > 0) {
+			List<CommerceOrder> commerceOrders =
+				commerceOrderLocalService.getCommerceOrdersByShippingAddress(
+					shippingAddressId);
+
+			for (CommerceOrder commerceOrder : commerceOrders) {
+				commerceOrderLocalService.resetCommerceOrderShipping(
+					commerceOrder);
+			}
+		}
 	}
 
 	@Override

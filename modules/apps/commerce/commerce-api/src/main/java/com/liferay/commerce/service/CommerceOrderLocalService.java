@@ -750,7 +750,6 @@ public interface CommerceOrderLocalService
 			long commerceOrderId, long shippingAddressId)
 		throws PortalException;
 
-	@Indexable(type = IndexableType.REINDEX)
 	public CommerceOrder updateShippingAddress(
 			long commerceOrderId, String name, String description,
 			String street1, String street2, String street3, String city,

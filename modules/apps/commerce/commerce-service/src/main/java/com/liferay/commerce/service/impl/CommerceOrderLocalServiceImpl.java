@@ -906,6 +906,63 @@ public class CommerceOrderLocalServiceImpl
 		return commerceOrderPersistence.update(commerceOrder);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public CommerceOrder removeCommerceOrderBillingAddress(
+			CommerceOrder commerceOrder)
+		throws PortalException {
+
+		commerceOrder.setBillingAddressId(0);
+
+		return commerceOrderPersistence.update(commerceOrder);
+	}
+
+	@Override
+	public void removeCommerceOrderBillingAddress(long billingAddressId)
+		throws PortalException {
+
+		if (billingAddressId > 0) {
+			List<CommerceOrder> commerceOrders =
+				commerceOrderLocalService.getCommerceOrdersByBillingAddress(
+					billingAddressId);
+
+			for (CommerceOrder commerceOrder : commerceOrders) {
+				commerceOrderLocalService.removeCommerceOrderBillingAddress(
+					commerceOrder);
+			}
+		}
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public CommerceOrder removeCommerceOrderShippingAddress(
+			CommerceOrder commerceOrder)
+		throws PortalException {
+
+		commerceOrder.setCommerceShippingMethodId(0);
+		commerceOrder.setShippingAddressId(0);
+		commerceOrder.setShippingAmount(BigDecimal.ZERO);
+		commerceOrder.setShippingOptionName(null);
+
+		return commerceOrderPersistence.update(commerceOrder);
+	}
+
+	@Override
+	public void removeCommerceOrderShippingAddress(long shippingAddressId)
+		throws PortalException {
+
+		if (shippingAddressId > 0) {
+			List<CommerceOrder> commerceOrders =
+				commerceOrderLocalService.getCommerceOrdersByShippingAddress(
+					shippingAddressId);
+
+			for (CommerceOrder commerceOrder : commerceOrders) {
+				commerceOrderLocalService.removeCommerceOrderShippingAddress(
+					commerceOrder);
+			}
+		}
+	}
+
 	@Override
 	public CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId, CommerceContext commerceContext)

@@ -817,6 +817,42 @@ public class CommerceOrderLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.commerce.model.CommerceOrder
+			removeCommerceOrderBillingAddress(
+				com.liferay.commerce.model.CommerceOrder commerceOrder)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceOrderLocalService.removeCommerceOrderBillingAddress(
+			commerceOrder);
+	}
+
+	@Override
+	public void removeCommerceOrderBillingAddress(long billingAddressId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_commerceOrderLocalService.removeCommerceOrderBillingAddress(
+			billingAddressId);
+	}
+
+	@Override
+	public com.liferay.commerce.model.CommerceOrder
+			removeCommerceOrderShippingAddress(
+				com.liferay.commerce.model.CommerceOrder commerceOrder)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceOrderLocalService.removeCommerceOrderShippingAddress(
+			commerceOrder);
+	}
+
+	@Override
+	public void removeCommerceOrderShippingAddress(long shippingAddressId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_commerceOrderLocalService.removeCommerceOrderShippingAddress(
+			shippingAddressId);
+	}
+
+	@Override
 	public com.liferay.commerce.model.CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId,
 			com.liferay.commerce.context.CommerceContext commerceContext)

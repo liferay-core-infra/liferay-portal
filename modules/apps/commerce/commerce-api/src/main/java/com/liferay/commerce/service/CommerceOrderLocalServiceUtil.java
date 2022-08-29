@@ -719,6 +719,33 @@ public class CommerceOrderLocalServiceUtil {
 		return getService().recalculatePrice(commerceOrderId, commerceContext);
 	}
 
+	public static CommerceOrder removeCommerceOrderBillingAddress(
+			CommerceOrder commerceOrder)
+		throws PortalException {
+
+		return getService().removeCommerceOrderBillingAddress(commerceOrder);
+	}
+
+	public static void removeCommerceOrderBillingAddress(long billingAddressId)
+		throws PortalException {
+
+		getService().removeCommerceOrderBillingAddress(billingAddressId);
+	}
+
+	public static CommerceOrder removeCommerceOrderShippingAddress(
+			CommerceOrder commerceOrder)
+		throws PortalException {
+
+		return getService().removeCommerceOrderShippingAddress(commerceOrder);
+	}
+
+	public static void removeCommerceOrderShippingAddress(
+			long shippingAddressId)
+		throws PortalException {
+
+		getService().removeCommerceOrderShippingAddress(shippingAddressId);
+	}
+
 	public static CommerceOrder reorderCommerceOrder(
 			long userId, long commerceOrderId,
 			com.liferay.commerce.context.CommerceContext commerceContext)

@@ -23,7 +23,6 @@ import com.liferay.commerce.exception.CommerceAddressTypeException;
 import com.liferay.commerce.exception.CommerceAddressZipException;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceGeocoder;
-import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.impl.CommerceAddressImpl;
 import com.liferay.commerce.service.base.CommerceAddressLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,8 +32,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.AddressLocalService;
@@ -46,8 +43,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.portal.vulcan.util.TransformUtil;
-
-import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -170,19 +165,11 @@ public class CommerceAddressLocalServiceImpl
 
 		// Commerce orders
 
-		List<CommerceOrder> commerceOrders =
-			commerceOrderLocalService.getCommerceOrdersByBillingAddress(
-				commerceAddress.getCommerceAddressId());
+		commerceOrderLocalService.removeCommerceOrderBillingAddress(
+			commerceAddress.getCommerceAddressId());
 
-		removeCommerceOrderAddresses(
-			commerceOrders, commerceAddress.getCommerceAddressId());
-
-		commerceOrders =
-			commerceOrderLocalService.getCommerceOrdersByShippingAddress(
-				commerceAddress.getCommerceAddressId());
-
-		removeCommerceOrderAddresses(
-			commerceOrders, commerceAddress.getCommerceAddressId());
+		commerceOrderLocalService.removeCommerceOrderShippingAddress(
+			commerceAddress.getCommerceAddressId());
 
 		return commerceAddress;
 	}
@@ -579,36 +566,6 @@ public class CommerceAddressLocalServiceImpl
 			address.isPrimary(), phoneNumber);
 
 		return CommerceAddressImpl.fromAddress(address);
-	}
-
-	protected void removeCommerceOrderAddresses(
-			List<CommerceOrder> commerceOrders, long commerceAddressId)
-		throws PortalException {
-
-		for (CommerceOrder commerceOrder : commerceOrders) {
-			long billingAddressId = commerceOrder.getBillingAddressId();
-			long shippingAddressId = commerceOrder.getShippingAddressId();
-
-			if (billingAddressId == commerceAddressId) {
-				commerceOrder.setBillingAddressId(0);
-			}
-
-			if (shippingAddressId == commerceAddressId) {
-				commerceOrder.setShippingAddressId(0);
-				commerceOrder.setCommerceShippingMethodId(0);
-				commerceOrder.setShippingOptionName(null);
-				commerceOrder.setShippingAmount(BigDecimal.ZERO);
-			}
-
-			commerceOrder = commerceOrderPersistence.update(commerceOrder);
-
-			Indexer<CommerceOrder> indexer =
-				IndexerRegistryUtil.nullSafeGetIndexer(CommerceOrder.class);
-
-			indexer.reindex(
-				CommerceOrder.class.getName(),
-				commerceOrder.getCommerceOrderId());
-		}
 	}
 
 	protected void validate(

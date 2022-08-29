@@ -163,14 +163,6 @@ public class CommerceAddressLocalServiceImpl
 		_addressLocalService.deleteAddress(
 			commerceAddress.getCommerceAddressId());
 
-		// Commerce orders
-
-		commerceOrderLocalService.removeCommerceOrderBillingAddress(
-			commerceAddress.getCommerceAddressId());
-
-		commerceOrderLocalService.removeCommerceOrderShippingAddress(
-			commerceAddress.getCommerceAddressId());
-
 		return commerceAddress;
 	}
 

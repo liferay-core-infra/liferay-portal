@@ -91,12 +91,14 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.io.Serializable;
 
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -1236,10 +1238,20 @@ public class CommerceOrderItemLocalServiceImpl
 				CommerceOrderConstants.TYPE_PK_APPROVAL, true);
 
 		if ((workflowDefinitionLink != null) && commerceOrder.isApproved()) {
-			return _commerceOrderLocalService.updateStatus(
-				serviceContext.getUserId(), commerceOrder.getCommerceOrderId(),
-				WorkflowConstants.STATUS_DRAFT, serviceContext,
-				Collections.emptyMap());
+			return WorkflowHandlerRegistryUtil.updateStatus(
+				WorkflowConstants.STATUS_DRAFT,
+				HashMapBuilder.<String, Serializable>put(
+					WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME,
+					CommerceOrder.class.getName()
+				).put(
+					WorkflowConstants.CONTEXT_ENTRY_CLASS_PK,
+					commerceOrder.getCommerceOrderId()
+				).put(
+					WorkflowConstants.CONTEXT_USER_ID,
+					serviceContext.getUserId()
+				).put(
+					"serviceContext", serviceContext
+				).build());
 		}
 
 		return commerceOrder;

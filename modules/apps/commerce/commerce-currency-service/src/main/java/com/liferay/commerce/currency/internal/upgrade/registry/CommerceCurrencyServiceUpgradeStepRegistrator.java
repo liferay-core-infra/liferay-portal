@@ -14,13 +14,20 @@
 
 package com.liferay.commerce.currency.internal.upgrade.registry;
 
+import com.liferay.commerce.currency.util.ExchangeRateProviderRegistry;
+import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
+import com.liferay.portal.kernel.service.CompanyLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alessio Antonio Rendina
@@ -57,6 +64,12 @@ public class CommerceCurrencyServiceUpgradeStepRegistrator
 
 			});
 
+		registry.registerInitialDeploymentUpgradeSteps(
+			new CommerceCurrencyDefaultValueImportUpgradeProcess(
+				_companyLocalService, _configurationProvider,
+				_counterLocalService, _userLocalService, _portalUUID,
+				_exchangeRateProviderRegistry));
+
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce currency upgrade step registrator finished");
 		}
@@ -64,5 +77,23 @@ public class CommerceCurrencyServiceUpgradeStepRegistrator
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceCurrencyServiceUpgradeStepRegistrator.class);
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private CounterLocalService _counterLocalService;
+
+	@Reference
+	private ExchangeRateProviderRegistry _exchangeRateProviderRegistry;
+
+	@Reference
+	private PortalUUID _portalUUID;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

@@ -57,9 +57,9 @@ public class JournalContentCompatibilityConverterImpl
 	@Override
 	public String convert(String content) {
 		try {
-			Document document = SAXReaderUtil.read(content);
+			Document document = _convert(SAXReaderUtil.read(content));
 
-			return XMLUtil.formatXML(_convert(document));
+			return document.formattedString(StringPool.DOUBLE_SPACE);
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {

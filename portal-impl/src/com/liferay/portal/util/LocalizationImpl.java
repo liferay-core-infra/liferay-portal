@@ -20,7 +20,7 @@ import com.liferay.petra.io.unsync.UnsyncStringWriter;
 import com.liferay.petra.memory.FinalizeManager;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
+import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -891,11 +891,11 @@ public class LocalizationImpl implements Localization {
 
 				if (cdata) {
 					xmlStreamWriter.writeCData(
-						XMLUtil.stripInvalidChars(entry.getValue()));
+						Dom4jUtil.stripInvalidChars(entry.getValue()));
 				}
 				else {
 					xmlStreamWriter.writeCharacters(
-						XMLUtil.stripInvalidChars(entry.getValue()));
+						Dom4jUtil.stripInvalidChars(entry.getValue()));
 				}
 
 				xmlStreamWriter.writeEndElement();
@@ -1288,7 +1288,7 @@ public class LocalizationImpl implements Localization {
 					_LANGUAGE_ID, requestedLanguageId);
 			}
 
-			String safeValue = XMLUtil.stripInvalidChars(value);
+			String safeValue = Dom4jUtil.stripInvalidChars(value);
 
 			if (cdata) {
 				xmlStreamWriter.writeCData(safeValue);

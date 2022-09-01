@@ -15,7 +15,7 @@
 package com.liferay.journal.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.petra.xml.XMLUtil;
+import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -57,7 +57,7 @@ public abstract class BaseJournalServiceTestCase {
 	protected String getDefultXsd() throws Exception {
 		String xsd = readText("test-journal-structure-all-fields.xml");
 
-		return XMLUtil.formatXML(xsd);
+		return Dom4jUtil.toString(xsd);
 	}
 
 	protected ServiceContext getServiceContext() {

@@ -889,33 +889,62 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				}
 
 				try {
-					<#list sanitizeTuples as sanitizeTuple>
-						<#assign
-							colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)
+					<#if serviceBuilder.isVersionGTE_7_4_0() && dependencyInjectorDS>
+						for (Sanitizer sanitizer : sanitizers) {
+							<#list sanitizeTuples as sanitizeTuple>
+								<#assign
+									colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)
+									contentType = "\"" + sanitizeTuple.getObject(1) + "\""
+								/>
 
-							contentType = "\"" + sanitizeTuple.getObject(1) + "\""
-						/>
+								<#if contentType == "\"text/html\"">
+									<#assign contentType = "ContentTypes.TEXT_HTML" />
+								<#elseif contentType == "\"text/plain\"">
+									<#assign contentType = "ContentTypes.TEXT_PLAIN" />
+								</#if>
 
-						<#if contentType == "\"text/html\"">
-							<#assign contentType = "ContentTypes.TEXT_HTML" />
-						<#elseif contentType == "\"text/plain\"">
-							<#assign contentType = "ContentTypes.TEXT_PLAIN" />
-						</#if>
+								<#assign modes = "\"" + sanitizeTuple.getObject(2) + "\"" />
 
-						<#assign modes = "\"" + sanitizeTuple.getObject(2) + "\"" />
+								<#if modes == "\"ALL\"">
+									<#assign modes = "Sanitizer.MODE_ALL" />
+								<#elseif modes == "\"BAD_WORDS\"">
+									<#assign modes = "Sanitizer.MODE_BAD_WORDS" />
+								<#elseif modes == "\"XSS\"">
+									<#assign modes = "Sanitizer.MODE_XSS" />
+								<#else>
+									<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")" />
+								</#if>
+								${entity.variableName}.set${colMethodName}(sanitizer.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVariableName}, ${contentType}, new String[]{${modes}}, ${entity.variableName}.get${colMethodName}(), null));
+							</#list>
+						}
+					<#else>
+						<#list sanitizeTuples as sanitizeTuple>
+							<#assign
+								colMethodName = textFormatter.format(sanitizeTuple.getObject(0), 6)
+								contentType = "\"" + sanitizeTuple.getObject(1) + "\""
+							/>
 
-						<#if modes == "\"ALL\"">
-							<#assign modes = "Sanitizer.MODE_ALL" />
-						<#elseif modes == "\"BAD_WORDS\"">
-							<#assign modes = "Sanitizer.MODE_BAD_WORDS" />
-						<#elseif modes == "\"XSS\"">
-							<#assign modes = "Sanitizer.MODE_XSS" />
-						<#else>
-							<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")" />
-						</#if>
+							<#if contentType == "\"text/html\"">
+								<#assign contentType = "ContentTypes.TEXT_HTML" />
+							<#elseif contentType == "\"text/plain\"">
+								<#assign contentType = "ContentTypes.TEXT_PLAIN" />
+							</#if>
 
-						${entity.variableName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVariableName}, ${contentType}, ${modes}, ${entity.variableName}.get${colMethodName}(), null));
-					</#list>
+							<#assign modes = "\"" + sanitizeTuple.getObject(2) + "\"" />
+
+							<#if modes == "\"ALL\"">
+								<#assign modes = "Sanitizer.MODE_ALL" />
+							<#elseif modes == "\"BAD_WORDS\"">
+								<#assign modes = "Sanitizer.MODE_BAD_WORDS" />
+							<#elseif modes == "\"XSS\"">
+								<#assign modes = "Sanitizer.MODE_XSS" />
+							<#else>
+								<#assign modes = "StringUtil.split(\"" + sanitizeTuple.getObject(2) + "\")" />
+							</#if>
+
+							${entity.variableName}.set${colMethodName}(SanitizerUtil.sanitize(companyId, groupId, userId, ${apiPackagePath}.model.${entity.name}.class.getName(), ${entity.PKVariableName}, ${contentType}, ${modes}, ${entity.variableName}.get${colMethodName}(), null));
+						</#list>
+					</#if>
 				}
 				catch (SanitizerException sanitizerException) {
 					throw new SystemException(sanitizerException);
@@ -2936,6 +2965,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				@ServiceReference(type = FinderCache.class)
 			</#if>
 			protected FinderCache finderCache;
+		</#if>
+		<#if sanitizeTuples?size != 0 && serviceBuilder.isVersionGTE_7_4_0() && dependencyInjectorDS>
+			@Reference
+			private volatile List<Sanitizer> sanitizers;
 		</#if>
 	</#if>
 

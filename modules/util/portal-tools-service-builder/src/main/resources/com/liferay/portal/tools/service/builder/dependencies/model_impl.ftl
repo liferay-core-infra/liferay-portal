@@ -1841,7 +1841,18 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 					<#if stringUtil.equals(entityColumn.type, "boolean")>
 						sb.append(is${entityColumn.methodName}());
 					<#else>
-						sb.append(get${entityColumn.methodName}());
+						<#if serviceBuilder.isVersionGTE_7_4_0()>
+							<#assign fieldName = textFormatter.format(entityColumn.methodName, 8) />
+							String ${fieldName} = String.valueOf(get${entityColumn.methodName}());
+
+							${fieldName} = StringUtil.replace(${fieldName}, "]]><", "[$SPECIAL_CHARACTER$]");
+							${fieldName} = StringUtil.replace(${fieldName}, "]]>", "]]]]><![CDATA[>");
+							${fieldName} = StringUtil.replace(${fieldName}, "[$SPECIAL_CHARACTER$]", "]]><");
+
+							sb.append(${fieldName});
+						<#else>
+							sb.append(get${entityColumn.methodName}());
+						</#if>
 					</#if>
 
 					sb.append("]]></column-value></column>");
@@ -1914,7 +1925,19 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 				sb.append("<column><column-name>");
 				sb.append(attributeName);
 				sb.append("</column-name><column-value><![CDATA[");
-				sb.append(attributeGetterFunction.apply((${entity.name})this));
+
+				<#if serviceBuilder.isVersionGTE_7_4_0()>
+					String attribute = String.valueOf(attributeGetterFunction.apply((${entity.name})this));
+
+					attribute = StringUtil.replace(attribute, "]]><", "[$SPECIAL_CHARACTER$]");
+					attribute = StringUtil.replace(attribute, "]]>", "]]]]><![CDATA[>");
+					attribute = StringUtil.replace(attribute, "[$SPECIAL_CHARACTER$]", "]]><");
+
+					sb.append(attribute);
+				<#else>
+					sb.append(attributeGetterFunction.apply((${entity.name})this));
+				</#if>
+
 				sb.append("]]></column-value></column>");
 			}
 

@@ -46,7 +46,7 @@ public class DeleteTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long[] deleteTemplateIds = null;
+		long[] deleteTemplateIds;
 
 		long templateId = ParamUtil.getLong(actionRequest, "templateId");
 

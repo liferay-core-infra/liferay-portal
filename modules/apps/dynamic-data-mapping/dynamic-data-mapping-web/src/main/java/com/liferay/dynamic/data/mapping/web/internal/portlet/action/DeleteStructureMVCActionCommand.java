@@ -44,7 +44,7 @@ public class DeleteStructureMVCActionCommand extends BaseDDMMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long[] deleteStructureIds = null;
+		long[] deleteStructureIds;
 
 		long structureId = ParamUtil.getLong(actionRequest, "classPK");
 

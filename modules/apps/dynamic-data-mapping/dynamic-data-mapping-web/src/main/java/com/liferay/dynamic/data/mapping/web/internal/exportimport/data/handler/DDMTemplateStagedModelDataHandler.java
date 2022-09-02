@@ -105,7 +105,7 @@ public class DDMTemplateStagedModelDataHandler
 
 		return _ddmTemplateLocalService.getDDMTemplatesByUuidAndCompanyId(
 			uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			new StagedModelModifiedDateComparator<DDMTemplate>());
+			new StagedModelModifiedDateComparator<>());
 	}
 
 	@Override
@@ -507,7 +507,7 @@ public class DDMTemplateStagedModelDataHandler
 		String uuid, long groupId, long classNameId, String templateKey,
 		boolean preloaded) {
 
-		DDMTemplate existingTemplate = null;
+		DDMTemplate existingTemplate;
 
 		if (!preloaded) {
 			existingTemplate = fetchStagedModelByUuidAndGroupId(uuid, groupId);

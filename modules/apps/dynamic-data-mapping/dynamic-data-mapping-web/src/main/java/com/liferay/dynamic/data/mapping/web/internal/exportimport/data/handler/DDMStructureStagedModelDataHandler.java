@@ -373,7 +373,7 @@ public class DDMStructureStagedModelDataHandler
 		ServiceContext serviceContext = portletDataContext.createServiceContext(
 			structure);
 
-		DDMStructure importedStructure = null;
+		DDMStructure importedStructure;
 
 		if (portletDataContext.isDataStrategyMirror()) {
 			Element element =

@@ -225,77 +225,31 @@ public class DDMPortlet extends MVCPortlet {
 			DDMWebConfiguration.class, properties);
 	}
 
-	@Reference(unbind = "-")
-	protected void setDDMDisplayRegistry(
-		DDMDisplayRegistry ddmDisplayRegistry) {
-
-		_ddmDisplayRegistry = ddmDisplayRegistry;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMStructureLinkLocalService(
-		DDMStructureLinkLocalService ddmStructureLinkLocalService) {
-
-		this.ddmStructureLinkLocalService = ddmStructureLinkLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMStructureLocalService(
-		DDMStructureLocalService ddmStructureLocalService) {
-
-		this.ddmStructureLocalService = ddmStructureLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMStructureService(
-		DDMStructureService ddmStructureService) {
-
-		this.ddmStructureService = ddmStructureService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMTemplateHelper(DDMTemplateHelper ddmTemplateHelper) {
-		_ddmTemplateHelper = ddmTemplateHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMTemplateLocalService(
-		DDMTemplateLocalService ddmTemplateLocalService) {
-
-		this.ddmTemplateLocalService = ddmTemplateLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMTemplateService(
-		DDMTemplateService ddmTemplateService) {
-
-		this.ddmTemplateService = ddmTemplateService;
-	}
-
-	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.dynamic.data.mapping.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))",
-		unbind = "-"
-	)
-	protected void setRelease(Release release) {
-	}
-
-	@Reference(unbind = "-")
-	protected void setStorageAdapterRegistry(
-		StorageAdapterRegistry storageAdapterRegistry) {
-
-		_storageAdapterRegistry = storageAdapterRegistry;
-	}
-
+	@Reference
 	protected volatile DDMStructureLinkLocalService
 		ddmStructureLinkLocalService;
+
+	@Reference
 	protected volatile DDMStructureLocalService ddmStructureLocalService;
+
+	@Reference
 	protected volatile DDMStructureService ddmStructureService;
+
+	@Reference
 	protected volatile DDMTemplateLocalService ddmTemplateLocalService;
+
+	@Reference
 	protected volatile DDMTemplateService ddmTemplateService;
+
 	protected volatile DDMWebConfiguration ddmWebConfiguration;
 
 	@Reference
 	protected Portal portal;
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.dynamic.data.mapping.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"
+	)
+	protected Release release;
 
 	private void _setDDMDisplayContextRequestAttribute(
 			RenderRequest renderRequest, RenderResponse renderResponse)
@@ -348,8 +302,13 @@ public class DDMPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(DDMPortlet.class);
 
+	@Reference
 	private DDMDisplayRegistry _ddmDisplayRegistry;
+
+	@Reference
 	private DDMTemplateHelper _ddmTemplateHelper;
+
+	@Reference
 	private StorageAdapterRegistry _storageAdapterRegistry;
 
 }

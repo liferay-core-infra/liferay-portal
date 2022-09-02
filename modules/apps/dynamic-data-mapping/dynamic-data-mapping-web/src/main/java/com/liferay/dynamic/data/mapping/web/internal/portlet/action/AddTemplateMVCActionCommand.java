@@ -83,13 +83,7 @@ public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 		return ParamUtil.getString(uploadPortletRequest, "scriptContent");
 	}
 
-	@Reference(unbind = "-")
-	protected void setDDMTemplateService(
-		DDMTemplateService ddmTemplateService) {
-
-		this.ddmTemplateService = ddmTemplateService;
-	}
-
+	@Reference
 	protected DDMTemplateService ddmTemplateService;
 
 	@Reference
@@ -163,7 +157,7 @@ public class AddTemplateMVCActionCommand extends BaseDDMMVCActionCommand {
 	}
 
 	private boolean _isValidContentType(String contentType) {
-		if (contentType.equals(ContentTypes.APPLICATION_XSLT_XML) ||
+		if (contentType.equals(ContentTypes.APPLICATION_XSLT_XnML) ||
 			contentType.startsWith(ContentTypes.TEXT)) {
 
 			return true;

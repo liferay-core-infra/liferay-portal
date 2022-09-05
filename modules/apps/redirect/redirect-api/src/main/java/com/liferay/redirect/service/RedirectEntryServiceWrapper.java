@@ -89,6 +89,14 @@ public class RedirectEntryServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.redirect.model.RedirectEntry>
+			getRedirectEntries(long groupId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _redirectEntryService.getRedirectEntries(groupId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.redirect.model.RedirectEntry>
 			getRedirectEntries(
 				long groupId, int start, int end,
 				com.liferay.portal.kernel.util.OrderByComparator

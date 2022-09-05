@@ -83,6 +83,12 @@ public class RedirectEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static List<RedirectEntry> getRedirectEntries(long groupId)
+		throws PortalException {
+
+		return getService().getRedirectEntries(groupId);
+	}
+
 	public static List<RedirectEntry> getRedirectEntries(
 			long groupId, int start, int end,
 			OrderByComparator<RedirectEntry> orderByComparator)

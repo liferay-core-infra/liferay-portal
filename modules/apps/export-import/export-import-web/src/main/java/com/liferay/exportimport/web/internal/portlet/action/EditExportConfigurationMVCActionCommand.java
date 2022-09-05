@@ -194,29 +194,6 @@ public class EditExportConfigurationMVCActionCommand
 		}
 	}
 
-	@Reference(unbind = "-")
-	protected void setExportImportConfigurationLocalService(
-		ExportImportConfigurationLocalService
-			exportImportConfigurationLocalService) {
-
-		this.exportImportConfigurationLocalService =
-			exportImportConfigurationLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setExportImportConfigurationService(
-		ExportImportConfigurationService exportImportConfigurationService) {
-
-		_exportImportConfigurationService = exportImportConfigurationService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setExportImportService(
-		ExportImportService exportImportService) {
-
-		_exportImportService = exportImportService;
-	}
-
 	protected void setLayoutIdMap(ActionRequest actionRequest) {
 		HttpServletRequest httpServletRequest = portal.getHttpServletRequest(
 			actionRequest);
@@ -233,11 +210,6 @@ public class EditExportConfigurationMVCActionCommand
 				groupId, privateLayout,
 				SessionTreeJSClicks.getOpenNodes(
 					httpServletRequest, treeId + "SelectedNode")));
-	}
-
-	@Reference(unbind = "-")
-	protected void setTrashEntryService(TrashEntryService trashEntryService) {
-		_trashEntryService = trashEntryService;
 	}
 
 	@Reference
@@ -309,8 +281,13 @@ public class EditExportConfigurationMVCActionCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditExportConfigurationMVCActionCommand.class);
 
+	@Reference
 	private ExportImportConfigurationService _exportImportConfigurationService;
+
+	@Reference
 	private ExportImportService _exportImportService;
+
+	@Reference
 	private TrashEntryService _trashEntryService;
 
 }

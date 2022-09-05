@@ -350,9 +350,8 @@ public class CPDefinitionOptionRelLocalServiceImpl
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
 			CPDefinitionOptionRel cpDefinitionOptionRel =
-				cpDefinitionOptionRelLocalService.
-					fetchCPDefinitionOptionRelByKey(
-						cpDefinitionId, jsonObject.getString("key"));
+				cpDefinitionOptionRelPersistence.fetchByC_K(
+					cpDefinitionId, jsonObject.getString("key"));
 
 			if ((cpDefinitionOptionRel == null) ||
 				(skuContributorsOnly &&
@@ -366,10 +365,9 @@ public class CPDefinitionOptionRelLocalServiceImpl
 
 			for (int j = 0; j < valueJSONArray.length(); j++) {
 				CPDefinitionOptionValueRel cpDefinitionOptionValueRel =
-					_cpDefinitionOptionValueRelLocalService.
-						fetchCPDefinitionOptionValueRel(
-							cpDefinitionOptionRel.getCPDefinitionOptionRelId(),
-							valueJSONArray.getString(j));
+					_cpDefinitionOptionValueRelPersistence.fetchByC_K(
+						cpDefinitionOptionRel.getCPDefinitionOptionRelId(),
+						valueJSONArray.getString(j));
 
 				if (cpDefinitionOptionValueRel == null) {
 					continue;

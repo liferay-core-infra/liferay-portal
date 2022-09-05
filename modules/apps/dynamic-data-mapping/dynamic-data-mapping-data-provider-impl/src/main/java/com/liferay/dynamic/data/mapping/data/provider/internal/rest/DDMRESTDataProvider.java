@@ -34,7 +34,6 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.json.web.service.client.JSONWebServiceClient;
 import com.liferay.portal.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.portal.json.web.service.client.JSONWebServiceException;
-import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -611,13 +610,6 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 		return StringPool.PERIOD.concat(path);
 	}
 
-	@Reference(unbind = "-")
-	private void _setMultiVMPool(MultiVMPool multiVMPool) {
-		_portalCache =
-			(PortalCache<String, DDMDataProviderResponse>)
-				multiVMPool.getPortalCache(DDMRESTDataProvider.class.getName());
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMRESTDataProvider.class);
 
@@ -641,6 +633,7 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 	@Reference
 	private JSONWebServiceClientFactory _jsonWebServiceClientFactory;
 
+	@Reference
 	private PortalCache<String, DDMDataProviderResponse> _portalCache;
 
 }

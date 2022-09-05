@@ -73,7 +73,7 @@ public class DDMXMLImpl implements DDMXML {
 			List<String> fieldNames)
 		throws PortalException {
 
-		Document document = null;
+		Document document;
 
 		try {
 			document = _saxReader.read(xml);

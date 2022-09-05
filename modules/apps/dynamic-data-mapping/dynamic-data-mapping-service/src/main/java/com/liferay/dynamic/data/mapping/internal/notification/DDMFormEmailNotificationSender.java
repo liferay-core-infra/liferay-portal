@@ -70,7 +70,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.function.Function;
 
 import javax.mail.internet.InternetAddress;
 
@@ -128,14 +127,8 @@ public class DDMFormEmailNotificationSender {
 
 		List<String> renderedDDMFormFieldValues = ListUtil.toList(
 			ddmFormFieldValues,
-			new Function<DDMFormFieldValue, String>() {
-
-				@Override
-				public String apply(DDMFormFieldValue ddmFormFieldValue) {
-					return _renderDDMFormFieldValue(ddmFormFieldValue, locale);
-				}
-
-			});
+			ddmFormFieldValue -> _renderDDMFormFieldValue(
+				ddmFormFieldValue, locale));
 
 		return HashMapBuilder.<String, Object>put(
 			"label", _getLabel(ddmFormField, locale)

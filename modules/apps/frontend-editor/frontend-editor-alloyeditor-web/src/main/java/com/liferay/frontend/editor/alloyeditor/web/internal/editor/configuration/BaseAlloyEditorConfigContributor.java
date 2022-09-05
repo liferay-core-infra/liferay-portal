@@ -92,11 +92,6 @@ public abstract class BaseAlloyEditorConfigContributor
 			name + "selectDocument");
 	}
 
-	@Reference(unbind = "-")
-	protected void setItemSelector(ItemSelector itemSelector) {
-		_itemSelector = itemSelector;
-	}
-
 	private void _populateFileBrowserURL(
 		JSONObject jsonObject,
 		RequestBackedPortletURLFactory requestBackedPortletURLFactory,
@@ -123,6 +118,7 @@ public abstract class BaseAlloyEditorConfigContributor
 					fileItemSelectorCriterion, layoutItemSelectorCriterion)));
 	}
 
+	@Reference
 	private ItemSelector _itemSelector;
 
 }

@@ -16,18 +16,19 @@ package com.liferay.redirect.service.impl;
 
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.redirect.constants.RedirectConstants;
 import com.liferay.redirect.model.RedirectEntry;
 import com.liferay.redirect.service.base.RedirectEntryServiceBaseImpl;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -102,40 +103,46 @@ public class RedirectEntryServiceImpl extends RedirectEntryServiceBaseImpl {
 	}
 
 	@Override
+	public List<RedirectEntry> getRedirectEntries(long groupId)
+		throws PortalException {
+
+		List<RedirectEntry> redirectEntries = ListUtil.copy(
+			redirectEntryPersistence.findByGroupId(groupId));
+
+		Iterator<RedirectEntry> iterator = redirectEntries.iterator();
+
+		while (iterator.hasNext()) {
+			RedirectEntry redirectEntry = iterator.next();
+
+			if (!_redirectEntryModelResourcePermission.contains(
+					getPermissionChecker(), redirectEntry, ActionKeys.VIEW)) {
+
+				iterator.remove();
+			}
+		}
+
+		return redirectEntries;
+	}
+
+	@Override
 	public List<RedirectEntry> getRedirectEntries(
 			long groupId, int start, int end,
 			OrderByComparator<RedirectEntry> orderByComparator)
 		throws PortalException {
 
-		PermissionChecker permissionChecker = getPermissionChecker();
+		List<RedirectEntry> redirectEntries = getRedirectEntries(groupId);
 
-		if (!permissionChecker.hasPermission(
-				groupId, RedirectEntry.class.getName(),
-				RedirectEntry.class.getName(), ActionKeys.VIEW)) {
+		Collections.sort(redirectEntries, orderByComparator);
 
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, RedirectEntry.class.getName(),
-				RedirectEntry.class.getName(), ActionKeys.VIEW);
-		}
-
-		return redirectEntryLocalService.getRedirectEntries(
-			groupId, start, end, orderByComparator);
+		return Collections.unmodifiableList(
+			ListUtil.subList(redirectEntries, start, end));
 	}
 
 	@Override
 	public int getRedirectEntriesCount(long groupId) throws PortalException {
-		PermissionChecker permissionChecker = getPermissionChecker();
+		List<RedirectEntry> redirectEntries = getRedirectEntries(groupId);
 
-		if (!permissionChecker.hasPermission(
-				groupId, RedirectEntry.class.getName(),
-				RedirectEntry.class.getName(), ActionKeys.VIEW)) {
-
-			throw new PrincipalException.MustHavePermission(
-				permissionChecker, RedirectEntry.class.getName(),
-				RedirectEntry.class.getName(), ActionKeys.VIEW);
-		}
-
-		return redirectEntryLocalService.getRedirectEntriesCount(groupId);
+		return redirectEntries.size();
 	}
 
 	@Override

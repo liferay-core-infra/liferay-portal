@@ -29,6 +29,7 @@ import com.liferay.product.navigation.control.menu.constants.ProductNavigationCo
 
 import javax.portlet.PortletRequest;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -85,12 +86,8 @@ public class PortletOptionsProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.product.navigation.control.menu.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	private String _getPortletId(HttpServletRequest httpServletRequest) {
@@ -102,5 +99,10 @@ public class PortletOptionsProductNavigationControlMenuEntry
 
 		return portletDisplay.getRootPortletId();
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.product.navigation.control.menu.web)"
+	)
+	private ServletContext _servletContext;
 
 }

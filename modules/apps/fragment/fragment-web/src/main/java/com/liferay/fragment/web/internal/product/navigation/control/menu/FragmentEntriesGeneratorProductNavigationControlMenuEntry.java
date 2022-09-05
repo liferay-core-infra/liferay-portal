@@ -26,6 +26,7 @@ import com.liferay.product.navigation.control.menu.constants.ProductNavigationCo
 import java.util.Locale;
 import java.util.Objects;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -86,12 +87,11 @@ public class FragmentEntriesGeneratorProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.fragment.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.fragment.web)")
+	private ServletContext _servletContext;
 
 }

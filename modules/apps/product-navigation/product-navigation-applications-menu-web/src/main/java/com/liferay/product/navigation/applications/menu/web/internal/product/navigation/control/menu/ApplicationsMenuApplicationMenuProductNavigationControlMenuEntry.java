@@ -29,6 +29,7 @@ import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationContr
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -92,14 +93,8 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.product.navigation.applications.menu.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	@Reference
@@ -111,6 +106,9 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;
 
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.product.navigation.applications.menu.web)"
+	)
 	private ServletContext _servletContext;
 
 }

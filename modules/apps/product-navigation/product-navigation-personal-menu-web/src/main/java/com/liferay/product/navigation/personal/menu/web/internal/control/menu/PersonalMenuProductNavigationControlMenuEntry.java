@@ -30,6 +30,7 @@ import com.liferay.product.navigation.personal.menu.web.internal.constants.Perso
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -113,16 +114,17 @@ public class PersonalMenuProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.product.navigation.personal.menu.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	@Reference
 	private PersonalMenuConfigurationTracker _personalMenuConfigurationTracker;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.product.navigation.personal.menu.web)"
+	)
+	private ServletContext _servletContext;
 
 	@Reference
 	private UserNotificationEventLocalService

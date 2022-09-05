@@ -43,6 +43,7 @@ import java.io.IOException;
 
 import java.util.Objects;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -144,12 +145,8 @@ public class SegmentsExperienceSelectorProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.segments.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	@Override
@@ -185,6 +182,9 @@ public class SegmentsExperienceSelectorProductNavigationControlMenuEntry
 
 	@Reference
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.segments.web)")
+	private ServletContext _servletContext;
 
 	@Reference
 	private Sites _sites;

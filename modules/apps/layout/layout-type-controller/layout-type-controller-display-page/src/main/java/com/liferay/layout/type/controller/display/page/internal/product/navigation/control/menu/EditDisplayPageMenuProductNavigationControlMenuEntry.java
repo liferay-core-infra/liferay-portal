@@ -43,6 +43,7 @@ import java.io.IOException;
 
 import java.util.Locale;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -168,12 +169,8 @@ public class EditDisplayPageMenuProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.display.page)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	@Reference
@@ -181,5 +178,10 @@ public class EditDisplayPageMenuProductNavigationControlMenuEntry
 
 	@Reference
 	private Portal _portal;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.display.page)"
+	)
+	private ServletContext _servletContext;
 
 }

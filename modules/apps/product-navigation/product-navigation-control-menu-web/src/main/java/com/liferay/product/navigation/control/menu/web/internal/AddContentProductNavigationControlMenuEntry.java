@@ -22,6 +22,7 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuE
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 import com.liferay.product.navigation.control.menu.web.internal.util.ProductNavigationControlMenuUtil;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,12 +76,13 @@ public class AddContentProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.product.navigation.control.menu.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.product.navigation.control.menu.web)"
+	)
+	private ServletContext _servletContext;
 
 }

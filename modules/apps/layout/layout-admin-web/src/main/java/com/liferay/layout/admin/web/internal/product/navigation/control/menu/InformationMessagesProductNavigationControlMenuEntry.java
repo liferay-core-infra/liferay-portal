@@ -31,6 +31,7 @@ import com.liferay.sites.kernel.util.Sites;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -123,12 +124,8 @@ public class InformationMessagesProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.layout.admin.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	private boolean _isLinkedLayout(ThemeDisplay themeDisplay)
@@ -174,6 +171,9 @@ public class InformationMessagesProductNavigationControlMenuEntry
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		InformationMessagesProductNavigationControlMenuEntry.class);
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.layout.admin.web)")
+	private ServletContext _servletContext;
 
 	@Reference
 	private Sites _sites;

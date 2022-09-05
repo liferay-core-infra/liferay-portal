@@ -53,6 +53,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletResponse;
 import javax.portlet.WindowState;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -149,12 +150,8 @@ public class CollectionItemsDetailProductNavigationControlMenuEntry
 	}
 
 	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.collection)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
+	protected RequestDispatcher getRequestDispatcher(String jspPath) {
+		return _servletContext.getRequestDispatcher(jspPath);
 	}
 
 	private LiferayRenderRequest _createLiferayRenderRequest(
@@ -226,5 +223,10 @@ public class CollectionItemsDetailProductNavigationControlMenuEntry
 
 	@Reference
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.collection)"
+	)
+	private ServletContext _servletContext;
 
 }

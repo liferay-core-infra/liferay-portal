@@ -36,6 +36,7 @@ import com.liferay.commerce.product.service.CPDefinitionOptionValueRelLocalServi
 import com.liferay.commerce.product.service.CPInstanceOptionValueRelLocalService;
 import com.liferay.commerce.product.service.CProductLocalService;
 import com.liferay.commerce.product.service.base.CPInstanceLocalServiceBaseImpl;
+import com.liferay.commerce.product.service.persistence.CPDefinitionOptionRelPersistence;
 import com.liferay.commerce.product.service.persistence.CPInstanceOptionValueRelPersistence;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -1480,8 +1481,7 @@ public class CPInstanceLocalServiceImpl extends CPInstanceLocalServiceBaseImpl {
 		throws NoSuchSkuContributorCPDefinitionOptionRelException {
 
 		List<CPDefinitionOptionRel> cpDefinitionOptionRels =
-			_cpDefinitionOptionRelLocalService.getCPDefinitionOptionRels(
-				cpDefinitionId, true);
+			_cpDefinitionOptionRelPersistence.findByC_SC(cpDefinitionId, true);
 
 		if (cpDefinitionOptionRels.isEmpty()) {
 			throw new NoSuchSkuContributorCPDefinitionOptionRelException();
@@ -1676,6 +1676,9 @@ public class CPInstanceLocalServiceImpl extends CPInstanceLocalServiceBaseImpl {
 	@BeanReference(type = CPDefinitionOptionRelLocalService.class)
 	private CPDefinitionOptionRelLocalService
 		_cpDefinitionOptionRelLocalService;
+
+	@BeanReference(type = CPDefinitionOptionRelPersistence.class)
+	private CPDefinitionOptionRelPersistence _cpDefinitionOptionRelPersistence;
 
 	@BeanReference(type = CPDefinitionOptionValueRelLocalService.class)
 	private CPDefinitionOptionValueRelLocalService

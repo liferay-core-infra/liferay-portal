@@ -85,13 +85,6 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 		return false;
 	}
 
-	@Reference(
-		target = "(panel.category.key=" + PanelCategoryKeys.HIDDEN + ")",
-		unbind = "-"
-	)
-	public void setPanelCategory(PanelCategory panelCategory) {
-	}
-
 	@Override
 	protected RequestDispatcher getRequestDispatcher(String jspPath) {
 		return _servletContext.getRequestDispatcher(jspPath);
@@ -102,6 +95,9 @@ public class ApplicationsMenuApplicationMenuProductNavigationControlMenuEntry
 
 	@Reference
 	private PanelAppRegistry _panelAppRegistry;
+
+	@Reference(target = "(panel.category.key=" + PanelCategoryKeys.HIDDEN + ")")
+	private PanelCategory _panelCategory;
 
 	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;

@@ -93,8 +93,7 @@ public class DDMDataProviderInstanceStagedModelDataHandler
 		return _ddmDataProviderInstanceLocalService.
 			getDDMDataProviderInstancesByUuidAndCompanyId(
 				uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				new StagedModelModifiedDateComparator
-					<DDMDataProviderInstance>());
+				new StagedModelModifiedDateComparator<>());
 	}
 
 	@Override

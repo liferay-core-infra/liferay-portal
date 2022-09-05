@@ -92,7 +92,7 @@ public class DDMFormValidatorImpl implements DDMFormValidator {
 		_validateDDMFormFieldNames(ddmFormFields);
 
 		_validateDDMFormFields(
-			ddmFormFields, new HashSet<String>(),
+			ddmFormFields, new HashSet<>(),
 			ddmForm.allowInvalidAvailableLocalesForProperty(),
 			ddmForm.getAvailableLocales(), ddmForm.getDefaultLocale());
 	}

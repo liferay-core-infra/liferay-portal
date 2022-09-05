@@ -140,7 +140,7 @@ public class DDMFormValuesValidatorImpl implements DDMFormValuesValidator {
 			return true;
 		}
 
-		DDMExpression<Boolean> ddmExpression = null;
+		DDMExpression<Boolean> ddmExpression;
 
 		try {
 			if (ddmFormFieldValidation.getParameterLocalizedValue() != null) {

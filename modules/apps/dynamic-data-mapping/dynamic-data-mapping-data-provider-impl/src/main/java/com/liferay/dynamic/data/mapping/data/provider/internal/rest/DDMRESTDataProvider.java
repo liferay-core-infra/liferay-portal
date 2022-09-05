@@ -372,7 +372,7 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 				).build(),
 				false);
 
-		String response = null;
+		String response;
 
 		try {
 			response = jsonWebServiceClient.doGet(

@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -72,9 +71,7 @@ public abstract class BaseJSPProductNavigationControlMenuEntry
 			httpServletRequest, httpServletResponse, getIconJspPath());
 	}
 
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
+	protected abstract RequestDispatcher getRequestDispatcher(String jspPath);
 
 	protected boolean include(
 			HttpServletRequest httpServletRequest,
@@ -85,8 +82,7 @@ public abstract class BaseJSPProductNavigationControlMenuEntry
 			return false;
 		}
 
-		RequestDispatcher requestDispatcher =
-			_servletContext.getRequestDispatcher(jspPath);
+		RequestDispatcher requestDispatcher = getRequestDispatcher(jspPath);
 
 		try {
 			requestDispatcher.include(httpServletRequest, httpServletResponse);
@@ -102,7 +98,5 @@ public abstract class BaseJSPProductNavigationControlMenuEntry
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseJSPProductNavigationControlMenuEntry.class);
-
-	private ServletContext _servletContext;
 
 }

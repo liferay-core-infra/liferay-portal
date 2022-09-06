@@ -19,6 +19,7 @@ import com.liferay.commerce.product.constants.CPConstants;
 import com.liferay.commerce.product.exception.CPDefinitionOptionRelPriceTypeException;
 import com.liferay.commerce.product.exception.CPDefinitionOptionSKUContributorException;
 import com.liferay.commerce.product.exception.DuplicateCPDefinitionOptionRelKeyException;
+import com.liferay.commerce.product.internal.util.GetCPDefinitionOptionRelCPDefinitionOptionValueRelIdsUtil;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPDefinitionOptionRel;
 import com.liferay.commerce.product.model.CPDefinitionOptionValueRel;
@@ -38,9 +39,7 @@ import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
@@ -329,69 +328,11 @@ public class CPDefinitionOptionRelLocalServiceImpl
 				long cpDefinitionId, boolean skuContributorsOnly, String json)
 		throws PortalException {
 
-		if (_jsonHelper.isEmpty(json)) {
-			return Collections.emptyMap();
-		}
-
-		Map<Long, List<Long>>
-			cpDefinitionOptionRelIdCPDefinitionOptionValueRelIds =
-				new HashMap<>();
-
-		JSONArray jsonArray = _jsonFactory.createJSONArray();
-
-		if (_jsonHelper.isArray(json)) {
-			jsonArray = _jsonFactory.createJSONArray(json);
-		}
-		else {
-			jsonArray.put(_jsonFactory.createJSONObject(json));
-		}
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			CPDefinitionOptionRel cpDefinitionOptionRel =
-				cpDefinitionOptionRelPersistence.fetchByC_K(
-					cpDefinitionId, jsonObject.getString("key"));
-
-			if ((cpDefinitionOptionRel == null) ||
-				(skuContributorsOnly &&
-				 !cpDefinitionOptionRel.isSkuContributor())) {
-
-				continue;
-			}
-
-			JSONArray valueJSONArray = _jsonHelper.getValueAsJSONArray(
-				"value", jsonObject);
-
-			for (int j = 0; j < valueJSONArray.length(); j++) {
-				CPDefinitionOptionValueRel cpDefinitionOptionValueRel =
-					_cpDefinitionOptionValueRelPersistence.fetchByC_K(
-						cpDefinitionOptionRel.getCPDefinitionOptionRelId(),
-						valueJSONArray.getString(j));
-
-				if (cpDefinitionOptionValueRel == null) {
-					continue;
-				}
-
-				List<Long> cpDefinitionOptionValueRelIds =
-					cpDefinitionOptionRelIdCPDefinitionOptionValueRelIds.get(
-						cpDefinitionOptionRel.getCPDefinitionOptionRelId());
-
-				if (cpDefinitionOptionValueRelIds == null) {
-					cpDefinitionOptionValueRelIds = new ArrayList<>();
-
-					cpDefinitionOptionRelIdCPDefinitionOptionValueRelIds.put(
-						cpDefinitionOptionRel.getCPDefinitionOptionRelId(),
-						cpDefinitionOptionValueRelIds);
-				}
-
-				cpDefinitionOptionValueRelIds.add(
-					cpDefinitionOptionValueRel.
-						getCPDefinitionOptionValueRelId());
-			}
-		}
-
-		return cpDefinitionOptionRelIdCPDefinitionOptionValueRelIds;
+		return GetCPDefinitionOptionRelCPDefinitionOptionValueRelIdsUtil.
+			getCPDefinitionOptionRelCPDefinitionOptionValueRelIds(
+				cpDefinitionId, skuContributorsOnly, json, _jsonHelper,
+				_jsonFactory, cpDefinitionOptionRelPersistence,
+				_cpDefinitionOptionValueRelPersistence);
 	}
 
 	@Override

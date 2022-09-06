@@ -421,10 +421,6 @@ public interface CPDefinitionOptionRelLocalService
 		long cpDefinitionId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasCPDefinitionRequiredCPDefinitionOptionRels(
-		long cpDefinitionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasLinkedCPInstanceCPDefinitionOptionRels(
 		long cpDefinitionId);
 

@@ -579,14 +579,6 @@ public class CPDefinitionOptionRelLocalServiceWrapper
 	}
 
 	@Override
-	public boolean hasCPDefinitionRequiredCPDefinitionOptionRels(
-		long cpDefinitionId) {
-
-		return _cpDefinitionOptionRelLocalService.
-			hasCPDefinitionRequiredCPDefinitionOptionRels(cpDefinitionId);
-	}
-
-	@Override
 	public boolean hasLinkedCPInstanceCPDefinitionOptionRels(
 		long cpDefinitionId) {
 

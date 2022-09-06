@@ -28,7 +28,6 @@ import com.liferay.commerce.product.model.CPInstanceOptionValueRel;
 import com.liferay.commerce.product.model.CPOption;
 import com.liferay.commerce.product.model.CPOptionValue;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
-import com.liferay.commerce.product.service.CPDefinitionOptionRelLocalService;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.service.CPInstanceOptionValueRelLocalService;
 import com.liferay.commerce.product.service.CPOptionLocalService;
@@ -962,11 +961,10 @@ public class CPDefinitionOptionValueRelLocalServiceImpl
 			return;
 		}
 
-		if (_cpDefinitionOptionRelLocalService.
-				hasCPDefinitionRequiredCPDefinitionOptionRels(
-					cpInstance.getCPDefinitionId()) ||
-			(cpInstance.getCPSubscriptionInfo() != null)) {
+		long count = _cpDefinitionOptionRelPersistence.countByCPDI_R(
+			cpInstance.getCPDefinitionId(), true);
 
+		if ((count != 0) || (cpInstance.getCPSubscriptionInfo() != null)) {
 			throw new CPDefinitionOptionValueRelCPInstanceException();
 		}
 
@@ -987,10 +985,6 @@ public class CPDefinitionOptionValueRelLocalServiceImpl
 
 	@BeanReference(type = CPDefinitionLocalService.class)
 	private CPDefinitionLocalService _cpDefinitionLocalService;
-
-	@BeanReference(type = CPDefinitionOptionRelLocalService.class)
-	private CPDefinitionOptionRelLocalService
-		_cpDefinitionOptionRelLocalService;
 
 	@BeanReference(type = CPDefinitionOptionRelPersistence.class)
 	private CPDefinitionOptionRelPersistence _cpDefinitionOptionRelPersistence;

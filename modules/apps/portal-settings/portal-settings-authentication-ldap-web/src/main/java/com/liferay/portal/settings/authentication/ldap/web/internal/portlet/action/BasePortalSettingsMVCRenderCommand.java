@@ -38,6 +38,8 @@ public abstract class BasePortalSettingsMVCRenderCommand
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
+		ServletContext servletContext = getServletContext();
+
 		RequestDispatcher requestDispatcher =
 			servletContext.getRequestDispatcher(getJspPath());
 
@@ -60,7 +62,7 @@ public abstract class BasePortalSettingsMVCRenderCommand
 
 	protected abstract String getJspPath();
 
-	protected volatile ServletContext servletContext;
+	protected abstract ServletContext getServletContext();
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BasePortalSettingsMVCRenderCommand.class);

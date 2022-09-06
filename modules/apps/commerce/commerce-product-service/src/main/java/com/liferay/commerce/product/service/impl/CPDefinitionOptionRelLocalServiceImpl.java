@@ -539,20 +539,6 @@ public class CPDefinitionOptionRelLocalServiceImpl
 	}
 
 	@Override
-	public boolean hasCPDefinitionRequiredCPDefinitionOptionRels(
-		long cpDefinitionId) {
-
-		long count = cpDefinitionOptionRelPersistence.countByCPDI_R(
-			cpDefinitionId, true);
-
-		if (count == 0) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
 	public boolean hasLinkedCPInstanceCPDefinitionOptionRels(
 		long cpDefinitionId) {
 

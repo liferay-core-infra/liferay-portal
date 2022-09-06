@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.util;
 
-import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
@@ -35,7 +34,6 @@ import java.net.URLStreamHandler;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -146,61 +144,6 @@ public class ClassUtilTest {
 		Assert.assertEquals(
 			"java.lang.Object", ClassUtil.getClassName(new Object()));
 		Assert.assertNull(ClassUtil.getClassName(null));
-	}
-
-	@Test
-	public void testGetParentPath() {
-		ClassLoader classLoader = ClassUtilTest.class.getClassLoader();
-
-		String className = "java/lang/String.class";
-
-		URL url = classLoader.getResource(className);
-
-		URI uri = ReflectionTestUtil.invoke(
-			ClassUtil.class, "_getPathURIFromURL", new Class<?>[] {URL.class},
-			url);
-
-		Path path = Paths.get(uri);
-
-		String expectedParentPath = StringUtil.replace(
-			path.toString(), CharPool.BACK_SLASH, CharPool.SLASH);
-
-		int pos = expectedParentPath.indexOf(className);
-
-		expectedParentPath = expectedParentPath.substring(0, pos);
-
-		Assert.assertEquals(
-			expectedParentPath,
-			ClassUtil.getParentPath(classLoader, "java.lang.String.class"));
-		Assert.assertEquals(
-			expectedParentPath,
-			ClassUtil.getParentPath(classLoader, "java.lang.String"));
-
-		// Test log output
-
-		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
-				ClassUtil.class.getName(), Level.FINE)) {
-
-			ClassUtil.getParentPath(classLoader, "java.lang.String");
-
-			List<LogEntry> logEntries = logCapture.getLogEntries();
-
-			Assert.assertEquals(logEntries.toString(), 3, logEntries.size());
-
-			LogEntry logEntry = logEntries.get(0);
-
-			Assert.assertEquals(
-				"Class name java.lang.String", logEntry.getMessage());
-
-			logEntry = logEntries.get(1);
-
-			Assert.assertEquals("URI " + uri, logEntry.getMessage());
-
-			logEntry = logEntries.get(2);
-
-			Assert.assertEquals(
-				"Parent path " + expectedParentPath, logEntry.getMessage());
-		}
 	}
 
 	@Test

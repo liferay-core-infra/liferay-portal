@@ -155,7 +155,7 @@ public class RedirectEntryServiceTest {
 			});
 	}
 
-	@Test(expected = PrincipalException.MustHavePermission.class)
+	@Test
 	public void testGetRedirectEntriesCountWithoutPermissions()
 		throws Exception {
 
@@ -164,8 +164,10 @@ public class RedirectEntryServiceTest {
 			ServiceContextTestUtil.getServiceContext());
 
 		RedirectTestUtil.withRegularUser(
-			(user, role) -> _redirectEntryService.getRedirectEntriesCount(
-				_group.getGroupId()));
+			(user, role) -> Assert.assertEquals(
+				0,
+				_redirectEntryService.getRedirectEntriesCount(
+					_group.getGroupId())));
 	}
 
 	@Test
@@ -189,16 +191,22 @@ public class RedirectEntryServiceTest {
 			});
 	}
 
-	@Test(expected = PrincipalException.MustHavePermission.class)
+	@Test
 	public void testGetRedirectEntriesWithoutPermissions() throws Exception {
 		_redirectEntry = _redirectEntryService.addRedirectEntry(
 			_group.getGroupId(), "destinationURL", null, false, "sourceURL",
 			ServiceContextTestUtil.getServiceContext());
 
 		RedirectTestUtil.withRegularUser(
-			(user, role) -> _redirectEntryService.getRedirectEntries(
-				_group.getGroupId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-				null));
+			(user, role) -> {
+				List<RedirectEntry> redirectEntries =
+					_redirectEntryService.getRedirectEntries(
+						_group.getGroupId(), QueryUtil.ALL_POS,
+						QueryUtil.ALL_POS, null);
+
+				Assert.assertEquals(
+					redirectEntries.toString(), 0, redirectEntries.size());
+			});
 	}
 
 	@Test

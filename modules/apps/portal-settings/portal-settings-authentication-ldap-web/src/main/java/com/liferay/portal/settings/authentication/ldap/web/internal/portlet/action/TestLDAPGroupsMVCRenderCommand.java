@@ -80,12 +80,9 @@ public class TestLDAPGroupsMVCRenderCommand
 		return _JSP_PATH;
 	}
 
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.portal.settings.authentication.ldap.web)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		super.servletContext = servletContext;
+	@Override
+	protected ServletContext getServletContext() {
+		return _servletContext;
 	}
 
 	private static final String _JSP_PATH =
@@ -96,5 +93,10 @@ public class TestLDAPGroupsMVCRenderCommand
 
 	@Reference
 	private Portal _portal;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.portal.settings.authentication.ldap.web)"
+	)
+	private ServletContext _servletContext;
 
 }

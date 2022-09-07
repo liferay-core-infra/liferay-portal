@@ -14,12 +14,17 @@
 
 package com.liferay.client.extension.internal.upgrade.registry;
 
+import com.liferay.client.extension.internal.upgrade.v3_0_0.ClassNamesUpgradeProcess;
+import com.liferay.client.extension.internal.upgrade.v3_1_0.util.ClientExtensionEntryRelTable;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalService;
+import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
-import org.osgi.service.component.ComponentContext;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -58,21 +63,81 @@ public class ClientExtensionServiceInitialDeploymentUpgradeStepRegistrator
 						_releaseLocalService.deleteRelease(remoteAppRelease);
 					}
 
-					_componentContext.enableComponent(
-						ClientExtensionUpgradeStepRegistrator.class.getName());
+					_bundleContext.registerService(
+						UpgradeStepRegistrator.class,
+						new InitialDeploymentUpgradeStepRegistrator(),
+						new HashMapDictionary<>());
 				}
 
 			});
 	}
 
 	@Activate
-	protected void activate(ComponentContext componentContext) {
-		_componentContext = componentContext;
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
 	}
 
-	private ComponentContext _componentContext;
+	private BundleContext _bundleContext;
 
 	@Reference
 	private ReleaseLocalService _releaseLocalService;
+
+	private static class InitialDeploymentUpgradeStepRegistrator
+		implements UpgradeStepRegistrator {
+
+		@Override
+		public void register(Registry registry) {
+			registry.register(
+				"1.0.0", "1.0.1",
+				UpgradeProcessFactory.alterColumnType(
+					"RemoteAppEntry", "url", "VARCHAR(1024) null"));
+
+			registry.register(
+				"1.0.1", "2.0.0",
+				new com.liferay.client.extension.internal.upgrade.v2_0_0.
+					RemoteAppEntryUpgradeProcess());
+
+			registry.register(
+				"2.0.0", "2.1.0",
+				new com.liferay.client.extension.internal.upgrade.v2_1_0.
+					ResourcePermissionsUpgradeProcess());
+
+			registry.register(
+				"2.1.0", "2.2.0",
+				UpgradeProcessFactory.addColumns(
+					"RemoteAppEntry", "friendlyURLMapping VARCHAR(75)"));
+
+			registry.register(
+				"2.2.0", "2.3.0",
+				new com.liferay.client.extension.internal.upgrade.v2_3_0.
+					RemoteAppEntryUpgradeProcess());
+
+			registry.register(
+				"2.3.0", "2.4.0",
+				new com.liferay.client.extension.internal.upgrade.v2_4_0.
+					RemoteAppEntryUpgradeProcess());
+
+			registry.register(
+				"2.4.0", "2.5.0",
+				new com.liferay.client.extension.internal.upgrade.v2_5_0.
+					RemoteAppEntryUpgradeProcess());
+
+			registry.register(
+				"2.5.0", "3.0.0", new ClassNamesUpgradeProcess(),
+				new com.liferay.client.extension.internal.upgrade.v3_0_0.
+					ClientExtensionEntryUpgradeProcess());
+
+			registry.register(
+				"3.0.0", "3.1.0", ClientExtensionEntryRelTable.create(),
+				new com.liferay.client.extension.internal.upgrade.v3_1_0.
+					ClientExtensionEntryUpgradeProcess());
+
+			registry.register(
+				"3.1.0", "3.2.0",
+				new CTModelUpgradeProcess(
+					"ClientExtensionEntry", "ClientExtensionEntryRel"));
+		}
+
+	}
 
 }

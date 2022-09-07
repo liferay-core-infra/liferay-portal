@@ -22,20 +22,16 @@ import com.liferay.commerce.currency.constants.RoundingTypeConstants;
 import com.liferay.commerce.currency.exception.CommerceCurrencyCodeException;
 import com.liferay.commerce.currency.exception.CommerceCurrencyNameException;
 import com.liferay.commerce.currency.exception.NoSuchCurrencyException;
+import com.liferay.commerce.currency.internal.model.DefaultCommerceCurrencyImporter;
 import com.liferay.commerce.currency.internal.model.listener.PortalInstanceLifecycleListenerImpl;
 import com.liferay.commerce.currency.model.CommerceCurrency;
-import com.liferay.commerce.currency.model.impl.CommerceCurrencyImpl;
 import com.liferay.commerce.currency.service.base.CommerceCurrencyLocalServiceBaseImpl;
 import com.liferay.commerce.currency.util.ExchangeRateProvider;
 import com.liferay.commerce.currency.util.ExchangeRateProviderRegistry;
 import com.liferay.commerce.currency.util.comparator.CommerceCurrencyPriorityComparator;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
+import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.SystemEventConstants;
@@ -43,15 +39,16 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.settings.CompanyServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.math.BigDecimal;
@@ -240,61 +237,23 @@ public class CommerceCurrencyLocalServiceImpl
 		String countriesJSON = StringUtil.read(
 			clazz.getClassLoader(), currenciesPath, false);
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(countriesJSON);
+		DefaultCommerceCurrencyImporter defaultCommerceCurrencyImporter =
+			new DefaultCommerceCurrencyImporter(
+				serviceContext, _configurationProvider, _counterLocalService,
+				_userLocalService, _portalUUID, _exchangeRateProviderRegistry);
 
-		String firstPrimaryCommerceCurrencyCode = null;
+		List<CommerceCurrency> commerceCurrencies =
+			defaultCommerceCurrencyImporter.getCommerceCurrency(countriesJSON);
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			String code = jsonObject.getString("code");
-
-			CommerceCurrency commerceCurrency =
+		for (CommerceCurrency commerceCurrency : commerceCurrencies) {
+			CommerceCurrency fetchCommerceCurrency =
 				commerceCurrencyPersistence.fetchByC_C(
-					serviceContext.getCompanyId(), code);
+					commerceCurrency.getCompanyId(),
+					commerceCurrency.getCode());
 
-			if (commerceCurrency == null) {
-				boolean primary = jsonObject.getBoolean("primary");
-				double priority = jsonObject.getDouble("priority");
-				String symbol = jsonObject.getString("symbol");
-
-				if (primary && (firstPrimaryCommerceCurrencyCode == null)) {
-					firstPrimaryCommerceCurrencyCode = code;
-				}
-
-				BigDecimal exchangeRate = BigDecimal.ONE;
-
-				if (!primary) {
-					exchangeRate = _getExchangeRate(
-						firstPrimaryCommerceCurrencyCode, code);
-				}
-
-				RoundingTypeConfiguration roundingTypeConfiguration =
-					_configurationProvider.getConfiguration(
-						RoundingTypeConfiguration.class,
-						new SystemSettingsLocator(
-							RoundingTypeConstants.SERVICE_NAME));
-
-				Map<Locale, String> nameMap = HashMapBuilder.put(
-					serviceContext.getLocale(), jsonObject.getString("name")
-				).build();
-
-				Map<Locale, String> formatPatternMap = HashMapBuilder.put(
-					serviceContext.getLocale(),
-					StringBundler.concat(
-						symbol, StringPool.SPACE,
-						CommerceCurrencyConstants.DECIMAL_FORMAT_PATTERN)
-				).build();
-
-				RoundingMode roundingMode =
-					roundingTypeConfiguration.roundingMode();
-
+			if (fetchCommerceCurrency == null) {
 				commerceCurrencyLocalService.addCommerceCurrency(
-					serviceContext.getUserId(), code, nameMap, symbol,
-					exchangeRate, formatPatternMap,
-					roundingTypeConfiguration.maximumFractionDigits(),
-					roundingTypeConfiguration.minimumFractionDigits(),
-					roundingMode.name(), primary, priority, true);
+					commerceCurrency);
 			}
 		}
 	}
@@ -492,43 +451,6 @@ public class CommerceCurrencyLocalServiceImpl
 		}
 	}
 
-	private BigDecimal _getExchangeRate(
-		String primaryCommerceCurrencyCode,
-		String currentCommerceCurrencyCode) {
-
-		CommerceCurrency primaryCommerceCurrency = new CommerceCurrencyImpl();
-
-		primaryCommerceCurrency.setCode(primaryCommerceCurrencyCode);
-
-		CommerceCurrency commerceCurrency = new CommerceCurrencyImpl();
-
-		commerceCurrency.setCode(currentCommerceCurrencyCode);
-
-		for (String exchangeRateProviderKey :
-				_exchangeRateProviderRegistry.getExchangeRateProviderKeys()) {
-
-			ExchangeRateProvider exchangeRateProvider =
-				_exchangeRateProviderRegistry.getExchangeRateProvider(
-					exchangeRateProviderKey);
-
-			if (exchangeRateProvider == null) {
-				return BigDecimal.ONE;
-			}
-
-			try {
-				return exchangeRateProvider.getExchangeRate(
-					primaryCommerceCurrency, commerceCurrency);
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
-				}
-			}
-		}
-
-		return BigDecimal.ONE;
-	}
-
 	private void _updateExchangeRates(
 			long companyId, String exchangeRateProviderKey)
 		throws PortalException {
@@ -552,9 +474,18 @@ public class CommerceCurrencyLocalServiceImpl
 	@ServiceReference(type = ConfigurationProvider.class)
 	private ConfigurationProvider _configurationProvider;
 
+	@ServiceReference(type = CounterLocalService.class)
+	private CounterLocalService _counterLocalService;
+
 	@ServiceReference(type = ExchangeRateProviderRegistry.class)
 	private ExchangeRateProviderRegistry _exchangeRateProviderRegistry;
 
+	@ServiceReference(type = PortalUUID.class)
+	private PortalUUID _portalUUID;
+
 	private ServiceRegistration<?> _serviceRegistration;
+
+	@ServiceReference(type = UserLocalService.class)
+	private UserLocalService _userLocalService;
 
 }

@@ -14,19 +14,11 @@
 
 package com.liferay.commerce.currency.internal.upgrade.registry;
 
-import com.liferay.commerce.currency.configuration.RoundingTypeConfiguration;
-import com.liferay.commerce.currency.constants.CommerceCurrencyConstants;
-import com.liferay.commerce.currency.constants.RoundingTypeConstants;
+import com.liferay.commerce.currency.internal.model.DefaultCommerceCurrencyImporter;
 import com.liferay.commerce.currency.model.CommerceCurrency;
-import com.liferay.commerce.currency.model.impl.CommerceCurrencyImpl;
-import com.liferay.commerce.currency.util.ExchangeRateProvider;
 import com.liferay.commerce.currency.util.ExchangeRateProviderRegistry;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -35,24 +27,18 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Janis Zhang
@@ -92,43 +78,6 @@ public class CommerceCurrencyDefaultValueImportUpgradeProcess
 			});
 	}
 
-	private BigDecimal _getExchangeRate(
-		String primaryCommerceCurrencyCode,
-		String currentCommerceCurrencyCode) {
-
-		CommerceCurrency primaryCommerceCurrency = new CommerceCurrencyImpl();
-
-		primaryCommerceCurrency.setCode(primaryCommerceCurrencyCode);
-
-		CommerceCurrency commerceCurrency = new CommerceCurrencyImpl();
-
-		commerceCurrency.setCode(currentCommerceCurrencyCode);
-
-		for (String exchangeRateProviderKey :
-				_exchangeRateProviderRegistry.getExchangeRateProviderKeys()) {
-
-			ExchangeRateProvider exchangeRateProvider =
-				_exchangeRateProviderRegistry.getExchangeRateProvider(
-					exchangeRateProviderKey);
-
-			if (exchangeRateProvider == null) {
-				return BigDecimal.ONE;
-			}
-
-			try {
-				return exchangeRateProvider.getExchangeRate(
-					primaryCommerceCurrency, commerceCurrency);
-			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
-				}
-			}
-		}
-
-		return BigDecimal.ONE;
-	}
-
 	private Boolean _hasPrimaryCommerceCurrency(Company company)
 		throws Exception {
 
@@ -149,6 +98,16 @@ public class CommerceCurrencyDefaultValueImportUpgradeProcess
 	}
 
 	private void _importDefaultValues(Company company) throws Exception {
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCompanyId(company.getCompanyId());
+		serviceContext.setLanguageId(
+			LocaleUtil.toLanguageId(company.getLocale()));
+
+		User defaultUser = company.getDefaultUser();
+
+		serviceContext.setUserId(defaultUser.getUserId());
+
 		Class<?> clazz = getClass();
 
 		String currenciesPath =
@@ -158,59 +117,19 @@ public class CommerceCurrencyDefaultValueImportUpgradeProcess
 		String countriesJSON = StringUtil.read(
 			clazz.getClassLoader(), currenciesPath, false);
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(countriesJSON);
+		DefaultCommerceCurrencyImporter defaultCommerceCurrencyImporter =
+			new DefaultCommerceCurrencyImporter(
+				serviceContext, _configurationProvider, _counterLocalService,
+				_userLocalService, _portalUUID, _exchangeRateProviderRegistry);
 
-		String firstPrimaryCommerceCurrencyCode = null;
+		List<CommerceCurrency> commerceCurrencies =
+			defaultCommerceCurrencyImporter.getCommerceCurrency(countriesJSON);
 
-		for (int i = 0; i < jsonArray.length(); i++) {
-			ServiceContext serviceContext = new ServiceContext();
+		for (CommerceCurrency commerceCurrency : commerceCurrencies) {
+			if (_isCommerceCurrencyExisting(
+					company, commerceCurrency.getCode())) {
 
-			serviceContext.setCompanyId(company.getCompanyId());
-			serviceContext.setLanguageId(
-				LocaleUtil.toLanguageId(company.getLocale()));
-
-			User defaultUser = company.getDefaultUser();
-
-			serviceContext.setUserId(defaultUser.getUserId());
-
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-			String code = jsonObject.getString("code");
-
-			if (_isCommerceCurrencyExisting(company, code)) {
 				return;
-			}
-
-			boolean primary = jsonObject.getBoolean("primary");
-
-			if (primary && (firstPrimaryCommerceCurrencyCode == null)) {
-				firstPrimaryCommerceCurrencyCode = code;
-			}
-
-			String symbol = jsonObject.getString("symbol");
-
-			RoundingTypeConfiguration roundingTypeConfiguration =
-				_configurationProvider.getConfiguration(
-					RoundingTypeConfiguration.class,
-					new SystemSettingsLocator(
-						RoundingTypeConstants.SERVICE_NAME));
-
-			Map<Locale, String> formatPatternMap = HashMapBuilder.put(
-				serviceContext.getLocale(),
-				StringBundler.concat(
-					symbol, StringPool.SPACE,
-					CommerceCurrencyConstants.DECIMAL_FORMAT_PATTERN)
-			).build();
-
-			RoundingMode roundingMode =
-				roundingTypeConfiguration.roundingMode();
-
-			User user = _userLocalService.getUser(defaultUser.getUserId());
-
-			if (formatPatternMap.isEmpty()) {
-				formatPatternMap.put(
-					user.getLocale(),
-					CommerceCurrencyConstants.DECIMAL_FORMAT_PATTERN);
 			}
 
 			try (PreparedStatement preparedStatement =
@@ -224,53 +143,47 @@ public class CommerceCurrencyDefaultValueImportUpgradeProcess
 							"priority,active_) values",
 							"(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) "))) {
 
-				preparedStatement.setString(1, _portalUUID.generate());
-				preparedStatement.setLong(2, _counterLocalService.increment());
-				preparedStatement.setLong(3, user.getCompanyId());
-				preparedStatement.setLong(4, user.getUserId());
-				preparedStatement.setString(5, user.getFullName());
+				preparedStatement.setString(1, commerceCurrency.getUuid());
+				preparedStatement.setLong(
+					2, commerceCurrency.getCommerceCurrencyId());
+				preparedStatement.setLong(3, company.getCompanyId());
+				preparedStatement.setLong(4, company.getUserId());
+				preparedStatement.setString(5, company.getUserName());
 
-				Date date = new Date();
+				Date createDate = commerceCurrency.getCreateDate();
+				Date modifiedDate = commerceCurrency.getModifiedDate();
 
-				preparedStatement.setDate(6, new java.sql.Date(date.getTime()));
-				preparedStatement.setDate(7, new java.sql.Date(date.getTime()));
+				preparedStatement.setDate(
+					6, new java.sql.Date(createDate.getTime()));
+				preparedStatement.setDate(
+					7, new java.sql.Date(modifiedDate.getTime()));
 
-				preparedStatement.setString(8, code);
+				preparedStatement.setString(8, commerceCurrency.getCode());
 				preparedStatement.setString(
 					9,
 					LocalizationUtil.updateLocalization(
-						HashMapBuilder.put(
-							serviceContext.getLocale(),
-							jsonObject.getString("name")
-						).build(),
-						"", "Name",
+						commerceCurrency.getNameMap(), "", "Name",
 						UpgradeProcessUtil.getDefaultLanguageId(
-							serviceContext.getCompanyId())));
-				preparedStatement.setString(10, symbol);
+							company.getCompanyId())));
+				preparedStatement.setString(10, commerceCurrency.getSymbol());
 
-				BigDecimal exchangeRate = BigDecimal.ONE;
-
-				if (!primary) {
-					exchangeRate = _getExchangeRate(
-						firstPrimaryCommerceCurrencyCode, code);
-				}
-
-				preparedStatement.setBigDecimal(11, exchangeRate);
+				preparedStatement.setBigDecimal(11, commerceCurrency.getRate());
 
 				preparedStatement.setString(
 					12,
 					LocalizationUtil.updateLocalization(
-						formatPatternMap, "", "FormatPattern",
+						commerceCurrency.getFormatPatternMap(), "",
+						"FormatPattern",
 						UpgradeProcessUtil.getDefaultLanguageId(
-							serviceContext.getCompanyId())));
+							company.getCompanyId())));
 				preparedStatement.setInt(
-					13, roundingTypeConfiguration.maximumFractionDigits());
+					13, commerceCurrency.getMaxFractionDigits());
 				preparedStatement.setInt(
-					14, roundingTypeConfiguration.minimumFractionDigits());
-				preparedStatement.setString(15, roundingMode.name());
-				preparedStatement.setBoolean(16, primary);
-				preparedStatement.setDouble(
-					17, jsonObject.getDouble("priority"));
+					14, commerceCurrency.getMinFractionDigits());
+				preparedStatement.setString(
+					15, commerceCurrency.getRoundingMode());
+				preparedStatement.setBoolean(16, commerceCurrency.getPrimary());
+				preparedStatement.setDouble(17, commerceCurrency.getPriority());
 				preparedStatement.setBoolean(18, true);
 
 				preparedStatement.executeUpdate();

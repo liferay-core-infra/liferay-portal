@@ -15,6 +15,7 @@
 package com.liferay.petra.xml;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringReader;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
@@ -36,6 +37,38 @@ import org.xml.sax.XMLReader;
  * @author Alan Zimmerman
  */
 public class Dom4jUtil {
+
+	public static String formatXML(String xml) {
+		return formatXML(xml, StringPool.TAB);
+	}
+
+	public static String formatXML(String xml, String indent) {
+		XMLReader xmlReader = null;
+
+		if (SecureXMLFactoryProviderUtil.getSecureXMLFactoryProvider() !=
+				null) {
+
+			xmlReader = SecureXMLFactoryProviderUtil.newXMLReader();
+		}
+
+		SAXReader saxReader = new SAXReader(xmlReader);
+
+		try {
+			xml = StringUtil.replace(xml, "&#", "[$SPECIAL_CHARACTER$]");
+
+			Document document = saxReader.read(new UnsyncStringReader(xml));
+
+			xml = toString(document, indent);
+
+			return StringUtil.replace(xml, "[$SPECIAL_CHARACTER$]", "&#");
+		}
+		catch (IOException ioException) {
+			throw new SystemException(ioException);
+		}
+		catch (DocumentException documentException) {
+			throw new SystemException(documentException);
+		}
+	}
 
 	public static String toString(Node node) throws IOException {
 		return toString(node, StringPool.TAB);
@@ -97,30 +130,6 @@ public class Dom4jUtil {
 		}
 
 		return content;
-	}
-
-	public static String toString(String xml)
-		throws DocumentException, IOException {
-
-		return toString(xml, StringPool.TAB);
-	}
-
-	public static String toString(String xml, String indent)
-		throws DocumentException, IOException {
-
-		XMLReader xmlReader = null;
-
-		if (SecureXMLFactoryProviderUtil.getSecureXMLFactoryProvider() !=
-				null) {
-
-			xmlReader = SecureXMLFactoryProviderUtil.newXMLReader();
-		}
-
-		SAXReader saxReader = new SAXReader(xmlReader);
-
-		Document document = saxReader.read(new UnsyncStringReader(xml));
-
-		return toString(document, indent);
 	}
 
 }

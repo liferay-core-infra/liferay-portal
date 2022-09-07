@@ -19,6 +19,7 @@ import com.liferay.message.boards.service.MBCategoryLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,31 +64,100 @@ public abstract class BaseMBCategoryUADExporter
 
 		sb.append(
 			"<column><column-name>categoryId</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getCategoryId());
+
+		String categoryId = String.valueOf(mbCategory.getCategoryId());
+
+		categoryId = StringUtil.replace(
+			categoryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		categoryId = StringUtil.replace(categoryId, "]]>", "]]]]><![CDATA[>");
+		categoryId = StringUtil.replace(
+			categoryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(categoryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(mbCategory.getStatusByUserId());
+
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]>", "]]]]><![CDATA[>");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			mbCategory.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getUserId());
+
+		String userId = String.valueOf(mbCategory.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getUserName());
+
+		String userName = String.valueOf(mbCategory.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getName());
+
+		String name = String.valueOf(mbCategory.getName());
+
+		name = StringUtil.replace(name, "]]><", "[$SPECIAL_CHARACTER$]");
+		name = StringUtil.replace(name, "]]>", "]]]]><![CDATA[>");
+		name = StringUtil.replace(name, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(name);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(mbCategory.getDescription());
+
+		String description = String.valueOf(mbCategory.getDescription());
+
+		description = StringUtil.replace(
+			description, "]]><", "[$SPECIAL_CHARACTER$]");
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+		description = StringUtil.replace(
+			description, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

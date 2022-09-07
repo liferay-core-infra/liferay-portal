@@ -965,7 +965,18 @@ public class AuditEventModelImpl
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((AuditEvent)this));
+
+			String attribute = String.valueOf(
+				attributeGetterFunction.apply((AuditEvent)this));
+
+			attribute = StringUtil.replace(
+				attribute, "]]><", "[$SPECIAL_CHARACTER$]");
+			attribute = StringUtil.replace(attribute, "]]>", "]]]]><![CDATA[>");
+			attribute = StringUtil.replace(
+				attribute, "[$SPECIAL_CHARACTER$]", "]]><");
+
+			sb.append(attribute);
+
 			sb.append("]]></column-value></column>");
 		}
 

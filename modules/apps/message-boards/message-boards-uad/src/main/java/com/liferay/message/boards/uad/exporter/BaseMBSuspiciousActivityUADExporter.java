@@ -19,6 +19,7 @@ import com.liferay.message.boards.service.MBSuspiciousActivityLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,15 +64,45 @@ public abstract class BaseMBSuspiciousActivityUADExporter
 
 		sb.append(
 			"<column><column-name>suspiciousActivityId</column-name><column-value><![CDATA[");
-		sb.append(mbSuspiciousActivity.getSuspiciousActivityId());
+
+		String suspiciousActivityId = String.valueOf(
+			mbSuspiciousActivity.getSuspiciousActivityId());
+
+		suspiciousActivityId = StringUtil.replace(
+			suspiciousActivityId, "]]><", "[$SPECIAL_CHARACTER$]");
+		suspiciousActivityId = StringUtil.replace(
+			suspiciousActivityId, "]]>", "]]]]><![CDATA[>");
+		suspiciousActivityId = StringUtil.replace(
+			suspiciousActivityId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(suspiciousActivityId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbSuspiciousActivity.getUserId());
+
+		String userId = String.valueOf(mbSuspiciousActivity.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbSuspiciousActivity.getUserName());
+
+		String userName = String.valueOf(mbSuspiciousActivity.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalService;
 import com.liferay.dynamic.data.mapping.uad.constants.DDMUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,31 +64,103 @@ public abstract class BaseDDMFormInstanceUADExporter
 
 		sb.append(
 			"<column><column-name>formInstanceId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getFormInstanceId());
+
+		String formInstanceId = String.valueOf(
+			ddmFormInstance.getFormInstanceId());
+
+		formInstanceId = StringUtil.replace(
+			formInstanceId, "]]><", "[$SPECIAL_CHARACTER$]");
+		formInstanceId = StringUtil.replace(
+			formInstanceId, "]]>", "]]]]><![CDATA[>");
+		formInstanceId = StringUtil.replace(
+			formInstanceId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(formInstanceId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>versionUserId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getVersionUserId());
+
+		String versionUserId = String.valueOf(
+			ddmFormInstance.getVersionUserId());
+
+		versionUserId = StringUtil.replace(
+			versionUserId, "]]><", "[$SPECIAL_CHARACTER$]");
+		versionUserId = StringUtil.replace(
+			versionUserId, "]]>", "]]]]><![CDATA[>");
+		versionUserId = StringUtil.replace(
+			versionUserId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(versionUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>versionUserName</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getVersionUserName());
+
+		String versionUserName = String.valueOf(
+			ddmFormInstance.getVersionUserName());
+
+		versionUserName = StringUtil.replace(
+			versionUserName, "]]><", "[$SPECIAL_CHARACTER$]");
+		versionUserName = StringUtil.replace(
+			versionUserName, "]]>", "]]]]><![CDATA[>");
+		versionUserName = StringUtil.replace(
+			versionUserName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(versionUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getUserId());
+
+		String userId = String.valueOf(ddmFormInstance.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getUserName());
+
+		String userName = String.valueOf(ddmFormInstance.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getName());
+
+		String name = String.valueOf(ddmFormInstance.getName());
+
+		name = StringUtil.replace(name, "]]><", "[$SPECIAL_CHARACTER$]");
+		name = StringUtil.replace(name, "]]>", "]]]]><![CDATA[>");
+		name = StringUtil.replace(name, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(name);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getDescription());
+
+		String description = String.valueOf(ddmFormInstance.getDescription());
+
+		description = StringUtil.replace(
+			description, "]]><", "[$SPECIAL_CHARACTER$]");
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+		description = StringUtil.replace(
+			description, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

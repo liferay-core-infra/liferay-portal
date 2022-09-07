@@ -1035,7 +1035,18 @@ public class KBFolderModelImpl
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((KBFolder)this));
+
+			String attribute = String.valueOf(
+				attributeGetterFunction.apply((KBFolder)this));
+
+			attribute = StringUtil.replace(
+				attribute, "]]><", "[$SPECIAL_CHARACTER$]");
+			attribute = StringUtil.replace(attribute, "]]>", "]]]]><![CDATA[>");
+			attribute = StringUtil.replace(
+				attribute, "[$SPECIAL_CHARACTER$]", "]]><");
+
+			sb.append(attribute);
+
 			sb.append("]]></column-value></column>");
 		}
 

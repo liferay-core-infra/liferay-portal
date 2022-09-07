@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
@@ -1410,139 +1411,329 @@ public class BatchEngineImportTaskModelImpl
 		sb.append(
 			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
 
-		sb.append(getMvccVersion());
+		String mvccVersion = String.valueOf(getMvccVersion());
+
+		mvccVersion = StringUtil.replace(
+			mvccVersion, "]]><", "[$SPECIAL_CHARACTER$]");
+		mvccVersion = StringUtil.replace(mvccVersion, "]]>", "]]]]><![CDATA[>");
+		mvccVersion = StringUtil.replace(
+			mvccVersion, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(mvccVersion);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>uuid</column-name><column-value><![CDATA[");
 
-		sb.append(getUuid());
+		String uuid = String.valueOf(getUuid());
+
+		uuid = StringUtil.replace(uuid, "]]><", "[$SPECIAL_CHARACTER$]");
+		uuid = StringUtil.replace(uuid, "]]>", "]]]]><![CDATA[>");
+		uuid = StringUtil.replace(uuid, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(uuid);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>externalReferenceCode</column-name><column-value><![CDATA[");
 
-		sb.append(getExternalReferenceCode());
+		String externalReferenceCode = String.valueOf(
+			getExternalReferenceCode());
+
+		externalReferenceCode = StringUtil.replace(
+			externalReferenceCode, "]]><", "[$SPECIAL_CHARACTER$]");
+		externalReferenceCode = StringUtil.replace(
+			externalReferenceCode, "]]>", "]]]]><![CDATA[>");
+		externalReferenceCode = StringUtil.replace(
+			externalReferenceCode, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(externalReferenceCode);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>batchEngineImportTaskId</column-name><column-value><![CDATA[");
 
-		sb.append(getBatchEngineImportTaskId());
+		String batchEngineImportTaskId = String.valueOf(
+			getBatchEngineImportTaskId());
+
+		batchEngineImportTaskId = StringUtil.replace(
+			batchEngineImportTaskId, "]]><", "[$SPECIAL_CHARACTER$]");
+		batchEngineImportTaskId = StringUtil.replace(
+			batchEngineImportTaskId, "]]>", "]]]]><![CDATA[>");
+		batchEngineImportTaskId = StringUtil.replace(
+			batchEngineImportTaskId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(batchEngineImportTaskId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
 
-		sb.append(getCompanyId());
+		String companyId = String.valueOf(getCompanyId());
+
+		companyId = StringUtil.replace(
+			companyId, "]]><", "[$SPECIAL_CHARACTER$]");
+		companyId = StringUtil.replace(companyId, "]]>", "]]]]><![CDATA[>");
+		companyId = StringUtil.replace(
+			companyId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(companyId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
 
-		sb.append(getUserId());
+		String userId = String.valueOf(getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>createDate</column-name><column-value><![CDATA[");
 
-		sb.append(getCreateDate());
+		String createDate = String.valueOf(getCreateDate());
+
+		createDate = StringUtil.replace(
+			createDate, "]]><", "[$SPECIAL_CHARACTER$]");
+		createDate = StringUtil.replace(createDate, "]]>", "]]]]><![CDATA[>");
+		createDate = StringUtil.replace(
+			createDate, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(createDate);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
 
-		sb.append(getModifiedDate());
+		String modifiedDate = String.valueOf(getModifiedDate());
+
+		modifiedDate = StringUtil.replace(
+			modifiedDate, "]]><", "[$SPECIAL_CHARACTER$]");
+		modifiedDate = StringUtil.replace(
+			modifiedDate, "]]>", "]]]]><![CDATA[>");
+		modifiedDate = StringUtil.replace(
+			modifiedDate, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(modifiedDate);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>batchSize</column-name><column-value><![CDATA[");
 
-		sb.append(getBatchSize());
+		String batchSize = String.valueOf(getBatchSize());
+
+		batchSize = StringUtil.replace(
+			batchSize, "]]><", "[$SPECIAL_CHARACTER$]");
+		batchSize = StringUtil.replace(batchSize, "]]>", "]]]]><![CDATA[>");
+		batchSize = StringUtil.replace(
+			batchSize, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(batchSize);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>callbackURL</column-name><column-value><![CDATA[");
 
-		sb.append(getCallbackURL());
+		String callbackURL = String.valueOf(getCallbackURL());
+
+		callbackURL = StringUtil.replace(
+			callbackURL, "]]><", "[$SPECIAL_CHARACTER$]");
+		callbackURL = StringUtil.replace(callbackURL, "]]>", "]]]]><![CDATA[>");
+		callbackURL = StringUtil.replace(
+			callbackURL, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(callbackURL);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>className</column-name><column-value><![CDATA[");
 
-		sb.append(getClassName());
+		String className = String.valueOf(getClassName());
+
+		className = StringUtil.replace(
+			className, "]]><", "[$SPECIAL_CHARACTER$]");
+		className = StringUtil.replace(className, "]]>", "]]]]><![CDATA[>");
+		className = StringUtil.replace(
+			className, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(className);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>contentType</column-name><column-value><![CDATA[");
 
-		sb.append(getContentType());
+		String contentType = String.valueOf(getContentType());
+
+		contentType = StringUtil.replace(
+			contentType, "]]><", "[$SPECIAL_CHARACTER$]");
+		contentType = StringUtil.replace(contentType, "]]>", "]]]]><![CDATA[>");
+		contentType = StringUtil.replace(
+			contentType, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(contentType);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>endTime</column-name><column-value><![CDATA[");
 
-		sb.append(getEndTime());
+		String endTime = String.valueOf(getEndTime());
+
+		endTime = StringUtil.replace(endTime, "]]><", "[$SPECIAL_CHARACTER$]");
+		endTime = StringUtil.replace(endTime, "]]>", "]]]]><![CDATA[>");
+		endTime = StringUtil.replace(endTime, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(endTime);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>errorMessage</column-name><column-value><![CDATA[");
 
-		sb.append(getErrorMessage());
+		String errorMessage = String.valueOf(getErrorMessage());
+
+		errorMessage = StringUtil.replace(
+			errorMessage, "]]><", "[$SPECIAL_CHARACTER$]");
+		errorMessage = StringUtil.replace(
+			errorMessage, "]]>", "]]]]><![CDATA[>");
+		errorMessage = StringUtil.replace(
+			errorMessage, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(errorMessage);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>executeStatus</column-name><column-value><![CDATA[");
 
-		sb.append(getExecuteStatus());
+		String executeStatus = String.valueOf(getExecuteStatus());
+
+		executeStatus = StringUtil.replace(
+			executeStatus, "]]><", "[$SPECIAL_CHARACTER$]");
+		executeStatus = StringUtil.replace(
+			executeStatus, "]]>", "]]]]><![CDATA[>");
+		executeStatus = StringUtil.replace(
+			executeStatus, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(executeStatus);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>fieldNameMapping</column-name><column-value><![CDATA[");
 
-		sb.append(getFieldNameMapping());
+		String fieldNameMapping = String.valueOf(getFieldNameMapping());
+
+		fieldNameMapping = StringUtil.replace(
+			fieldNameMapping, "]]><", "[$SPECIAL_CHARACTER$]");
+		fieldNameMapping = StringUtil.replace(
+			fieldNameMapping, "]]>", "]]]]><![CDATA[>");
+		fieldNameMapping = StringUtil.replace(
+			fieldNameMapping, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(fieldNameMapping);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>importStrategy</column-name><column-value><![CDATA[");
 
-		sb.append(getImportStrategy());
+		String importStrategy = String.valueOf(getImportStrategy());
+
+		importStrategy = StringUtil.replace(
+			importStrategy, "]]><", "[$SPECIAL_CHARACTER$]");
+		importStrategy = StringUtil.replace(
+			importStrategy, "]]>", "]]]]><![CDATA[>");
+		importStrategy = StringUtil.replace(
+			importStrategy, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(importStrategy);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>operation</column-name><column-value><![CDATA[");
 
-		sb.append(getOperation());
+		String operation = String.valueOf(getOperation());
+
+		operation = StringUtil.replace(
+			operation, "]]><", "[$SPECIAL_CHARACTER$]");
+		operation = StringUtil.replace(operation, "]]>", "]]]]><![CDATA[>");
+		operation = StringUtil.replace(
+			operation, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(operation);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>parameters</column-name><column-value><![CDATA[");
 
-		sb.append(getParameters());
+		String parameters = String.valueOf(getParameters());
+
+		parameters = StringUtil.replace(
+			parameters, "]]><", "[$SPECIAL_CHARACTER$]");
+		parameters = StringUtil.replace(parameters, "]]>", "]]]]><![CDATA[>");
+		parameters = StringUtil.replace(
+			parameters, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(parameters);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>processedItemsCount</column-name><column-value><![CDATA[");
 
-		sb.append(getProcessedItemsCount());
+		String processedItemsCount = String.valueOf(getProcessedItemsCount());
+
+		processedItemsCount = StringUtil.replace(
+			processedItemsCount, "]]><", "[$SPECIAL_CHARACTER$]");
+		processedItemsCount = StringUtil.replace(
+			processedItemsCount, "]]>", "]]]]><![CDATA[>");
+		processedItemsCount = StringUtil.replace(
+			processedItemsCount, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(processedItemsCount);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>startTime</column-name><column-value><![CDATA[");
 
-		sb.append(getStartTime());
+		String startTime = String.valueOf(getStartTime());
+
+		startTime = StringUtil.replace(
+			startTime, "]]><", "[$SPECIAL_CHARACTER$]");
+		startTime = StringUtil.replace(startTime, "]]>", "]]]]><![CDATA[>");
+		startTime = StringUtil.replace(
+			startTime, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(startTime);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>taskItemDelegateName</column-name><column-value><![CDATA[");
 
-		sb.append(getTaskItemDelegateName());
+		String taskItemDelegateName = String.valueOf(getTaskItemDelegateName());
+
+		taskItemDelegateName = StringUtil.replace(
+			taskItemDelegateName, "]]><", "[$SPECIAL_CHARACTER$]");
+		taskItemDelegateName = StringUtil.replace(
+			taskItemDelegateName, "]]>", "]]]]><![CDATA[>");
+		taskItemDelegateName = StringUtil.replace(
+			taskItemDelegateName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(taskItemDelegateName);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>totalItemsCount</column-name><column-value><![CDATA[");
 
-		sb.append(getTotalItemsCount());
+		String totalItemsCount = String.valueOf(getTotalItemsCount());
+
+		totalItemsCount = StringUtil.replace(
+			totalItemsCount, "]]><", "[$SPECIAL_CHARACTER$]");
+		totalItemsCount = StringUtil.replace(
+			totalItemsCount, "]]>", "]]]]><![CDATA[>");
+		totalItemsCount = StringUtil.replace(
+			totalItemsCount, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(totalItemsCount);
 
 		sb.append("]]></column-value></column>");
 

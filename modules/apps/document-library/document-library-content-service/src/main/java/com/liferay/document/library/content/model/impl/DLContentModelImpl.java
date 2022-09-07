@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
@@ -745,55 +746,121 @@ public class DLContentModelImpl
 		sb.append(
 			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
 
-		sb.append(getMvccVersion());
+		String mvccVersion = String.valueOf(getMvccVersion());
+
+		mvccVersion = StringUtil.replace(
+			mvccVersion, "]]><", "[$SPECIAL_CHARACTER$]");
+		mvccVersion = StringUtil.replace(mvccVersion, "]]>", "]]]]><![CDATA[>");
+		mvccVersion = StringUtil.replace(
+			mvccVersion, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(mvccVersion);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>ctCollectionId</column-name><column-value><![CDATA[");
 
-		sb.append(getCtCollectionId());
+		String ctCollectionId = String.valueOf(getCtCollectionId());
+
+		ctCollectionId = StringUtil.replace(
+			ctCollectionId, "]]><", "[$SPECIAL_CHARACTER$]");
+		ctCollectionId = StringUtil.replace(
+			ctCollectionId, "]]>", "]]]]><![CDATA[>");
+		ctCollectionId = StringUtil.replace(
+			ctCollectionId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(ctCollectionId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>contentId</column-name><column-value><![CDATA[");
 
-		sb.append(getContentId());
+		String contentId = String.valueOf(getContentId());
+
+		contentId = StringUtil.replace(
+			contentId, "]]><", "[$SPECIAL_CHARACTER$]");
+		contentId = StringUtil.replace(contentId, "]]>", "]]]]><![CDATA[>");
+		contentId = StringUtil.replace(
+			contentId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(contentId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
 
-		sb.append(getGroupId());
+		String groupId = String.valueOf(getGroupId());
+
+		groupId = StringUtil.replace(groupId, "]]><", "[$SPECIAL_CHARACTER$]");
+		groupId = StringUtil.replace(groupId, "]]>", "]]]]><![CDATA[>");
+		groupId = StringUtil.replace(groupId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(groupId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
 
-		sb.append(getCompanyId());
+		String companyId = String.valueOf(getCompanyId());
+
+		companyId = StringUtil.replace(
+			companyId, "]]><", "[$SPECIAL_CHARACTER$]");
+		companyId = StringUtil.replace(companyId, "]]>", "]]]]><![CDATA[>");
+		companyId = StringUtil.replace(
+			companyId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(companyId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>repositoryId</column-name><column-value><![CDATA[");
 
-		sb.append(getRepositoryId());
+		String repositoryId = String.valueOf(getRepositoryId());
+
+		repositoryId = StringUtil.replace(
+			repositoryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		repositoryId = StringUtil.replace(
+			repositoryId, "]]>", "]]]]><![CDATA[>");
+		repositoryId = StringUtil.replace(
+			repositoryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(repositoryId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>path</column-name><column-value><![CDATA[");
 
-		sb.append(getPath());
+		String path = String.valueOf(getPath());
+
+		path = StringUtil.replace(path, "]]><", "[$SPECIAL_CHARACTER$]");
+		path = StringUtil.replace(path, "]]>", "]]]]><![CDATA[>");
+		path = StringUtil.replace(path, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(path);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>version</column-name><column-value><![CDATA[");
 
-		sb.append(getVersion());
+		String version = String.valueOf(getVersion());
+
+		version = StringUtil.replace(version, "]]><", "[$SPECIAL_CHARACTER$]");
+		version = StringUtil.replace(version, "]]>", "]]]]><![CDATA[>");
+		version = StringUtil.replace(version, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(version);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>size</column-name><column-value><![CDATA[");
 
-		sb.append(getSize());
+		String size = String.valueOf(getSize());
+
+		size = StringUtil.replace(size, "]]><", "[$SPECIAL_CHARACTER$]");
+		size = StringUtil.replace(size, "]]>", "]]]]><![CDATA[>");
+		size = StringUtil.replace(size, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(size);
 
 		sb.append("]]></column-value></column>");
 

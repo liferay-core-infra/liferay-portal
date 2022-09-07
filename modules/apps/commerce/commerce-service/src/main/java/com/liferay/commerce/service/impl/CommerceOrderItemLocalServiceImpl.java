@@ -197,10 +197,10 @@ public class CommerceOrderItemLocalServiceImpl
 			commerceOrderItemPersistence.update(childCommerceOrderItem);
 		}
 
-		_commerceOrderLocalService.recalculatePrice(
-			commerceOrderItem.getCommerceOrderId(), commerceContext);
+		_populateServiceContext(
+			commerceOrderItem.getCommerceOrderItemId(), commerceContext);
 
-		return commerceOrderItem;
+		return commerceOrderItemPersistence.update(commerceOrderItem);
 	}
 
 	@Override
@@ -1621,6 +1621,22 @@ public class CommerceOrderItemLocalServiceImpl
 		}
 
 		return false;
+	}
+
+	private void _populateServiceContext(
+		long commerceOrderItemId, CommerceContext commerceContext) {
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext == null) {
+			serviceContext = new ServiceContext();
+		}
+
+		serviceContext.setAttribute("commerceContext", commerceContext);
+		serviceContext.setAttribute("commerceOrderItemId", commerceOrderItemId);
+
+		ServiceContextThreadLocal.pushServiceContext(serviceContext);
 	}
 
 	private void _setCommerceOrderItemDiscountValue(

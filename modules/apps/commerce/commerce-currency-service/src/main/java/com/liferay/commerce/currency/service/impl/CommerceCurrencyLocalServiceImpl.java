@@ -24,6 +24,7 @@ import com.liferay.commerce.currency.exception.CommerceCurrencyNameException;
 import com.liferay.commerce.currency.exception.NoSuchCurrencyException;
 import com.liferay.commerce.currency.internal.model.listener.PortalInstanceLifecycleListenerImpl;
 import com.liferay.commerce.currency.model.CommerceCurrency;
+import com.liferay.commerce.currency.model.impl.CommerceCurrencyImpl;
 import com.liferay.commerce.currency.service.base.CommerceCurrencyLocalServiceBaseImpl;
 import com.liferay.commerce.currency.util.ExchangeRateProvider;
 import com.liferay.commerce.currency.util.ExchangeRateProviderRegistry;
@@ -241,6 +242,8 @@ public class CommerceCurrencyLocalServiceImpl
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(countriesJSON);
 
+		String firstPrimaryCommerceCurrencyCode = null;
+
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -254,6 +257,17 @@ public class CommerceCurrencyLocalServiceImpl
 				boolean primary = jsonObject.getBoolean("primary");
 				double priority = jsonObject.getDouble("priority");
 				String symbol = jsonObject.getString("symbol");
+
+				if (primary && (firstPrimaryCommerceCurrencyCode == null)) {
+					firstPrimaryCommerceCurrencyCode = code;
+				}
+
+				BigDecimal exchangeRate = BigDecimal.ONE;
+
+				if (!primary) {
+					exchangeRate = _getExchangeRate(
+						firstPrimaryCommerceCurrencyCode, code);
+				}
 
 				RoundingTypeConfiguration roundingTypeConfiguration =
 					_configurationProvider.getConfiguration(
@@ -277,20 +291,11 @@ public class CommerceCurrencyLocalServiceImpl
 
 				commerceCurrencyLocalService.addCommerceCurrency(
 					serviceContext.getUserId(), code, nameMap, symbol,
-					BigDecimal.ONE, formatPatternMap,
+					exchangeRate, formatPatternMap,
 					roundingTypeConfiguration.maximumFractionDigits(),
 					roundingTypeConfiguration.minimumFractionDigits(),
 					roundingMode.name(), primary, priority, true);
 			}
-		}
-
-		for (String exchangeRateProviderKey :
-				_exchangeRateProviderRegistry.getExchangeRateProviderKeys()) {
-
-			_updateExchangeRates(
-				serviceContext.getCompanyId(), exchangeRateProviderKey);
-
-			break;
 		}
 	}
 
@@ -485,6 +490,43 @@ public class CommerceCurrencyLocalServiceImpl
 				}
 			}
 		}
+	}
+
+	private BigDecimal _getExchangeRate(
+		String primaryCommerceCurrencyCode,
+		String currentCommerceCurrencyCode) {
+
+		CommerceCurrency primaryCommerceCurrency = new CommerceCurrencyImpl();
+
+		primaryCommerceCurrency.setCode(primaryCommerceCurrencyCode);
+
+		CommerceCurrency commerceCurrency = new CommerceCurrencyImpl();
+
+		commerceCurrency.setCode(currentCommerceCurrencyCode);
+
+		for (String exchangeRateProviderKey :
+				_exchangeRateProviderRegistry.getExchangeRateProviderKeys()) {
+
+			ExchangeRateProvider exchangeRateProvider =
+				_exchangeRateProviderRegistry.getExchangeRateProvider(
+					exchangeRateProviderKey);
+
+			if (exchangeRateProvider == null) {
+				return BigDecimal.ONE;
+			}
+
+			try {
+				return exchangeRateProvider.getExchangeRate(
+					primaryCommerceCurrency, commerceCurrency);
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(exception);
+				}
+			}
+		}
+
+		return BigDecimal.ONE;
 	}
 
 	private void _updateExchangeRates(

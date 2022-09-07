@@ -42,16 +42,16 @@ public class CommerceOrderItemModelListener
 	public void onAfterRemove(CommerceOrderItem commerceOrderItem)
 		throws ModelListenerException {
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
 		try {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
 			if (serviceContext != null) {
 				long commerceOrderItemId = GetterUtil.getLong(
-					serviceContext.getAttribute("commerceOrderItemId"));
+					serviceContext.removeAttribute("commerceOrderItemId"));
 
 				CommerceContext commerceContext =
-					(CommerceContext)serviceContext.getAttribute(
+					(CommerceContext)serviceContext.removeAttribute(
 						"commerceContext");
 
 				if ((commerceContext != null) &&
@@ -75,12 +75,6 @@ public class CommerceOrderItemModelListener
 		catch (Exception exception) {
 			throw new ModelListenerException(exception);
 		}
-		finally {
-			if (serviceContext != null) {
-				serviceContext.removeAttribute("commerceContext");
-				serviceContext.removeAttribute("commerceOrderItemId");
-			}
-		}
 	}
 
 	@Override
@@ -89,16 +83,16 @@ public class CommerceOrderItemModelListener
 			CommerceOrderItem commerceOrderItem)
 		throws ModelListenerException {
 
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
 		try {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
 			if (serviceContext != null) {
 				long commerceOrderItemId = GetterUtil.getLong(
-					serviceContext.getAttribute("commerceOrderItemId"));
+					serviceContext.removeAttribute("commerceOrderItemId"));
 
 				CommerceContext commerceContext =
-					(CommerceContext)serviceContext.getAttribute(
+					(CommerceContext)serviceContext.removeAttribute(
 						"commerceContext");
 
 				if ((commerceContext != null) &&
@@ -113,12 +107,6 @@ public class CommerceOrderItemModelListener
 		}
 		catch (Exception exception) {
 			throw new ModelListenerException(exception);
-		}
-		finally {
-			if (serviceContext != null) {
-				serviceContext.removeAttribute("commerceContext");
-				serviceContext.removeAttribute("commerceOrderItemId");
-			}
 		}
 	}
 

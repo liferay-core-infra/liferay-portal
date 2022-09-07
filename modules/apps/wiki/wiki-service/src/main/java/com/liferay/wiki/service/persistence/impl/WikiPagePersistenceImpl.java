@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -23791,11 +23790,15 @@ public class WikiPagePersistenceImpl
 			}
 
 			try {
-				wikiPage.setTitle(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, WikiPage.class.getName(),
-						pageId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						wikiPage.getTitle(), null));
+				for (Sanitizer sanitizer : sanitizers) {
+					wikiPage.setTitle(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							WikiPage.class.getName(), pageId,
+							ContentTypes.TEXT_PLAIN,
+							new String[] {Sanitizer.MODE_ALL},
+							wikiPage.getTitle(), null));
+				}
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -24946,6 +24949,9 @@ public class WikiPagePersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	private volatile List<Sanitizer> sanitizers;
 
 	private static final String _SQL_SELECT_WIKIPAGE =
 		"SELECT wikiPage FROM WikiPage wikiPage";

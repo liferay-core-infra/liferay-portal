@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
@@ -1165,13 +1164,15 @@ public class CTermEntryLocalizationPersistenceImpl
 			}
 
 			try {
-				cTermEntryLocalization.setDescription(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId,
-						CTermEntryLocalization.class.getName(),
-						cTermEntryLocalizationId, ContentTypes.TEXT_HTML,
-						Sanitizer.MODE_ALL,
-						cTermEntryLocalization.getDescription(), null));
+				for (Sanitizer sanitizer : sanitizers) {
+					cTermEntryLocalization.setDescription(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							CTermEntryLocalization.class.getName(),
+							cTermEntryLocalizationId, ContentTypes.TEXT_HTML,
+							new String[] {Sanitizer.MODE_ALL},
+							cTermEntryLocalization.getDescription(), null));
+				}
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -1575,6 +1576,9 @@ public class CTermEntryLocalizationPersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	private volatile List<Sanitizer> sanitizers;
 
 	private static final String _SQL_SELECT_CTERMENTRYLOCALIZATION =
 		"SELECT cTermEntryLocalization FROM CTermEntryLocalization cTermEntryLocalization";

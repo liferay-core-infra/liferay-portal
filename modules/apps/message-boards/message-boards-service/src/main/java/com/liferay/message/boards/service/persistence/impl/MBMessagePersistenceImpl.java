@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -21712,11 +21711,15 @@ public class MBMessagePersistenceImpl
 			}
 
 			try {
-				mbMessage.setSubject(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, MBMessage.class.getName(),
-						messageId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						mbMessage.getSubject(), null));
+				for (Sanitizer sanitizer : sanitizers) {
+					mbMessage.setSubject(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							MBMessage.class.getName(), messageId,
+							ContentTypes.TEXT_PLAIN,
+							new String[] {Sanitizer.MODE_ALL},
+							mbMessage.getSubject(), null));
+				}
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -22962,6 +22965,9 @@ public class MBMessagePersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	private volatile List<Sanitizer> sanitizers;
 
 	private static final String _SQL_SELECT_MBMESSAGE =
 		"SELECT mbMessage FROM MBMessage mbMessage";

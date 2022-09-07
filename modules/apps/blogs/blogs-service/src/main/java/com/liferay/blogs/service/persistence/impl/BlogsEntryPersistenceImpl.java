@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -21969,23 +21968,31 @@ public class BlogsEntryPersistenceImpl
 			}
 
 			try {
-				blogsEntry.setTitle(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, BlogsEntry.class.getName(),
-						entryId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						blogsEntry.getTitle(), null));
+				for (Sanitizer sanitizer : sanitizers) {
+					blogsEntry.setTitle(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							BlogsEntry.class.getName(), entryId,
+							ContentTypes.TEXT_PLAIN,
+							new String[] {Sanitizer.MODE_ALL},
+							blogsEntry.getTitle(), null));
 
-				blogsEntry.setContent(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, BlogsEntry.class.getName(),
-						entryId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
-						blogsEntry.getContent(), null));
+					blogsEntry.setContent(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							BlogsEntry.class.getName(), entryId,
+							ContentTypes.TEXT_HTML,
+							new String[] {Sanitizer.MODE_ALL},
+							blogsEntry.getContent(), null));
 
-				blogsEntry.setCoverImageCaption(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, BlogsEntry.class.getName(),
-						entryId, ContentTypes.TEXT_HTML, Sanitizer.MODE_ALL,
-						blogsEntry.getCoverImageCaption(), null));
+					blogsEntry.setCoverImageCaption(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							BlogsEntry.class.getName(), entryId,
+							ContentTypes.TEXT_HTML,
+							new String[] {Sanitizer.MODE_ALL},
+							blogsEntry.getCoverImageCaption(), null));
+				}
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -23085,6 +23092,9 @@ public class BlogsEntryPersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	private volatile List<Sanitizer> sanitizers;
 
 	private static Long _getTime(Date date) {
 		if (date == null) {

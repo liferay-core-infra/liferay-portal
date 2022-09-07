@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -13535,11 +13534,15 @@ public class MBThreadPersistenceImpl
 			}
 
 			try {
-				mbThread.setTitle(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, MBThread.class.getName(),
-						threadId, ContentTypes.TEXT_PLAIN, Sanitizer.MODE_ALL,
-						mbThread.getTitle(), null));
+				for (Sanitizer sanitizer : sanitizers) {
+					mbThread.setTitle(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							MBThread.class.getName(), threadId,
+							ContentTypes.TEXT_PLAIN,
+							new String[] {Sanitizer.MODE_ALL},
+							mbThread.getTitle(), null));
+				}
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -14412,6 +14415,9 @@ public class MBThreadPersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	private volatile List<Sanitizer> sanitizers;
 
 	private static Long _getTime(Date date) {
 		if (date == null) {

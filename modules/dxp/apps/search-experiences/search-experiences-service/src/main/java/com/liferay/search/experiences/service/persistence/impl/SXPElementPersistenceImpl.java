@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerException;
-import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
@@ -6323,11 +6322,15 @@ public class SXPElementPersistenceImpl
 			}
 
 			try {
-				sxpElement.setTitle(
-					SanitizerUtil.sanitize(
-						companyId, groupId, userId, SXPElement.class.getName(),
-						sxpElementId, ContentTypes.TEXT_PLAIN,
-						Sanitizer.MODE_ALL, sxpElement.getTitle(), null));
+				for (Sanitizer sanitizer : sanitizers) {
+					sxpElement.setTitle(
+						sanitizer.sanitize(
+							companyId, groupId, userId,
+							SXPElement.class.getName(), sxpElementId,
+							ContentTypes.TEXT_PLAIN,
+							new String[] {Sanitizer.MODE_ALL},
+							sxpElement.getTitle(), null));
+				}
 			}
 			catch (SanitizerException sanitizerException) {
 				throw new SystemException(sanitizerException);
@@ -6825,6 +6828,9 @@ public class SXPElementPersistenceImpl
 
 	@Reference
 	protected FinderCache finderCache;
+
+	@Reference
+	private volatile List<Sanitizer> sanitizers;
 
 	private static final String _SQL_SELECT_SXPELEMENT =
 		"SELECT sxpElement FROM SXPElement sxpElement";

@@ -4735,7 +4735,7 @@ public class ServiceBuilder {
 		}
 
 		xml = StringUtil.replace(xml, '\r', "");
-		xml = Dom4jUtil.toString(xml);
+		xml = Dom4jUtil.formatXML(xml);
 		xml = StringUtil.replace(xml, "\"/>", "\" />");
 
 		if (Validator.isNotNull(doctype)) {

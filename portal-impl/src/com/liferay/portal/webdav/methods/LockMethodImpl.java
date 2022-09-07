@@ -82,7 +82,7 @@ public class LockMethodImpl implements Method {
 
 			if (Validator.isNotNull(xml)) {
 				if (_log.isDebugEnabled()) {
-					_log.debug("Request XML\n" + Dom4jUtil.toString(xml));
+					_log.debug("Request XML\n" + Dom4jUtil.formatXML(xml));
 				}
 
 				Document document = SAXReaderUtil.read(xml);
@@ -225,7 +225,7 @@ public class LockMethodImpl implements Method {
 		sb.append("</D:lockdiscovery>");
 		sb.append("</D:prop>");
 
-		return Dom4jUtil.toString(sb.toString());
+		return Dom4jUtil.formatXML(sb.toString());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LockMethodImpl.class);

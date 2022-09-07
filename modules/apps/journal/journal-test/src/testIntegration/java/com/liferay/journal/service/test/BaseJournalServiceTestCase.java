@@ -57,7 +57,7 @@ public abstract class BaseJournalServiceTestCase {
 	protected String getDefultXsd() throws Exception {
 		String xsd = readText("test-journal-structure-all-fields.xml");
 
-		return Dom4jUtil.toString(xsd);
+		return Dom4jUtil.formatXML(xsd);
 	}
 
 	protected ServiceContext getServiceContext() {

@@ -104,7 +104,7 @@ public class PropfindMethodImpl extends BasePropMethodImpl implements Method {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Request XML: \n" +
-						Dom4jUtil.toString(xml, StringPool.FOUR_SPACES));
+						Dom4jUtil.formatXML(xml, StringPool.FOUR_SPACES));
 			}
 
 			Document document = SAXReaderUtil.read(xml);

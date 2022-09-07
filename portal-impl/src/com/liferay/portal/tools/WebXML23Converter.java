@@ -92,7 +92,7 @@ public class WebXML23Converter {
 			webXML23 = StringUtil.removeSubstrings(
 				webXML23, "<jsp-config>", "</jsp-config>");
 
-			webXML23 = Dom4jUtil.toString(webXML23);
+			webXML23 = Dom4jUtil.formatXML(webXML23);
 
 			FileUtil.write(output, webXML23);
 		}

@@ -56,7 +56,6 @@ import com.liferay.commerce.product.util.JsonHelper;
 import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.base.CommerceOrderItemLocalServiceBaseImpl;
 import com.liferay.commerce.tax.CommerceTaxCalculation;
-import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
@@ -271,19 +270,11 @@ public class CommerceOrderItemLocalServiceImpl
 
 		// Commerce order item
 
+		_populateServiceContext(
+			commerceOrderItem.getCommerceOrderItemId(), commerceContext);
+
 		commerceOrderItemLocalService.deleteCommerceOrderItem(
 			commerceOrderItem);
-
-		CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
-
-		if (_commerceShippingHelper.isFreeShipping(commerceOrder)) {
-			_commerceOrderLocalService.updateCommerceShippingMethod(
-				commerceOrder.getCommerceOrderId(), 0, null, BigDecimal.ZERO,
-				commerceContext);
-		}
-
-		_commerceOrderLocalService.recalculatePrice(
-			commerceOrder.getCommerceOrderId(), commerceContext);
 
 		return commerceOrderItem;
 	}
@@ -2083,9 +2074,6 @@ public class CommerceOrderItemLocalServiceImpl
 
 	@ServiceReference(type = CommerceProductPriceCalculation.class)
 	private CommerceProductPriceCalculation _commerceProductPriceCalculation;
-
-	@ServiceReference(type = CommerceShippingHelper.class)
-	private CommerceShippingHelper _commerceShippingHelper;
 
 	@ServiceReference(type = CommerceTaxCalculation.class)
 	private CommerceTaxCalculation _commerceTaxCalculation;

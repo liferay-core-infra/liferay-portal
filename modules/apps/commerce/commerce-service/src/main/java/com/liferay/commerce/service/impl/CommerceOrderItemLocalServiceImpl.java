@@ -2015,15 +2015,12 @@ public class CommerceOrderItemLocalServiceImpl
 
 		commerceOrderItem.setExpandoBridgeAttributes(serviceContext);
 
-		commerceOrderItem = commerceOrderItemPersistence.update(
-			commerceOrderItem);
-
 		if (commerceOrder.isOpen()) {
-			_commerceOrderLocalService.recalculatePrice(
-				commerceOrderItem.getCommerceOrderId(), commerceContext);
+			_populateServiceContext(
+				commerceOrderItem.getCommerceOrderItemId(), commerceContext);
 		}
 
-		return commerceOrderItem;
+		return commerceOrderItemPersistence.update(commerceOrderItem);
 	}
 
 	private CommerceOrderItem _updateCommerceOrderItem(

@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.service.DLFileShortcutLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,23 +64,77 @@ public abstract class BaseDLFileShortcutUADExporter
 
 		sb.append(
 			"<column><column-name>fileShortcutId</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getFileShortcutId());
+
+		String fileShortcutId = String.valueOf(
+			dlFileShortcut.getFileShortcutId());
+
+		fileShortcutId = StringUtil.replace(
+			fileShortcutId, "]]><", "[$SPECIAL_CHARACTER$]");
+		fileShortcutId = StringUtil.replace(
+			fileShortcutId, "]]>", "]]]]><![CDATA[>");
+		fileShortcutId = StringUtil.replace(
+			fileShortcutId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(fileShortcutId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(
+			dlFileShortcut.getStatusByUserId());
+
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]>", "]]]]><![CDATA[>");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			dlFileShortcut.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getUserId());
+
+		String userId = String.valueOf(dlFileShortcut.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileShortcut.getUserName());
+
+		String userName = String.valueOf(dlFileShortcut.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

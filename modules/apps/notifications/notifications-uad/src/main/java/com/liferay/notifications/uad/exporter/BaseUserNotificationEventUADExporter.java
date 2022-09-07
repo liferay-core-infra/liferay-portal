@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
 import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -64,11 +65,31 @@ public abstract class BaseUserNotificationEventUADExporter
 
 		sb.append(
 			"<column><column-name>userNotificationEventId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationEvent.getUserNotificationEventId());
+
+		String userNotificationEventId = String.valueOf(
+			userNotificationEvent.getUserNotificationEventId());
+
+		userNotificationEventId = StringUtil.replace(
+			userNotificationEventId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userNotificationEventId = StringUtil.replace(
+			userNotificationEventId, "]]>", "]]]]><![CDATA[>");
+		userNotificationEventId = StringUtil.replace(
+			userNotificationEventId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userNotificationEventId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationEvent.getUserId());
+
+		String userId = String.valueOf(userNotificationEvent.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

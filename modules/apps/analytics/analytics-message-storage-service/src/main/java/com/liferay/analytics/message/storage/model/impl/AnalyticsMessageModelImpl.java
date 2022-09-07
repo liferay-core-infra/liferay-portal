@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
 
@@ -668,37 +669,84 @@ public class AnalyticsMessageModelImpl
 		sb.append(
 			"<column><column-name>mvccVersion</column-name><column-value><![CDATA[");
 
-		sb.append(getMvccVersion());
+		String mvccVersion = String.valueOf(getMvccVersion());
+
+		mvccVersion = StringUtil.replace(
+			mvccVersion, "]]><", "[$SPECIAL_CHARACTER$]");
+		mvccVersion = StringUtil.replace(mvccVersion, "]]>", "]]]]><![CDATA[>");
+		mvccVersion = StringUtil.replace(
+			mvccVersion, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(mvccVersion);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>analyticsMessageId</column-name><column-value><![CDATA[");
 
-		sb.append(getAnalyticsMessageId());
+		String analyticsMessageId = String.valueOf(getAnalyticsMessageId());
+
+		analyticsMessageId = StringUtil.replace(
+			analyticsMessageId, "]]><", "[$SPECIAL_CHARACTER$]");
+		analyticsMessageId = StringUtil.replace(
+			analyticsMessageId, "]]>", "]]]]><![CDATA[>");
+		analyticsMessageId = StringUtil.replace(
+			analyticsMessageId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(analyticsMessageId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
 
-		sb.append(getCompanyId());
+		String companyId = String.valueOf(getCompanyId());
+
+		companyId = StringUtil.replace(
+			companyId, "]]><", "[$SPECIAL_CHARACTER$]");
+		companyId = StringUtil.replace(companyId, "]]>", "]]]]><![CDATA[>");
+		companyId = StringUtil.replace(
+			companyId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(companyId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
 
-		sb.append(getUserId());
+		String userId = String.valueOf(getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
 
-		sb.append(getUserName());
+		String userName = String.valueOf(getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>createDate</column-name><column-value><![CDATA[");
 
-		sb.append(getCreateDate());
+		String createDate = String.valueOf(getCreateDate());
+
+		createDate = StringUtil.replace(
+			createDate, "]]><", "[$SPECIAL_CHARACTER$]");
+		createDate = StringUtil.replace(createDate, "]]>", "]]]]><![CDATA[>");
+		createDate = StringUtil.replace(
+			createDate, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(createDate);
 
 		sb.append("]]></column-value></column>");
 

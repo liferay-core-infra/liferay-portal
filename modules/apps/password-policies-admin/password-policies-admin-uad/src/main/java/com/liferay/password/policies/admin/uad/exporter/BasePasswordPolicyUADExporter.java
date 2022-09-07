@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.service.PasswordPolicyLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -64,15 +65,45 @@ public abstract class BasePasswordPolicyUADExporter
 
 		sb.append(
 			"<column><column-name>passwordPolicyId</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getPasswordPolicyId());
+
+		String passwordPolicyId = String.valueOf(
+			passwordPolicy.getPasswordPolicyId());
+
+		passwordPolicyId = StringUtil.replace(
+			passwordPolicyId, "]]><", "[$SPECIAL_CHARACTER$]");
+		passwordPolicyId = StringUtil.replace(
+			passwordPolicyId, "]]>", "]]]]><![CDATA[>");
+		passwordPolicyId = StringUtil.replace(
+			passwordPolicyId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(passwordPolicyId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getUserId());
+
+		String userId = String.valueOf(passwordPolicy.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(passwordPolicy.getUserName());
+
+		String userName = String.valueOf(passwordPolicy.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

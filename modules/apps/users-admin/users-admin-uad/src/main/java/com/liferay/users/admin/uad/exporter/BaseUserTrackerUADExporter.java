@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.UserTracker;
 import com.liferay.portal.kernel.service.UserTrackerLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.users.admin.uad.constants.UsersAdminUADConstants;
 
@@ -63,11 +64,30 @@ public abstract class BaseUserTrackerUADExporter
 
 		sb.append(
 			"<column><column-name>userTrackerId</column-name><column-value><![CDATA[");
-		sb.append(userTracker.getUserTrackerId());
+
+		String userTrackerId = String.valueOf(userTracker.getUserTrackerId());
+
+		userTrackerId = StringUtil.replace(
+			userTrackerId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userTrackerId = StringUtil.replace(
+			userTrackerId, "]]>", "]]]]><![CDATA[>");
+		userTrackerId = StringUtil.replace(
+			userTrackerId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userTrackerId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userTracker.getUserId());
+
+		String userId = String.valueOf(userTracker.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

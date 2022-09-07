@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.UserNotificationDelivery;
 import com.liferay.portal.kernel.service.UserNotificationDeliveryLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -66,11 +67,31 @@ public abstract class BaseUserNotificationDeliveryUADExporter
 
 		sb.append(
 			"<column><column-name>userNotificationDeliveryId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationDelivery.getUserNotificationDeliveryId());
+
+		String userNotificationDeliveryId = String.valueOf(
+			userNotificationDelivery.getUserNotificationDeliveryId());
+
+		userNotificationDeliveryId = StringUtil.replace(
+			userNotificationDeliveryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userNotificationDeliveryId = StringUtil.replace(
+			userNotificationDeliveryId, "]]>", "]]]]><![CDATA[>");
+		userNotificationDeliveryId = StringUtil.replace(
+			userNotificationDeliveryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userNotificationDeliveryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationDelivery.getUserId());
+
+		String userId = String.valueOf(userNotificationDelivery.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

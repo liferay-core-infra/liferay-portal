@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,44 @@ public abstract class BaseSystemEventUADExporter
 
 		sb.append(
 			"<column><column-name>systemEventId</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getSystemEventId());
+
+		String systemEventId = String.valueOf(systemEvent.getSystemEventId());
+
+		systemEventId = StringUtil.replace(
+			systemEventId, "]]><", "[$SPECIAL_CHARACTER$]");
+		systemEventId = StringUtil.replace(
+			systemEventId, "]]>", "]]]]><![CDATA[>");
+		systemEventId = StringUtil.replace(
+			systemEventId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(systemEventId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getUserId());
+
+		String userId = String.valueOf(systemEvent.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getUserName());
+
+		String userName = String.valueOf(systemEvent.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

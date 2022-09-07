@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.RegionService;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -147,7 +148,7 @@ public class CommerceAddressDisplayContext {
 	}
 
 	public String getDeleteCommerceAddressURL(long commerceAddressId) {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_liferayPortletResponse
 		).setActionName(
 			"/commerce_address_content/edit_commerce_address"

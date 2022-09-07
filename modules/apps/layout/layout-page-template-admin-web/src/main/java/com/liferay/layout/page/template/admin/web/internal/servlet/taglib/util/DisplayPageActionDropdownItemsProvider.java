@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -230,7 +231,7 @@ public class DisplayPageActionDropdownItemsProvider {
 				LanguageUtil.get(_httpServletRequest, key));
 			dropdownItem.putData(
 				"deleteDisplayPageURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -255,7 +256,7 @@ public class DisplayPageActionDropdownItemsProvider {
 				"action", "deleteLayoutPageTemplateEntryPreview");
 			dropdownItem.putData(
 				"deleteLayoutPageTemplateEntryPreviewURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -347,7 +348,7 @@ public class DisplayPageActionDropdownItemsProvider {
 		ItemSelectorCriterion itemSelectorCriterion =
 			new UploadItemSelectorCriterion(
 				LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -377,7 +378,7 @@ public class DisplayPageActionDropdownItemsProvider {
 			dropdownItem.putData("action", "markAsDefaultDisplayPage");
 			dropdownItem.putData(
 				"markAsDefaultDisplayPageURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -476,7 +477,7 @@ public class DisplayPageActionDropdownItemsProvider {
 				_layoutPageTemplateEntry.getName());
 			dropdownItem.putData(
 				"updateDisplayPageURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +

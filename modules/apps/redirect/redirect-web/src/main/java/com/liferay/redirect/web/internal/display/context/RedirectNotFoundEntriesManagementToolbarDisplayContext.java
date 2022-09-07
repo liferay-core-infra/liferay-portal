@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -86,7 +87,7 @@ public class RedirectNotFoundEntriesManagementToolbarDisplayContext
 	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"editRedirectNotFoundEntriesURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/redirect/edit_redirect_not_found_entry"

@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -377,7 +378,7 @@ public class CommerceSubscriptionEntryDisplayContext {
 	}
 
 	public PortletURL getTransitionOrderPortletURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_cpRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/commerce_open_order_content/edit_commerce_order"
@@ -388,7 +389,7 @@ public class CommerceSubscriptionEntryDisplayContext {
 		).setParameter(
 			"commerceSubscriptionEntryId",
 			_commerceSubscriptionEntry.getCommerceSubscriptionEntryId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public boolean hasManageCommerceSubscriptionEntryPermission() {

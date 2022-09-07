@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -320,7 +321,7 @@ public class GetDataMVCResourceCommand extends BaseMVCResourceCommand {
 				resourceRequest, resourceResponse)
 		).put(
 			"hideAnalyticsReportsPanelURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				resourceResponse
 			).setActionName(
 				"/analytics_reports/hide_panel"

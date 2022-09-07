@@ -21,6 +21,7 @@ import com.liferay.portal.instances.service.PortalInstancesLocalServiceUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +75,7 @@ public class CompanyActionDropdownItems {
 							dropdownItem.putData("action", "deleteInstance");
 							dropdownItem.putData(
 								"deleteURL",
-								PortletURLBuilder.createActionURL(
+								ActionURLBuilder.createActionURL(
 									_liferayPortletResponse
 								).setActionName(
 									"/portal_instances/delete_instance"

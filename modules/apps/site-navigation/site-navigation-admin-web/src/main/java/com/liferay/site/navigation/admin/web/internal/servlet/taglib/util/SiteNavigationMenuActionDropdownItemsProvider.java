@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -134,7 +135,7 @@ public class SiteNavigationMenuActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteSiteNavigationMenu");
 			dropdownItem.putData(
 				"deleteSiteNavigationMenuURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_navigation_admin/delete_site_navigation_menu"
@@ -222,7 +223,7 @@ public class SiteNavigationMenuActionDropdownItemsProvider {
 
 			dropdownItem.putData(
 				"markAsPrimaryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_navigation_admin/edit_site_navigation_menu_settings"
@@ -253,7 +254,7 @@ public class SiteNavigationMenuActionDropdownItemsProvider {
 				"mainFieldValue", _siteNavigationMenu.getName());
 			dropdownItem.putData(
 				"renameSiteNavigationMenuURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_navigation_admin/update_site_navigation_menu"
@@ -279,7 +280,7 @@ public class SiteNavigationMenuActionDropdownItemsProvider {
 			dropdownItem.putData("action", "markAsSecondary");
 			dropdownItem.putData(
 				"markAsSecondaryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_navigation_admin/edit_site_navigation_menu_settings"
@@ -311,7 +312,7 @@ public class SiteNavigationMenuActionDropdownItemsProvider {
 			dropdownItem.putData("action", "markAsSocial");
 			dropdownItem.putData(
 				"markAsSocialURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_liferayPortletResponse
 				).setActionName(
 					"/site_navigation_admin/edit_site_navigation_menu_settings"

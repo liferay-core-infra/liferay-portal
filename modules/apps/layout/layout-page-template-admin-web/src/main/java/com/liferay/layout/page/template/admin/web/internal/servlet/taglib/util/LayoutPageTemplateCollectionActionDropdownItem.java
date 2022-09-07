@@ -22,6 +22,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -127,7 +128,7 @@ public class LayoutPageTemplateCollectionActionDropdownItem {
 								"action", "deleteLayoutPageTemplateCollection");
 							dropdownItem.putData(
 								"deleteLayoutPageTemplateCollectionURL",
-								PortletURLBuilder.createActionURL(
+								ActionURLBuilder.createActionURL(
 									_renderResponse
 								).setActionName(
 									"/layout_page_template_admin/delete_" +

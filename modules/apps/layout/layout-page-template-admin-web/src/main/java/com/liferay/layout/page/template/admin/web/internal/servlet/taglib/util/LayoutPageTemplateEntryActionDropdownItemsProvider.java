@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalServiceUtil;
@@ -229,7 +230,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteLayoutPageTemplateEntry");
 			dropdownItem.putData(
 				"deleteLayoutPageTemplateEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -254,7 +255,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 				"action", "deleteLayoutPageTemplateEntryPreview");
 			dropdownItem.putData(
 				"deleteLayoutPageTemplateEntryPreviewURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -382,7 +383,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 		ItemSelectorCriterion itemSelectorCriterion =
 			new UploadItemSelectorCriterion(
 				LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -429,7 +430,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 			dropdownItem.putData("itemSelectorURL", itemSelectorURL.toString());
 			dropdownItem.putData(
 				"moveLayoutPageTemplateEntryURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -534,7 +535,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 	}
 
 	private String _getUpdateLayoutPageTemplateEntryURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/layout_page_template_admin/update_layout_page_template_entry"
@@ -552,7 +553,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 	private String _getUpdateLayoutPrototypeURL(
 		LayoutPrototype layoutPrototype) {
 
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/layout_page_template_admin/update_layout_prototype"

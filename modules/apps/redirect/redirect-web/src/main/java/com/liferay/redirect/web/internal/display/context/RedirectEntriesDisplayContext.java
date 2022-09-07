@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
@@ -124,7 +125,7 @@ public class RedirectEntriesDisplayContext {
 				ActionKeys.DELETE),
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_liferayPortletResponse
 					).setActionName(
 						"/redirect/delete_redirect_entry"

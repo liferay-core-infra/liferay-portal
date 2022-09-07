@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
@@ -250,13 +251,13 @@ public class LayoutSetPrototypeDisplayContext {
 	}
 
 	public List<ViewTypeItem> getViewTypeItems() {
-		PortletURL portletURL = PortletURLBuilder.createActionURL(
+		PortletURL portletURL = ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"changeDisplayStyle"
 		).setRedirect(
 			PortalUtil.getCurrentURL(_httpServletRequest)
-		).buildPortletURL();
+		).buildActionURL();
 
 		return new ViewTypeItemList(portletURL, getDisplayStyle()) {
 			{

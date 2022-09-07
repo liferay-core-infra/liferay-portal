@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactory;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -240,7 +241,7 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 
 		LiferayPortletURL liferayPortletURL = _getLiferayPortletURL(
 			httpServletRequest,
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/login/login"

@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.math.BigDecimal;
 
+import java.util.function.Consumer;
+
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -42,22 +44,10 @@ public class CommerceOrderItemModelListener
 	public void onAfterRemove(CommerceOrderItem commerceOrderItem)
 		throws ModelListenerException {
 
-		try {
-			ServiceContext serviceContext =
-				ServiceContextThreadLocal.getServiceContext();
-
-			if (serviceContext != null) {
-				long commerceOrderItemId = GetterUtil.getLong(
-					serviceContext.removeAttribute("commerceOrderItemId"));
-
-				CommerceContext commerceContext =
-					(CommerceContext)serviceContext.removeAttribute(
-						"commerceContext");
-
-				if ((commerceContext != null) &&
-					(commerceOrderItemId ==
-						commerceOrderItem.getCommerceOrderItemId())) {
-
+		_updateCommerceOrder(
+			commerceOrderItem,
+			commerceContext -> {
+				try {
 					CommerceOrder commerceOrder =
 						commerceOrderItem.getCommerceOrder();
 
@@ -70,11 +60,10 @@ public class CommerceOrderItemModelListener
 					_commerceOrderLocalService.recalculatePrice(
 						commerceOrder.getCommerceOrderId(), commerceContext);
 				}
-			}
-		}
-		catch (Exception exception) {
-			throw new ModelListenerException(exception);
-		}
+				catch (Exception exception) {
+					throw new ModelListenerException(exception);
+				}
+			});
 	}
 
 	@Override
@@ -83,30 +72,41 @@ public class CommerceOrderItemModelListener
 			CommerceOrderItem commerceOrderItem)
 		throws ModelListenerException {
 
-		try {
-			ServiceContext serviceContext =
-				ServiceContextThreadLocal.getServiceContext();
-
-			if (serviceContext != null) {
-				long commerceOrderItemId = GetterUtil.getLong(
-					serviceContext.removeAttribute("commerceOrderItemId"));
-
-				CommerceContext commerceContext =
-					(CommerceContext)serviceContext.removeAttribute(
-						"commerceContext");
-
-				if ((commerceContext != null) &&
-					(commerceOrderItemId ==
-						commerceOrderItem.getCommerceOrderItemId())) {
-
+		_updateCommerceOrder(
+			commerceOrderItem,
+			commerceContext -> {
+				try {
 					_commerceOrderLocalService.recalculatePrice(
 						commerceOrderItem.getCommerceOrderId(),
 						commerceContext);
 				}
+				catch (Exception exception) {
+					throw new ModelListenerException(exception);
+				}
+			});
+	}
+
+	private void _updateCommerceOrder(
+		CommerceOrderItem commerceOrderItem,
+		Consumer<CommerceContext> commerceOrderUpdate) {
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		if (serviceContext != null) {
+			long commerceOrderItemId = GetterUtil.getLong(
+				serviceContext.removeAttribute("commerceOrderItemId"));
+
+			CommerceContext commerceContext =
+				(CommerceContext)serviceContext.removeAttribute(
+					"commerceContext");
+
+			if ((commerceContext != null) &&
+				(commerceOrderItemId ==
+					commerceOrderItem.getCommerceOrderItemId())) {
+
+				commerceOrderUpdate.accept(commerceContext);
 			}
-		}
-		catch (Exception exception) {
-			throw new ModelListenerException(exception);
 		}
 	}
 

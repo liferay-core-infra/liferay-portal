@@ -22,6 +22,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuil
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
@@ -114,7 +115,7 @@ public class AccountUserActionDropdownItemsProvider {
 					).buildString());
 				dropdownItem.putData(
 					"editRoleAccountUsersURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_renderResponse
 					).setActionName(
 						"/account_admin/set_user_account_roles"
@@ -135,7 +136,7 @@ public class AccountUserActionDropdownItemsProvider {
 				dropdownItem.putData("action", "removeAccountUsers");
 				dropdownItem.putData(
 					"removeAccountUsersURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_renderResponse
 					).setActionName(
 						"/account_admin/remove_account_users"

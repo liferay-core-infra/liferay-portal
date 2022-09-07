@@ -22,6 +22,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -224,7 +225,7 @@ public class SynonymsDisplayBuilder {
 				dropdownItem.putData("action", "delete");
 				dropdownItem.putData(
 					"deleteURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_renderResponse
 					).setActionName(
 						"/synonyms/delete_synonym_sets"

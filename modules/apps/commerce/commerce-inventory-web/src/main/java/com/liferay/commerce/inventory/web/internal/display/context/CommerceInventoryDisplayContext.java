@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -271,7 +272,7 @@ public class CommerceInventoryDisplayContext {
 	}
 
 	public PortletURL getTransitionInventoryPortletURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_cpRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/commerce_inventory/edit_commerce_inventory_item"
@@ -281,7 +282,7 @@ public class CommerceInventoryDisplayContext {
 			_cpRequestHelper.getCurrentURL()
 		).setParameter(
 			"sku", _sku
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public CreationMenu getWarehousesCreationMenu() throws Exception {

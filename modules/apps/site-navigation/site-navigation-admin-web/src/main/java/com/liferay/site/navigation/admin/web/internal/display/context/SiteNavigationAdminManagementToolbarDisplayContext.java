@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -109,12 +110,12 @@ public class SiteNavigationAdminManagementToolbarDisplayContext
 				dropdownItem.putData("action", "addSiteNavigationMenu");
 				dropdownItem.putData(
 					"addSiteNavigationMenuURL",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
-					).setActionName(
-						"/site_navigation_admin/add_site_navigation_menu"
 					).setMVCPath(
 						"/edit_site_navigation_menu.jsp"
+					).setActionName(
+						"/site_navigation_admin/add_site_navigation_menu"
 					).setRedirect(
 						themeDisplay.getURLCurrent()
 					).buildString());

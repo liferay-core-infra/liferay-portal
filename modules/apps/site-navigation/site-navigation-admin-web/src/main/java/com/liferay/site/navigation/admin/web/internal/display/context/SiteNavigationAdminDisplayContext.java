@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.NavItem;
@@ -263,7 +264,7 @@ public class SiteNavigationAdminDisplayContext {
 			getAddSiteNavigationMenuItemDropdownItems()
 		).put(
 			"deleteSiteNavigationMenuItemURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				_liferayPortletResponse
 			).setActionName(
 				"/site_navigation_admin/delete_site_navigation_menu_item"
@@ -272,7 +273,7 @@ public class SiteNavigationAdminDisplayContext {
 			"displayTemplateOptions", _getDDMTemplatesJSONArray()
 		).put(
 			"editSiteNavigationMenuItemParentURL",
-			() -> PortletURLBuilder.createActionURL(
+			() -> ActionURLBuilder.createActionURL(
 				_liferayPortletResponse
 			).setActionName(
 				"/site_navigation_admin/edit_site_navigation_menu_item_parent"

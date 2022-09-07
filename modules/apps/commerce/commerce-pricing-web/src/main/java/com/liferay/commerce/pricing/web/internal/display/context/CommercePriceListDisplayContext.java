@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
@@ -190,7 +191,7 @@ public class CommercePriceListDisplayContext
 
 		HeaderActionModel saveAsDraftHeaderActionModel = new HeaderActionModel(
 			null, liferayPortletResponse.getNamespace() + "fm",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/commerce_price_list/edit_commerce_price_list"
@@ -220,7 +221,7 @@ public class CommercePriceListDisplayContext
 
 		HeaderActionModel publishHeaderActionModel = new HeaderActionModel(
 			additionalClasses, liferayPortletResponse.getNamespace() + "fm",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/commerce_price_list/edit_commerce_price_list"

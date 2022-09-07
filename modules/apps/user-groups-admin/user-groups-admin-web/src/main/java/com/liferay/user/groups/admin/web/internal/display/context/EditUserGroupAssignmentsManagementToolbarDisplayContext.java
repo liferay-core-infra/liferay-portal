@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.UserGroupServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -93,7 +94,7 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"editUserGroupAssignmentsURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				"editUserGroupAssignments"
@@ -102,7 +103,7 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 			"portletURL", String.valueOf(getPortletURL())
 		).put(
 			"selectUsersURL",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setMVCPath(
 				"/select_user_group_users.jsp"

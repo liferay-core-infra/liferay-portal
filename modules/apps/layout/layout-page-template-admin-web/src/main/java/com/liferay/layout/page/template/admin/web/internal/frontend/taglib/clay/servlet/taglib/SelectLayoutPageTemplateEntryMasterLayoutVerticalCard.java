@@ -16,7 +16,7 @@ package com.liferay.layout.page.template.admin.web.internal.frontend.taglib.clay
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.VerticalCard;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -46,7 +46,7 @@ public class SelectLayoutPageTemplateEntryMasterLayoutVerticalCard
 	}
 
 	public String getAddLayoutPageTemplateEntryURL() {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_renderResponse
 		).setActionName(
 			"/layout_page_template_admin/add_layout_page_template_entry"

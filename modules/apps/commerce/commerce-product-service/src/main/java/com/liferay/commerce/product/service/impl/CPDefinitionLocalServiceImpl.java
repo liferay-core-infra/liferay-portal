@@ -52,7 +52,7 @@ import com.liferay.commerce.product.model.impl.CPDefinitionModelImpl;
 import com.liferay.commerce.product.service.CPAttachmentFileEntryLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionLinkLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionOptionRelLocalServiceUtil;
-import com.liferay.commerce.product.service.CPDefinitionSpecificationOptionValueLocalService;
+import com.liferay.commerce.product.service.CPDefinitionSpecificationOptionValueLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDisplayLayoutLocalService;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.service.CPInstanceOptionValueRelLocalService;
@@ -988,7 +988,7 @@ public class CPDefinitionLocalServiceImpl
 
 		// Commerce product definition specification option values
 
-		_cpDefinitionSpecificationOptionValueLocalService.
+		CPDefinitionSpecificationOptionValueLocalServiceUtil.
 			deleteCPDefinitionSpecificationOptionValues(
 				cpDefinition.getCPDefinitionId());
 
@@ -2812,10 +2812,6 @@ public class CPDefinitionLocalServiceImpl
 	@Reference
 	private CPDefinitionOptionValueRelPersistence
 		_cpDefinitionOptionValueRelPersistence;
-
-	@Reference
-	private CPDefinitionSpecificationOptionValueLocalService
-		_cpDefinitionSpecificationOptionValueLocalService;
 
 	@Reference
 	private CPDefinitionSpecificationOptionValuePersistence

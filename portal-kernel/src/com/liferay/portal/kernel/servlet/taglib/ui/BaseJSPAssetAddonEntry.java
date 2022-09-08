@@ -38,8 +38,10 @@ public abstract class BaseJSPAssetAddonEntry extends BaseAssetAddonEntry {
 			HttpServletResponse httpServletResponse)
 		throws IOException {
 
+		ServletContext servletContext = getServletContext();
+
 		RequestDispatcher requestDispatcher =
-			_servletContext.getRequestDispatcher(getJspPath());
+			servletContext.getRequestDispatcher(getJspPath());
 
 		try {
 			requestDispatcher.include(httpServletRequest, httpServletResponse);
@@ -53,13 +55,9 @@ public abstract class BaseJSPAssetAddonEntry extends BaseAssetAddonEntry {
 		}
 	}
 
-	public void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
+	public abstract ServletContext getServletContext();
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseJSPAssetAddonEntry.class);
-
-	private ServletContext _servletContext;
 
 }

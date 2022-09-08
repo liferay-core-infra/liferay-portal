@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -102,7 +103,7 @@ public class CommerceCatalogDisplayContext {
 	}
 
 	public String getAddCommerceCatalogRenderURL() throws Exception {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			cpRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_catalogs/add_commerce_catalog"

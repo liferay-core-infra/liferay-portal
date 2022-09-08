@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
@@ -86,7 +87,7 @@ public class CommercePriceListDisplayContext
 	}
 
 	public String getAddCommercePriceListRenderURL() throws Exception {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/commerce_price_list/add_commerce_price_list"
@@ -96,7 +97,7 @@ public class CommercePriceListDisplayContext
 	}
 
 	public String getAddCommercePriceModifierRenderURL() throws Exception {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/commerce_price_list/add_commerce_price_modifier"
@@ -171,7 +172,7 @@ public class CommercePriceListDisplayContext
 
 		HeaderActionModel cancelHeaderActionModel = new HeaderActionModel(
 			null,
-			PortletURLBuilder.createRenderURL(
+			RenderURLBuilder.createRenderURL(
 				liferayPortletResponse
 			).buildString(),
 			null, "cancel");
@@ -285,7 +286,7 @@ public class CommercePriceListDisplayContext
 
 		List<FDSActionDropdownItem> fdsActionDropdownItems =
 			getFDSActionDropdownItems(
-				PortletURLBuilder.createRenderURL(
+				RenderURLBuilder.createRenderURL(
 					commercePricingRequestHelper.getRenderResponse()
 				).setMVCRenderCommandName(
 					"/commerce_price_list/edit_commerce_price_list"

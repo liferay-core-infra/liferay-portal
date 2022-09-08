@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -99,7 +100,7 @@ public class UADHierarchyDisplay {
 			RenderResponse renderResponse, Locale locale)
 		throws Exception {
 
-		PortletURL baseURL = PortletURLBuilder.createRenderURL(
+		PortletURL baseURL = RenderURLBuilder.createRenderURL(
 			renderResponse
 		).setParameter(
 			"applicationKey",
@@ -117,7 +118,7 @@ public class UADHierarchyDisplay {
 
 				return null;
 			}
-		).buildPortletURL();
+		).buildRenderURL();
 
 		String className = ParamUtil.getString(
 			httpServletRequest, "parentContainerClass");
@@ -397,7 +398,7 @@ public class UADHierarchyDisplay {
 			return null;
 		}
 
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/user_associated_data/view_uad_hierarchy"

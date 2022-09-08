@@ -26,13 +26,13 @@ import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServices
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -91,7 +91,7 @@ public class CPOptionDisplayContext {
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						cpRequestHelper.getLiferayPortletResponse()
 					).setMVCRenderCommandName(
 						"/cp_options/add_cp_option"
@@ -167,7 +167,7 @@ public class CPOptionDisplayContext {
 		throws PortalException {
 
 		return _getFDSActionDropdownItems(
-			PortletURLBuilder.createRenderURL(
+			RenderURLBuilder.createRenderURL(
 				cpRequestHelper.getRenderResponse()
 			).setMVCRenderCommandName(
 				"/cp_options/edit_cp_option"
@@ -188,7 +188,7 @@ public class CPOptionDisplayContext {
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						cpRequestHelper.getLiferayPortletResponse()
 					).setMVCRenderCommandName(
 						"/cp_options/add_cp_option_value"
@@ -208,7 +208,7 @@ public class CPOptionDisplayContext {
 	public List<FDSActionDropdownItem> getOptionValueFDSActionDropdownItems()
 		throws PortalException {
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			cpRequestHelper.getRenderResponse()
 		).setMVCRenderCommandName(
 			"/cp_options/edit_cp_option_value"
@@ -219,7 +219,7 @@ public class CPOptionDisplayContext {
 		).setParameter(
 			"screenNavigationCategoryKey",
 			CPDefinitionScreenNavigationConstants.CATEGORY_KEY_DETAILS
-		).buildPortletURL();
+		).buildRenderURL();
 
 		try {
 			portletURL.setWindowState(LiferayWindowState.POP_UP);

@@ -14,7 +14,6 @@
 
 package com.liferay.roles.admin.web.internal.display.context;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -28,6 +27,7 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.PermissionConverterUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.security.permission.RolePermissions;
@@ -205,7 +205,7 @@ public class EditRolePermissionsSummaryDisplayContext {
 			return _permissionsAllURL;
 		}
 
-		_permissionsAllURL = PortletURLBuilder.createRenderURL(
+		_permissionsAllURL = RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setMVCPath(
 			"/edit_role_permissions.jsp"
@@ -229,7 +229,7 @@ public class EditRolePermissionsSummaryDisplayContext {
 
 				return role.getRoleId();
 			}
-		).buildPortletURL();
+		).buildRenderURL();
 
 		return _permissionsAllURL;
 	}
@@ -337,7 +337,7 @@ public class EditRolePermissionsSummaryDisplayContext {
 				"accountRoleGroupScope",
 				String.valueOf(_roleDisplayContext.isAccountRoleGroupScope()));
 
-			PortletURL editPermissionsURL = PortletURLBuilder.createRenderURL(
+			PortletURL editPermissionsURL = RenderURLBuilder.createRenderURL(
 				_liferayPortletResponse
 			).setMVCPath(
 				"/edit_role_permissions.jsp"
@@ -356,7 +356,7 @@ public class EditRolePermissionsSummaryDisplayContext {
 				_roleDisplayContext.isAccountRoleGroupScope()
 			).setParameter(
 				"roleId", role.getRoleId()
-			).buildPortletURL();
+			).buildRenderURL();
 
 			StringBundler sb = new StringBundler(18);
 

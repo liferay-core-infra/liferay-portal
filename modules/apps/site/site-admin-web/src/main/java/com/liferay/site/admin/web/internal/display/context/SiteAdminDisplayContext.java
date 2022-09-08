@@ -15,7 +15,6 @@
 package com.liferay.site.admin.web.internal.display.context;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -27,6 +26,7 @@ import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
@@ -97,11 +97,11 @@ public class SiteAdminDisplayContext {
 		breadcrumbEntry.setTitle(
 			LanguageUtil.get(_httpServletRequest, "sites"));
 
-		PortletURL mainURL = PortletURLBuilder.createRenderURL(
+		PortletURL mainURL = RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setMVCPath(
 			"/view.jsp"
-		).buildPortletURL();
+		).buildRenderURL();
 
 		breadcrumbEntry.setURL(mainURL.toString());
 
@@ -225,13 +225,13 @@ public class SiteAdminDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setParameter(
 			"displayStyle", getDisplayStyle()
 		).setParameter(
 			"groupId", getGroupId()
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public int getUserGroupsCount(Group group) {

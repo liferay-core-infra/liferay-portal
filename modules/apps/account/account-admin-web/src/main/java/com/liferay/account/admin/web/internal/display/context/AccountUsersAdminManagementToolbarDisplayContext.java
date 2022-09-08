@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
@@ -229,7 +230,7 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 				"action", "addAccountUser"
 			).putData(
 				"accountEntrySelectorURL",
-				PortletURLBuilder.createRenderURL(
+				RenderURLBuilder.createRenderURL(
 					liferayPortletResponse
 				).setMVCPath(
 					"/account_users_admin/select_account_entry.jsp"
@@ -240,7 +241,7 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 				).buildString()
 			).putData(
 				"addAccountUserURL",
-				PortletURLBuilder.createRenderURL(
+				RenderURLBuilder.createRenderURL(
 					liferayPortletResponse
 				).setMVCRenderCommandName(
 					"/account_admin/add_account_user"
@@ -456,7 +457,7 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 
 				dropdownItem.putData(
 					"accountEntriesSelectorURL",
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						liferayPortletResponse
 					).setMVCPath(
 						"/account_users_admin/select_account_entries.jsp"

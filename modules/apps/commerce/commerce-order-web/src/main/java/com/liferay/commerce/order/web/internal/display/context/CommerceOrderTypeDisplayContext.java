@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
@@ -72,7 +73,7 @@ public class CommerceOrderTypeDisplayContext {
 	}
 
 	public String getAddCommerceOrderTypeRenderURL() throws Exception {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			commerceOrderRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_order_type/add_commerce_order_type"

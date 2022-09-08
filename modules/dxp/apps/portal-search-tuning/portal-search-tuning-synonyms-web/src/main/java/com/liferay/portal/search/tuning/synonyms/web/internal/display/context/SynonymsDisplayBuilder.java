@@ -18,11 +18,11 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -134,7 +134,7 @@ public class SynonymsDisplayBuilder {
 	}
 
 	private RenderURL _buildEditRenderURL(SynonymSet synonymSet) {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCRenderCommandName(
 			"/synonyms/edit_synonym_sets"
@@ -251,11 +251,11 @@ public class SynonymsDisplayBuilder {
 	}
 
 	private PortletURL _getPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCPath(
 			"/view.jsp"
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	private final DocumentToSynonymSetTranslator

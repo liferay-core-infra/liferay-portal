@@ -19,10 +19,10 @@ import com.liferay.account.constants.AccountActionKeys;
 import com.liferay.account.constants.AccountPortletKeys;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
@@ -76,7 +76,7 @@ public class AccountUserActionDropdownItemsProvider {
 			},
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_renderResponse
 					).setMVCPath(
 						"/account_users_admin/edit_account_user.jsp"
@@ -100,7 +100,7 @@ public class AccountUserActionDropdownItemsProvider {
 				dropdownItem.putData("action", "assignRoleAccountUsers");
 				dropdownItem.putData(
 					"assignRoleAccountUsersURL",
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_renderResponse
 					).setMVCPath(
 						"/account_entries_admin/select_account_roles.jsp"

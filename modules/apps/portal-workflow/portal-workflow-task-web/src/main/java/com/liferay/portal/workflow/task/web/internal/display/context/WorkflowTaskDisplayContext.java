@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -364,7 +365,7 @@ public class WorkflowTaskDisplayContext {
 	}
 
 	public String getSortingURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_workflowTaskRequestHelper.getLiferayPortletResponse()
 		).setNavigation(
 			_getNavigation()
@@ -821,7 +822,7 @@ public class WorkflowTaskDisplayContext {
 	}
 
 	private PortletURL _getPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setNavigation(
 			() -> {
@@ -836,7 +837,7 @@ public class WorkflowTaskDisplayContext {
 			}
 		).setTabs1(
 			_getTabs1()
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	private Role _getRole(long roleId) {

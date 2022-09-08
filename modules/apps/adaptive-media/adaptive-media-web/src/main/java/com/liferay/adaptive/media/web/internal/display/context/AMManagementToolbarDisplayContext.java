@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import java.util.List;
@@ -107,11 +108,11 @@ public class AMManagementToolbarDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setParameter(
 			"entriesNavigation", (String)null
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public List<AMImageConfigurationEntry> getSelectedConfigurationEntries() {

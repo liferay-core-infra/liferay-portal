@@ -20,7 +20,6 @@ import com.liferay.announcements.kernel.model.AnnouncementsFlagConstants;
 import com.liferay.announcements.kernel.service.AnnouncementsEntryLocalServiceUtil;
 import com.liferay.announcements.kernel.util.AnnouncementsUtil;
 import com.liferay.announcements.web.internal.display.context.helper.AnnouncementsRequestHelper;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -31,6 +30,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -335,7 +335,7 @@ public class DefaultAnnouncementsDisplayContext
 
 	@Override
 	public String getTabs1PortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_announcementsRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/announcements/view"
@@ -484,13 +484,13 @@ public class DefaultAnnouncementsDisplayContext
 			return _portletURL;
 		}
 
-		_portletURL = PortletURLBuilder.createRenderURL(
+		_portletURL = RenderURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCRenderCommandName(
 			"/announcements/view"
 		).setTabs1(
 			_announcementsRequestHelper.getTabs1()
-		).buildPortletURL();
+		).buildRenderURL();
 
 		return _portletURL;
 	}

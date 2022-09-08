@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -98,7 +99,7 @@ public class EditSiteTeamAssignmentsUserGroupsManagementToolbarDisplayContext
 
 					dropdownItem.putData(
 						"selectUserGroupURL",
-						PortletURLBuilder.createRenderURL(
+						RenderURLBuilder.createRenderURL(
 							liferayPortletResponse
 						).setMVCPath(
 							"/select_user_groups.jsp"

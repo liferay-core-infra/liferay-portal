@@ -33,12 +33,12 @@ import com.liferay.commerce.util.CommerceUtil;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.KeyValuePair;
@@ -220,7 +220,7 @@ public class CommerceVirtualOrderItemContentDisplayContext {
 					commerceVirtualOrderItem.getCommerceVirtualOrderItemId()));
 		}
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			_commerceVirtualOrderItemContentRequestHelper.
 				getLiferayPortletResponse()
 		).setMVCRenderCommandName(
@@ -234,7 +234,7 @@ public class CommerceVirtualOrderItemContentDisplayContext {
 			_commerceVirtualOrderItemContentRequestHelper.getScopeGroupId()
 		).setWindowState(
 			LiferayWindowState.POP_UP
-		).buildPortletURL();
+		).buildRenderURL();
 
 		if (cpDefinitionVirtualSetting.isUseTermsOfUseJournal()) {
 			JournalArticle termsOfUseJournalArticle =

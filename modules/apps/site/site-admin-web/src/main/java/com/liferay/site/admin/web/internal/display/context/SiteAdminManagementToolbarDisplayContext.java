@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
@@ -115,7 +116,7 @@ public class SiteAdminManagementToolbarDisplayContext
 			return CreationMenuBuilder.addPrimaryDropdownItem(
 				dropdownItem -> {
 					dropdownItem.setHref(
-						PortletURLBuilder.createRenderURL(
+						RenderURLBuilder.createRenderURL(
 							liferayPortletResponse
 						).setMVCRenderCommandName(
 							"/site_admin/select_site_initializer"

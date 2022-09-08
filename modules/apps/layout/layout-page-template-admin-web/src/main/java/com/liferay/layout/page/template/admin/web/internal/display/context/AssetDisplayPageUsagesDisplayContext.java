@@ -27,12 +27,12 @@ import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.info.search.InfoSearchClassMapperTracker;
 import com.liferay.layout.page.template.admin.constants.LayoutPageTemplateAdminPortletKeys;
 import com.liferay.layout.page.template.admin.web.internal.util.comparator.AssetDisplayPageEntryModifiedDateComparator;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -128,7 +128,7 @@ public class AssetDisplayPageUsagesDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCRenderCommandName(
 			"/layout_page_template_admin/view_asset_display_page_usages"
@@ -136,7 +136,7 @@ public class AssetDisplayPageUsagesDisplayContext {
 			getRedirect()
 		).setParameter(
 			"layoutPageTemplateEntryId", getLayoutPageTemplateEntryId()
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public String getRedirect() {

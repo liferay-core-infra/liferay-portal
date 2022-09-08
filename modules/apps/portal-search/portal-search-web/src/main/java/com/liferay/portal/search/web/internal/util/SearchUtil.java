@@ -19,13 +19,13 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.xml.XMLUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.search.OpenSearch;
 import com.liferay.portal.kernel.search.OpenSearchRegistryUtil;
 import com.liferay.portal.kernel.search.OpenSearchUtil;
@@ -152,7 +152,7 @@ public class SearchUtil {
 		String currentURL) {
 
 		try {
-			PortletURL viewContentURL = PortletURLBuilder.createRenderURL(
+			PortletURL viewContentURL = RenderURLBuilder.createRenderURL(
 				renderResponse
 			).setMVCPath(
 				"/view_content.jsp"
@@ -160,7 +160,7 @@ public class SearchUtil {
 				PortletMode.VIEW
 			).setWindowState(
 				WindowState.MAXIMIZED
-			).buildPortletURL();
+			).buildRenderURL();
 
 			if (Validator.isNull(className) || (classPK <= 0)) {
 				return HttpComponentsUtil.setParameter(

@@ -14,13 +14,13 @@
 
 package com.liferay.portal.search.tuning.rankings.web.internal.portlet.action;
 
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletURL;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -157,7 +157,7 @@ public class EditRankingMVCActionCommand extends BaseMVCActionCommand {
 		catch (Exception exception) {
 			actionRequest.setAttribute(
 				WebKeys.REDIRECT,
-				PortletURLBuilder.createRenderURL(
+				RenderURLBuilder.createRenderURL(
 					portal.getLiferayPortletResponse(actionResponse)
 				).setMVCRenderCommandName(
 					"/result_rankings/add_results_rankings"

@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -106,7 +107,7 @@ public class CPDefinitionOptionRelDisplayContext
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						liferayPortletResponse
 					).setMVCRenderCommandName(
 						"/cp_definitions/edit_cp_definition_option_value_rel"

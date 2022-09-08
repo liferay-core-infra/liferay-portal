@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -138,11 +139,11 @@ public class ViewUADEntitiesManagementToolbarDisplayContext
 				_log.warn(portletException);
 			}
 
-			portletURL = PortletURLBuilder.createRenderURL(
+			portletURL = RenderURLBuilder.createRenderURL(
 				liferayPortletResponse
 			).setParameters(
 				portletURL.getParameterMap()
-			).buildPortletURL();
+			).buildRenderURL();
 		}
 
 		String[] parameterNames = {

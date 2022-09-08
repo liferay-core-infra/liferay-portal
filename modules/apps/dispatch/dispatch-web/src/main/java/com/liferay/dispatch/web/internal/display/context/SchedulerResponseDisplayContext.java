@@ -16,10 +16,10 @@ package com.liferay.dispatch.web.internal.display.context;
 
 import com.liferay.dispatch.constants.DispatchPortletKeys;
 import com.liferay.dispatch.scheduler.SchedulerResponseManager;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.scheduler.SchedulerException;
 import com.liferay.portal.kernel.scheduler.TriggerState;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerResponse;
@@ -90,13 +90,13 @@ public class SchedulerResponseDisplayContext extends BaseDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			dispatchRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/dispatch/edit_scheduler_response"
 		).setTabs1(
 			"scheduler-response"
-		).buildPortletURL();
+		).buildRenderURL();
 
 		String redirect = ParamUtil.getString(
 			dispatchRequestHelper.getRequest(), "redirect");

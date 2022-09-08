@@ -18,11 +18,11 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.layout.page.template.admin.web.internal.security.permission.resource.LayoutPageTemplateCollectionPermission;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -62,7 +62,7 @@ public class LayoutPageTemplateCollectionActionDropdownItem {
 							layoutPageTemplateCollection, ActionKeys.UPDATE),
 						dropdownItem -> {
 							dropdownItem.setHref(
-								PortletURLBuilder.createRenderURL(
+								RenderURLBuilder.createRenderURL(
 									_renderResponse
 								).setMVCRenderCommandName(
 									"/layout_page_template_admin" +
@@ -134,7 +134,7 @@ public class LayoutPageTemplateCollectionActionDropdownItem {
 									"/layout_page_template_admin/delete_" +
 										"layout_page_template_collection"
 								).setRedirect(
-									PortletURLBuilder.createRenderURL(
+									RenderURLBuilder.createRenderURL(
 										_renderResponse
 									).setTabs1(
 										"page-templates"

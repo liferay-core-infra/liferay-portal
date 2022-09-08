@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.UserGroupServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -186,7 +187,7 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCPath(
 			_mvcPath
@@ -208,7 +209,7 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 			"orderByType", getOrderByType()
 		).setParameter(
 			"userGroupId", _userGroup.getUserGroupId()
-		).buildPortletURL();
+		).buildRenderURL();
 
 		if (_userSearch != null) {
 			portletURL.setParameter(

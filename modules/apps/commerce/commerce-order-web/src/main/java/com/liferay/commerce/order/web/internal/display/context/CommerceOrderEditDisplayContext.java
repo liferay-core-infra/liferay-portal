@@ -49,7 +49,6 @@ import com.liferay.commerce.term.model.CommerceTermEntry;
 import com.liferay.commerce.term.service.CommerceTermEntryLocalService;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -60,6 +59,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Region;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -187,7 +187,7 @@ public class CommerceOrderEditDisplayContext {
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_commerceOrderRequestHelper.getLiferayPortletResponse()
 					).setMVCRenderCommandName(
 						mvcRenderCommandName
@@ -217,7 +217,7 @@ public class CommerceOrderEditDisplayContext {
 	}
 
 	public PortletURL getCommerceNotificationQueueEntriesPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_commerceOrderRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_order/edit_commerce_order"
@@ -238,7 +238,7 @@ public class CommerceOrderEditDisplayContext {
 			"screenNavigationCategoryKey",
 			CommerceOrderScreenNavigationConstants.
 				CATEGORY_KEY_COMMERCE_ORDER_EMAILS
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public CommerceNotificationQueueEntry getCommerceNotificationQueueEntry()
@@ -294,7 +294,7 @@ public class CommerceOrderEditDisplayContext {
 	}
 
 	public PortletURL getCommerceOrderItemsPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_commerceOrderRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_order/edit_commerce_order"
@@ -315,7 +315,7 @@ public class CommerceOrderEditDisplayContext {
 			"screenNavigationCategoryKey",
 			CommerceOrderScreenNavigationConstants.
 				CATEGORY_KEY_COMMERCE_ORDER_GENERAL
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public List<CommerceOrderNote> getCommerceOrderNotes()
@@ -362,7 +362,7 @@ public class CommerceOrderEditDisplayContext {
 	}
 
 	public PortletURL getCommerceOrderPaymentsPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_commerceOrderRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_order/edit_commerce_order"
@@ -383,7 +383,7 @@ public class CommerceOrderEditDisplayContext {
 			"screenNavigationCategoryKey",
 			CommerceOrderScreenNavigationConstants.
 				CATEGORY_KEY_COMMERCE_ORDER_PAYMENTS
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public String getCommerceOrderTypeName(String languageId)
@@ -428,7 +428,7 @@ public class CommerceOrderEditDisplayContext {
 	}
 
 	public PortletURL getCommerceShipmentsPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_commerceOrderRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_order/edit_commerce_order"
@@ -449,7 +449,7 @@ public class CommerceOrderEditDisplayContext {
 			"screenNavigationCategoryKey",
 			CommerceOrderScreenNavigationConstants.
 				CATEGORY_KEY_COMMERCE_ORDER_SHIPMENTS
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public List<CPMeasurementUnit> getCPMeasurementUnits()

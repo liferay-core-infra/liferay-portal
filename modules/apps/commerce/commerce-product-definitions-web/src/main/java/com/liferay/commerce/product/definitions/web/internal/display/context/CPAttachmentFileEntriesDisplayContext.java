@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.taglib.util.CustomAttributesUtil;
@@ -149,7 +150,7 @@ public class CPAttachmentFileEntriesDisplayContext
 			creationMenu.addDropdownItem(
 				dropdownItem -> {
 					dropdownItem.setHref(
-						PortletURLBuilder.createRenderURL(
+						RenderURLBuilder.createRenderURL(
 							liferayPortletResponse
 						).setMVCRenderCommandName(
 							"/cp_definitions/edit_cp_attachment_file_entry"

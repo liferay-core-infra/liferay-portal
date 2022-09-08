@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -274,7 +275,7 @@ public class CPDefinitionsDisplayContext
 	public CreationMenu getCreationMenu() throws Exception {
 		CreationMenu creationMenu = new CreationMenu();
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/cp_definitions/add_cp_definition"
@@ -282,7 +283,7 @@ public class CPDefinitionsDisplayContext
 			cpRequestHelper.getCurrentURL()
 		).setWindowState(
 			LiferayWindowState.POP_UP
-		).buildPortletURL();
+		).buildRenderURL();
 
 		for (CPType cpType : getCPTypes()) {
 			portletURL.setParameter("productTypeName", cpType.getName());

@@ -21,7 +21,6 @@ import com.liferay.application.list.display.context.logic.PersonalMenuEntryHelpe
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemListBuilder;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Permission;
@@ -31,6 +30,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
@@ -432,7 +432,7 @@ public class RoleDisplayContext {
 
 		return HashMapBuilder.put(
 			"assignees",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCPath(
 				"/edit_role_assignments.jsp"
@@ -447,7 +447,7 @@ public class RoleDisplayContext {
 			).buildString()
 		).put(
 			"define-group-scope-permissions",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCPath(
 				"/edit_role_permissions.jsp"
@@ -466,7 +466,7 @@ public class RoleDisplayContext {
 			).buildString()
 		).put(
 			"define-permissions",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCPath(
 				"/edit_role_permissions.jsp"
@@ -483,7 +483,7 @@ public class RoleDisplayContext {
 			).buildString()
 		).put(
 			"details",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCPath(
 				"/edit_role.jsp"

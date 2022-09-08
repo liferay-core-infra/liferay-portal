@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalServiceUtil;
@@ -204,7 +205,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 		_getConfigureLayoutPrototypeActionUnsafeConsumer() {
 
 		PortletURL configureLayoutPrototypeURL =
-			PortletURLBuilder.createRenderURL(
+			RenderURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCPath(
 				"/edit_layout_prototype.jsp"
@@ -213,7 +214,7 @@ public class LayoutPageTemplateEntryActionDropdownItemsProvider {
 			).setParameter(
 				"layoutPrototypeId",
 				_layoutPageTemplateEntry.getLayoutPrototypeId()
-			).buildPortletURL();
+			).buildRenderURL();
 
 		return dropdownItem -> {
 			dropdownItem.setHref(configureLayoutPrototypeURL);

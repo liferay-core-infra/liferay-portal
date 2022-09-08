@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -230,7 +231,7 @@ public class UsersManagementToolbarDisplayContext
 
 					dropdownItem.putData(
 						"selectUsersURL",
-						PortletURLBuilder.createRenderURL(
+						RenderURLBuilder.createRenderURL(
 							liferayPortletResponse
 						).setMVCPath(
 							"/select_users.jsp"
@@ -361,7 +362,7 @@ public class UsersManagementToolbarDisplayContext
 
 				dropdownItem.putData(
 					"viewRoleURL",
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						liferayPortletResponse
 					).setMVCPath(
 						"/view.jsp"
@@ -389,13 +390,13 @@ public class UsersManagementToolbarDisplayContext
 	}
 
 	private String _getSelectorURL(String mvcPath) throws Exception {
-		PortletURL selectURL = PortletURLBuilder.createRenderURL(
+		PortletURL selectURL = RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCPath(
 			mvcPath
 		).setParameter(
 			"groupId", _usersDisplayContext.getGroupId()
-		).buildPortletURL();
+		).buildRenderURL();
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(

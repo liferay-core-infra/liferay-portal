@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.SearchDisplayStyleUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.NavItem;
@@ -282,7 +283,7 @@ public class SiteNavigationAdminDisplayContext {
 			).buildString()
 		).put(
 			"editSiteNavigationMenuItemURL",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_liferayPortletResponse
 			).setMVCPath(
 				"/edit_site_navigation_menu_item.jsp"
@@ -291,7 +292,7 @@ public class SiteNavigationAdminDisplayContext {
 			).buildString()
 		).put(
 			"editSiteNavigationMenuSettingsURL",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_liferayPortletResponse
 			).setMVCPath(
 				"/site_navigation_menu_settings.jsp"
@@ -398,7 +399,7 @@ public class SiteNavigationAdminDisplayContext {
 			}
 		}
 
-		PortletURL addURL = PortletURLBuilder.createRenderURL(
+		PortletURL addURL = RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setMVCPath(
 			"/add_site_navigation_menu_item.jsp"
@@ -419,7 +420,7 @@ public class SiteNavigationAdminDisplayContext {
 			"siteNavigationMenuId", getSiteNavigationMenuId()
 		).setParameter(
 			"type", siteNavigationMenuItemType.getType()
-		).build();
+		).buildRenderURL();
 
 		try {
 			addURL.setWindowState(LiferayWindowState.POP_UP);

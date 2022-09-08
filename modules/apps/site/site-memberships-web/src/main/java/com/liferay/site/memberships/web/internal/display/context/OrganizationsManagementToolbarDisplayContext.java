@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -125,7 +126,7 @@ public class OrganizationsManagementToolbarDisplayContext
 
 					dropdownItem.putData(
 						"selectOrganizationsURL",
-						PortletURLBuilder.createRenderURL(
+						RenderURLBuilder.createRenderURL(
 							liferayPortletResponse
 						).setMVCPath(
 							"/select_organizations.jsp"

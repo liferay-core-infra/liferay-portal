@@ -35,15 +35,7 @@ public class TranslationInfoItemFieldValuesExporterTrackerUtil {
 			getTranslationInfoItemFieldValuesExporters();
 	}
 
-	@Reference(unbind = "-")
-	protected void setTranslationInfoItemFieldValuesExporterTracker(
-		TranslationInfoItemFieldValuesExporterTracker
-			translationInfoItemFieldValuesExporterTracker) {
-
-		_translationInfoItemFieldValuesExporterTracker =
-			translationInfoItemFieldValuesExporterTracker;
-	}
-
+	@Reference
 	private static TranslationInfoItemFieldValuesExporterTracker
 		_translationInfoItemFieldValuesExporterTracker;
 

@@ -32,6 +32,7 @@ import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
@@ -453,6 +454,12 @@ public class CommerceCurrencyLocalServiceImpl
 
 	@ServiceReference(type = PortalUUID.class)
 	private PortalUUID _portalUUID;
+
+	@ServiceReference(
+		filterString = "(&(release.bundle.symbolic.name=com.liferay.commerce.currency.service)(release.schema.version>=1.3.0))",
+		type = Release.class
+	)
+	private Release _release;
 
 	@ServiceReference(type = UserLocalService.class)
 	private UserLocalService _userLocalService;

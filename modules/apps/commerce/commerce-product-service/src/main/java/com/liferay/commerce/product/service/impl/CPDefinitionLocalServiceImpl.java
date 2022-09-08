@@ -54,7 +54,7 @@ import com.liferay.commerce.product.service.CPDefinitionLinkLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionOptionRelLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionSpecificationOptionValueLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDisplayLayoutLocalServiceUtil;
-import com.liferay.commerce.product.service.CPInstanceLocalService;
+import com.liferay.commerce.product.service.CPInstanceLocalServiceUtil;
 import com.liferay.commerce.product.service.CPInstanceOptionValueRelLocalService;
 import com.liferay.commerce.product.service.CProductLocalService;
 import com.liferay.commerce.product.service.CommerceChannelRelLocalService;
@@ -311,7 +311,7 @@ public class CPDefinitionLocalServiceImpl
 			cpInstanceServiceContext.setScopeGroupId(groupId);
 			cpInstanceServiceContext.setUserId(userId);
 
-			_cpInstanceLocalService.addCPInstance(
+			CPInstanceLocalServiceUtil.addCPInstance(
 				externalReferenceCode, cpDefinitionId, groupId, defaultSku,
 				null, null, published, null, cpDefinition.getWidth(),
 				cpDefinition.getHeight(), cpDefinition.getDepth(),
@@ -994,7 +994,7 @@ public class CPDefinitionLocalServiceImpl
 
 		// Commerce product instances
 
-		_cpInstanceLocalService.deleteCPInstances(
+		CPInstanceLocalServiceUtil.deleteCPInstances(
 			cpDefinition.getCPDefinitionId());
 
 		// Commerce product definition option rels
@@ -2285,7 +2285,7 @@ public class CPDefinitionLocalServiceImpl
 							cpDefinition.getModelClassName()),
 						cpDefinition.getCPDefinitionId());
 
-				_cpInstanceLocalService.checkCPInstancesByDisplayDate(
+				CPInstanceLocalServiceUtil.checkCPInstancesByDisplayDate(
 					cpDefinition.getCPDefinitionId());
 			}
 		}
@@ -2327,7 +2327,7 @@ public class CPDefinitionLocalServiceImpl
 
 		if (ignoreSKUCombinations) {
 			int cpInstancesCount =
-				_cpInstanceLocalService.getCPDefinitionInstancesCount(
+				CPInstanceLocalServiceUtil.getCPDefinitionInstancesCount(
 					cpDefinitionId, WorkflowConstants.STATUS_APPROVED);
 
 			if (cpInstancesCount <= 1) {
@@ -2346,7 +2346,7 @@ public class CPDefinitionLocalServiceImpl
 		}
 
 		List<CPInstance> cpInstances =
-			_cpInstanceLocalService.getCPDefinitionInstances(
+			CPInstanceLocalServiceUtil.getCPDefinitionInstances(
 				cpDefinitionId, WorkflowConstants.STATUS_APPROVED,
 				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 
@@ -2354,7 +2354,7 @@ public class CPDefinitionLocalServiceImpl
 			if (!_cpInstanceOptionValueRelLocalService.
 					hasCPInstanceOptionValueRel(cpInstance.getCPInstanceId())) {
 
-				_cpInstanceLocalService.updateStatus(
+				CPInstanceLocalServiceUtil.updateStatus(
 					userId, cpInstance.getCPInstanceId(),
 					WorkflowConstants.STATUS_INACTIVE);
 			}
@@ -2819,9 +2819,6 @@ public class CPDefinitionLocalServiceImpl
 
 	@Reference
 	private CPDisplayLayoutPersistence _cpDisplayLayoutPersistence;
-
-	@Reference
-	private CPInstanceLocalService _cpInstanceLocalService;
 
 	@Reference
 	private CPInstanceOptionValueRelLocalService

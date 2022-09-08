@@ -17,8 +17,8 @@ package com.liferay.portlet.configuration.web.internal.servlet.taglib.util;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.settings.ArchivedSettings;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -65,12 +65,12 @@ public class ArchivedSettingsActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteArchivedSetups");
 			dropdownItem.putData(
 				"deleteArchivedSetupsURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
-				).setActionName(
-					"deleteArchivedSetups"
 				).setMVCPath(
 					"/edit_configuration_templates.jsp"
+				).setActionName(
+					"deleteArchivedSetups"
 				).setRedirect(
 					_themeDisplay.getURLCurrent()
 				).setPortletResource(
@@ -103,12 +103,12 @@ public class ArchivedSettingsActionDropdownItemsProvider {
 			dropdownItem.putData("action", "restoreArchivedSetup");
 			dropdownItem.putData(
 				"restoreArchivedSetupURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
-				).setActionName(
-					"restoreArchivedSetup"
 				).setMVCPath(
 					"/edit_configuration_templates.jsp"
+				).setActionName(
+					"restoreArchivedSetup"
 				).setRedirect(
 					_themeDisplay.getURLCurrent()
 				).setPortletResource(

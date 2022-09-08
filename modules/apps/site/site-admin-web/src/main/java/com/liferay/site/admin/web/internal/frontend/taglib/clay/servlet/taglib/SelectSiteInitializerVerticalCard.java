@@ -15,8 +15,8 @@
 package com.liferay.site.admin.web.internal.frontend.taglib.clay.servlet.taglib;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.VerticalCard;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -54,7 +54,7 @@ public class SelectSiteInitializerVerticalCard implements VerticalCard {
 	public Map<String, String> getDynamicAttributes() {
 		return HashMapBuilder.put(
 			"data-add-site-url",
-			() -> PortletURLBuilder.createRenderURL(
+			() -> RenderURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCRenderCommandName(
 				"/site_admin/add_group"

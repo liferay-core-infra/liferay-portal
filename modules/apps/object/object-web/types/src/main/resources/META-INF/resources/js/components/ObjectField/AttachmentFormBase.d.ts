@@ -14,16 +14,19 @@
 
 /// <reference types="react" />
 
-export default function ModalWithProvider({
-	apiURL,
-	objectDefinitionId,
-	objectFieldTypes,
-	objectName,
-}: IProps): JSX.Element;
-interface IProps {
-	apiURL: string;
-	objectDefinitionId: number;
-	objectFieldTypes: ObjectFieldType[];
+import './ObjectFieldFormBase.scss';
+interface IAttachmentFormBaseProps {
+	disabled?: boolean;
+	error?: string;
+	objectFieldSettings: ObjectFieldSetting[];
 	objectName: string;
+	setValues: (values: Partial<ObjectField>) => void;
 }
+export declare function AttachmentFormBase({
+	disabled,
+	error,
+	objectFieldSettings,
+	objectName,
+	setValues,
+}: IAttachmentFormBaseProps): JSX.Element;
 export {};

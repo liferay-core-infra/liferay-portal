@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.LayoutPrototypePermissionUtil;
@@ -142,7 +143,7 @@ public class LayoutPrototypeActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteLayoutPrototype");
 			dropdownItem.putData(
 				"deleteLayoutPrototypeURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin/delete_layout_prototype"

@@ -53,6 +53,8 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
 import com.liferay.portal.kernel.settings.SystemSettingsLocator;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -154,7 +156,7 @@ public class CPDefinitionsDisplayContext
 	public List<DropdownItem> getBulkActionDropdownItems() {
 		return ListUtil.fromArray(
 			new FDSActionDropdownItem(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					cpRequestHelper.getRenderResponse()
 				).setActionName(
 					"/cp_definitions/edit_cp_definition"
@@ -273,7 +275,7 @@ public class CPDefinitionsDisplayContext
 	public CreationMenu getCreationMenu() throws Exception {
 		CreationMenu creationMenu = new CreationMenu();
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/cp_definitions/add_cp_definition"
@@ -281,7 +283,7 @@ public class CPDefinitionsDisplayContext
 			cpRequestHelper.getCurrentURL()
 		).setWindowState(
 			LiferayWindowState.POP_UP
-		).buildPortletURL();
+		).buildRenderURL();
 
 		for (CPType cpType : getCPTypes()) {
 			portletURL.setParameter("productTypeName", cpType.getName());
@@ -317,7 +319,7 @@ public class CPDefinitionsDisplayContext
 						"formId", liferayPortletResponse.getNamespace() + "fm"
 					).build()
 				).setHref(
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/cp_definitions/edit_cp_definition"
@@ -415,7 +417,7 @@ public class CPDefinitionsDisplayContext
 			HeaderActionModel saveAsDraftHeaderActionModel =
 				new HeaderActionModel(
 					null, liferayPortletResponse.getNamespace() + "fm",
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						liferayPortletResponse
 					).setActionName(
 						"/cp_definitions/edit_cp_definition"
@@ -444,7 +446,7 @@ public class CPDefinitionsDisplayContext
 
 		HeaderActionModel publishHeaderActionModel = new HeaderActionModel(
 			additionalClasses, liferayPortletResponse.getNamespace() + "fm",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/cp_definitions/edit_cp_definition"

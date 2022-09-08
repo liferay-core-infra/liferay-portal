@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -95,7 +96,7 @@ public class ViewPortalPropertiesDisplayContext {
 			return _portletURL;
 		}
 
-		_portletURL = PortletURLBuilder.createRenderURL(
+		_portletURL = RenderURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCRenderCommandName(
 			"/server_admin/view"
@@ -117,7 +118,7 @@ public class ViewPortalPropertiesDisplayContext {
 			ParamUtil.getString(
 				_httpServletRequest, "screenNavigationEntryKey",
 				ServerAdminNavigationEntryConstants.ENTRY_KEY_PORTAL_PROPERTIES)
-		).buildPortletURL();
+		).buildRenderURL();
 
 		return _portletURL;
 	}

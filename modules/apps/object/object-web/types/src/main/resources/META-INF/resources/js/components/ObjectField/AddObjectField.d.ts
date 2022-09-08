@@ -14,33 +14,16 @@
 
 /// <reference types="react" />
 
-import './EditObjectField.scss';
-export default function EditObjectField({
-	filterOperators,
-	forbiddenChars,
-	forbiddenLastChars,
-	forbiddenNames,
-	isApproved,
-	isDefaultStorageType,
-	objectDefinitionId,
-	objectField: initialValues,
-	objectFieldTypes,
-	objectName,
-	readOnly,
-	workflowStatusJSONArray,
-}: IProps): JSX.Element;
 interface IProps {
-	filterOperators: TFilterOperators;
-	forbiddenChars: string[];
-	forbiddenLastChars: string[];
-	forbiddenNames: string[];
-	isApproved: boolean;
-	isDefaultStorageType: boolean;
+	apiURL: string;
 	objectDefinitionId: number;
-	objectField: ObjectField;
 	objectFieldTypes: ObjectFieldType[];
 	objectName: string;
-	readOnly: boolean;
-	workflowStatusJSONArray: LabelValueObject[];
 }
+export default function AddObjectField({
+	apiURL,
+	objectDefinitionId,
+	objectFieldTypes,
+	objectName,
+}: IProps): JSX.Element;
 export {};

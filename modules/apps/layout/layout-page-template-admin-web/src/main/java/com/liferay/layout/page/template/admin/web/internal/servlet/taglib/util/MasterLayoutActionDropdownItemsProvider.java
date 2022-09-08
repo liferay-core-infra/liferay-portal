@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -210,7 +211,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 			dropdownItem.putData("action", "copyMasterLayout");
 			dropdownItem.putData(
 				"copyMasterLayoutURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -237,7 +238,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteMasterLayout");
 			dropdownItem.putData(
 				"deleteMasterLayoutURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin/delete_master_layout"
@@ -260,7 +261,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deleteMasterLayoutPreview");
 			dropdownItem.putData(
 				"deleteMasterLayoutPreviewURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -364,7 +365,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 			).repositoryName(
 				LanguageUtil.get(_themeDisplay.getLocale(), "master-page")
 			).url(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -394,7 +395,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 			dropdownItem.putData("action", "markAsDefaultMasterLayout");
 			dropdownItem.putData(
 				"markAsDefaultMasterLayoutURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -430,7 +431,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 			dropdownItem.putData("action", "markAsDefaultMasterLayout");
 			dropdownItem.putData(
 				"markAsDefaultMasterLayoutURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +
@@ -505,7 +506,7 @@ public class MasterLayoutActionDropdownItemsProvider {
 				_layoutPageTemplateEntry.getName());
 			dropdownItem.putData(
 				"updateMasterLayoutURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"/layout_page_template_admin" +

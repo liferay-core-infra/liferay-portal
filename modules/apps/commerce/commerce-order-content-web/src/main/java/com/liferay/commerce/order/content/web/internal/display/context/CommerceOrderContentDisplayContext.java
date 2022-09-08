@@ -82,6 +82,8 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -263,7 +265,7 @@ public class CommerceOrderContentDisplayContext {
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_cpRequestHelper.getLiferayPortletResponse()
 					).setMVCRenderCommandName(
 						mvcRenderCommandName
@@ -609,7 +611,7 @@ public class CommerceOrderContentDisplayContext {
 
 			dropdownItems.add(
 				DropdownItemBuilder.setHref(
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_cpRequestHelper.getLiferayPortletResponse()
 					).setActionName(
 						"/commerce_open_order_content/edit_commerce_order"
@@ -626,7 +628,7 @@ public class CommerceOrderContentDisplayContext {
 
 			dropdownItems.add(
 				DropdownItemBuilder.setHref(
-					PortletURLBuilder.createActionURL(
+					ActionURLBuilder.createActionURL(
 						_cpRequestHelper.getLiferayPortletResponse()
 					).setActionName(
 						"/commerce_open_order_content/edit_commerce_order_item"
@@ -683,7 +685,7 @@ public class CommerceOrderContentDisplayContext {
 		headerActionModels.add(
 			new HeaderActionModel(
 				"btn-secondary", null,
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_cpRequestHelper.getLiferayPortletResponse()
 				).setActionName(
 					"/commerce_open_order_content/edit_commerce_order"
@@ -693,7 +695,7 @@ public class CommerceOrderContentDisplayContext {
 					_cpRequestHelper.getCurrentURL()
 				).setParameter(
 					"commerceOrderId", commerceOrder.getCommerceOrderId()
-				).buildPortletURL(
+				).buildActionURL(
 				).toString(),
 				null, "save"));
 
@@ -718,7 +720,7 @@ public class CommerceOrderContentDisplayContext {
 		}
 
 		if (!commerceOrder.isOpen()) {
-			String portletURL = PortletURLBuilder.createActionURL(
+			String portletURL = ActionURLBuilder.createActionURL(
 				_cpRequestHelper.getLiferayPortletResponse()
 			).setActionName(
 				"/commerce_open_order_content/edit_commerce_order"
@@ -976,7 +978,7 @@ public class CommerceOrderContentDisplayContext {
 	}
 
 	public PortletURL getTransitionOrderPortletURL() throws PortalException {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			_cpRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/commerce_open_order_content/edit_commerce_order"
@@ -986,7 +988,7 @@ public class CommerceOrderContentDisplayContext {
 			_cpRequestHelper.getCurrentURL()
 		).setParameter(
 			"commerceOrderId", getCommerceOrderId()
-		).buildPortletURL();
+		).buildActionURL();
 	}
 
 	public boolean hasManageCommerceOrderDeliveryTermsPermission() {

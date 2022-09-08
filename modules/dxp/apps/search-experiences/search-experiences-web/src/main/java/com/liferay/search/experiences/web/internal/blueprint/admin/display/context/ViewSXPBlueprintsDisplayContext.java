@@ -20,6 +20,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.util.Constants;
@@ -58,7 +59,7 @@ public class ViewSXPBlueprintsDisplayContext {
 	public List<DropdownItem> getBulkActionDropdownItems() throws Exception {
 		return Arrays.asList(
 			new FDSActionDropdownItem(
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_sxpRequestHelper.getLiferayPortletResponse()
 				).setActionName(
 					"/sxp_blueprint_admin/edit_sxp_blueprint"

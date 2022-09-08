@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -147,7 +148,7 @@ public class MasterLayoutManagementToolbarDisplayContext
 						"action", "addMasterLayout"
 					).put(
 						"addMasterLayoutURL",
-						PortletURLBuilder.createActionURL(
+						ActionURLBuilder.createActionURL(
 							liferayPortletResponse
 						).setActionName(
 							"/layout_page_template_admin/add_master_layout"

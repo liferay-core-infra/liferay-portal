@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -105,7 +106,7 @@ public class AnnouncementsAdminViewManagementToolbarDisplayContext {
 	}
 
 	public String getClearResultsURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setNavigation(
 			_getNavigation()
@@ -118,7 +119,7 @@ public class AnnouncementsAdminViewManagementToolbarDisplayContext {
 				String navigation = _getNavigation();
 
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						_liferayPortletResponse
 					).setMVCRenderCommandName(
 						"/announcements/edit_entry"
@@ -128,7 +129,7 @@ public class AnnouncementsAdminViewManagementToolbarDisplayContext {
 						"alert", navigation.equals("alerts")
 					).setParameter(
 						"distributionScope", _getDistributionScope()
-					).buildPortletURL());
+					).buildRenderURL());
 
 				String label = null;
 

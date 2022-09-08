@@ -35,10 +35,10 @@ import com.liferay.commerce.product.util.CPInstanceHelper;
 import com.liferay.commerce.service.CommerceOrderItemService;
 import com.liferay.commerce.util.CommerceBigDecimalUtil;
 import com.liferay.commerce.util.CommerceUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
@@ -171,7 +171,7 @@ public class CommerceCartContentDisplayContext {
 	}
 
 	public String getDeleteURL(CommerceOrderItem commerceOrderItem) {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			commerceCartContentRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/commerce_cart_content/edit_commerce_order_item"

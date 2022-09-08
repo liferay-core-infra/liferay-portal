@@ -95,6 +95,7 @@ import com.liferay.portal.kernel.portlet.PortletConfigFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
@@ -827,7 +828,7 @@ public class ContentPageEditorDisplayContext {
 
 	protected String getFragmentEntryActionURL(String action, String command) {
 		return HttpComponentsUtil.addParameter(
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				_renderResponse
 			).setActionName(
 				action

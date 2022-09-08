@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -362,7 +363,7 @@ public class CPInstanceDisplayContext extends BaseCPDefinitionsDisplayContext {
 	}
 
 	private String _getAddMultipleCPInstancePortletURL() throws Exception {
-		return PortletURLBuilder.createActionURL(
+		return ActionURLBuilder.createActionURL(
 			cpRequestHelper.getLiferayPortletResponse()
 		).setActionName(
 			"/cp_definitions/edit_cp_instance"

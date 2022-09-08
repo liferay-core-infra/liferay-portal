@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -306,7 +307,7 @@ public class StagingProcessesWebToolbarDisplayContext {
 	}
 
 	private PortletURL _getStagingRenderURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setNavigation(
 			ParamUtil.getString(_httpServletRequest, "navigation", "all")
@@ -324,7 +325,7 @@ public class StagingProcessesWebToolbarDisplayContext {
 		).setParameter(
 			"searchContainerId",
 			ParamUtil.getString(_httpServletRequest, "searchContainerId")
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	private final HttpServletRequest _httpServletRequest;

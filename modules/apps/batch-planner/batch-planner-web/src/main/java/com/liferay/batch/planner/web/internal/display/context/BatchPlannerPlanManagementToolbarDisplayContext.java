@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
@@ -55,7 +56,7 @@ public class BatchPlannerPlanManagementToolbarDisplayContext
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						liferayPortletResponse
 					).setMVCRenderCommandName(
 						"/batch_planner/edit_export_batch_planner_plan"
@@ -63,14 +64,14 @@ public class BatchPlannerPlanManagementToolbarDisplayContext
 						PortalUtil.getCurrentURL(httpServletRequest)
 					).setNavigation(
 						"export"
-					).buildPortletURL());
+					).buildRenderURL());
 				dropdownItem.setLabel(
 					LanguageUtil.get(httpServletRequest, "export-file"));
 			}
 		).addDropdownItem(
 			dropdownItem -> {
 				dropdownItem.setHref(
-					PortletURLBuilder.createRenderURL(
+					RenderURLBuilder.createRenderURL(
 						liferayPortletResponse
 					).setMVCRenderCommandName(
 						"/batch_planner/edit_import_batch_planner_plan"
@@ -78,7 +79,7 @@ public class BatchPlannerPlanManagementToolbarDisplayContext
 						PortalUtil.getCurrentURL(httpServletRequest)
 					).setNavigation(
 						"import"
-					).buildPortletURL());
+					).buildRenderURL());
 				dropdownItem.setLabel(
 					LanguageUtil.get(httpServletRequest, "import-file"));
 			}

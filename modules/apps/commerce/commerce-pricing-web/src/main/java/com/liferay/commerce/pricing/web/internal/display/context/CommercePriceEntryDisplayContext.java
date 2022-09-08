@@ -22,13 +22,13 @@ import com.liferay.commerce.price.list.service.CommercePriceListService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -63,7 +63,7 @@ public class CommercePriceEntryDisplayContext
 	}
 
 	public String getAddCommerceTierPriceEntryRenderURL() throws Exception {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/commerce_price_list/add_commerce_tier_price_entry"
@@ -148,7 +148,7 @@ public class CommercePriceEntryDisplayContext
 
 		List<FDSActionDropdownItem> fdsActionDropdownItems = new ArrayList<>();
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		PortletURL portletURL = RenderURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/commerce_price_list/edit_commerce_price_entry"
@@ -158,7 +158,7 @@ public class CommercePriceEntryDisplayContext
 			"commercePriceEntryId", "{priceEntryId}"
 		).setParameter(
 			"commercePriceListId", getCommercePriceListId()
-		).buildPortletURL();
+		).buildRenderURL();
 
 		try {
 			portletURL.setWindowState(LiferayWindowState.POP_UP);

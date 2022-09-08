@@ -31,6 +31,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil;
@@ -72,7 +74,7 @@ public class CommerceTermEntryDisplayContext {
 	}
 
 	public String getAddCommerceTermEntryRenderURL() throws Exception {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			commerceTermEntryRequestHelper.getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			"/commerce_term_entry/add_commerce_term_entry"
@@ -184,7 +186,7 @@ public class CommerceTermEntryDisplayContext {
 
 		HeaderActionModel saveAsDraftHeaderActionModel = new HeaderActionModel(
 			null, liferayPortletResponse.getNamespace() + "fm",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/commerce_term_entry/edit_commerce_term_entry"
@@ -211,7 +213,7 @@ public class CommerceTermEntryDisplayContext {
 
 		HeaderActionModel publishHeaderActionModel = new HeaderActionModel(
 			additionalClasses, liferayPortletResponse.getNamespace() + "fm",
-			PortletURLBuilder.createActionURL(
+			ActionURLBuilder.createActionURL(
 				liferayPortletResponse
 			).setActionName(
 				"/commerce_term_entry/edit_commerce_term_entry"

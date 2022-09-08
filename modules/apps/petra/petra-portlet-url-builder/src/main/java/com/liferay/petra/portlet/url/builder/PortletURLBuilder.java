@@ -49,34 +49,14 @@ public class PortletURLBuilder {
 	}
 
 	public static PortletURLStep createActionURL(
-		LiferayPortletResponse liferayPortletResponse, MimeResponse.Copy copy) {
-
-		return new PortletURLStep(liferayPortletResponse.createActionURL(copy));
-	}
-
-	public static PortletURLStep createActionURL(
 		LiferayPortletResponse liferayPortletResponse, String portletName) {
 
 		return new PortletURLStep(
 			liferayPortletResponse.createActionURL(portletName));
 	}
 
-	public static PortletURLStep createActionURL(
-		LiferayPortletResponse liferayPortletResponse, String portletName,
-		MimeResponse.Copy copy) {
-
-		return new PortletURLStep(
-			liferayPortletResponse.createActionURL(portletName, copy));
-	}
-
 	public static PortletURLStep createActionURL(MimeResponse mimeResponse) {
 		return new PortletURLStep(mimeResponse.createActionURL());
-	}
-
-	public static PortletURLStep createActionURL(
-		MimeResponse mimeResponse, MimeResponse.Copy copy) {
-
-		return new PortletURLStep(mimeResponse.createActionURL(copy));
 	}
 
 	public static PortletURLStep createLiferayPortletURL(
@@ -148,34 +128,14 @@ public class PortletURLBuilder {
 	}
 
 	public static PortletURLStep createRenderURL(
-		LiferayPortletResponse liferayPortletResponse, MimeResponse.Copy copy) {
-
-		return new PortletURLStep(liferayPortletResponse.createRenderURL(copy));
-	}
-
-	public static PortletURLStep createRenderURL(
 		LiferayPortletResponse liferayPortletResponse, String portletName) {
 
 		return new PortletURLStep(
 			liferayPortletResponse.createRenderURL(portletName));
 	}
 
-	public static PortletURLStep createRenderURL(
-		LiferayPortletResponse liferayPortletResponse, String portletName,
-		MimeResponse.Copy copy) {
-
-		return new PortletURLStep(
-			liferayPortletResponse.createRenderURL(portletName, copy));
-	}
-
 	public static PortletURLStep createRenderURL(MimeResponse mimeResponse) {
 		return new PortletURLStep(mimeResponse.createRenderURL());
-	}
-
-	public static PortletURLStep createRenderURL(
-		MimeResponse mimeResponse, MimeResponse.Copy copy) {
-
-		return new PortletURLStep(mimeResponse.createRenderURL(copy));
 	}
 
 	public static class PortletURLStep

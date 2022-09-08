@@ -20,8 +20,21 @@ import {Observer} from '@clayui/modal/lib/types';
 import {API, Input} from '@liferay/object-js-components-web';
 import React, {useEffect, useState} from 'react';
 
-import {toCamelCase} from '../utils/string';
-import ObjectFieldFormBase, {useObjectFieldForm} from './ObjectFieldFormBase';
+import {toCamelCase} from '../../utils/string';
+import ObjectFieldFormBase from './ObjectFieldFormBase';
+import {useObjectFieldForm} from './useObjectFieldForm';
+
+interface IModal extends IProps {
+	observer: Observer;
+	onClose: () => void;
+}
+
+interface IProps {
+	apiURL: string;
+	objectDefinitionId: number;
+	objectFieldTypes: ObjectFieldType[];
+	objectName: string;
+}
 
 const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
 
@@ -130,7 +143,7 @@ function ModalAddObjectField({
 	);
 }
 
-export default function ModalWithProvider({
+export default function AddObjectField({
 	apiURL,
 	objectDefinitionId,
 	objectFieldTypes,
@@ -167,16 +180,4 @@ export default function ModalWithProvider({
 			)}
 		</ClayModalProvider>
 	);
-}
-
-interface IModal extends IProps {
-	observer: Observer;
-	onClose: () => void;
-}
-
-interface IProps {
-	apiURL: string;
-	objectDefinitionId: number;
-	objectFieldTypes: ObjectFieldType[];
-	objectName: string;
 }

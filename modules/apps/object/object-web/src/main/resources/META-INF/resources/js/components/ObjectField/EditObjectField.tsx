@@ -12,7 +12,6 @@
  * details.
  */
 
-import ClayForm, {ClayRadio, ClayRadioGroup, ClayToggle} from '@clayui/form';
 import {useModal} from '@clayui/modal';
 import {
 	API,
@@ -20,34 +19,62 @@ import {
 	Card,
 	Input,
 	InputLocalized,
-	Select,
 	SidePanelForm,
-	Toggle,
 	invalidateRequired,
 	openToast,
 	saveAndReload,
 } from '@liferay/object-js-components-web';
-import {sub} from 'frontend-js-web';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {createTextMaskInputElement} from 'text-mask-core';
+import React, {useEffect, useState} from 'react';
 
-import {createAutoCorrectedNumberPipe} from '../utils/createAutoCorrectedNumberPipe';
+import {updateFieldSettings} from '../../utils/fieldSettings';
 import {
-	normalizeFieldSettings,
-	updateFieldSettings,
-} from '../utils/fieldSettings';
-import {FilterErrors, FilterValidation, ModalAddFilter} from './ModalAddFilter';
-import ObjectFieldFormBase, {
-	ObjectFieldErrors,
-	useObjectFieldForm,
-} from './ObjectFieldFormBase';
+	FilterErrors,
+	FilterValidation,
+	ModalAddFilter,
+} from '../ModalAddFilter';
+import {AttachmentProperties} from './AttachmentProperties';
+import {MaxLengthProperties} from './MaxLengthProperties';
+import ObjectFieldFormBase from './ObjectFieldFormBase';
+import {SearchableContainer} from './SearchableContainer';
+import {useObjectFieldForm} from './useObjectFieldForm';
 
 import './EditObjectField.scss';
 
+interface AggregationFilters {
+	defaultSort?: boolean;
+	fieldLabel?: string;
+	filterBy?: string;
+	filterType?: string;
+	label: LocalizedValue<string>;
+	objectFieldBusinessType?: string;
+	objectFieldName: string;
+	priority?: number;
+	sortOrder?: string;
+	type?: string;
+	value?: string;
+	valueList?: LabelValueObject[];
+}
+
+interface IItem extends LabelValueObject {
+	checked?: boolean;
+}
+interface IProps {
+	filterOperators: TFilterOperators;
+	forbiddenChars: string[];
+	forbiddenLastChars: string[];
+	forbiddenNames: string[];
+	isApproved: boolean;
+	isDefaultStorageType: boolean;
+	objectDefinitionId: number;
+	objectField: ObjectField;
+	objectFieldTypes: ObjectFieldType[];
+	objectName: string;
+	readOnly: boolean;
+	workflowStatusJSONArray: LabelValueObject[];
+}
+
 const REQUIRED_MSG = Liferay.Language.get('required');
 const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
-const languages = Liferay.Language.available;
-const languageLabels = Object.values(languages);
 
 export default function EditObjectField({
 	filterOperators,
@@ -644,313 +671,4 @@ export default function EditObjectField({
 			)}
 		</SidePanelForm>
 	);
-}
-
-function SearchableContainer({
-	disabled,
-	isApproved,
-	objectField,
-	readOnly,
-	setValues,
-}: ISearchableProps) {
-	const isSearchableString =
-		objectField.indexed &&
-		(objectField.DBType === 'Clob' ||
-			objectField.DBType === 'String' ||
-			objectField.businessType === 'Attachment') &&
-		objectField.businessType !== 'Aggregation';
-
-	const selectedLanguageIndex = useMemo(() => {
-		const label =
-			objectField.indexedLanguageId &&
-			languages[objectField.indexedLanguageId];
-
-		return label ? languageLabels.indexOf(label) : undefined;
-	}, [objectField.indexedLanguageId]);
-
-	return (
-		<Card title={Liferay.Language.get('searchable')}>
-			<ClayForm.Group>
-				<ClayToggle
-					disabled={disabled}
-					label={Liferay.Language.get('searchable')}
-					name="indexed"
-					onToggle={(indexed) => setValues({indexed})}
-					toggled={objectField.indexed}
-				/>
-			</ClayForm.Group>
-
-			{isSearchableString && (
-				<ClayForm.Group>
-					<ClayRadioGroup
-						onChange={(selected: string | number) => {
-							const indexedAsKeyword = selected === 'true';
-							const indexedLanguageId = indexedAsKeyword
-								? null
-								: defaultLanguageId;
-
-							setValues({
-								indexedAsKeyword,
-								indexedLanguageId,
-							});
-						}}
-						value={new Boolean(
-							objectField.indexedAsKeyword
-						).toString()}
-					>
-						<ClayRadio
-							disabled={readOnly || isApproved}
-							label={Liferay.Language.get('keyword')}
-							value="true"
-						/>
-
-						<ClayRadio
-							disabled={readOnly || isApproved}
-							label={Liferay.Language.get('text')}
-							value="false"
-						/>
-					</ClayRadioGroup>
-				</ClayForm.Group>
-			)}
-
-			{isSearchableString && !objectField.indexedAsKeyword && (
-				<Select
-					disabled={disabled}
-					label={Liferay.Language.get('language')}
-					name="indexedLanguageId"
-					onChange={({target: {value}}) => {
-						const selectedLabel =
-							languageLabels[
-								value as keyof typeof languageLabels
-							];
-						const [indexedLanguageId] = Object.entries(
-							languages
-						).find(([, label]) => selectedLabel === label) as [
-							Locale,
-							string
-						];
-						setValues({indexedLanguageId});
-					}}
-					options={languageLabels}
-					required
-					value={selectedLanguageIndex}
-				/>
-			)}
-		</Card>
-	);
-}
-
-function MaxLengthProperties({
-	disabled,
-	errors,
-	objectField,
-	objectFieldSettings,
-	onSettingsChange,
-	setValues,
-}: IMaxLengthPropertiesProps) {
-	const [defaultMaxLength, defaultMaxLengthText] =
-		objectField.businessType === 'Text' ? [280, '280'] : [65000, '65,000'];
-
-	const settings = normalizeFieldSettings(objectFieldSettings);
-
-	const inputRef = useRef(null);
-	const maskRef = useRef();
-
-	useEffect(() => {
-		if (settings.showCounter) {
-			maskRef.current = createTextMaskInputElement({
-				guide: false,
-				inputElement: inputRef.current,
-				keepCharPositions: true,
-				mask:
-					objectField.businessType === 'Text'
-						? [/\d/, /\d/, /\d/]
-						: [/\d/, /\d/, /\d/, /\d/, /\d/],
-				pipe: createAutoCorrectedNumberPipe(defaultMaxLength, 1),
-				showMask: true,
-			});
-		}
-	}, [defaultMaxLength, objectField.businessType, settings.showCounter]);
-
-	return (
-		<>
-			<ClayForm.Group>
-				<Toggle
-					disabled={disabled}
-					label={Liferay.Language.get('limit-characters')}
-					name="showCounter"
-					onToggle={(value) => {
-						const updatedSettings: ObjectFieldSetting[] = [
-							{name: 'showCounter', value},
-						];
-
-						if (value) {
-							updatedSettings.push({
-								name: 'maxLength',
-								value: defaultMaxLength,
-							});
-						}
-
-						setValues({objectFieldSettings: updatedSettings});
-					}}
-					toggled={!!settings.showCounter}
-					tooltip={Liferay.Language.get(
-						'when-enabled-a-character-counter-will-be-shown-to-the-user'
-					)}
-				/>
-			</ClayForm.Group>
-			<ClayForm.Group>
-				{settings.showCounter && (
-					<Input
-						disabled={disabled}
-						error={errors.maxLength}
-						feedbackMessage={sub(
-							Liferay.Language.get(
-								'set-the-maximum-number-of-characters-accepted-this-value-cant-be-less-than-x-or-greater-than-x'
-							),
-							'1',
-							defaultMaxLengthText
-						)}
-						label={Liferay.Language.get(
-							'maximum-number-of-characters'
-						)}
-						onChange={({target: {value}}) =>
-							onSettingsChange({
-								name: 'maxLength',
-								value: value && Number(value),
-							})
-						}
-						onInput={({target: {value}}: any) =>
-							(maskRef.current as any).update(value)
-						}
-						ref={inputRef}
-						required
-						value={`${settings.maxLength}`}
-					/>
-				)}
-			</ClayForm.Group>
-		</>
-	);
-}
-
-function AttachmentProperties({
-	errors,
-	objectFieldSettings,
-	onSettingsChange,
-}: IAttachmentPropertiesProps) {
-	const settings = normalizeFieldSettings(objectFieldSettings);
-
-	return (
-		<>
-			<ClayForm.Group>
-				{settings.showFilesInDocumentsAndMedia && (
-					<Input
-						error={errors.storageDLFolderPath}
-						feedbackMessage={sub(
-							Liferay.Language.get(
-								'input-the-path-of-the-chosen-folder-in-documents-and-media-an-example-of-a-valid-path-is-x'
-							),
-							'/myDocumentsAndMediaFolder'
-						)}
-						label={Liferay.Language.get('storage-folder')}
-						maxLength={255}
-						onChange={({target: {value}}) =>
-							onSettingsChange({
-								name: 'storageDLFolderPath',
-								value,
-							})
-						}
-						required
-						value={settings.storageDLFolderPath as string}
-					/>
-				)}
-			</ClayForm.Group>
-			<Input
-				component="textarea"
-				error={errors.acceptedFileExtensions}
-				feedbackMessage={Liferay.Language.get(
-					'enter-the-list-of-file-extensions-users-can-upload-use-commas-to-separate-extensions'
-				)}
-				label={Liferay.Language.get('accepted-file-extensions')}
-				onChange={({target: {value}}) =>
-					onSettingsChange({name: 'acceptedFileExtensions', value})
-				}
-				required
-				value={settings.acceptedFileExtensions as string}
-			/>
-
-			<Input
-				error={errors.maximumFileSize}
-				feedbackMessage={Liferay.Language.get('maximum-file-size-help')}
-				label={Liferay.Language.get('maximum-file-size')}
-				min={0}
-				onChange={({target: {value}}) =>
-					onSettingsChange({
-						name: 'maximumFileSize',
-						value: value && Number(value),
-					})
-				}
-				required
-				type="number"
-				value={settings.maximumFileSize as number}
-			/>
-		</>
-	);
-}
-
-interface AggregationFilters {
-	defaultSort?: boolean;
-	fieldLabel?: string;
-	filterBy?: string;
-	filterType?: string;
-	label: LocalizedValue<string>;
-	objectFieldBusinessType?: string;
-	objectFieldName: string;
-	priority?: number;
-	sortOrder?: string;
-	type?: string;
-	value?: string;
-	valueList?: LabelValueObject[];
-}
-
-interface IItem extends LabelValueObject {
-	checked?: boolean;
-}
-interface IAttachmentPropertiesProps {
-	errors: ObjectFieldErrors;
-	objectFieldSettings: ObjectFieldSetting[];
-	onSettingsChange: (setting: ObjectFieldSetting) => void;
-}
-
-interface IMaxLengthPropertiesProps {
-	disabled?: boolean;
-	errors: ObjectFieldErrors;
-	objectField: Partial<ObjectField>;
-	objectFieldSettings: ObjectFieldSetting[];
-	onSettingsChange: (setting: ObjectFieldSetting) => void;
-	setValues: (values: Partial<ObjectField>) => void;
-}
-
-interface IProps {
-	filterOperators: TFilterOperators;
-	forbiddenChars: string[];
-	forbiddenLastChars: string[];
-	forbiddenNames: string[];
-	isApproved: boolean;
-	isDefaultStorageType: boolean;
-	objectDefinitionId: number;
-	objectField: ObjectField;
-	objectFieldTypes: ObjectFieldType[];
-	objectName: string;
-	readOnly: boolean;
-	workflowStatusJSONArray: LabelValueObject[];
-}
-
-interface ISearchableProps {
-	disabled?: boolean;
-	errors: ObjectFieldErrors;
-	isApproved: boolean;
-	objectField: Partial<ObjectField>;
-	readOnly: boolean;
-	setValues: (values: Partial<ObjectField>) => void;
 }

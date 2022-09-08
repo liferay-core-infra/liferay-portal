@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
@@ -85,7 +86,7 @@ public class UserActionDropdownItemsProvider {
 			dropdownItem.putData("action", "assignRoles");
 			dropdownItem.putData(
 				"assignRolesURL",
-				PortletURLBuilder.createRenderURL(
+				RenderURLBuilder.createRenderURL(
 					_renderResponse
 				).setMVCPath(
 					"/users_roles.jsp"

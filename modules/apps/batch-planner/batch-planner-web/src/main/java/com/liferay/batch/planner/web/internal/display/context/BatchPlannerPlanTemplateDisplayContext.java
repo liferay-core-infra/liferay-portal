@@ -17,11 +17,11 @@ package com.liferay.batch.planner.web.internal.display.context;
 import com.liferay.batch.planner.constants.BatchPlannerPortletKeys;
 import com.liferay.batch.planner.model.BatchPlannerPlan;
 import com.liferay.batch.planner.service.BatchPlannerPlanServiceUtil;
-import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
+import com.liferay.portal.kernel.portlet.url.builder.RenderURLBuilder;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -46,7 +46,7 @@ public class BatchPlannerPlanTemplateDisplayContext extends BaseDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		return PortletURLBuilder.createRenderURL(
+		return RenderURLBuilder.createRenderURL(
 			renderResponse
 		).setMVCRenderCommandName(
 			"/batch_planner/view_batch_planner_plan_templates"
@@ -56,7 +56,7 @@ public class BatchPlannerPlanTemplateDisplayContext extends BaseDisplayContext {
 			"batch-planner-plan-templates"
 		).setParameter(
 			"delta", () -> ParamUtil.getString(renderRequest, "delta")
-		).buildPortletURL();
+		).buildRenderURL();
 	}
 
 	public SearchContainer<BatchPlannerPlan> getSearchContainer() {

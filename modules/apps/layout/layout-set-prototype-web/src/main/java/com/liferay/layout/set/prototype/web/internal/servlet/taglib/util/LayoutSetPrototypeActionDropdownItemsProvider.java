@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.LayoutSetPrototype;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.url.builder.ActionURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.LayoutSetPrototypePermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -133,7 +134,7 @@ public class LayoutSetPrototypeActionDropdownItemsProvider {
 			dropdownItem.putData("action", "activate");
 			dropdownItem.putData(
 				"activateURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"updateLayoutSetPrototypeAction"
@@ -157,7 +158,7 @@ public class LayoutSetPrototypeActionDropdownItemsProvider {
 			dropdownItem.putData("action", "deactivate");
 			dropdownItem.putData(
 				"deactivateURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"updateLayoutSetPrototypeAction"
@@ -181,7 +182,7 @@ public class LayoutSetPrototypeActionDropdownItemsProvider {
 			dropdownItem.putData("action", "delete");
 			dropdownItem.putData(
 				"deleteURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"deleteLayoutSetPrototypes"
@@ -202,7 +203,7 @@ public class LayoutSetPrototypeActionDropdownItemsProvider {
 			dropdownItem.putData("action", "disablePropagation");
 			dropdownItem.putData(
 				"disablePropagationURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"updateLayoutSetPrototypeAction"
@@ -246,7 +247,7 @@ public class LayoutSetPrototypeActionDropdownItemsProvider {
 			dropdownItem.putData("action", "readyForPropagation");
 			dropdownItem.putData(
 				"readyForPropagationURL",
-				PortletURLBuilder.createActionURL(
+				ActionURLBuilder.createActionURL(
 					_renderResponse
 				).setActionName(
 					"updateLayoutSetPrototypeAction"

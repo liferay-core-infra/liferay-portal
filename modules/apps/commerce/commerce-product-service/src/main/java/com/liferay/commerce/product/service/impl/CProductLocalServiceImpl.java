@@ -18,7 +18,7 @@ import com.liferay.commerce.product.exception.DuplicateCProductException;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CProduct;
-import com.liferay.commerce.product.service.CPDefinitionLinkLocalService;
+import com.liferay.commerce.product.service.CPDefinitionLinkLocalServiceUtil;
 import com.liferay.commerce.product.service.CPDefinitionLocalServiceUtil;
 import com.liferay.commerce.product.service.base.CProductLocalServiceBaseImpl;
 import com.liferay.commerce.product.service.persistence.CPInstancePersistence;
@@ -86,7 +86,7 @@ public class CProductLocalServiceImpl extends CProductLocalServiceBaseImpl {
 
 		// Commerce product definition links
 
-		_cpDefinitionLinkLocalService.deleteCPDefinitionLinksByCProductId(
+		CPDefinitionLinkLocalServiceUtil.deleteCPDefinitionLinksByCProductId(
 			cProduct.getCProductId());
 
 		// Commerce product
@@ -201,9 +201,6 @@ public class CProductLocalServiceImpl extends CProductLocalServiceBaseImpl {
 
 	@Reference
 	protected CPInstancePersistence cpInstancePersistence;
-
-	@Reference
-	private CPDefinitionLinkLocalService _cpDefinitionLinkLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

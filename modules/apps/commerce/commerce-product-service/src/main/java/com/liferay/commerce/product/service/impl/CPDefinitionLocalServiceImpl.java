@@ -23,7 +23,7 @@ import com.liferay.commerce.account.service.CommerceAccountGroupRelLocalService;
 import com.liferay.commerce.price.list.constants.CommercePriceListConstants;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
 import com.liferay.commerce.price.list.model.CommercePriceList;
-import com.liferay.commerce.price.list.service.CommercePriceEntryLocalService;
+import com.liferay.commerce.price.list.service.CommercePriceEntryLocalServiceUtil;
 import com.liferay.commerce.price.list.service.CommercePriceListLocalService;
 import com.liferay.commerce.product.configuration.CProductVersionConfiguration;
 import com.liferay.commerce.product.constants.CPAttachmentFileEntryConstants;
@@ -2720,20 +2720,20 @@ public class CPDefinitionLocalServiceImpl
 					cpInstance.getGroupId(), type);
 
 		CommercePriceEntry commercePriceEntry =
-			_commercePriceEntryLocalService.fetchCommercePriceEntry(
+			CommercePriceEntryLocalServiceUtil.fetchCommercePriceEntry(
 				commercePriceList.getCommercePriceListId(),
 				cpInstance.getCPInstanceUuid());
 
 		if (commercePriceEntry == null) {
 			CPDefinition cpDefinition = cpInstance.getCPDefinition();
 
-			_commercePriceEntryLocalService.addCommercePriceEntry(
+			CommercePriceEntryLocalServiceUtil.addCommercePriceEntry(
 				cpDefinition.getCProductId(), cpInstance.getCPInstanceUuid(),
 				commercePriceList.getCommercePriceListId(), price, null,
 				serviceContext);
 		}
 		else {
-			_commercePriceEntryLocalService.updateCommercePriceEntry(
+			CommercePriceEntryLocalServiceUtil.updateCommercePriceEntry(
 				commercePriceEntry.getCommercePriceEntryId(), price, null,
 				serviceContext);
 		}
@@ -2793,9 +2793,6 @@ public class CPDefinitionLocalServiceImpl
 
 	@Reference
 	private CommerceChannelRelLocalService _commerceChannelRelLocalService;
-
-	@Reference
-	private CommercePriceEntryLocalService _commercePriceEntryLocalService;
 
 	@Reference
 	private CommercePriceListLocalService _commercePriceListLocalService;

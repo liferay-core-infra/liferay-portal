@@ -147,14 +147,12 @@ public class UpdateByQueryDocumentRequestExecutorImpl
 		}
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
 		_elasticsearchClientResolver = elasticsearchClientResolver;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setLegacyQueryTranslator(
 		com.liferay.portal.kernel.search.query.QueryTranslator<QueryBuilder>
 			legacyQueryTranslator) {
@@ -162,23 +160,29 @@ public class UpdateByQueryDocumentRequestExecutorImpl
 		_legacyQueryTranslator = legacyQueryTranslator;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setQueryTranslator(
 		QueryTranslator<QueryBuilder> queryTranslator) {
 
 		_queryTranslator = queryTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setScripts(Scripts scripts) {
 		_scripts = scripts;
 	}
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private com.liferay.portal.kernel.search.query.QueryTranslator<QueryBuilder>
 		_legacyQueryTranslator;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private QueryTranslator<QueryBuilder> _queryTranslator;
+
+	@Reference
 	private Scripts _scripts;
+
 	private final ScriptTranslator _scriptTranslator = new ScriptTranslator();
 
 }

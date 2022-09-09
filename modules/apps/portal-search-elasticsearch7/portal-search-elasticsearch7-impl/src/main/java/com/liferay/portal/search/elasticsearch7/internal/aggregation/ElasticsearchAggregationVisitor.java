@@ -504,7 +504,6 @@ public class ElasticsearchAggregationVisitor
 			weightedAvgAggregation, this, _pipelineAggregationTranslator);
 	}
 
-	@Reference(unbind = "-")
 	protected void setAggregationBuilderAssemblerFactory(
 		AggregationBuilderAssemblerFactory aggregationBuilderAssemblerFactory) {
 
@@ -512,7 +511,6 @@ public class ElasticsearchAggregationVisitor
 			aggregationBuilderAssemblerFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setDateHistogramAggregationTranslator(
 		DateHistogramAggregationTranslator dateHistogramAggregationTranslator) {
 
@@ -520,42 +518,36 @@ public class ElasticsearchAggregationVisitor
 			dateHistogramAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setDateRangeAggregationTranslator(
 		DateRangeAggregationTranslator dateRangeAggregationTranslator) {
 
 		_dateRangeAggregationTranslator = dateRangeAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setFilterAggregationTranslator(
 		FilterAggregationTranslator filterAggregationTranslator) {
 
 		_filterAggregationTranslator = filterAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setFiltersAggregationTranslator(
 		FiltersAggregationTranslator filtersAggregationTranslator) {
 
 		_filtersAggregationTranslator = filtersAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setGeoDistanceAggregationTranslator(
 		GeoDistanceAggregationTranslator geoDistanceAggregationTranslator) {
 
 		_geoDistanceAggregationTranslator = geoDistanceAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setHistogramAggregationTranslator(
 		HistogramAggregationTranslator histogramAggregationTranslator) {
 
 		_histogramAggregationTranslator = histogramAggregationTranslator;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setPipelineAggregationTranslator(
 		PipelineAggregationTranslator<PipelineAggregationBuilder>
 			pipelineAggregationTranslator) {
@@ -563,14 +555,12 @@ public class ElasticsearchAggregationVisitor
 		_pipelineAggregationTranslator = pipelineAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setRangeAggregationTranslator(
 		RangeAggregationTranslator rangeAggregationTranslator) {
 
 		_rangeAggregationTranslator = rangeAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setScriptedMetricAggregationTranslator(
 		ScriptedMetricAggregationTranslator
 			scriptedMetricAggregationTranslator) {
@@ -579,7 +569,6 @@ public class ElasticsearchAggregationVisitor
 			scriptedMetricAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSignificantTermsAggregationTranslator(
 		SignificantTermsAggregationTranslator
 			significantTermsAggregationTranslator) {
@@ -588,7 +577,6 @@ public class ElasticsearchAggregationVisitor
 			significantTermsAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSignificantTextAggregationTranslator(
 		SignificantTextAggregationTranslator
 			significantTextAggregationTranslator) {
@@ -597,21 +585,18 @@ public class ElasticsearchAggregationVisitor
 			significantTextAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setTermsAggregationTranslator(
 		TermsAggregationTranslator termsAggregationTranslator) {
 
 		_termsAggregationTranslator = termsAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setTopHitsAggregationTranslator(
 		TopHitsAggregationTranslator topHitsAggregationTranslator) {
 
 		_topHitsAggregationTranslator = topHitsAggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setWeightedAvgAggregationTranslator(
 		WeightedAvgAggregationTranslator weightedAvgAggregationTranslator) {
 
@@ -641,28 +626,58 @@ public class ElasticsearchAggregationVisitor
 			valuesSourceAggregationBuilder, fieldAggregation);
 	}
 
+	@Reference
 	private AggregationBuilderAssemblerFactory
 		_aggregationBuilderAssemblerFactory;
+
 	private final BaseFieldAggregationTranslator
 		_baseFieldAggregationTranslator = new BaseFieldAggregationTranslator();
+
+	@Reference
 	private DateHistogramAggregationTranslator
 		_dateHistogramAggregationTranslator;
+
+	@Reference
 	private DateRangeAggregationTranslator _dateRangeAggregationTranslator;
+
+	@Reference
 	private FilterAggregationTranslator _filterAggregationTranslator;
+
+	@Reference
 	private FiltersAggregationTranslator _filtersAggregationTranslator;
+
+	@Reference
 	private GeoDistanceAggregationTranslator _geoDistanceAggregationTranslator;
+
+	@Reference
 	private HistogramAggregationTranslator _histogramAggregationTranslator;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private PipelineAggregationTranslator<PipelineAggregationBuilder>
 		_pipelineAggregationTranslator;
+
+	@Reference
 	private RangeAggregationTranslator _rangeAggregationTranslator;
+
+	@Reference
 	private ScriptedMetricAggregationTranslator
 		_scriptedMetricAggregationTranslator;
+
+	@Reference
 	private SignificantTermsAggregationTranslator
 		_significantTermsAggregationTranslator;
+
+	@Reference
 	private SignificantTextAggregationTranslator
 		_significantTextAggregationTranslator;
+
+	@Reference
 	private TermsAggregationTranslator _termsAggregationTranslator;
+
+	@Reference
 	private TopHitsAggregationTranslator _topHitsAggregationTranslator;
+
+	@Reference
 	private WeightedAvgAggregationTranslator _weightedAvgAggregationTranslator;
 
 }

@@ -81,14 +81,12 @@ public class RefreshIndexRequestExecutorImpl
 		return new RefreshRequest(refreshIndexRequest.getIndexNames());
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
 		_elasticsearchClientResolver = elasticsearchClientResolver;
 	}
 
-	@Reference(unbind = "-")
 	protected void setIndexRequestShardFailureTranslator(
 		IndexRequestShardFailureTranslator indexRequestShardFailureTranslator) {
 
@@ -116,7 +114,10 @@ public class RefreshIndexRequestExecutorImpl
 		}
 	}
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
+
+	@Reference
 	private IndexRequestShardFailureTranslator
 		_indexRequestShardFailureTranslator;
 

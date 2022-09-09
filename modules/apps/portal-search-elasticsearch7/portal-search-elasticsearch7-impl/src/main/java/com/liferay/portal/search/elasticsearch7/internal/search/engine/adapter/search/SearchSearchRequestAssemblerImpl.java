@@ -76,7 +76,6 @@ public class SearchSearchRequestAssemblerImpl
 		searchRequest.source(searchSourceBuilder);
 	}
 
-	@Reference(unbind = "-")
 	protected void setCommonSearchSourceBuilderAssembler(
 		CommonSearchSourceBuilderAssembler commonSearchSourceBuilderAssembler) {
 
@@ -84,52 +83,44 @@ public class SearchSearchRequestAssemblerImpl
 			commonSearchSourceBuilderAssembler;
 	}
 
-	@Reference(unbind = "-")
 	protected void setGroupByRequestFactory(
 		GroupByRequestFactory groupByRequestFactory) {
 
 		_groupByRequestFactory = groupByRequestFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setGroupByTranslator(GroupByTranslator groupByTranslator) {
 		_groupByTranslator = groupByTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setHighlighterTranslator(
 		HighlighterTranslator highlighterTranslator) {
 
 		_highlighterTranslator = highlighterTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setQueryToQueryBuilderTranslator(
 		QueryToQueryBuilderTranslator queryToQueryBuilderTranslator) {
 
 		_queryToQueryBuilderTranslator = queryToQueryBuilderTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSortFieldTranslator(
 		SortFieldTranslator<SortBuilder<?>> sortFieldTranslator) {
 
 		_sortFieldTranslator = sortFieldTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSortTranslator(SortTranslator sortTranslator) {
 		_sortTranslator = sortTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setStatsRequestBuilderFactory(
 		StatsRequestBuilderFactory statsRequestBuilderFactory) {
 
 		_statsRequestBuilderFactory = statsRequestBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setStatsTranslator(StatsTranslator statsTranslator) {
 		_statsTranslator = statsTranslator;
 	}
@@ -310,17 +301,35 @@ public class SearchSearchRequestAssemblerImpl
 		}
 	}
 
+	@Reference
 	private CommonSearchSourceBuilderAssembler
 		_commonSearchSourceBuilderAssembler;
+
+	@Reference
 	private GroupByRequestFactory _groupByRequestFactory;
+
+	@Reference
 	private GroupByTranslator _groupByTranslator;
+
+	@Reference
 	private HighlighterTranslator _highlighterTranslator;
+
 	private final HighlightTranslator _highlightTranslator =
 		new HighlightTranslator();
+
+	@Reference
 	private QueryToQueryBuilderTranslator _queryToQueryBuilderTranslator;
+
+	@Reference
 	private SortFieldTranslator<SortBuilder<?>> _sortFieldTranslator;
+
+	@Reference
 	private SortTranslator _sortTranslator;
+
+	@Reference
 	private StatsRequestBuilderFactory _statsRequestBuilderFactory;
+
+	@Reference
 	private StatsTranslator _statsTranslator;
 
 }

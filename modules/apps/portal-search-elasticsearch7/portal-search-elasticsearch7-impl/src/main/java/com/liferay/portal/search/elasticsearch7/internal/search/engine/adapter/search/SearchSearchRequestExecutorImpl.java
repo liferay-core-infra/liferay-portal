@@ -100,21 +100,18 @@ public class SearchSearchRequestExecutorImpl
 		}
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
 		_elasticsearchClientResolver = elasticsearchClientResolver;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSearchSearchRequestAssembler(
 		SearchSearchRequestAssembler searchSearchRequestAssembler) {
 
 		_searchSearchRequestAssembler = searchSearchRequestAssembler;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSearchSearchResponseAssembler(
 		SearchSearchResponseAssembler searchSearchResponseAssembler) {
 
@@ -135,8 +132,13 @@ public class SearchSearchRequestExecutorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchSearchRequestExecutorImpl.class);
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
+
+	@Reference
 	private SearchSearchRequestAssembler _searchSearchRequestAssembler;
+
+	@Reference
 	private SearchSearchResponseAssembler _searchSearchResponseAssembler;
 
 }

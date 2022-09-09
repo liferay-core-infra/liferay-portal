@@ -38,7 +38,6 @@ public class AggregationBuilderAssemblerFactoryImpl
 			aggregationTranslator, _pipelineAggregationTranslator);
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setPipelineAggregationTranslator(
 		PipelineAggregationTranslator<PipelineAggregationBuilder>
 			pipelineAggregationTranslator) {
@@ -46,6 +45,7 @@ public class AggregationBuilderAssemblerFactoryImpl
 		_pipelineAggregationTranslator = pipelineAggregationTranslator;
 	}
 
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private PipelineAggregationTranslator<PipelineAggregationBuilder>
 		_pipelineAggregationTranslator;
 

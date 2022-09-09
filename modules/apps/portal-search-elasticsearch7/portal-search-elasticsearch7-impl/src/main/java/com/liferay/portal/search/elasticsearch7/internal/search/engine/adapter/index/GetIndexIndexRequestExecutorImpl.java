@@ -84,7 +84,6 @@ public class GetIndexIndexRequestExecutorImpl
 		return getIndexRequest;
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
@@ -175,6 +174,7 @@ public class GetIndexIndexRequestExecutorImpl
 		}
 	}
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
 
 }

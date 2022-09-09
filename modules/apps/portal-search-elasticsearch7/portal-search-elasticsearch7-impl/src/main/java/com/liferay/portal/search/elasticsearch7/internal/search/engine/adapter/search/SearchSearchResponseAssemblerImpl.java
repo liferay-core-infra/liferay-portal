@@ -106,14 +106,12 @@ public class SearchSearchResponseAssemblerImpl
 			elasticsearchAggregation, _aggregationResults);
 	}
 
-	@Reference(unbind = "-")
 	protected void setAggregationResults(
 		AggregationResults aggregationResults) {
 
 		_aggregationResults = aggregationResults;
 	}
 
-	@Reference(unbind = "-")
 	protected void setCommonSearchResponseAssembler(
 		CommonSearchResponseAssembler commonSearchResponseAssembler) {
 
@@ -132,40 +130,34 @@ public class SearchSearchResponseAssemblerImpl
 		searchSearchResponse.setCount(totalHits.value);
 	}
 
-	@Reference(unbind = "-")
 	protected void setDocumentBuilderFactory(
 		DocumentBuilderFactory documentBuilderFactory) {
 
 		_documentBuilderFactory = documentBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setGeoBuilders(GeoBuilders geoBuilders) {
 		_geoBuilders = geoBuilders;
 	}
 
-	@Reference(unbind = "-")
 	protected void setHighlightFieldBuilderFactory(
 		HighlightFieldBuilderFactory highlightFieldBuilderFactory) {
 
 		_highlightFieldBuilderFactory = highlightFieldBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSearchHitBuilderFactory(
 		SearchHitBuilderFactory searchHitBuilderFactory) {
 
 		_searchHitBuilderFactory = searchHitBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSearchHitsBuilderFactory(
 		SearchHitsBuilderFactory searchHitsBuilderFactory) {
 
 		_searchHitsBuilderFactory = searchHitsBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setSearchResponseTranslator(
 		SearchResponseTranslator searchResponseTranslator) {
 
@@ -248,13 +240,28 @@ public class SearchSearchResponseAssemblerImpl
 		searchSearchResponse.setSearchTimeValue(builder.build());
 	}
 
+	@Reference
 	private AggregationResults _aggregationResults;
+
+	@Reference
 	private CommonSearchResponseAssembler _commonSearchResponseAssembler;
+
+	@Reference
 	private DocumentBuilderFactory _documentBuilderFactory;
+
+	@Reference
 	private GeoBuilders _geoBuilders;
+
+	@Reference
 	private HighlightFieldBuilderFactory _highlightFieldBuilderFactory;
+
+	@Reference
 	private SearchHitBuilderFactory _searchHitBuilderFactory;
+
+	@Reference
 	private SearchHitsBuilderFactory _searchHitsBuilderFactory;
+
+	@Reference
 	private SearchResponseTranslator _searchResponseTranslator;
 
 }

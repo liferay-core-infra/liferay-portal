@@ -204,13 +204,13 @@ public class DefaultStatsTranslator implements StatsTranslator {
 		return statsResponseBuilder.build();
 	}
 
-	@Reference(unbind = "-")
 	protected void setStatsResponseBuilderFactory(
 		StatsResponseBuilderFactory statsResponseBuilderFactory) {
 
 		_statsResponseBuilderFactory = statsResponseBuilderFactory;
 	}
 
+	@Reference
 	private StatsResponseBuilderFactory _statsResponseBuilderFactory;
 
 }

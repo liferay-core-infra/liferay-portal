@@ -169,7 +169,6 @@ public class ElasticsearchSortFieldTranslator
 		return scriptSortBuilder;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setQueryTranslator(
 		QueryTranslator<QueryBuilder> queryTranslator) {
 
@@ -241,7 +240,10 @@ public class ElasticsearchSortFieldTranslator
 		new DistanceUnitTranslator();
 	private final GeoDistanceTypeTranslator _geoDistanceTypeTranslator =
 		new GeoDistanceTypeTranslator();
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private QueryTranslator<QueryBuilder> _queryTranslator;
+
 	private final ScriptTranslator _scriptTranslator = new ScriptTranslator();
 
 }

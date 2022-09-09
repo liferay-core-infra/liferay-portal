@@ -178,7 +178,6 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 		return LocalizationUtil.getLocalization();
 	}
 
-	@Reference(unbind = "-")
 	protected void setIndexNameBuilder(IndexNameBuilder indexNameBuilder) {
 		_indexNameBuilder = indexNameBuilder;
 	}
@@ -187,7 +186,6 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 		_localization = localization;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setSearchEngineAdapter(
 		SearchEngineAdapter searchEngineAdapter) {
 
@@ -373,8 +371,12 @@ public class ElasticsearchQuerySuggester implements QuerySuggester {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchQuerySuggester.class);
 
+	@Reference
 	private IndexNameBuilder _indexNameBuilder;
+
 	private Localization _localization;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private SearchEngineAdapter _searchEngineAdapter;
 
 }

@@ -87,7 +87,6 @@ public class CommonSearchResponseAssemblerImpl
 		}
 	}
 
-	@Reference(unbind = "-")
 	protected void setStatsTranslator(StatsTranslator statsTranslator) {
 		_statsTranslator = statsTranslator;
 	}
@@ -262,6 +261,7 @@ public class CommonSearchResponseAssemblerImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommonSearchResponseAssemblerImpl.class);
 
+	@Reference
 	private StatsTranslator _statsTranslator;
 
 }

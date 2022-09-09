@@ -83,14 +83,12 @@ public class HealthClusterRequestExecutorImpl
 		return clusterHealthRequest;
 	}
 
-	@Reference(unbind = "-")
 	protected void setClusterHealthStatusTranslator(
 		ClusterHealthStatusTranslator clusterHealthStatusTranslator) {
 
 		_clusterHealthStatusTranslator = clusterHealthStatusTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
@@ -117,7 +115,10 @@ public class HealthClusterRequestExecutorImpl
 		}
 	}
 
+	@Reference
 	private ClusterHealthStatusTranslator _clusterHealthStatusTranslator;
+
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
 
 }

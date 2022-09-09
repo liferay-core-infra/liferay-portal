@@ -127,7 +127,6 @@ public class ElasticsearchBulkableDocumentRequestTranslatorImpl
 		return updateRequest;
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchDocumentFactory(
 		ElasticsearchDocumentFactory elasticsearchDocumentFactory) {
 
@@ -256,7 +255,9 @@ public class ElasticsearchBulkableDocumentRequestTranslatorImpl
 		}
 	}
 
+	@Reference
 	private ElasticsearchDocumentFactory _elasticsearchDocumentFactory;
+
 	private final ScriptTranslator _scriptTranslator = new ScriptTranslator();
 
 }

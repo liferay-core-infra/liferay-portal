@@ -102,7 +102,6 @@ public class RestoreSnapshotRequestExecutorImpl
 		return elasticsearchRestoreSnapshotRequest;
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
@@ -131,6 +130,7 @@ public class RestoreSnapshotRequestExecutorImpl
 		}
 	}
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
 
 }

@@ -131,7 +131,6 @@ public class AnalyzeIndexRequestExecutorImpl
 		return customAnalyzerBuilder.build(analyzeIndexRequest.getTexts());
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
@@ -268,6 +267,7 @@ public class AnalyzeIndexRequestExecutorImpl
 		return analysisIndexResponseTokens;
 	}
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
 
 }

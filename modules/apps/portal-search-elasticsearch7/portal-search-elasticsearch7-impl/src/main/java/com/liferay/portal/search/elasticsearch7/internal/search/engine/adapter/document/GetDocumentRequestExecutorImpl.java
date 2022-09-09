@@ -71,7 +71,6 @@ public class GetDocumentRequestExecutorImpl
 		return getDocumentResponse;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setBulkableDocumentRequestTranslator(
 		ElasticsearchBulkableDocumentRequestTranslator
 			elasticsearchBulkableDocumentRequestTranslator) {
@@ -80,21 +79,18 @@ public class GetDocumentRequestExecutorImpl
 			elasticsearchBulkableDocumentRequestTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setDocumentBuilderFactory(
 		DocumentBuilderFactory documentBuilderFactory) {
 
 		_documentBuilderFactory = documentBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
 		_elasticsearchClientResolver = elasticsearchClientResolver;
 	}
 
-	@Reference(unbind = "-")
 	protected void setGeoBuilders(GeoBuilders geoBuilders) {
 		_geoBuilders = geoBuilders;
 	}
@@ -115,10 +111,17 @@ public class GetDocumentRequestExecutorImpl
 		}
 	}
 
+	@Reference
 	private DocumentBuilderFactory _documentBuilderFactory;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private ElasticsearchBulkableDocumentRequestTranslator
 		_elasticsearchBulkableDocumentRequestTranslator;
+
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
+
+	@Reference
 	private GeoBuilders _geoBuilders;
 
 }

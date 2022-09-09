@@ -87,33 +87,28 @@ public class CommonSearchSourceBuilderAssemblerImpl
 		searchRequest.source(searchSourceBuilder);
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setAggregationTranslator(
 		AggregationTranslator<AggregationBuilder> aggregationTranslator) {
 
 		_aggregationTranslator = aggregationTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setComplexQueryBuilderFactory(
 		ComplexQueryBuilderFactory complexQueryBuilderFactory) {
 
 		_complexQueryBuilderFactory = complexQueryBuilderFactory;
 	}
 
-	@Reference(unbind = "-")
 	protected void setFacetTranslator(FacetTranslator facetTranslator) {
 		_facetTranslator = facetTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setFilterToQueryBuilderTranslator(
 		FilterToQueryBuilderTranslator filterToQueryBuilderTranslator) {
 
 		_filterToQueryBuilderTranslator = filterToQueryBuilderTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setLegacyQueryToQueryBuilderTranslator(
 		com.liferay.portal.search.elasticsearch7.internal.legacy.query.
 			QueryToQueryBuilderTranslator queryToQueryBuilderTranslator) {
@@ -121,7 +116,6 @@ public class CommonSearchSourceBuilderAssemblerImpl
 		_legacyQueryToQueryBuilderTranslator = queryToQueryBuilderTranslator;
 	}
 
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	protected void setPipelineAggregationTranslator(
 		PipelineAggregationTranslator<PipelineAggregationBuilder>
 			pipelineAggregationTranslator) {
@@ -136,14 +130,12 @@ public class CommonSearchSourceBuilderAssemblerImpl
 		searchSourceBuilder.query(_getQueryBuilder(baseSearchRequest));
 	}
 
-	@Reference(unbind = "-")
 	protected void setQueryToQueryBuilderTranslator(
 		QueryToQueryBuilderTranslator queryToQueryBuilderTranslator) {
 
 		_queryToQueryBuilderTranslator = queryToQueryBuilderTranslator;
 	}
 
-	@Reference(unbind = "-")
 	protected void setStatsTranslator(StatsTranslator statsTranslator) {
 		_statsTranslator = statsTranslator;
 	}
@@ -599,15 +591,30 @@ public class CommonSearchSourceBuilderAssemblerImpl
 		return null;
 	}
 
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private AggregationTranslator<AggregationBuilder> _aggregationTranslator;
+
+	@Reference
 	private ComplexQueryBuilderFactory _complexQueryBuilderFactory;
+
+	@Reference
 	private FacetTranslator _facetTranslator;
+
+	@Reference
 	private FilterTranslator<QueryBuilder> _filterToQueryBuilderTranslator;
+
+	@Reference
 	private com.liferay.portal.search.elasticsearch7.internal.legacy.query.
 		QueryToQueryBuilderTranslator _legacyQueryToQueryBuilderTranslator;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	private PipelineAggregationTranslator<PipelineAggregationBuilder>
 		_pipelineAggregationTranslator;
+
+	@Reference
 	private QueryToQueryBuilderTranslator _queryToQueryBuilderTranslator;
+
+	@Reference
 	private StatsTranslator _statsTranslator;
 
 }

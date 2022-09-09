@@ -75,7 +75,6 @@ public class CreateIndexRequestExecutorImpl
 		return elasticsearchCreateIndexRequest;
 	}
 
-	@Reference(unbind = "-")
 	protected void setElasticsearchClientResolver(
 		ElasticsearchClientResolver elasticsearchClientResolver) {
 
@@ -107,6 +106,7 @@ public class CreateIndexRequestExecutorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		CreateIndexRequestExecutorImpl.class);
 
+	@Reference
 	private ElasticsearchClientResolver _elasticsearchClientResolver;
 
 }

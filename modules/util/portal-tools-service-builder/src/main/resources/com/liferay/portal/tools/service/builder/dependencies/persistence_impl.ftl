@@ -2848,7 +2848,27 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		</#list>
 
 		_set${entity.name}UtilPersistence(this);
-	}
+
+	<#if serviceBuilder.isVersionGTE_7_4_0() && (entity.eagerCacheEntityFinders?size != 0)>
+			<#list entity.eagerCacheEntityFinders as eagerCacheEntityFinder>
+				_eagerCacheFinderPaths.put("${eagerCacheEntityFinder.name}",
+					<#if eagerCacheEntityFinder.isUnique()>
+						_finderPathFetchBy${eagerCacheEntityFinder.name}
+					<#elseif eagerCacheEntityFinder.isCollection()>
+						_finderPathWithoutPaginationFindBy${eagerCacheEntityFinder.name}
+					</#if>
+					);
+			</#list>
+		}
+
+		protected Map<String, FinderPath> getEagerCacheFinderPaths() {
+			return _eagerCacheFinderPaths;
+		}
+
+		private final Map<String, FinderPath> _eagerCacheFinderPaths = new HashMap<>();
+	<#else>
+		}
+	</#if>
 
 	<#if dependencyInjectorDS>
 		@Deactivate

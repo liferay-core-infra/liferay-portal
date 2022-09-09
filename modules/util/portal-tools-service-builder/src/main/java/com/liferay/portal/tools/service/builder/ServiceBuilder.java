@@ -547,6 +547,8 @@ public class ServiceBuilder {
 		_tplPersistence = _getTplProperty("persistence", _tplPersistence);
 		_tplPersistenceImpl = _getTplProperty(
 			"persistence_impl", _tplPersistenceImpl);
+		_tplFinderCacheInitializer = _getTplProperty(
+			"finder_cache_initializer", _tplFinderCacheInitializer);
 		_tplPersistenceUtil = _getTplProperty(
 			"persistence_util", _tplPersistenceUtil);
 		_tplProps = _getTplProperty("props", _tplProps);
@@ -820,6 +822,8 @@ public class ServiceBuilder {
 							_createPersistenceUtil(entity);
 
 							_createModelArgumentsResolver(entity);
+
+							_createFinderCacheInitializer(entity);
 
 							if (Validator.isNotNull(_testDirName)) {
 								_createPersistenceTest(entity);
@@ -2882,6 +2886,43 @@ public class ServiceBuilder {
 			StringBundler.concat(
 				_outputPath, "/service/persistence/impl/", entity.getName(),
 				"FinderBaseImpl.java"));
+
+		_write(file, content, _modifiedFileNames);
+	}
+
+	private void _createFinderCacheInitializer(Entity entity) throws Exception {
+		if (!isVersionGTE_7_4_0()) {
+			return;
+		}
+
+		File file = new File(
+			StringBundler.concat(
+				_outputPath, "/service/persistence/impl/", entity.getName(),
+				"FinderCacheInitializer.java"));
+
+		List<EntityFinder> entityFinders = entity.getEagerCacheEntityFinders();
+
+		if (entityFinders.isEmpty()) {
+			if (file.exists()) {
+				System.out.println("Removing " + file);
+
+				file.delete();
+			}
+
+			return;
+		}
+
+		Map<String, Object> context = _getContext();
+
+		context.put("entity", entity);
+
+		JavaClass modelImplJavaClass = _getJavaClass(
+			StringBundler.concat(
+				_outputPath, "/model/impl/", entity.getName(), "Impl.java"));
+
+		context = _putDeprecatedKeys(context, modelImplJavaClass);
+
+		String content = _processTemplate(_tplFinderCacheInitializer, context);
 
 		_write(file, content, _modifiedFileNames);
 	}
@@ -6629,6 +6670,8 @@ public class ServiceBuilder {
 			String finderReturn = finderElement.attributeValue("return-type");
 			boolean finderUnique = GetterUtil.getBoolean(
 				finderElement.attributeValue("unique"));
+			boolean eagerCache = GetterUtil.getBoolean(
+				finderElement.attributeValue("eagerCache"));
 
 			String finderWhere = finderElement.attributeValue("where");
 
@@ -6709,7 +6752,7 @@ public class ServiceBuilder {
 				new EntityFinder(
 					this, finderName, finderPluralName, finderReturn,
 					finderUnique, finderWhere, finderDBWhere, finderDBIndex,
-					finderEntityColumns));
+					finderEntityColumns, eagerCache));
 		}
 
 		String uadOutputPath =
@@ -6925,7 +6968,8 @@ public class ServiceBuilder {
 						entityFinder.getPluralName(), "Collection", false,
 						entityFinder.getWhere(), entityFinder.getDBWhere(),
 						entityFinder.isDBIndex(),
-						new ArrayList<>(entityFinder.getEntityColumns())));
+						new ArrayList<>(entityFinder.getEntityColumns()),
+						false));
 
 				List<EntityColumn> finderEntityColumns =
 					entityFinder.getEntityColumns();
@@ -6939,7 +6983,7 @@ public class ServiceBuilder {
 						this, entityFinder.getName() + "_Head", null,
 						entityFinder.getReturnType(), entityFinder.isUnique(),
 						entityFinder.getWhere(), entityFinder.getDBWhere(),
-						entityFinder.isDBIndex(), finderEntityColumns));
+						entityFinder.isDBIndex(), finderEntityColumns, false));
 			}
 		}
 
@@ -8031,6 +8075,8 @@ public class ServiceBuilder {
 		_TPL_ROOT + "extended_model_impl.ftl";
 	private String _tplFinder = _TPL_ROOT + "finder.ftl";
 	private String _tplFinderBaseImpl = _TPL_ROOT + "finder_base_impl.ftl";
+	private String _tplFinderCacheInitializer =
+		_TPL_ROOT + "finder_cache_initializer.ftl";
 	private String _tplFinderUtil = _TPL_ROOT + "finder_util.ftl";
 	private String _tplHbmXml = _TPL_ROOT + "hbm_xml.ftl";
 	private String _tplJsonJs = _TPL_ROOT + "json_js.ftl";

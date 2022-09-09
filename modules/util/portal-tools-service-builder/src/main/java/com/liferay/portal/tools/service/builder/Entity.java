@@ -198,8 +198,14 @@ public class Entity implements Comparable<Entity> {
 		if (_entityFinders != null) {
 			Set<EntityColumn> finderEntityColumns = new HashSet<>();
 
+			_eagerCacheEntityFinders = new ArrayList<>();
+
 			for (EntityFinder entityFinder : _entityFinders) {
 				finderEntityColumns.addAll(entityFinder.getEntityColumns());
+
+				if (entityFinder.isEagerCache()) {
+					_eagerCacheEntityFinders.add(entityFinder);
+				}
 			}
 
 			_finderEntityColumns = new ArrayList<>(finderEntityColumns);
@@ -207,6 +213,7 @@ public class Entity implements Comparable<Entity> {
 			Collections.sort(_finderEntityColumns);
 		}
 		else {
+			_eagerCacheEntityFinders = Collections.emptyList();
 			_finderEntityColumns = Collections.emptyList();
 		}
 
@@ -338,6 +345,10 @@ public class Entity implements Comparable<Entity> {
 
 	public String getDataSource() {
 		return _dataSource;
+	}
+
+	public List<EntityFinder> getEagerCacheEntityFinders() {
+		return _eagerCacheEntityFinders;
 	}
 
 	public EntityColumn getEntityColumn(String name) {
@@ -1323,6 +1334,7 @@ public class Entity implements Comparable<Entity> {
 	private final String _dataSource;
 	private final boolean _deprecated;
 	private final boolean _dynamicUpdateEnabled;
+	private final List<EntityFinder> _eagerCacheEntityFinders;
 	private final List<EntityColumn> _entityColumns;
 	private final List<EntityFinder> _entityFinders;
 	private final EntityOrder _entityOrder;

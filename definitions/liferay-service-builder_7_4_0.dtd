@@ -791,6 +791,14 @@ The finder element represents a generated finder method.
 <!ELEMENT finder (finder-column+)>
 
 <!--
+If the eagerCache value is true, then its corresponding finder cache will be
+populated when initializing finder cache.
+-->
+<!ATTLIST finder
+	eagerCache CDATA #REQUIRED
+>
+
+<!--
 The name value specifies the name of the finder method.
 -->
 <!ATTLIST finder

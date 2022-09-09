@@ -30,7 +30,7 @@ public class EntityFinder {
 	public EntityFinder(
 		ServiceBuilder serviceBuilder, String name, String pluralName,
 		String returnType, boolean unique, String where, String dbWhere,
-		boolean dbIndex, List<EntityColumn> entityColumns) {
+		boolean dbIndex, List<EntityColumn> entityColumns, boolean eagerCache) {
 
 		_serviceBuilder = serviceBuilder;
 		_name = name;
@@ -49,6 +49,12 @@ public class EntityFinder {
 				_arrayableColumns.add(column);
 			}
 		}
+
+		if (hasCustomComparator()) {
+			eagerCache = false;
+		}
+
+		_eagerCache = eagerCache;
 
 		if (isCollection() && isUnique() && !hasArrayableOperator()) {
 			throw new IllegalArgumentException(
@@ -170,6 +176,10 @@ public class EntityFinder {
 		return _dbIndex;
 	}
 
+	public boolean isEagerCache() {
+		return _eagerCache;
+	}
+
 	public boolean isUnique() {
 		return _unique;
 	}
@@ -177,6 +187,7 @@ public class EntityFinder {
 	private final List<EntityColumn> _arrayableColumns = new ArrayList<>();
 	private final boolean _dbIndex;
 	private final String _dbWhere;
+	private final boolean _eagerCache;
 	private final List<EntityColumn> _entityColumns;
 	private final String _name;
 	private final String _pluralName;

@@ -21,6 +21,9 @@
 
 	<#if entity.hasEntityColumns() && entity.hasPersistence()>
 		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			<#if entity.eagerCacheEntityFinders?size != 0>
+				<bean class="${packagePath}.service.persistence.impl.${entity.name}FinderCacheInitializer" id="${packagePath}.service.persistence.impl.${entity.name}FinderCacheInitializer" />
+			</#if>
 			<bean class="${packagePath}.service.persistence.impl.${entity.name}ModelArgumentsResolver" id="${packagePath}.service.persistence.impl.${entity.name}ModelArgumentsResolver" />
 		</#if>
 

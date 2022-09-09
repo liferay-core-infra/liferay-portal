@@ -16,6 +16,10 @@ create unique index IX_17A11405 on ERCGroupEntry (uuid_[$COLUMN_LENGTH:75$], gro
 
 create unique index IX_6E042099 on EagerBlobEntry (uuid_[$COLUMN_LENGTH:75$], groupId);
 
+create index IX_37081BD6 on EagerFinderCacheEntry (companyId, groupId);
+create index IX_9AA6A2D6 on EagerFinderCacheEntry (groupId);
+create unique index IX_A1305FC4 on EagerFinderCacheEntry (uniqueName[$COLUMN_LENGTH:75$]);
+
 create index IX_420C1E47 on FinderWhereClauseEntry (name[$COLUMN_LENGTH:75$]);
 
 create index IX_C28A6270 on LVEntry (groupId, head);

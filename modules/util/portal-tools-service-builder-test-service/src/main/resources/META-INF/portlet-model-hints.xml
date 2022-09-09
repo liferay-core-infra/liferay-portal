@@ -44,6 +44,12 @@
 		<field name="groupId" type="long" />
 		<field name="blob" type="Blob" />
 	</model>
+	<model name="com.liferay.portal.tools.service.builder.test.model.EagerFinderCacheEntry">
+		<field name="eagerFinderCacheEntryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="uniqueName" type="String" />
+	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry">
 		<field name="uuid" type="String" />
 		<field name="externalReferenceCode" type="String" />

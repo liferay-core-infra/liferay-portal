@@ -10,6 +10,7 @@
 	<import class="com.liferay.portal.tools.service.builder.test.model.DSLQueryEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.DSLQueryStatusEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry" />
+	<import class="com.liferay.portal.tools.service.builder.test.model.EagerFinderCacheEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry" />
@@ -85,6 +86,14 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" column="uuid_" name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" column="blob_" name="blob" type="org.hibernate.type.BlobType" />
+	</class>
+	<class name="com.liferay.portal.tools.service.builder.test.model.impl.EagerFinderCacheEntryImpl" table="EagerFinderCacheEntry">
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="eagerFinderCacheEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="uniqueName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.portal.tools.service.builder.test.model.impl.ERCCompanyEntryImpl" table="ERCCompanyEntry">
 		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="ercCompanyEntryId" type="long">

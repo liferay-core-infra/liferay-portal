@@ -72,6 +72,13 @@ create table EagerBlobEntry (
 	blob_ BLOB
 );
 
+create table EagerFinderCacheEntry (
+	eagerFinderCacheEntryId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	uniqueName VARCHAR(75) null
+);
+
 create table FinderWhereClauseEntry (
 	finderWhereClauseEntryId LONG not null primary key,
 	name VARCHAR(75) null,

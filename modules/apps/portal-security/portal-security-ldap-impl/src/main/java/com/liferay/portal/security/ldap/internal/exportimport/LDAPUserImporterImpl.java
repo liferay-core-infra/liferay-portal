@@ -112,7 +112,9 @@ import javax.naming.ldap.LdapContext;
 
 import org.apache.commons.lang.time.StopWatch;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
@@ -596,9 +598,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		}
 	}
 
-	@Reference(unbind = "-")
-	public void setSingleVMPool(SingleVMPool singleVMPool) {
-		_portalCache = (PortalCache<String, Long>)singleVMPool.getPortalCache(
+	@Activate
+	protected void activate() {
+		_portalCache = (PortalCache<String, Long>)_singleVMPool.getPortalCache(
 			UserImporter.class.getName());
 	}
 
@@ -676,6 +678,11 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		}
 
 		return user;
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_singleVMPool.removePortalCache(UserImporter.class.getName());
 	}
 
 	protected String escapeLDAPName(String ldapName) {
@@ -1947,6 +1954,9 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile SafePortalLDAP _safePortalLDAP;
+
+	@Reference
+	private SingleVMPool _singleVMPool;
 
 	@Reference
 	private UserGroupLocalService _userGroupLocalService;

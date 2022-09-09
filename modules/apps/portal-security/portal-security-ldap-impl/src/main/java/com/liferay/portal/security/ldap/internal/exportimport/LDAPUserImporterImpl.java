@@ -55,7 +55,6 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
-import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -898,80 +897,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 
 		_userLocalService.deleteUserGroupUsers(
 			userGroupId, ArrayUtil.toLongArray(deletedUserIds));
-	}
-
-	@Reference(unbind = "-")
-	protected void setCompanyLocalService(
-		CompanyLocalService companyLocalService) {
-
-		_companyLocalService = companyLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setExpandoValueLocalService(
-		ExpandoValueLocalService expandoValueLocalService) {
-
-		_expandoValueLocalService = expandoValueLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setGroupLocalService(GroupLocalService groupLocalService) {
-		_groupLocalService = groupLocalService;
-	}
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPImportConfigurationProvider(
-		ConfigurationProvider<LDAPImportConfiguration>
-			ldapImportConfigurationProvider) {
-
-		_ldapImportConfigurationProvider = ldapImportConfigurationProvider;
-	}
-
-	@Reference(
-		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)",
-		unbind = "-"
-	)
-	protected void setLDAPServerConfigurationProvider(
-		ConfigurationProvider<LDAPServerConfiguration>
-			ldapServerConfigurationProvider) {
-
-		_ldapServerConfigurationProvider = ldapServerConfigurationProvider;
-	}
-
-	@Reference(unbind = "-")
-	protected void setLdapSettings(LDAPSettings ldapSettings) {
-		_ldapSettings = ldapSettings;
-	}
-
-	@Reference(unbind = "-")
-	protected void setLockManager(LockManager lockManager) {
-		_lockManager = lockManager;
-	}
-
-	@Reference(unbind = "-")
-	protected void setProps(Props props) {
-		_companySecurityAuthType = GetterUtil.getString(
-			props.get(PropsKeys.COMPANY_SECURITY_AUTH_TYPE));
-	}
-
-	@Reference(unbind = "-")
-	protected void setRoleLocalService(RoleLocalService roleLocalService) {
-		_roleLocalService = roleLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserGroupLocalService(
-		UserGroupLocalService userGroupLocalService) {
-
-		_userGroupLocalService = userGroupLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
 	}
 
 	private void _addRole(
@@ -1971,19 +1896,36 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	@Reference
 	private BeanProperties _beanProperties;
 
+	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
 	private String _companySecurityAuthType;
+
+	@Reference
 	private ExpandoValueLocalService _expandoValueLocalService;
+
+	@Reference
 	private GroupLocalService _groupLocalService;
+
 	private long _lastImportTime;
 
 	@Reference
 	private LDAPFilterValidator _ldapFilterValidator;
 
+	@Reference(
+		target = "(factoryPid=com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration)"
+	)
 	private ConfigurationProvider<LDAPImportConfiguration>
 		_ldapImportConfigurationProvider;
+
+	@Reference(
+		target = "(factoryPid=com.liferay.portal.security.ldap.configuration.LDAPServerConfiguration)"
+	)
 	private ConfigurationProvider<LDAPServerConfiguration>
 		_ldapServerConfigurationProvider;
+
+	@Reference
 	private LDAPSettings _ldapSettings;
 
 	@Reference(
@@ -1992,8 +1934,12 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	)
 	private volatile LDAPToPortalConverter _ldapToPortalConverter;
 
+	@Reference
 	private LockManager _lockManager;
+
 	private PortalCache<String, Long> _portalCache;
+
+	@Reference
 	private RoleLocalService _roleLocalService;
 
 	@Reference(
@@ -2002,7 +1948,10 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	)
 	private volatile SafePortalLDAP _safePortalLDAP;
 
+	@Reference
 	private UserGroupLocalService _userGroupLocalService;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

@@ -115,99 +115,6 @@ public class ServletContextUtil {
 		_servletContextUtil = null;
 	}
 
-	@Reference(
-		target = "(model.class.name=com.liferay.commerce.model.CommerceOrder)",
-		unbind = "-"
-	)
-	protected void setCommerceOrderModelResourcePermission(
-		ModelResourcePermission<CommerceOrder>
-			commerceOrderModelResourcePermission) {
-
-		_commerceOrderModelResourcePermission =
-			commerceOrderModelResourcePermission;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCommerceOrderStatusRegistry(
-		CommerceOrderStatusRegistry commerceOrderStatusRegistry) {
-
-		_commerceOrderStatusRegistry = commerceOrderStatusRegistry;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCommerceOrderValidatorRegistry(
-		CommerceOrderValidatorRegistry commerceOrderValidatorRegistry) {
-
-		_commerceOrderValidatorRegistry = commerceOrderValidatorRegistry;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCommercePriceCalculation(
-		CommerceProductPriceCalculation commerceProductPriceCalculation) {
-
-		_commerceProductPriceCalculation = commerceProductPriceCalculation;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCommercePriceFormatter(
-		CommercePriceFormatter commercePriceFormatter) {
-
-		_commercePriceFormatter = commercePriceFormatter;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCommercePriceListLocalService(
-		CommercePriceListLocalService commercePriceListLocalService) {
-
-		_commercePriceListLocalService = commercePriceListLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCommerceWorkflowedModelHelper(
-		CommerceWorkflowedModelHelper commerceWorkflowedModelHelper) {
-
-		_commerceWorkflowedModelHelper = commerceWorkflowedModelHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setConfigurationProvider(
-		ConfigurationProvider configurationProvider) {
-
-		_configurationProvider = configurationProvider;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCPDefinitionHelper(
-		CPDefinitionHelper cpDefinitionHelper) {
-
-		_cpDefinitionHelper = cpDefinitionHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCPInstanceHelper(CPInstanceHelper cpInstanceHelper) {
-		_cpInstanceHelper = cpInstanceHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPanelAppRegistry(PanelAppRegistry panelAppRegistry) {
-		_panelAppRegistry = panelAppRegistry;
-	}
-
-	@Reference(unbind = "-")
-	protected void setPanelCategoryRegistry(
-		PanelCategoryRegistry panelCategoryRegistry) {
-
-		_panelCategoryRegistry = panelCategoryRegistry;
-	}
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private CommerceWorkflowedModelHelper _getCommerceOrderHelper() {
 		return _commerceWorkflowedModelHelper;
 	}
@@ -266,19 +173,46 @@ public class ServletContextUtil {
 
 	private static ServletContextUtil _servletContextUtil;
 
+	@Reference(
+		target = "(model.class.name=com.liferay.commerce.model.CommerceOrder)"
+	)
 	private ModelResourcePermission<CommerceOrder>
 		_commerceOrderModelResourcePermission;
+
+	@Reference
 	private CommerceOrderStatusRegistry _commerceOrderStatusRegistry;
+
+	@Reference
 	private CommerceOrderValidatorRegistry _commerceOrderValidatorRegistry;
+
+	@Reference
 	private CommercePriceFormatter _commercePriceFormatter;
+
+	@Reference
 	private CommercePriceListLocalService _commercePriceListLocalService;
+
+	@Reference
 	private CommerceProductPriceCalculation _commerceProductPriceCalculation;
+
+	@Reference
 	private CommerceWorkflowedModelHelper _commerceWorkflowedModelHelper;
+
+	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
 	private CPDefinitionHelper _cpDefinitionHelper;
+
+	@Reference
 	private CPInstanceHelper _cpInstanceHelper;
+
+	@Reference
 	private PanelAppRegistry _panelAppRegistry;
+
+	@Reference
 	private PanelCategoryRegistry _panelCategoryRegistry;
+
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.commerce.taglib)")
 	private ServletContext _servletContext;
 
 }

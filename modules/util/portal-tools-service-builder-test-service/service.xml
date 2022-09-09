@@ -135,6 +135,37 @@
 
 		<column lazy="false" name="blob" type="Blob" />
 	</entity>
+	<entity local-service="true" name="EagerFinderCacheEntry" remote-service="false" uuid="false">
+
+		<!-- PK fields -->
+
+		<column name="eagerFinderCacheEntryId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="uniqueName" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder eagerCache="true" name="UniqueName" return-type="EagerFinderCacheEntry" unique="true">
+			<finder-column name="uniqueName" />
+		</finder>
+		<finder eagerCache="true" name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder eagerCache="true" name="C_G" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="groupId" />
+		</finder>
+	</entity>
 	<entity external-reference-code="company" local-service="true" name="ERCCompanyEntry" remote-service="false" uuid="true">
 
 		<!-- PK fields -->

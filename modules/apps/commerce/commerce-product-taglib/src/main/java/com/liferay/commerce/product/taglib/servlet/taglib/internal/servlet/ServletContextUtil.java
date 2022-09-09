@@ -63,34 +63,6 @@ public class ServletContextUtil {
 		_servletContextUtil = null;
 	}
 
-	@Reference(unbind = "-")
-	protected void setCPContentHelper(CPContentHelper cpContentHelper) {
-		_cpContentHelper = cpContentHelper;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCPContentListEntryRendererRegistry(
-		CPContentListEntryRendererRegistry cpContentListEntryRendererRegistry) {
-
-		_cpContentListEntryRendererRegistry =
-			cpContentListEntryRendererRegistry;
-	}
-
-	@Reference(unbind = "-")
-	protected void setCPContentListRendererRegistry(
-		CPContentListRendererRegistry cpContentListRendererRegistry) {
-
-		_cpContentListRendererRegistry = cpContentListRendererRegistry;
-	}
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.product.taglib)",
-		unbind = "-"
-	)
-	protected void setServletContext(ServletContext servletContext) {
-		_servletContext = servletContext;
-	}
-
 	private CPContentHelper _getCPContentHelper() {
 		return _cpContentHelper;
 	}
@@ -111,10 +83,19 @@ public class ServletContextUtil {
 
 	private static ServletContextUtil _servletContextUtil;
 
+	@Reference
 	private CPContentHelper _cpContentHelper;
+
+	@Reference
 	private CPContentListEntryRendererRegistry
 		_cpContentListEntryRendererRegistry;
+
+	@Reference
 	private CPContentListRendererRegistry _cpContentListRendererRegistry;
+
+	@Reference(
+		target = "(osgi.web.symbolicname=com.liferay.commerce.product.taglib)"
+	)
 	private ServletContext _servletContext;
 
 }

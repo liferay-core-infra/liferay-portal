@@ -45,6 +45,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1454,7 +1455,17 @@ public class ResourceActionPersistenceImpl
 			new String[] {"name", "actionId"}, false);
 
 		_setResourceActionUtilPersistence(this);
+
+		_eagerCacheFinderPaths.put(
+			"Name", _finderPathWithoutPaginationFindByName);
 	}
+
+	protected Map<String, FinderPath> getEagerCacheFinderPaths() {
+		return _eagerCacheFinderPaths;
+	}
+
+	private final Map<String, FinderPath> _eagerCacheFinderPaths =
+		new HashMap<>();
 
 	public void destroy() {
 		_setResourceActionUtilPersistence(null);

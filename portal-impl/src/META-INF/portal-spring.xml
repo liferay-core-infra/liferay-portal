@@ -260,6 +260,7 @@
 	<bean class="com.liferay.portal.service.persistence.impl.RepositoryEntryPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.RepositoryEntryPersistence" />
 	<bean class="com.liferay.portal.service.impl.ResourceLocalServiceImpl" id="com.liferay.portal.kernel.service.ResourceLocalService" />
 	<bean class="com.liferay.portal.service.impl.ResourceActionLocalServiceImpl" id="com.liferay.portal.kernel.service.ResourceActionLocalService" />
+	<bean class="com.liferay.portal.service.persistence.impl.ResourceActionFinderCacheInitializer" id="com.liferay.portal.service.persistence.impl.ResourceActionFinderCacheInitializer" />
 	<bean class="com.liferay.portal.service.persistence.impl.ResourceActionModelArgumentsResolver" id="com.liferay.portal.service.persistence.impl.ResourceActionModelArgumentsResolver" />
 	<bean class="com.liferay.portal.service.persistence.impl.ResourceActionPersistenceImpl" id="com.liferay.portal.kernel.service.persistence.ResourceActionPersistence" />
 	<bean class="com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl" id="com.liferay.portal.kernel.service.ResourcePermissionLocalService" />

@@ -2034,7 +2034,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="Name" return-type="Collection">
+		<finder eagerCache="true" name="Name" return-type="Collection">
 			<finder-column name="name" />
 		</finder>
 		<finder name="N_A" return-type="ResourceAction" unique="true">

@@ -82,6 +82,7 @@ public abstract class BaseAssetEntryCPDataSourceImpl implements CPDataSource {
 	@Reference
 	protected CPDefinitionHelper cpDefinitionHelper;
 
+	@Reference
 	protected Portal portal;
 
 }

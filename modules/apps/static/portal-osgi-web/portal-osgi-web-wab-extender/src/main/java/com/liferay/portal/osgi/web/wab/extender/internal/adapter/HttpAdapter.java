@@ -130,6 +130,12 @@ public class HttpAdapter {
 
 		PortletSessionListenerManager.addHttpSessionListener(
 			_INVALIDATEHTTPSESSION_LISTENER);
+
+		Class<?> clazz = getClass();
+
+		_servletContext = (ServletContext)Proxy.newProxyInstance(
+			clazz.getClassLoader(), _INTERFACES,
+			new ServletContextAdaptor(_servletContext));
 	}
 
 	@Deactivate
@@ -144,15 +150,6 @@ public class HttpAdapter {
 		_httpServiceServlet.destroy();
 
 		_httpServiceServlet = null;
-	}
-
-	@Reference(target = "(original.bean=true)", unbind = "-")
-	protected void setServletContext(ServletContext servletContext) {
-		Class<?> clazz = getClass();
-
-		_servletContext = (ServletContext)Proxy.newProxyInstance(
-			clazz.getClassLoader(), _INTERFACES,
-			new ServletContextAdaptor(servletContext));
 	}
 
 	private static final Class<?>[] _INTERFACES = new Class<?>[] {
@@ -177,6 +174,8 @@ public class HttpAdapter {
 
 	private HttpServiceServlet _httpServiceServlet;
 	private ServiceRegistration<?> _serviceRegistration;
+
+	@Reference(target = "(original.bean=true)")
 	private ServletContext _servletContext;
 
 	private static class ServletContextAdaptor implements InvocationHandler {

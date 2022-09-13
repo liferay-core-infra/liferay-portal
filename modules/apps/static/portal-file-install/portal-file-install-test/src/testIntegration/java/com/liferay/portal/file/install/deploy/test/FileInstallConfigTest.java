@@ -19,8 +19,11 @@ import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.persistence.ReloadablePersistenceManager;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
+import com.liferay.portal.file.install.constants.FileInstallConstants;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.log.LogCapture;
@@ -32,12 +35,15 @@ import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 
+import java.net.URI;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Set;
@@ -317,6 +323,93 @@ public class FileInstallConfigTest {
 		_testFactoryConfiguration(CharPool.UNDERLINE);
 	}
 
+	@Test
+	public void testFindConfigurationWithFelixFileNameWhenUsingSymlinkAfterReloadingConfiguration()
+		throws Exception {
+
+		String configurationPid = StringBundler.concat(
+			_CONFIGURATION_PID_PREFIX,
+			".testFindConfigurationWithFelixFileNameWhenUsingSymlinkAfter",
+			"ReloadingConfiguration");
+
+		_configurationPath = Paths.get(
+			FileUtil.createTempFileName(configurationPid, "config"));
+
+		Path symlinkConfigurationPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			configurationPid.concat(".config"));
+
+		try {
+			Files.createSymbolicLink(
+				symlinkConfigurationPath, _configurationPath);
+
+			_configuration = _createConfiguration(
+				configurationPid, StringPool.BLANK);
+
+			_reloadablePersistenceManager.reload(configurationPid);
+
+			Configuration[] configurations = _findExistingConfigurations(
+				symlinkConfigurationPath);
+
+			Assert.assertNotNull(configurations);
+			Assert.assertEquals(
+				Arrays.toString(configurations), 1, configurations.length);
+			Assert.assertEquals(_configuration, configurations[0]);
+		}
+		finally {
+			Files.delete(symlinkConfigurationPath);
+		}
+	}
+
+	public void testFindFactoryConfigurationWithFelixFileNameWhenUsingSymlinkAfterReloadingConfiguration()
+		throws Exception {
+
+		String factoryConfigurationName = "abc";
+		String factoryPid = StringBundler.concat(
+			_CONFIGURATION_PID_PREFIX,
+			".testFindFactoryConfigurationWithFelixFileNameUsingSymlinkAfter",
+			"ReloadingConfiguration");
+
+		String configurationPid = StringBundler.concat(
+			factoryPid, CharPool.TILDE, factoryConfigurationName);
+
+		_configurationPath = Paths.get(
+			FileUtil.createTempFileName(configurationPid, "config"));
+
+		Path symlinkConfigurationPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			configurationPid.concat(".config"));
+
+		try {
+			_createFacotryConfiguration(
+				factoryPid,
+				() -> {
+					String content = StringPool.BLANK;
+
+					Files.write(_configurationPath, content.getBytes());
+
+					Files.createSymbolicLink(
+						symlinkConfigurationPath, _configurationPath);
+				});
+
+			_reloadablePersistenceManager.reload(configurationPid);
+
+			Configuration[] configurations = _findExistingConfigurations(
+				symlinkConfigurationPath);
+
+			_configuration = _configurationAdmin.getFactoryConfiguration(
+				factoryPid, factoryConfigurationName, StringPool.QUESTION);
+
+			Assert.assertNotNull(configurations);
+			Assert.assertEquals(
+				Arrays.toString(configurations), 1, configurations.length);
+			Assert.assertEquals(_configuration, configurations[0]);
+		}
+		finally {
+			Files.delete(symlinkConfigurationPath);
+		}
+	}
+
 	@Ignore
 	@Test
 	public void testReadOnlyConfiguration() throws Exception {
@@ -445,6 +538,28 @@ public class FileInstallConfigTest {
 		}
 	}
 
+	private Configuration[] _findExistingConfigurations(Path configurationPath)
+		throws Exception {
+
+		Path configurationDirPath = configurationPath.getParent();
+
+		configurationDirPath = configurationDirPath.toRealPath();
+
+		configurationPath = configurationDirPath.resolve(
+			configurationPath.getFileName());
+
+		File file = configurationPath.toFile();
+
+		URI uri = file.toURI();
+
+		return _configurationAdmin.listConfigurations(
+			StringBundler.concat(
+				StringPool.OPEN_PARENTHESIS,
+				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
+				StringPool.EQUAL, uri.toString(),
+				StringPool.CLOSE_PARENTHESIS));
+	}
+
 	private void _testFactoryConfiguration(char separator) throws Exception {
 		String factoryConfigurationName = StringBundler.concat(
 			StringUtil.randomId(), CharPool.DASH, StringUtil.randomId());
@@ -493,5 +608,8 @@ public class FileInstallConfigTest {
 	private BundleContext _bundleContext;
 	private Configuration _configuration;
 	private Path _configurationPath;
+
+	@Inject
+	private ReloadablePersistenceManager _reloadablePersistenceManager;
 
 }

@@ -17,6 +17,7 @@ package com.liferay.portal.security.ldap.configuration;
 import aQute.bnd.annotation.metatype.Meta;
 
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -46,9 +47,7 @@ public abstract class BaseConfigurationProvider<T>
 		return _factoryPid;
 	}
 
-	protected abstract void setConfigurationAdmin(
-		ConfigurationAdmin configurationAdmin);
-
+	@Reference
 	protected ConfigurationAdmin configurationAdmin;
 
 	private String _factoryPid;

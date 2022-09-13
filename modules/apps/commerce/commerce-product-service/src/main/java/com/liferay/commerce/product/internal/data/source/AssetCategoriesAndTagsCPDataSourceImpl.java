@@ -20,7 +20,6 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.commerce.product.catalog.CPQuery;
 import com.liferay.commerce.product.data.source.CPDataSource;
 import com.liferay.commerce.product.model.CPDefinition;
-import com.liferay.commerce.product.util.CPDefinitionHelper;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.Portal;
@@ -81,11 +80,6 @@ public class AssetCategoriesAndTagsCPDataSourceImpl
 		}
 
 		return tagIds;
-	}
-
-	@Reference(unbind = "-")
-	private void _setCPDefinitionHelper(CPDefinitionHelper cpDefinitionHelper) {
-		this.cpDefinitionHelper = cpDefinitionHelper;
 	}
 
 	@Reference(unbind = "-")

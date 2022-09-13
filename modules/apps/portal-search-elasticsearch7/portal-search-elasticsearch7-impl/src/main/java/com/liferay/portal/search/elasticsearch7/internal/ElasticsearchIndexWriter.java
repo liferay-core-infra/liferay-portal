@@ -320,12 +320,10 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 		}
 	}
 
-	@Override
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
 	public void setSpellCheckIndexWriter(
 		SpellCheckIndexWriter spellCheckIndexWriter) {
 
-		super.setSpellCheckIndexWriter(spellCheckIndexWriter);
+		_spellCheckIndexWriter = spellCheckIndexWriter;
 	}
 
 	@Override
@@ -411,6 +409,11 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 		}
 	}
 
+	@Override
+	protected SpellCheckIndexWriter getSpellCheckIndexWriter() {
+		return _spellCheckIndexWriter;
+	}
+
 	@Reference(unbind = "-")
 	protected void setElasticsearchConfigurationWrapper(
 		ElasticsearchConfigurationWrapper elasticsearchConfigurationWrapper) {
@@ -437,5 +440,8 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 		_elasticsearchConfigurationWrapper;
 	private IndexNameBuilder _indexNameBuilder;
 	private SearchEngineAdapter _searchEngineAdapter;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
+	private SpellCheckIndexWriter _spellCheckIndexWriter;
 
 }

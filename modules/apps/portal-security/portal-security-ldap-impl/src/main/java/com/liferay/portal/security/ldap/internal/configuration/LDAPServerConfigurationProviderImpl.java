@@ -42,9 +42,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.cm.Configuration;
-import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -415,14 +413,6 @@ public class LDAPServerConfigurationProviderImpl
 			throw new SystemException(
 				"Unable to update configuration", ioException);
 		}
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	protected void setConfigurationAdmin(
-		ConfigurationAdmin configurationAdmin) {
-
-		super.configurationAdmin = configurationAdmin;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -7,3 +7,4 @@ Import-Package:\
 	!org.junit.*,\
 	\
 	*
+-dsannotations-options: inherit

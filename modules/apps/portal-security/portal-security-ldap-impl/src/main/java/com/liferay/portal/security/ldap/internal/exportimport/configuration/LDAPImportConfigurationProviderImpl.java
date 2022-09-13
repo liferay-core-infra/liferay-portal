@@ -18,9 +18,7 @@ import com.liferay.portal.security.ldap.configuration.CompanyScopedConfiguration
 import com.liferay.portal.security.ldap.configuration.ConfigurationProvider;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 
-import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -36,14 +34,6 @@ public class LDAPImportConfigurationProviderImpl
 	@Override
 	public Class<LDAPImportConfiguration> getMetatype() {
 		return LDAPImportConfiguration.class;
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	protected void setConfigurationAdmin(
-		ConfigurationAdmin configurationAdmin) {
-
-		super.configurationAdmin = configurationAdmin;
 	}
 
 }

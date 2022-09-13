@@ -120,11 +120,8 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 		try {
 			return Dom4jUtil.toString(xml, StringPool.DOUBLE_SPACE);
 		}
-		catch (IOException ioException) {
-			throw new SystemException(ioException);
-		}
-		catch (DocumentException documentException) {
-			throw new SystemException(documentException);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 

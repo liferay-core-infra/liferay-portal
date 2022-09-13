@@ -16,9 +16,11 @@ package com.liferay.user.associated.data.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.xml.XMLUtil;
+import com.liferay.petra.string.StringUtil;
+import com.liferay.petra.xml.Dom4jUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -29,7 +31,10 @@ import com.liferay.portal.kernel.zip.ZipWriterFactoryUtil;
 import com.liferay.user.associated.data.util.UADDynamicQueryUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import org.dom4j.DocumentException;
 
 /**
  * Provides the base implementation of {@link UADExporter} for entities
@@ -116,7 +121,24 @@ public abstract class DynamicQueryUADExporter<T extends BaseModel>
 	protected abstract String[] doGetUserIdFieldNames();
 
 	protected String formatXML(String xml) {
-		return XMLUtil.formatXML(xml);
+		try {
+
+			// This is only supposed to format your xml, however, it will also
+			// unwantingly change &#169; and other characters like it into their
+			// respective readable versions
+
+			xml = StringUtil.replace(xml, "&#", "[$SPECIAL_CHARACTER$]");
+			xml = Dom4jUtil.toString(xml, StringPool.DOUBLE_SPACE);
+			xml = StringUtil.replace(xml, "[$SPECIAL_CHARACTER$]", "&#");
+
+			return xml;
+		}
+		catch (IOException ioException) {
+			throw new SystemException(ioException);
+		}
+		catch (DocumentException documentException) {
+			throw new SystemException(documentException);
+		}
 	}
 
 	/**

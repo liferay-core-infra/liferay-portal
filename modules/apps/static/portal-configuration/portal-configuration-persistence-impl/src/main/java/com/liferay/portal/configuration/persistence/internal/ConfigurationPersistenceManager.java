@@ -41,6 +41,9 @@ import java.io.OutputStream;
 
 import java.net.URI;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -342,7 +345,7 @@ public class ConfigurationPersistenceManager
 			FileInstallConstants.FELIX_FILE_INSTALL_FILENAME);
 
 		if (fileName != null) {
-			File file = _getCanonicalConfigFile(fileName);
+			File file = _getConfigFile(fileName);
 
 			URI uri = file.toURI();
 
@@ -406,11 +409,15 @@ public class ConfigurationPersistenceManager
 		}
 	}
 
-	private File _getCanonicalConfigFile(String fileName) throws IOException {
-		File configFile = new File(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
+	private File _getConfigFile(String fileName) throws IOException {
+		Path configsDirPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
 
-		return configFile.getCanonicalFile();
+		configsDirPath = configsDirPath.toRealPath();
+
+		Path configFilePath = configsDirPath.resolve(fileName);
+
+		return configFilePath.toFile();
 	}
 
 	private Dictionary<Object, Object> _getDictionary(String pid)
@@ -611,7 +618,7 @@ public class ConfigurationPersistenceManager
 			needSave = false;
 		}
 		else {
-			configFile = _getCanonicalConfigFile(felixFileInstallFileName);
+			configFile = _getConfigFile(felixFileInstallFileName);
 
 			URI uri = configFile.toURI();
 

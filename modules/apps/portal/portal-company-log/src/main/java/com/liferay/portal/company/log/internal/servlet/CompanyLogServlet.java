@@ -16,8 +16,10 @@ package com.liferay.portal.company.log.internal.servlet;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchCompanyException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -29,6 +31,7 @@ import com.liferay.portal.kernel.security.permission.PermissionCheckerFactory;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.ServletResponseUtil;
+import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MimeTypes;
@@ -41,13 +44,14 @@ import com.liferay.portal.log4j.Log4JUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import java.util.Arrays;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
@@ -137,7 +141,8 @@ public class CompanyLogServlet extends HttpServlet {
 		File companyLogDirectory = Log4JUtil.getCompanyLogDirectory(companyId);
 
 		if (companyLogDirectory == null) {
-			return;
+			throw new Exception(
+				"No company log directory exists with companyId " + companyId);
 		}
 
 		String fileName = pathArray[1];
@@ -230,80 +235,80 @@ public class CompanyLogServlet extends HttpServlet {
 			HttpServletResponse httpServletResponse)
 		throws Exception {
 
-		httpServletResponse.setContentType("text/html");
-
-		PrintWriter printWriter = httpServletResponse.getWriter();
-
-		printWriter.println("<html><body>");
-
-		StringBundler sb = new StringBundler();
+		JSONArray companyLogFilesJSONArray = _jsonFactory.createJSONArray();
 
 		if (permissionChecker.isOmniadmin()) {
 			_companyLocalService.forEachCompany(
 				company -> _listCompanyLogFiles(
-					httpServletRequest, sb, company));
+					httpServletRequest, company, companyLogFilesJSONArray));
 		}
 		else if (permissionChecker.isCompanyAdmin()) {
 			User user = permissionChecker.getUser();
 
 			_listCompanyLogFiles(
-				httpServletRequest, sb,
-				_companyLocalService.getCompany(user.getCompanyId()));
+				httpServletRequest,
+				_companyLocalService.getCompany(user.getCompanyId()),
+				companyLogFilesJSONArray);
 		}
 		else {
 			throw new PrincipalException.MustBeCompanyAdmin(
 				permissionChecker.getUserId());
 		}
 
-		if (sb.length() == 0) {
-			sb.append("No log is available.");
-		}
+		httpServletResponse.setContentType(ContentTypes.APPLICATION_JSON);
+		httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
-		printWriter.println(sb.toString());
-		printWriter.println("</body></html>");
+		ServletResponseUtil.write(
+			httpServletResponse, companyLogFilesJSONArray.toString());
 	}
 
 	private void _listCompanyLogFiles(
-		HttpServletRequest httpServletRequest, StringBundler sb,
-		Company company) {
+			HttpServletRequest httpServletRequest, Company company,
+			JSONArray companyLogFilesJSONArray)
+		throws Exception {
 
 		File companyLogDirectory = Log4JUtil.getCompanyLogDirectory(
 			company.getCompanyId());
 
 		if (companyLogDirectory == null) {
-			return;
+			throw new Exception(
+				"No company log directory exists with companyId " +
+					company.getCompanyId());
 		}
 
-		sb.append("<h1>");
-		sb.append(company.getWebId());
-		sb.append("</h1><ul>");
+		JSONObject companyLogFileJSONObject = _jsonFactory.createJSONObject();
 
-		for (File file : companyLogDirectory.listFiles()) {
-			String href = StringBundler.concat(
-				_portal.getPortalURL(httpServletRequest),
-				_portal.getPathContext(), "/o/company-log/",
-				company.getCompanyId(), StringPool.SLASH, file.getName());
+		companyLogFileJSONObject.put(
+			"companyId", company.getCompanyId()
+		).put(
+			"webId", company.getWebId()
+		);
 
-			sb.append("<li><a target=\"_self\" href=\"");
-			sb.append(href);
-			sb.append("\">");
-			sb.append(file.getName());
-			sb.append(" (");
-			sb.append(
+		JSONArray companyLogFileInfosJSONArray = _jsonFactory.createJSONArray();
+
+		File[] companyLogFiles = companyLogDirectory.listFiles();
+
+		Arrays.sort(companyLogFiles);
+
+		for (File file : companyLogFiles) {
+			JSONObject companyLogFileInfoJSONObject =
+				_jsonFactory.createJSONObject();
+
+			companyLogFileInfoJSONObject.put(
+				"logFileName", file.getName()
+			).put(
+				"logFileSize",
 				_language.formatStorageSize(
-					file.length(), httpServletRequest.getLocale()));
-			sb.append(")</a><form action = \"");
-			sb.append(href);
-			sb.append("\" method = \"GET\">");
-			sb.append("StartIndex: <input name = \"startIndex\" type = \"text");
-			sb.append("\" />");
-			sb.append("EndIndex: <input name = \"endIndex\" type = \"text\" ");
-			sb.append("/> <input type = \"submit\" value = \"download\" />");
-			sb.append("</form>");
-			sb.append("</li>");
+					file.length(), httpServletRequest.getLocale())
+			);
+
+			companyLogFileInfosJSONArray.put(companyLogFileInfoJSONObject);
 		}
 
-		sb.append("</ul>");
+		companyLogFileJSONObject.put(
+			"companyLogFileInfos", companyLogFileInfosJSONArray);
+
+		companyLogFilesJSONArray.put(companyLogFileJSONObject);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -311,6 +316,9 @@ public class CompanyLogServlet extends HttpServlet {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;

@@ -314,7 +314,7 @@ public class FileInstallConfigTest {
 	}
 
 	@Test
-	public void testFactoryConfigurationWithTiled() throws Exception {
+	public void testFactoryConfigurationWithTilde() throws Exception {
 		_testFactoryConfiguration(CharPool.TILDE);
 	}
 
@@ -381,7 +381,7 @@ public class FileInstallConfigTest {
 			configurationPid.concat(".config"));
 
 		try {
-			_createFacotryConfiguration(
+			_createFactoryConfiguration(
 				factoryPid,
 				() -> {
 					String content = StringPool.BLANK;
@@ -487,7 +487,7 @@ public class FileInstallConfigTest {
 			Charset.defaultCharset(), configurationPid, content);
 	}
 
-	private void _createFacotryConfiguration(
+	private void _createFactoryConfiguration(
 			String factoryPid, UnsafeRunnable<Exception> runnable)
 		throws Exception {
 
@@ -575,7 +575,7 @@ public class FileInstallConfigTest {
 		String testKey = "testKey";
 		String testValue = "testValue";
 
-		_createFacotryConfiguration(
+		_createFactoryConfiguration(
 			factoryPid,
 			() -> {
 				String content = StringBundler.concat(

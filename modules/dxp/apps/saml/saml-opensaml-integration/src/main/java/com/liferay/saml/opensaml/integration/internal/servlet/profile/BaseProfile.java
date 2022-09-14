@@ -212,20 +212,10 @@ public abstract class BaseProfile {
 	}
 
 	public String generateIdentifier(int length) {
-		IdentifierGenerationStrategyFactory
-			identifierGenerationStrategyFactory =
-				getIdentifierGenerationStrategyFactory();
-
 		IdentifierGenerationStrategy identifierGenerationStrategy =
-			identifierGenerationStrategyFactory.create(length);
+			_identifierGenerationStrategyFactory.create(length);
 
 		return identifierGenerationStrategy.generateIdentifier();
-	}
-
-	public IdentifierGenerationStrategyFactory
-		getIdentifierGenerationStrategyFactory() {
-
-		return _identifierGenerationStrategyFactory;
 	}
 
 	public MessageContext<SAMLObject> getMessageContext(

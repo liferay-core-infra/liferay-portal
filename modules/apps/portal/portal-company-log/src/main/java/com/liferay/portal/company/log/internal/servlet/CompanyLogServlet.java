@@ -140,11 +140,6 @@ public class CompanyLogServlet extends HttpServlet {
 
 		File companyLogDirectory = Log4JUtil.getCompanyLogDirectory(companyId);
 
-		if (companyLogDirectory == null) {
-			throw new Exception(
-				"No company log directory exists with companyId " + companyId);
-		}
-
 		String fileName = pathArray[1];
 
 		Path path = Paths.get(companyLogDirectory.getPath(), fileName);
@@ -269,12 +264,6 @@ public class CompanyLogServlet extends HttpServlet {
 
 		File companyLogDirectory = Log4JUtil.getCompanyLogDirectory(
 			company.getCompanyId());
-
-		if (companyLogDirectory == null) {
-			throw new Exception(
-				"No company log directory exists with companyId " +
-					company.getCompanyId());
-		}
 
 		JSONObject companyLogFileJSONObject = _jsonFactory.createJSONObject();
 

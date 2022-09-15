@@ -2846,6 +2846,42 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 					);
 			</#if>
 		</#list>
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			_finderPaths.put("finderPathWithPaginationFindAll", _finderPathWithPaginationFindAll);
+			_finderPaths.put("finderPathWithoutPaginationFindAll", _finderPathWithoutPaginationFindAll);
+			_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+			<#if entity.isHierarchicalTree()>
+				_finderPaths.put("finderPathWithPaginationCountAncestors", _finderPathWithPaginationCountAncestors);
+				_finderPaths.put("finderPathWithPaginationCountDescendants", _finderPathWithPaginationCountDescendants);
+				_finderPaths.put("finderPathWithPaginationGetAncestors", _finderPathWithPaginationGetAncestors);
+				_finderPaths.put("finderPathWithPaginationGetDescendants", _finderPathWithPaginationGetDescendants);
+			</#if>
+
+			<#list entity.entityFinders as entityFinder>
+				<#assign entityColumns = entityFinder.entityColumns />
+
+				<#if entityFinder.isCollection()>
+					_finderPaths.put("finderPathWithPaginationFindBy${entityFinder.name}", _finderPathWithPaginationFindBy${entityFinder.name});
+
+					<#if !entityFinder.hasCustomComparator()>
+						_finderPaths.put("finderPathWithoutPaginationFindBy${entityFinder.name}", _finderPathWithoutPaginationFindBy${entityFinder.name});
+					</#if>
+				</#if>
+
+				<#if !entityFinder.isCollection() || entityFinder.isUnique()>
+					_finderPaths.put("finderPathFetchBy${entityFinder.name}", _finderPathFetchBy${entityFinder.name});
+				</#if>
+
+				<#if !entityFinder.hasCustomComparator()>
+					_finderPaths.put("finderPathCountBy${entityFinder.name}", _finderPathCountBy${entityFinder.name});
+				</#if>
+
+				<#if entityFinder.hasArrayableOperator() || entityFinder.hasCustomComparator()>
+					_finderPaths.put("finderPathWithPaginationCountBy${entityFinder.name}", _finderPathWithPaginationCountBy${entityFinder.name});
+				</#if>
+			</#list>
+		</#if>
 
 		_set${entity.name}UtilPersistence(this);
 	}
@@ -2885,6 +2921,55 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 		</#list>
 	}
+
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		@Override
+		public Map<String, FinderPath> getFinderPaths() {
+			return _finderPaths;
+		}
+
+		@Override
+		public void populateFinderCache(FinderPath ... finderPaths) {
+			List<${entity.name}> ${entity.variableName}s = findAll();
+
+			for (FinderPath finderPath : finderPaths) {
+				Map<List<Object>, List<${entity.name}>> resultMap = new HashMap<>();
+
+				for (${entity.name} ${entity.variableName} : ${entity.variableName}s) {
+					List<Object> arguments = new ArrayList<>();
+
+					for (String columnName : finderPath.getColumnNames()) {
+						${entity.name}ModelImpl ${entity.variableName}ModelImpl = (${entity.name}ModelImpl)${entity.variableName};
+
+						arguments.add(${entity.variableName}ModelImpl.getColumnValue(columnName));
+					}
+
+					if (Objects.equals(finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+						${finderCache}.putResult(finderPath, arguments.toArray(), ${entity.variableName});
+					}
+					else {
+						List<${entity.name}> resultList = resultMap.computeIfAbsent(arguments, key -> new ArrayList<>());
+
+						resultList.add(${entity.variableName});
+					}
+				}
+
+				for (Map.Entry<List<Object>, List<${entity.name}>> resultEntry : resultMap.entrySet()) {
+					List<Object> key = resultEntry.getKey();
+					List<${entity.name}> value = resultEntry.getValue();
+
+					if (finderPath.isBaseModelResult()) {
+						${finderCache}.putResult(finderPath, key.toArray(), value);
+					}
+					else {
+						${finderCache}.putResult(finderPath, key.toArray(), value.size());
+					}
+				}
+			}
+		}
+
+		private Map<String, FinderPath> _finderPaths = new HashMap<>();
+	</#if>
 
 	private void _set${entity.name}UtilPersistence(${entity.name}Persistence ${entity.variableName}Persistence) {
 		try {

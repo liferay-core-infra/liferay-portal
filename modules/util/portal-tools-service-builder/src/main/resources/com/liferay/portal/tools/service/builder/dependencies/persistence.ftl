@@ -60,7 +60,9 @@ public interface ${entity.name}Persistence extends BasePersistence<${entity.name
 	</#if>
 
 	<#list methods as method>
-		<#if method.isPublic() && serviceBuilder.isCustomMethod(method) && !serviceBuilder.isBasePersistenceMethod(method) && !stringUtil.equals(method.name, "fetchByPrimaryKeys")>
+		<#if serviceBuilder.isVersionGTE_7_4_0() && stringUtil.equals(method.name, "populateFinderCache")>
+			public void populateFinderCache(com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
+		<#elseif method.isPublic() && serviceBuilder.isCustomMethod(method) && !serviceBuilder.isBasePersistenceMethod(method) && !stringUtil.equals(method.name, "fetchByPrimaryKeys")>
 			${serviceBuilder.getJavadocComment(method)}
 
 			<#if serviceBuilder.hasAnnotation(method, "Deprecated")>

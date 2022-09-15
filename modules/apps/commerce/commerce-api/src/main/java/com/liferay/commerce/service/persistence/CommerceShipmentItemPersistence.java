@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchShipmentItemException;
 import com.liferay.commerce.model.CommerceShipmentItem;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1214,5 +1216,11 @@ public interface CommerceShipmentItemPersistence
 	 * @return the number of commerce shipment items
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

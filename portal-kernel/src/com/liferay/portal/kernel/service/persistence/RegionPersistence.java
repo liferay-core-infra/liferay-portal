@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.service.persistence;
 import com.liferay.portal.kernel.exception.NoSuchRegionException;
 import com.liferay.portal.kernel.model.Region;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -942,5 +944,11 @@ public interface RegionPersistence extends BasePersistence<Region> {
 	 * @return the number of regions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

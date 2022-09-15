@@ -18,6 +18,8 @@ import com.liferay.commerce.product.type.virtual.exception.NoSuchCPDefinitionVir
 import com.liferay.commerce.product.type.virtual.model.CPDefinitionVirtualSetting;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -566,5 +568,11 @@ public interface CPDefinitionVirtualSettingPersistence
 	 * @return the number of cp definition virtual settings
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

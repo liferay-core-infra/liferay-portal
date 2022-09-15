@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.service.persistence;
 import com.liferay.portal.kernel.exception.NoSuchLayoutPrototypeException;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1024,5 +1026,11 @@ public interface LayoutPrototypePersistence
 	 * @return the number of layout prototypes
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

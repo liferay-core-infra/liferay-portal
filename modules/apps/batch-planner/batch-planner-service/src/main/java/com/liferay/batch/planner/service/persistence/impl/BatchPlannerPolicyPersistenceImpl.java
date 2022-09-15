@@ -50,7 +50,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1472,6 +1474,30 @@ public class BatchPlannerPolicyPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"batchPlannerPlanId", "name"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByBatchPlannerPlanId",
+			_finderPathWithPaginationFindByBatchPlannerPlanId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByBatchPlannerPlanId",
+			_finderPathWithoutPaginationFindByBatchPlannerPlanId);
+
+		_finderPaths.put(
+			"finderPathCountByBatchPlannerPlanId",
+			_finderPathCountByBatchPlannerPlanId);
+
+		_finderPaths.put("finderPathFetchByBPPI_N", _finderPathFetchByBPPI_N);
+
+		_finderPaths.put("finderPathCountByBPPI_N", _finderPathCountByBPPI_N);
+
 		_setBatchPlannerPolicyUtilPersistence(this);
 	}
 
@@ -1481,6 +1507,64 @@ public class BatchPlannerPolicyPersistenceImpl
 
 		entityCache.removeCache(BatchPlannerPolicyImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<BatchPlannerPolicy> batchPlannerPolicys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BatchPlannerPolicy>> resultMap =
+				new HashMap<>();
+
+			for (BatchPlannerPolicy batchPlannerPolicy : batchPlannerPolicys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BatchPlannerPolicyModelImpl batchPlannerPolicyModelImpl =
+						(BatchPlannerPolicyModelImpl)batchPlannerPolicy;
+
+					arguments.add(
+						batchPlannerPolicyModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), batchPlannerPolicy);
+				}
+				else {
+					List<BatchPlannerPolicy> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(batchPlannerPolicy);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BatchPlannerPolicy>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BatchPlannerPolicy> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setBatchPlannerPolicyUtilPersistence(
 		BatchPlannerPolicyPersistence batchPlannerPolicyPersistence) {

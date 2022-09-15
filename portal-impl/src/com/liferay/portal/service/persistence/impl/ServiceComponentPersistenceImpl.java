@@ -46,6 +46,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1475,6 +1476,30 @@ public class ServiceComponentPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"buildNamespace", "buildNumber"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByBuildNamespace",
+			_finderPathWithPaginationFindByBuildNamespace);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByBuildNamespace",
+			_finderPathWithoutPaginationFindByBuildNamespace);
+
+		_finderPaths.put(
+			"finderPathCountByBuildNamespace",
+			_finderPathCountByBuildNamespace);
+
+		_finderPaths.put("finderPathFetchByBNS_BNU", _finderPathFetchByBNS_BNU);
+
+		_finderPaths.put("finderPathCountByBNS_BNU", _finderPathCountByBNS_BNU);
+
 		_setServiceComponentUtilPersistence(this);
 	}
 
@@ -1483,6 +1508,64 @@ public class ServiceComponentPersistenceImpl
 
 		EntityCacheUtil.removeCache(ServiceComponentImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ServiceComponent> serviceComponents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ServiceComponent>> resultMap =
+				new HashMap<>();
+
+			for (ServiceComponent serviceComponent : serviceComponents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ServiceComponentModelImpl serviceComponentModelImpl =
+						(ServiceComponentModelImpl)serviceComponent;
+
+					arguments.add(
+						serviceComponentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), serviceComponent);
+				}
+				else {
+					List<ServiceComponent> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(serviceComponent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ServiceComponent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ServiceComponent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setServiceComponentUtilPersistence(
 		ServiceComponentPersistence serviceComponentPersistence) {

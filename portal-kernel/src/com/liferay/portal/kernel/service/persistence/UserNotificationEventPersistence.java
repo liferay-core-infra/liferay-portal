@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.service.persistence;
 import com.liferay.portal.kernel.exception.NoSuchUserNotificationEventException;
 import com.liferay.portal.kernel.model.UserNotificationEvent;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -3393,5 +3395,11 @@ public interface UserNotificationEventPersistence
 	 * @return the number of user notification events
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

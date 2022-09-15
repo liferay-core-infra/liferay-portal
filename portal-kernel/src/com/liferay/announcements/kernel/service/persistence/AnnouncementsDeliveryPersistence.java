@@ -18,6 +18,8 @@ import com.liferay.announcements.kernel.exception.NoSuchDeliveryException;
 import com.liferay.announcements.kernel.model.AnnouncementsDelivery;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -499,5 +501,11 @@ public interface AnnouncementsDeliveryPersistence
 	 * @return the number of announcements deliveries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -2165,6 +2165,37 @@ public class KaleoTimerPersistenceImpl
 			},
 			new String[] {"kaleoClassName", "kaleoClassPK", "blocking"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKCN_KCPK",
+			_finderPathWithPaginationFindByKCN_KCPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKCN_KCPK",
+			_finderPathWithoutPaginationFindByKCN_KCPK);
+
+		_finderPaths.put(
+			"finderPathCountByKCN_KCPK", _finderPathCountByKCN_KCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKCN_KCPK_Blocking",
+			_finderPathWithPaginationFindByKCN_KCPK_Blocking);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKCN_KCPK_Blocking",
+			_finderPathWithoutPaginationFindByKCN_KCPK_Blocking);
+
+		_finderPaths.put(
+			"finderPathCountByKCN_KCPK_Blocking",
+			_finderPathCountByKCN_KCPK_Blocking);
+
 		_setKaleoTimerUtilPersistence(this);
 	}
 
@@ -2174,6 +2205,62 @@ public class KaleoTimerPersistenceImpl
 
 		entityCache.removeCache(KaleoTimerImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoTimer> kaleoTimers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoTimer>> resultMap = new HashMap<>();
+
+			for (KaleoTimer kaleoTimer : kaleoTimers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoTimerModelImpl kaleoTimerModelImpl =
+						(KaleoTimerModelImpl)kaleoTimer;
+
+					arguments.add(
+						kaleoTimerModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoTimer);
+				}
+				else {
+					List<KaleoTimer> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoTimer);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoTimer>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoTimer> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoTimerUtilPersistence(
 		KaleoTimerPersistence kaleoTimerPersistence) {

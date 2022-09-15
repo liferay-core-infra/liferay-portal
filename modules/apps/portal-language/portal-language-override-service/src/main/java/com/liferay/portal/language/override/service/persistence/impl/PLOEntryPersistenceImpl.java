@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2705,6 +2706,49 @@ public class PLOEntryPersistenceImpl
 			},
 			new String[] {"companyId", "key_", "languageId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_K",
+			_finderPathWithPaginationFindByC_K);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_K",
+			_finderPathWithoutPaginationFindByC_K);
+
+		_finderPaths.put("finderPathCountByC_K", _finderPathCountByC_K);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_L",
+			_finderPathWithPaginationFindByC_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_L",
+			_finderPathWithoutPaginationFindByC_L);
+
+		_finderPaths.put("finderPathCountByC_L", _finderPathCountByC_L);
+
+		_finderPaths.put("finderPathFetchByC_K_L", _finderPathFetchByC_K_L);
+
+		_finderPaths.put("finderPathCountByC_K_L", _finderPathCountByC_K_L);
+
 		_setPLOEntryUtilPersistence(this);
 	}
 
@@ -2714,6 +2758,61 @@ public class PLOEntryPersistenceImpl
 
 		entityCache.removeCache(PLOEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<PLOEntry> ploEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PLOEntry>> resultMap = new HashMap<>();
+
+			for (PLOEntry ploEntry : ploEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PLOEntryModelImpl ploEntryModelImpl =
+						(PLOEntryModelImpl)ploEntry;
+
+					arguments.add(ploEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ploEntry);
+				}
+				else {
+					List<PLOEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ploEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PLOEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PLOEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setPLOEntryUtilPersistence(
 		PLOEntryPersistence ploEntryPersistence) {

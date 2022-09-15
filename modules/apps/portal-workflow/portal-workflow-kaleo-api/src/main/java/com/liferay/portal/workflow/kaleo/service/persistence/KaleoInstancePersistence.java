@@ -20,6 +20,7 @@ import com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceException;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -1321,5 +1322,11 @@ public interface KaleoInstancePersistence
 	 * @return the number of kaleo instances
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

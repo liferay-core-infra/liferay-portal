@@ -51,10 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2248,6 +2250,40 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceShippingFixedOptionId",
+			_finderPathWithPaginationFindByCommerceShippingFixedOptionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceShippingFixedOptionId",
+			_finderPathWithoutPaginationFindByCommerceShippingFixedOptionId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceShippingFixedOptionId",
+			_finderPathCountByCommerceShippingFixedOptionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
 		_setCommerceShippingFixedOptionQualifierUtilPersistence(this);
 	}
 
@@ -2258,6 +2294,74 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 		entityCache.removeCache(
 			CommerceShippingFixedOptionQualifierImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceShippingFixedOptionQualifier>
+			commerceShippingFixedOptionQualifiers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceShippingFixedOptionQualifier>>
+				resultMap = new HashMap<>();
+
+			for (CommerceShippingFixedOptionQualifier
+					commerceShippingFixedOptionQualifier :
+						commerceShippingFixedOptionQualifiers) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceShippingFixedOptionQualifierModelImpl
+						commerceShippingFixedOptionQualifierModelImpl =
+							(CommerceShippingFixedOptionQualifierModelImpl)
+								commerceShippingFixedOptionQualifier;
+
+					arguments.add(
+						commerceShippingFixedOptionQualifierModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceShippingFixedOptionQualifier);
+				}
+				else {
+					List<CommerceShippingFixedOptionQualifier> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceShippingFixedOptionQualifier);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CommerceShippingFixedOptionQualifier>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceShippingFixedOptionQualifier> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceShippingFixedOptionQualifierUtilPersistence(
 		CommerceShippingFixedOptionQualifierPersistence

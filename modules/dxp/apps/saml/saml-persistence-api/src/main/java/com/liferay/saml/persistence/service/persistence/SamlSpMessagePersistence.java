@@ -19,6 +19,7 @@ import com.liferay.saml.persistence.exception.NoSuchSpMessageException;
 import com.liferay.saml.persistence.model.SamlSpMessage;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -361,5 +362,11 @@ public interface SamlSpMessagePersistence
 	 * @return the number of saml sp messages
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

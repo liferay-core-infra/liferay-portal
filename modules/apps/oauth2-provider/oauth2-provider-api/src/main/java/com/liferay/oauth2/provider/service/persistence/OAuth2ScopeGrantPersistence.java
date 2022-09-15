@@ -18,6 +18,8 @@ import com.liferay.oauth2.provider.exception.NoSuchOAuth2ScopeGrantException;
 import com.liferay.oauth2.provider.model.OAuth2ScopeGrant;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -565,5 +567,11 @@ public interface OAuth2ScopeGrantPersistence
 		long pk,
 		java.util.List<com.liferay.oauth2.provider.model.OAuth2Authorization>
 			oAuth2Authorizations);
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

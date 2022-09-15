@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.translation.exception.NoSuchEntryException;
 import com.liferay.translation.model.TranslationEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -724,5 +726,11 @@ public interface TranslationEntryPersistence
 	 * @return the number of translation entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

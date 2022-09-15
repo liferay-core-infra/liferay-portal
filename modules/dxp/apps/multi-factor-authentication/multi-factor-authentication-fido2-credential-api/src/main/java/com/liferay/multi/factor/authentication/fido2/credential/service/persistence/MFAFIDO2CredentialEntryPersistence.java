@@ -18,6 +18,8 @@ import com.liferay.multi.factor.authentication.fido2.credential.exception.NoSuch
 import com.liferay.multi.factor.authentication.fido2.credential.model.MFAFIDO2CredentialEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -504,5 +506,11 @@ public interface MFAFIDO2CredentialEntryPersistence
 	 * @return the number of mfafido2 credential entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

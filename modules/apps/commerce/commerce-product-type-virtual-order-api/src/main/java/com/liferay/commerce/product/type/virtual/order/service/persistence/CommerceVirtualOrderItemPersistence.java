@@ -18,6 +18,8 @@ import com.liferay.commerce.product.type.virtual.order.exception.NoSuchVirtualOr
 import com.liferay.commerce.product.type.virtual.order.model.CommerceVirtualOrderItem;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -560,5 +562,11 @@ public interface CommerceVirtualOrderItemPersistence
 	 * @return the number of commerce virtual order items
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.commerce.term.exception.NoSuchTermEntryRelException;
 import com.liferay.commerce.term.model.CommerceTermEntryRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -522,5 +524,11 @@ public interface CommerceTermEntryRelPersistence
 	 * @return the number of commerce term entry rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

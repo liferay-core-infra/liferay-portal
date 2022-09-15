@@ -2565,6 +2565,39 @@ public class ExpandoColumnPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByT_N",
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"tableId", "name"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByTableId",
+			_finderPathWithPaginationFindByTableId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByTableId",
+			_finderPathWithoutPaginationFindByTableId);
+
+		_finderPaths.put("finderPathCountByTableId", _finderPathCountByTableId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByT_N",
+			_finderPathWithPaginationFindByT_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByT_N",
+			_finderPathWithoutPaginationFindByT_N);
+
+		_finderPaths.put("finderPathFetchByT_N", _finderPathFetchByT_N);
+
+		_finderPaths.put("finderPathCountByT_N", _finderPathCountByT_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByT_N",
+			_finderPathWithPaginationCountByT_N);
 
 		_setExpandoColumnUtilPersistence(this);
 	}
@@ -2574,6 +2607,62 @@ public class ExpandoColumnPersistenceImpl
 
 		EntityCacheUtil.removeCache(ExpandoColumnImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ExpandoColumn> expandoColumns = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExpandoColumn>> resultMap = new HashMap<>();
+
+			for (ExpandoColumn expandoColumn : expandoColumns) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExpandoColumnModelImpl expandoColumnModelImpl =
+						(ExpandoColumnModelImpl)expandoColumn;
+
+					arguments.add(
+						expandoColumnModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), expandoColumn);
+				}
+				else {
+					List<ExpandoColumn> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(expandoColumn);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExpandoColumn>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExpandoColumn> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setExpandoColumnUtilPersistence(
 		ExpandoColumnPersistence expandoColumnPersistence) {

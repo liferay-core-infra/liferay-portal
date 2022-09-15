@@ -2792,6 +2792,51 @@ public class DDMFieldPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"storageId", "instanceId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStorageId",
+			_finderPathWithPaginationFindByStorageId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStorageId",
+			_finderPathWithoutPaginationFindByStorageId);
+
+		_finderPaths.put(
+			"finderPathCountByStorageId", _finderPathCountByStorageId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureVersionId",
+			_finderPathWithPaginationFindByStructureVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureVersionId",
+			_finderPathWithoutPaginationFindByStructureVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByStructureVersionId",
+			_finderPathCountByStructureVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_F",
+			_finderPathWithPaginationFindByC_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_F",
+			_finderPathWithoutPaginationFindByC_F);
+
+		_finderPaths.put("finderPathCountByC_F", _finderPathCountByC_F);
+
+		_finderPaths.put("finderPathFetchByS_I", _finderPathFetchByS_I);
+
+		_finderPaths.put("finderPathCountByS_I", _finderPathCountByS_I);
+
 		_setDDMFieldUtilPersistence(this);
 	}
 
@@ -2801,6 +2846,61 @@ public class DDMFieldPersistenceImpl
 
 		entityCache.removeCache(DDMFieldImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMField> ddmFields = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMField>> resultMap = new HashMap<>();
+
+			for (DDMField ddmField : ddmFields) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMFieldModelImpl ddmFieldModelImpl =
+						(DDMFieldModelImpl)ddmField;
+
+					arguments.add(ddmFieldModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmField);
+				}
+				else {
+					List<DDMField> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmField);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMField>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMField> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMFieldUtilPersistence(
 		DDMFieldPersistence ddmFieldPersistence) {

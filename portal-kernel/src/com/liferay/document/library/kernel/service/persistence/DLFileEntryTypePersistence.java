@@ -19,6 +19,8 @@ import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1113,5 +1115,11 @@ public interface DLFileEntryTypePersistence
 		long pk,
 		java.util.List<com.liferay.document.library.kernel.model.DLFolder>
 			dlFolders);
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

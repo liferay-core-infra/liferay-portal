@@ -49,10 +49,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1144,6 +1146,24 @@ public class PasswordTrackerPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"userId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
 		_setPasswordTrackerUtilPersistence(this);
 	}
 
@@ -1152,6 +1172,64 @@ public class PasswordTrackerPersistenceImpl
 
 		EntityCacheUtil.removeCache(PasswordTrackerImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<PasswordTracker> passwordTrackers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PasswordTracker>> resultMap =
+				new HashMap<>();
+
+			for (PasswordTracker passwordTracker : passwordTrackers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PasswordTrackerModelImpl passwordTrackerModelImpl =
+						(PasswordTrackerModelImpl)passwordTracker;
+
+					arguments.add(
+						passwordTrackerModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), passwordTracker);
+				}
+				else {
+					List<PasswordTracker> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(passwordTracker);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PasswordTracker>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PasswordTracker> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setPasswordTrackerUtilPersistence(
 		PasswordTrackerPersistence passwordTrackerPersistence) {

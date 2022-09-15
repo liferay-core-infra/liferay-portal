@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTaskFormInstanceException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskFormInstance;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -930,5 +932,11 @@ public interface KaleoTaskFormInstancePersistence
 	 * @return the number of kaleo task form instances
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

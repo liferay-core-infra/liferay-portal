@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.trash.exception.NoSuchVersionException;
 import com.liferay.trash.model.TrashVersion;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -508,5 +510,11 @@ public interface TrashVersionPersistence
 	 * @return the number of trash versions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

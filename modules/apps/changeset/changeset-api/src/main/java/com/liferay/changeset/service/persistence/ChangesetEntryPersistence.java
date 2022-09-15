@@ -18,6 +18,8 @@ import com.liferay.changeset.exception.NoSuchEntryException;
 import com.liferay.changeset.model.ChangesetEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -960,5 +962,11 @@ public interface ChangesetEntryPersistence
 	 * @return the number of changeset entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

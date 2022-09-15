@@ -6610,6 +6610,117 @@ public class CalendarBookingPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"parentCalendarBookingId", "status"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCalendarId",
+			_finderPathWithPaginationFindByCalendarId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCalendarId",
+			_finderPathWithoutPaginationFindByCalendarId);
+
+		_finderPaths.put(
+			"finderPathCountByCalendarId", _finderPathCountByCalendarId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCalendarResourceId",
+			_finderPathWithPaginationFindByCalendarResourceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCalendarResourceId",
+			_finderPathWithoutPaginationFindByCalendarResourceId);
+
+		_finderPaths.put(
+			"finderPathCountByCalendarResourceId",
+			_finderPathCountByCalendarResourceId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByParentCalendarBookingId",
+			_finderPathWithPaginationFindByParentCalendarBookingId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByParentCalendarBookingId",
+			_finderPathWithoutPaginationFindByParentCalendarBookingId);
+
+		_finderPaths.put(
+			"finderPathCountByParentCalendarBookingId",
+			_finderPathCountByParentCalendarBookingId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRecurringCalendarBookingId",
+			_finderPathWithPaginationFindByRecurringCalendarBookingId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRecurringCalendarBookingId",
+			_finderPathWithoutPaginationFindByRecurringCalendarBookingId);
+
+		_finderPaths.put(
+			"finderPathCountByRecurringCalendarBookingId",
+			_finderPathCountByRecurringCalendarBookingId);
+
+		_finderPaths.put("finderPathFetchByC_P", _finderPathFetchByC_P);
+
+		_finderPaths.put("finderPathCountByC_P", _finderPathCountByC_P);
+
+		_finderPaths.put("finderPathFetchByC_V", _finderPathFetchByC_V);
+
+		_finderPaths.put("finderPathCountByC_V", _finderPathCountByC_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S",
+			_finderPathWithPaginationFindByC_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S",
+			_finderPathWithoutPaginationFindByC_S);
+
+		_finderPaths.put("finderPathCountByC_S", _finderPathCountByC_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_S",
+			_finderPathWithPaginationCountByC_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_S",
+			_finderPathWithPaginationFindByP_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_S",
+			_finderPathWithoutPaginationFindByP_S);
+
+		_finderPaths.put("finderPathCountByP_S", _finderPathCountByP_S);
+
 		_setCalendarBookingUtilPersistence(this);
 	}
 
@@ -6619,6 +6730,64 @@ public class CalendarBookingPersistenceImpl
 
 		entityCache.removeCache(CalendarBookingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CalendarBooking> calendarBookings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CalendarBooking>> resultMap =
+				new HashMap<>();
+
+			for (CalendarBooking calendarBooking : calendarBookings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CalendarBookingModelImpl calendarBookingModelImpl =
+						(CalendarBookingModelImpl)calendarBooking;
+
+					arguments.add(
+						calendarBookingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), calendarBooking);
+				}
+				else {
+					List<CalendarBooking> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(calendarBooking);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CalendarBooking>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CalendarBooking> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCalendarBookingUtilPersistence(
 		CalendarBookingPersistence calendarBookingPersistence) {

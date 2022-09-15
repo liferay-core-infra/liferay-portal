@@ -6793,6 +6793,113 @@ public class DLFileVersionPersistenceImpl
 			},
 			new String[] {"groupId", "folderId", "title", "version"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFileEntryId",
+			_finderPathWithPaginationFindByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFileEntryId",
+			_finderPathWithoutPaginationFindByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByFileEntryId", _finderPathCountByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByMimeType",
+			_finderPathWithPaginationFindByMimeType);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByMimeType",
+			_finderPathWithoutPaginationFindByMimeType);
+
+		_finderPaths.put(
+			"finderPathCountByMimeType", _finderPathCountByMimeType);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_NotS",
+			_finderPathWithPaginationFindByC_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_NotS",
+			_finderPathWithPaginationCountByC_NotS);
+
+		_finderPaths.put("finderPathFetchByF_V", _finderPathFetchByF_V);
+
+		_finderPaths.put("finderPathCountByF_V", _finderPathCountByF_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_S",
+			_finderPathWithPaginationFindByF_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_S",
+			_finderPathWithoutPaginationFindByF_S);
+
+		_finderPaths.put("finderPathCountByF_S", _finderPathCountByF_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F_S",
+			_finderPathWithPaginationFindByG_F_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F_S",
+			_finderPathWithoutPaginationFindByG_F_S);
+
+		_finderPaths.put("finderPathCountByG_F_S", _finderPathCountByG_F_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F_T_V",
+			_finderPathWithPaginationFindByG_F_T_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F_T_V",
+			_finderPathWithoutPaginationFindByG_F_T_V);
+
+		_finderPaths.put("finderPathCountByG_F_T_V", _finderPathCountByG_F_T_V);
+
 		_setDLFileVersionUtilPersistence(this);
 	}
 
@@ -6801,6 +6908,62 @@ public class DLFileVersionPersistenceImpl
 
 		EntityCacheUtil.removeCache(DLFileVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DLFileVersion> dlFileVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLFileVersion>> resultMap = new HashMap<>();
+
+			for (DLFileVersion dlFileVersion : dlFileVersions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLFileVersionModelImpl dlFileVersionModelImpl =
+						(DLFileVersionModelImpl)dlFileVersion;
+
+					arguments.add(
+						dlFileVersionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), dlFileVersion);
+				}
+				else {
+					List<DLFileVersion> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlFileVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLFileVersion>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLFileVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDLFileVersionUtilPersistence(
 		DLFileVersionPersistence dlFileVersionPersistence) {

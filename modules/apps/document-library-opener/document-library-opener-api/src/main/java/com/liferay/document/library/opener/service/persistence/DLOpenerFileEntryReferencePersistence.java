@@ -18,6 +18,8 @@ import com.liferay.document.library.opener.exception.NoSuchFileEntryReferenceExc
 import com.liferay.document.library.opener.model.DLOpenerFileEntryReference;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -264,5 +266,11 @@ public interface DLOpenerFileEntryReferencePersistence
 	 * @return the number of dl opener file entry references
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

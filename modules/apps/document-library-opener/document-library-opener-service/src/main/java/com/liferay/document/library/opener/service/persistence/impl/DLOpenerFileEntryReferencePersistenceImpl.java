@@ -51,6 +51,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1216,6 +1217,24 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"referenceType", "fileEntryId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathFetchByFileEntryId", _finderPathFetchByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByFileEntryId", _finderPathCountByFileEntryId);
+
+		_finderPaths.put("finderPathFetchByR_F", _finderPathFetchByR_F);
+
+		_finderPaths.put("finderPathCountByR_F", _finderPathCountByR_F);
+
 		_setDLOpenerFileEntryReferenceUtilPersistence(this);
 	}
 
@@ -1225,6 +1244,71 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 
 		entityCache.removeCache(DLOpenerFileEntryReferenceImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DLOpenerFileEntryReference> dlOpenerFileEntryReferences =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLOpenerFileEntryReference>> resultMap =
+				new HashMap<>();
+
+			for (DLOpenerFileEntryReference dlOpenerFileEntryReference :
+					dlOpenerFileEntryReferences) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLOpenerFileEntryReferenceModelImpl
+						dlOpenerFileEntryReferenceModelImpl =
+							(DLOpenerFileEntryReferenceModelImpl)
+								dlOpenerFileEntryReference;
+
+					arguments.add(
+						dlOpenerFileEntryReferenceModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						dlOpenerFileEntryReference);
+				}
+				else {
+					List<DLOpenerFileEntryReference> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dlOpenerFileEntryReference);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLOpenerFileEntryReference>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLOpenerFileEntryReference> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDLOpenerFileEntryReferenceUtilPersistence(
 		DLOpenerFileEntryReferencePersistence

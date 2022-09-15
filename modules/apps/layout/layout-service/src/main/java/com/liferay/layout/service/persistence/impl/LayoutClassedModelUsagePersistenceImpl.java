@@ -5879,6 +5879,97 @@ public class LayoutClassedModelUsagePersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByPlid",
+			_finderPathWithPaginationFindByPlid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByPlid",
+			_finderPathWithoutPaginationFindByPlid);
+
+		_finderPaths.put("finderPathCountByPlid", _finderPathCountByPlid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCN_CPK",
+			_finderPathWithPaginationFindByCN_CPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCN_CPK",
+			_finderPathWithoutPaginationFindByCN_CPK);
+
+		_finderPaths.put("finderPathCountByCN_CPK", _finderPathCountByCN_CPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CN_CT",
+			_finderPathWithPaginationFindByC_CN_CT);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CN_CT",
+			_finderPathWithoutPaginationFindByC_CN_CT);
+
+		_finderPaths.put("finderPathCountByC_CN_CT", _finderPathCountByC_CN_CT);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCN_CPK_T",
+			_finderPathWithPaginationFindByCN_CPK_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCN_CPK_T",
+			_finderPathWithoutPaginationFindByCN_CPK_T);
+
+		_finderPaths.put(
+			"finderPathCountByCN_CPK_T", _finderPathCountByCN_CPK_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCK_CT_P",
+			_finderPathWithPaginationFindByCK_CT_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCK_CT_P",
+			_finderPathWithoutPaginationFindByCK_CT_P);
+
+		_finderPaths.put("finderPathCountByCK_CT_P", _finderPathCountByCK_CT_P);
+
+		_finderPaths.put(
+			"finderPathFetchByCN_CPK_CK_CT_P",
+			_finderPathFetchByCN_CPK_CK_CT_P);
+
+		_finderPaths.put(
+			"finderPathCountByCN_CPK_CK_CT_P",
+			_finderPathCountByCN_CPK_CK_CT_P);
+
 		_setLayoutClassedModelUsageUtilPersistence(this);
 	}
 
@@ -5888,6 +5979,70 @@ public class LayoutClassedModelUsagePersistenceImpl
 
 		entityCache.removeCache(LayoutClassedModelUsageImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutClassedModelUsage> layoutClassedModelUsages = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutClassedModelUsage>> resultMap =
+				new HashMap<>();
+
+			for (LayoutClassedModelUsage layoutClassedModelUsage :
+					layoutClassedModelUsages) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutClassedModelUsageModelImpl
+						layoutClassedModelUsageModelImpl =
+							(LayoutClassedModelUsageModelImpl)
+								layoutClassedModelUsage;
+
+					arguments.add(
+						layoutClassedModelUsageModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutClassedModelUsage);
+				}
+				else {
+					List<LayoutClassedModelUsage> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutClassedModelUsage);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutClassedModelUsage>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutClassedModelUsage> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutClassedModelUsageUtilPersistence(
 		LayoutClassedModelUsagePersistence layoutClassedModelUsagePersistence) {

@@ -51,10 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2177,6 +2179,44 @@ public class CommerceDiscountCommerceAccountGroupRelPersistenceImpl
 			new String[] {"commerceDiscountId", "commerceAccountGroupId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceDiscountId",
+			_finderPathWithPaginationFindByCommerceDiscountId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceDiscountId",
+			_finderPathWithoutPaginationFindByCommerceDiscountId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceDiscountId",
+			_finderPathCountByCommerceDiscountId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceAccountGroupId",
+			_finderPathWithPaginationFindByCommerceAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceAccountGroupId",
+			_finderPathWithoutPaginationFindByCommerceAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceAccountGroupId",
+			_finderPathCountByCommerceAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathFetchByCDI_CAGI", _finderPathFetchByCDI_CAGI);
+
+		_finderPaths.put(
+			"finderPathCountByCDI_CAGI", _finderPathCountByCDI_CAGI);
+
 		_setCommerceDiscountCommerceAccountGroupRelUtilPersistence(this);
 	}
 
@@ -2187,6 +2227,75 @@ public class CommerceDiscountCommerceAccountGroupRelPersistenceImpl
 		entityCache.removeCache(
 			CommerceDiscountCommerceAccountGroupRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceDiscountCommerceAccountGroupRel>
+			commerceDiscountCommerceAccountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceDiscountCommerceAccountGroupRel>>
+				resultMap = new HashMap<>();
+
+			for (CommerceDiscountCommerceAccountGroupRel
+					commerceDiscountCommerceAccountGroupRel :
+						commerceDiscountCommerceAccountGroupRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceDiscountCommerceAccountGroupRelModelImpl
+						commerceDiscountCommerceAccountGroupRelModelImpl =
+							(CommerceDiscountCommerceAccountGroupRelModelImpl)
+								commerceDiscountCommerceAccountGroupRel;
+
+					arguments.add(
+						commerceDiscountCommerceAccountGroupRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceDiscountCommerceAccountGroupRel);
+				}
+				else {
+					List<CommerceDiscountCommerceAccountGroupRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceDiscountCommerceAccountGroupRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>,
+					 List<CommerceDiscountCommerceAccountGroupRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceDiscountCommerceAccountGroupRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceDiscountCommerceAccountGroupRelUtilPersistence(
 		CommerceDiscountCommerceAccountGroupRelPersistence

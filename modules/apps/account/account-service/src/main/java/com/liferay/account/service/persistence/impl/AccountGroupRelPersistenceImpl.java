@@ -51,10 +51,13 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2594,6 +2597,50 @@ public class AccountGroupRelPersistenceImpl
 			},
 			new String[] {"accountGroupId", "classNameId", "classPK"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAccountGroupId",
+			_finderPathWithPaginationFindByAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAccountGroupId",
+			_finderPathWithoutPaginationFindByAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathCountByAccountGroupId",
+			_finderPathCountByAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByA_C",
+			_finderPathWithPaginationFindByA_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByA_C",
+			_finderPathWithoutPaginationFindByA_C);
+
+		_finderPaths.put("finderPathCountByA_C", _finderPathCountByA_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByA_C_C", _finderPathFetchByA_C_C);
+
+		_finderPaths.put("finderPathCountByA_C_C", _finderPathCountByA_C_C);
+
 		_setAccountGroupRelUtilPersistence(this);
 	}
 
@@ -2603,6 +2650,64 @@ public class AccountGroupRelPersistenceImpl
 
 		entityCache.removeCache(AccountGroupRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AccountGroupRel> accountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AccountGroupRel>> resultMap =
+				new HashMap<>();
+
+			for (AccountGroupRel accountGroupRel : accountGroupRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AccountGroupRelModelImpl accountGroupRelModelImpl =
+						(AccountGroupRelModelImpl)accountGroupRel;
+
+					arguments.add(
+						accountGroupRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), accountGroupRel);
+				}
+				else {
+					List<AccountGroupRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(accountGroupRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AccountGroupRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AccountGroupRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAccountGroupRelUtilPersistence(
 		AccountGroupRelPersistence accountGroupRelPersistence) {

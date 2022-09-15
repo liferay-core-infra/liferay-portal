@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchManyColumnsEntryException;
 import com.liferay.portal.tools.service.builder.test.model.ManyColumnsEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -161,5 +163,11 @@ public interface ManyColumnsEntryPersistence
 	 * @return the number of many columns entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -1774,6 +1774,34 @@ public class CPDefinitionLocalizationPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"CPDefinitionId", "languageId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPDefinitionId",
+			_finderPathWithPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPDefinitionId",
+			_finderPathWithoutPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathFetchByCPDefinitionId_LanguageId",
+			_finderPathFetchByCPDefinitionId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId_LanguageId",
+			_finderPathCountByCPDefinitionId_LanguageId);
+
 		_setCPDefinitionLocalizationUtilPersistence(this);
 	}
 
@@ -1782,6 +1810,70 @@ public class CPDefinitionLocalizationPersistenceImpl
 
 		entityCache.removeCache(CPDefinitionLocalizationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CPDefinitionLocalization> cpDefinitionLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionLocalization>> resultMap =
+				new HashMap<>();
+
+			for (CPDefinitionLocalization cpDefinitionLocalization :
+					cpDefinitionLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionLocalizationModelImpl
+						cpDefinitionLocalizationModelImpl =
+							(CPDefinitionLocalizationModelImpl)
+								cpDefinitionLocalization;
+
+					arguments.add(
+						cpDefinitionLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpDefinitionLocalization);
+				}
+				else {
+					List<CPDefinitionLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDefinitionLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCPDefinitionLocalizationUtilPersistence(
 		CPDefinitionLocalizationPersistence

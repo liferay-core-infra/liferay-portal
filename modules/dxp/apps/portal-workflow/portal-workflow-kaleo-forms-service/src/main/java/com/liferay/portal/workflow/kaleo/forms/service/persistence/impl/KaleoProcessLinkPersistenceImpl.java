@@ -48,6 +48,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1430,6 +1432,30 @@ public class KaleoProcessLinkPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"kaleoProcessId", "workflowTaskName"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoProcessId",
+			_finderPathWithPaginationFindByKaleoProcessId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoProcessId",
+			_finderPathWithoutPaginationFindByKaleoProcessId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoProcessId",
+			_finderPathCountByKaleoProcessId);
+
+		_finderPaths.put("finderPathFetchByKPI_WTN", _finderPathFetchByKPI_WTN);
+
+		_finderPaths.put("finderPathCountByKPI_WTN", _finderPathCountByKPI_WTN);
+
 		_setKaleoProcessLinkUtilPersistence(this);
 	}
 
@@ -1439,6 +1465,64 @@ public class KaleoProcessLinkPersistenceImpl
 
 		entityCache.removeCache(KaleoProcessLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoProcessLink> kaleoProcessLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoProcessLink>> resultMap =
+				new HashMap<>();
+
+			for (KaleoProcessLink kaleoProcessLink : kaleoProcessLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoProcessLinkModelImpl kaleoProcessLinkModelImpl =
+						(KaleoProcessLinkModelImpl)kaleoProcessLink;
+
+					arguments.add(
+						kaleoProcessLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoProcessLink);
+				}
+				else {
+					List<KaleoProcessLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoProcessLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoProcessLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoProcessLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoProcessLinkUtilPersistence(
 		KaleoProcessLinkPersistence kaleoProcessLinkPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.frontend.view.state.exception.NoSuchActiveEntryException;
 import com.liferay.frontend.view.state.model.FVSActiveEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -525,5 +527,11 @@ public interface FVSActiveEntryPersistence
 	 * @return the number of fvs active entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

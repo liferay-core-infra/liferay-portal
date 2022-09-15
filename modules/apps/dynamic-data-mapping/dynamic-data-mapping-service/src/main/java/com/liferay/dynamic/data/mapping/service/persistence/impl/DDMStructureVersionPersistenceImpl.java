@@ -2326,6 +2326,39 @@ public class DDMStructureVersionPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"structureId", "status"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureId",
+			_finderPathWithPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureId",
+			_finderPathWithoutPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByStructureId", _finderPathCountByStructureId);
+
+		_finderPaths.put("finderPathFetchByS_V", _finderPathFetchByS_V);
+
+		_finderPaths.put("finderPathCountByS_V", _finderPathCountByS_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_S",
+			_finderPathWithPaginationFindByS_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_S",
+			_finderPathWithoutPaginationFindByS_S);
+
+		_finderPaths.put("finderPathCountByS_S", _finderPathCountByS_S);
+
 		_setDDMStructureVersionUtilPersistence(this);
 	}
 
@@ -2335,6 +2368,67 @@ public class DDMStructureVersionPersistenceImpl
 
 		entityCache.removeCache(DDMStructureVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMStructureVersion> ddmStructureVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMStructureVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDMStructureVersion ddmStructureVersion :
+					ddmStructureVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMStructureVersionModelImpl ddmStructureVersionModelImpl =
+						(DDMStructureVersionModelImpl)ddmStructureVersion;
+
+					arguments.add(
+						ddmStructureVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmStructureVersion);
+				}
+				else {
+					List<DDMStructureVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmStructureVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMStructureVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMStructureVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMStructureVersionUtilPersistence(
 		DDMStructureVersionPersistence ddmStructureVersionPersistence) {

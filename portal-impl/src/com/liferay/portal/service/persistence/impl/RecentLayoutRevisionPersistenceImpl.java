@@ -46,8 +46,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -2476,6 +2479,50 @@ public class RecentLayoutRevisionPersistenceImpl
 			},
 			new String[] {"userId", "layoutSetBranchId", "plid"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLayoutRevisionId",
+			_finderPathWithPaginationFindByLayoutRevisionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLayoutRevisionId",
+			_finderPathWithoutPaginationFindByLayoutRevisionId);
+
+		_finderPaths.put(
+			"finderPathCountByLayoutRevisionId",
+			_finderPathCountByLayoutRevisionId);
+
+		_finderPaths.put("finderPathFetchByU_L_P", _finderPathFetchByU_L_P);
+
+		_finderPaths.put("finderPathCountByU_L_P", _finderPathCountByU_L_P);
+
 		_setRecentLayoutRevisionUtilPersistence(this);
 	}
 
@@ -2484,6 +2531,68 @@ public class RecentLayoutRevisionPersistenceImpl
 
 		EntityCacheUtil.removeCache(RecentLayoutRevisionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<RecentLayoutRevision> recentLayoutRevisions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RecentLayoutRevision>> resultMap =
+				new HashMap<>();
+
+			for (RecentLayoutRevision recentLayoutRevision :
+					recentLayoutRevisions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RecentLayoutRevisionModelImpl
+						recentLayoutRevisionModelImpl =
+							(RecentLayoutRevisionModelImpl)recentLayoutRevision;
+
+					arguments.add(
+						recentLayoutRevisionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), recentLayoutRevision);
+				}
+				else {
+					List<RecentLayoutRevision> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(recentLayoutRevision);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RecentLayoutRevision>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RecentLayoutRevision> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setRecentLayoutRevisionUtilPersistence(
 		RecentLayoutRevisionPersistence recentLayoutRevisionPersistence) {

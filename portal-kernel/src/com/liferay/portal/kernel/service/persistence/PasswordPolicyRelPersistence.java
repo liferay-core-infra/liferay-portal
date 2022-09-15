@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.service.persistence;
 import com.liferay.portal.kernel.exception.NoSuchPasswordPolicyRelException;
 import com.liferay.portal.kernel.model.PasswordPolicyRel;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -354,5 +356,11 @@ public interface PasswordPolicyRelPersistence
 	 * @return the number of password policy rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

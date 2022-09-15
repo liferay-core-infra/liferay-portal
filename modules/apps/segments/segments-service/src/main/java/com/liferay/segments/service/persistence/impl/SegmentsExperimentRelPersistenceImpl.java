@@ -61,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1743,6 +1744,30 @@ public class SegmentsExperimentRelPersistenceImpl
 			new String[] {"segmentsExperimentId", "segmentsExperienceId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySegmentsExperimentId",
+			_finderPathWithPaginationFindBySegmentsExperimentId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySegmentsExperimentId",
+			_finderPathWithoutPaginationFindBySegmentsExperimentId);
+
+		_finderPaths.put(
+			"finderPathCountBySegmentsExperimentId",
+			_finderPathCountBySegmentsExperimentId);
+
+		_finderPaths.put("finderPathFetchByS_S", _finderPathFetchByS_S);
+
+		_finderPaths.put("finderPathCountByS_S", _finderPathCountByS_S);
+
 		_setSegmentsExperimentRelUtilPersistence(this);
 	}
 
@@ -1752,6 +1777,69 @@ public class SegmentsExperimentRelPersistenceImpl
 
 		entityCache.removeCache(SegmentsExperimentRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SegmentsExperimentRel> segmentsExperimentRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsExperimentRel>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsExperimentRel segmentsExperimentRel :
+					segmentsExperimentRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsExperimentRelModelImpl
+						segmentsExperimentRelModelImpl =
+							(SegmentsExperimentRelModelImpl)
+								segmentsExperimentRel;
+
+					arguments.add(
+						segmentsExperimentRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsExperimentRel);
+				}
+				else {
+					List<SegmentsExperimentRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsExperimentRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsExperimentRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsExperimentRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSegmentsExperimentRelUtilPersistence(
 		SegmentsExperimentRelPersistence segmentsExperimentRelPersistence) {

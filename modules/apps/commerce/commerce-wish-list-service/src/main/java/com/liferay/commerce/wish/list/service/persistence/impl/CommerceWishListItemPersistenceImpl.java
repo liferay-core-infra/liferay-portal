@@ -51,8 +51,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -3822,6 +3824,75 @@ public class CommerceWishListItemPersistenceImpl
 			new String[] {"commerceWishListId", "CPInstanceUuid", "CProductId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceWishListId",
+			_finderPathWithPaginationFindByCommerceWishListId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceWishListId",
+			_finderPathWithoutPaginationFindByCommerceWishListId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceWishListId",
+			_finderPathCountByCommerceWishListId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPInstanceUuid",
+			_finderPathWithPaginationFindByCPInstanceUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPInstanceUuid",
+			_finderPathWithoutPaginationFindByCPInstanceUuid);
+
+		_finderPaths.put(
+			"finderPathCountByCPInstanceUuid",
+			_finderPathCountByCPInstanceUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCProductId",
+			_finderPathWithPaginationFindByCProductId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCProductId",
+			_finderPathWithoutPaginationFindByCProductId);
+
+		_finderPaths.put(
+			"finderPathCountByCProductId", _finderPathCountByCProductId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCW_CPI",
+			_finderPathWithPaginationFindByCW_CPI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCW_CPI",
+			_finderPathWithoutPaginationFindByCW_CPI);
+
+		_finderPaths.put("finderPathCountByCW_CPI", _finderPathCountByCW_CPI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCW_CP",
+			_finderPathWithPaginationFindByCW_CP);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCW_CP",
+			_finderPathWithoutPaginationFindByCW_CP);
+
+		_finderPaths.put("finderPathCountByCW_CP", _finderPathCountByCW_CP);
+
+		_finderPaths.put(
+			"finderPathFetchByCW_CPI_CP", _finderPathFetchByCW_CPI_CP);
+
+		_finderPaths.put(
+			"finderPathCountByCW_CPI_CP", _finderPathCountByCW_CPI_CP);
+
 		_setCommerceWishListItemUtilPersistence(this);
 	}
 
@@ -3831,6 +3902,68 @@ public class CommerceWishListItemPersistenceImpl
 
 		entityCache.removeCache(CommerceWishListItemImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceWishListItem> commerceWishListItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceWishListItem>> resultMap =
+				new HashMap<>();
+
+			for (CommerceWishListItem commerceWishListItem :
+					commerceWishListItems) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceWishListItemModelImpl
+						commerceWishListItemModelImpl =
+							(CommerceWishListItemModelImpl)commerceWishListItem;
+
+					arguments.add(
+						commerceWishListItemModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceWishListItem);
+				}
+				else {
+					List<CommerceWishListItem> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceWishListItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceWishListItem>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceWishListItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceWishListItemUtilPersistence(
 		CommerceWishListItemPersistence commerceWishListItemPersistence) {

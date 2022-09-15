@@ -7354,6 +7354,93 @@ public class CalendarResourcePersistenceImpl
 				Boolean.class.getName()
 			},
 			new String[] {"companyId", "code_", "active_"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByActive",
+			_finderPathWithPaginationFindByActive);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByActive",
+			_finderPathWithoutPaginationFindByActive);
+
+		_finderPaths.put("finderPathCountByActive", _finderPathCountByActive);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C",
+			_finderPathWithPaginationCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_A",
+			_finderPathWithPaginationFindByG_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_A",
+			_finderPathWithoutPaginationFindByG_A);
+
+		_finderPaths.put("finderPathCountByG_A", _finderPathCountByG_A);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LikeC_A",
+			_finderPathWithPaginationFindByC_LikeC_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LikeC_A",
+			_finderPathWithPaginationCountByC_LikeC_A);
 
 		_setCalendarResourceUtilPersistence(this);
 	}
@@ -7364,6 +7451,64 @@ public class CalendarResourcePersistenceImpl
 
 		entityCache.removeCache(CalendarResourceImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CalendarResource> calendarResources = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CalendarResource>> resultMap =
+				new HashMap<>();
+
+			for (CalendarResource calendarResource : calendarResources) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CalendarResourceModelImpl calendarResourceModelImpl =
+						(CalendarResourceModelImpl)calendarResource;
+
+					arguments.add(
+						calendarResourceModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), calendarResource);
+				}
+				else {
+					List<CalendarResource> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(calendarResource);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CalendarResource>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CalendarResource> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCalendarResourceUtilPersistence(
 		CalendarResourcePersistence calendarResourcePersistence) {

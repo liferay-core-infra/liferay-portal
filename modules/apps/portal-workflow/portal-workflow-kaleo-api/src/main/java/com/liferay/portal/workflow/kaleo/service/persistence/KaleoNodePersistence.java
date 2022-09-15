@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.portal.workflow.kaleo.exception.NoSuchNodeException;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -602,5 +604,11 @@ public interface KaleoNodePersistence
 	 * @return the number of kaleo nodes
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

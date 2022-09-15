@@ -4773,6 +4773,86 @@ public class CPInstanceOptionValueRelPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPDefinitionOptionRelId",
+			_finderPathWithPaginationFindByCPDefinitionOptionRelId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPDefinitionOptionRelId",
+			_finderPathWithoutPaginationFindByCPDefinitionOptionRelId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionOptionRelId",
+			_finderPathCountByCPDefinitionOptionRelId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPInstanceId",
+			_finderPathWithPaginationFindByCPInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPInstanceId",
+			_finderPathWithoutPaginationFindByCPInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByCPInstanceId", _finderPathCountByCPInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCDORI_CII",
+			_finderPathWithPaginationFindByCDORI_CII);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCDORI_CII",
+			_finderPathWithoutPaginationFindByCDORI_CII);
+
+		_finderPaths.put(
+			"finderPathCountByCDORI_CII", _finderPathCountByCDORI_CII);
+
+		_finderPaths.put(
+			"finderPathFetchByCDOVRI_CII", _finderPathFetchByCDOVRI_CII);
+
+		_finderPaths.put(
+			"finderPathCountByCDOVRI_CII", _finderPathCountByCDOVRI_CII);
+
+		_finderPaths.put(
+			"finderPathFetchByCDORI_CDOVRI_CII",
+			_finderPathFetchByCDORI_CDOVRI_CII);
+
+		_finderPaths.put(
+			"finderPathCountByCDORI_CDOVRI_CII",
+			_finderPathCountByCDORI_CDOVRI_CII);
+
 		_setCPInstanceOptionValueRelUtilPersistence(this);
 	}
 
@@ -4781,6 +4861,70 @@ public class CPInstanceOptionValueRelPersistenceImpl
 
 		entityCache.removeCache(CPInstanceOptionValueRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CPInstanceOptionValueRel> cpInstanceOptionValueRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPInstanceOptionValueRel>> resultMap =
+				new HashMap<>();
+
+			for (CPInstanceOptionValueRel cpInstanceOptionValueRel :
+					cpInstanceOptionValueRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPInstanceOptionValueRelModelImpl
+						cpInstanceOptionValueRelModelImpl =
+							(CPInstanceOptionValueRelModelImpl)
+								cpInstanceOptionValueRel;
+
+					arguments.add(
+						cpInstanceOptionValueRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpInstanceOptionValueRel);
+				}
+				else {
+					List<CPInstanceOptionValueRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpInstanceOptionValueRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPInstanceOptionValueRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPInstanceOptionValueRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCPInstanceOptionValueRelUtilPersistence(
 		CPInstanceOptionValueRelPersistence

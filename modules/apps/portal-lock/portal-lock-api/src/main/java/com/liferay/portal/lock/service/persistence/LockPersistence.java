@@ -19,6 +19,7 @@ import com.liferay.portal.lock.exception.NoSuchLockException;
 import com.liferay.portal.lock.model.Lock;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -791,5 +792,11 @@ public interface LockPersistence extends BasePersistence<Lock> {
 	 * @return the number of locks
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

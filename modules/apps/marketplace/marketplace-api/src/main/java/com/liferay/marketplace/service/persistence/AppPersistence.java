@@ -18,6 +18,8 @@ import com.liferay.marketplace.exception.NoSuchAppException;
 import com.liferay.marketplace.model.App;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -776,5 +778,11 @@ public interface AppPersistence extends BasePersistence<App> {
 	 * @return the number of apps
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -27502,6 +27502,249 @@ public class LayoutPageTemplateEntryPersistenceImpl
 				"status"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLayoutPrototypeId",
+			_finderPathWithPaginationFindByLayoutPrototypeId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLayoutPrototypeId",
+			_finderPathWithoutPaginationFindByLayoutPrototypeId);
+
+		_finderPaths.put(
+			"finderPathCountByLayoutPrototypeId",
+			_finderPathCountByLayoutPrototypeId);
+
+		_finderPaths.put("finderPathFetchByPlid", _finderPathFetchByPlid);
+
+		_finderPaths.put("finderPathCountByPlid", _finderPathCountByPlid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_L",
+			_finderPathWithPaginationFindByG_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_L",
+			_finderPathWithoutPaginationFindByG_L);
+
+		_finderPaths.put("finderPathCountByG_L", _finderPathCountByG_L);
+
+		_finderPaths.put("finderPathFetchByG_LPTEK", _finderPathFetchByG_LPTEK);
+
+		_finderPaths.put("finderPathCountByG_LPTEK", _finderPathCountByG_LPTEK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_N",
+			_finderPathWithPaginationFindByG_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_N",
+			_finderPathWithoutPaginationFindByG_N);
+
+		_finderPaths.put("finderPathCountByG_N", _finderPathCountByG_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T",
+			_finderPathWithPaginationFindByG_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_T",
+			_finderPathWithoutPaginationFindByG_T);
+
+		_finderPaths.put("finderPathCountByG_T", _finderPathCountByG_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_T",
+			_finderPathWithPaginationCountByG_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_L_LikeN",
+			_finderPathWithPaginationFindByG_L_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_L_LikeN",
+			_finderPathWithPaginationCountByG_L_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_L_T",
+			_finderPathWithPaginationFindByG_L_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_L_T",
+			_finderPathWithoutPaginationFindByG_L_T);
+
+		_finderPaths.put("finderPathCountByG_L_T", _finderPathCountByG_L_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_L_S",
+			_finderPathWithPaginationFindByG_L_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_L_S",
+			_finderPathWithoutPaginationFindByG_L_S);
+
+		_finderPaths.put("finderPathCountByG_L_S", _finderPathCountByG_L_S);
+
+		_finderPaths.put("finderPathFetchByG_N_T", _finderPathFetchByG_N_T);
+
+		_finderPaths.put("finderPathCountByG_N_T", _finderPathCountByG_N_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T_LikeN",
+			_finderPathWithPaginationFindByG_T_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_T_LikeN",
+			_finderPathWithPaginationCountByG_T_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T_S",
+			_finderPathWithPaginationFindByG_T_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_T_S",
+			_finderPathWithoutPaginationFindByG_T_S);
+
+		_finderPaths.put("finderPathCountByG_T_S", _finderPathCountByG_T_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_T_S",
+			_finderPathWithPaginationCountByG_T_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_L_LikeN_S",
+			_finderPathWithPaginationFindByG_L_LikeN_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_L_LikeN_S",
+			_finderPathWithPaginationCountByG_L_LikeN_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_T",
+			_finderPathWithPaginationFindByG_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_T",
+			_finderPathWithoutPaginationFindByG_C_C_T);
+
+		_finderPaths.put("finderPathCountByG_C_C_T", _finderPathCountByG_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_D",
+			_finderPathWithPaginationFindByG_C_C_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_D",
+			_finderPathWithoutPaginationFindByG_C_C_D);
+
+		_finderPaths.put("finderPathCountByG_C_C_D", _finderPathCountByG_C_C_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_T_D",
+			_finderPathWithPaginationFindByG_C_T_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_T_D",
+			_finderPathWithoutPaginationFindByG_C_T_D);
+
+		_finderPaths.put("finderPathCountByG_C_T_D", _finderPathCountByG_C_T_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T_LikeN_S",
+			_finderPathWithPaginationFindByG_T_LikeN_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_T_LikeN_S",
+			_finderPathWithPaginationCountByG_T_LikeN_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T_D_S",
+			_finderPathWithPaginationFindByG_T_D_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_T_D_S",
+			_finderPathWithoutPaginationFindByG_T_D_S);
+
+		_finderPaths.put("finderPathCountByG_T_D_S", _finderPathCountByG_T_D_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_LikeN_T",
+			_finderPathWithPaginationFindByG_C_C_LikeN_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C_C_LikeN_T",
+			_finderPathWithPaginationCountByG_C_C_LikeN_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_T_S",
+			_finderPathWithPaginationFindByG_C_C_T_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_T_S",
+			_finderPathWithoutPaginationFindByG_C_C_T_S);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_C_T_S", _finderPathCountByG_C_C_T_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_D_S",
+			_finderPathWithPaginationFindByG_C_C_D_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_D_S",
+			_finderPathWithoutPaginationFindByG_C_C_D_S);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_C_D_S", _finderPathCountByG_C_C_D_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_LikeN_T_S",
+			_finderPathWithPaginationFindByG_C_C_LikeN_T_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C_C_LikeN_T_S",
+			_finderPathWithPaginationCountByG_C_C_LikeN_T_S);
 
 		_setLayoutPageTemplateEntryUtilPersistence(this);
 	}
@@ -27512,6 +27755,70 @@ public class LayoutPageTemplateEntryPersistenceImpl
 
 		entityCache.removeCache(LayoutPageTemplateEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutPageTemplateEntry> layoutPageTemplateEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutPageTemplateEntry>> resultMap =
+				new HashMap<>();
+
+			for (LayoutPageTemplateEntry layoutPageTemplateEntry :
+					layoutPageTemplateEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutPageTemplateEntryModelImpl
+						layoutPageTemplateEntryModelImpl =
+							(LayoutPageTemplateEntryModelImpl)
+								layoutPageTemplateEntry;
+
+					arguments.add(
+						layoutPageTemplateEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutPageTemplateEntry);
+				}
+				else {
+					List<LayoutPageTemplateEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutPageTemplateEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutPageTemplateEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutPageTemplateEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutPageTemplateEntryUtilPersistence(
 		LayoutPageTemplateEntryPersistence layoutPageTemplateEntryPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.security.service.access.policy.exception.NoSuchEntryException;
 import com.liferay.portal.security.service.access.policy.model.SAPEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1070,5 +1072,11 @@ public interface SAPEntryPersistence extends BasePersistence<SAPEntry> {
 	 * @return the number of sap entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchNestedSetsTreeEntryException;
 import com.liferay.portal.tools.service.builder.test.model.NestedSetsTreeEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -186,5 +188,11 @@ public interface NestedSetsTreeEntryPersistence
 	public void rebuildTree(long groupId, boolean force);
 
 	public void setRebuildTreeEnabled(boolean rebuildTreeEnabled);
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

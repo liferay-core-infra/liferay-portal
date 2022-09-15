@@ -17,6 +17,8 @@ package com.liferay.portal.kernel.service.persistence;
 import com.liferay.portal.kernel.exception.NoSuchRecentLayoutBranchException;
 import com.liferay.portal.kernel.model.RecentLayoutBranch;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -648,5 +650,11 @@ public interface RecentLayoutBranchPersistence
 	 * @return the number of recent layout branches
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

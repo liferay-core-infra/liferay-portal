@@ -18,6 +18,8 @@ import com.liferay.commerce.notification.exception.NoSuchNotificationAttachmentE
 import com.liferay.commerce.notification.model.CommerceNotificationAttachment;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -677,5 +679,11 @@ public interface CommerceNotificationAttachmentPersistence
 	 * @return the number of commerce notification attachments
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

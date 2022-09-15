@@ -50,7 +50,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1560,6 +1562,32 @@ public class BatchPlannerMappingPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByBatchPlannerPlanId",
+			_finderPathWithPaginationFindByBatchPlannerPlanId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByBatchPlannerPlanId",
+			_finderPathWithoutPaginationFindByBatchPlannerPlanId);
+
+		_finderPaths.put(
+			"finderPathCountByBatchPlannerPlanId",
+			_finderPathCountByBatchPlannerPlanId);
+
+		_finderPaths.put(
+			"finderPathFetchByBPPI_EFN_IFN", _finderPathFetchByBPPI_EFN_IFN);
+
+		_finderPaths.put(
+			"finderPathCountByBPPI_EFN_IFN", _finderPathCountByBPPI_EFN_IFN);
+
 		_setBatchPlannerMappingUtilPersistence(this);
 	}
 
@@ -1569,6 +1597,67 @@ public class BatchPlannerMappingPersistenceImpl
 
 		entityCache.removeCache(BatchPlannerMappingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<BatchPlannerMapping> batchPlannerMappings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BatchPlannerMapping>> resultMap =
+				new HashMap<>();
+
+			for (BatchPlannerMapping batchPlannerMapping :
+					batchPlannerMappings) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BatchPlannerMappingModelImpl batchPlannerMappingModelImpl =
+						(BatchPlannerMappingModelImpl)batchPlannerMapping;
+
+					arguments.add(
+						batchPlannerMappingModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), batchPlannerMapping);
+				}
+				else {
+					List<BatchPlannerMapping> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(batchPlannerMapping);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BatchPlannerMapping>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BatchPlannerMapping> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setBatchPlannerMappingUtilPersistence(
 		BatchPlannerMappingPersistence batchPlannerMappingPersistence) {

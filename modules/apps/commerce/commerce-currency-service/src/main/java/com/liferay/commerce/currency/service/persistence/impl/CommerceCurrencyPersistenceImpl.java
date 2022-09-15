@@ -50,6 +50,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -4334,6 +4335,79 @@ public class CommerceCurrencyPersistenceImpl
 			},
 			new String[] {"companyId", "primary_", "active_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_P",
+			_finderPathWithPaginationFindByC_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_P",
+			_finderPathWithoutPaginationFindByC_P);
+
+		_finderPaths.put("finderPathCountByC_P", _finderPathCountByC_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A",
+			_finderPathWithPaginationFindByC_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A",
+			_finderPathWithoutPaginationFindByC_A);
+
+		_finderPaths.put("finderPathCountByC_A", _finderPathCountByC_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_P_A",
+			_finderPathWithPaginationFindByC_P_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_P_A",
+			_finderPathWithoutPaginationFindByC_P_A);
+
+		_finderPaths.put("finderPathCountByC_P_A", _finderPathCountByC_P_A);
+
 		_setCommerceCurrencyUtilPersistence(this);
 	}
 
@@ -4342,6 +4416,64 @@ public class CommerceCurrencyPersistenceImpl
 
 		entityCache.removeCache(CommerceCurrencyImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceCurrency> commerceCurrencys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceCurrency>> resultMap =
+				new HashMap<>();
+
+			for (CommerceCurrency commerceCurrency : commerceCurrencys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceCurrencyModelImpl commerceCurrencyModelImpl =
+						(CommerceCurrencyModelImpl)commerceCurrency;
+
+					arguments.add(
+						commerceCurrencyModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceCurrency);
+				}
+				else {
+					List<CommerceCurrency> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceCurrency);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceCurrency>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceCurrency> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceCurrencyUtilPersistence(
 		CommerceCurrencyPersistence commerceCurrencyPersistence) {

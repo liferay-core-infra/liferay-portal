@@ -18,6 +18,8 @@ import com.liferay.knowledge.base.exception.NoSuchArticleException;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -8912,5 +8914,11 @@ public interface KBArticlePersistence extends BasePersistence<KBArticle> {
 	 * @return the number of kb articles
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

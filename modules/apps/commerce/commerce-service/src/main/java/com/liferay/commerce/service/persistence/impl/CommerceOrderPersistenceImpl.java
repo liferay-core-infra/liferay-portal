@@ -58,6 +58,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8721,6 +8722,154 @@ public class CommerceOrderPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByBillingAddressId",
+			_finderPathWithPaginationFindByBillingAddressId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByBillingAddressId",
+			_finderPathWithoutPaginationFindByBillingAddressId);
+
+		_finderPaths.put(
+			"finderPathCountByBillingAddressId",
+			_finderPathCountByBillingAddressId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceAccountId",
+			_finderPathWithPaginationFindByCommerceAccountId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceAccountId",
+			_finderPathWithoutPaginationFindByCommerceAccountId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceAccountId",
+			_finderPathCountByCommerceAccountId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByShippingAddressId",
+			_finderPathWithPaginationFindByShippingAddressId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByShippingAddressId",
+			_finderPathWithoutPaginationFindByShippingAddressId);
+
+		_finderPaths.put(
+			"finderPathCountByShippingAddressId",
+			_finderPathCountByShippingAddressId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_CP",
+			_finderPathWithPaginationFindByG_CP);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_CP",
+			_finderPathWithoutPaginationFindByG_CP);
+
+		_finderPaths.put("finderPathCountByG_CP", _finderPathCountByG_CP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_O",
+			_finderPathWithPaginationFindByG_U_O);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_O",
+			_finderPathWithoutPaginationFindByG_U_O);
+
+		_finderPaths.put("finderPathCountByG_U_O", _finderPathCountByG_U_O);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_O",
+			_finderPathWithPaginationFindByG_C_O);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_O",
+			_finderPathWithoutPaginationFindByG_C_O);
+
+		_finderPaths.put("finderPathCountByG_C_O", _finderPathCountByG_C_O);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_LtC_O",
+			_finderPathWithPaginationFindByU_LtC_O);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByU_LtC_O",
+			_finderPathWithPaginationCountByU_LtC_O);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LtC_O",
+			_finderPathWithPaginationFindByC_LtC_O);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LtC_O",
+			_finderPathWithPaginationCountByC_LtC_O);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setCommerceOrderUtilPersistence(this);
 	}
 
@@ -8729,6 +8878,62 @@ public class CommerceOrderPersistenceImpl
 
 		entityCache.removeCache(CommerceOrderImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceOrder> commerceOrders = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceOrder>> resultMap = new HashMap<>();
+
+			for (CommerceOrder commerceOrder : commerceOrders) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceOrderModelImpl commerceOrderModelImpl =
+						(CommerceOrderModelImpl)commerceOrder;
+
+					arguments.add(
+						commerceOrderModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceOrder);
+				}
+				else {
+					List<CommerceOrder> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceOrder);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceOrder>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceOrder> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceOrderUtilPersistence(
 		CommerceOrderPersistence commerceOrderPersistence) {

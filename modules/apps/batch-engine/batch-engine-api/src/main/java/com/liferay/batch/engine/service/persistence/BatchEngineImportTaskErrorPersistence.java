@@ -18,6 +18,8 @@ import com.liferay.batch.engine.exception.NoSuchImportTaskErrorException;
 import com.liferay.batch.engine.model.BatchEngineImportTaskError;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -314,5 +316,11 @@ public interface BatchEngineImportTaskErrorPersistence
 	 * @return the number of batch engine import task errors
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

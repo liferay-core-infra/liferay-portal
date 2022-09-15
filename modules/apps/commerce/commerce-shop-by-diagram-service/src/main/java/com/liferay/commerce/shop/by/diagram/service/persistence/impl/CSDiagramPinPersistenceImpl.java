@@ -61,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1403,6 +1404,26 @@ public class CSDiagramPinPersistenceImpl
 			"countByCPDefinitionId", new String[] {Long.class.getName()},
 			new String[] {"CPDefinitionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPDefinitionId",
+			_finderPathWithPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPDefinitionId",
+			_finderPathWithoutPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
 		_setCSDiagramPinUtilPersistence(this);
 	}
 
@@ -1412,6 +1433,62 @@ public class CSDiagramPinPersistenceImpl
 
 		entityCache.removeCache(CSDiagramPinImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CSDiagramPin> csDiagramPins = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CSDiagramPin>> resultMap = new HashMap<>();
+
+			for (CSDiagramPin csDiagramPin : csDiagramPins) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CSDiagramPinModelImpl csDiagramPinModelImpl =
+						(CSDiagramPinModelImpl)csDiagramPin;
+
+					arguments.add(
+						csDiagramPinModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), csDiagramPin);
+				}
+				else {
+					List<CSDiagramPin> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(csDiagramPin);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CSDiagramPin>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CSDiagramPin> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCSDiagramPinUtilPersistence(
 		CSDiagramPinPersistence csDiagramPinPersistence) {

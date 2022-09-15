@@ -48,9 +48,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2387,6 +2389,49 @@ public class StatusPersistenceImpl
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			new String[] {"modifiedDate", "online_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByUserId", _finderPathFetchByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByModifiedDate",
+			_finderPathWithPaginationFindByModifiedDate);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByModifiedDate",
+			_finderPathWithoutPaginationFindByModifiedDate);
+
+		_finderPaths.put(
+			"finderPathCountByModifiedDate", _finderPathCountByModifiedDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByOnline",
+			_finderPathWithPaginationFindByOnline);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByOnline",
+			_finderPathWithoutPaginationFindByOnline);
+
+		_finderPaths.put("finderPathCountByOnline", _finderPathCountByOnline);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByM_O",
+			_finderPathWithPaginationFindByM_O);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByM_O",
+			_finderPathWithoutPaginationFindByM_O);
+
+		_finderPaths.put("finderPathCountByM_O", _finderPathCountByM_O);
+
 		_setStatusUtilPersistence(this);
 	}
 
@@ -2396,6 +2441,60 @@ public class StatusPersistenceImpl
 
 		entityCache.removeCache(StatusImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Status> statuss = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Status>> resultMap = new HashMap<>();
+
+			for (Status status : statuss) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					StatusModelImpl statusModelImpl = (StatusModelImpl)status;
+
+					arguments.add(statusModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), status);
+				}
+				else {
+					List<Status> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(status);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Status>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Status> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setStatusUtilPersistence(
 		StatusPersistence statusPersistence) {

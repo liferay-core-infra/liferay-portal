@@ -7193,6 +7193,107 @@ public class CPAttachmentFileEntryPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtD_S",
+			_finderPathWithPaginationFindByLtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtD_S",
+			_finderPathWithPaginationCountByLtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_F",
+			_finderPathWithPaginationFindByC_C_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_F",
+			_finderPathWithoutPaginationFindByC_C_F);
+
+		_finderPaths.put("finderPathCountByC_C_F", _finderPathCountByC_C_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_C",
+			_finderPathWithPaginationFindByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_C",
+			_finderPathWithoutPaginationFindByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_LtD_S",
+			_finderPathWithPaginationFindByC_C_LtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_LtD_S",
+			_finderPathWithPaginationCountByC_C_LtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T_ST",
+			_finderPathWithPaginationFindByC_C_T_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_T_ST",
+			_finderPathWithoutPaginationFindByC_C_T_ST);
+
+		_finderPaths.put(
+			"finderPathCountByC_C_T_ST", _finderPathCountByC_C_T_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T_NotST",
+			_finderPathWithPaginationFindByC_C_T_NotST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_T_NotST",
+			_finderPathWithPaginationCountByC_C_T_NotST);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setCPAttachmentFileEntryUtilPersistence(this);
 	}
 
@@ -7201,6 +7302,69 @@ public class CPAttachmentFileEntryPersistenceImpl
 
 		entityCache.removeCache(CPAttachmentFileEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CPAttachmentFileEntry> cpAttachmentFileEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPAttachmentFileEntry>> resultMap =
+				new HashMap<>();
+
+			for (CPAttachmentFileEntry cpAttachmentFileEntry :
+					cpAttachmentFileEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPAttachmentFileEntryModelImpl
+						cpAttachmentFileEntryModelImpl =
+							(CPAttachmentFileEntryModelImpl)
+								cpAttachmentFileEntry;
+
+					arguments.add(
+						cpAttachmentFileEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), cpAttachmentFileEntry);
+				}
+				else {
+					List<CPAttachmentFileEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpAttachmentFileEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPAttachmentFileEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPAttachmentFileEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCPAttachmentFileEntryUtilPersistence(
 		CPAttachmentFileEntryPersistence cpAttachmentFileEntryPersistence) {

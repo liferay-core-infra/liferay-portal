@@ -46,8 +46,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1105,6 +1108,26 @@ public class OrgLaborPersistenceImpl
 			"countByOrganizationId", new String[] {Long.class.getName()},
 			new String[] {"organizationId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByOrganizationId",
+			_finderPathWithPaginationFindByOrganizationId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByOrganizationId",
+			_finderPathWithoutPaginationFindByOrganizationId);
+
+		_finderPaths.put(
+			"finderPathCountByOrganizationId",
+			_finderPathCountByOrganizationId);
+
 		_setOrgLaborUtilPersistence(this);
 	}
 
@@ -1113,6 +1136,61 @@ public class OrgLaborPersistenceImpl
 
 		EntityCacheUtil.removeCache(OrgLaborImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<OrgLabor> orgLabors = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OrgLabor>> resultMap = new HashMap<>();
+
+			for (OrgLabor orgLabor : orgLabors) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OrgLaborModelImpl orgLaborModelImpl =
+						(OrgLaborModelImpl)orgLabor;
+
+					arguments.add(orgLaborModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), orgLabor);
+				}
+				else {
+					List<OrgLabor> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(orgLabor);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OrgLabor>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OrgLabor> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setOrgLaborUtilPersistence(
 		OrgLaborPersistence orgLaborPersistence) {

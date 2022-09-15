@@ -50,9 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1646,6 +1649,37 @@ public class CTProcessPersistenceImpl
 			"countByCtCollectionId", new String[] {Long.class.getName()},
 			new String[] {"ctCollectionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCtCollectionId",
+			_finderPathWithPaginationFindByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCtCollectionId",
+			_finderPathWithoutPaginationFindByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathCountByCtCollectionId",
+			_finderPathCountByCtCollectionId);
+
 		_setCTProcessUtilPersistence(this);
 	}
 
@@ -1655,6 +1689,62 @@ public class CTProcessPersistenceImpl
 
 		entityCache.removeCache(CTProcessImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CTProcess> ctProcesss = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTProcess>> resultMap = new HashMap<>();
+
+			for (CTProcess ctProcess : ctProcesss) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTProcessModelImpl ctProcessModelImpl =
+						(CTProcessModelImpl)ctProcess;
+
+					arguments.add(
+						ctProcessModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctProcess);
+				}
+				else {
+					List<CTProcess> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctProcess);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTProcess>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTProcess> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCTProcessUtilPersistence(
 		CTProcessPersistence ctProcessPersistence) {

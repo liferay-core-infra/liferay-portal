@@ -51,10 +51,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2034,6 +2036,37 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFileEntryId",
+			_finderPathWithPaginationFindByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFileEntryId",
+			_finderPathWithoutPaginationFindByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByFileEntryId", _finderPathCountByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtExpirationDate",
+			_finderPathWithPaginationFindByLtExpirationDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtExpirationDate",
+			_finderPathWithPaginationCountByLtExpirationDate);
+
+		_finderPaths.put("finderPathFetchByF_S_T", _finderPathFetchByF_S_T);
+
+		_finderPaths.put("finderPathCountByF_S_T", _finderPathCountByF_S_T);
+
 		_setSyncDLFileVersionDiffUtilPersistence(this);
 	}
 
@@ -2043,6 +2076,69 @@ public class SyncDLFileVersionDiffPersistenceImpl
 
 		entityCache.removeCache(SyncDLFileVersionDiffImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SyncDLFileVersionDiff> syncDLFileVersionDiffs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SyncDLFileVersionDiff>> resultMap =
+				new HashMap<>();
+
+			for (SyncDLFileVersionDiff syncDLFileVersionDiff :
+					syncDLFileVersionDiffs) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SyncDLFileVersionDiffModelImpl
+						syncDLFileVersionDiffModelImpl =
+							(SyncDLFileVersionDiffModelImpl)
+								syncDLFileVersionDiff;
+
+					arguments.add(
+						syncDLFileVersionDiffModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), syncDLFileVersionDiff);
+				}
+				else {
+					List<SyncDLFileVersionDiff> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(syncDLFileVersionDiff);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SyncDLFileVersionDiff>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SyncDLFileVersionDiff> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSyncDLFileVersionDiffUtilPersistence(
 		SyncDLFileVersionDiffPersistence syncDLFileVersionDiffPersistence) {

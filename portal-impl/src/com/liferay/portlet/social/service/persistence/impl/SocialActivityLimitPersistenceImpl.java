@@ -2926,6 +2926,50 @@ public class SocialActivityLimitPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathFetchByG_U_C_C_A_A", _finderPathFetchByG_U_C_C_A_A);
+
+		_finderPaths.put(
+			"finderPathCountByG_U_C_C_A_A", _finderPathCountByG_U_C_C_A_A);
+
 		_setSocialActivityLimitUtilPersistence(this);
 	}
 
@@ -2934,6 +2978,67 @@ public class SocialActivityLimitPersistenceImpl
 
 		EntityCacheUtil.removeCache(SocialActivityLimitImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SocialActivityLimit> socialActivityLimits = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialActivityLimit>> resultMap =
+				new HashMap<>();
+
+			for (SocialActivityLimit socialActivityLimit :
+					socialActivityLimits) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialActivityLimitModelImpl socialActivityLimitModelImpl =
+						(SocialActivityLimitModelImpl)socialActivityLimit;
+
+					arguments.add(
+						socialActivityLimitModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialActivityLimit);
+				}
+				else {
+					List<SocialActivityLimit> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(socialActivityLimit);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialActivityLimit>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialActivityLimit> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSocialActivityLimitUtilPersistence(
 		SocialActivityLimitPersistence socialActivityLimitPersistence) {

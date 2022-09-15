@@ -5326,6 +5326,90 @@ public class SiteNavigationMenuItemPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByS_LikeN",
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"siteNavigationMenuId", "name"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySiteNavigationMenuId",
+			_finderPathWithPaginationFindBySiteNavigationMenuId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySiteNavigationMenuId",
+			_finderPathWithoutPaginationFindBySiteNavigationMenuId);
+
+		_finderPaths.put(
+			"finderPathCountBySiteNavigationMenuId",
+			_finderPathCountBySiteNavigationMenuId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByParentSiteNavigationMenuItemId",
+			_finderPathWithPaginationFindByParentSiteNavigationMenuItemId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByParentSiteNavigationMenuItemId",
+			_finderPathWithoutPaginationFindByParentSiteNavigationMenuItemId);
+
+		_finderPaths.put(
+			"finderPathCountByParentSiteNavigationMenuItemId",
+			_finderPathCountByParentSiteNavigationMenuItemId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_P",
+			_finderPathWithPaginationFindByS_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_P",
+			_finderPathWithoutPaginationFindByS_P);
+
+		_finderPaths.put("finderPathCountByS_P", _finderPathCountByS_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_LikeN",
+			_finderPathWithPaginationFindByS_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByS_LikeN",
+			_finderPathWithPaginationCountByS_LikeN);
 
 		_setSiteNavigationMenuItemUtilPersistence(this);
 	}
@@ -5336,6 +5420,70 @@ public class SiteNavigationMenuItemPersistenceImpl
 
 		entityCache.removeCache(SiteNavigationMenuItemImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SiteNavigationMenuItem> siteNavigationMenuItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SiteNavigationMenuItem>> resultMap =
+				new HashMap<>();
+
+			for (SiteNavigationMenuItem siteNavigationMenuItem :
+					siteNavigationMenuItems) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SiteNavigationMenuItemModelImpl
+						siteNavigationMenuItemModelImpl =
+							(SiteNavigationMenuItemModelImpl)
+								siteNavigationMenuItem;
+
+					arguments.add(
+						siteNavigationMenuItemModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						siteNavigationMenuItem);
+				}
+				else {
+					List<SiteNavigationMenuItem> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(siteNavigationMenuItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SiteNavigationMenuItem>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SiteNavigationMenuItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSiteNavigationMenuItemUtilPersistence(
 		SiteNavigationMenuItemPersistence siteNavigationMenuItemPersistence) {

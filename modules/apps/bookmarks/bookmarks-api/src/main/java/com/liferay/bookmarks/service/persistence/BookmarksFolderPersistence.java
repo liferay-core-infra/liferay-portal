@@ -18,6 +18,8 @@ import com.liferay.bookmarks.exception.NoSuchFolderException;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1885,5 +1887,11 @@ public interface BookmarksFolderPersistence
 	 * @return the number of bookmarks folders
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

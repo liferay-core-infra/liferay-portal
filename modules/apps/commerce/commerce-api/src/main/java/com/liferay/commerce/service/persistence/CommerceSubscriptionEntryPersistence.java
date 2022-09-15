@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchSubscriptionEntryException;
 import com.liferay.commerce.model.CommerceSubscriptionEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1376,5 +1378,11 @@ public interface CommerceSubscriptionEntryPersistence
 	 * @return the number of commerce subscription entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -6206,6 +6206,97 @@ public class CommerceTierPriceEntryPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommercePriceEntryId",
+			_finderPathWithPaginationFindByCommercePriceEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommercePriceEntryId",
+			_finderPathWithoutPaginationFindByCommercePriceEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByCommercePriceEntryId",
+			_finderPathCountByCommercePriceEntryId);
+
+		_finderPaths.put("finderPathFetchByC_M", _finderPathFetchByC_M);
+
+		_finderPaths.put("finderPathCountByC_M", _finderPathCountByC_M);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LteM",
+			_finderPathWithPaginationFindByC_LteM);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LteM",
+			_finderPathWithPaginationCountByC_LteM);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtD_S",
+			_finderPathWithPaginationFindByLtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtD_S",
+			_finderPathWithPaginationCountByLtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtE_S",
+			_finderPathWithPaginationFindByLtE_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtE_S",
+			_finderPathWithPaginationCountByLtE_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LteM_S",
+			_finderPathWithPaginationFindByC_LteM_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LteM_S",
+			_finderPathWithPaginationCountByC_LteM_S);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setCommerceTierPriceEntryUtilPersistence(this);
 	}
 
@@ -6215,6 +6306,70 @@ public class CommerceTierPriceEntryPersistenceImpl
 
 		entityCache.removeCache(CommerceTierPriceEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceTierPriceEntry> commerceTierPriceEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceTierPriceEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceTierPriceEntry commerceTierPriceEntry :
+					commerceTierPriceEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceTierPriceEntryModelImpl
+						commerceTierPriceEntryModelImpl =
+							(CommerceTierPriceEntryModelImpl)
+								commerceTierPriceEntry;
+
+					arguments.add(
+						commerceTierPriceEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceTierPriceEntry);
+				}
+				else {
+					List<CommerceTierPriceEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceTierPriceEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceTierPriceEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceTierPriceEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceTierPriceEntryUtilPersistence(
 		CommerceTierPriceEntryPersistence commerceTierPriceEntryPersistence) {

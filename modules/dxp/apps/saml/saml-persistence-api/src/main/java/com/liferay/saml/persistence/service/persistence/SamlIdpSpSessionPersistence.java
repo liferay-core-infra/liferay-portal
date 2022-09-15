@@ -19,6 +19,7 @@ import com.liferay.saml.persistence.exception.NoSuchIdpSpSessionException;
 import com.liferay.saml.persistence.model.SamlIdpSpSession;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -449,5 +450,11 @@ public interface SamlIdpSpSessionPersistence
 	 * @return the number of saml idp sp sessions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

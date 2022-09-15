@@ -47,6 +47,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -5008,6 +5010,97 @@ public class EntryPersistenceImpl
 			},
 			new String[] {"fromUserId", "toUserId", "content"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCreateDate",
+			_finderPathWithPaginationFindByCreateDate);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCreateDate",
+			_finderPathWithoutPaginationFindByCreateDate);
+
+		_finderPaths.put(
+			"finderPathCountByCreateDate", _finderPathCountByCreateDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFromUserId",
+			_finderPathWithPaginationFindByFromUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFromUserId",
+			_finderPathWithoutPaginationFindByFromUserId);
+
+		_finderPaths.put(
+			"finderPathCountByFromUserId", _finderPathCountByFromUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByToUserId",
+			_finderPathWithPaginationFindByToUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByToUserId",
+			_finderPathWithoutPaginationFindByToUserId);
+
+		_finderPaths.put(
+			"finderPathCountByToUserId", _finderPathCountByToUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_F",
+			_finderPathWithPaginationFindByC_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_F",
+			_finderPathWithoutPaginationFindByC_F);
+
+		_finderPaths.put("finderPathCountByC_F", _finderPathCountByC_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_T",
+			_finderPathWithPaginationFindByC_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_T",
+			_finderPathWithoutPaginationFindByC_T);
+
+		_finderPaths.put("finderPathCountByC_T", _finderPathCountByC_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_T",
+			_finderPathWithPaginationFindByF_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_T",
+			_finderPathWithoutPaginationFindByF_T);
+
+		_finderPaths.put("finderPathCountByF_T", _finderPathCountByF_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_F_T",
+			_finderPathWithPaginationFindByC_F_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_F_T",
+			_finderPathWithoutPaginationFindByC_F_T);
+
+		_finderPaths.put("finderPathCountByC_F_T", _finderPathCountByC_F_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_T_C",
+			_finderPathWithPaginationFindByF_T_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_T_C",
+			_finderPathWithoutPaginationFindByF_T_C);
+
+		_finderPaths.put("finderPathCountByF_T_C", _finderPathCountByF_T_C);
+
 		_setEntryUtilPersistence(this);
 	}
 
@@ -5017,6 +5110,60 @@ public class EntryPersistenceImpl
 
 		entityCache.removeCache(EntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Entry> entrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Entry>> resultMap = new HashMap<>();
+
+			for (Entry entry : entrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					EntryModelImpl entryModelImpl = (EntryModelImpl)entry;
+
+					arguments.add(entryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), entry);
+				}
+				else {
+					List<Entry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(entry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Entry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Entry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setEntryUtilPersistence(EntryPersistence entryPersistence) {
 		try {

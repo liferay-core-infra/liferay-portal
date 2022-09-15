@@ -1033,6 +1033,18 @@ public class BigDecimalEntryUtil {
 		getPersistence().setLVEntries(pk, lvEntries);
 	}
 
+	public static Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths() {
+
+		return getPersistence().getFinderPaths();
+	}
+
+	public static void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath finderPaths) {
+
+		getPersistence().populateFinderCache(finderPaths);
+	}
+
 	public static BigDecimalEntryPersistence getPersistence() {
 		return _persistence;
 	}

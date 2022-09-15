@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2196,6 +2197,38 @@ public class TrashVersionPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"classNameId", "classPK"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByEntryId",
+			_finderPathWithPaginationFindByEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByEntryId",
+			_finderPathWithoutPaginationFindByEntryId);
+
+		_finderPaths.put("finderPathCountByEntryId", _finderPathCountByEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByE_C",
+			_finderPathWithPaginationFindByE_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByE_C",
+			_finderPathWithoutPaginationFindByE_C);
+
+		_finderPaths.put("finderPathCountByE_C", _finderPathCountByE_C);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
 		_setTrashVersionUtilPersistence(this);
 	}
 
@@ -2205,6 +2238,62 @@ public class TrashVersionPersistenceImpl
 
 		entityCache.removeCache(TrashVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<TrashVersion> trashVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<TrashVersion>> resultMap = new HashMap<>();
+
+			for (TrashVersion trashVersion : trashVersions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					TrashVersionModelImpl trashVersionModelImpl =
+						(TrashVersionModelImpl)trashVersion;
+
+					arguments.add(
+						trashVersionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), trashVersion);
+				}
+				else {
+					List<TrashVersion> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(trashVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<TrashVersion>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<TrashVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setTrashVersionUtilPersistence(
 		TrashVersionPersistence trashVersionPersistence) {

@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1146,6 +1147,18 @@ public class FriendlyURLEntryMappingPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"classNameId", "classPK"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
 		_setFriendlyURLEntryMappingUtilPersistence(this);
 	}
 
@@ -1155,6 +1168,70 @@ public class FriendlyURLEntryMappingPersistenceImpl
 
 		entityCache.removeCache(FriendlyURLEntryMappingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<FriendlyURLEntryMapping> friendlyURLEntryMappings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FriendlyURLEntryMapping>> resultMap =
+				new HashMap<>();
+
+			for (FriendlyURLEntryMapping friendlyURLEntryMapping :
+					friendlyURLEntryMappings) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FriendlyURLEntryMappingModelImpl
+						friendlyURLEntryMappingModelImpl =
+							(FriendlyURLEntryMappingModelImpl)
+								friendlyURLEntryMapping;
+
+					arguments.add(
+						friendlyURLEntryMappingModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						friendlyURLEntryMapping);
+				}
+				else {
+					List<FriendlyURLEntryMapping> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(friendlyURLEntryMapping);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FriendlyURLEntryMapping>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FriendlyURLEntryMapping> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setFriendlyURLEntryMappingUtilPersistence(
 		FriendlyURLEntryMappingPersistence friendlyURLEntryMappingPersistence) {

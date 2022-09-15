@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -3654,6 +3655,61 @@ public class PortalPreferenceValuePersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByPortalPreferencesId",
+			_finderPathWithPaginationFindByPortalPreferencesId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByPortalPreferencesId",
+			_finderPathWithoutPaginationFindByPortalPreferencesId);
+
+		_finderPaths.put(
+			"finderPathCountByPortalPreferencesId",
+			_finderPathCountByPortalPreferencesId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_N",
+			_finderPathWithPaginationFindByP_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_N",
+			_finderPathWithoutPaginationFindByP_N);
+
+		_finderPaths.put("finderPathCountByP_N", _finderPathCountByP_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_K_N",
+			_finderPathWithPaginationFindByP_K_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_K_N",
+			_finderPathWithoutPaginationFindByP_K_N);
+
+		_finderPaths.put("finderPathCountByP_K_N", _finderPathCountByP_K_N);
+
+		_finderPaths.put("finderPathFetchByP_I_K_N", _finderPathFetchByP_I_K_N);
+
+		_finderPaths.put("finderPathCountByP_I_K_N", _finderPathCountByP_I_K_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_K_N_SV",
+			_finderPathWithPaginationFindByP_K_N_SV);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_K_N_SV",
+			_finderPathWithoutPaginationFindByP_K_N_SV);
+
+		_finderPaths.put(
+			"finderPathCountByP_K_N_SV", _finderPathCountByP_K_N_SV);
+
 		_setPortalPreferenceValueUtilPersistence(this);
 	}
 
@@ -3662,6 +3718,69 @@ public class PortalPreferenceValuePersistenceImpl
 
 		EntityCacheUtil.removeCache(PortalPreferenceValueImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<PortalPreferenceValue> portalPreferenceValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortalPreferenceValue>> resultMap =
+				new HashMap<>();
+
+			for (PortalPreferenceValue portalPreferenceValue :
+					portalPreferenceValues) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortalPreferenceValueModelImpl
+						portalPreferenceValueModelImpl =
+							(PortalPreferenceValueModelImpl)
+								portalPreferenceValue;
+
+					arguments.add(
+						portalPreferenceValueModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portalPreferenceValue);
+				}
+				else {
+					List<PortalPreferenceValue> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(portalPreferenceValue);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortalPreferenceValue>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortalPreferenceValue> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setPortalPreferenceValueUtilPersistence(
 		PortalPreferenceValuePersistence portalPreferenceValuePersistence) {

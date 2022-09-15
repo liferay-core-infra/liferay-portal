@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.social.kernel.exception.NoSuchActivityAchievementException;
 import com.liferay.social.kernel.model.SocialActivityAchievement;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1002,5 +1004,11 @@ public interface SocialActivityAchievementPersistence
 	 * @return the number of social activity achievements
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -53,8 +53,10 @@ import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -3514,6 +3516,69 @@ public class SubscriptionPersistenceImpl
 			},
 			new String[] {"companyId", "userId", "classNameId", "classPK"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U",
+			_finderPathWithPaginationFindByG_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U",
+			_finderPathWithoutPaginationFindByG_U);
+
+		_finderPaths.put("finderPathCountByG_U", _finderPathCountByG_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_C",
+			_finderPathWithPaginationFindByU_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_C",
+			_finderPathWithoutPaginationFindByU_C);
+
+		_finderPaths.put("finderPathCountByU_C", _finderPathCountByU_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_C",
+			_finderPathWithPaginationFindByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_C",
+			_finderPathWithoutPaginationFindByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_U_C_C",
+			_finderPathWithPaginationFindByC_U_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_U_C_C",
+			_finderPathWithoutPaginationFindByC_U_C_C);
+
+		_finderPaths.put("finderPathFetchByC_U_C_C", _finderPathFetchByC_U_C_C);
+
+		_finderPaths.put("finderPathCountByC_U_C_C", _finderPathCountByC_U_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_U_C_C",
+			_finderPathWithPaginationCountByC_U_C_C);
 
 		_setSubscriptionUtilPersistence(this);
 	}
@@ -3523,6 +3588,62 @@ public class SubscriptionPersistenceImpl
 
 		EntityCacheUtil.removeCache(SubscriptionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Subscription> subscriptions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Subscription>> resultMap = new HashMap<>();
+
+			for (Subscription subscription : subscriptions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SubscriptionModelImpl subscriptionModelImpl =
+						(SubscriptionModelImpl)subscription;
+
+					arguments.add(
+						subscriptionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), subscription);
+				}
+				else {
+					List<Subscription> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(subscription);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Subscription>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Subscription> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSubscriptionUtilPersistence(
 		SubscriptionPersistence subscriptionPersistence) {

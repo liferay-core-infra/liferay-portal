@@ -16007,6 +16007,193 @@ public class DLFolderPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"groupId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRepositoryId",
+			_finderPathWithPaginationFindByRepositoryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRepositoryId",
+			_finderPathWithoutPaginationFindByRepositoryId);
+
+		_finderPaths.put(
+			"finderPathCountByRepositoryId", _finderPathCountByRepositoryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P",
+			_finderPathWithPaginationFindByG_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P",
+			_finderPathWithoutPaginationFindByG_P);
+
+		_finderPaths.put("finderPathCountByG_P", _finderPathCountByG_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_NotS",
+			_finderPathWithPaginationFindByC_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_NotS",
+			_finderPathWithPaginationCountByC_NotS);
+
+		_finderPaths.put("finderPathFetchByR_M", _finderPathFetchByR_M);
+
+		_finderPaths.put("finderPathCountByR_M", _finderPathCountByR_M);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByR_P",
+			_finderPathWithPaginationFindByR_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByR_P",
+			_finderPathWithoutPaginationFindByR_P);
+
+		_finderPaths.put("finderPathCountByR_P", _finderPathCountByR_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_N",
+			_finderPathWithPaginationFindByP_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_N",
+			_finderPathWithoutPaginationFindByP_N);
+
+		_finderPaths.put("finderPathCountByP_N", _finderPathCountByP_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGtF_C_P",
+			_finderPathWithPaginationFindByGtF_C_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGtF_C_P",
+			_finderPathWithPaginationCountByGtF_C_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_M_P",
+			_finderPathWithPaginationFindByG_M_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_M_P",
+			_finderPathWithoutPaginationFindByG_M_P);
+
+		_finderPaths.put("finderPathCountByG_M_P", _finderPathCountByG_M_P);
+
+		_finderPaths.put("finderPathFetchByG_P_N", _finderPathFetchByG_P_N);
+
+		_finderPaths.put("finderPathCountByG_P_N", _finderPathCountByG_P_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGtF_C_P_NotS",
+			_finderPathWithPaginationFindByGtF_C_P_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGtF_C_P_NotS",
+			_finderPathWithPaginationCountByGtF_C_P_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_M_P_H",
+			_finderPathWithPaginationFindByG_M_P_H);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_M_P_H",
+			_finderPathWithoutPaginationFindByG_M_P_H);
+
+		_finderPaths.put("finderPathCountByG_M_P_H", _finderPathCountByG_M_P_H);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_M_LikeT_H",
+			_finderPathWithPaginationFindByG_M_LikeT_H);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_M_LikeT_H",
+			_finderPathWithPaginationCountByG_M_LikeT_H);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_H_S",
+			_finderPathWithPaginationFindByG_P_H_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_H_S",
+			_finderPathWithoutPaginationFindByG_P_H_S);
+
+		_finderPaths.put("finderPathCountByG_P_H_S", _finderPathCountByG_P_H_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_M_P_H_S",
+			_finderPathWithPaginationFindByG_M_P_H_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_M_P_H_S",
+			_finderPathWithoutPaginationFindByG_M_P_H_S);
+
+		_finderPaths.put(
+			"finderPathCountByG_M_P_H_S", _finderPathCountByG_M_P_H_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_M_LikeT_H_NotS",
+			_finderPathWithPaginationFindByG_M_LikeT_H_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_M_LikeT_H_NotS",
+			_finderPathWithPaginationCountByG_M_LikeT_H_NotS);
+
+		_finderPaths.put("finderPathFetchByG_ERC", _finderPathFetchByG_ERC);
+
+		_finderPaths.put("finderPathCountByG_ERC", _finderPathCountByG_ERC);
+
 		_setDLFolderUtilPersistence(this);
 	}
 
@@ -16017,6 +16204,61 @@ public class DLFolderPersistenceImpl
 
 		TableMapperFactory.removeTableMapper("DLFileEntryTypes_DLFolders");
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DLFolder> dlFolders = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLFolder>> resultMap = new HashMap<>();
+
+			for (DLFolder dlFolder : dlFolders) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLFolderModelImpl dlFolderModelImpl =
+						(DLFolderModelImpl)dlFolder;
+
+					arguments.add(dlFolderModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), dlFolder);
+				}
+				else {
+					List<DLFolder> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlFolder);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLFolder>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLFolder> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDLFolderUtilPersistence(
 		DLFolderPersistence dlFolderPersistence) {

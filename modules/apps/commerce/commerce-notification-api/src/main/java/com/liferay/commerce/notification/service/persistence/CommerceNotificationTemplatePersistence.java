@@ -18,6 +18,8 @@ import com.liferay.commerce.notification.exception.NoSuchNotificationTemplateExc
 import com.liferay.commerce.notification.model.CommerceNotificationTemplate;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1196,5 +1198,11 @@ public interface CommerceNotificationTemplatePersistence
 	 * @return the number of commerce notification templates
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

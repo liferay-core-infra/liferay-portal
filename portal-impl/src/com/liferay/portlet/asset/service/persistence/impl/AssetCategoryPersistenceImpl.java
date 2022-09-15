@@ -13284,6 +13284,159 @@ public class AssetCategoryPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"groupId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByParentCategoryId",
+			_finderPathWithPaginationFindByParentCategoryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByParentCategoryId",
+			_finderPathWithoutPaginationFindByParentCategoryId);
+
+		_finderPaths.put(
+			"finderPathCountByParentCategoryId",
+			_finderPathCountByParentCategoryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByVocabularyId",
+			_finderPathWithPaginationFindByVocabularyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByVocabularyId",
+			_finderPathWithoutPaginationFindByVocabularyId);
+
+		_finderPaths.put(
+			"finderPathCountByVocabularyId", _finderPathCountByVocabularyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P",
+			_finderPathWithPaginationFindByG_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P",
+			_finderPathWithoutPaginationFindByG_P);
+
+		_finderPaths.put("finderPathCountByG_P", _finderPathCountByG_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_V",
+			_finderPathWithPaginationFindByG_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_V",
+			_finderPathWithoutPaginationFindByG_V);
+
+		_finderPaths.put("finderPathCountByG_V", _finderPathCountByG_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_V",
+			_finderPathWithPaginationCountByG_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_N",
+			_finderPathWithPaginationFindByP_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_N",
+			_finderPathWithoutPaginationFindByP_N);
+
+		_finderPaths.put("finderPathCountByP_N", _finderPathCountByP_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_V",
+			_finderPathWithPaginationFindByP_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_V",
+			_finderPathWithoutPaginationFindByP_V);
+
+		_finderPaths.put("finderPathCountByP_V", _finderPathCountByP_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByN_V",
+			_finderPathWithPaginationFindByN_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByN_V",
+			_finderPathWithoutPaginationFindByN_V);
+
+		_finderPaths.put("finderPathCountByN_V", _finderPathCountByN_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_V",
+			_finderPathWithPaginationFindByG_P_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_V",
+			_finderPathWithoutPaginationFindByG_P_V);
+
+		_finderPaths.put("finderPathCountByG_P_V", _finderPathCountByG_P_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_LikeT_V",
+			_finderPathWithPaginationFindByG_LikeT_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_LikeT_V",
+			_finderPathWithPaginationCountByG_LikeT_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_LikeN_V",
+			_finderPathWithPaginationFindByG_LikeN_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_LikeN_V",
+			_finderPathWithPaginationCountByG_LikeN_V);
+
+		_finderPaths.put("finderPathFetchByP_N_V", _finderPathFetchByP_N_V);
+
+		_finderPaths.put("finderPathCountByP_N_V", _finderPathCountByP_N_V);
+
+		_finderPaths.put("finderPathFetchByG_ERC", _finderPathFetchByG_ERC);
+
+		_finderPaths.put("finderPathCountByG_ERC", _finderPathCountByG_ERC);
+
 		_setAssetCategoryUtilPersistence(this);
 	}
 
@@ -13292,6 +13445,62 @@ public class AssetCategoryPersistenceImpl
 
 		EntityCacheUtil.removeCache(AssetCategoryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AssetCategory> assetCategorys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetCategory>> resultMap = new HashMap<>();
+
+			for (AssetCategory assetCategory : assetCategorys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetCategoryModelImpl assetCategoryModelImpl =
+						(AssetCategoryModelImpl)assetCategory;
+
+					arguments.add(
+						assetCategoryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), assetCategory);
+				}
+				else {
+					List<AssetCategory> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(assetCategory);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetCategory>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetCategory> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAssetCategoryUtilPersistence(
 		AssetCategoryPersistence assetCategoryPersistence) {

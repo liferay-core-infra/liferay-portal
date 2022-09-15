@@ -46,6 +46,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1540,6 +1542,30 @@ public class UserNotificationDeliveryPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathFetchByU_P_C_N_D", _finderPathFetchByU_P_C_N_D);
+
+		_finderPaths.put(
+			"finderPathCountByU_P_C_N_D", _finderPathCountByU_P_C_N_D);
+
 		_setUserNotificationDeliveryUtilPersistence(this);
 	}
 
@@ -1549,6 +1575,70 @@ public class UserNotificationDeliveryPersistenceImpl
 		EntityCacheUtil.removeCache(
 			UserNotificationDeliveryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<UserNotificationDelivery> userNotificationDeliverys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserNotificationDelivery>> resultMap =
+				new HashMap<>();
+
+			for (UserNotificationDelivery userNotificationDelivery :
+					userNotificationDeliverys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserNotificationDeliveryModelImpl
+						userNotificationDeliveryModelImpl =
+							(UserNotificationDeliveryModelImpl)
+								userNotificationDelivery;
+
+					arguments.add(
+						userNotificationDeliveryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						userNotificationDelivery);
+				}
+				else {
+					List<UserNotificationDelivery> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(userNotificationDelivery);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserNotificationDelivery>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserNotificationDelivery> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setUserNotificationDeliveryUtilPersistence(
 		UserNotificationDeliveryPersistence

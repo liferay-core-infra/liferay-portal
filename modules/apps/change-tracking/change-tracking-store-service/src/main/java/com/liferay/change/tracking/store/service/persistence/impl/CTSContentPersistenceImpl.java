@@ -3439,6 +3439,48 @@ public class CTSContentPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_R_S",
+			_finderPathWithPaginationFindByC_R_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_R_S",
+			_finderPathWithoutPaginationFindByC_R_S);
+
+		_finderPaths.put("finderPathCountByC_R_S", _finderPathCountByC_R_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_R_P_S",
+			_finderPathWithPaginationFindByC_R_P_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_R_P_S",
+			_finderPathWithoutPaginationFindByC_R_P_S);
+
+		_finderPaths.put("finderPathCountByC_R_P_S", _finderPathCountByC_R_P_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_R_LikeP_S",
+			_finderPathWithPaginationFindByC_R_LikeP_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_R_LikeP_S",
+			_finderPathWithPaginationCountByC_R_LikeP_S);
+
+		_finderPaths.put(
+			"finderPathFetchByC_R_P_V_S", _finderPathFetchByC_R_P_V_S);
+
+		_finderPaths.put(
+			"finderPathCountByC_R_P_V_S", _finderPathCountByC_R_P_V_S);
+
 		_setCTSContentUtilPersistence(this);
 	}
 
@@ -3448,6 +3490,62 @@ public class CTSContentPersistenceImpl
 
 		entityCache.removeCache(CTSContentImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CTSContent> ctsContents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTSContent>> resultMap = new HashMap<>();
+
+			for (CTSContent ctsContent : ctsContents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTSContentModelImpl ctsContentModelImpl =
+						(CTSContentModelImpl)ctsContent;
+
+					arguments.add(
+						ctsContentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctsContent);
+				}
+				else {
+					List<CTSContent> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctsContent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTSContent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTSContent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCTSContentUtilPersistence(
 		CTSContentPersistence ctsContentPersistence) {

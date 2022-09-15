@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectFieldSettingException;
 import com.liferay.object.model.ObjectFieldSetting;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -653,5 +655,11 @@ public interface ObjectFieldSettingPersistence
 	 * @return the number of object field settings
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

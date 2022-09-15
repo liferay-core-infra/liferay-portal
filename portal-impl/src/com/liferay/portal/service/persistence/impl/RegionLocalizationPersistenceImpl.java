@@ -46,6 +46,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1426,6 +1428,33 @@ public class RegionLocalizationPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"regionId", "languageId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRegionId",
+			_finderPathWithPaginationFindByRegionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRegionId",
+			_finderPathWithoutPaginationFindByRegionId);
+
+		_finderPaths.put(
+			"finderPathCountByRegionId", _finderPathCountByRegionId);
+
+		_finderPaths.put(
+			"finderPathFetchByRegionId_LanguageId",
+			_finderPathFetchByRegionId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathCountByRegionId_LanguageId",
+			_finderPathCountByRegionId_LanguageId);
+
 		_setRegionLocalizationUtilPersistence(this);
 	}
 
@@ -1434,6 +1463,64 @@ public class RegionLocalizationPersistenceImpl
 
 		EntityCacheUtil.removeCache(RegionLocalizationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<RegionLocalization> regionLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RegionLocalization>> resultMap =
+				new HashMap<>();
+
+			for (RegionLocalization regionLocalization : regionLocalizations) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RegionLocalizationModelImpl regionLocalizationModelImpl =
+						(RegionLocalizationModelImpl)regionLocalization;
+
+					arguments.add(
+						regionLocalizationModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), regionLocalization);
+				}
+				else {
+					List<RegionLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(regionLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RegionLocalization>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RegionLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setRegionLocalizationUtilPersistence(
 		RegionLocalizationPersistence regionLocalizationPersistence) {

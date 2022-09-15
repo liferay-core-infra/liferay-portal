@@ -3158,6 +3158,54 @@ public class LayoutSetPersistenceImpl
 			new String[] {Boolean.class.getName(), Long.class.getName()},
 			new String[] {"privateLayout", "logoId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLayoutSetPrototypeUuid",
+			_finderPathWithPaginationFindByLayoutSetPrototypeUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLayoutSetPrototypeUuid",
+			_finderPathWithoutPaginationFindByLayoutSetPrototypeUuid);
+
+		_finderPaths.put(
+			"finderPathCountByLayoutSetPrototypeUuid",
+			_finderPathCountByLayoutSetPrototypeUuid);
+
+		_finderPaths.put("finderPathFetchByG_P", _finderPathFetchByG_P);
+
+		_finderPaths.put("finderPathCountByG_P", _finderPathCountByG_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_L",
+			_finderPathWithPaginationFindByC_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_L",
+			_finderPathWithoutPaginationFindByC_L);
+
+		_finderPaths.put("finderPathCountByC_L", _finderPathCountByC_L);
+
+		_finderPaths.put("finderPathFetchByP_L", _finderPathFetchByP_L);
+
+		_finderPaths.put("finderPathCountByP_L", _finderPathCountByP_L);
+
 		_setLayoutSetUtilPersistence(this);
 	}
 
@@ -3166,6 +3214,62 @@ public class LayoutSetPersistenceImpl
 
 		EntityCacheUtil.removeCache(LayoutSetImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutSet> layoutSets = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutSet>> resultMap = new HashMap<>();
+
+			for (LayoutSet layoutSet : layoutSets) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutSetModelImpl layoutSetModelImpl =
+						(LayoutSetModelImpl)layoutSet;
+
+					arguments.add(
+						layoutSetModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layoutSet);
+				}
+				else {
+					List<LayoutSet> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutSet);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutSet>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutSet> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutSetUtilPersistence(
 		LayoutSetPersistence layoutSetPersistence) {

@@ -2663,6 +2663,46 @@ public class CPDefinitionInventoryPersistenceImpl
 			"countByCPDefinitionId", new String[] {Long.class.getName()},
 			new String[] {"CPDefinitionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathFetchByCPDefinitionId",
+			_finderPathFetchByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
 		_setCPDefinitionInventoryUtilPersistence(this);
 	}
 
@@ -2671,6 +2711,69 @@ public class CPDefinitionInventoryPersistenceImpl
 
 		entityCache.removeCache(CPDefinitionInventoryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CPDefinitionInventory> cpDefinitionInventorys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionInventory>> resultMap =
+				new HashMap<>();
+
+			for (CPDefinitionInventory cpDefinitionInventory :
+					cpDefinitionInventorys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionInventoryModelImpl
+						cpDefinitionInventoryModelImpl =
+							(CPDefinitionInventoryModelImpl)
+								cpDefinitionInventory;
+
+					arguments.add(
+						cpDefinitionInventoryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), cpDefinitionInventory);
+				}
+				else {
+					List<CPDefinitionInventory> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionInventory);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDefinitionInventory>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionInventory> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCPDefinitionInventoryUtilPersistence(
 		CPDefinitionInventoryPersistence cpDefinitionInventoryPersistence) {

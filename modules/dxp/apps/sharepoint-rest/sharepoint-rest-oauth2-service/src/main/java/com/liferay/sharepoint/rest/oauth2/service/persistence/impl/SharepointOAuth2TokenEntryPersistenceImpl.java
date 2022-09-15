@@ -50,7 +50,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1489,6 +1491,28 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"userId", "configurationPid"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put("finderPathFetchByU_C", _finderPathFetchByU_C);
+
+		_finderPaths.put("finderPathCountByU_C", _finderPathCountByU_C);
+
 		_setSharepointOAuth2TokenEntryUtilPersistence(this);
 	}
 
@@ -1498,6 +1522,71 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 
 		entityCache.removeCache(SharepointOAuth2TokenEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SharepointOAuth2TokenEntry> sharepointOAuth2TokenEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SharepointOAuth2TokenEntry>> resultMap =
+				new HashMap<>();
+
+			for (SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry :
+					sharepointOAuth2TokenEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SharepointOAuth2TokenEntryModelImpl
+						sharepointOAuth2TokenEntryModelImpl =
+							(SharepointOAuth2TokenEntryModelImpl)
+								sharepointOAuth2TokenEntry;
+
+					arguments.add(
+						sharepointOAuth2TokenEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						sharepointOAuth2TokenEntry);
+				}
+				else {
+					List<SharepointOAuth2TokenEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(sharepointOAuth2TokenEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SharepointOAuth2TokenEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SharepointOAuth2TokenEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSharepointOAuth2TokenEntryUtilPersistence(
 		SharepointOAuth2TokenEntryPersistence

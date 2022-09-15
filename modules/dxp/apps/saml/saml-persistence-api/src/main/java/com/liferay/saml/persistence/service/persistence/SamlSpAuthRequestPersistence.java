@@ -19,6 +19,7 @@ import com.liferay.saml.persistence.exception.NoSuchSpAuthRequestException;
 import com.liferay.saml.persistence.model.SamlSpAuthRequest;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -362,5 +363,11 @@ public interface SamlSpAuthRequestPersistence
 	 * @return the number of saml sp auth requests
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

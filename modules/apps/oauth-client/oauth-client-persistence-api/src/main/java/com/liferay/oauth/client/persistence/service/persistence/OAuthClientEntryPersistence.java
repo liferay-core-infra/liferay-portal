@@ -18,6 +18,8 @@ import com.liferay.oauth.client.persistence.exception.NoSuchOAuthClientEntryExce
 import com.liferay.oauth.client.persistence.model.OAuthClientEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -863,5 +865,11 @@ public interface OAuthClientEntryPersistence
 	 * @return the number of o auth client entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

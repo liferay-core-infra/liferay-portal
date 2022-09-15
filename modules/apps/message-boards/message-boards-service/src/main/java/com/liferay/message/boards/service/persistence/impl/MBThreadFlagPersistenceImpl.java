@@ -3669,6 +3669,63 @@ public class MBThreadFlagPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"userId", "threadId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByThreadId",
+			_finderPathWithPaginationFindByThreadId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByThreadId",
+			_finderPathWithoutPaginationFindByThreadId);
+
+		_finderPaths.put(
+			"finderPathCountByThreadId", _finderPathCountByThreadId);
+
+		_finderPaths.put("finderPathFetchByU_T", _finderPathFetchByU_T);
+
+		_finderPaths.put("finderPathCountByU_T", _finderPathCountByU_T);
+
 		_setMBThreadFlagUtilPersistence(this);
 	}
 
@@ -3678,6 +3735,62 @@ public class MBThreadFlagPersistenceImpl
 
 		entityCache.removeCache(MBThreadFlagImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<MBThreadFlag> mbThreadFlags = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MBThreadFlag>> resultMap = new HashMap<>();
+
+			for (MBThreadFlag mbThreadFlag : mbThreadFlags) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MBThreadFlagModelImpl mbThreadFlagModelImpl =
+						(MBThreadFlagModelImpl)mbThreadFlag;
+
+					arguments.add(
+						mbThreadFlagModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), mbThreadFlag);
+				}
+				else {
+					List<MBThreadFlag> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(mbThreadFlag);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MBThreadFlag>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MBThreadFlag> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setMBThreadFlagUtilPersistence(
 		MBThreadFlagPersistence mbThreadFlagPersistence) {

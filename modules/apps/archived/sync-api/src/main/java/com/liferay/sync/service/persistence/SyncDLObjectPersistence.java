@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.sync.exception.NoSuchDLObjectException;
 import com.liferay.sync.model.SyncDLObject;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1796,5 +1798,11 @@ public interface SyncDLObjectPersistence extends BasePersistence<SyncDLObject> {
 	 * @return the number of sync dl objects
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

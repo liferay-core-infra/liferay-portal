@@ -5176,6 +5176,82 @@ public class TemplateEntryPersistenceImpl
 				"groupId", "infoItemClassName", "infoItemFormVariationKey"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGroupId",
+			_finderPathWithPaginationCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathFetchByDDMTemplateId", _finderPathFetchByDDMTemplateId);
+
+		_finderPaths.put(
+			"finderPathCountByDDMTemplateId", _finderPathCountByDDMTemplateId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_IICN",
+			_finderPathWithPaginationFindByG_IICN);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_IICN",
+			_finderPathWithoutPaginationFindByG_IICN);
+
+		_finderPaths.put("finderPathCountByG_IICN", _finderPathCountByG_IICN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_IICN_IIFVK",
+			_finderPathWithPaginationFindByG_IICN_IIFVK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_IICN_IIFVK",
+			_finderPathWithoutPaginationFindByG_IICN_IIFVK);
+
+		_finderPaths.put(
+			"finderPathCountByG_IICN_IIFVK", _finderPathCountByG_IICN_IIFVK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_IICN_IIFVK",
+			_finderPathWithPaginationCountByG_IICN_IIFVK);
 
 		_setTemplateEntryUtilPersistence(this);
 	}
@@ -5186,6 +5262,62 @@ public class TemplateEntryPersistenceImpl
 
 		entityCache.removeCache(TemplateEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<TemplateEntry> templateEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<TemplateEntry>> resultMap = new HashMap<>();
+
+			for (TemplateEntry templateEntry : templateEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					TemplateEntryModelImpl templateEntryModelImpl =
+						(TemplateEntryModelImpl)templateEntry;
+
+					arguments.add(
+						templateEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), templateEntry);
+				}
+				else {
+					List<TemplateEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(templateEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<TemplateEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<TemplateEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setTemplateEntryUtilPersistence(
 		TemplateEntryPersistence templateEntryPersistence) {

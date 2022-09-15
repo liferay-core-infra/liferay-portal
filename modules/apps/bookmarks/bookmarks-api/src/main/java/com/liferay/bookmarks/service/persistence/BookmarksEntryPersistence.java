@@ -18,6 +18,8 @@ import com.liferay.bookmarks.exception.NoSuchEntryException;
 import com.liferay.bookmarks.model.BookmarksEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -3284,5 +3286,11 @@ public interface BookmarksEntryPersistence
 	 * @return the number of bookmarks entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

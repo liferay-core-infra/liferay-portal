@@ -52,9 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2887,6 +2890,49 @@ public class CTEntryPersistenceImpl
 			},
 			new String[] {"ctCollectionId", "modelClassNameId", "modelClassPK"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCtCollectionId",
+			_finderPathWithPaginationFindByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCtCollectionId",
+			_finderPathWithoutPaginationFindByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathCountByCtCollectionId",
+			_finderPathCountByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_MCNI",
+			_finderPathWithPaginationFindByC_MCNI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_MCNI",
+			_finderPathWithoutPaginationFindByC_MCNI);
+
+		_finderPaths.put("finderPathCountByC_MCNI", _finderPathCountByC_MCNI);
+
+		_finderPaths.put(
+			"finderPathFetchByC_MCNI_MCPK", _finderPathFetchByC_MCNI_MCPK);
+
+		_finderPaths.put(
+			"finderPathCountByC_MCNI_MCPK", _finderPathCountByC_MCNI_MCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByNotC_MCNI_MCPK",
+			_finderPathWithPaginationFindByNotC_MCNI_MCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByNotC_MCNI_MCPK",
+			_finderPathWithPaginationCountByNotC_MCNI_MCPK);
 
 		_setCTEntryUtilPersistence(this);
 	}
@@ -2897,6 +2943,61 @@ public class CTEntryPersistenceImpl
 
 		entityCache.removeCache(CTEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CTEntry> ctEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTEntry>> resultMap = new HashMap<>();
+
+			for (CTEntry ctEntry : ctEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTEntryModelImpl ctEntryModelImpl =
+						(CTEntryModelImpl)ctEntry;
+
+					arguments.add(ctEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctEntry);
+				}
+				else {
+					List<CTEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCTEntryUtilPersistence(
 		CTEntryPersistence ctEntryPersistence) {

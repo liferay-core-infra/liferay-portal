@@ -51,10 +51,13 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -942,6 +945,18 @@ public class HtmlPreviewEntryPersistenceImpl
 			},
 			new String[] {"groupId", "classNameId", "classPK"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByG_C_C", _finderPathFetchByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
 		_setHtmlPreviewEntryUtilPersistence(this);
 	}
 
@@ -951,6 +966,64 @@ public class HtmlPreviewEntryPersistenceImpl
 
 		entityCache.removeCache(HtmlPreviewEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<HtmlPreviewEntry> htmlPreviewEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<HtmlPreviewEntry>> resultMap =
+				new HashMap<>();
+
+			for (HtmlPreviewEntry htmlPreviewEntry : htmlPreviewEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					HtmlPreviewEntryModelImpl htmlPreviewEntryModelImpl =
+						(HtmlPreviewEntryModelImpl)htmlPreviewEntry;
+
+					arguments.add(
+						htmlPreviewEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), htmlPreviewEntry);
+				}
+				else {
+					List<HtmlPreviewEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(htmlPreviewEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<HtmlPreviewEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<HtmlPreviewEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setHtmlPreviewEntryUtilPersistence(
 		HtmlPreviewEntryPersistence htmlPreviewEntryPersistence) {

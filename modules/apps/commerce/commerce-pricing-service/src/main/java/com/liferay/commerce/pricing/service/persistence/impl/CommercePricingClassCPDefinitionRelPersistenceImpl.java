@@ -62,6 +62,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2429,6 +2430,42 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"commercePricingClassId", "CPDefinitionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommercePricingClassId",
+			_finderPathWithPaginationFindByCommercePricingClassId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommercePricingClassId",
+			_finderPathWithoutPaginationFindByCommercePricingClassId);
+
+		_finderPaths.put(
+			"finderPathCountByCommercePricingClassId",
+			_finderPathCountByCommercePricingClassId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPDefinitionId",
+			_finderPathWithPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPDefinitionId",
+			_finderPathWithoutPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
 		_setCommercePricingClassCPDefinitionRelUtilPersistence(this);
 	}
 
@@ -2439,6 +2476,74 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 		entityCache.removeCache(
 			CommercePricingClassCPDefinitionRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommercePricingClassCPDefinitionRel>
+			commercePricingClassCPDefinitionRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePricingClassCPDefinitionRel>>
+				resultMap = new HashMap<>();
+
+			for (CommercePricingClassCPDefinitionRel
+					commercePricingClassCPDefinitionRel :
+						commercePricingClassCPDefinitionRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePricingClassCPDefinitionRelModelImpl
+						commercePricingClassCPDefinitionRelModelImpl =
+							(CommercePricingClassCPDefinitionRelModelImpl)
+								commercePricingClassCPDefinitionRel;
+
+					arguments.add(
+						commercePricingClassCPDefinitionRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commercePricingClassCPDefinitionRel);
+				}
+				else {
+					List<CommercePricingClassCPDefinitionRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePricingClassCPDefinitionRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CommercePricingClassCPDefinitionRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePricingClassCPDefinitionRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommercePricingClassCPDefinitionRelUtilPersistence(
 		CommercePricingClassCPDefinitionRelPersistence

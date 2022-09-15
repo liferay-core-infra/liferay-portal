@@ -3101,6 +3101,50 @@ public class PortletPreferenceValuePersistenceImpl
 			},
 			new String[] {"portletPreferencesId", "name", "smallValue"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByPortletPreferencesId",
+			_finderPathWithPaginationFindByPortletPreferencesId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByPortletPreferencesId",
+			_finderPathWithoutPaginationFindByPortletPreferencesId);
+
+		_finderPaths.put(
+			"finderPathCountByPortletPreferencesId",
+			_finderPathCountByPortletPreferencesId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_N",
+			_finderPathWithPaginationFindByP_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_N",
+			_finderPathWithoutPaginationFindByP_N);
+
+		_finderPaths.put("finderPathCountByP_N", _finderPathCountByP_N);
+
+		_finderPaths.put("finderPathFetchByP_I_N", _finderPathFetchByP_I_N);
+
+		_finderPaths.put("finderPathCountByP_I_N", _finderPathCountByP_I_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_N_SV",
+			_finderPathWithPaginationFindByP_N_SV);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_N_SV",
+			_finderPathWithoutPaginationFindByP_N_SV);
+
+		_finderPaths.put("finderPathCountByP_N_SV", _finderPathCountByP_N_SV);
+
 		_setPortletPreferenceValueUtilPersistence(this);
 	}
 
@@ -3109,6 +3153,70 @@ public class PortletPreferenceValuePersistenceImpl
 
 		EntityCacheUtil.removeCache(PortletPreferenceValueImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<PortletPreferenceValue> portletPreferenceValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortletPreferenceValue>> resultMap =
+				new HashMap<>();
+
+			for (PortletPreferenceValue portletPreferenceValue :
+					portletPreferenceValues) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortletPreferenceValueModelImpl
+						portletPreferenceValueModelImpl =
+							(PortletPreferenceValueModelImpl)
+								portletPreferenceValue;
+
+					arguments.add(
+						portletPreferenceValueModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						portletPreferenceValue);
+				}
+				else {
+					List<PortletPreferenceValue> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(portletPreferenceValue);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortletPreferenceValue>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortletPreferenceValue> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setPortletPreferenceValueUtilPersistence(
 		PortletPreferenceValuePersistence portletPreferenceValuePersistence) {

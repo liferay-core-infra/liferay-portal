@@ -61,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1501,6 +1502,29 @@ public class RatingsStatsPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"classNameId", "classPK"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C",
+			_finderPathWithPaginationCountByC_C);
 
 		_setRatingsStatsUtilPersistence(this);
 	}
@@ -1510,6 +1534,62 @@ public class RatingsStatsPersistenceImpl
 
 		EntityCacheUtil.removeCache(RatingsStatsImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<RatingsStats> ratingsStatss = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RatingsStats>> resultMap = new HashMap<>();
+
+			for (RatingsStats ratingsStats : ratingsStatss) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RatingsStatsModelImpl ratingsStatsModelImpl =
+						(RatingsStatsModelImpl)ratingsStats;
+
+					arguments.add(
+						ratingsStatsModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), ratingsStats);
+				}
+				else {
+					List<RatingsStats> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ratingsStats);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RatingsStats>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RatingsStats> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setRatingsStatsUtilPersistence(
 		RatingsStatsPersistence ratingsStatsPersistence) {

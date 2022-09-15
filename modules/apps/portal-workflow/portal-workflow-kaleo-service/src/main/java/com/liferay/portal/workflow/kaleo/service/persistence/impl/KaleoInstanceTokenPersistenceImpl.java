@@ -3831,6 +3831,70 @@ public class KaleoInstanceTokenPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithoutPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoDefinitionVersionId",
+			_finderPathCountByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoInstanceId",
+			_finderPathWithPaginationFindByKaleoInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoInstanceId",
+			_finderPathWithoutPaginationFindByKaleoInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoInstanceId",
+			_finderPathCountByKaleoInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_PKITI",
+			_finderPathWithPaginationFindByC_PKITI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_PKITI",
+			_finderPathWithoutPaginationFindByC_PKITI);
+
+		_finderPaths.put("finderPathCountByC_PKITI", _finderPathCountByC_PKITI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_PKITI_CD",
+			_finderPathWithPaginationFindByC_PKITI_CD);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_PKITI_CD",
+			_finderPathWithoutPaginationFindByC_PKITI_CD);
+
+		_finderPaths.put(
+			"finderPathCountByC_PKITI_CD", _finderPathCountByC_PKITI_CD);
+
 		_setKaleoInstanceTokenUtilPersistence(this);
 	}
 
@@ -3840,6 +3904,64 @@ public class KaleoInstanceTokenPersistenceImpl
 
 		entityCache.removeCache(KaleoInstanceTokenImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoInstanceToken> kaleoInstanceTokens = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoInstanceToken>> resultMap =
+				new HashMap<>();
+
+			for (KaleoInstanceToken kaleoInstanceToken : kaleoInstanceTokens) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoInstanceTokenModelImpl kaleoInstanceTokenModelImpl =
+						(KaleoInstanceTokenModelImpl)kaleoInstanceToken;
+
+					arguments.add(
+						kaleoInstanceTokenModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoInstanceToken);
+				}
+				else {
+					List<KaleoInstanceToken> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoInstanceToken);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoInstanceToken>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoInstanceToken> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoInstanceTokenUtilPersistence(
 		KaleoInstanceTokenPersistence kaleoInstanceTokenPersistence) {

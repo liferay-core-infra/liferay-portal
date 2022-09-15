@@ -57,6 +57,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14025,6 +14026,146 @@ public class MicroblogsEntryPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_T",
+			_finderPathWithPaginationFindByU_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_T",
+			_finderPathWithoutPaginationFindByU_T);
+
+		_finderPaths.put("finderPathCountByU_T", _finderPathCountByU_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCCNI_CCPK",
+			_finderPathWithPaginationFindByCCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCCNI_CCPK",
+			_finderPathWithoutPaginationFindByCCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathCountByCCNI_CCPK", _finderPathCountByCCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByCCNI_CCPK",
+			_finderPathWithPaginationCountByCCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCCNI_T",
+			_finderPathWithPaginationFindByCCNI_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCCNI_T",
+			_finderPathWithoutPaginationFindByCCNI_T);
+
+		_finderPaths.put("finderPathCountByCCNI_T", _finderPathCountByCCNI_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByT_P",
+			_finderPathWithPaginationFindByT_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByT_P",
+			_finderPathWithoutPaginationFindByT_P);
+
+		_finderPaths.put("finderPathCountByT_P", _finderPathCountByT_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CCNI_CCPK",
+			_finderPathWithPaginationFindByC_CCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CCNI_CCPK",
+			_finderPathWithoutPaginationFindByC_CCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathCountByC_CCNI_CCPK", _finderPathCountByC_CCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_CCNI_CCPK",
+			_finderPathWithPaginationCountByC_CCNI_CCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CCNI_T",
+			_finderPathWithPaginationFindByC_CCNI_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CCNI_T",
+			_finderPathWithoutPaginationFindByC_CCNI_T);
+
+		_finderPaths.put(
+			"finderPathCountByC_CCNI_T", _finderPathCountByC_CCNI_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCCNI_CCPK_T",
+			_finderPathWithPaginationFindByCCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCCNI_CCPK_T",
+			_finderPathWithoutPaginationFindByCCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathCountByCCNI_CCPK_T", _finderPathCountByCCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByCCNI_CCPK_T",
+			_finderPathWithPaginationCountByCCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CCNI_CCPK_T",
+			_finderPathWithPaginationFindByC_CCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CCNI_CCPK_T",
+			_finderPathWithoutPaginationFindByC_CCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathCountByC_CCNI_CCPK_T", _finderPathCountByC_CCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_CCNI_CCPK_T",
+			_finderPathWithPaginationCountByC_CCNI_CCPK_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_C_T_S",
+			_finderPathWithPaginationFindByU_C_T_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_C_T_S",
+			_finderPathWithoutPaginationFindByU_C_T_S);
+
+		_finderPaths.put("finderPathCountByU_C_T_S", _finderPathCountByU_C_T_S);
+
 		_setMicroblogsEntryUtilPersistence(this);
 	}
 
@@ -14034,6 +14175,64 @@ public class MicroblogsEntryPersistenceImpl
 
 		entityCache.removeCache(MicroblogsEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<MicroblogsEntry> microblogsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MicroblogsEntry>> resultMap =
+				new HashMap<>();
+
+			for (MicroblogsEntry microblogsEntry : microblogsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MicroblogsEntryModelImpl microblogsEntryModelImpl =
+						(MicroblogsEntryModelImpl)microblogsEntry;
+
+					arguments.add(
+						microblogsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), microblogsEntry);
+				}
+				else {
+					List<MicroblogsEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(microblogsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MicroblogsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MicroblogsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setMicroblogsEntryUtilPersistence(
 		MicroblogsEntryPersistence microblogsEntryPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchOrderTypeRelException;
 import com.liferay.commerce.model.CommerceOrderTypeRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -873,5 +875,11 @@ public interface CommerceOrderTypeRelPersistence
 	 * @return the number of commerce order type rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

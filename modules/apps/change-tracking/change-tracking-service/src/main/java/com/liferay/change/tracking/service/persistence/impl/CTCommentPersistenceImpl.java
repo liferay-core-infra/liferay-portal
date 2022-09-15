@@ -50,9 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1655,6 +1658,37 @@ public class CTCommentPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"ctEntryId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCtCollectionId",
+			_finderPathWithPaginationFindByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCtCollectionId",
+			_finderPathWithoutPaginationFindByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathCountByCtCollectionId",
+			_finderPathCountByCtCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCtEntryId",
+			_finderPathWithPaginationFindByCtEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCtEntryId",
+			_finderPathWithoutPaginationFindByCtEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByCtEntryId", _finderPathCountByCtEntryId);
+
 		_setCTCommentUtilPersistence(this);
 	}
 
@@ -1664,6 +1698,62 @@ public class CTCommentPersistenceImpl
 
 		entityCache.removeCache(CTCommentImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CTComment> ctComments = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTComment>> resultMap = new HashMap<>();
+
+			for (CTComment ctComment : ctComments) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTCommentModelImpl ctCommentModelImpl =
+						(CTCommentModelImpl)ctComment;
+
+					arguments.add(
+						ctCommentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctComment);
+				}
+				else {
+					List<CTComment> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctComment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTComment>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTComment> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCTCommentUtilPersistence(
 		CTCommentPersistence ctCommentPersistence) {

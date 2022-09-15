@@ -56,6 +56,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -3897,6 +3898,69 @@ public class UserGroupGroupRolePersistenceImpl
 			},
 			new String[] {"userGroupId", "groupId", "roleId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserGroupId",
+			_finderPathWithPaginationFindByUserGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserGroupId",
+			_finderPathWithoutPaginationFindByUserGroupId);
+
+		_finderPaths.put(
+			"finderPathCountByUserGroupId", _finderPathCountByUserGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRoleId",
+			_finderPathWithPaginationFindByRoleId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRoleId",
+			_finderPathWithoutPaginationFindByRoleId);
+
+		_finderPaths.put("finderPathCountByRoleId", _finderPathCountByRoleId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_G",
+			_finderPathWithPaginationFindByU_G);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_G",
+			_finderPathWithoutPaginationFindByU_G);
+
+		_finderPaths.put("finderPathCountByU_G", _finderPathCountByU_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_R",
+			_finderPathWithPaginationFindByG_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_R",
+			_finderPathWithoutPaginationFindByG_R);
+
+		_finderPaths.put("finderPathCountByG_R", _finderPathCountByG_R);
+
+		_finderPaths.put("finderPathFetchByU_G_R", _finderPathFetchByU_G_R);
+
+		_finderPaths.put("finderPathCountByU_G_R", _finderPathCountByU_G_R);
+
 		_setUserGroupGroupRoleUtilPersistence(this);
 	}
 
@@ -3905,6 +3969,64 @@ public class UserGroupGroupRolePersistenceImpl
 
 		EntityCacheUtil.removeCache(UserGroupGroupRoleImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<UserGroupGroupRole> userGroupGroupRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserGroupGroupRole>> resultMap =
+				new HashMap<>();
+
+			for (UserGroupGroupRole userGroupGroupRole : userGroupGroupRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserGroupGroupRoleModelImpl userGroupGroupRoleModelImpl =
+						(UserGroupGroupRoleModelImpl)userGroupGroupRole;
+
+					arguments.add(
+						userGroupGroupRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userGroupGroupRole);
+				}
+				else {
+					List<UserGroupGroupRole> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(userGroupGroupRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserGroupGroupRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserGroupGroupRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setUserGroupGroupRoleUtilPersistence(
 		UserGroupGroupRolePersistence userGroupGroupRolePersistence) {

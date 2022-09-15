@@ -3421,6 +3421,60 @@ public class DLFileEntryMetadataPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"DDMStructureId", "fileVersionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFileEntryId",
+			_finderPathWithPaginationFindByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFileEntryId",
+			_finderPathWithoutPaginationFindByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByFileEntryId", _finderPathCountByFileEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFileVersionId",
+			_finderPathWithPaginationFindByFileVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFileVersionId",
+			_finderPathWithoutPaginationFindByFileVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByFileVersionId", _finderPathCountByFileVersionId);
+
+		_finderPaths.put("finderPathFetchByD_F", _finderPathFetchByD_F);
+
+		_finderPaths.put("finderPathCountByD_F", _finderPathCountByD_F);
+
 		_setDLFileEntryMetadataUtilPersistence(this);
 	}
 
@@ -3429,6 +3483,67 @@ public class DLFileEntryMetadataPersistenceImpl
 
 		EntityCacheUtil.removeCache(DLFileEntryMetadataImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DLFileEntryMetadata> dlFileEntryMetadatas = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLFileEntryMetadata>> resultMap =
+				new HashMap<>();
+
+			for (DLFileEntryMetadata dlFileEntryMetadata :
+					dlFileEntryMetadatas) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLFileEntryMetadataModelImpl dlFileEntryMetadataModelImpl =
+						(DLFileEntryMetadataModelImpl)dlFileEntryMetadata;
+
+					arguments.add(
+						dlFileEntryMetadataModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), dlFileEntryMetadata);
+				}
+				else {
+					List<DLFileEntryMetadata> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dlFileEntryMetadata);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLFileEntryMetadata>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLFileEntryMetadata> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDLFileEntryMetadataUtilPersistence(
 		DLFileEntryMetadataPersistence dlFileEntryMetadataPersistence) {

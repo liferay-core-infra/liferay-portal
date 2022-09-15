@@ -49,6 +49,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1366,6 +1367,26 @@ public class CompanyPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"logoId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByWebId", _finderPathFetchByWebId);
+
+		_finderPaths.put("finderPathCountByWebId", _finderPathCountByWebId);
+
+		_finderPaths.put("finderPathFetchByMx", _finderPathFetchByMx);
+
+		_finderPaths.put("finderPathCountByMx", _finderPathCountByMx);
+
+		_finderPaths.put("finderPathFetchByLogoId", _finderPathFetchByLogoId);
+
+		_finderPaths.put("finderPathCountByLogoId", _finderPathCountByLogoId);
+
 		_setCompanyUtilPersistence(this);
 	}
 
@@ -1374,6 +1395,61 @@ public class CompanyPersistenceImpl
 
 		EntityCacheUtil.removeCache(CompanyImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Company> companys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Company>> resultMap = new HashMap<>();
+
+			for (Company company : companys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CompanyModelImpl companyModelImpl =
+						(CompanyModelImpl)company;
+
+					arguments.add(companyModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), company);
+				}
+				else {
+					List<Company> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(company);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Company>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Company> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCompanyUtilPersistence(
 		CompanyPersistence companyPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.batch.planner.exception.NoSuchMappingException;
 import com.liferay.batch.planner.model.BatchPlannerMapping;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -370,5 +372,11 @@ public interface BatchPlannerMappingPersistence
 	 * @return the number of batch planner mappings
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

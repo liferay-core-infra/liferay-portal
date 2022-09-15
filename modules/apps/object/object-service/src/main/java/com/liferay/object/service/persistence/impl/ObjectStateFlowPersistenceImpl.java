@@ -54,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2063,6 +2064,40 @@ public class ObjectStateFlowPersistenceImpl
 			"countByObjectFieldId", new String[] {Long.class.getName()},
 			new String[] {"objectFieldId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathFetchByObjectFieldId", _finderPathFetchByObjectFieldId);
+
+		_finderPaths.put(
+			"finderPathCountByObjectFieldId", _finderPathCountByObjectFieldId);
+
 		_setObjectStateFlowUtilPersistence(this);
 	}
 
@@ -2072,6 +2107,64 @@ public class ObjectStateFlowPersistenceImpl
 
 		entityCache.removeCache(ObjectStateFlowImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ObjectStateFlow> objectStateFlows = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectStateFlow>> resultMap =
+				new HashMap<>();
+
+			for (ObjectStateFlow objectStateFlow : objectStateFlows) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectStateFlowModelImpl objectStateFlowModelImpl =
+						(ObjectStateFlowModelImpl)objectStateFlow;
+
+					arguments.add(
+						objectStateFlowModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectStateFlow);
+				}
+				else {
+					List<ObjectStateFlow> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectStateFlow);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectStateFlow>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectStateFlow> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setObjectStateFlowUtilPersistence(
 		ObjectStateFlowPersistence objectStateFlowPersistence) {

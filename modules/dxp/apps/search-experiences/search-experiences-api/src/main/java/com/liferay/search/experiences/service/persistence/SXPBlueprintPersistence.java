@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.search.experiences.exception.NoSuchSXPBlueprintException;
 import com.liferay.search.experiences.model.SXPBlueprint;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -851,5 +853,11 @@ public interface SXPBlueprintPersistence extends BasePersistence<SXPBlueprint> {
 	 * @return the number of sxp blueprints
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

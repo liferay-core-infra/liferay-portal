@@ -18,6 +18,8 @@ import com.liferay.knowledge.base.exception.NoSuchTemplateException;
 import com.liferay.knowledge.base.model.KBTemplate;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -712,5 +714,11 @@ public interface KBTemplatePersistence extends BasePersistence<KBTemplate> {
 	 * @return the number of kb templates
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

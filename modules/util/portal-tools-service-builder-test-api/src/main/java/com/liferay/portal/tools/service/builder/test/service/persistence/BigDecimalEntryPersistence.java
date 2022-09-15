@@ -20,6 +20,8 @@ import com.liferay.portal.tools.service.builder.test.model.BigDecimalEntry;
 
 import java.math.BigDecimal;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -777,5 +779,11 @@ public interface BigDecimalEntryPersistence
 		java.util.List
 			<com.liferay.portal.tools.service.builder.test.model.LVEntry>
 				lvEntries);
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

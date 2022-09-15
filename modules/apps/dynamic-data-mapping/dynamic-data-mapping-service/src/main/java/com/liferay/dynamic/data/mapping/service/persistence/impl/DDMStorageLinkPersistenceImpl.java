@@ -3642,6 +3642,64 @@ public class DDMStorageLinkPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
 			"countByStructureVersionId", new String[] {Long.class.getName()},
 			new String[] {"structureVersionId"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put("finderPathFetchByClassPK", _finderPathFetchByClassPK);
+
+		_finderPaths.put("finderPathCountByClassPK", _finderPathCountByClassPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureId",
+			_finderPathWithPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureId",
+			_finderPathWithoutPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByStructureId", _finderPathCountByStructureId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureVersionId",
+			_finderPathWithPaginationFindByStructureVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureVersionId",
+			_finderPathWithoutPaginationFindByStructureVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByStructureVersionId",
+			_finderPathCountByStructureVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByStructureVersionId",
+			_finderPathWithPaginationCountByStructureVersionId);
 
 		_setDDMStorageLinkUtilPersistence(this);
 	}
@@ -3652,6 +3710,62 @@ public class DDMStorageLinkPersistenceImpl
 
 		entityCache.removeCache(DDMStorageLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMStorageLink> ddmStorageLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMStorageLink>> resultMap = new HashMap<>();
+
+			for (DDMStorageLink ddmStorageLink : ddmStorageLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)ddmStorageLink;
+
+					arguments.add(
+						ddmStorageLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmStorageLink);
+				}
+				else {
+					List<DDMStorageLink> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmStorageLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMStorageLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMStorageLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMStorageLinkUtilPersistence(
 		DDMStorageLinkPersistence ddmStorageLinkPersistence) {

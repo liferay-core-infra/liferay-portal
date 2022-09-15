@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -4212,6 +4213,76 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceInventoryWarehouseId",
+			_finderPathWithPaginationFindByCommerceInventoryWarehouseId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceInventoryWarehouseId",
+			_finderPathWithoutPaginationFindByCommerceInventoryWarehouseId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceInventoryWarehouseId",
+			_finderPathCountByCommerceInventoryWarehouseId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId_Sku",
+			_finderPathWithPaginationFindByCompanyId_Sku);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId_Sku",
+			_finderPathWithoutPaginationFindByCompanyId_Sku);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId_Sku", _finderPathCountByCompanyId_Sku);
+
+		_finderPaths.put("finderPathFetchByC_S", _finderPathFetchByC_S);
+
+		_finderPaths.put("finderPathCountByC_S", _finderPathCountByC_S);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setCommerceInventoryWarehouseItemUtilPersistence(this);
 	}
 
@@ -4222,6 +4293,72 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		entityCache.removeCache(
 			CommerceInventoryWarehouseItemImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceInventoryWarehouseItem> commerceInventoryWarehouseItems =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceInventoryWarehouseItem>> resultMap =
+				new HashMap<>();
+
+			for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
+					commerceInventoryWarehouseItems) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceInventoryWarehouseItemModelImpl
+						commerceInventoryWarehouseItemModelImpl =
+							(CommerceInventoryWarehouseItemModelImpl)
+								commerceInventoryWarehouseItem;
+
+					arguments.add(
+						commerceInventoryWarehouseItemModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceInventoryWarehouseItem);
+				}
+				else {
+					List<CommerceInventoryWarehouseItem> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceInventoryWarehouseItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceInventoryWarehouseItem>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceInventoryWarehouseItem> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceInventoryWarehouseItemUtilPersistence(
 		CommerceInventoryWarehouseItemPersistence

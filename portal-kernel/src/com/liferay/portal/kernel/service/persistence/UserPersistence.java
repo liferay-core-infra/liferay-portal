@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -3001,5 +3002,11 @@ public interface UserPersistence
 	public void setUserGroups(
 		long pk,
 		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups);
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.change.tracking.exception.NoSuchPreferencesException;
 import com.liferay.change.tracking.model.CTPreferences;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -498,5 +500,11 @@ public interface CTPreferencesPersistence
 	 * @return the number of ct preferenceses
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

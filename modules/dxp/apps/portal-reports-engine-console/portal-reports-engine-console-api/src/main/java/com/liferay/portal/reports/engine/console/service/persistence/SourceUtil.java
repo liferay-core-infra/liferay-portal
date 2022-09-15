@@ -1094,6 +1094,18 @@ public class SourceUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths() {
+
+		return getPersistence().getFinderPaths();
+	}
+
+	public static void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath finderPaths) {
+
+		getPersistence().populateFinderCache(finderPaths);
+	}
+
 	public static SourcePersistence getPersistence() {
 		return _persistence;
 	}

@@ -2846,6 +2846,48 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 			new String[] {"groupId", "classNameId", "classPK", "languageId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFriendlyURLEntryId",
+			_finderPathWithPaginationFindByFriendlyURLEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFriendlyURLEntryId",
+			_finderPathWithoutPaginationFindByFriendlyURLEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByFriendlyURLEntryId",
+			_finderPathCountByFriendlyURLEntryId);
+
+		_finderPaths.put(
+			"finderPathFetchByFriendlyURLEntryId_LanguageId",
+			_finderPathFetchByFriendlyURLEntryId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathCountByFriendlyURLEntryId_LanguageId",
+			_finderPathCountByFriendlyURLEntryId_LanguageId);
+
+		_finderPaths.put("finderPathFetchByG_C_U", _finderPathFetchByG_C_U);
+
+		_finderPaths.put("finderPathCountByG_C_U", _finderPathCountByG_C_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_L",
+			_finderPathWithPaginationFindByG_C_C_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_L",
+			_finderPathWithoutPaginationFindByG_C_C_L);
+
+		_finderPaths.put("finderPathCountByG_C_C_L", _finderPathCountByG_C_C_L);
+
 		_setFriendlyURLEntryLocalizationUtilPersistence(this);
 	}
 
@@ -2856,6 +2898,72 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 		entityCache.removeCache(
 			FriendlyURLEntryLocalizationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<FriendlyURLEntryLocalization> friendlyURLEntryLocalizations =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FriendlyURLEntryLocalization>> resultMap =
+				new HashMap<>();
+
+			for (FriendlyURLEntryLocalization friendlyURLEntryLocalization :
+					friendlyURLEntryLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FriendlyURLEntryLocalizationModelImpl
+						friendlyURLEntryLocalizationModelImpl =
+							(FriendlyURLEntryLocalizationModelImpl)
+								friendlyURLEntryLocalization;
+
+					arguments.add(
+						friendlyURLEntryLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						friendlyURLEntryLocalization);
+				}
+				else {
+					List<FriendlyURLEntryLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(friendlyURLEntryLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FriendlyURLEntryLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FriendlyURLEntryLocalization> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setFriendlyURLEntryLocalizationUtilPersistence(
 		FriendlyURLEntryLocalizationPersistence

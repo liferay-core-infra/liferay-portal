@@ -48,6 +48,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -971,6 +973,27 @@ public class NestedSetsTreeEntryPersistenceImpl
 			},
 			true);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountAncestors",
+			_finderPathWithPaginationCountAncestors);
+		_finderPaths.put(
+			"finderPathWithPaginationCountDescendants",
+			_finderPathWithPaginationCountDescendants);
+		_finderPaths.put(
+			"finderPathWithPaginationGetAncestors",
+			_finderPathWithPaginationGetAncestors);
+		_finderPaths.put(
+			"finderPathWithPaginationGetDescendants",
+			_finderPathWithPaginationGetDescendants);
+
 		_setNestedSetsTreeEntryUtilPersistence(this);
 	}
 
@@ -979,6 +1002,67 @@ public class NestedSetsTreeEntryPersistenceImpl
 
 		entityCache.removeCache(NestedSetsTreeEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<NestedSetsTreeEntry> nestedSetsTreeEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<NestedSetsTreeEntry>> resultMap =
+				new HashMap<>();
+
+			for (NestedSetsTreeEntry nestedSetsTreeEntry :
+					nestedSetsTreeEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					NestedSetsTreeEntryModelImpl nestedSetsTreeEntryModelImpl =
+						(NestedSetsTreeEntryModelImpl)nestedSetsTreeEntry;
+
+					arguments.add(
+						nestedSetsTreeEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), nestedSetsTreeEntry);
+				}
+				else {
+					List<NestedSetsTreeEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(nestedSetsTreeEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<NestedSetsTreeEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<NestedSetsTreeEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setNestedSetsTreeEntryUtilPersistence(
 		NestedSetsTreeEntryPersistence nestedSetsTreeEntryPersistence) {

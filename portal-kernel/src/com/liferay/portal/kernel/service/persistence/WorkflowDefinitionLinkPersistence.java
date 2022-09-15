@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.exception.NoSuchWorkflowDefinitionLinkException
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1079,5 +1081,11 @@ public interface WorkflowDefinitionLinkPersistence
 	 * @return the number of workflow definition links
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -61,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2248,6 +2249,40 @@ public class AssetAutoTaggerEntryPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"assetEntryId", "assetTagId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAssetEntryId",
+			_finderPathWithPaginationFindByAssetEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAssetEntryId",
+			_finderPathWithoutPaginationFindByAssetEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByAssetEntryId", _finderPathCountByAssetEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAssetTagId",
+			_finderPathWithPaginationFindByAssetTagId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAssetTagId",
+			_finderPathWithoutPaginationFindByAssetTagId);
+
+		_finderPaths.put(
+			"finderPathCountByAssetTagId", _finderPathCountByAssetTagId);
+
+		_finderPaths.put("finderPathFetchByA_A", _finderPathFetchByA_A);
+
+		_finderPaths.put("finderPathCountByA_A", _finderPathCountByA_A);
+
 		_setAssetAutoTaggerEntryUtilPersistence(this);
 	}
 
@@ -2257,6 +2292,68 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 		entityCache.removeCache(AssetAutoTaggerEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AssetAutoTaggerEntry> assetAutoTaggerEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetAutoTaggerEntry>> resultMap =
+				new HashMap<>();
+
+			for (AssetAutoTaggerEntry assetAutoTaggerEntry :
+					assetAutoTaggerEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetAutoTaggerEntryModelImpl
+						assetAutoTaggerEntryModelImpl =
+							(AssetAutoTaggerEntryModelImpl)assetAutoTaggerEntry;
+
+					arguments.add(
+						assetAutoTaggerEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), assetAutoTaggerEntry);
+				}
+				else {
+					List<AssetAutoTaggerEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(assetAutoTaggerEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetAutoTaggerEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetAutoTaggerEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAssetAutoTaggerEntryUtilPersistence(
 		AssetAutoTaggerEntryPersistence assetAutoTaggerEntryPersistence) {

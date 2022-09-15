@@ -10839,6 +10839,107 @@ public class OrganizationPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyIdLocations",
+			_finderPathWithPaginationFindByCompanyIdLocations);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyIdLocations",
+			_finderPathWithoutPaginationFindByCompanyIdLocations);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyIdLocations",
+			_finderPathCountByCompanyIdLocations);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_P",
+			_finderPathWithPaginationFindByC_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_P",
+			_finderPathWithoutPaginationFindByC_P);
+
+		_finderPaths.put("finderPathCountByC_P", _finderPathCountByC_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LikeT",
+			_finderPathWithPaginationFindByC_LikeT);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LikeT",
+			_finderPathWithPaginationCountByC_LikeT);
+
+		_finderPaths.put("finderPathFetchByC_N", _finderPathFetchByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LikeN",
+			_finderPathWithPaginationFindByC_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LikeN",
+			_finderPathWithPaginationCountByC_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGtO_C_P",
+			_finderPathWithPaginationFindByGtO_C_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGtO_C_P",
+			_finderPathWithPaginationCountByGtO_C_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_P_LikeN",
+			_finderPathWithPaginationFindByC_P_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_P_LikeN",
+			_finderPathWithPaginationCountByC_P_LikeN);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setOrganizationUtilPersistence(this);
 	}
 
@@ -10850,6 +10951,62 @@ public class OrganizationPersistenceImpl
 		TableMapperFactory.removeTableMapper("Groups_Orgs");
 		TableMapperFactory.removeTableMapper("Users_Orgs");
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Organization> organizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Organization>> resultMap = new HashMap<>();
+
+			for (Organization organization : organizations) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OrganizationModelImpl organizationModelImpl =
+						(OrganizationModelImpl)organization;
+
+					arguments.add(
+						organizationModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), organization);
+				}
+				else {
+					List<Organization> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(organization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Organization>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Organization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setOrganizationUtilPersistence(
 		OrganizationPersistence organizationPersistence) {

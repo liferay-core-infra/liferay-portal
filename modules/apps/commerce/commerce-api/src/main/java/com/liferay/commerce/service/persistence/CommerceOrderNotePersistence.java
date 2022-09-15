@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchOrderNoteException;
 import com.liferay.commerce.model.CommerceOrderNote;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -861,5 +863,11 @@ public interface CommerceOrderNotePersistence
 	 * @return the number of commerce order notes
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

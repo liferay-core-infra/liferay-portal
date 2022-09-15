@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1454,6 +1455,28 @@ public class EagerBlobEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "groupId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
 		_setEagerBlobEntryUtilPersistence(this);
 	}
 
@@ -1462,6 +1485,63 @@ public class EagerBlobEntryPersistenceImpl
 
 		dummyEntityCache.removeCache(EagerBlobEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<EagerBlobEntry> eagerBlobEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<EagerBlobEntry>> resultMap = new HashMap<>();
+
+			for (EagerBlobEntry eagerBlobEntry : eagerBlobEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					EagerBlobEntryModelImpl eagerBlobEntryModelImpl =
+						(EagerBlobEntryModelImpl)eagerBlobEntry;
+
+					arguments.add(
+						eagerBlobEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					dummyFinderCache.putResult(
+						finderPath, arguments.toArray(), eagerBlobEntry);
+				}
+				else {
+					List<EagerBlobEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(eagerBlobEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<EagerBlobEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<EagerBlobEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					dummyFinderCache.putResult(
+						finderPath, key.toArray(), value);
+				}
+				else {
+					dummyFinderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setEagerBlobEntryUtilPersistence(
 		EagerBlobEntryPersistence eagerBlobEntryPersistence) {

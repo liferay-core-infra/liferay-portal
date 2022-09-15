@@ -52,7 +52,9 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2633,6 +2635,42 @@ public class AnalyticsAssociationPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A",
+			_finderPathWithPaginationFindByC_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A",
+			_finderPathWithoutPaginationFindByC_A);
+
+		_finderPaths.put("finderPathCountByC_A", _finderPathCountByC_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_GtM_A",
+			_finderPathWithPaginationFindByC_GtM_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_GtM_A",
+			_finderPathWithPaginationCountByC_GtM_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_A",
+			_finderPathWithPaginationFindByC_A_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_A",
+			_finderPathWithoutPaginationFindByC_A_A);
+
+		_finderPaths.put("finderPathCountByC_A_A", _finderPathCountByC_A_A);
+
 		_setAnalyticsAssociationUtilPersistence(this);
 	}
 
@@ -2642,6 +2680,68 @@ public class AnalyticsAssociationPersistenceImpl
 
 		entityCache.removeCache(AnalyticsAssociationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AnalyticsAssociation> analyticsAssociations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AnalyticsAssociation>> resultMap =
+				new HashMap<>();
+
+			for (AnalyticsAssociation analyticsAssociation :
+					analyticsAssociations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AnalyticsAssociationModelImpl
+						analyticsAssociationModelImpl =
+							(AnalyticsAssociationModelImpl)analyticsAssociation;
+
+					arguments.add(
+						analyticsAssociationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), analyticsAssociation);
+				}
+				else {
+					List<AnalyticsAssociation> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(analyticsAssociation);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AnalyticsAssociation>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AnalyticsAssociation> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAnalyticsAssociationUtilPersistence(
 		AnalyticsAssociationPersistence analyticsAssociationPersistence) {

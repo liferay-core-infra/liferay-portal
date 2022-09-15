@@ -13319,6 +13319,169 @@ public class DDMTemplatePersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByClassPK",
+			_finderPathWithPaginationFindByClassPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByClassPK",
+			_finderPathWithoutPaginationFindByClassPK);
+
+		_finderPaths.put("finderPathCountByClassPK", _finderPathCountByClassPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByTemplateKey",
+			_finderPathWithPaginationFindByTemplateKey);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByTemplateKey",
+			_finderPathWithoutPaginationFindByTemplateKey);
+
+		_finderPaths.put(
+			"finderPathCountByTemplateKey", _finderPathCountByTemplateKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByType",
+			_finderPathWithPaginationFindByType);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByType",
+			_finderPathWithoutPaginationFindByType);
+
+		_finderPaths.put("finderPathCountByType", _finderPathCountByType);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLanguage",
+			_finderPathWithPaginationFindByLanguage);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLanguage",
+			_finderPathWithoutPaginationFindByLanguage);
+
+		_finderPaths.put(
+			"finderPathCountByLanguage", _finderPathCountByLanguage);
+
+		_finderPaths.put(
+			"finderPathFetchBySmallImageId", _finderPathFetchBySmallImageId);
+
+		_finderPaths.put(
+			"finderPathCountBySmallImageId", _finderPathCountBySmallImageId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_CPK",
+			_finderPathWithPaginationFindByG_CPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_CPK",
+			_finderPathWithoutPaginationFindByG_CPK);
+
+		_finderPaths.put("finderPathCountByG_CPK", _finderPathCountByG_CPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_CPK",
+			_finderPathWithPaginationCountByG_CPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C",
+			_finderPathWithPaginationFindByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C",
+			_finderPathWithoutPaginationFindByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C_C",
+			_finderPathWithPaginationCountByG_C_C);
+
+		_finderPaths.put("finderPathFetchByG_C_T", _finderPathFetchByG_C_T);
+
+		_finderPaths.put("finderPathCountByG_C_T", _finderPathCountByG_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T",
+			_finderPathWithPaginationFindByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_T",
+			_finderPathWithoutPaginationFindByC_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_T", _finderPathCountByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_T",
+			_finderPathWithPaginationFindByG_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_T",
+			_finderPathWithoutPaginationFindByG_C_C_T);
+
+		_finderPaths.put("finderPathCountByG_C_C_T", _finderPathCountByG_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_T_M",
+			_finderPathWithPaginationFindByG_C_C_T_M);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_T_M",
+			_finderPathWithoutPaginationFindByG_C_C_T_M);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_C_T_M", _finderPathCountByG_C_C_T_M);
+
 		_setDDMTemplateUtilPersistence(this);
 	}
 
@@ -13328,6 +13491,62 @@ public class DDMTemplatePersistenceImpl
 
 		entityCache.removeCache(DDMTemplateImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMTemplate> ddmTemplates = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMTemplate>> resultMap = new HashMap<>();
+
+			for (DDMTemplate ddmTemplate : ddmTemplates) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMTemplateModelImpl ddmTemplateModelImpl =
+						(DDMTemplateModelImpl)ddmTemplate;
+
+					arguments.add(
+						ddmTemplateModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmTemplate);
+				}
+				else {
+					List<DDMTemplate> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmTemplate);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMTemplate>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMTemplate> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMTemplateUtilPersistence(
 		DDMTemplatePersistence ddmTemplatePersistence) {

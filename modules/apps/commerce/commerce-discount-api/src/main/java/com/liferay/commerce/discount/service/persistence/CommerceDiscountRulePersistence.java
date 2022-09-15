@@ -18,6 +18,8 @@ import com.liferay.commerce.discount.exception.NoSuchDiscountRuleException;
 import com.liferay.commerce.discount.model.CommerceDiscountRule;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -306,5 +308,11 @@ public interface CommerceDiscountRulePersistence
 	 * @return the number of commerce discount rules
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

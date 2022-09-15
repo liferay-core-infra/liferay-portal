@@ -18,6 +18,8 @@ import com.liferay.oauth.exception.NoSuchUserException;
 import com.liferay.oauth.model.OAuthUser;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -669,5 +671,11 @@ public interface OAuthUserPersistence extends BasePersistence<OAuthUser> {
 	 * @return the number of o auth users
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

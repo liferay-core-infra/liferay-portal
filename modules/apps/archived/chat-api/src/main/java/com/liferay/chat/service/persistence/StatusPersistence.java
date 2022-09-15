@@ -18,6 +18,8 @@ import com.liferay.chat.exception.NoSuchStatusException;
 import com.liferay.chat.model.Status;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -639,5 +641,11 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 * @return the number of statuses
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.list.type.exception.NoSuchListTypeEntryException;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -855,5 +857,11 @@ public interface ListTypeEntryPersistence
 	 * @return the number of list type entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

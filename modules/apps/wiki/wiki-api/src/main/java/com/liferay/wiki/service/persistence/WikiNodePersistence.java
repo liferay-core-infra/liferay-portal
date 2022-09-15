@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.wiki.exception.NoSuchNodeException;
 import com.liferay.wiki.model.WikiNode;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1330,5 +1332,11 @@ public interface WikiNodePersistence extends BasePersistence<WikiNode> {
 	 * @return the number of wiki nodes
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

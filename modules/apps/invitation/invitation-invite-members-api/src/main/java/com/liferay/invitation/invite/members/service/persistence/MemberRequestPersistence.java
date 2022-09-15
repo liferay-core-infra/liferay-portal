@@ -18,6 +18,8 @@ import com.liferay.invitation.invite.members.exception.NoSuchMemberRequestExcept
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -561,5 +563,11 @@ public interface MemberRequestPersistence
 	 * @return the number of member requests
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

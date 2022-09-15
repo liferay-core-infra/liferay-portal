@@ -57,6 +57,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -5159,6 +5160,67 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				"companyId", "commerceAccountId", "relativeChange", "status"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put("finderPathFetchByC_C_T", _finderPathFetchByC_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_T", _finderPathCountByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_S",
+			_finderPathWithPaginationFindByC_C_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_S",
+			_finderPathWithoutPaginationFindByC_C_S);
+
+		_finderPaths.put("finderPathCountByC_C_S", _finderPathCountByC_C_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_S",
+			_finderPathWithPaginationCountByC_C_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_GtRc_S",
+			_finderPathWithPaginationFindByC_C_GtRc_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_GtRc_S",
+			_finderPathWithPaginationCountByC_C_GtRc_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_LtRc_S",
+			_finderPathWithPaginationFindByC_C_LtRc_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_LtRc_S",
+			_finderPathWithPaginationCountByC_C_LtRc_S);
 
 		_setCommerceMLForecastAlertEntryUtilPersistence(this);
 	}
@@ -5170,6 +5232,72 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		entityCache.removeCache(
 			CommerceMLForecastAlertEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceMLForecastAlertEntry> commerceMLForecastAlertEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceMLForecastAlertEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
+					commerceMLForecastAlertEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceMLForecastAlertEntryModelImpl
+						commerceMLForecastAlertEntryModelImpl =
+							(CommerceMLForecastAlertEntryModelImpl)
+								commerceMLForecastAlertEntry;
+
+					arguments.add(
+						commerceMLForecastAlertEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceMLForecastAlertEntry);
+				}
+				else {
+					List<CommerceMLForecastAlertEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceMLForecastAlertEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceMLForecastAlertEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceMLForecastAlertEntry> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceMLForecastAlertEntryUtilPersistence(
 		CommerceMLForecastAlertEntryPersistence

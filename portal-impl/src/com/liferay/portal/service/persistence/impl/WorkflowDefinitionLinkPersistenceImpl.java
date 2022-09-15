@@ -4437,6 +4437,71 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C",
+			_finderPathWithPaginationFindByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C",
+			_finderPathWithoutPaginationFindByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_CPK",
+			_finderPathWithPaginationFindByG_C_CPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_CPK",
+			_finderPathWithoutPaginationFindByG_C_CPK);
+
+		_finderPaths.put("finderPathCountByG_C_CPK", _finderPathCountByG_C_CPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_W_W",
+			_finderPathWithPaginationFindByC_W_W);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_W_W",
+			_finderPathWithoutPaginationFindByC_W_W);
+
+		_finderPaths.put("finderPathCountByC_W_W", _finderPathCountByC_W_W);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_C",
+			_finderPathWithPaginationFindByG_C_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_C",
+			_finderPathWithoutPaginationFindByG_C_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C_C", _finderPathCountByG_C_C_C);
+
+		_finderPaths.put(
+			"finderPathFetchByG_C_C_C_T", _finderPathFetchByG_C_C_C_T);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_C_C_T", _finderPathCountByG_C_C_C_T);
+
 		_setWorkflowDefinitionLinkUtilPersistence(this);
 	}
 
@@ -4445,6 +4510,70 @@ public class WorkflowDefinitionLinkPersistenceImpl
 
 		EntityCacheUtil.removeCache(WorkflowDefinitionLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<WorkflowDefinitionLink> workflowDefinitionLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<WorkflowDefinitionLink>> resultMap =
+				new HashMap<>();
+
+			for (WorkflowDefinitionLink workflowDefinitionLink :
+					workflowDefinitionLinks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					WorkflowDefinitionLinkModelImpl
+						workflowDefinitionLinkModelImpl =
+							(WorkflowDefinitionLinkModelImpl)
+								workflowDefinitionLink;
+
+					arguments.add(
+						workflowDefinitionLinkModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						workflowDefinitionLink);
+				}
+				else {
+					List<WorkflowDefinitionLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(workflowDefinitionLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<WorkflowDefinitionLink>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<WorkflowDefinitionLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setWorkflowDefinitionLinkUtilPersistence(
 		WorkflowDefinitionLinkPersistence workflowDefinitionLinkPersistence) {

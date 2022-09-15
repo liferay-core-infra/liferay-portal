@@ -18,6 +18,8 @@ import com.liferay.depot.exception.NoSuchEntryException;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -547,5 +549,11 @@ public interface DepotEntryPersistence extends BasePersistence<DepotEntry> {
 	 * @return the number of depot entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

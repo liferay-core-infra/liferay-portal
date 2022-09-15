@@ -18,6 +18,8 @@ import com.liferay.mail.reader.exception.NoSuchMessageException;
 import com.liferay.mail.reader.model.Message;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -494,5 +496,11 @@ public interface MessagePersistence extends BasePersistence<Message> {
 	 * @return the number of messages
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

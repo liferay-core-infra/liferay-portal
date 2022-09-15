@@ -18,6 +18,8 @@ import com.liferay.frontend.view.state.exception.NoSuchEntryException;
 import com.liferay.frontend.view.state.model.FVSEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -454,5 +456,11 @@ public interface FVSEntryPersistence extends BasePersistence<FVSEntry> {
 	 * @return the number of fvs entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

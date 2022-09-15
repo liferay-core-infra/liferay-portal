@@ -50,6 +50,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -5474,6 +5475,103 @@ public class CommerceSubscriptionEntryPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathFetchByCommerceOrderItemId",
+			_finderPathFetchByCommerceOrderItemId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceOrderItemId",
+			_finderPathCountByCommerceOrderItemId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySubscriptionStatus",
+			_finderPathWithPaginationFindBySubscriptionStatus);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySubscriptionStatus",
+			_finderPathWithoutPaginationFindBySubscriptionStatus);
+
+		_finderPaths.put(
+			"finderPathCountBySubscriptionStatus",
+			_finderPathCountBySubscriptionStatus);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_U",
+			_finderPathWithPaginationFindByC_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_U",
+			_finderPathWithoutPaginationFindByC_U);
+
+		_finderPaths.put("finderPathCountByC_U", _finderPathCountByC_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_U",
+			_finderPathWithPaginationFindByG_C_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_U",
+			_finderPathWithoutPaginationFindByG_C_U);
+
+		_finderPaths.put("finderPathCountByG_C_U", _finderPathCountByG_C_U);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
 		_setCommerceSubscriptionEntryUtilPersistence(this);
 	}
 
@@ -5482,6 +5580,70 @@ public class CommerceSubscriptionEntryPersistenceImpl
 
 		entityCache.removeCache(CommerceSubscriptionEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceSubscriptionEntry> commerceSubscriptionEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceSubscriptionEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceSubscriptionEntry commerceSubscriptionEntry :
+					commerceSubscriptionEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceSubscriptionEntryModelImpl
+						commerceSubscriptionEntryModelImpl =
+							(CommerceSubscriptionEntryModelImpl)
+								commerceSubscriptionEntry;
+
+					arguments.add(
+						commerceSubscriptionEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceSubscriptionEntry);
+				}
+				else {
+					List<CommerceSubscriptionEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceSubscriptionEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceSubscriptionEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceSubscriptionEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceSubscriptionEntryUtilPersistence(
 		CommerceSubscriptionEntryPersistence

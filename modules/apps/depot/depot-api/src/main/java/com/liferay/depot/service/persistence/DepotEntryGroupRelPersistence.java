@@ -18,6 +18,8 @@ import com.liferay.depot.exception.NoSuchEntryGroupRelException;
 import com.liferay.depot.model.DepotEntryGroupRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1158,5 +1160,11 @@ public interface DepotEntryGroupRelPersistence
 	 * @return the number of depot entry group rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

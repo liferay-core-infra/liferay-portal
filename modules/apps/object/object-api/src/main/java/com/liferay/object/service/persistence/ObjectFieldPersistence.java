@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectFieldException;
 import com.liferay.object.model.ObjectField;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1494,5 +1496,11 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 * @return the number of object fields
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

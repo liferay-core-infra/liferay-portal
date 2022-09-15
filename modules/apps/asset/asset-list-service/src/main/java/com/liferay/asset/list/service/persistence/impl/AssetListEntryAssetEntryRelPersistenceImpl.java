@@ -4854,6 +4854,75 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 			},
 			new String[] {"assetListEntryId", "segmentsEntryId", "position"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAssetListEntryId",
+			_finderPathWithPaginationFindByAssetListEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAssetListEntryId",
+			_finderPathWithoutPaginationFindByAssetListEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByAssetListEntryId",
+			_finderPathCountByAssetListEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByA_S",
+			_finderPathWithPaginationFindByA_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByA_S",
+			_finderPathWithoutPaginationFindByA_S);
+
+		_finderPaths.put("finderPathCountByA_S", _finderPathCountByA_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByA_S",
+			_finderPathWithPaginationCountByA_S);
+
+		_finderPaths.put("finderPathFetchByA_S_P", _finderPathFetchByA_S_P);
+
+		_finderPaths.put("finderPathCountByA_S_P", _finderPathCountByA_S_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByA_S_GtP",
+			_finderPathWithPaginationFindByA_S_GtP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByA_S_GtP",
+			_finderPathWithPaginationCountByA_S_GtP);
 
 		_setAssetListEntryAssetEntryRelUtilPersistence(this);
 	}
@@ -4865,6 +4934,72 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		entityCache.removeCache(
 			AssetListEntryAssetEntryRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AssetListEntryAssetEntryRel> assetListEntryAssetEntryRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetListEntryAssetEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (AssetListEntryAssetEntryRel assetListEntryAssetEntryRel :
+					assetListEntryAssetEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetListEntryAssetEntryRelModelImpl
+						assetListEntryAssetEntryRelModelImpl =
+							(AssetListEntryAssetEntryRelModelImpl)
+								assetListEntryAssetEntryRel;
+
+					arguments.add(
+						assetListEntryAssetEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						assetListEntryAssetEntryRel);
+				}
+				else {
+					List<AssetListEntryAssetEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(assetListEntryAssetEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetListEntryAssetEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetListEntryAssetEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAssetListEntryAssetEntryRelUtilPersistence(
 		AssetListEntryAssetEntryRelPersistence

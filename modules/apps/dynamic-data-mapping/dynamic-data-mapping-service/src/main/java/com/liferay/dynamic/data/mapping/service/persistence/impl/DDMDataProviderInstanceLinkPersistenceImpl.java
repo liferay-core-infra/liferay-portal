@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2284,6 +2285,41 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"dataProviderInstanceId", "structureId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByDataProviderInstanceId",
+			_finderPathWithPaginationFindByDataProviderInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByDataProviderInstanceId",
+			_finderPathWithoutPaginationFindByDataProviderInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByDataProviderInstanceId",
+			_finderPathCountByDataProviderInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureId",
+			_finderPathWithPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureId",
+			_finderPathWithoutPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByStructureId", _finderPathCountByStructureId);
+
+		_finderPaths.put("finderPathFetchByD_S", _finderPathFetchByD_S);
+
+		_finderPaths.put("finderPathCountByD_S", _finderPathCountByD_S);
+
 		_setDDMDataProviderInstanceLinkUtilPersistence(this);
 	}
 
@@ -2294,6 +2330,72 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 		entityCache.removeCache(
 			DDMDataProviderInstanceLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMDataProviderInstanceLink> ddmDataProviderInstanceLinks =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMDataProviderInstanceLink>> resultMap =
+				new HashMap<>();
+
+			for (DDMDataProviderInstanceLink ddmDataProviderInstanceLink :
+					ddmDataProviderInstanceLinks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMDataProviderInstanceLinkModelImpl
+						ddmDataProviderInstanceLinkModelImpl =
+							(DDMDataProviderInstanceLinkModelImpl)
+								ddmDataProviderInstanceLink;
+
+					arguments.add(
+						ddmDataProviderInstanceLinkModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						ddmDataProviderInstanceLink);
+				}
+				else {
+					List<DDMDataProviderInstanceLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmDataProviderInstanceLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMDataProviderInstanceLink>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMDataProviderInstanceLink> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMDataProviderInstanceLinkUtilPersistence(
 		DDMDataProviderInstanceLinkPersistence

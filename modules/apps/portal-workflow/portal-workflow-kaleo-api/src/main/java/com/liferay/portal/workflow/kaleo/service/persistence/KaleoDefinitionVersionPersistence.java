@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.portal.workflow.kaleo.exception.NoSuchDefinitionVersionException;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -523,5 +525,11 @@ public interface KaleoDefinitionVersionPersistence
 	 * @return the number of kaleo definition versions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

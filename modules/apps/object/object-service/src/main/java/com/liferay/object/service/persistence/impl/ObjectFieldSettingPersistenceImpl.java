@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2646,6 +2647,49 @@ public class ObjectFieldSettingPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"objectFieldId", "name"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByObjectFieldId",
+			_finderPathWithPaginationFindByObjectFieldId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByObjectFieldId",
+			_finderPathWithoutPaginationFindByObjectFieldId);
+
+		_finderPaths.put(
+			"finderPathCountByObjectFieldId", _finderPathCountByObjectFieldId);
+
+		_finderPaths.put("finderPathFetchByOFI_N", _finderPathFetchByOFI_N);
+
+		_finderPaths.put("finderPathCountByOFI_N", _finderPathCountByOFI_N);
+
 		_setObjectFieldSettingUtilPersistence(this);
 	}
 
@@ -2655,6 +2699,64 @@ public class ObjectFieldSettingPersistenceImpl
 
 		entityCache.removeCache(ObjectFieldSettingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ObjectFieldSetting> objectFieldSettings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectFieldSetting>> resultMap =
+				new HashMap<>();
+
+			for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectFieldSettingModelImpl objectFieldSettingModelImpl =
+						(ObjectFieldSettingModelImpl)objectFieldSetting;
+
+					arguments.add(
+						objectFieldSettingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectFieldSetting);
+				}
+				else {
+					List<ObjectFieldSetting> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectFieldSetting);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectFieldSetting>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectFieldSetting> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setObjectFieldSettingUtilPersistence(
 		ObjectFieldSettingPersistence objectFieldSettingPersistence) {

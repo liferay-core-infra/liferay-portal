@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTimerInstanceTokenException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimerInstanceToken;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -691,5 +693,11 @@ public interface KaleoTimerInstanceTokenPersistence
 	 * @return the number of kaleo timer instance tokens
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

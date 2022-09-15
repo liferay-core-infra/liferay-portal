@@ -45,8 +45,11 @@ import java.io.Serializable;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -579,6 +582,14 @@ public class RSVEntryPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
 		_setRSVEntryUtilPersistence(this);
 	}
 
@@ -588,6 +599,61 @@ public class RSVEntryPersistenceImpl
 
 		entityCache.removeCache(RSVEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<RSVEntry> rsvEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RSVEntry>> resultMap = new HashMap<>();
+
+			for (RSVEntry rsvEntry : rsvEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RSVEntryModelImpl rsvEntryModelImpl =
+						(RSVEntryModelImpl)rsvEntry;
+
+					arguments.add(rsvEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), rsvEntry);
+				}
+				else {
+					List<RSVEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(rsvEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RSVEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RSVEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setRSVEntryUtilPersistence(
 		RSVEntryPersistence rsvEntryPersistence) {

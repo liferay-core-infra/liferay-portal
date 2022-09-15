@@ -44,8 +44,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -2509,6 +2512,56 @@ public class VersionedEntryVersionPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"groupId", "version"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByVersionedEntryId",
+			_finderPathWithPaginationFindByVersionedEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByVersionedEntryId",
+			_finderPathWithoutPaginationFindByVersionedEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByVersionedEntryId",
+			_finderPathCountByVersionedEntryId);
+
+		_finderPaths.put(
+			"finderPathFetchByVersionedEntryId_Version",
+			_finderPathFetchByVersionedEntryId_Version);
+
+		_finderPaths.put(
+			"finderPathCountByVersionedEntryId_Version",
+			_finderPathCountByVersionedEntryId_Version);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId_Version",
+			_finderPathWithPaginationFindByGroupId_Version);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId_Version",
+			_finderPathWithoutPaginationFindByGroupId_Version);
+
+		_finderPaths.put(
+			"finderPathCountByGroupId_Version",
+			_finderPathCountByGroupId_Version);
+
 		_setVersionedEntryVersionUtilPersistence(this);
 	}
 
@@ -2517,6 +2570,69 @@ public class VersionedEntryVersionPersistenceImpl
 
 		entityCache.removeCache(VersionedEntryVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<VersionedEntryVersion> versionedEntryVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<VersionedEntryVersion>> resultMap =
+				new HashMap<>();
+
+			for (VersionedEntryVersion versionedEntryVersion :
+					versionedEntryVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					VersionedEntryVersionModelImpl
+						versionedEntryVersionModelImpl =
+							(VersionedEntryVersionModelImpl)
+								versionedEntryVersion;
+
+					arguments.add(
+						versionedEntryVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), versionedEntryVersion);
+				}
+				else {
+					List<VersionedEntryVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(versionedEntryVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<VersionedEntryVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<VersionedEntryVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setVersionedEntryVersionUtilPersistence(
 		VersionedEntryVersionPersistence versionedEntryVersionPersistence) {

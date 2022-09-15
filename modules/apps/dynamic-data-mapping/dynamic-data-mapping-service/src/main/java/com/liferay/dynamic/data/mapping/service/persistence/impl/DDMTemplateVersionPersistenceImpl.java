@@ -2296,6 +2296,39 @@ public class DDMTemplateVersionPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"templateId", "status"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByTemplateId",
+			_finderPathWithPaginationFindByTemplateId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByTemplateId",
+			_finderPathWithoutPaginationFindByTemplateId);
+
+		_finderPaths.put(
+			"finderPathCountByTemplateId", _finderPathCountByTemplateId);
+
+		_finderPaths.put("finderPathFetchByT_V", _finderPathFetchByT_V);
+
+		_finderPaths.put("finderPathCountByT_V", _finderPathCountByT_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByT_S",
+			_finderPathWithPaginationFindByT_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByT_S",
+			_finderPathWithoutPaginationFindByT_S);
+
+		_finderPaths.put("finderPathCountByT_S", _finderPathCountByT_S);
+
 		_setDDMTemplateVersionUtilPersistence(this);
 	}
 
@@ -2305,6 +2338,64 @@ public class DDMTemplateVersionPersistenceImpl
 
 		entityCache.removeCache(DDMTemplateVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMTemplateVersion> ddmTemplateVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMTemplateVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDMTemplateVersion ddmTemplateVersion : ddmTemplateVersions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMTemplateVersionModelImpl ddmTemplateVersionModelImpl =
+						(DDMTemplateVersionModelImpl)ddmTemplateVersion;
+
+					arguments.add(
+						ddmTemplateVersionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmTemplateVersion);
+				}
+				else {
+					List<DDMTemplateVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmTemplateVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMTemplateVersion>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMTemplateVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMTemplateVersionUtilPersistence(
 		DDMTemplateVersionPersistence ddmTemplateVersionPersistence) {

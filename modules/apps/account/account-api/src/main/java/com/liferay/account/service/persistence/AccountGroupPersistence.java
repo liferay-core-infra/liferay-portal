@@ -18,6 +18,8 @@ import com.liferay.account.exception.NoSuchGroupException;
 import com.liferay.account.model.AccountGroup;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1602,5 +1604,11 @@ public interface AccountGroupPersistence extends BasePersistence<AccountGroup> {
 	 * @return the number of account groups
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

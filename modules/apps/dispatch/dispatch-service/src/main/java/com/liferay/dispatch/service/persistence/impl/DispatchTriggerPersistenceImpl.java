@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7685,6 +7686,87 @@ public class DispatchTriggerPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_U",
+			_finderPathWithPaginationFindByC_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_U",
+			_finderPathWithoutPaginationFindByC_U);
+
+		_finderPaths.put("finderPathCountByC_U", _finderPathCountByC_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_DTET",
+			_finderPathWithPaginationFindByC_DTET);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_DTET",
+			_finderPathWithoutPaginationFindByC_DTET);
+
+		_finderPaths.put("finderPathCountByC_DTET", _finderPathCountByC_DTET);
+
+		_finderPaths.put("finderPathFetchByC_N", _finderPathFetchByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByA_DTCM",
+			_finderPathWithPaginationFindByA_DTCM);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByA_DTCM",
+			_finderPathWithoutPaginationFindByA_DTCM);
+
+		_finderPaths.put("finderPathCountByA_DTCM", _finderPathCountByA_DTCM);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByA_DTCM",
+			_finderPathWithPaginationCountByA_DTCM);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setDispatchTriggerUtilPersistence(this);
 	}
 
@@ -7694,6 +7776,64 @@ public class DispatchTriggerPersistenceImpl
 
 		entityCache.removeCache(DispatchTriggerImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DispatchTrigger> dispatchTriggers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DispatchTrigger>> resultMap =
+				new HashMap<>();
+
+			for (DispatchTrigger dispatchTrigger : dispatchTriggers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DispatchTriggerModelImpl dispatchTriggerModelImpl =
+						(DispatchTriggerModelImpl)dispatchTrigger;
+
+					arguments.add(
+						dispatchTriggerModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dispatchTrigger);
+				}
+				else {
+					List<DispatchTrigger> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dispatchTrigger);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DispatchTrigger>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DispatchTrigger> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDispatchTriggerUtilPersistence(
 		DispatchTriggerPersistence dispatchTriggerPersistence) {

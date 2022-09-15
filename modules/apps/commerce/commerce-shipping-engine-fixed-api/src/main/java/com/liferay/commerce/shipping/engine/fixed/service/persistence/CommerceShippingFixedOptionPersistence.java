@@ -18,6 +18,8 @@ import com.liferay.commerce.shipping.engine.fixed.exception.NoSuchShippingFixedO
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOption;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -368,5 +370,11 @@ public interface CommerceShippingFixedOptionPersistence
 	 * @return the number of commerce shipping fixed options
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

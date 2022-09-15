@@ -52,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1310,6 +1311,22 @@ public class WeDeployAuthTokenPersistenceImpl
 			},
 			new String[] {"clientId", "token", "type_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByT_T", _finderPathFetchByT_T);
+
+		_finderPaths.put("finderPathCountByT_T", _finderPathCountByT_T);
+
+		_finderPaths.put("finderPathFetchByCI_T_T", _finderPathFetchByCI_T_T);
+
+		_finderPaths.put("finderPathCountByCI_T_T", _finderPathCountByCI_T_T);
+
 		_setWeDeployAuthTokenUtilPersistence(this);
 	}
 
@@ -1319,6 +1336,64 @@ public class WeDeployAuthTokenPersistenceImpl
 
 		entityCache.removeCache(WeDeployAuthTokenImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<WeDeployAuthToken> weDeployAuthTokens = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<WeDeployAuthToken>> resultMap =
+				new HashMap<>();
+
+			for (WeDeployAuthToken weDeployAuthToken : weDeployAuthTokens) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl =
+						(WeDeployAuthTokenModelImpl)weDeployAuthToken;
+
+					arguments.add(
+						weDeployAuthTokenModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), weDeployAuthToken);
+				}
+				else {
+					List<WeDeployAuthToken> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(weDeployAuthToken);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<WeDeployAuthToken>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<WeDeployAuthToken> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setWeDeployAuthTokenUtilPersistence(
 		WeDeployAuthTokenPersistence weDeployAuthTokenPersistence) {

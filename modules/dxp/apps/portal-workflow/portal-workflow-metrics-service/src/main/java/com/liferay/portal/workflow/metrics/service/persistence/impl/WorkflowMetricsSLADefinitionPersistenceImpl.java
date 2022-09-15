@@ -54,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -5745,6 +5746,91 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				"companyId", "active_", "processId", "processVersion", "status"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathFetchByWMSLAD_A", _finderPathFetchByWMSLAD_A);
+
+		_finderPaths.put(
+			"finderPathCountByWMSLAD_A", _finderPathCountByWMSLAD_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S",
+			_finderPathWithPaginationFindByC_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S",
+			_finderPathWithoutPaginationFindByC_S);
+
+		_finderPaths.put("finderPathCountByC_S", _finderPathCountByC_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_P",
+			_finderPathWithPaginationFindByC_A_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_P",
+			_finderPathWithoutPaginationFindByC_A_P);
+
+		_finderPaths.put("finderPathCountByC_A_P", _finderPathCountByC_A_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_N_P",
+			_finderPathWithPaginationFindByC_A_N_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_N_P",
+			_finderPathWithoutPaginationFindByC_A_N_P);
+
+		_finderPaths.put("finderPathCountByC_A_N_P", _finderPathCountByC_A_N_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_P_S",
+			_finderPathWithPaginationFindByC_A_P_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_P_S",
+			_finderPathWithoutPaginationFindByC_A_P_S);
+
+		_finderPaths.put("finderPathCountByC_A_P_S", _finderPathCountByC_A_P_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_P_NotPV_S",
+			_finderPathWithPaginationFindByC_A_P_NotPV_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_A_P_NotPV_S",
+			_finderPathWithPaginationCountByC_A_P_NotPV_S);
 
 		_setWorkflowMetricsSLADefinitionUtilPersistence(this);
 	}
@@ -5756,6 +5842,72 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		entityCache.removeCache(
 			WorkflowMetricsSLADefinitionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<WorkflowMetricsSLADefinition> workflowMetricsSLADefinitions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<WorkflowMetricsSLADefinition>> resultMap =
+				new HashMap<>();
+
+			for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
+					workflowMetricsSLADefinitions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					WorkflowMetricsSLADefinitionModelImpl
+						workflowMetricsSLADefinitionModelImpl =
+							(WorkflowMetricsSLADefinitionModelImpl)
+								workflowMetricsSLADefinition;
+
+					arguments.add(
+						workflowMetricsSLADefinitionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						workflowMetricsSLADefinition);
+				}
+				else {
+					List<WorkflowMetricsSLADefinition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(workflowMetricsSLADefinition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<WorkflowMetricsSLADefinition>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<WorkflowMetricsSLADefinition> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setWorkflowMetricsSLADefinitionUtilPersistence(
 		WorkflowMetricsSLADefinitionPersistence

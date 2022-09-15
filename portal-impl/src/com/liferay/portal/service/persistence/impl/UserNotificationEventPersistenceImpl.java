@@ -49,6 +49,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12466,6 +12467,211 @@ public class UserNotificationEventPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByType",
+			_finderPathWithPaginationFindByType);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByType",
+			_finderPathWithoutPaginationFindByType);
+
+		_finderPaths.put("finderPathCountByType", _finderPathCountByType);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT",
+			_finderPathWithPaginationFindByU_DT);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT",
+			_finderPathWithoutPaginationFindByU_DT);
+
+		_finderPaths.put("finderPathCountByU_DT", _finderPathCountByU_DT);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_D",
+			_finderPathWithPaginationFindByU_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_D",
+			_finderPathWithoutPaginationFindByU_D);
+
+		_finderPaths.put("finderPathCountByU_D", _finderPathCountByU_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_A",
+			_finderPathWithPaginationFindByU_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_A",
+			_finderPathWithoutPaginationFindByU_A);
+
+		_finderPaths.put("finderPathCountByU_A", _finderPathCountByU_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT_D",
+			_finderPathWithPaginationFindByU_DT_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT_D",
+			_finderPathWithoutPaginationFindByU_DT_D);
+
+		_finderPaths.put("finderPathCountByU_DT_D", _finderPathCountByU_DT_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT_A",
+			_finderPathWithPaginationFindByU_DT_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT_A",
+			_finderPathWithoutPaginationFindByU_DT_A);
+
+		_finderPaths.put("finderPathCountByU_DT_A", _finderPathCountByU_DT_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_D_AR",
+			_finderPathWithPaginationFindByU_D_AR);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_D_AR",
+			_finderPathWithoutPaginationFindByU_D_AR);
+
+		_finderPaths.put("finderPathCountByU_D_AR", _finderPathCountByU_D_AR);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_D_A",
+			_finderPathWithPaginationFindByU_D_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_D_A",
+			_finderPathWithoutPaginationFindByU_D_A);
+
+		_finderPaths.put("finderPathCountByU_D_A", _finderPathCountByU_D_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_AR_A",
+			_finderPathWithPaginationFindByU_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_AR_A",
+			_finderPathWithoutPaginationFindByU_AR_A);
+
+		_finderPaths.put("finderPathCountByU_AR_A", _finderPathCountByU_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_T_DT_D",
+			_finderPathWithPaginationFindByU_T_DT_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_T_DT_D",
+			_finderPathWithoutPaginationFindByU_T_DT_D);
+
+		_finderPaths.put(
+			"finderPathCountByU_T_DT_D", _finderPathCountByU_T_DT_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT_D_AR",
+			_finderPathWithPaginationFindByU_DT_D_AR);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT_D_AR",
+			_finderPathWithoutPaginationFindByU_DT_D_AR);
+
+		_finderPaths.put(
+			"finderPathCountByU_DT_D_AR", _finderPathCountByU_DT_D_AR);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT_D_A",
+			_finderPathWithPaginationFindByU_DT_D_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT_D_A",
+			_finderPathWithoutPaginationFindByU_DT_D_A);
+
+		_finderPaths.put(
+			"finderPathCountByU_DT_D_A", _finderPathCountByU_DT_D_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT_AR_A",
+			_finderPathWithPaginationFindByU_DT_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT_AR_A",
+			_finderPathWithoutPaginationFindByU_DT_AR_A);
+
+		_finderPaths.put(
+			"finderPathCountByU_DT_AR_A", _finderPathCountByU_DT_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_D_AR_A",
+			_finderPathWithPaginationFindByU_D_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_D_AR_A",
+			_finderPathWithoutPaginationFindByU_D_AR_A);
+
+		_finderPaths.put(
+			"finderPathCountByU_D_AR_A", _finderPathCountByU_D_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_T_DT_D_A",
+			_finderPathWithPaginationFindByU_T_DT_D_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_T_DT_D_A",
+			_finderPathWithoutPaginationFindByU_T_DT_D_A);
+
+		_finderPaths.put(
+			"finderPathCountByU_T_DT_D_A", _finderPathCountByU_T_DT_D_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_DT_D_AR_A",
+			_finderPathWithPaginationFindByU_DT_D_AR_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_DT_D_AR_A",
+			_finderPathWithoutPaginationFindByU_DT_D_AR_A);
+
+		_finderPaths.put(
+			"finderPathCountByU_DT_D_AR_A", _finderPathCountByU_DT_D_AR_A);
+
 		_setUserNotificationEventUtilPersistence(this);
 	}
 
@@ -12474,6 +12680,69 @@ public class UserNotificationEventPersistenceImpl
 
 		EntityCacheUtil.removeCache(UserNotificationEventImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<UserNotificationEvent> userNotificationEvents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserNotificationEvent>> resultMap =
+				new HashMap<>();
+
+			for (UserNotificationEvent userNotificationEvent :
+					userNotificationEvents) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserNotificationEventModelImpl
+						userNotificationEventModelImpl =
+							(UserNotificationEventModelImpl)
+								userNotificationEvent;
+
+					arguments.add(
+						userNotificationEventModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userNotificationEvent);
+				}
+				else {
+					List<UserNotificationEvent> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(userNotificationEvent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserNotificationEvent>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserNotificationEvent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setUserNotificationEventUtilPersistence(
 		UserNotificationEventPersistence userNotificationEventPersistence) {

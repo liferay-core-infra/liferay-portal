@@ -18,6 +18,8 @@ import com.liferay.mail.reader.exception.NoSuchAttachmentException;
 import com.liferay.mail.reader.model.Attachment;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -302,5 +304,11 @@ public interface AttachmentPersistence extends BasePersistence<Attachment> {
 	 * @return the number of attachments
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

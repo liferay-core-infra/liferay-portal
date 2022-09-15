@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchShippingMethodException;
 import com.liferay.commerce.model.CommerceShippingMethod;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -512,5 +514,11 @@ public interface CommerceShippingMethodPersistence
 	 * @return the number of commerce shipping methods
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

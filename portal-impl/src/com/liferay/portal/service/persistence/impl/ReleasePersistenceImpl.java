@@ -49,6 +49,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -888,6 +889,22 @@ public class ReleasePersistenceImpl
 			"countByServletContextName", new String[] {String.class.getName()},
 			new String[] {"servletContextName"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathFetchByServletContextName",
+			_finderPathFetchByServletContextName);
+
+		_finderPaths.put(
+			"finderPathCountByServletContextName",
+			_finderPathCountByServletContextName);
+
 		_setReleaseUtilPersistence(this);
 	}
 
@@ -896,6 +913,61 @@ public class ReleasePersistenceImpl
 
 		EntityCacheUtil.removeCache(ReleaseImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Release> releases = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Release>> resultMap = new HashMap<>();
+
+			for (Release release : releases) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ReleaseModelImpl releaseModelImpl =
+						(ReleaseModelImpl)release;
+
+					arguments.add(releaseModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), release);
+				}
+				else {
+					List<Release> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(release);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Release>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Release> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setReleaseUtilPersistence(
 		ReleasePersistence releasePersistence) {

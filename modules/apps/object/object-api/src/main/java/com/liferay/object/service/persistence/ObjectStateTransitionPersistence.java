@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectStateTransitionException;
 import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -893,5 +895,11 @@ public interface ObjectStateTransitionPersistence
 	 * @return the number of object state transitions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

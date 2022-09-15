@@ -50,9 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -3619,6 +3622,71 @@ public class ChangesetEntryPersistenceImpl
 			new String[] {"changesetCollectionId", "classNameId", "classPK"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByChangesetCollectionId",
+			_finderPathWithPaginationFindByChangesetCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByChangesetCollectionId",
+			_finderPathWithoutPaginationFindByChangesetCollectionId);
+
+		_finderPaths.put(
+			"finderPathCountByChangesetCollectionId",
+			_finderPathCountByChangesetCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
 		_setChangesetEntryUtilPersistence(this);
 	}
 
@@ -3628,6 +3696,62 @@ public class ChangesetEntryPersistenceImpl
 
 		entityCache.removeCache(ChangesetEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ChangesetEntry> changesetEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ChangesetEntry>> resultMap = new HashMap<>();
+
+			for (ChangesetEntry changesetEntry : changesetEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ChangesetEntryModelImpl changesetEntryModelImpl =
+						(ChangesetEntryModelImpl)changesetEntry;
+
+					arguments.add(
+						changesetEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), changesetEntry);
+				}
+				else {
+					List<ChangesetEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(changesetEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ChangesetEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ChangesetEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setChangesetEntryUtilPersistence(
 		ChangesetEntryPersistence changesetEntryPersistence) {

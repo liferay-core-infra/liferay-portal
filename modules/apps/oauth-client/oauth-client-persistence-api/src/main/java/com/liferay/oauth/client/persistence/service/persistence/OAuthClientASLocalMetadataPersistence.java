@@ -18,6 +18,8 @@ import com.liferay.oauth.client.persistence.exception.NoSuchOAuthClientASLocalMe
 import com.liferay.oauth.client.persistence.model.OAuthClientASLocalMetadata;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -631,5 +633,11 @@ public interface OAuthClientASLocalMetadataPersistence
 	 * @return the number of o auth client as local metadatas
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

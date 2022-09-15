@@ -49,8 +49,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2212,6 +2214,38 @@ public class PortletItemPersistenceImpl
 			new String[] {"groupId", "name", "portletId", "classNameId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_C",
+			_finderPathWithPaginationFindByG_P_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_C",
+			_finderPathWithoutPaginationFindByG_P_C);
+
+		_finderPaths.put("finderPathCountByG_P_C", _finderPathCountByG_P_C);
+
+		_finderPaths.put("finderPathFetchByG_N_P_C", _finderPathFetchByG_N_P_C);
+
+		_finderPaths.put("finderPathCountByG_N_P_C", _finderPathCountByG_N_P_C);
+
 		_setPortletItemUtilPersistence(this);
 	}
 
@@ -2220,6 +2254,62 @@ public class PortletItemPersistenceImpl
 
 		EntityCacheUtil.removeCache(PortletItemImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<PortletItem> portletItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortletItem>> resultMap = new HashMap<>();
+
+			for (PortletItem portletItem : portletItems) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortletItemModelImpl portletItemModelImpl =
+						(PortletItemModelImpl)portletItem;
+
+					arguments.add(
+						portletItemModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portletItem);
+				}
+				else {
+					List<PortletItem> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(portletItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortletItem>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortletItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setPortletItemUtilPersistence(
 		PortletItemPersistence portletItemPersistence) {

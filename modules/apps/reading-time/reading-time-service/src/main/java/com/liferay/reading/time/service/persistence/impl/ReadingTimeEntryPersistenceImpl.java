@@ -2678,6 +2678,42 @@ public class ReadingTimeEntryPersistenceImpl
 			},
 			new String[] {"groupId", "classNameId", "classPK"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put("finderPathFetchByG_C_C", _finderPathFetchByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
 		_setReadingTimeEntryUtilPersistence(this);
 	}
 
@@ -2687,6 +2723,64 @@ public class ReadingTimeEntryPersistenceImpl
 
 		entityCache.removeCache(ReadingTimeEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ReadingTimeEntry> readingTimeEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ReadingTimeEntry>> resultMap =
+				new HashMap<>();
+
+			for (ReadingTimeEntry readingTimeEntry : readingTimeEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ReadingTimeEntryModelImpl readingTimeEntryModelImpl =
+						(ReadingTimeEntryModelImpl)readingTimeEntry;
+
+					arguments.add(
+						readingTimeEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), readingTimeEntry);
+				}
+				else {
+					List<ReadingTimeEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(readingTimeEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ReadingTimeEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ReadingTimeEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setReadingTimeEntryUtilPersistence(
 		ReadingTimeEntryPersistence readingTimeEntryPersistence) {

@@ -45,6 +45,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1453,6 +1455,28 @@ public class ResourceActionPersistenceImpl
 			new String[] {String.class.getName(), String.class.getName()},
 			new String[] {"name", "actionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByName",
+			_finderPathWithPaginationFindByName);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByName",
+			_finderPathWithoutPaginationFindByName);
+
+		_finderPaths.put("finderPathCountByName", _finderPathCountByName);
+
+		_finderPaths.put("finderPathFetchByN_A", _finderPathFetchByN_A);
+
+		_finderPaths.put("finderPathCountByN_A", _finderPathCountByN_A);
+
 		_setResourceActionUtilPersistence(this);
 	}
 
@@ -1461,6 +1485,62 @@ public class ResourceActionPersistenceImpl
 
 		EntityCacheUtil.removeCache(ResourceActionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ResourceAction> resourceActions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ResourceAction>> resultMap = new HashMap<>();
+
+			for (ResourceAction resourceAction : resourceActions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ResourceActionModelImpl resourceActionModelImpl =
+						(ResourceActionModelImpl)resourceAction;
+
+					arguments.add(
+						resourceActionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), resourceAction);
+				}
+				else {
+					List<ResourceAction> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(resourceAction);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ResourceAction>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ResourceAction> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setResourceActionUtilPersistence(
 		ResourceActionPersistence resourceActionPersistence) {

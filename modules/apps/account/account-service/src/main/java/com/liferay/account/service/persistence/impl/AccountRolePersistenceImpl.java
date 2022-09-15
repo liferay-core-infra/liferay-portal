@@ -52,9 +52,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -4546,6 +4549,58 @@ public class AccountRolePersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_A",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"companyId", "accountEntryId"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAccountEntryId",
+			_finderPathWithPaginationFindByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAccountEntryId",
+			_finderPathWithoutPaginationFindByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByAccountEntryId",
+			_finderPathCountByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByAccountEntryId",
+			_finderPathWithPaginationCountByAccountEntryId);
+
+		_finderPaths.put("finderPathFetchByRoleId", _finderPathFetchByRoleId);
+
+		_finderPaths.put("finderPathCountByRoleId", _finderPathCountByRoleId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A",
+			_finderPathWithPaginationFindByC_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A",
+			_finderPathWithoutPaginationFindByC_A);
+
+		_finderPaths.put("finderPathCountByC_A", _finderPathCountByC_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_A",
+			_finderPathWithPaginationCountByC_A);
 
 		_setAccountRoleUtilPersistence(this);
 	}
@@ -4556,6 +4611,62 @@ public class AccountRolePersistenceImpl
 
 		entityCache.removeCache(AccountRoleImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AccountRole> accountRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AccountRole>> resultMap = new HashMap<>();
+
+			for (AccountRole accountRole : accountRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AccountRoleModelImpl accountRoleModelImpl =
+						(AccountRoleModelImpl)accountRole;
+
+					arguments.add(
+						accountRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), accountRole);
+				}
+				else {
+					List<AccountRole> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(accountRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AccountRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AccountRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAccountRoleUtilPersistence(
 		AccountRolePersistence accountRolePersistence) {

@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectLayoutBoxException;
 import com.liferay.object.model.ObjectLayoutBox;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -602,5 +604,11 @@ public interface ObjectLayoutBoxPersistence
 	 * @return the number of object layout boxes
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.adaptive.media.image.exception.NoSuchAMImageEntryException;
 import com.liferay.adaptive.media.image.model.AMImageEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1287,5 +1289,11 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 * @return the number of am image entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

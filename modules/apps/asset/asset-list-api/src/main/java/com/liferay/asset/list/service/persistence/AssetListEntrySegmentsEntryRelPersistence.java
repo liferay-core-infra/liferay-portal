@@ -19,6 +19,8 @@ import com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1101,5 +1103,11 @@ public interface AssetListEntrySegmentsEntryRelPersistence
 	 * @return the number of asset list entry segments entry rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

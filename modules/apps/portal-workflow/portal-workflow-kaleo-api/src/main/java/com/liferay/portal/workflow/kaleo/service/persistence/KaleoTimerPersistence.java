@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.portal.workflow.kaleo.exception.NoSuchTimerException;
 import com.liferay.portal.workflow.kaleo.model.KaleoTimer;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -487,5 +489,11 @@ public interface KaleoTimerPersistence
 	 * @return the number of kaleo timers
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

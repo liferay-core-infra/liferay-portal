@@ -18,6 +18,8 @@ import com.liferay.commerce.payment.exception.NoSuchPaymentMethodGroupRelQualifi
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRelQualifier;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -550,5 +552,11 @@ public interface CommercePaymentMethodGroupRelQualifierPersistence
 	 * @return the number of commerce payment method group rel qualifiers
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

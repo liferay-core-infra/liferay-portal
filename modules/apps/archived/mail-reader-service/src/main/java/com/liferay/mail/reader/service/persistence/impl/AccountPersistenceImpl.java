@@ -52,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1430,6 +1431,28 @@ public class AccountPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"userId", "address"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put("finderPathFetchByU_A", _finderPathFetchByU_A);
+
+		_finderPaths.put("finderPathCountByU_A", _finderPathCountByU_A);
+
 		_setAccountUtilPersistence(this);
 	}
 
@@ -1439,6 +1462,61 @@ public class AccountPersistenceImpl
 
 		entityCache.removeCache(AccountImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Account> accounts = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Account>> resultMap = new HashMap<>();
+
+			for (Account account : accounts) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AccountModelImpl accountModelImpl =
+						(AccountModelImpl)account;
+
+					arguments.add(accountModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), account);
+				}
+				else {
+					List<Account> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(account);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Account>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Account> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAccountUtilPersistence(
 		AccountPersistence accountPersistence) {

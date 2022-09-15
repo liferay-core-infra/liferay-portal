@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchOrderPaymentException;
 import com.liferay.commerce.model.CommerceOrderPayment;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -306,5 +308,11 @@ public interface CommerceOrderPaymentPersistence
 	 * @return the number of commerce order payments
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

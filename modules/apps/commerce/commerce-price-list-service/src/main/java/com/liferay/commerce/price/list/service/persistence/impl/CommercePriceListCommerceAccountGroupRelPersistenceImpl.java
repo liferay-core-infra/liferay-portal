@@ -3175,6 +3175,52 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 			new String[] {"commercePriceListId", "commerceAccountGroupId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommercePriceListId",
+			_finderPathWithPaginationFindByCommercePriceListId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommercePriceListId",
+			_finderPathWithoutPaginationFindByCommercePriceListId);
+
+		_finderPaths.put(
+			"finderPathCountByCommercePriceListId",
+			_finderPathCountByCommercePriceListId);
+
+		_finderPaths.put(
+			"finderPathFetchByCAGI_CPI", _finderPathFetchByCAGI_CPI);
+
+		_finderPaths.put(
+			"finderPathCountByCAGI_CPI", _finderPathCountByCAGI_CPI);
+
 		_setCommercePriceListCommerceAccountGroupRelUtilPersistence(this);
 	}
 
@@ -3185,6 +3231,75 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 		entityCache.removeCache(
 			CommercePriceListCommerceAccountGroupRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommercePriceListCommerceAccountGroupRel>
+			commercePriceListCommerceAccountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePriceListCommerceAccountGroupRel>>
+				resultMap = new HashMap<>();
+
+			for (CommercePriceListCommerceAccountGroupRel
+					commercePriceListCommerceAccountGroupRel :
+						commercePriceListCommerceAccountGroupRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePriceListCommerceAccountGroupRelModelImpl
+						commercePriceListCommerceAccountGroupRelModelImpl =
+							(CommercePriceListCommerceAccountGroupRelModelImpl)
+								commercePriceListCommerceAccountGroupRel;
+
+					arguments.add(
+						commercePriceListCommerceAccountGroupRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commercePriceListCommerceAccountGroupRel);
+				}
+				else {
+					List<CommercePriceListCommerceAccountGroupRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePriceListCommerceAccountGroupRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>,
+					 List<CommercePriceListCommerceAccountGroupRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePriceListCommerceAccountGroupRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommercePriceListCommerceAccountGroupRelUtilPersistence(
 		CommercePriceListCommerceAccountGroupRelPersistence

@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.spring.sample.exception.NoSuchSpringEntryException;
 import com.liferay.portal.tools.service.builder.spring.sample.model.SpringEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -600,5 +602,11 @@ public interface SpringEntryPersistence extends BasePersistence<SpringEntry> {
 	 * @return the number of spring entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

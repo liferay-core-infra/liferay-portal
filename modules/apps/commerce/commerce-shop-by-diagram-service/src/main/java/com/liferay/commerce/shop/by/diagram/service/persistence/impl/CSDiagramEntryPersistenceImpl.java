@@ -2251,6 +2251,41 @@ public class CSDiagramEntryPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"CPDefinitionId", "sequence"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPDefinitionId",
+			_finderPathWithPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPDefinitionId",
+			_finderPathWithoutPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPInstanceId",
+			_finderPathWithPaginationFindByCPInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPInstanceId",
+			_finderPathWithoutPaginationFindByCPInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByCPInstanceId", _finderPathCountByCPInstanceId);
+
+		_finderPaths.put("finderPathFetchByCPDI_S", _finderPathFetchByCPDI_S);
+
+		_finderPaths.put("finderPathCountByCPDI_S", _finderPathCountByCPDI_S);
+
 		_setCSDiagramEntryUtilPersistence(this);
 	}
 
@@ -2260,6 +2295,62 @@ public class CSDiagramEntryPersistenceImpl
 
 		entityCache.removeCache(CSDiagramEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CSDiagramEntry> csDiagramEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CSDiagramEntry>> resultMap = new HashMap<>();
+
+			for (CSDiagramEntry csDiagramEntry : csDiagramEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CSDiagramEntryModelImpl csDiagramEntryModelImpl =
+						(CSDiagramEntryModelImpl)csDiagramEntry;
+
+					arguments.add(
+						csDiagramEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), csDiagramEntry);
+				}
+				else {
+					List<CSDiagramEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(csDiagramEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CSDiagramEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CSDiagramEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCSDiagramEntryUtilPersistence(
 		CSDiagramEntryPersistence csDiagramEntryPersistence) {

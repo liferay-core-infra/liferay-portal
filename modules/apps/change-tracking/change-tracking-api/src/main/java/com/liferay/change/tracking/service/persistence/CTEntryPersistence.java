@@ -18,6 +18,8 @@ import com.liferay.change.tracking.exception.NoSuchEntryException;
 import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -775,5 +777,11 @@ public interface CTEntryPersistence extends BasePersistence<CTEntry> {
 	 * @return the number of ct entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

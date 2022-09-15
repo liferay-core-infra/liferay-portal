@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.kaleo.forms.exception.NoSuchKaleoProcessLinkException;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcessLink;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -357,5 +359,11 @@ public interface KaleoProcessLinkPersistence
 	 * @return the number of kaleo process links
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

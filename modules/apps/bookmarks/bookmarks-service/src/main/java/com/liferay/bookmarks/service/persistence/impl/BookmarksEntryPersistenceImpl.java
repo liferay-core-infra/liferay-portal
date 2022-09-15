@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13303,6 +13304,142 @@ public class BookmarksEntryPersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			},
 			new String[] {"groupId", "userId", "folderId", "status"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F",
+			_finderPathWithPaginationFindByG_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F",
+			_finderPathWithoutPaginationFindByG_F);
+
+		_finderPaths.put("finderPathCountByG_F", _finderPathCountByG_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_F",
+			_finderPathWithPaginationCountByG_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_S",
+			_finderPathWithPaginationFindByG_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_S",
+			_finderPathWithoutPaginationFindByG_S);
+
+		_finderPaths.put("finderPathCountByG_S", _finderPathCountByG_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_NotS",
+			_finderPathWithPaginationFindByG_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_NotS",
+			_finderPathWithPaginationCountByG_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_NotS",
+			_finderPathWithPaginationFindByC_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_NotS",
+			_finderPathWithPaginationCountByC_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_S",
+			_finderPathWithPaginationFindByG_U_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_S",
+			_finderPathWithoutPaginationFindByG_U_S);
+
+		_finderPaths.put("finderPathCountByG_U_S", _finderPathCountByG_U_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_NotS",
+			_finderPathWithPaginationFindByG_U_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_U_NotS",
+			_finderPathWithPaginationCountByG_U_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F_S",
+			_finderPathWithPaginationFindByG_F_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F_S",
+			_finderPathWithoutPaginationFindByG_F_S);
+
+		_finderPaths.put("finderPathCountByG_F_S", _finderPathCountByG_F_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_F_S",
+			_finderPathWithPaginationCountByG_F_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F_NotS",
+			_finderPathWithPaginationFindByG_F_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_F_NotS",
+			_finderPathWithPaginationCountByG_F_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_F_S",
+			_finderPathWithPaginationFindByG_U_F_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_F_S",
+			_finderPathWithoutPaginationFindByG_U_F_S);
+
+		_finderPaths.put("finderPathCountByG_U_F_S", _finderPathCountByG_U_F_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_U_F_S",
+			_finderPathWithPaginationCountByG_U_F_S);
 
 		_setBookmarksEntryUtilPersistence(this);
 	}
@@ -13313,6 +13450,62 @@ public class BookmarksEntryPersistenceImpl
 
 		entityCache.removeCache(BookmarksEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<BookmarksEntry> bookmarksEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BookmarksEntry>> resultMap = new HashMap<>();
+
+			for (BookmarksEntry bookmarksEntry : bookmarksEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BookmarksEntryModelImpl bookmarksEntryModelImpl =
+						(BookmarksEntryModelImpl)bookmarksEntry;
+
+					arguments.add(
+						bookmarksEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), bookmarksEntry);
+				}
+				else {
+					List<BookmarksEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(bookmarksEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BookmarksEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BookmarksEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setBookmarksEntryUtilPersistence(
 		BookmarksEntryPersistence bookmarksEntryPersistence) {

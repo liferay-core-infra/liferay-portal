@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2254,6 +2255,39 @@ public class DDMStructureLinkPersistenceImpl
 			},
 			new String[] {"classNameId", "classPK", "structureId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureId",
+			_finderPathWithPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureId",
+			_finderPathWithoutPaginationFindByStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByStructureId", _finderPathCountByStructureId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_S", _finderPathFetchByC_C_S);
+
+		_finderPaths.put("finderPathCountByC_C_S", _finderPathCountByC_C_S);
+
 		_setDDMStructureLinkUtilPersistence(this);
 	}
 
@@ -2263,6 +2297,64 @@ public class DDMStructureLinkPersistenceImpl
 
 		entityCache.removeCache(DDMStructureLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMStructureLink> ddmStructureLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMStructureLink>> resultMap =
+				new HashMap<>();
+
+			for (DDMStructureLink ddmStructureLink : ddmStructureLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMStructureLinkModelImpl ddmStructureLinkModelImpl =
+						(DDMStructureLinkModelImpl)ddmStructureLink;
+
+					arguments.add(
+						ddmStructureLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmStructureLink);
+				}
+				else {
+					List<DDMStructureLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmStructureLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMStructureLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMStructureLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMStructureLinkUtilPersistence(
 		DDMStructureLinkPersistence ddmStructureLinkPersistence) {

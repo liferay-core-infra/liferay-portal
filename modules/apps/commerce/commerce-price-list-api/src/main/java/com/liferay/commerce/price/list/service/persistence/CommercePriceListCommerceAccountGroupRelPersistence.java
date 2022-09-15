@@ -19,6 +19,8 @@ import com.liferay.commerce.price.list.model.CommercePriceListCommerceAccountGro
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -685,5 +687,11 @@ public interface CommercePriceListCommerceAccountGroupRelPersistence
 	 * @return the number of commerce price list commerce account group rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectEntryException;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1407,5 +1409,11 @@ public interface ObjectEntryPersistence extends BasePersistence<ObjectEntry> {
 	 * @return the number of object entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

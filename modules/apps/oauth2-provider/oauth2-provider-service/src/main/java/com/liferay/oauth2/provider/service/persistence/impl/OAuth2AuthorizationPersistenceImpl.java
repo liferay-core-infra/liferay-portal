@@ -56,6 +56,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -3868,6 +3869,66 @@ public class OAuth2AuthorizationPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByOAuth2ApplicationId",
+			_finderPathWithPaginationFindByOAuth2ApplicationId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByOAuth2ApplicationId",
+			_finderPathWithoutPaginationFindByOAuth2ApplicationId);
+
+		_finderPaths.put(
+			"finderPathCountByOAuth2ApplicationId",
+			_finderPathCountByOAuth2ApplicationId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_ATCH",
+			_finderPathWithPaginationFindByC_ATCH);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_ATCH",
+			_finderPathWithoutPaginationFindByC_ATCH);
+
+		_finderPaths.put("finderPathCountByC_ATCH", _finderPathCountByC_ATCH);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_RTCH",
+			_finderPathWithPaginationFindByC_RTCH);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_RTCH",
+			_finderPathWithoutPaginationFindByC_RTCH);
+
+		_finderPaths.put("finderPathCountByC_RTCH", _finderPathCountByC_RTCH);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_O_R",
+			_finderPathWithPaginationFindByU_O_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_O_R",
+			_finderPathWithoutPaginationFindByU_O_R);
+
+		_finderPaths.put("finderPathCountByU_O_R", _finderPathCountByU_O_R);
+
 		_setOAuth2AuthorizationUtilPersistence(this);
 	}
 
@@ -3880,6 +3941,67 @@ public class OAuth2AuthorizationPersistenceImpl
 		TableMapperFactory.removeTableMapper(
 			"OA2Auths_OA2ScopeGrants#oAuth2AuthorizationId");
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<OAuth2Authorization> oAuth2Authorizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuth2Authorization>> resultMap =
+				new HashMap<>();
+
+			for (OAuth2Authorization oAuth2Authorization :
+					oAuth2Authorizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuth2AuthorizationModelImpl oAuth2AuthorizationModelImpl =
+						(OAuth2AuthorizationModelImpl)oAuth2Authorization;
+
+					arguments.add(
+						oAuth2AuthorizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), oAuth2Authorization);
+				}
+				else {
+					List<OAuth2Authorization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuth2Authorization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuth2Authorization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuth2Authorization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setOAuth2AuthorizationUtilPersistence(
 		OAuth2AuthorizationPersistence oAuth2AuthorizationPersistence) {

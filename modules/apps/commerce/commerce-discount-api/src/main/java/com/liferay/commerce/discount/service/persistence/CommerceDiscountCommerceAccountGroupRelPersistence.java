@@ -18,6 +18,8 @@ import com.liferay.commerce.discount.exception.NoSuchDiscountCommerceAccountGrou
 import com.liferay.commerce.discount.model.CommerceDiscountCommerceAccountGroupRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -531,5 +533,11 @@ public interface CommerceDiscountCommerceAccountGroupRelPersistence
 	 * @return the number of commerce discount commerce account group rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

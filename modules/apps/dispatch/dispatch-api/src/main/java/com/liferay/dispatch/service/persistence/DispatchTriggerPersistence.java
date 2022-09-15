@@ -18,6 +18,8 @@ import com.liferay.dispatch.exception.NoSuchTriggerException;
 import com.liferay.dispatch.model.DispatchTrigger;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1715,5 +1717,11 @@ public interface DispatchTriggerPersistence
 	 * @return the number of dispatch triggers
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

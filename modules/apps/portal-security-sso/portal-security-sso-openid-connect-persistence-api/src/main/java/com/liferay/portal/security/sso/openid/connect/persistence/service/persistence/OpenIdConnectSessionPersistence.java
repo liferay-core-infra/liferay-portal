@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.security.sso.openid.connect.persistence.exception.NoSuchSessionException;
 import com.liferay.portal.security.sso.openid.connect.persistence.model.OpenIdConnectSession;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -537,5 +539,11 @@ public interface OpenIdConnectSessionPersistence
 	 * @return the number of open ID connect sessions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

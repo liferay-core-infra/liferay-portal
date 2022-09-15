@@ -18,6 +18,8 @@ import com.liferay.batch.engine.exception.NoSuchExportTaskException;
 import com.liferay.batch.engine.model.BatchEngineExportTask;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -802,5 +804,11 @@ public interface BatchEngineExportTaskPersistence
 	 * @return the number of batch engine export tasks
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

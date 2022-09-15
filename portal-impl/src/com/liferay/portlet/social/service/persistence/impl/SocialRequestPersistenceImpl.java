@@ -7438,6 +7438,129 @@ public class SocialRequestPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByReceiverUserId",
+			_finderPathWithPaginationFindByReceiverUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByReceiverUserId",
+			_finderPathWithoutPaginationFindByReceiverUserId);
+
+		_finderPaths.put(
+			"finderPathCountByReceiverUserId",
+			_finderPathCountByReceiverUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_S",
+			_finderPathWithPaginationFindByU_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_S",
+			_finderPathWithoutPaginationFindByU_S);
+
+		_finderPaths.put("finderPathCountByU_S", _finderPathCountByU_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByR_S",
+			_finderPathWithPaginationFindByR_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByR_S",
+			_finderPathWithoutPaginationFindByR_S);
+
+		_finderPaths.put("finderPathCountByR_S", _finderPathCountByR_S);
+
+		_finderPaths.put(
+			"finderPathFetchByU_C_C_T_R", _finderPathFetchByU_C_C_T_R);
+
+		_finderPaths.put(
+			"finderPathCountByU_C_C_T_R", _finderPathCountByU_C_C_T_R);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_C_C_T_S",
+			_finderPathWithPaginationFindByU_C_C_T_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_C_C_T_S",
+			_finderPathWithoutPaginationFindByU_C_C_T_S);
+
+		_finderPaths.put(
+			"finderPathCountByU_C_C_T_S", _finderPathCountByU_C_C_T_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T_R_S",
+			_finderPathWithPaginationFindByC_C_T_R_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_T_R_S",
+			_finderPathWithoutPaginationFindByC_C_T_R_S);
+
+		_finderPaths.put(
+			"finderPathCountByC_C_T_R_S", _finderPathCountByC_C_T_R_S);
+
 		_setSocialRequestUtilPersistence(this);
 	}
 
@@ -7446,6 +7569,62 @@ public class SocialRequestPersistenceImpl
 
 		EntityCacheUtil.removeCache(SocialRequestImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SocialRequest> socialRequests = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialRequest>> resultMap = new HashMap<>();
+
+			for (SocialRequest socialRequest : socialRequests) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialRequestModelImpl socialRequestModelImpl =
+						(SocialRequestModelImpl)socialRequest;
+
+					arguments.add(
+						socialRequestModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialRequest);
+				}
+				else {
+					List<SocialRequest> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(socialRequest);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialRequest>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialRequest> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSocialRequestUtilPersistence(
 		SocialRequestPersistence socialRequestPersistence) {

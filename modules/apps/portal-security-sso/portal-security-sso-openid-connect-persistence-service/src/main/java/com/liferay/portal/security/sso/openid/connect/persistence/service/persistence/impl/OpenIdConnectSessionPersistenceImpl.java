@@ -50,7 +50,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2225,6 +2227,38 @@ public class OpenIdConnectSessionPersistenceImpl
 			new String[] {"userId", "authServerWellKnownURI", "clientId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_C",
+			_finderPathWithPaginationFindByC_A_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_C",
+			_finderPathWithoutPaginationFindByC_A_C);
+
+		_finderPaths.put("finderPathCountByC_A_C", _finderPathCountByC_A_C);
+
+		_finderPaths.put("finderPathFetchByU_A_C", _finderPathFetchByU_A_C);
+
+		_finderPaths.put("finderPathCountByU_A_C", _finderPathCountByU_A_C);
+
 		_setOpenIdConnectSessionUtilPersistence(this);
 	}
 
@@ -2234,6 +2268,68 @@ public class OpenIdConnectSessionPersistenceImpl
 
 		entityCache.removeCache(OpenIdConnectSessionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<OpenIdConnectSession> openIdConnectSessions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OpenIdConnectSession>> resultMap =
+				new HashMap<>();
+
+			for (OpenIdConnectSession openIdConnectSession :
+					openIdConnectSessions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OpenIdConnectSessionModelImpl
+						openIdConnectSessionModelImpl =
+							(OpenIdConnectSessionModelImpl)openIdConnectSession;
+
+					arguments.add(
+						openIdConnectSessionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), openIdConnectSession);
+				}
+				else {
+					List<OpenIdConnectSession> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(openIdConnectSession);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OpenIdConnectSession>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OpenIdConnectSession> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setOpenIdConnectSessionUtilPersistence(
 		OpenIdConnectSessionPersistence openIdConnectSessionPersistence) {

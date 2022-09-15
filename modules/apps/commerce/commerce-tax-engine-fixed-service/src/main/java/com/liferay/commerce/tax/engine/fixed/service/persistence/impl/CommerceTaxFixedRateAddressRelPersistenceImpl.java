@@ -51,10 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2321,6 +2323,49 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"countryId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceTaxMethodId",
+			_finderPathWithPaginationFindByCommerceTaxMethodId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceTaxMethodId",
+			_finderPathWithoutPaginationFindByCommerceTaxMethodId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceTaxMethodId",
+			_finderPathCountByCommerceTaxMethodId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPTaxCategoryId",
+			_finderPathWithPaginationFindByCPTaxCategoryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPTaxCategoryId",
+			_finderPathWithoutPaginationFindByCPTaxCategoryId);
+
+		_finderPaths.put(
+			"finderPathCountByCPTaxCategoryId",
+			_finderPathCountByCPTaxCategoryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCountryId",
+			_finderPathWithPaginationFindByCountryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCountryId",
+			_finderPathWithoutPaginationFindByCountryId);
+
+		_finderPaths.put(
+			"finderPathCountByCountryId", _finderPathCountByCountryId);
+
 		_setCommerceTaxFixedRateAddressRelUtilPersistence(this);
 	}
 
@@ -2331,6 +2376,72 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 		entityCache.removeCache(
 			CommerceTaxFixedRateAddressRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceTaxFixedRateAddressRel> commerceTaxFixedRateAddressRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceTaxFixedRateAddressRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel :
+					commerceTaxFixedRateAddressRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceTaxFixedRateAddressRelModelImpl
+						commerceTaxFixedRateAddressRelModelImpl =
+							(CommerceTaxFixedRateAddressRelModelImpl)
+								commerceTaxFixedRateAddressRel;
+
+					arguments.add(
+						commerceTaxFixedRateAddressRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceTaxFixedRateAddressRel);
+				}
+				else {
+					List<CommerceTaxFixedRateAddressRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceTaxFixedRateAddressRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceTaxFixedRateAddressRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceTaxFixedRateAddressRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceTaxFixedRateAddressRelUtilPersistence(
 		CommerceTaxFixedRateAddressRelPersistence

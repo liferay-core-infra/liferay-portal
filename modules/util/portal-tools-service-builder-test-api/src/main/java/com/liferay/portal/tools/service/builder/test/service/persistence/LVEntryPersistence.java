@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchLVEntryException;
 import com.liferay.portal.tools.service.builder.test.model.LVEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1875,5 +1877,11 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 		java.util.List
 			<com.liferay.portal.tools.service.builder.test.model.
 				BigDecimalEntry> bigDecimalEntries);
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

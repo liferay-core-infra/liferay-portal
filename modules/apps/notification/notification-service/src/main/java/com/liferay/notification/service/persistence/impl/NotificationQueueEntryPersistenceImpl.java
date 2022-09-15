@@ -55,10 +55,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -4401,6 +4403,54 @@ public class NotificationQueueEntryPersistenceImpl
 			new String[] {Integer.class.getName()}, new String[] {"status"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByNotificationTemplateId",
+			_finderPathWithPaginationFindByNotificationTemplateId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByNotificationTemplateId",
+			_finderPathWithoutPaginationFindByNotificationTemplateId);
+
+		_finderPaths.put(
+			"finderPathCountByNotificationTemplateId",
+			_finderPathCountByNotificationTemplateId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySent",
+			_finderPathWithPaginationFindBySent);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySent",
+			_finderPathWithoutPaginationFindBySent);
+
+		_finderPaths.put("finderPathCountBySent", _finderPathCountBySent);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtSentDate",
+			_finderPathWithPaginationFindByLtSentDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtSentDate",
+			_finderPathWithPaginationCountByLtSentDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStatus",
+			_finderPathWithPaginationFindByStatus);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStatus",
+			_finderPathWithoutPaginationFindByStatus);
+
+		_finderPaths.put("finderPathCountByStatus", _finderPathCountByStatus);
+
 		_setNotificationQueueEntryUtilPersistence(this);
 	}
 
@@ -4410,6 +4460,70 @@ public class NotificationQueueEntryPersistenceImpl
 
 		entityCache.removeCache(NotificationQueueEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<NotificationQueueEntry> notificationQueueEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<NotificationQueueEntry>> resultMap =
+				new HashMap<>();
+
+			for (NotificationQueueEntry notificationQueueEntry :
+					notificationQueueEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					NotificationQueueEntryModelImpl
+						notificationQueueEntryModelImpl =
+							(NotificationQueueEntryModelImpl)
+								notificationQueueEntry;
+
+					arguments.add(
+						notificationQueueEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						notificationQueueEntry);
+				}
+				else {
+					List<NotificationQueueEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(notificationQueueEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<NotificationQueueEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<NotificationQueueEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setNotificationQueueEntryUtilPersistence(
 		NotificationQueueEntryPersistence notificationQueueEntryPersistence) {

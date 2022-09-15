@@ -18,6 +18,8 @@ import com.liferay.document.library.exception.NoSuchStorageQuotaException;
 import com.liferay.document.library.model.DLStorageQuota;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -205,5 +207,11 @@ public interface DLStorageQuotaPersistence
 	 * @return the number of dl storage quotas
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

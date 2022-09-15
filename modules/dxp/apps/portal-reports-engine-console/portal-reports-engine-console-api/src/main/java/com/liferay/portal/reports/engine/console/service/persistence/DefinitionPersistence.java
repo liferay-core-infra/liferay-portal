@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.reports.engine.console.exception.NoSuchDefinitionException;
 import com.liferay.portal.reports.engine.console.model.Definition;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -856,5 +858,11 @@ public interface DefinitionPersistence extends BasePersistence<Definition> {
 	 * @return the number of definitions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

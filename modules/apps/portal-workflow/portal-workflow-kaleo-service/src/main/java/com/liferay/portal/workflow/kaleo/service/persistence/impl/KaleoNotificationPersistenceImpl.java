@@ -3340,6 +3340,59 @@ public class KaleoNotificationPersistenceImpl
 			new String[] {"kaleoClassName", "kaleoClassPK", "executionType"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithoutPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoDefinitionVersionId",
+			_finderPathCountByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKCN_KCPK",
+			_finderPathWithPaginationFindByKCN_KCPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKCN_KCPK",
+			_finderPathWithoutPaginationFindByKCN_KCPK);
+
+		_finderPaths.put(
+			"finderPathCountByKCN_KCPK", _finderPathCountByKCN_KCPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKCN_KCPK_ET",
+			_finderPathWithPaginationFindByKCN_KCPK_ET);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKCN_KCPK_ET",
+			_finderPathWithoutPaginationFindByKCN_KCPK_ET);
+
+		_finderPaths.put(
+			"finderPathCountByKCN_KCPK_ET", _finderPathCountByKCN_KCPK_ET);
+
 		_setKaleoNotificationUtilPersistence(this);
 	}
 
@@ -3349,6 +3402,64 @@ public class KaleoNotificationPersistenceImpl
 
 		entityCache.removeCache(KaleoNotificationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoNotification> kaleoNotifications = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoNotification>> resultMap =
+				new HashMap<>();
+
+			for (KaleoNotification kaleoNotification : kaleoNotifications) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoNotificationModelImpl kaleoNotificationModelImpl =
+						(KaleoNotificationModelImpl)kaleoNotification;
+
+					arguments.add(
+						kaleoNotificationModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoNotification);
+				}
+				else {
+					List<KaleoNotification> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoNotification);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoNotification>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoNotification> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoNotificationUtilPersistence(
 		KaleoNotificationPersistence kaleoNotificationPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.search.experiences.exception.NoSuchSXPElementException;
 import com.liferay.search.experiences.model.SXPElement;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1538,5 +1540,11 @@ public interface SXPElementPersistence extends BasePersistence<SXPElement> {
 	 * @return the number of sxp elements
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

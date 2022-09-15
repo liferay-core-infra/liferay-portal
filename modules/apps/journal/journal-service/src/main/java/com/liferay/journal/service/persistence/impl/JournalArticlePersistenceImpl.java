@@ -35661,6 +35661,415 @@ public class JournalArticlePersistenceImpl
 			},
 			new String[] {"groupId", "folderId", "classNameId", "status"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByResourcePrimKey",
+			_finderPathWithPaginationFindByResourcePrimKey);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByResourcePrimKey",
+			_finderPathWithoutPaginationFindByResourcePrimKey);
+
+		_finderPaths.put(
+			"finderPathCountByResourcePrimKey",
+			_finderPathCountByResourcePrimKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByDDMStructureKey",
+			_finderPathWithPaginationFindByDDMStructureKey);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByDDMStructureKey",
+			_finderPathWithoutPaginationFindByDDMStructureKey);
+
+		_finderPaths.put(
+			"finderPathCountByDDMStructureKey",
+			_finderPathCountByDDMStructureKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByDDMStructureKey",
+			_finderPathWithPaginationCountByDDMStructureKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByDDMTemplateKey",
+			_finderPathWithPaginationFindByDDMTemplateKey);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByDDMTemplateKey",
+			_finderPathWithoutPaginationFindByDDMTemplateKey);
+
+		_finderPaths.put(
+			"finderPathCountByDDMTemplateKey",
+			_finderPathCountByDDMTemplateKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLayoutUuid",
+			_finderPathWithPaginationFindByLayoutUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLayoutUuid",
+			_finderPathWithoutPaginationFindByLayoutUuid);
+
+		_finderPaths.put(
+			"finderPathCountByLayoutUuid", _finderPathCountByLayoutUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySmallImageId",
+			_finderPathWithPaginationFindBySmallImageId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySmallImageId",
+			_finderPathWithoutPaginationFindBySmallImageId);
+
+		_finderPaths.put(
+			"finderPathCountBySmallImageId", _finderPathCountBySmallImageId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByR_I",
+			_finderPathWithPaginationFindByR_I);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByR_I",
+			_finderPathWithoutPaginationFindByR_I);
+
+		_finderPaths.put("finderPathCountByR_I", _finderPathCountByR_I);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByR_ST",
+			_finderPathWithPaginationFindByR_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByR_ST",
+			_finderPathWithoutPaginationFindByR_ST);
+
+		_finderPaths.put("finderPathCountByR_ST", _finderPathCountByR_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByR_ST",
+			_finderPathWithPaginationCountByR_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U",
+			_finderPathWithPaginationFindByG_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U",
+			_finderPathWithoutPaginationFindByG_U);
+
+		_finderPaths.put("finderPathCountByG_U", _finderPathCountByG_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_ERC",
+			_finderPathWithPaginationFindByG_ERC);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_ERC",
+			_finderPathWithoutPaginationFindByG_ERC);
+
+		_finderPaths.put("finderPathCountByG_ERC", _finderPathCountByG_ERC);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F",
+			_finderPathWithPaginationFindByG_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F",
+			_finderPathWithoutPaginationFindByG_F);
+
+		_finderPaths.put("finderPathCountByG_F", _finderPathCountByG_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_F",
+			_finderPathWithPaginationCountByG_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_A",
+			_finderPathWithPaginationFindByG_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_A",
+			_finderPathWithoutPaginationFindByG_A);
+
+		_finderPaths.put("finderPathCountByG_A", _finderPathCountByG_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_UT",
+			_finderPathWithPaginationFindByG_UT);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_UT",
+			_finderPathWithoutPaginationFindByG_UT);
+
+		_finderPaths.put("finderPathCountByG_UT", _finderPathCountByG_UT);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_DDMSK",
+			_finderPathWithPaginationFindByG_DDMSK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_DDMSK",
+			_finderPathWithoutPaginationFindByG_DDMSK);
+
+		_finderPaths.put("finderPathCountByG_DDMSK", _finderPathCountByG_DDMSK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_DDMTK",
+			_finderPathWithPaginationFindByG_DDMTK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_DDMTK",
+			_finderPathWithoutPaginationFindByG_DDMTK);
+
+		_finderPaths.put("finderPathCountByG_DDMTK", _finderPathCountByG_DDMTK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_L",
+			_finderPathWithPaginationFindByG_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_L",
+			_finderPathWithoutPaginationFindByG_L);
+
+		_finderPaths.put("finderPathCountByG_L", _finderPathCountByG_L);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_NotL",
+			_finderPathWithPaginationFindByG_NotL);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_NotL",
+			_finderPathWithPaginationCountByG_NotL);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_ST",
+			_finderPathWithPaginationFindByG_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_ST",
+			_finderPathWithoutPaginationFindByG_ST);
+
+		_finderPaths.put("finderPathCountByG_ST", _finderPathCountByG_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_V",
+			_finderPathWithPaginationFindByC_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_V",
+			_finderPathWithoutPaginationFindByC_V);
+
+		_finderPaths.put("finderPathCountByC_V", _finderPathCountByC_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_ST",
+			_finderPathWithPaginationFindByC_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_ST",
+			_finderPathWithoutPaginationFindByC_ST);
+
+		_finderPaths.put("finderPathCountByC_ST", _finderPathCountByC_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_NotST",
+			_finderPathWithPaginationFindByC_NotST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_NotST",
+			_finderPathWithPaginationCountByC_NotST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtD_S",
+			_finderPathWithPaginationFindByLtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtD_S",
+			_finderPathWithPaginationCountByLtD_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByR_I_S",
+			_finderPathWithPaginationFindByR_I_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByR_I_S",
+			_finderPathWithoutPaginationFindByR_I_S);
+
+		_finderPaths.put("finderPathCountByR_I_S", _finderPathCountByR_I_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByR_I_S",
+			_finderPathWithPaginationCountByR_I_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_C",
+			_finderPathWithPaginationFindByG_U_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_C",
+			_finderPathWithoutPaginationFindByG_U_C);
+
+		_finderPaths.put("finderPathCountByG_U_C", _finderPathCountByG_U_C);
+
+		_finderPaths.put("finderPathFetchByG_ERC_V", _finderPathFetchByG_ERC_V);
+
+		_finderPaths.put("finderPathCountByG_ERC_V", _finderPathCountByG_ERC_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F_ST",
+			_finderPathWithPaginationFindByG_F_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F_ST",
+			_finderPathWithoutPaginationFindByG_F_ST);
+
+		_finderPaths.put("finderPathCountByG_F_ST", _finderPathCountByG_F_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_F_ST",
+			_finderPathWithPaginationCountByG_F_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C",
+			_finderPathWithPaginationFindByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C",
+			_finderPathWithoutPaginationFindByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
+		_finderPaths.put(
+			"finderPathFetchByG_C_DDMSK", _finderPathFetchByG_C_DDMSK);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_DDMSK", _finderPathCountByG_C_DDMSK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_DDMTK",
+			_finderPathWithPaginationFindByG_C_DDMTK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_DDMTK",
+			_finderPathWithoutPaginationFindByG_C_DDMTK);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_DDMTK", _finderPathCountByG_C_DDMTK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_L",
+			_finderPathWithPaginationFindByG_C_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_L",
+			_finderPathWithoutPaginationFindByG_C_L);
+
+		_finderPaths.put("finderPathCountByG_C_L", _finderPathCountByG_C_L);
+
+		_finderPaths.put("finderPathFetchByG_A_V", _finderPathFetchByG_A_V);
+
+		_finderPaths.put("finderPathCountByG_A_V", _finderPathCountByG_A_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_A_ST",
+			_finderPathWithPaginationFindByG_A_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_A_ST",
+			_finderPathWithoutPaginationFindByG_A_ST);
+
+		_finderPaths.put("finderPathCountByG_A_ST", _finderPathCountByG_A_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_A_ST",
+			_finderPathWithPaginationCountByG_A_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_A_NotST",
+			_finderPathWithPaginationFindByG_A_NotST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_A_NotST",
+			_finderPathWithPaginationCountByG_A_NotST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_UT_ST",
+			_finderPathWithPaginationFindByG_UT_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_UT_ST",
+			_finderPathWithoutPaginationFindByG_UT_ST);
+
+		_finderPaths.put("finderPathCountByG_UT_ST", _finderPathCountByG_UT_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_V_ST",
+			_finderPathWithPaginationFindByC_V_ST);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_V_ST",
+			_finderPathWithoutPaginationFindByC_V_ST);
+
+		_finderPaths.put("finderPathCountByC_V_ST", _finderPathCountByC_V_ST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F_C_NotST",
+			_finderPathWithPaginationFindByG_F_C_NotST);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_F_C_NotST",
+			_finderPathWithPaginationCountByG_F_C_NotST);
 
 		_setJournalArticleUtilPersistence(this);
 	}
@@ -35671,6 +36080,62 @@ public class JournalArticlePersistenceImpl
 
 		entityCache.removeCache(JournalArticleImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<JournalArticle> journalArticles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<JournalArticle>> resultMap = new HashMap<>();
+
+			for (JournalArticle journalArticle : journalArticles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					JournalArticleModelImpl journalArticleModelImpl =
+						(JournalArticleModelImpl)journalArticle;
+
+					arguments.add(
+						journalArticleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), journalArticle);
+				}
+				else {
+					List<JournalArticle> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(journalArticle);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<JournalArticle>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<JournalArticle> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setJournalArticleUtilPersistence(
 		JournalArticlePersistence journalArticlePersistence) {

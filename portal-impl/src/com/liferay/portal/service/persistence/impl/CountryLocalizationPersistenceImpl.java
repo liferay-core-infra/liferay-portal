@@ -46,6 +46,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1432,6 +1434,33 @@ public class CountryLocalizationPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"countryId", "languageId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCountryId",
+			_finderPathWithPaginationFindByCountryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCountryId",
+			_finderPathWithoutPaginationFindByCountryId);
+
+		_finderPaths.put(
+			"finderPathCountByCountryId", _finderPathCountByCountryId);
+
+		_finderPaths.put(
+			"finderPathFetchByCountryId_LanguageId",
+			_finderPathFetchByCountryId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathCountByCountryId_LanguageId",
+			_finderPathCountByCountryId_LanguageId);
+
 		_setCountryLocalizationUtilPersistence(this);
 	}
 
@@ -1440,6 +1469,67 @@ public class CountryLocalizationPersistenceImpl
 
 		EntityCacheUtil.removeCache(CountryLocalizationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CountryLocalization> countryLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CountryLocalization>> resultMap =
+				new HashMap<>();
+
+			for (CountryLocalization countryLocalization :
+					countryLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CountryLocalizationModelImpl countryLocalizationModelImpl =
+						(CountryLocalizationModelImpl)countryLocalization;
+
+					arguments.add(
+						countryLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), countryLocalization);
+				}
+				else {
+					List<CountryLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(countryLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CountryLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CountryLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCountryLocalizationUtilPersistence(
 		CountryLocalizationPersistence countryLocalizationPersistence) {

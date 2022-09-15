@@ -18,6 +18,8 @@ import com.liferay.multi.factor.authentication.email.otp.exception.NoSuchEntryEx
 import com.liferay.multi.factor.authentication.email.otp.model.MFAEmailOTPEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -205,5 +207,11 @@ public interface MFAEmailOTPEntryPersistence
 	 * @return the number of mfa email otp entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

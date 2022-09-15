@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectLayoutRowException;
 import com.liferay.object.model.ObjectLayoutRow;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -602,5 +604,11 @@ public interface ObjectLayoutRowPersistence
 	 * @return the number of object layout rows
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

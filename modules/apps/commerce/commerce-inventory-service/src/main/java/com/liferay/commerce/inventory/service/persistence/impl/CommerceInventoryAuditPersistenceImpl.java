@@ -53,6 +53,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1833,6 +1834,32 @@ public class CommerceInventoryAuditPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "sku"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtCreateDate",
+			_finderPathWithPaginationFindByLtCreateDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtCreateDate",
+			_finderPathWithPaginationCountByLtCreateDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S",
+			_finderPathWithPaginationFindByC_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S",
+			_finderPathWithoutPaginationFindByC_S);
+
+		_finderPaths.put("finderPathCountByC_S", _finderPathCountByC_S);
+
 		_setCommerceInventoryAuditUtilPersistence(this);
 	}
 
@@ -1842,6 +1869,70 @@ public class CommerceInventoryAuditPersistenceImpl
 
 		entityCache.removeCache(CommerceInventoryAuditImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceInventoryAudit> commerceInventoryAudits = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceInventoryAudit>> resultMap =
+				new HashMap<>();
+
+			for (CommerceInventoryAudit commerceInventoryAudit :
+					commerceInventoryAudits) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceInventoryAuditModelImpl
+						commerceInventoryAuditModelImpl =
+							(CommerceInventoryAuditModelImpl)
+								commerceInventoryAudit;
+
+					arguments.add(
+						commerceInventoryAuditModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceInventoryAudit);
+				}
+				else {
+					List<CommerceInventoryAudit> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceInventoryAudit);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceInventoryAudit>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceInventoryAudit> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceInventoryAuditUtilPersistence(
 		CommerceInventoryAuditPersistence commerceInventoryAuditPersistence) {

@@ -4334,6 +4334,69 @@ public class ClientExtensionEntryRelPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CETERC",
+			_finderPathWithPaginationFindByC_CETERC);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CETERC",
+			_finderPathWithoutPaginationFindByC_CETERC);
+
+		_finderPaths.put(
+			"finderPathCountByC_CETERC", _finderPathCountByC_CETERC);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T",
+			_finderPathWithPaginationFindByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_T",
+			_finderPathWithoutPaginationFindByC_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_T", _finderPathCountByC_C_T);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setClientExtensionEntryRelUtilPersistence(this);
 	}
 
@@ -4343,6 +4406,70 @@ public class ClientExtensionEntryRelPersistenceImpl
 
 		entityCache.removeCache(ClientExtensionEntryRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ClientExtensionEntryRel> clientExtensionEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ClientExtensionEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (ClientExtensionEntryRel clientExtensionEntryRel :
+					clientExtensionEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ClientExtensionEntryRelModelImpl
+						clientExtensionEntryRelModelImpl =
+							(ClientExtensionEntryRelModelImpl)
+								clientExtensionEntryRel;
+
+					arguments.add(
+						clientExtensionEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						clientExtensionEntryRel);
+				}
+				else {
+					List<ClientExtensionEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(clientExtensionEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ClientExtensionEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ClientExtensionEntryRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setClientExtensionEntryRelUtilPersistence(
 		ClientExtensionEntryRelPersistence clientExtensionEntryRelPersistence) {

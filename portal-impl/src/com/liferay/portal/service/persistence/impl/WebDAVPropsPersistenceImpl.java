@@ -48,9 +48,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -871,6 +874,18 @@ public class WebDAVPropsPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"classNameId", "classPK"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
 		_setWebDAVPropsUtilPersistence(this);
 	}
 
@@ -879,6 +894,62 @@ public class WebDAVPropsPersistenceImpl
 
 		EntityCacheUtil.removeCache(WebDAVPropsImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<WebDAVProps> webDAVPropss = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<WebDAVProps>> resultMap = new HashMap<>();
+
+			for (WebDAVProps webDAVProps : webDAVPropss) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					WebDAVPropsModelImpl webDAVPropsModelImpl =
+						(WebDAVPropsModelImpl)webDAVProps;
+
+					arguments.add(
+						webDAVPropsModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), webDAVProps);
+				}
+				else {
+					List<WebDAVProps> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(webDAVProps);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<WebDAVProps>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<WebDAVProps> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setWebDAVPropsUtilPersistence(
 		WebDAVPropsPersistence webDAVPropsPersistence) {

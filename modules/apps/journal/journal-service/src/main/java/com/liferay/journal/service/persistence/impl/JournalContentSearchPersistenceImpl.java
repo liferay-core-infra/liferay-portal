@@ -6214,6 +6214,103 @@ public class JournalContentSearchPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByPortletId",
+			_finderPathWithPaginationFindByPortletId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByPortletId",
+			_finderPathWithoutPaginationFindByPortletId);
+
+		_finderPaths.put(
+			"finderPathCountByPortletId", _finderPathCountByPortletId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByArticleId",
+			_finderPathWithPaginationFindByArticleId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByArticleId",
+			_finderPathWithoutPaginationFindByArticleId);
+
+		_finderPaths.put(
+			"finderPathCountByArticleId", _finderPathCountByArticleId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P",
+			_finderPathWithPaginationFindByG_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P",
+			_finderPathWithoutPaginationFindByG_P);
+
+		_finderPaths.put("finderPathCountByG_P", _finderPathCountByG_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_A",
+			_finderPathWithPaginationFindByG_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_A",
+			_finderPathWithoutPaginationFindByG_A);
+
+		_finderPaths.put("finderPathCountByG_A", _finderPathCountByG_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_L",
+			_finderPathWithPaginationFindByG_P_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_L",
+			_finderPathWithoutPaginationFindByG_P_L);
+
+		_finderPaths.put("finderPathCountByG_P_L", _finderPathCountByG_P_L);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_A",
+			_finderPathWithPaginationFindByG_P_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_A",
+			_finderPathWithoutPaginationFindByG_P_A);
+
+		_finderPaths.put("finderPathCountByG_P_A", _finderPathCountByG_P_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_L_P",
+			_finderPathWithPaginationFindByG_P_L_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_L_P",
+			_finderPathWithoutPaginationFindByG_P_L_P);
+
+		_finderPaths.put("finderPathCountByG_P_L_P", _finderPathCountByG_P_L_P);
+
+		_finderPaths.put(
+			"finderPathFetchByG_P_L_P_A", _finderPathFetchByG_P_L_P_A);
+
+		_finderPaths.put(
+			"finderPathCountByG_P_L_P_A", _finderPathCountByG_P_L_P_A);
+
 		_setJournalContentSearchUtilPersistence(this);
 	}
 
@@ -6223,6 +6320,68 @@ public class JournalContentSearchPersistenceImpl
 
 		entityCache.removeCache(JournalContentSearchImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<JournalContentSearch> journalContentSearchs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<JournalContentSearch>> resultMap =
+				new HashMap<>();
+
+			for (JournalContentSearch journalContentSearch :
+					journalContentSearchs) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					JournalContentSearchModelImpl
+						journalContentSearchModelImpl =
+							(JournalContentSearchModelImpl)journalContentSearch;
+
+					arguments.add(
+						journalContentSearchModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), journalContentSearch);
+				}
+				else {
+					List<JournalContentSearch> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(journalContentSearch);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<JournalContentSearch>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<JournalContentSearch> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setJournalContentSearchUtilPersistence(
 		JournalContentSearchPersistence journalContentSearchPersistence) {

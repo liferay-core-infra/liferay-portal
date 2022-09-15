@@ -48,7 +48,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2188,6 +2190,46 @@ public class UserTrackerPersistenceImpl
 			new String[] {String.class.getName()}, new String[] {"sessionId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySessionId",
+			_finderPathWithPaginationFindBySessionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySessionId",
+			_finderPathWithoutPaginationFindBySessionId);
+
+		_finderPaths.put(
+			"finderPathCountBySessionId", _finderPathCountBySessionId);
+
 		_setUserTrackerUtilPersistence(this);
 	}
 
@@ -2196,6 +2238,62 @@ public class UserTrackerPersistenceImpl
 
 		EntityCacheUtil.removeCache(UserTrackerImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<UserTracker> userTrackers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserTracker>> resultMap = new HashMap<>();
+
+			for (UserTracker userTracker : userTrackers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserTrackerModelImpl userTrackerModelImpl =
+						(UserTrackerModelImpl)userTracker;
+
+					arguments.add(
+						userTrackerModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userTracker);
+				}
+				else {
+					List<UserTracker> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(userTracker);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserTracker>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserTracker> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setUserTrackerUtilPersistence(
 		UserTrackerPersistence userTrackerPersistence) {

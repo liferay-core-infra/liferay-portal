@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.view.count.exception.NoSuchEntryException;
 import com.liferay.view.count.model.ViewCountEntry;
 
+import java.util.Map;
 import java.util.Set;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -164,5 +165,11 @@ public interface ViewCountEntryPersistence
 	public int countAll();
 
 	public Set<String> getCompoundPKColumnNames();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -3542,6 +3542,61 @@ public class DEDataListViewPersistenceImpl
 			},
 			new String[] {"groupId", "companyId", "ddmStructureId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByDDMStructureId",
+			_finderPathWithPaginationFindByDDMStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByDDMStructureId",
+			_finderPathWithoutPaginationFindByDDMStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByDDMStructureId",
+			_finderPathCountByDDMStructureId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_DDMSI",
+			_finderPathWithPaginationFindByG_C_DDMSI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_DDMSI",
+			_finderPathWithoutPaginationFindByG_C_DDMSI);
+
+		_finderPaths.put(
+			"finderPathCountByG_C_DDMSI", _finderPathCountByG_C_DDMSI);
+
 		_setDEDataListViewUtilPersistence(this);
 	}
 
@@ -3551,6 +3606,62 @@ public class DEDataListViewPersistenceImpl
 
 		entityCache.removeCache(DEDataListViewImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DEDataListView> deDataListViews = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DEDataListView>> resultMap = new HashMap<>();
+
+			for (DEDataListView deDataListView : deDataListViews) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DEDataListViewModelImpl deDataListViewModelImpl =
+						(DEDataListViewModelImpl)deDataListView;
+
+					arguments.add(
+						deDataListViewModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), deDataListView);
+				}
+				else {
+					List<DEDataListView> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(deDataListView);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DEDataListView>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DEDataListView> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDEDataListViewUtilPersistence(
 		DEDataListViewPersistence deDataListViewPersistence) {

@@ -19,6 +19,7 @@ import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -354,5 +355,11 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	 * @return the number of akismet entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

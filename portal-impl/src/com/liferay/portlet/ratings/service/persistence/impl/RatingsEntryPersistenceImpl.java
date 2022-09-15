@@ -3950,6 +3950,70 @@ public class RatingsEntryPersistenceImpl
 			},
 			new String[] {"classNameId", "classPK", "score"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_C_C",
+			_finderPathWithPaginationFindByU_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_C_C",
+			_finderPathWithoutPaginationFindByU_C_C);
+
+		_finderPaths.put("finderPathFetchByU_C_C", _finderPathFetchByU_C_C);
+
+		_finderPaths.put("finderPathCountByU_C_C", _finderPathCountByU_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByU_C_C",
+			_finderPathWithPaginationCountByU_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_S",
+			_finderPathWithPaginationFindByC_C_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_S",
+			_finderPathWithoutPaginationFindByC_C_S);
+
+		_finderPaths.put("finderPathCountByC_C_S", _finderPathCountByC_C_S);
+
 		_setRatingsEntryUtilPersistence(this);
 	}
 
@@ -3958,6 +4022,62 @@ public class RatingsEntryPersistenceImpl
 
 		EntityCacheUtil.removeCache(RatingsEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<RatingsEntry> ratingsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RatingsEntry>> resultMap = new HashMap<>();
+
+			for (RatingsEntry ratingsEntry : ratingsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RatingsEntryModelImpl ratingsEntryModelImpl =
+						(RatingsEntryModelImpl)ratingsEntry;
+
+					arguments.add(
+						ratingsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), ratingsEntry);
+				}
+				else {
+					List<RatingsEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ratingsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RatingsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RatingsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setRatingsEntryUtilPersistence(
 		RatingsEntryPersistence ratingsEntryPersistence) {

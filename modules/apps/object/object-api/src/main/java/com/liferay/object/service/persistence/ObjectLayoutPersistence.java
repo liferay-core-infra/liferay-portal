@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectLayoutException;
 import com.liferay.object.model.ObjectLayout;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -762,5 +764,11 @@ public interface ObjectLayoutPersistence extends BasePersistence<ObjectLayout> {
 	 * @return the number of object layouts
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

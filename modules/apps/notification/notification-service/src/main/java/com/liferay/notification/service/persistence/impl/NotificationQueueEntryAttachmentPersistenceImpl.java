@@ -49,9 +49,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1260,6 +1262,26 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 			new String[] {Long.class.getName()},
 			new String[] {"notificationQueueEntryId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByNotificationQueueEntryId",
+			_finderPathWithPaginationFindByNotificationQueueEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByNotificationQueueEntryId",
+			_finderPathWithoutPaginationFindByNotificationQueueEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByNotificationQueueEntryId",
+			_finderPathCountByNotificationQueueEntryId);
+
 		_setNotificationQueueEntryAttachmentUtilPersistence(this);
 	}
 
@@ -1270,6 +1292,73 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 		entityCache.removeCache(
 			NotificationQueueEntryAttachmentImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<NotificationQueueEntryAttachment>
+			notificationQueueEntryAttachments = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<NotificationQueueEntryAttachment>>
+				resultMap = new HashMap<>();
+
+			for (NotificationQueueEntryAttachment
+					notificationQueueEntryAttachment :
+						notificationQueueEntryAttachments) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					NotificationQueueEntryAttachmentModelImpl
+						notificationQueueEntryAttachmentModelImpl =
+							(NotificationQueueEntryAttachmentModelImpl)
+								notificationQueueEntryAttachment;
+
+					arguments.add(
+						notificationQueueEntryAttachmentModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						notificationQueueEntryAttachment);
+				}
+				else {
+					List<NotificationQueueEntryAttachment> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(notificationQueueEntryAttachment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<NotificationQueueEntryAttachment>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<NotificationQueueEntryAttachment> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setNotificationQueueEntryAttachmentUtilPersistence(
 		NotificationQueueEntryAttachmentPersistence

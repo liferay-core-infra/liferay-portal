@@ -18,6 +18,8 @@ import com.liferay.commerce.tax.engine.fixed.exception.NoSuchTaxFixedRateAddress
 import com.liferay.commerce.tax.engine.fixed.model.CommerceTaxFixedRateAddressRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -604,5 +606,11 @@ public interface CommerceTaxFixedRateAddressRelPersistence
 	 * @return the number of commerce tax fixed rate address rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

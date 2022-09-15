@@ -7094,6 +7094,121 @@ public class LVEntryPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"headId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_Head",
+			_finderPathWithPaginationFindByUuid_Head);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_Head",
+			_finderPathWithoutPaginationFindByUuid_Head);
+
+		_finderPaths.put(
+			"finderPathCountByUuid_Head", _finderPathCountByUuid_Head);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUUID_G",
+			_finderPathWithPaginationFindByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUUID_G",
+			_finderPathWithoutPaginationFindByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathFetchByUUID_G_Head", _finderPathFetchByUUID_G_Head);
+
+		_finderPaths.put(
+			"finderPathCountByUUID_G_Head", _finderPathCountByUUID_G_Head);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C_Head",
+			_finderPathWithPaginationFindByUuid_C_Head);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C_Head",
+			_finderPathWithoutPaginationFindByUuid_C_Head);
+
+		_finderPaths.put(
+			"finderPathCountByUuid_C_Head", _finderPathCountByUuid_C_Head);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGroupId",
+			_finderPathWithPaginationCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId_Head",
+			_finderPathWithPaginationFindByGroupId_Head);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId_Head",
+			_finderPathWithoutPaginationFindByGroupId_Head);
+
+		_finderPaths.put(
+			"finderPathCountByGroupId_Head", _finderPathCountByGroupId_Head);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGroupId_Head",
+			_finderPathWithPaginationCountByGroupId_Head);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_UGK",
+			_finderPathWithPaginationFindByG_UGK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_UGK",
+			_finderPathWithoutPaginationFindByG_UGK);
+
+		_finderPaths.put("finderPathCountByG_UGK", _finderPathCountByG_UGK);
+
+		_finderPaths.put(
+			"finderPathFetchByG_UGK_Head", _finderPathFetchByG_UGK_Head);
+
+		_finderPaths.put(
+			"finderPathCountByG_UGK_Head", _finderPathCountByG_UGK_Head);
+
+		_finderPaths.put("finderPathFetchByHeadId", _finderPathFetchByHeadId);
+
+		_finderPaths.put("finderPathCountByHeadId", _finderPathCountByHeadId);
+
 		_setLVEntryUtilPersistence(this);
 	}
 
@@ -7104,6 +7219,61 @@ public class LVEntryPersistenceImpl
 
 		TableMapperFactory.removeTableMapper("BigDecimalEntries_LVEntries");
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LVEntry> lvEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LVEntry>> resultMap = new HashMap<>();
+
+			for (LVEntry lvEntry : lvEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LVEntryModelImpl lvEntryModelImpl =
+						(LVEntryModelImpl)lvEntry;
+
+					arguments.add(lvEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), lvEntry);
+				}
+				else {
+					List<LVEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(lvEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LVEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LVEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLVEntryUtilPersistence(
 		LVEntryPersistence lvEntryPersistence) {

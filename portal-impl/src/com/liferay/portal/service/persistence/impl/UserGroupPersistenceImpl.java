@@ -8004,6 +8004,79 @@ public class UserGroupPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_P",
+			_finderPathWithPaginationFindByC_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_P",
+			_finderPathWithoutPaginationFindByC_P);
+
+		_finderPaths.put("finderPathCountByC_P", _finderPathCountByC_P);
+
+		_finderPaths.put("finderPathFetchByC_N", _finderPathFetchByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LikeN",
+			_finderPathWithPaginationFindByC_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LikeN",
+			_finderPathWithPaginationCountByC_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGtU_C_P",
+			_finderPathWithPaginationFindByGtU_C_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGtU_C_P",
+			_finderPathWithPaginationCountByGtU_C_P);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setUserGroupUtilPersistence(this);
 	}
 
@@ -8016,6 +8089,62 @@ public class UserGroupPersistenceImpl
 		TableMapperFactory.removeTableMapper("UserGroups_Teams");
 		TableMapperFactory.removeTableMapper("Users_UserGroups");
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<UserGroup> userGroups = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserGroup>> resultMap = new HashMap<>();
+
+			for (UserGroup userGroup : userGroups) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserGroupModelImpl userGroupModelImpl =
+						(UserGroupModelImpl)userGroup;
+
+					arguments.add(
+						userGroupModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userGroup);
+				}
+				else {
+					List<UserGroup> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(userGroup);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserGroup>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserGroup> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setUserGroupUtilPersistence(
 		UserGroupPersistence userGroupPersistence) {

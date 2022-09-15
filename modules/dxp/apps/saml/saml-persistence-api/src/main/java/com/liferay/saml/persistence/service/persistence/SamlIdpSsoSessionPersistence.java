@@ -19,6 +19,7 @@ import com.liferay.saml.persistence.exception.NoSuchIdpSsoSessionException;
 import com.liferay.saml.persistence.model.SamlIdpSsoSession;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -355,5 +356,11 @@ public interface SamlIdpSsoSessionPersistence
 	 * @return the number of saml idp sso sessions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

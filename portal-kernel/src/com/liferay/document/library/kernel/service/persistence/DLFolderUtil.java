@@ -4930,6 +4930,18 @@ public class DLFolderUtil {
 		getPersistence().setDLFileEntryTypes(pk, dlFileEntryTypes);
 	}
 
+	public static Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths() {
+
+		return getPersistence().getFinderPaths();
+	}
+
+	public static void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath finderPaths) {
+
+		getPersistence().populateFinderCache(finderPaths);
+	}
+
 	public static DLFolderPersistence getPersistence() {
 		return _persistence;
 	}

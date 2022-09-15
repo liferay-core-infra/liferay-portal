@@ -50,9 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1987,6 +1990,39 @@ public class COREntryRelPersistenceImpl
 			},
 			new String[] {"classNameId", "classPK", "COREntryId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCOREntryId",
+			_finderPathWithPaginationFindByCOREntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCOREntryId",
+			_finderPathWithoutPaginationFindByCOREntryId);
+
+		_finderPaths.put(
+			"finderPathCountByCOREntryId", _finderPathCountByCOREntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
 		_setCOREntryRelUtilPersistence(this);
 	}
 
@@ -1996,6 +2032,62 @@ public class COREntryRelPersistenceImpl
 
 		entityCache.removeCache(COREntryRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<COREntryRel> corEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<COREntryRel>> resultMap = new HashMap<>();
+
+			for (COREntryRel corEntryRel : corEntryRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					COREntryRelModelImpl corEntryRelModelImpl =
+						(COREntryRelModelImpl)corEntryRel;
+
+					arguments.add(
+						corEntryRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), corEntryRel);
+				}
+				else {
+					List<COREntryRel> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(corEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<COREntryRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<COREntryRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCOREntryRelUtilPersistence(
 		COREntryRelPersistence corEntryRelPersistence) {

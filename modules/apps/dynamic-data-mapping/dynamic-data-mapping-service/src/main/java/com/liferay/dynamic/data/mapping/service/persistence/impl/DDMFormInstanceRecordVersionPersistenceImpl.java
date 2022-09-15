@@ -4339,6 +4339,70 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFormInstanceRecordId",
+			_finderPathWithPaginationFindByFormInstanceRecordId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFormInstanceRecordId",
+			_finderPathWithoutPaginationFindByFormInstanceRecordId);
+
+		_finderPaths.put(
+			"finderPathCountByFormInstanceRecordId",
+			_finderPathCountByFormInstanceRecordId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_F",
+			_finderPathWithPaginationFindByU_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_F",
+			_finderPathWithoutPaginationFindByU_F);
+
+		_finderPaths.put("finderPathCountByU_F", _finderPathCountByU_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_F",
+			_finderPathWithPaginationFindByF_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_F",
+			_finderPathWithoutPaginationFindByF_F);
+
+		_finderPaths.put("finderPathCountByF_F", _finderPathCountByF_F);
+
+		_finderPaths.put("finderPathFetchByF_V", _finderPathFetchByF_V);
+
+		_finderPaths.put("finderPathCountByF_V", _finderPathCountByF_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_S",
+			_finderPathWithPaginationFindByF_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_S",
+			_finderPathWithoutPaginationFindByF_S);
+
+		_finderPaths.put("finderPathCountByF_S", _finderPathCountByF_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_F_F_S",
+			_finderPathWithPaginationFindByU_F_F_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_F_F_S",
+			_finderPathWithoutPaginationFindByU_F_F_S);
+
+		_finderPaths.put("finderPathCountByU_F_F_S", _finderPathCountByU_F_F_S);
+
 		_setDDMFormInstanceRecordVersionUtilPersistence(this);
 	}
 
@@ -4349,6 +4413,72 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		entityCache.removeCache(
 			DDMFormInstanceRecordVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMFormInstanceRecordVersion> ddmFormInstanceRecordVersions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMFormInstanceRecordVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
+					ddmFormInstanceRecordVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMFormInstanceRecordVersionModelImpl
+						ddmFormInstanceRecordVersionModelImpl =
+							(DDMFormInstanceRecordVersionModelImpl)
+								ddmFormInstanceRecordVersion;
+
+					arguments.add(
+						ddmFormInstanceRecordVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						ddmFormInstanceRecordVersion);
+				}
+				else {
+					List<DDMFormInstanceRecordVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmFormInstanceRecordVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMFormInstanceRecordVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMFormInstanceRecordVersion> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMFormInstanceRecordVersionUtilPersistence(
 		DDMFormInstanceRecordVersionPersistence

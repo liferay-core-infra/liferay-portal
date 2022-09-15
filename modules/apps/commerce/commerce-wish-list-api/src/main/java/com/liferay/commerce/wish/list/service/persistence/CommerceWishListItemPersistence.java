@@ -18,6 +18,8 @@ import com.liferay.commerce.wish.list.exception.NoSuchWishListItemException;
 import com.liferay.commerce.wish.list.model.CommerceWishListItem;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -966,5 +968,11 @@ public interface CommerceWishListItemPersistence
 	 * @return the number of commerce wish list items
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

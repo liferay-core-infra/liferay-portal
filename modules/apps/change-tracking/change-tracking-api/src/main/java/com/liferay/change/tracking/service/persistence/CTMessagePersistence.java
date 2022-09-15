@@ -18,6 +18,8 @@ import com.liferay.change.tracking.exception.NoSuchMessageException;
 import com.liferay.change.tracking.model.CTMessage;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -301,5 +303,11 @@ public interface CTMessagePersistence extends BasePersistence<CTMessage> {
 	 * @return the number of ct messages
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

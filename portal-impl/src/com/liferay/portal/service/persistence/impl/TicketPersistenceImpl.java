@@ -50,6 +50,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -2719,6 +2720,48 @@ public class TicketPersistenceImpl
 			new String[] {"companyId", "classNameId", "classPK", "type_"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put("finderPathFetchByKey", _finderPathFetchByKey);
+
+		_finderPaths.put("finderPathCountByKey", _finderPathCountByKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_C",
+			_finderPathWithPaginationFindByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_C",
+			_finderPathWithoutPaginationFindByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T",
+			_finderPathWithPaginationFindByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_T",
+			_finderPathWithoutPaginationFindByC_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_T", _finderPathCountByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_C_T",
+			_finderPathWithPaginationFindByC_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_C_T",
+			_finderPathWithoutPaginationFindByC_C_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_C_T", _finderPathCountByC_C_C_T);
+
 		_setTicketUtilPersistence(this);
 	}
 
@@ -2727,6 +2770,60 @@ public class TicketPersistenceImpl
 
 		EntityCacheUtil.removeCache(TicketImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Ticket> tickets = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Ticket>> resultMap = new HashMap<>();
+
+			for (Ticket ticket : tickets) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					TicketModelImpl ticketModelImpl = (TicketModelImpl)ticket;
+
+					arguments.add(ticketModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), ticket);
+				}
+				else {
+					List<Ticket> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ticket);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Ticket>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Ticket> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setTicketUtilPersistence(
 		TicketPersistence ticketPersistence) {

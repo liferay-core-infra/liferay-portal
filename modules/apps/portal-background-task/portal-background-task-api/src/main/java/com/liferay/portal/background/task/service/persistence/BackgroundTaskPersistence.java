@@ -18,6 +18,8 @@ import com.liferay.portal.background.task.exception.NoSuchBackgroundTaskExceptio
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -2419,5 +2421,11 @@ public interface BackgroundTaskPersistence
 	 * @return the number of background tasks
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -4548,6 +4549,85 @@ public class DepotEntryGroupRelPersistenceImpl
 			new String[] {Boolean.class.getName(), Long.class.getName()},
 			new String[] {"searchable", "toGroupId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByDepotEntryId",
+			_finderPathWithPaginationFindByDepotEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByDepotEntryId",
+			_finderPathWithoutPaginationFindByDepotEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByDepotEntryId", _finderPathCountByDepotEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByToGroupId",
+			_finderPathWithPaginationFindByToGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByToGroupId",
+			_finderPathWithoutPaginationFindByToGroupId);
+
+		_finderPaths.put(
+			"finderPathCountByToGroupId", _finderPathCountByToGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByDDMSA_TGI",
+			_finderPathWithPaginationFindByDDMSA_TGI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByDDMSA_TGI",
+			_finderPathWithoutPaginationFindByDDMSA_TGI);
+
+		_finderPaths.put(
+			"finderPathCountByDDMSA_TGI", _finderPathCountByDDMSA_TGI);
+
+		_finderPaths.put("finderPathFetchByD_TGI", _finderPathFetchByD_TGI);
+
+		_finderPaths.put("finderPathCountByD_TGI", _finderPathCountByD_TGI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_TGI",
+			_finderPathWithPaginationFindByS_TGI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_TGI",
+			_finderPathWithoutPaginationFindByS_TGI);
+
+		_finderPaths.put("finderPathCountByS_TGI", _finderPathCountByS_TGI);
+
 		_setDepotEntryGroupRelUtilPersistence(this);
 	}
 
@@ -4557,6 +4637,64 @@ public class DepotEntryGroupRelPersistenceImpl
 
 		entityCache.removeCache(DepotEntryGroupRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DepotEntryGroupRel> depotEntryGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DepotEntryGroupRel>> resultMap =
+				new HashMap<>();
+
+			for (DepotEntryGroupRel depotEntryGroupRel : depotEntryGroupRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DepotEntryGroupRelModelImpl depotEntryGroupRelModelImpl =
+						(DepotEntryGroupRelModelImpl)depotEntryGroupRel;
+
+					arguments.add(
+						depotEntryGroupRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), depotEntryGroupRel);
+				}
+				else {
+					List<DepotEntryGroupRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(depotEntryGroupRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DepotEntryGroupRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DepotEntryGroupRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDepotEntryGroupRelUtilPersistence(
 		DepotEntryGroupRelPersistence depotEntryGroupRelPersistence) {

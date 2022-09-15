@@ -60,6 +60,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1336,6 +1337,21 @@ public class ImagePersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByLtSize",
 			new String[] {Integer.class.getName()}, new String[] {"size_"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtSize",
+			_finderPathWithPaginationFindByLtSize);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtSize",
+			_finderPathWithPaginationCountByLtSize);
 
 		_setImageUtilPersistence(this);
 	}
@@ -1345,6 +1361,60 @@ public class ImagePersistenceImpl
 
 		EntityCacheUtil.removeCache(ImageImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Image> images = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Image>> resultMap = new HashMap<>();
+
+			for (Image image : images) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ImageModelImpl imageModelImpl = (ImageModelImpl)image;
+
+					arguments.add(imageModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), image);
+				}
+				else {
+					List<Image> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(image);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Image>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Image> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setImageUtilPersistence(ImagePersistence imagePersistence) {
 		try {

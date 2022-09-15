@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.saml.persistence.exception.NoSuchIdpSpConnectionException;
 import com.liferay.saml.persistence.model.SamlIdpSpConnection;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -358,5 +360,11 @@ public interface SamlIdpSpConnectionPersistence
 	 * @return the number of saml idp sp connections
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

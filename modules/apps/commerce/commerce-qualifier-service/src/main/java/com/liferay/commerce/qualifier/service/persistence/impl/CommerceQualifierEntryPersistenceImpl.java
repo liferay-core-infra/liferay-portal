@@ -51,10 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -3424,6 +3426,58 @@ public class CommerceQualifierEntryPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_S",
+			_finderPathWithPaginationFindByS_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_S",
+			_finderPathWithoutPaginationFindByS_S);
+
+		_finderPaths.put("finderPathCountByS_S", _finderPathCountByS_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByT_T",
+			_finderPathWithPaginationFindByT_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByT_T",
+			_finderPathWithoutPaginationFindByT_T);
+
+		_finderPaths.put("finderPathCountByT_T", _finderPathCountByT_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_S_T",
+			_finderPathWithPaginationFindByS_S_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_S_T",
+			_finderPathWithoutPaginationFindByS_S_T);
+
+		_finderPaths.put("finderPathCountByS_S_T", _finderPathCountByS_S_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_T_T",
+			_finderPathWithPaginationFindByS_T_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_T_T",
+			_finderPathWithoutPaginationFindByS_T_T);
+
+		_finderPaths.put("finderPathCountByS_T_T", _finderPathCountByS_T_T);
+
+		_finderPaths.put("finderPathFetchByS_S_T_T", _finderPathFetchByS_S_T_T);
+
+		_finderPaths.put("finderPathCountByS_S_T_T", _finderPathCountByS_S_T_T);
+
 		_setCommerceQualifierEntryUtilPersistence(this);
 	}
 
@@ -3433,6 +3487,70 @@ public class CommerceQualifierEntryPersistenceImpl
 
 		entityCache.removeCache(CommerceQualifierEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceQualifierEntry> commerceQualifierEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceQualifierEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceQualifierEntry commerceQualifierEntry :
+					commerceQualifierEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceQualifierEntryModelImpl
+						commerceQualifierEntryModelImpl =
+							(CommerceQualifierEntryModelImpl)
+								commerceQualifierEntry;
+
+					arguments.add(
+						commerceQualifierEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceQualifierEntry);
+				}
+				else {
+					List<CommerceQualifierEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceQualifierEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceQualifierEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceQualifierEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceQualifierEntryUtilPersistence(
 		CommerceQualifierEntryPersistence commerceQualifierEntryPersistence) {

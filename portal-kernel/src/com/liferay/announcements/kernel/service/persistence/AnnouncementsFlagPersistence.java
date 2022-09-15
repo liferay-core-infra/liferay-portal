@@ -18,6 +18,8 @@ import com.liferay.announcements.kernel.exception.NoSuchFlagException;
 import com.liferay.announcements.kernel.model.AnnouncementsFlag;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -501,5 +503,11 @@ public interface AnnouncementsFlagPersistence
 	 * @return the number of announcements flags
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -46,6 +46,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2601,6 +2603,50 @@ public class LayoutBranchPersistenceImpl
 			},
 			new String[] {"layoutSetBranchId", "plid", "master"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLayoutSetBranchId",
+			_finderPathWithPaginationFindByLayoutSetBranchId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLayoutSetBranchId",
+			_finderPathWithoutPaginationFindByLayoutSetBranchId);
+
+		_finderPaths.put(
+			"finderPathCountByLayoutSetBranchId",
+			_finderPathCountByLayoutSetBranchId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByL_P",
+			_finderPathWithPaginationFindByL_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByL_P",
+			_finderPathWithoutPaginationFindByL_P);
+
+		_finderPaths.put("finderPathCountByL_P", _finderPathCountByL_P);
+
+		_finderPaths.put("finderPathFetchByL_P_N", _finderPathFetchByL_P_N);
+
+		_finderPaths.put("finderPathCountByL_P_N", _finderPathCountByL_P_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByL_P_M",
+			_finderPathWithPaginationFindByL_P_M);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByL_P_M",
+			_finderPathWithoutPaginationFindByL_P_M);
+
+		_finderPaths.put("finderPathCountByL_P_M", _finderPathCountByL_P_M);
+
 		_setLayoutBranchUtilPersistence(this);
 	}
 
@@ -2609,6 +2655,62 @@ public class LayoutBranchPersistenceImpl
 
 		EntityCacheUtil.removeCache(LayoutBranchImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutBranch> layoutBranchs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutBranch>> resultMap = new HashMap<>();
+
+			for (LayoutBranch layoutBranch : layoutBranchs) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutBranchModelImpl layoutBranchModelImpl =
+						(LayoutBranchModelImpl)layoutBranch;
+
+					arguments.add(
+						layoutBranchModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layoutBranch);
+				}
+				else {
+					List<LayoutBranch> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutBranch);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutBranch>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutBranch> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutBranchUtilPersistence(
 		LayoutBranchPersistence layoutBranchPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.account.exception.NoSuchGroupRelException;
 import com.liferay.account.model.AccountGroupRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -674,5 +676,11 @@ public interface AccountGroupRelPersistence
 	 * @return the number of account group rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -6527,6 +6528,75 @@ public class BatchPlannerPlanPersistenceImpl
 			},
 			new String[] {"companyId", "export", "template"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_U",
+			_finderPathWithPaginationFindByC_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_U",
+			_finderPathWithoutPaginationFindByC_U);
+
+		_finderPaths.put("finderPathCountByC_U", _finderPathCountByC_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_E",
+			_finderPathWithPaginationFindByC_E);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_E",
+			_finderPathWithoutPaginationFindByC_E);
+
+		_finderPaths.put("finderPathCountByC_E", _finderPathCountByC_E);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N",
+			_finderPathWithPaginationFindByC_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N",
+			_finderPathWithoutPaginationFindByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_T",
+			_finderPathWithPaginationFindByC_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_T",
+			_finderPathWithoutPaginationFindByC_T);
+
+		_finderPaths.put("finderPathCountByC_T", _finderPathCountByC_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_E_T",
+			_finderPathWithPaginationFindByC_E_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_E_T",
+			_finderPathWithoutPaginationFindByC_E_T);
+
+		_finderPaths.put("finderPathCountByC_E_T", _finderPathCountByC_E_T);
+
 		_setBatchPlannerPlanUtilPersistence(this);
 	}
 
@@ -6536,6 +6606,64 @@ public class BatchPlannerPlanPersistenceImpl
 
 		entityCache.removeCache(BatchPlannerPlanImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<BatchPlannerPlan> batchPlannerPlans = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BatchPlannerPlan>> resultMap =
+				new HashMap<>();
+
+			for (BatchPlannerPlan batchPlannerPlan : batchPlannerPlans) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BatchPlannerPlanModelImpl batchPlannerPlanModelImpl =
+						(BatchPlannerPlanModelImpl)batchPlannerPlan;
+
+					arguments.add(
+						batchPlannerPlanModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), batchPlannerPlan);
+				}
+				else {
+					List<BatchPlannerPlan> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(batchPlannerPlan);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BatchPlannerPlan>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BatchPlannerPlan> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setBatchPlannerPlanUtilPersistence(
 		BatchPlannerPlanPersistence batchPlannerPlanPersistence) {

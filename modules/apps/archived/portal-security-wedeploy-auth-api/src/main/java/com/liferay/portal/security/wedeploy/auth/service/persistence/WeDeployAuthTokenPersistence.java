@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.security.wedeploy.auth.exception.NoSuchTokenException;
 import com.liferay.portal.security.wedeploy.auth.model.WeDeployAuthToken;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -269,5 +271,11 @@ public interface WeDeployAuthTokenPersistence
 	 * @return the number of we deploy auth tokens
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

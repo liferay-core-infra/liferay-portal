@@ -2433,6 +2433,39 @@ public class KaleoDefinitionVersionPersistenceImpl
 			},
 			new String[] {"companyId", "name", "version"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N",
+			_finderPathWithPaginationFindByC_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N",
+			_finderPathWithoutPaginationFindByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put("finderPathFetchByC_N_V", _finderPathFetchByC_N_V);
+
+		_finderPaths.put("finderPathCountByC_N_V", _finderPathCountByC_N_V);
+
 		_setKaleoDefinitionVersionUtilPersistence(this);
 	}
 
@@ -2442,6 +2475,70 @@ public class KaleoDefinitionVersionPersistenceImpl
 
 		entityCache.removeCache(KaleoDefinitionVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoDefinitionVersion> kaleoDefinitionVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoDefinitionVersion>> resultMap =
+				new HashMap<>();
+
+			for (KaleoDefinitionVersion kaleoDefinitionVersion :
+					kaleoDefinitionVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoDefinitionVersionModelImpl
+						kaleoDefinitionVersionModelImpl =
+							(KaleoDefinitionVersionModelImpl)
+								kaleoDefinitionVersion;
+
+					arguments.add(
+						kaleoDefinitionVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						kaleoDefinitionVersion);
+				}
+				else {
+					List<KaleoDefinitionVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoDefinitionVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoDefinitionVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoDefinitionVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoDefinitionVersionUtilPersistence(
 		KaleoDefinitionVersionPersistence kaleoDefinitionVersionPersistence) {

@@ -3322,6 +3322,52 @@ public class JSONStorageEntryPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCN_CPK",
+			_finderPathWithPaginationFindByCN_CPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCN_CPK",
+			_finderPathWithoutPaginationFindByCN_CPK);
+
+		_finderPaths.put("finderPathCountByCN_CPK", _finderPathCountByCN_CPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CN_I_T_VL",
+			_finderPathWithPaginationFindByC_CN_I_T_VL);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CN_I_T_VL",
+			_finderPathWithoutPaginationFindByC_CN_I_T_VL);
+
+		_finderPaths.put(
+			"finderPathCountByC_CN_I_T_VL", _finderPathCountByC_CN_I_T_VL);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CN_K_T_VL",
+			_finderPathWithPaginationFindByC_CN_K_T_VL);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CN_K_T_VL",
+			_finderPathWithoutPaginationFindByC_CN_K_T_VL);
+
+		_finderPaths.put(
+			"finderPathCountByC_CN_K_T_VL", _finderPathCountByC_CN_K_T_VL);
+
+		_finderPaths.put(
+			"finderPathFetchByCN_CPK_P_I_K", _finderPathFetchByCN_CPK_P_I_K);
+
+		_finderPaths.put(
+			"finderPathCountByCN_CPK_P_I_K", _finderPathCountByCN_CPK_P_I_K);
+
 		_setJSONStorageEntryUtilPersistence(this);
 	}
 
@@ -3331,6 +3377,64 @@ public class JSONStorageEntryPersistenceImpl
 
 		entityCache.removeCache(JSONStorageEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<JSONStorageEntry> jsonStorageEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<JSONStorageEntry>> resultMap =
+				new HashMap<>();
+
+			for (JSONStorageEntry jsonStorageEntry : jsonStorageEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					JSONStorageEntryModelImpl jsonStorageEntryModelImpl =
+						(JSONStorageEntryModelImpl)jsonStorageEntry;
+
+					arguments.add(
+						jsonStorageEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), jsonStorageEntry);
+				}
+				else {
+					List<JSONStorageEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(jsonStorageEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<JSONStorageEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<JSONStorageEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setJSONStorageEntryUtilPersistence(
 		JSONStorageEntryPersistence jsonStorageEntryPersistence) {

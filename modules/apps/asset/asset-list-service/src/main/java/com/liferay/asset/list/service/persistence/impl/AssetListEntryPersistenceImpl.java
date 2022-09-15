@@ -14609,6 +14609,122 @@ public class AssetListEntryPersistenceImpl
 				"groupId", "title", "assetEntrySubtype", "assetEntryType"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGroupId",
+			_finderPathWithPaginationCountByGroupId);
+
+		_finderPaths.put("finderPathFetchByG_ALEK", _finderPathFetchByG_ALEK);
+
+		_finderPaths.put("finderPathCountByG_ALEK", _finderPathCountByG_ALEK);
+
+		_finderPaths.put("finderPathFetchByG_T", _finderPathFetchByG_T);
+
+		_finderPaths.put("finderPathCountByG_T", _finderPathCountByG_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_LikeT",
+			_finderPathWithPaginationFindByG_LikeT);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_LikeT",
+			_finderPathWithPaginationCountByG_LikeT);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_TY",
+			_finderPathWithPaginationFindByG_TY);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_TY",
+			_finderPathWithoutPaginationFindByG_TY);
+
+		_finderPaths.put("finderPathCountByG_TY", _finderPathCountByG_TY);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_AET",
+			_finderPathWithPaginationFindByG_AET);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_AET",
+			_finderPathWithoutPaginationFindByG_AET);
+
+		_finderPaths.put("finderPathCountByG_AET", _finderPathCountByG_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_AET",
+			_finderPathWithPaginationCountByG_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_LikeT_AET",
+			_finderPathWithPaginationFindByG_LikeT_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_LikeT_AET",
+			_finderPathWithPaginationCountByG_LikeT_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_AES_AET",
+			_finderPathWithPaginationFindByG_AES_AET);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_AES_AET",
+			_finderPathWithoutPaginationFindByG_AES_AET);
+
+		_finderPaths.put(
+			"finderPathCountByG_AES_AET", _finderPathCountByG_AES_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_AES_AET",
+			_finderPathWithPaginationCountByG_AES_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_LikeT_AES_AET",
+			_finderPathWithPaginationFindByG_LikeT_AES_AET);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_LikeT_AES_AET",
+			_finderPathWithPaginationCountByG_LikeT_AES_AET);
 
 		_setAssetListEntryUtilPersistence(this);
 	}
@@ -14619,6 +14735,62 @@ public class AssetListEntryPersistenceImpl
 
 		entityCache.removeCache(AssetListEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AssetListEntry> assetListEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetListEntry>> resultMap = new HashMap<>();
+
+			for (AssetListEntry assetListEntry : assetListEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetListEntryModelImpl assetListEntryModelImpl =
+						(AssetListEntryModelImpl)assetListEntry;
+
+					arguments.add(
+						assetListEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), assetListEntry);
+				}
+				else {
+					List<AssetListEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(assetListEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetListEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetListEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAssetListEntryUtilPersistence(
 		AssetListEntryPersistence assetListEntryPersistence) {

@@ -54,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2889,6 +2890,51 @@ public class SyncDevicePersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_LikeU",
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "userName"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LikeU",
+			_finderPathWithPaginationFindByC_LikeU);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LikeU",
+			_finderPathWithPaginationCountByC_LikeU);
 
 		_setSyncDeviceUtilPersistence(this);
 	}
@@ -2899,6 +2945,62 @@ public class SyncDevicePersistenceImpl
 
 		entityCache.removeCache(SyncDeviceImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SyncDevice> syncDevices = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SyncDevice>> resultMap = new HashMap<>();
+
+			for (SyncDevice syncDevice : syncDevices) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SyncDeviceModelImpl syncDeviceModelImpl =
+						(SyncDeviceModelImpl)syncDevice;
+
+					arguments.add(
+						syncDeviceModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), syncDevice);
+				}
+				else {
+					List<SyncDevice> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(syncDevice);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SyncDevice>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SyncDevice> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSyncDeviceUtilPersistence(
 		SyncDevicePersistence syncDevicePersistence) {

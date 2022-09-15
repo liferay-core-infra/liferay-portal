@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.security.audit.storage.exception.NoSuchEventException;
 import com.liferay.portal.security.audit.storage.model.AuditEvent;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -301,5 +303,11 @@ public interface AuditEventPersistence extends BasePersistence<AuditEvent> {
 	 * @return the number of audit events
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.commerce.discount.exception.NoSuchDiscountOrderTypeRelExcepti
 import com.liferay.commerce.discount.model.CommerceDiscountOrderTypeRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -814,5 +816,11 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 * @return the number of commerce discount order type rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.document.library.sync.exception.NoSuchEventException;
 import com.liferay.document.library.sync.model.DLSyncEvent;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -343,5 +345,11 @@ public interface DLSyncEventPersistence extends BasePersistence<DLSyncEvent> {
 	 * @return the number of dl sync events
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

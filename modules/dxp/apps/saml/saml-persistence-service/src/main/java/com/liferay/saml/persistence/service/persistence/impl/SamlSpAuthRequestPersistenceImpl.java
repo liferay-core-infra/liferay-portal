@@ -53,8 +53,10 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1532,6 +1534,28 @@ public class SamlSpAuthRequestPersistenceImpl
 			new String[] {String.class.getName(), String.class.getName()},
 			new String[] {"samlIdpEntityId", "samlSpAuthRequestKey"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLtCreateDate",
+			_finderPathWithPaginationFindByLtCreateDate);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByLtCreateDate",
+			_finderPathWithPaginationCountByLtCreateDate);
+
+		_finderPaths.put(
+			"finderPathFetchBySIEI_SSARK", _finderPathFetchBySIEI_SSARK);
+
+		_finderPaths.put(
+			"finderPathCountBySIEI_SSARK", _finderPathCountBySIEI_SSARK);
+
 		_setSamlSpAuthRequestUtilPersistence(this);
 	}
 
@@ -1541,6 +1565,64 @@ public class SamlSpAuthRequestPersistenceImpl
 
 		entityCache.removeCache(SamlSpAuthRequestImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SamlSpAuthRequest> samlSpAuthRequests = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SamlSpAuthRequest>> resultMap =
+				new HashMap<>();
+
+			for (SamlSpAuthRequest samlSpAuthRequest : samlSpAuthRequests) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SamlSpAuthRequestModelImpl samlSpAuthRequestModelImpl =
+						(SamlSpAuthRequestModelImpl)samlSpAuthRequest;
+
+					arguments.add(
+						samlSpAuthRequestModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), samlSpAuthRequest);
+				}
+				else {
+					List<SamlSpAuthRequest> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(samlSpAuthRequest);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SamlSpAuthRequest>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SamlSpAuthRequest> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSamlSpAuthRequestUtilPersistence(
 		SamlSpAuthRequestPersistence samlSpAuthRequestPersistence) {

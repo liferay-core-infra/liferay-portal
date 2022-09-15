@@ -18,6 +18,8 @@ import com.liferay.dispatch.exception.NoSuchLogException;
 import com.liferay.dispatch.model.DispatchLog;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -457,5 +459,11 @@ public interface DispatchLogPersistence extends BasePersistence<DispatchLog> {
 	 * @return the number of dispatch logs
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

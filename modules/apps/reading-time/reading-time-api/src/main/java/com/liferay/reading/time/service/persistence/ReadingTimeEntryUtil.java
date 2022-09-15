@@ -758,6 +758,18 @@ public class ReadingTimeEntryUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths() {
+
+		return getPersistence().getFinderPaths();
+	}
+
+	public static void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath finderPaths) {
+
+		getPersistence().populateFinderCache(finderPaths);
+	}
+
 	public static ReadingTimeEntryPersistence getPersistence() {
 		return _persistence;
 	}

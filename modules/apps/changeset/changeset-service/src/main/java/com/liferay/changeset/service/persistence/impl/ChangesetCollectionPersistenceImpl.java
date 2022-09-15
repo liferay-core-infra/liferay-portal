@@ -50,7 +50,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -3137,6 +3139,59 @@ public class ChangesetCollectionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "name"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U",
+			_finderPathWithPaginationFindByG_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U",
+			_finderPathWithoutPaginationFindByG_U);
+
+		_finderPaths.put("finderPathCountByG_U", _finderPathCountByG_U);
+
+		_finderPaths.put("finderPathFetchByG_N", _finderPathFetchByG_N);
+
+		_finderPaths.put("finderPathCountByG_N", _finderPathCountByG_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N",
+			_finderPathWithPaginationFindByC_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N",
+			_finderPathWithoutPaginationFindByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
 		_setChangesetCollectionUtilPersistence(this);
 	}
 
@@ -3146,6 +3201,67 @@ public class ChangesetCollectionPersistenceImpl
 
 		entityCache.removeCache(ChangesetCollectionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ChangesetCollection> changesetCollections = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ChangesetCollection>> resultMap =
+				new HashMap<>();
+
+			for (ChangesetCollection changesetCollection :
+					changesetCollections) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ChangesetCollectionModelImpl changesetCollectionModelImpl =
+						(ChangesetCollectionModelImpl)changesetCollection;
+
+					arguments.add(
+						changesetCollectionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), changesetCollection);
+				}
+				else {
+					List<ChangesetCollection> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(changesetCollection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ChangesetCollection>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ChangesetCollection> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setChangesetCollectionUtilPersistence(
 		ChangesetCollectionPersistence changesetCollectionPersistence) {

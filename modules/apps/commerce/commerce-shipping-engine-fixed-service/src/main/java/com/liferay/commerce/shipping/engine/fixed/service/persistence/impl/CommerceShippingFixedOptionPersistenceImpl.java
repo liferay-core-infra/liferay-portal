@@ -51,6 +51,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1545,6 +1546,30 @@ public class CommerceShippingFixedOptionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "key_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceShippingMethodId",
+			_finderPathWithPaginationFindByCommerceShippingMethodId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceShippingMethodId",
+			_finderPathWithoutPaginationFindByCommerceShippingMethodId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceShippingMethodId",
+			_finderPathCountByCommerceShippingMethodId);
+
+		_finderPaths.put("finderPathFetchByC_K", _finderPathFetchByC_K);
+
+		_finderPaths.put("finderPathCountByC_K", _finderPathCountByC_K);
+
 		_setCommerceShippingFixedOptionUtilPersistence(this);
 	}
 
@@ -1555,6 +1580,72 @@ public class CommerceShippingFixedOptionPersistenceImpl
 		entityCache.removeCache(
 			CommerceShippingFixedOptionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceShippingFixedOption> commerceShippingFixedOptions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceShippingFixedOption>> resultMap =
+				new HashMap<>();
+
+			for (CommerceShippingFixedOption commerceShippingFixedOption :
+					commerceShippingFixedOptions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceShippingFixedOptionModelImpl
+						commerceShippingFixedOptionModelImpl =
+							(CommerceShippingFixedOptionModelImpl)
+								commerceShippingFixedOption;
+
+					arguments.add(
+						commerceShippingFixedOptionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceShippingFixedOption);
+				}
+				else {
+					List<CommerceShippingFixedOption> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceShippingFixedOption);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceShippingFixedOption>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceShippingFixedOption> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceShippingFixedOptionUtilPersistence(
 		CommerceShippingFixedOptionPersistence

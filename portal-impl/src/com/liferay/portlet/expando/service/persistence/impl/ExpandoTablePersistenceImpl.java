@@ -1722,6 +1722,28 @@ public class ExpandoTablePersistenceImpl
 			},
 			new String[] {"companyId", "classNameId", "name"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_N", _finderPathFetchByC_C_N);
+
+		_finderPaths.put("finderPathCountByC_C_N", _finderPathCountByC_C_N);
+
 		_setExpandoTableUtilPersistence(this);
 	}
 
@@ -1730,6 +1752,62 @@ public class ExpandoTablePersistenceImpl
 
 		EntityCacheUtil.removeCache(ExpandoTableImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ExpandoTable> expandoTables = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExpandoTable>> resultMap = new HashMap<>();
+
+			for (ExpandoTable expandoTable : expandoTables) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExpandoTableModelImpl expandoTableModelImpl =
+						(ExpandoTableModelImpl)expandoTable;
+
+					arguments.add(
+						expandoTableModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), expandoTable);
+				}
+				else {
+					List<ExpandoTable> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(expandoTable);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExpandoTable>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExpandoTable> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setExpandoTableUtilPersistence(
 		ExpandoTablePersistence expandoTablePersistence) {

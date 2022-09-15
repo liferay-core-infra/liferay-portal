@@ -18,6 +18,8 @@ import com.liferay.html.preview.exception.NoSuchHtmlPreviewEntryException;
 import com.liferay.html.preview.model.HtmlPreviewEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -219,5 +221,11 @@ public interface HtmlPreviewEntryPersistence
 	 * @return the number of html preview entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

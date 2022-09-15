@@ -51,10 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2256,6 +2258,40 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 			new String[] {"classNameId", "classPK", "CPaymentMethodGroupRelId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommercePaymentMethodGroupRelId",
+			_finderPathWithPaginationFindByCommercePaymentMethodGroupRelId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommercePaymentMethodGroupRelId",
+			_finderPathWithoutPaginationFindByCommercePaymentMethodGroupRelId);
+
+		_finderPaths.put(
+			"finderPathCountByCommercePaymentMethodGroupRelId",
+			_finderPathCountByCommercePaymentMethodGroupRelId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
 		_setCommercePaymentMethodGroupRelQualifierUtilPersistence(this);
 	}
 
@@ -2266,6 +2302,74 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 		entityCache.removeCache(
 			CommercePaymentMethodGroupRelQualifierImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommercePaymentMethodGroupRelQualifier>
+			commercePaymentMethodGroupRelQualifiers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePaymentMethodGroupRelQualifier>>
+				resultMap = new HashMap<>();
+
+			for (CommercePaymentMethodGroupRelQualifier
+					commercePaymentMethodGroupRelQualifier :
+						commercePaymentMethodGroupRelQualifiers) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePaymentMethodGroupRelQualifierModelImpl
+						commercePaymentMethodGroupRelQualifierModelImpl =
+							(CommercePaymentMethodGroupRelQualifierModelImpl)
+								commercePaymentMethodGroupRelQualifier;
+
+					arguments.add(
+						commercePaymentMethodGroupRelQualifierModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commercePaymentMethodGroupRelQualifier);
+				}
+				else {
+					List<CommercePaymentMethodGroupRelQualifier> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePaymentMethodGroupRelQualifier);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CommercePaymentMethodGroupRelQualifier>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePaymentMethodGroupRelQualifier> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommercePaymentMethodGroupRelQualifierUtilPersistence(
 		CommercePaymentMethodGroupRelQualifierPersistence

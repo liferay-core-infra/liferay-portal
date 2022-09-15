@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.sharepoint.rest.oauth2.exception.NoSuch2TokenEntryException;
 import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -363,5 +365,11 @@ public interface SharepointOAuth2TokenEntryPersistence
 	 * @return the number of sharepoint o auth2 token entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

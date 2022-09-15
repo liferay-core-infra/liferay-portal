@@ -11404,6 +11404,136 @@ public class DDMStructurePersistenceImpl
 			},
 			new String[] {"groupId", "classNameId", "name", "description"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGroupId",
+			_finderPathWithPaginationCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByParentStructureId",
+			_finderPathWithPaginationFindByParentStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByParentStructureId",
+			_finderPathWithoutPaginationFindByParentStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByParentStructureId",
+			_finderPathCountByParentStructureId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByStructureKey",
+			_finderPathWithPaginationFindByStructureKey);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByStructureKey",
+			_finderPathWithoutPaginationFindByStructureKey);
+
+		_finderPaths.put(
+			"finderPathCountByStructureKey", _finderPathCountByStructureKey);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P",
+			_finderPathWithPaginationFindByG_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P",
+			_finderPathWithoutPaginationFindByG_P);
+
+		_finderPaths.put("finderPathCountByG_P", _finderPathCountByG_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C",
+			_finderPathWithPaginationCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByG_C_S", _finderPathFetchByG_C_S);
+
+		_finderPaths.put("finderPathCountByG_C_S", _finderPathCountByG_C_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_N_D",
+			_finderPathWithPaginationFindByG_N_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_N_D",
+			_finderPathWithoutPaginationFindByG_N_D);
+
+		_finderPaths.put("finderPathCountByG_N_D", _finderPathCountByG_N_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_N_D",
+			_finderPathWithPaginationFindByG_C_N_D);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_N_D",
+			_finderPathWithoutPaginationFindByG_C_N_D);
+
+		_finderPaths.put("finderPathCountByG_C_N_D", _finderPathCountByG_C_N_D);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C_N_D",
+			_finderPathWithPaginationCountByG_C_N_D);
 
 		_setDDMStructureUtilPersistence(this);
 	}
@@ -11414,6 +11544,62 @@ public class DDMStructurePersistenceImpl
 
 		entityCache.removeCache(DDMStructureImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMStructure> ddmStructures = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMStructure>> resultMap = new HashMap<>();
+
+			for (DDMStructure ddmStructure : ddmStructures) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMStructureModelImpl ddmStructureModelImpl =
+						(DDMStructureModelImpl)ddmStructure;
+
+					arguments.add(
+						ddmStructureModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmStructure);
+				}
+				else {
+					List<DDMStructure> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmStructure);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMStructure>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMStructure> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMStructureUtilPersistence(
 		DDMStructurePersistence ddmStructurePersistence) {

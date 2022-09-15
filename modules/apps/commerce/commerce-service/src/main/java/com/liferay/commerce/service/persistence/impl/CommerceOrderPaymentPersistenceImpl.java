@@ -47,9 +47,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1176,6 +1179,26 @@ public class CommerceOrderPaymentPersistenceImpl
 			"countByCommerceOrderId", new String[] {Long.class.getName()},
 			new String[] {"commerceOrderId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceOrderId",
+			_finderPathWithPaginationFindByCommerceOrderId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceOrderId",
+			_finderPathWithoutPaginationFindByCommerceOrderId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceOrderId",
+			_finderPathCountByCommerceOrderId);
+
 		_setCommerceOrderPaymentUtilPersistence(this);
 	}
 
@@ -1184,6 +1207,68 @@ public class CommerceOrderPaymentPersistenceImpl
 
 		entityCache.removeCache(CommerceOrderPaymentImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceOrderPayment> commerceOrderPayments = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceOrderPayment>> resultMap =
+				new HashMap<>();
+
+			for (CommerceOrderPayment commerceOrderPayment :
+					commerceOrderPayments) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceOrderPaymentModelImpl
+						commerceOrderPaymentModelImpl =
+							(CommerceOrderPaymentModelImpl)commerceOrderPayment;
+
+					arguments.add(
+						commerceOrderPaymentModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceOrderPayment);
+				}
+				else {
+					List<CommerceOrderPayment> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceOrderPayment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceOrderPayment>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceOrderPayment> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceOrderPaymentUtilPersistence(
 		CommerceOrderPaymentPersistence commerceOrderPaymentPersistence) {

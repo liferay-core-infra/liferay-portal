@@ -6370,6 +6370,109 @@ public class LayoutFriendlyURLPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByPlid",
+			_finderPathWithPaginationFindByPlid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByPlid",
+			_finderPathWithoutPaginationFindByPlid);
+
+		_finderPaths.put("finderPathCountByPlid", _finderPathCountByPlid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_F",
+			_finderPathWithPaginationFindByP_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_F",
+			_finderPathWithoutPaginationFindByP_F);
+
+		_finderPaths.put("finderPathCountByP_F", _finderPathCountByP_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByP_L",
+			_finderPathWithPaginationFindByP_L);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByP_L",
+			_finderPathWithoutPaginationFindByP_L);
+
+		_finderPaths.put("finderPathFetchByP_L", _finderPathFetchByP_L);
+
+		_finderPaths.put("finderPathCountByP_L", _finderPathCountByP_L);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByP_L",
+			_finderPathWithPaginationCountByP_L);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_F",
+			_finderPathWithPaginationFindByG_P_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_F",
+			_finderPathWithoutPaginationFindByG_P_F);
+
+		_finderPaths.put("finderPathCountByG_P_F", _finderPathCountByG_P_F);
+
+		_finderPaths.put("finderPathFetchByG_P_F_L", _finderPathFetchByG_P_F_L);
+
+		_finderPaths.put("finderPathCountByG_P_F_L", _finderPathCountByG_P_F_L);
+
 		_setLayoutFriendlyURLUtilPersistence(this);
 	}
 
@@ -6378,6 +6481,64 @@ public class LayoutFriendlyURLPersistenceImpl
 
 		EntityCacheUtil.removeCache(LayoutFriendlyURLImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutFriendlyURL> layoutFriendlyURLs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutFriendlyURL>> resultMap =
+				new HashMap<>();
+
+			for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutFriendlyURLModelImpl layoutFriendlyURLModelImpl =
+						(LayoutFriendlyURLModelImpl)layoutFriendlyURL;
+
+					arguments.add(
+						layoutFriendlyURLModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layoutFriendlyURL);
+				}
+				else {
+					List<LayoutFriendlyURL> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutFriendlyURL);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutFriendlyURL>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutFriendlyURL> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutFriendlyURLUtilPersistence(
 		LayoutFriendlyURLPersistence layoutFriendlyURLPersistence) {

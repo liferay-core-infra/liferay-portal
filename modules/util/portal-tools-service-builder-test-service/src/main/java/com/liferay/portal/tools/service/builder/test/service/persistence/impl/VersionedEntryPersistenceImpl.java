@@ -44,8 +44,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -1890,6 +1893,39 @@ public class VersionedEntryPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"headId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId_Head",
+			_finderPathWithPaginationFindByGroupId_Head);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId_Head",
+			_finderPathWithoutPaginationFindByGroupId_Head);
+
+		_finderPaths.put(
+			"finderPathCountByGroupId_Head", _finderPathCountByGroupId_Head);
+
+		_finderPaths.put("finderPathFetchByHeadId", _finderPathFetchByHeadId);
+
+		_finderPaths.put("finderPathCountByHeadId", _finderPathCountByHeadId);
+
 		_setVersionedEntryUtilPersistence(this);
 	}
 
@@ -1898,6 +1934,62 @@ public class VersionedEntryPersistenceImpl
 
 		entityCache.removeCache(VersionedEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<VersionedEntry> versionedEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<VersionedEntry>> resultMap = new HashMap<>();
+
+			for (VersionedEntry versionedEntry : versionedEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					VersionedEntryModelImpl versionedEntryModelImpl =
+						(VersionedEntryModelImpl)versionedEntry;
+
+					arguments.add(
+						versionedEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), versionedEntry);
+				}
+				else {
+					List<VersionedEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(versionedEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<VersionedEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<VersionedEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setVersionedEntryUtilPersistence(
 		VersionedEntryPersistence versionedEntryPersistence) {

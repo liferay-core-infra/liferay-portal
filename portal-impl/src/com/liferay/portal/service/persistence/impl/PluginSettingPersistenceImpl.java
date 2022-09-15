@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1472,6 +1473,29 @@ public class PluginSettingPersistenceImpl
 			},
 			new String[] {"companyId", "pluginId", "pluginType"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put("finderPathFetchByC_P_P", _finderPathFetchByC_P_P);
+
+		_finderPaths.put("finderPathCountByC_P_P", _finderPathCountByC_P_P);
+
 		_setPluginSettingUtilPersistence(this);
 	}
 
@@ -1480,6 +1504,62 @@ public class PluginSettingPersistenceImpl
 
 		EntityCacheUtil.removeCache(PluginSettingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<PluginSetting> pluginSettings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PluginSetting>> resultMap = new HashMap<>();
+
+			for (PluginSetting pluginSetting : pluginSettings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PluginSettingModelImpl pluginSettingModelImpl =
+						(PluginSettingModelImpl)pluginSetting;
+
+					arguments.add(
+						pluginSettingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), pluginSetting);
+				}
+				else {
+					List<PluginSetting> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(pluginSetting);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PluginSetting>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PluginSetting> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setPluginSettingUtilPersistence(
 		PluginSettingPersistence pluginSettingPersistence) {

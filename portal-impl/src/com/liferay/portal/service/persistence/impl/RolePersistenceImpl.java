@@ -11622,6 +11622,134 @@ public class RolePersistenceImpl
 			},
 			new String[] {"companyId", "classNameId", "classPK", "type_"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByName",
+			_finderPathWithPaginationFindByName);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByName",
+			_finderPathWithoutPaginationFindByName);
+
+		_finderPaths.put("finderPathCountByName", _finderPathCountByName);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByType",
+			_finderPathWithPaginationFindByType);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByType",
+			_finderPathWithoutPaginationFindByType);
+
+		_finderPaths.put("finderPathCountByType", _finderPathCountByType);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySubtype",
+			_finderPathWithPaginationFindBySubtype);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySubtype",
+			_finderPathWithoutPaginationFindBySubtype);
+
+		_finderPaths.put("finderPathCountBySubtype", _finderPathCountBySubtype);
+
+		_finderPaths.put("finderPathFetchByC_N", _finderPathFetchByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_T",
+			_finderPathWithPaginationFindByC_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_T",
+			_finderPathWithoutPaginationFindByC_T);
+
+		_finderPaths.put("finderPathCountByC_T", _finderPathCountByC_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_T",
+			_finderPathWithPaginationCountByC_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByT_S",
+			_finderPathWithPaginationFindByT_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByT_S",
+			_finderPathWithoutPaginationFindByT_S);
+
+		_finderPaths.put("finderPathCountByT_S", _finderPathCountByT_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_C",
+			_finderPathWithPaginationFindByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_C",
+			_finderPathWithoutPaginationFindByC_C_C);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_C",
+			_finderPathWithPaginationCountByC_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_C_T",
+			_finderPathWithPaginationFindByC_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_C_T",
+			_finderPathWithoutPaginationFindByC_C_C_T);
+
+		_finderPaths.put("finderPathFetchByC_C_C_T", _finderPathFetchByC_C_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_C_T", _finderPathCountByC_C_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_C_C_T",
+			_finderPathWithPaginationCountByC_C_C_T);
 
 		_setRoleUtilPersistence(this);
 	}
@@ -11634,6 +11762,60 @@ public class RolePersistenceImpl
 		TableMapperFactory.removeTableMapper("Groups_Roles");
 		TableMapperFactory.removeTableMapper("Users_Roles");
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Role> roles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Role>> resultMap = new HashMap<>();
+
+			for (Role role : roles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RoleModelImpl roleModelImpl = (RoleModelImpl)role;
+
+					arguments.add(roleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), role);
+				}
+				else {
+					List<Role> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(role);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Role>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Role> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setRoleUtilPersistence(RolePersistence rolePersistence) {
 		try {

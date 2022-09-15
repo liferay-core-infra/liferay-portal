@@ -46,6 +46,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1448,6 +1449,28 @@ public class ListTypePersistenceImpl
 			new String[] {String.class.getName(), String.class.getName()},
 			new String[] {"name", "type_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByType",
+			_finderPathWithPaginationFindByType);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByType",
+			_finderPathWithoutPaginationFindByType);
+
+		_finderPaths.put("finderPathCountByType", _finderPathCountByType);
+
+		_finderPaths.put("finderPathFetchByN_T", _finderPathFetchByN_T);
+
+		_finderPaths.put("finderPathCountByN_T", _finderPathCountByN_T);
+
 		_setListTypeUtilPersistence(this);
 	}
 
@@ -1456,6 +1479,61 @@ public class ListTypePersistenceImpl
 
 		EntityCacheUtil.removeCache(ListTypeImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ListType> listTypes = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ListType>> resultMap = new HashMap<>();
+
+			for (ListType listType : listTypes) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ListTypeModelImpl listTypeModelImpl =
+						(ListTypeModelImpl)listType;
+
+					arguments.add(listTypeModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), listType);
+				}
+				else {
+					List<ListType> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(listType);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ListType>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ListType> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setListTypeUtilPersistence(
 		ListTypePersistence listTypePersistence) {

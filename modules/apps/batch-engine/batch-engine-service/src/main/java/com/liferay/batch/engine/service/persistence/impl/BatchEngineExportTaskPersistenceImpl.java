@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -3252,6 +3253,60 @@ public class BatchEngineExportTaskPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByExecuteStatus",
+			_finderPathWithPaginationFindByExecuteStatus);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByExecuteStatus",
+			_finderPathWithoutPaginationFindByExecuteStatus);
+
+		_finderPaths.put(
+			"finderPathCountByExecuteStatus", _finderPathCountByExecuteStatus);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setBatchEngineExportTaskUtilPersistence(this);
 	}
 
@@ -3261,6 +3316,69 @@ public class BatchEngineExportTaskPersistenceImpl
 
 		entityCache.removeCache(BatchEngineExportTaskImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<BatchEngineExportTask> batchEngineExportTasks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BatchEngineExportTask>> resultMap =
+				new HashMap<>();
+
+			for (BatchEngineExportTask batchEngineExportTask :
+					batchEngineExportTasks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BatchEngineExportTaskModelImpl
+						batchEngineExportTaskModelImpl =
+							(BatchEngineExportTaskModelImpl)
+								batchEngineExportTask;
+
+					arguments.add(
+						batchEngineExportTaskModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), batchEngineExportTask);
+				}
+				else {
+					List<BatchEngineExportTask> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(batchEngineExportTask);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BatchEngineExportTask>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BatchEngineExportTask> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setBatchEngineExportTaskUtilPersistence(
 		BatchEngineExportTaskPersistence batchEngineExportTaskPersistence) {

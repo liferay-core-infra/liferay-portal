@@ -19,6 +19,8 @@ import com.liferay.commerce.pricing.model.CommercePricingClassCPDefinitionRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -527,5 +529,11 @@ public interface CommercePricingClassCPDefinitionRelPersistence
 	 * @return the number of commerce pricing class cp definition rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -48,6 +48,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2743,6 +2744,54 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"accountEntryId", "commerceChannelId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAccountEntryId",
+			_finderPathWithPaginationFindByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAccountEntryId",
+			_finderPathWithoutPaginationFindByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByAccountEntryId",
+			_finderPathCountByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceChannelId",
+			_finderPathWithPaginationFindByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceChannelId",
+			_finderPathWithoutPaginationFindByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceChannelId",
+			_finderPathCountByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceShippingOptionKey",
+			_finderPathWithPaginationFindByCommerceShippingOptionKey);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceShippingOptionKey",
+			_finderPathWithoutPaginationFindByCommerceShippingOptionKey);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceShippingOptionKey",
+			_finderPathCountByCommerceShippingOptionKey);
+
+		_finderPaths.put("finderPathFetchByA_C", _finderPathFetchByA_C);
+
+		_finderPaths.put("finderPathCountByA_C", _finderPathCountByA_C);
+
 		_setCommerceShippingOptionAccountEntryRelUtilPersistence(this);
 	}
 
@@ -2752,6 +2801,74 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 		entityCache.removeCache(
 			CommerceShippingOptionAccountEntryRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceShippingOptionAccountEntryRel>
+			commerceShippingOptionAccountEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceShippingOptionAccountEntryRel>>
+				resultMap = new HashMap<>();
+
+			for (CommerceShippingOptionAccountEntryRel
+					commerceShippingOptionAccountEntryRel :
+						commerceShippingOptionAccountEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceShippingOptionAccountEntryRelModelImpl
+						commerceShippingOptionAccountEntryRelModelImpl =
+							(CommerceShippingOptionAccountEntryRelModelImpl)
+								commerceShippingOptionAccountEntryRel;
+
+					arguments.add(
+						commerceShippingOptionAccountEntryRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceShippingOptionAccountEntryRel);
+				}
+				else {
+					List<CommerceShippingOptionAccountEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceShippingOptionAccountEntryRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CommerceShippingOptionAccountEntryRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceShippingOptionAccountEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceShippingOptionAccountEntryRelUtilPersistence(
 		CommerceShippingOptionAccountEntryRelPersistence

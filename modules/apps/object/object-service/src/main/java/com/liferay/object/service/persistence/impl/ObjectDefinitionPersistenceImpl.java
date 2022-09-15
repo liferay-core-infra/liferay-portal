@@ -56,6 +56,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -8476,6 +8477,97 @@ public class ObjectDefinitionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySystem",
+			_finderPathWithPaginationFindBySystem);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySystem",
+			_finderPathWithoutPaginationFindBySystem);
+
+		_finderPaths.put("finderPathCountBySystem", _finderPathCountBySystem);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_N", _finderPathFetchByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByS_S",
+			_finderPathWithPaginationFindByS_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByS_S",
+			_finderPathWithoutPaginationFindByS_S);
+
+		_finderPaths.put("finderPathCountByS_S", _finderPathCountByS_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_S",
+			_finderPathWithPaginationFindByC_A_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_S",
+			_finderPathWithoutPaginationFindByC_A_S);
+
+		_finderPaths.put("finderPathCountByC_A_S", _finderPathCountByC_A_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_S_S",
+			_finderPathWithPaginationFindByC_A_S_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_S_S",
+			_finderPathWithoutPaginationFindByC_A_S_S);
+
+		_finderPaths.put("finderPathCountByC_A_S_S", _finderPathCountByC_A_S_S);
+
+		_finderPaths.put("finderPathFetchByC_ERC", _finderPathFetchByC_ERC);
+
+		_finderPaths.put("finderPathCountByC_ERC", _finderPathCountByC_ERC);
+
 		_setObjectDefinitionUtilPersistence(this);
 	}
 
@@ -8485,6 +8577,64 @@ public class ObjectDefinitionPersistenceImpl
 
 		entityCache.removeCache(ObjectDefinitionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ObjectDefinition> objectDefinitions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectDefinition>> resultMap =
+				new HashMap<>();
+
+			for (ObjectDefinition objectDefinition : objectDefinitions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectDefinitionModelImpl objectDefinitionModelImpl =
+						(ObjectDefinitionModelImpl)objectDefinition;
+
+					arguments.add(
+						objectDefinitionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectDefinition);
+				}
+				else {
+					List<ObjectDefinition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectDefinition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectDefinition>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectDefinition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setObjectDefinitionUtilPersistence(
 		ObjectDefinitionPersistence objectDefinitionPersistence) {

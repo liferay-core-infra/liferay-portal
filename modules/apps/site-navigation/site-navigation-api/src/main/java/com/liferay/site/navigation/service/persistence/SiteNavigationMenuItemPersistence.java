@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersisten
 import com.liferay.site.navigation.exception.NoSuchMenuItemException;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1271,5 +1273,11 @@ public interface SiteNavigationMenuItemPersistence
 	 * @return the number of site navigation menu items
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

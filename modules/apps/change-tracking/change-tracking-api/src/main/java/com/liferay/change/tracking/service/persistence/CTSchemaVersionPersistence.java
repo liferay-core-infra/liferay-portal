@@ -18,6 +18,8 @@ import com.liferay.change.tracking.exception.NoSuchSchemaVersionException;
 import com.liferay.change.tracking.model.CTSchemaVersion;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -303,5 +305,11 @@ public interface CTSchemaVersionPersistence
 	 * @return the number of ct schema versions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

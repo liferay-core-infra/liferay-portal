@@ -61,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2605,6 +2606,49 @@ public class KaleoNotificationRecipientPersistenceImpl
 			"countByKaleoNotificationId", new String[] {Long.class.getName()},
 			new String[] {"kaleoNotificationId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithoutPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoDefinitionVersionId",
+			_finderPathCountByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoNotificationId",
+			_finderPathWithPaginationFindByKaleoNotificationId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoNotificationId",
+			_finderPathWithoutPaginationFindByKaleoNotificationId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoNotificationId",
+			_finderPathCountByKaleoNotificationId);
+
 		_setKaleoNotificationRecipientUtilPersistence(this);
 	}
 
@@ -2614,6 +2658,71 @@ public class KaleoNotificationRecipientPersistenceImpl
 
 		entityCache.removeCache(KaleoNotificationRecipientImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoNotificationRecipient> kaleoNotificationRecipients =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoNotificationRecipient>> resultMap =
+				new HashMap<>();
+
+			for (KaleoNotificationRecipient kaleoNotificationRecipient :
+					kaleoNotificationRecipients) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoNotificationRecipientModelImpl
+						kaleoNotificationRecipientModelImpl =
+							(KaleoNotificationRecipientModelImpl)
+								kaleoNotificationRecipient;
+
+					arguments.add(
+						kaleoNotificationRecipientModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						kaleoNotificationRecipient);
+				}
+				else {
+					List<KaleoNotificationRecipient> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoNotificationRecipient);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoNotificationRecipient>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoNotificationRecipient> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoNotificationRecipientUtilPersistence(
 		KaleoNotificationRecipientPersistence

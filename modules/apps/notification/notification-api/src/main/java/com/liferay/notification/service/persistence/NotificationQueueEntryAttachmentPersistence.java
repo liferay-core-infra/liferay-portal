@@ -18,6 +18,8 @@ import com.liferay.notification.exception.NoSuchNotificationQueueEntryAttachment
 import com.liferay.notification.model.NotificationQueueEntryAttachment;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -321,5 +323,11 @@ public interface NotificationQueueEntryAttachmentPersistence
 	 * @return the number of notification queue entry attachments
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

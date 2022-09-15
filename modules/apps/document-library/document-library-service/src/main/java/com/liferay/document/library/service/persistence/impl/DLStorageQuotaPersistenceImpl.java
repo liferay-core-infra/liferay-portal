@@ -48,8 +48,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -834,6 +837,20 @@ public class DLStorageQuotaPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"companyId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathFetchByCompanyId", _finderPathFetchByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
 		_setDLStorageQuotaUtilPersistence(this);
 	}
 
@@ -843,6 +860,62 @@ public class DLStorageQuotaPersistenceImpl
 
 		entityCache.removeCache(DLStorageQuotaImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DLStorageQuota> dlStorageQuotas = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLStorageQuota>> resultMap = new HashMap<>();
+
+			for (DLStorageQuota dlStorageQuota : dlStorageQuotas) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLStorageQuotaModelImpl dlStorageQuotaModelImpl =
+						(DLStorageQuotaModelImpl)dlStorageQuota;
+
+					arguments.add(
+						dlStorageQuotaModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dlStorageQuota);
+				}
+				else {
+					List<DLStorageQuota> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlStorageQuota);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLStorageQuota>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLStorageQuota> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDLStorageQuotaUtilPersistence(
 		DLStorageQuotaPersistence dlStorageQuotaPersistence) {

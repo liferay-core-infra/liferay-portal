@@ -18,6 +18,8 @@ import com.liferay.commerce.inventory.exception.NoSuchInventoryWarehouseExceptio
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1565,5 +1567,11 @@ public interface CommerceInventoryWarehousePersistence
 	 * @return the number of commerce inventory warehouses
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

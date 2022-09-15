@@ -2472,6 +2472,18 @@ public class AnnouncementsEntryUtil {
 		return getPersistence().countAll();
 	}
 
+	public static Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths() {
+
+		return getPersistence().getFinderPaths();
+	}
+
+	public static void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath finderPaths) {
+
+		getPersistence().populateFinderCache(finderPaths);
+	}
+
 	public static AnnouncementsEntryPersistence getPersistence() {
 		return _persistence;
 	}

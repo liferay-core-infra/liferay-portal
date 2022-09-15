@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.saml.persistence.exception.NoSuchPeerBindingException;
 import com.liferay.saml.persistence.model.SamlPeerBinding;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -601,5 +603,11 @@ public interface SamlPeerBindingPersistence
 	 * @return the number of saml peer bindings
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

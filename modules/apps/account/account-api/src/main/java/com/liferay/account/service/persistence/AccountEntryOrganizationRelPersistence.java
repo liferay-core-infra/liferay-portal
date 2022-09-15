@@ -18,6 +18,8 @@ import com.liferay.account.exception.NoSuchEntryOrganizationRelException;
 import com.liferay.account.model.AccountEntryOrganizationRel;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -510,5 +512,11 @@ public interface AccountEntryOrganizationRelPersistence
 	 * @return the number of account entry organization rels
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

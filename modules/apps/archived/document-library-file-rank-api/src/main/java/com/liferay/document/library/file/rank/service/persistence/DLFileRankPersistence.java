@@ -18,6 +18,8 @@ import com.liferay.document.library.file.rank.exception.NoSuchFileRankException;
 import com.liferay.document.library.file.rank.model.DLFileRank;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -821,5 +823,11 @@ public interface DLFileRankPersistence extends BasePersistence<DLFileRank> {
 	 * @return the number of document library file ranks
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

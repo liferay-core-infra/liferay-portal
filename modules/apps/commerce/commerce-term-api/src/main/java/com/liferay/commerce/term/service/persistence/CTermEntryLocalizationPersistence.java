@@ -18,6 +18,8 @@ import com.liferay.commerce.term.exception.NoSuchCTermEntryLocalizationException
 import com.liferay.commerce.term.model.CTermEntryLocalization;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -362,5 +364,11 @@ public interface CTermEntryLocalizationPersistence
 	 * @return the number of c term entry localizations
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -2336,6 +2336,42 @@ public class CSDiagramSettingPersistenceImpl
 			"countByCPDefinitionId", new String[] {Long.class.getName()},
 			new String[] {"CPDefinitionId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathFetchByCPDefinitionId",
+			_finderPathFetchByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
 		_setCSDiagramSettingUtilPersistence(this);
 	}
 
@@ -2345,6 +2381,64 @@ public class CSDiagramSettingPersistenceImpl
 
 		entityCache.removeCache(CSDiagramSettingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CSDiagramSetting> csDiagramSettings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CSDiagramSetting>> resultMap =
+				new HashMap<>();
+
+			for (CSDiagramSetting csDiagramSetting : csDiagramSettings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CSDiagramSettingModelImpl csDiagramSettingModelImpl =
+						(CSDiagramSettingModelImpl)csDiagramSetting;
+
+					arguments.add(
+						csDiagramSettingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), csDiagramSetting);
+				}
+				else {
+					List<CSDiagramSetting> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(csDiagramSetting);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CSDiagramSetting>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CSDiagramSetting> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCSDiagramSettingUtilPersistence(
 		CSDiagramSettingPersistence csDiagramSettingPersistence) {

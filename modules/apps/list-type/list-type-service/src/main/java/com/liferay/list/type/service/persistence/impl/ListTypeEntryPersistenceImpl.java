@@ -55,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -3279,6 +3280,66 @@ public class ListTypeEntryPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"listTypeDefinitionId", "key_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByListTypeEntryId",
+			_finderPathWithPaginationFindByListTypeEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByListTypeEntryId",
+			_finderPathWithoutPaginationFindByListTypeEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByListTypeEntryId",
+			_finderPathCountByListTypeEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByListTypeEntryId",
+			_finderPathWithPaginationCountByListTypeEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByListTypeDefinitionId",
+			_finderPathWithPaginationFindByListTypeDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByListTypeDefinitionId",
+			_finderPathWithoutPaginationFindByListTypeDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByListTypeDefinitionId",
+			_finderPathCountByListTypeDefinitionId);
+
+		_finderPaths.put("finderPathFetchByLTDI_K", _finderPathFetchByLTDI_K);
+
+		_finderPaths.put("finderPathCountByLTDI_K", _finderPathCountByLTDI_K);
+
 		_setListTypeEntryUtilPersistence(this);
 	}
 
@@ -3288,6 +3349,62 @@ public class ListTypeEntryPersistenceImpl
 
 		entityCache.removeCache(ListTypeEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ListTypeEntry> listTypeEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ListTypeEntry>> resultMap = new HashMap<>();
+
+			for (ListTypeEntry listTypeEntry : listTypeEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ListTypeEntryModelImpl listTypeEntryModelImpl =
+						(ListTypeEntryModelImpl)listTypeEntry;
+
+					arguments.add(
+						listTypeEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), listTypeEntry);
+				}
+				else {
+					List<ListTypeEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(listTypeEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ListTypeEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ListTypeEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setListTypeEntryUtilPersistence(
 		ListTypeEntryPersistence listTypeEntryPersistence) {

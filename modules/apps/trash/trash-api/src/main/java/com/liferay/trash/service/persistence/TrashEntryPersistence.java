@@ -20,6 +20,7 @@ import com.liferay.trash.exception.NoSuchEntryException;
 import com.liferay.trash.model.TrashEntry;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -807,5 +808,11 @@ public interface TrashEntryPersistence
 	 * @return the number of trash entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

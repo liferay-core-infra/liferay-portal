@@ -18,6 +18,8 @@ import com.liferay.mail.reader.exception.NoSuchFolderException;
 import com.liferay.mail.reader.model.Folder;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -350,5 +352,11 @@ public interface FolderPersistence extends BasePersistence<Folder> {
 	 * @return the number of folders
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

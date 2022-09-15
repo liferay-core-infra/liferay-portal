@@ -41,8 +41,11 @@ import java.io.Serializable;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -583,6 +586,14 @@ public class DSLQueryStatusEntryPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
 		_setDSLQueryStatusEntryUtilPersistence(this);
 	}
 
@@ -591,6 +602,67 @@ public class DSLQueryStatusEntryPersistenceImpl
 
 		entityCache.removeCache(DSLQueryStatusEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DSLQueryStatusEntry> dslQueryStatusEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DSLQueryStatusEntry>> resultMap =
+				new HashMap<>();
+
+			for (DSLQueryStatusEntry dslQueryStatusEntry :
+					dslQueryStatusEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DSLQueryStatusEntryModelImpl dslQueryStatusEntryModelImpl =
+						(DSLQueryStatusEntryModelImpl)dslQueryStatusEntry;
+
+					arguments.add(
+						dslQueryStatusEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dslQueryStatusEntry);
+				}
+				else {
+					List<DSLQueryStatusEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dslQueryStatusEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DSLQueryStatusEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DSLQueryStatusEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDSLQueryStatusEntryUtilPersistence(
 		DSLQueryStatusEntryPersistence dslQueryStatusEntryPersistence) {

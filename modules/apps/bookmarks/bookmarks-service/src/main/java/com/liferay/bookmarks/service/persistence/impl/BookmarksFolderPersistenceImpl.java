@@ -55,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7526,6 +7527,102 @@ public class BookmarksFolderPersistenceImpl
 			},
 			new String[] {"folderId", "companyId", "parentFolderId", "status"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P",
+			_finderPathWithPaginationFindByG_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P",
+			_finderPathWithoutPaginationFindByG_P);
+
+		_finderPaths.put("finderPathCountByG_P", _finderPathCountByG_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_NotS",
+			_finderPathWithPaginationFindByC_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_NotS",
+			_finderPathWithPaginationCountByC_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_S",
+			_finderPathWithPaginationFindByG_P_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_P_S",
+			_finderPathWithoutPaginationFindByG_P_S);
+
+		_finderPaths.put("finderPathCountByG_P_S", _finderPathCountByG_P_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_P_NotS",
+			_finderPathWithPaginationFindByG_P_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_P_NotS",
+			_finderPathWithPaginationCountByG_P_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGtF_C_P_NotS",
+			_finderPathWithPaginationFindByGtF_C_P_NotS);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByGtF_C_P_NotS",
+			_finderPathWithPaginationCountByGtF_C_P_NotS);
 
 		_setBookmarksFolderUtilPersistence(this);
 	}
@@ -7536,6 +7633,64 @@ public class BookmarksFolderPersistenceImpl
 
 		entityCache.removeCache(BookmarksFolderImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<BookmarksFolder> bookmarksFolders = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BookmarksFolder>> resultMap =
+				new HashMap<>();
+
+			for (BookmarksFolder bookmarksFolder : bookmarksFolders) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BookmarksFolderModelImpl bookmarksFolderModelImpl =
+						(BookmarksFolderModelImpl)bookmarksFolder;
+
+					arguments.add(
+						bookmarksFolderModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), bookmarksFolder);
+				}
+				else {
+					List<BookmarksFolder> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(bookmarksFolder);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BookmarksFolder>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BookmarksFolder> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setBookmarksFolderUtilPersistence(
 		BookmarksFolderPersistence bookmarksFolderPersistence) {

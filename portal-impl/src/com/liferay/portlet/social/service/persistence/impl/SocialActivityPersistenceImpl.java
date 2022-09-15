@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -6766,6 +6767,125 @@ public class SocialActivityPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByActivitySetId",
+			_finderPathWithPaginationFindByActivitySetId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByActivitySetId",
+			_finderPathWithoutPaginationFindByActivitySetId);
+
+		_finderPaths.put(
+			"finderPathCountByActivitySetId", _finderPathCountByActivitySetId);
+
+		_finderPaths.put(
+			"finderPathFetchByMirrorActivityId",
+			_finderPathFetchByMirrorActivityId);
+
+		_finderPaths.put(
+			"finderPathCountByMirrorActivityId",
+			_finderPathCountByMirrorActivityId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByReceiverUserId",
+			_finderPathWithPaginationFindByReceiverUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByReceiverUserId",
+			_finderPathWithoutPaginationFindByReceiverUserId);
+
+		_finderPaths.put(
+			"finderPathCountByReceiverUserId",
+			_finderPathCountByReceiverUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByM_C_C",
+			_finderPathWithPaginationFindByM_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByM_C_C",
+			_finderPathWithoutPaginationFindByM_C_C);
+
+		_finderPaths.put("finderPathCountByM_C_C", _finderPathCountByM_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C_T",
+			_finderPathWithPaginationFindByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C_T",
+			_finderPathWithoutPaginationFindByC_C_T);
+
+		_finderPaths.put("finderPathCountByC_C_T", _finderPathCountByC_C_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_C_C_T_R",
+			_finderPathWithPaginationFindByG_U_C_C_T_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_C_C_T_R",
+			_finderPathWithoutPaginationFindByG_U_C_C_T_R);
+
+		_finderPaths.put(
+			"finderPathCountByG_U_C_C_T_R", _finderPathCountByG_U_C_C_T_R);
+
+		_finderPaths.put(
+			"finderPathFetchByG_U_CD_C_C_T_R",
+			_finderPathFetchByG_U_CD_C_C_T_R);
+
+		_finderPaths.put(
+			"finderPathCountByG_U_CD_C_C_T_R",
+			_finderPathCountByG_U_CD_C_C_T_R);
+
 		_setSocialActivityUtilPersistence(this);
 	}
 
@@ -6774,6 +6894,62 @@ public class SocialActivityPersistenceImpl
 
 		EntityCacheUtil.removeCache(SocialActivityImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SocialActivity> socialActivitys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialActivity>> resultMap = new HashMap<>();
+
+			for (SocialActivity socialActivity : socialActivitys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialActivityModelImpl socialActivityModelImpl =
+						(SocialActivityModelImpl)socialActivity;
+
+					arguments.add(
+						socialActivityModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialActivity);
+				}
+				else {
+					List<SocialActivity> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(socialActivity);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialActivity>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialActivity> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSocialActivityUtilPersistence(
 		SocialActivityPersistence socialActivityPersistence) {

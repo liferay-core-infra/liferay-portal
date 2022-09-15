@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectStateFlowException;
 import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -503,5 +505,11 @@ public interface ObjectStateFlowPersistence
 	 * @return the number of object state flows
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

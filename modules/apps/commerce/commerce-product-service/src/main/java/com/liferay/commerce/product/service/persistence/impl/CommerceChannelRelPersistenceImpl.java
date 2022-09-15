@@ -58,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -2304,6 +2305,40 @@ public class CommerceChannelRelPersistenceImpl
 			new String[] {"classNameId", "classPK", "commerceChannelId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceChannelId",
+			_finderPathWithPaginationFindByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceChannelId",
+			_finderPathWithoutPaginationFindByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceChannelId",
+			_finderPathCountByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put("finderPathFetchByC_C_C", _finderPathFetchByC_C_C);
+
+		_finderPaths.put("finderPathCountByC_C_C", _finderPathCountByC_C_C);
+
 		_setCommerceChannelRelUtilPersistence(this);
 	}
 
@@ -2312,6 +2347,64 @@ public class CommerceChannelRelPersistenceImpl
 
 		entityCache.removeCache(CommerceChannelRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceChannelRel> commerceChannelRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceChannelRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceChannelRel commerceChannelRel : commerceChannelRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceChannelRelModelImpl commerceChannelRelModelImpl =
+						(CommerceChannelRelModelImpl)commerceChannelRel;
+
+					arguments.add(
+						commerceChannelRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceChannelRel);
+				}
+				else {
+					List<CommerceChannelRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceChannelRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceChannelRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceChannelRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceChannelRelUtilPersistence(
 		CommerceChannelRelPersistence commerceChannelRelPersistence) {

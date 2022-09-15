@@ -18,6 +18,8 @@ import com.liferay.change.tracking.exception.NoSuchCollectionException;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -932,5 +934,11 @@ public interface CTCollectionPersistence extends BasePersistence<CTCollection> {
 	 * @return the number of ct collections
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

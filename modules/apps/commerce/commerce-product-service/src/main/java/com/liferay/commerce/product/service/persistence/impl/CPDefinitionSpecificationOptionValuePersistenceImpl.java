@@ -6390,6 +6390,108 @@ public class CPDefinitionSpecificationOptionValuePersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"CPDefinitionId", "CPOptionCategoryId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPDefinitionId",
+			_finderPathWithPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPDefinitionId",
+			_finderPathWithoutPaginationFindByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPDefinitionId",
+			_finderPathCountByCPDefinitionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPSpecificationOptionId",
+			_finderPathWithPaginationFindByCPSpecificationOptionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPSpecificationOptionId",
+			_finderPathWithoutPaginationFindByCPSpecificationOptionId);
+
+		_finderPaths.put(
+			"finderPathCountByCPSpecificationOptionId",
+			_finderPathCountByCPSpecificationOptionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCPOptionCategoryId",
+			_finderPathWithPaginationFindByCPOptionCategoryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCPOptionCategoryId",
+			_finderPathWithoutPaginationFindByCPOptionCategoryId);
+
+		_finderPaths.put(
+			"finderPathCountByCPOptionCategoryId",
+			_finderPathCountByCPOptionCategoryId);
+
+		_finderPaths.put("finderPathFetchByC_CSOVI", _finderPathFetchByC_CSOVI);
+
+		_finderPaths.put("finderPathCountByC_CSOVI", _finderPathCountByC_CSOVI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_CSO",
+			_finderPathWithPaginationFindByC_CSO);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_CSO",
+			_finderPathWithoutPaginationFindByC_CSO);
+
+		_finderPaths.put("finderPathCountByC_CSO", _finderPathCountByC_CSO);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_COC",
+			_finderPathWithPaginationFindByC_COC);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_COC",
+			_finderPathWithoutPaginationFindByC_COC);
+
+		_finderPaths.put("finderPathCountByC_COC", _finderPathCountByC_COC);
+
 		_setCPDefinitionSpecificationOptionValueUtilPersistence(this);
 	}
 
@@ -6399,6 +6501,74 @@ public class CPDefinitionSpecificationOptionValuePersistenceImpl
 		entityCache.removeCache(
 			CPDefinitionSpecificationOptionValueImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CPDefinitionSpecificationOptionValue>
+			cpDefinitionSpecificationOptionValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionSpecificationOptionValue>>
+				resultMap = new HashMap<>();
+
+			for (CPDefinitionSpecificationOptionValue
+					cpDefinitionSpecificationOptionValue :
+						cpDefinitionSpecificationOptionValues) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionSpecificationOptionValueModelImpl
+						cpDefinitionSpecificationOptionValueModelImpl =
+							(CPDefinitionSpecificationOptionValueModelImpl)
+								cpDefinitionSpecificationOptionValue;
+
+					arguments.add(
+						cpDefinitionSpecificationOptionValueModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpDefinitionSpecificationOptionValue);
+				}
+				else {
+					List<CPDefinitionSpecificationOptionValue> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionSpecificationOptionValue);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CPDefinitionSpecificationOptionValue>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionSpecificationOptionValue> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCPDefinitionSpecificationOptionValueUtilPersistence(
 		CPDefinitionSpecificationOptionValuePersistence

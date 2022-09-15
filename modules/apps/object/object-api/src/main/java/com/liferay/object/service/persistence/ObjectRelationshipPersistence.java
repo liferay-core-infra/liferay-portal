@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectRelationshipException;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1555,5 +1557,11 @@ public interface ObjectRelationshipPersistence
 	 * @return the number of object relationships
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -45,6 +45,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -3517,6 +3519,77 @@ public class LVEntryLocalizationVersionPersistenceImpl
 			},
 			new String[] {"lvEntryId", "languageId", "version"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLvEntryLocalizationId",
+			_finderPathWithPaginationFindByLvEntryLocalizationId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLvEntryLocalizationId",
+			_finderPathWithoutPaginationFindByLvEntryLocalizationId);
+
+		_finderPaths.put(
+			"finderPathCountByLvEntryLocalizationId",
+			_finderPathCountByLvEntryLocalizationId);
+
+		_finderPaths.put(
+			"finderPathFetchByLvEntryLocalizationId_Version",
+			_finderPathFetchByLvEntryLocalizationId_Version);
+
+		_finderPaths.put(
+			"finderPathCountByLvEntryLocalizationId_Version",
+			_finderPathCountByLvEntryLocalizationId_Version);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLvEntryId",
+			_finderPathWithPaginationFindByLvEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLvEntryId",
+			_finderPathWithoutPaginationFindByLvEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByLvEntryId", _finderPathCountByLvEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLvEntryId_Version",
+			_finderPathWithPaginationFindByLvEntryId_Version);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLvEntryId_Version",
+			_finderPathWithoutPaginationFindByLvEntryId_Version);
+
+		_finderPaths.put(
+			"finderPathCountByLvEntryId_Version",
+			_finderPathCountByLvEntryId_Version);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLvEntryId_LanguageId",
+			_finderPathWithPaginationFindByLvEntryId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLvEntryId_LanguageId",
+			_finderPathWithoutPaginationFindByLvEntryId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathCountByLvEntryId_LanguageId",
+			_finderPathCountByLvEntryId_LanguageId);
+
+		_finderPaths.put(
+			"finderPathFetchByLvEntryId_LanguageId_Version",
+			_finderPathFetchByLvEntryId_LanguageId_Version);
+
+		_finderPaths.put(
+			"finderPathCountByLvEntryId_LanguageId_Version",
+			_finderPathCountByLvEntryId_LanguageId_Version);
+
 		_setLVEntryLocalizationVersionUtilPersistence(this);
 	}
 
@@ -3525,6 +3598,71 @@ public class LVEntryLocalizationVersionPersistenceImpl
 
 		entityCache.removeCache(LVEntryLocalizationVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LVEntryLocalizationVersion> lvEntryLocalizationVersions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LVEntryLocalizationVersion>> resultMap =
+				new HashMap<>();
+
+			for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
+					lvEntryLocalizationVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LVEntryLocalizationVersionModelImpl
+						lvEntryLocalizationVersionModelImpl =
+							(LVEntryLocalizationVersionModelImpl)
+								lvEntryLocalizationVersion;
+
+					arguments.add(
+						lvEntryLocalizationVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						lvEntryLocalizationVersion);
+				}
+				else {
+					List<LVEntryLocalizationVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(lvEntryLocalizationVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LVEntryLocalizationVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LVEntryLocalizationVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLVEntryLocalizationVersionUtilPersistence(
 		LVEntryLocalizationVersionPersistence

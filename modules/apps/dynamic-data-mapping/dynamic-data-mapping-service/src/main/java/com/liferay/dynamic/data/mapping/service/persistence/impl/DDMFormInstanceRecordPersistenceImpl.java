@@ -4718,6 +4718,81 @@ public class DDMFormInstanceRecordPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"formInstanceId", "formInstanceVersion"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFormInstanceId",
+			_finderPathWithPaginationFindByFormInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFormInstanceId",
+			_finderPathWithoutPaginationFindByFormInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByFormInstanceId",
+			_finderPathCountByFormInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByU_F",
+			_finderPathWithPaginationFindByU_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByU_F",
+			_finderPathWithoutPaginationFindByU_F);
+
+		_finderPaths.put("finderPathCountByU_F", _finderPathCountByU_F);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_F",
+			_finderPathWithPaginationFindByF_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_F",
+			_finderPathWithoutPaginationFindByF_F);
+
+		_finderPaths.put("finderPathCountByF_F", _finderPathCountByF_F);
+
 		_setDDMFormInstanceRecordUtilPersistence(this);
 	}
 
@@ -4727,6 +4802,69 @@ public class DDMFormInstanceRecordPersistenceImpl
 
 		entityCache.removeCache(DDMFormInstanceRecordImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMFormInstanceRecord> ddmFormInstanceRecords = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMFormInstanceRecord>> resultMap =
+				new HashMap<>();
+
+			for (DDMFormInstanceRecord ddmFormInstanceRecord :
+					ddmFormInstanceRecords) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMFormInstanceRecordModelImpl
+						ddmFormInstanceRecordModelImpl =
+							(DDMFormInstanceRecordModelImpl)
+								ddmFormInstanceRecord;
+
+					arguments.add(
+						ddmFormInstanceRecordModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmFormInstanceRecord);
+				}
+				else {
+					List<DDMFormInstanceRecord> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmFormInstanceRecord);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMFormInstanceRecord>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMFormInstanceRecord> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMFormInstanceRecordUtilPersistence(
 		DDMFormInstanceRecordPersistence ddmFormInstanceRecordPersistence) {

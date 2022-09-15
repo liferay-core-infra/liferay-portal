@@ -1439,6 +1439,18 @@ public class DLFileEntryTypeUtil {
 		getPersistence().setDLFolders(pk, dlFolders);
 	}
 
+	public static Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths() {
+
+		return getPersistence().getFinderPaths();
+	}
+
+	public static void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath finderPaths) {
+
+		getPersistence().populateFinderCache(finderPaths);
+	}
+
 	public static DLFileEntryTypePersistence getPersistence() {
 		return _persistence;
 	}

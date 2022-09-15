@@ -4678,6 +4678,83 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 			},
 			new String[] {"companyId", "userId", "completed"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoDefinitionVersionId",
+			_finderPathWithoutPaginationFindByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoDefinitionVersionId",
+			_finderPathCountByKaleoDefinitionVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByKaleoInstanceId",
+			_finderPathWithPaginationFindByKaleoInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByKaleoInstanceId",
+			_finderPathWithoutPaginationFindByKaleoInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByKaleoInstanceId",
+			_finderPathCountByKaleoInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_U",
+			_finderPathWithPaginationFindByC_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_U",
+			_finderPathWithoutPaginationFindByC_U);
+
+		_finderPaths.put("finderPathCountByC_U", _finderPathCountByC_U);
+
+		_finderPaths.put("finderPathFetchByKII_KTI", _finderPathFetchByKII_KTI);
+
+		_finderPaths.put("finderPathCountByKII_KTI", _finderPathCountByKII_KTI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCN_CPK",
+			_finderPathWithPaginationFindByCN_CPK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCN_CPK",
+			_finderPathWithoutPaginationFindByCN_CPK);
+
+		_finderPaths.put("finderPathCountByCN_CPK", _finderPathCountByCN_CPK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_U_C",
+			_finderPathWithPaginationFindByC_U_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_U_C",
+			_finderPathWithoutPaginationFindByC_U_C);
+
+		_finderPaths.put("finderPathCountByC_U_C", _finderPathCountByC_U_C);
+
 		_setKaleoTaskInstanceTokenUtilPersistence(this);
 	}
 
@@ -4687,6 +4764,70 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 
 		entityCache.removeCache(KaleoTaskInstanceTokenImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoTaskInstanceToken> kaleoTaskInstanceTokens = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoTaskInstanceToken>> resultMap =
+				new HashMap<>();
+
+			for (KaleoTaskInstanceToken kaleoTaskInstanceToken :
+					kaleoTaskInstanceTokens) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoTaskInstanceTokenModelImpl
+						kaleoTaskInstanceTokenModelImpl =
+							(KaleoTaskInstanceTokenModelImpl)
+								kaleoTaskInstanceToken;
+
+					arguments.add(
+						kaleoTaskInstanceTokenModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						kaleoTaskInstanceToken);
+				}
+				else {
+					List<KaleoTaskInstanceToken> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoTaskInstanceToken);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoTaskInstanceToken>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoTaskInstanceToken> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoTaskInstanceTokenUtilPersistence(
 		KaleoTaskInstanceTokenPersistence kaleoTaskInstanceTokenPersistence) {

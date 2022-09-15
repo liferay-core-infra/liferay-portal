@@ -53,6 +53,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -5663,6 +5664,104 @@ public class CountryPersistenceImpl
 			},
 			new String[] {"companyId", "active_", "shippingAllowed"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByActive",
+			_finderPathWithPaginationFindByActive);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByActive",
+			_finderPathWithoutPaginationFindByActive);
+
+		_finderPaths.put("finderPathCountByActive", _finderPathCountByActive);
+
+		_finderPaths.put("finderPathFetchByC_A2", _finderPathFetchByC_A2);
+
+		_finderPaths.put("finderPathCountByC_A2", _finderPathCountByC_A2);
+
+		_finderPaths.put("finderPathFetchByC_A3", _finderPathFetchByC_A3);
+
+		_finderPaths.put("finderPathCountByC_A3", _finderPathCountByC_A3);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_Active",
+			_finderPathWithPaginationFindByC_Active);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_Active",
+			_finderPathWithoutPaginationFindByC_Active);
+
+		_finderPaths.put(
+			"finderPathCountByC_Active", _finderPathCountByC_Active);
+
+		_finderPaths.put("finderPathFetchByC_Name", _finderPathFetchByC_Name);
+
+		_finderPaths.put("finderPathCountByC_Name", _finderPathCountByC_Name);
+
+		_finderPaths.put(
+			"finderPathFetchByC_Number", _finderPathFetchByC_Number);
+
+		_finderPaths.put(
+			"finderPathCountByC_Number", _finderPathCountByC_Number);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_B",
+			_finderPathWithPaginationFindByC_A_B);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_B",
+			_finderPathWithoutPaginationFindByC_A_B);
+
+		_finderPaths.put("finderPathCountByC_A_B", _finderPathCountByC_A_B);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A_S",
+			_finderPathWithPaginationFindByC_A_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A_S",
+			_finderPathWithoutPaginationFindByC_A_S);
+
+		_finderPaths.put("finderPathCountByC_A_S", _finderPathCountByC_A_S);
+
 		_setCountryUtilPersistence(this);
 	}
 
@@ -5671,6 +5770,61 @@ public class CountryPersistenceImpl
 
 		EntityCacheUtil.removeCache(CountryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Country> countrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Country>> resultMap = new HashMap<>();
+
+			for (Country country : countrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CountryModelImpl countryModelImpl =
+						(CountryModelImpl)country;
+
+					arguments.add(countryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), country);
+				}
+				else {
+					List<Country> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(country);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Country>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Country> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCountryUtilPersistence(
 		CountryPersistence countryPersistence) {

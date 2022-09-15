@@ -2743,6 +2743,41 @@ public class JournalArticleLocalizationPersistenceImpl
 			new String[] {"companyId", "articlePK", "title", "languageId"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByArticlePK",
+			_finderPathWithPaginationFindByArticlePK);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByArticlePK",
+			_finderPathWithoutPaginationFindByArticlePK);
+
+		_finderPaths.put(
+			"finderPathCountByArticlePK", _finderPathCountByArticlePK);
+
+		_finderPaths.put("finderPathFetchByC_A", _finderPathFetchByC_A);
+
+		_finderPaths.put("finderPathCountByC_A", _finderPathCountByC_A);
+
+		_finderPaths.put("finderPathFetchByA_L", _finderPathFetchByA_L);
+
+		_finderPaths.put("finderPathCountByA_L", _finderPathCountByA_L);
+
+		_finderPaths.put("finderPathFetchByC_A_L", _finderPathFetchByC_A_L);
+
+		_finderPaths.put("finderPathCountByC_A_L", _finderPathCountByC_A_L);
+
+		_finderPaths.put("finderPathFetchByC_A_T_L", _finderPathFetchByC_A_T_L);
+
+		_finderPaths.put("finderPathCountByC_A_T_L", _finderPathCountByC_A_T_L);
+
 		_setJournalArticleLocalizationUtilPersistence(this);
 	}
 
@@ -2752,6 +2787,71 @@ public class JournalArticleLocalizationPersistenceImpl
 
 		entityCache.removeCache(JournalArticleLocalizationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<JournalArticleLocalization> journalArticleLocalizations =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<JournalArticleLocalization>> resultMap =
+				new HashMap<>();
+
+			for (JournalArticleLocalization journalArticleLocalization :
+					journalArticleLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					JournalArticleLocalizationModelImpl
+						journalArticleLocalizationModelImpl =
+							(JournalArticleLocalizationModelImpl)
+								journalArticleLocalization;
+
+					arguments.add(
+						journalArticleLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						journalArticleLocalization);
+				}
+				else {
+					List<JournalArticleLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(journalArticleLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<JournalArticleLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<JournalArticleLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setJournalArticleLocalizationUtilPersistence(
 		JournalArticleLocalizationPersistence

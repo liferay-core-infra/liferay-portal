@@ -52,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -4032,6 +4033,77 @@ public class ModulePersistenceImpl
 			new String[] {"appId", "bundleSymbolicName", "bundleVersion"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAppId",
+			_finderPathWithPaginationFindByAppId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAppId",
+			_finderPathWithoutPaginationFindByAppId);
+
+		_finderPaths.put("finderPathCountByAppId", _finderPathCountByAppId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByBundleSymbolicName",
+			_finderPathWithPaginationFindByBundleSymbolicName);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByBundleSymbolicName",
+			_finderPathWithoutPaginationFindByBundleSymbolicName);
+
+		_finderPaths.put(
+			"finderPathCountByBundleSymbolicName",
+			_finderPathCountByBundleSymbolicName);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByContextName",
+			_finderPathWithPaginationFindByContextName);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByContextName",
+			_finderPathWithoutPaginationFindByContextName);
+
+		_finderPaths.put(
+			"finderPathCountByContextName", _finderPathCountByContextName);
+
+		_finderPaths.put("finderPathFetchByA_CN", _finderPathFetchByA_CN);
+
+		_finderPaths.put("finderPathCountByA_CN", _finderPathCountByA_CN);
+
+		_finderPaths.put(
+			"finderPathFetchByA_BSN_BV", _finderPathFetchByA_BSN_BV);
+
+		_finderPaths.put(
+			"finderPathCountByA_BSN_BV", _finderPathCountByA_BSN_BV);
+
 		_setModuleUtilPersistence(this);
 	}
 
@@ -4041,6 +4113,60 @@ public class ModulePersistenceImpl
 
 		entityCache.removeCache(ModuleImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<Module> modules = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Module>> resultMap = new HashMap<>();
+
+			for (Module module : modules) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ModuleModelImpl moduleModelImpl = (ModuleModelImpl)module;
+
+					arguments.add(moduleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), module);
+				}
+				else {
+					List<Module> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(module);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Module>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Module> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setModuleUtilPersistence(
 		ModulePersistence modulePersistence) {

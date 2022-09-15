@@ -18,6 +18,8 @@ import com.liferay.analytics.message.storage.exception.NoSuchMessageException;
 import com.liferay.analytics.message.storage.model.AnalyticsMessage;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -303,5 +305,11 @@ public interface AnalyticsMessagePersistence
 	 * @return the number of analytics messages
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -18,6 +18,8 @@ import com.liferay.commerce.product.type.grouped.exception.NoSuchCPDefinitionGro
 import com.liferay.commerce.product.type.grouped.model.CPDefinitionGroupedEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -709,5 +711,11 @@ public interface CPDefinitionGroupedEntryPersistence
 	 * @return the number of cp definition grouped entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

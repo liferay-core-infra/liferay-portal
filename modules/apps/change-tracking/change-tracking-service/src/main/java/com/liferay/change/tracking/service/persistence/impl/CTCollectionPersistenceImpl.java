@@ -54,9 +54,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -3888,6 +3891,50 @@ public class CTCollectionPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_S",
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"companyId", "status"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySchemaVersionId",
+			_finderPathWithPaginationFindBySchemaVersionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySchemaVersionId",
+			_finderPathWithoutPaginationFindBySchemaVersionId);
+
+		_finderPaths.put(
+			"finderPathCountBySchemaVersionId",
+			_finderPathCountBySchemaVersionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S",
+			_finderPathWithPaginationFindByC_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S",
+			_finderPathWithoutPaginationFindByC_S);
+
+		_finderPaths.put("finderPathCountByC_S", _finderPathCountByC_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_S",
+			_finderPathWithPaginationCountByC_S);
 
 		_setCTCollectionUtilPersistence(this);
 	}
@@ -3898,6 +3945,62 @@ public class CTCollectionPersistenceImpl
 
 		entityCache.removeCache(CTCollectionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CTCollection> ctCollections = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CTCollection>> resultMap = new HashMap<>();
+
+			for (CTCollection ctCollection : ctCollections) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CTCollectionModelImpl ctCollectionModelImpl =
+						(CTCollectionModelImpl)ctCollection;
+
+					arguments.add(
+						ctCollectionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ctCollection);
+				}
+				else {
+					List<CTCollection> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ctCollection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CTCollection>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CTCollection> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCTCollectionUtilPersistence(
 		CTCollectionPersistence ctCollectionPersistence) {

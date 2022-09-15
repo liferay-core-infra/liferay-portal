@@ -18,6 +18,8 @@ import com.liferay.commerce.discount.exception.NoSuchDiscountUsageEntryException
 import com.liferay.commerce.discount.model.CommerceDiscountUsageEntry;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -798,5 +800,11 @@ public interface CommerceDiscountUsageEntryPersistence
 	 * @return the number of commerce discount usage entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

@@ -2342,6 +2342,40 @@ public class DDMFormInstanceVersionPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"formInstanceId", "status"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFormInstanceId",
+			_finderPathWithPaginationFindByFormInstanceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFormInstanceId",
+			_finderPathWithoutPaginationFindByFormInstanceId);
+
+		_finderPaths.put(
+			"finderPathCountByFormInstanceId",
+			_finderPathCountByFormInstanceId);
+
+		_finderPaths.put("finderPathFetchByF_V", _finderPathFetchByF_V);
+
+		_finderPaths.put("finderPathCountByF_V", _finderPathCountByF_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByF_S",
+			_finderPathWithPaginationFindByF_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByF_S",
+			_finderPathWithoutPaginationFindByF_S);
+
+		_finderPaths.put("finderPathCountByF_S", _finderPathCountByF_S);
+
 		_setDDMFormInstanceVersionUtilPersistence(this);
 	}
 
@@ -2351,6 +2385,70 @@ public class DDMFormInstanceVersionPersistenceImpl
 
 		entityCache.removeCache(DDMFormInstanceVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDMFormInstanceVersion> ddmFormInstanceVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMFormInstanceVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDMFormInstanceVersion ddmFormInstanceVersion :
+					ddmFormInstanceVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMFormInstanceVersionModelImpl
+						ddmFormInstanceVersionModelImpl =
+							(DDMFormInstanceVersionModelImpl)
+								ddmFormInstanceVersion;
+
+					arguments.add(
+						ddmFormInstanceVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						ddmFormInstanceVersion);
+				}
+				else {
+					List<DDMFormInstanceVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmFormInstanceVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMFormInstanceVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMFormInstanceVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDMFormInstanceVersionUtilPersistence(
 		DDMFormInstanceVersionPersistence ddmFormInstanceVersionPersistence) {

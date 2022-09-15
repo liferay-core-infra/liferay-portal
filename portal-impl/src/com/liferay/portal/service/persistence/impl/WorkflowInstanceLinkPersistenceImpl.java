@@ -59,6 +59,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -2176,6 +2177,34 @@ public class WorkflowInstanceLinkPersistenceImpl
 			new String[] {"groupId", "companyId", "classNameId", "classPK"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C",
+			_finderPathWithPaginationFindByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C",
+			_finderPathWithoutPaginationFindByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_C",
+			_finderPathWithPaginationFindByG_C_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_C",
+			_finderPathWithoutPaginationFindByG_C_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C_C", _finderPathCountByG_C_C_C);
+
 		_setWorkflowInstanceLinkUtilPersistence(this);
 	}
 
@@ -2184,6 +2213,68 @@ public class WorkflowInstanceLinkPersistenceImpl
 
 		EntityCacheUtil.removeCache(WorkflowInstanceLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<WorkflowInstanceLink> workflowInstanceLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<WorkflowInstanceLink>> resultMap =
+				new HashMap<>();
+
+			for (WorkflowInstanceLink workflowInstanceLink :
+					workflowInstanceLinks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					WorkflowInstanceLinkModelImpl
+						workflowInstanceLinkModelImpl =
+							(WorkflowInstanceLinkModelImpl)workflowInstanceLink;
+
+					arguments.add(
+						workflowInstanceLinkModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), workflowInstanceLink);
+				}
+				else {
+					List<WorkflowInstanceLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(workflowInstanceLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<WorkflowInstanceLink>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<WorkflowInstanceLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setWorkflowInstanceLinkUtilPersistence(
 		WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence) {

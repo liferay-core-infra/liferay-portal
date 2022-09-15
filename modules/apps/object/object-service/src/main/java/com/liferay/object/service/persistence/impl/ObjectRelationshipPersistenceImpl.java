@@ -54,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -6293,6 +6294,117 @@ public class ObjectRelationshipPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByObjectDefinitionId1",
+			_finderPathWithPaginationFindByObjectDefinitionId1);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByObjectDefinitionId1",
+			_finderPathWithoutPaginationFindByObjectDefinitionId1);
+
+		_finderPaths.put(
+			"finderPathCountByObjectDefinitionId1",
+			_finderPathCountByObjectDefinitionId1);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByObjectDefinitionId2",
+			_finderPathWithPaginationFindByObjectDefinitionId2);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByObjectDefinitionId2",
+			_finderPathWithoutPaginationFindByObjectDefinitionId2);
+
+		_finderPaths.put(
+			"finderPathCountByObjectDefinitionId2",
+			_finderPathCountByObjectDefinitionId2);
+
+		_finderPaths.put(
+			"finderPathFetchByObjectFieldId2",
+			_finderPathFetchByObjectFieldId2);
+
+		_finderPaths.put(
+			"finderPathCountByObjectFieldId2",
+			_finderPathCountByObjectFieldId2);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByODI1_N",
+			_finderPathWithPaginationFindByODI1_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByODI1_N",
+			_finderPathWithoutPaginationFindByODI1_N);
+
+		_finderPaths.put("finderPathCountByODI1_N", _finderPathCountByODI1_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByODI1_ODI2_T",
+			_finderPathWithPaginationFindByODI1_ODI2_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByODI1_ODI2_T",
+			_finderPathWithoutPaginationFindByODI1_ODI2_T);
+
+		_finderPaths.put(
+			"finderPathCountByODI1_ODI2_T", _finderPathCountByODI1_ODI2_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByODI1_DT_R",
+			_finderPathWithPaginationFindByODI1_DT_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByODI1_DT_R",
+			_finderPathWithoutPaginationFindByODI1_DT_R);
+
+		_finderPaths.put(
+			"finderPathCountByODI1_DT_R", _finderPathCountByODI1_DT_R);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByODI1_ODI2_N_T",
+			_finderPathWithPaginationFindByODI1_ODI2_N_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByODI1_ODI2_N_T",
+			_finderPathWithoutPaginationFindByODI1_ODI2_N_T);
+
+		_finderPaths.put(
+			"finderPathCountByODI1_ODI2_N_T", _finderPathCountByODI1_ODI2_N_T);
+
+		_finderPaths.put(
+			"finderPathFetchByODI1_ODI2_N_R_T",
+			_finderPathFetchByODI1_ODI2_N_R_T);
+
+		_finderPaths.put(
+			"finderPathCountByODI1_ODI2_N_R_T",
+			_finderPathCountByODI1_ODI2_N_R_T);
+
 		_setObjectRelationshipUtilPersistence(this);
 	}
 
@@ -6302,6 +6414,64 @@ public class ObjectRelationshipPersistenceImpl
 
 		entityCache.removeCache(ObjectRelationshipImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ObjectRelationship> objectRelationships = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectRelationship>> resultMap =
+				new HashMap<>();
+
+			for (ObjectRelationship objectRelationship : objectRelationships) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectRelationshipModelImpl objectRelationshipModelImpl =
+						(ObjectRelationshipModelImpl)objectRelationship;
+
+					arguments.add(
+						objectRelationshipModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectRelationship);
+				}
+				else {
+					List<ObjectRelationship> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectRelationship);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectRelationship>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectRelationship> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setObjectRelationshipUtilPersistence(
 		ObjectRelationshipPersistence objectRelationshipPersistence) {

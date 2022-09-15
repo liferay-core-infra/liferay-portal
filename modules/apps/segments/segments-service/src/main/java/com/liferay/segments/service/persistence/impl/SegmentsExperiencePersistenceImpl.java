@@ -11892,6 +11892,130 @@ public class SegmentsExperiencePersistenceImpl
 				"active_"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySegmentsEntryId",
+			_finderPathWithPaginationFindBySegmentsEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySegmentsEntryId",
+			_finderPathWithoutPaginationFindBySegmentsEntryId);
+
+		_finderPaths.put(
+			"finderPathCountBySegmentsEntryId",
+			_finderPathCountBySegmentsEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C",
+			_finderPathWithPaginationFindByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C",
+			_finderPathWithoutPaginationFindByG_C_C);
+
+		_finderPaths.put("finderPathCountByG_C_C", _finderPathCountByG_C_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_S_C_C",
+			_finderPathWithPaginationFindByG_S_C_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_S_C_C",
+			_finderPathWithoutPaginationFindByG_S_C_C);
+
+		_finderPaths.put("finderPathCountByG_S_C_C", _finderPathCountByG_S_C_C);
+
+		_finderPaths.put(
+			"finderPathFetchByG_SEK_C_C", _finderPathFetchByG_SEK_C_C);
+
+		_finderPaths.put(
+			"finderPathCountByG_SEK_C_C", _finderPathCountByG_SEK_C_C);
+
+		_finderPaths.put("finderPathFetchByG_C_C_P", _finderPathFetchByG_C_C_P);
+
+		_finderPaths.put("finderPathCountByG_C_C_P", _finderPathCountByG_C_C_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_GtP",
+			_finderPathWithPaginationFindByG_C_C_GtP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C_C_GtP",
+			_finderPathWithPaginationCountByG_C_C_GtP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_LtP",
+			_finderPathWithPaginationFindByG_C_C_LtP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_C_C_LtP",
+			_finderPathWithPaginationCountByG_C_C_LtP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_C_A",
+			_finderPathWithPaginationFindByG_C_C_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_C_A",
+			_finderPathWithoutPaginationFindByG_C_C_A);
+
+		_finderPaths.put("finderPathCountByG_C_C_A", _finderPathCountByG_C_C_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_S_C_C_A",
+			_finderPathWithPaginationFindByG_S_C_C_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_S_C_C_A",
+			_finderPathWithoutPaginationFindByG_S_C_C_A);
+
+		_finderPaths.put(
+			"finderPathCountByG_S_C_C_A", _finderPathCountByG_S_C_C_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_S_C_C_A",
+			_finderPathWithPaginationCountByG_S_C_C_A);
 
 		_setSegmentsExperienceUtilPersistence(this);
 	}
@@ -11902,6 +12026,64 @@ public class SegmentsExperiencePersistenceImpl
 
 		entityCache.removeCache(SegmentsExperienceImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SegmentsExperience> segmentsExperiences = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsExperience>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsExperience segmentsExperience : segmentsExperiences) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsExperienceModelImpl segmentsExperienceModelImpl =
+						(SegmentsExperienceModelImpl)segmentsExperience;
+
+					arguments.add(
+						segmentsExperienceModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsExperience);
+				}
+				else {
+					List<SegmentsExperience> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsExperience);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsExperience>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsExperience> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSegmentsExperienceUtilPersistence(
 		SegmentsExperiencePersistence segmentsExperiencePersistence) {

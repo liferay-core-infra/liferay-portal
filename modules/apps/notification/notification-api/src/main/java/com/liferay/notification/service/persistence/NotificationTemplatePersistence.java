@@ -18,6 +18,8 @@ import com.liferay.notification.exception.NoSuchNotificationTemplateException;
 import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -594,5 +596,11 @@ public interface NotificationTemplatePersistence
 	 * @return the number of notification templates
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

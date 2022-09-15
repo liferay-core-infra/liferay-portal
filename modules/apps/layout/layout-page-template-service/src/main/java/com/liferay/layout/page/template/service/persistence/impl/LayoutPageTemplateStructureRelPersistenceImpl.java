@@ -3942,6 +3942,66 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByLayoutPageTemplateStructureId",
+			_finderPathWithPaginationFindByLayoutPageTemplateStructureId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByLayoutPageTemplateStructureId",
+			_finderPathWithoutPaginationFindByLayoutPageTemplateStructureId);
+
+		_finderPaths.put(
+			"finderPathCountByLayoutPageTemplateStructureId",
+			_finderPathCountByLayoutPageTemplateStructureId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySegmentsExperienceId",
+			_finderPathWithPaginationFindBySegmentsExperienceId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySegmentsExperienceId",
+			_finderPathWithoutPaginationFindBySegmentsExperienceId);
+
+		_finderPaths.put(
+			"finderPathCountBySegmentsExperienceId",
+			_finderPathCountBySegmentsExperienceId);
+
+		_finderPaths.put("finderPathFetchByL_S", _finderPathFetchByL_S);
+
+		_finderPaths.put("finderPathCountByL_S", _finderPathCountByL_S);
+
 		_setLayoutPageTemplateStructureRelUtilPersistence(this);
 	}
 
@@ -3952,6 +4012,72 @@ public class LayoutPageTemplateStructureRelPersistenceImpl
 		entityCache.removeCache(
 			LayoutPageTemplateStructureRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutPageTemplateStructureRel> layoutPageTemplateStructureRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutPageTemplateStructureRel>> resultMap =
+				new HashMap<>();
+
+			for (LayoutPageTemplateStructureRel layoutPageTemplateStructureRel :
+					layoutPageTemplateStructureRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutPageTemplateStructureRelModelImpl
+						layoutPageTemplateStructureRelModelImpl =
+							(LayoutPageTemplateStructureRelModelImpl)
+								layoutPageTemplateStructureRel;
+
+					arguments.add(
+						layoutPageTemplateStructureRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutPageTemplateStructureRel);
+				}
+				else {
+					List<LayoutPageTemplateStructureRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutPageTemplateStructureRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutPageTemplateStructureRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutPageTemplateStructureRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutPageTemplateStructureRelUtilPersistence(
 		LayoutPageTemplateStructureRelPersistence

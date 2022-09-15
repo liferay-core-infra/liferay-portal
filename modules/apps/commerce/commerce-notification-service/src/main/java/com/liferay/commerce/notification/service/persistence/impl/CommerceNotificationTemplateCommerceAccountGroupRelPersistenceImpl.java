@@ -51,10 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2267,6 +2269,42 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceNotificationTemplateId",
+			_finderPathWithPaginationFindByCommerceNotificationTemplateId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceNotificationTemplateId",
+			_finderPathWithoutPaginationFindByCommerceNotificationTemplateId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceNotificationTemplateId",
+			_finderPathCountByCommerceNotificationTemplateId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceAccountGroupId",
+			_finderPathWithPaginationFindByCommerceAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceAccountGroupId",
+			_finderPathWithoutPaginationFindByCommerceAccountGroupId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceAccountGroupId",
+			_finderPathCountByCommerceAccountGroupId);
+
+		_finderPaths.put("finderPathFetchByC_C", _finderPathFetchByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
 		_setCommerceNotificationTemplateCommerceAccountGroupRelUtilPersistence(
 			this);
 	}
@@ -2280,6 +2318,78 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class.
 				getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceNotificationTemplateCommerceAccountGroupRel>
+			commerceNotificationTemplateCommerceAccountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map
+				<List<Object>,
+				 List<CommerceNotificationTemplateCommerceAccountGroupRel>>
+					resultMap = new HashMap<>();
+
+			for (CommerceNotificationTemplateCommerceAccountGroupRel
+					commerceNotificationTemplateCommerceAccountGroupRel :
+						commerceNotificationTemplateCommerceAccountGroupRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceNotificationTemplateCommerceAccountGroupRelModelImpl
+						commerceNotificationTemplateCommerceAccountGroupRelModelImpl =
+							(CommerceNotificationTemplateCommerceAccountGroupRelModelImpl)
+								commerceNotificationTemplateCommerceAccountGroupRel;
+
+					arguments.add(
+						commerceNotificationTemplateCommerceAccountGroupRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceNotificationTemplateCommerceAccountGroupRel);
+				}
+				else {
+					List<CommerceNotificationTemplateCommerceAccountGroupRel>
+						resultList = resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(
+						commerceNotificationTemplateCommerceAccountGroupRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>,
+					 List<CommerceNotificationTemplateCommerceAccountGroupRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceNotificationTemplateCommerceAccountGroupRel>
+					value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void
 		_setCommerceNotificationTemplateCommerceAccountGroupRelUtilPersistence(

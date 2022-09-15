@@ -48,9 +48,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -2817,6 +2820,54 @@ public class MembershipRequestPersistenceImpl
 			},
 			new String[] {"groupId", "userId", "statusId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_S",
+			_finderPathWithPaginationFindByG_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_S",
+			_finderPathWithoutPaginationFindByG_S);
+
+		_finderPaths.put("finderPathCountByG_S", _finderPathCountByG_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_S",
+			_finderPathWithPaginationFindByG_U_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_S",
+			_finderPathWithoutPaginationFindByG_U_S);
+
+		_finderPaths.put("finderPathCountByG_U_S", _finderPathCountByG_U_S);
+
 		_setMembershipRequestUtilPersistence(this);
 	}
 
@@ -2825,6 +2876,64 @@ public class MembershipRequestPersistenceImpl
 
 		EntityCacheUtil.removeCache(MembershipRequestImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<MembershipRequest> membershipRequests = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MembershipRequest>> resultMap =
+				new HashMap<>();
+
+			for (MembershipRequest membershipRequest : membershipRequests) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MembershipRequestModelImpl membershipRequestModelImpl =
+						(MembershipRequestModelImpl)membershipRequest;
+
+					arguments.add(
+						membershipRequestModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), membershipRequest);
+				}
+				else {
+					List<MembershipRequest> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(membershipRequest);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MembershipRequest>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MembershipRequest> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setMembershipRequestUtilPersistence(
 		MembershipRequestPersistence membershipRequestPersistence) {

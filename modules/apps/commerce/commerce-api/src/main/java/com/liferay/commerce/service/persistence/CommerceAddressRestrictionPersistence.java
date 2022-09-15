@@ -18,6 +18,8 @@ import com.liferay.commerce.exception.NoSuchAddressRestrictionException;
 import com.liferay.commerce.model.CommerceAddressRestriction;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -523,5 +525,11 @@ public interface CommerceAddressRestrictionPersistence
 	 * @return the number of commerce address restrictions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

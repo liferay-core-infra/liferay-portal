@@ -52,9 +52,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1778,6 +1781,32 @@ public class AnalyticsDeleteMessagePersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_GtM",
 			new String[] {Long.class.getName(), Date.class.getName()},
 			new String[] {"companyId", "modifiedDate"}, false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_GtM",
+			_finderPathWithPaginationFindByC_GtM);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_GtM",
+			_finderPathWithPaginationCountByC_GtM);
 
 		_setAnalyticsDeleteMessageUtilPersistence(this);
 	}
@@ -1788,6 +1817,70 @@ public class AnalyticsDeleteMessagePersistenceImpl
 
 		entityCache.removeCache(AnalyticsDeleteMessageImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AnalyticsDeleteMessage> analyticsDeleteMessages = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AnalyticsDeleteMessage>> resultMap =
+				new HashMap<>();
+
+			for (AnalyticsDeleteMessage analyticsDeleteMessage :
+					analyticsDeleteMessages) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AnalyticsDeleteMessageModelImpl
+						analyticsDeleteMessageModelImpl =
+							(AnalyticsDeleteMessageModelImpl)
+								analyticsDeleteMessage;
+
+					arguments.add(
+						analyticsDeleteMessageModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						analyticsDeleteMessage);
+				}
+				else {
+					List<AnalyticsDeleteMessage> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(analyticsDeleteMessage);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AnalyticsDeleteMessage>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AnalyticsDeleteMessage> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAnalyticsDeleteMessageUtilPersistence(
 		AnalyticsDeleteMessagePersistence analyticsDeleteMessagePersistence) {

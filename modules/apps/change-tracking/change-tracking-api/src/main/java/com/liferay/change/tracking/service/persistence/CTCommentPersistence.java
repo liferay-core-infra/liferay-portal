@@ -18,6 +18,8 @@ import com.liferay.change.tracking.exception.NoSuchCommentException;
 import com.liferay.change.tracking.model.CTComment;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -444,5 +446,11 @@ public interface CTCommentPersistence extends BasePersistence<CTComment> {
 	 * @return the number of ct comments
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

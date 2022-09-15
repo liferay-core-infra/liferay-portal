@@ -4260,6 +4260,67 @@ public class KaleoDefinitionPersistenceImpl
 			},
 			new String[] {"companyId", "scope", "active_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put("finderPathFetchByC_N", _finderPathFetchByC_N);
+
+		_finderPaths.put("finderPathCountByC_N", _finderPathCountByC_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S",
+			_finderPathWithPaginationFindByC_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S",
+			_finderPathWithoutPaginationFindByC_S);
+
+		_finderPaths.put("finderPathCountByC_S", _finderPathCountByC_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_A",
+			_finderPathWithPaginationFindByC_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_A",
+			_finderPathWithoutPaginationFindByC_A);
+
+		_finderPaths.put("finderPathCountByC_A", _finderPathCountByC_A);
+
+		_finderPaths.put("finderPathFetchByC_N_V", _finderPathFetchByC_N_V);
+
+		_finderPaths.put("finderPathCountByC_N_V", _finderPathCountByC_N_V);
+
+		_finderPaths.put("finderPathFetchByC_N_A", _finderPathFetchByC_N_A);
+
+		_finderPaths.put("finderPathCountByC_N_A", _finderPathCountByC_N_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S_A",
+			_finderPathWithPaginationFindByC_S_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S_A",
+			_finderPathWithoutPaginationFindByC_S_A);
+
+		_finderPaths.put("finderPathCountByC_S_A", _finderPathCountByC_S_A);
+
 		_setKaleoDefinitionUtilPersistence(this);
 	}
 
@@ -4269,6 +4330,64 @@ public class KaleoDefinitionPersistenceImpl
 
 		entityCache.removeCache(KaleoDefinitionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<KaleoDefinition> kaleoDefinitions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoDefinition>> resultMap =
+				new HashMap<>();
+
+			for (KaleoDefinition kaleoDefinition : kaleoDefinitions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoDefinitionModelImpl kaleoDefinitionModelImpl =
+						(KaleoDefinitionModelImpl)kaleoDefinition;
+
+					arguments.add(
+						kaleoDefinitionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoDefinition);
+				}
+				else {
+					List<KaleoDefinition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoDefinition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoDefinition>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoDefinition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setKaleoDefinitionUtilPersistence(
 		KaleoDefinitionPersistence kaleoDefinitionPersistence) {

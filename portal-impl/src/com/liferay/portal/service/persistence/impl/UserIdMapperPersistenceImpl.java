@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1695,6 +1696,32 @@ public class UserIdMapperPersistenceImpl
 			new String[] {String.class.getName(), String.class.getName()},
 			new String[] {"type_", "externalUserId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put("finderPathFetchByU_T", _finderPathFetchByU_T);
+
+		_finderPaths.put("finderPathCountByU_T", _finderPathCountByU_T);
+
+		_finderPaths.put("finderPathFetchByT_E", _finderPathFetchByT_E);
+
+		_finderPaths.put("finderPathCountByT_E", _finderPathCountByT_E);
+
 		_setUserIdMapperUtilPersistence(this);
 	}
 
@@ -1703,6 +1730,62 @@ public class UserIdMapperPersistenceImpl
 
 		EntityCacheUtil.removeCache(UserIdMapperImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<UserIdMapper> userIdMappers = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserIdMapper>> resultMap = new HashMap<>();
+
+			for (UserIdMapper userIdMapper : userIdMappers) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserIdMapperModelImpl userIdMapperModelImpl =
+						(UserIdMapperModelImpl)userIdMapper;
+
+					arguments.add(
+						userIdMapperModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userIdMapper);
+				}
+				else {
+					List<UserIdMapper> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(userIdMapper);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserIdMapper>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserIdMapper> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setUserIdMapperUtilPersistence(
 		UserIdMapperPersistence userIdMapperPersistence) {

@@ -7661,6 +7661,118 @@ public class ResourcePermissionPersistenceImpl
 				"viewActionId"
 			},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByName",
+			_finderPathWithPaginationFindByName);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByName",
+			_finderPathWithoutPaginationFindByName);
+
+		_finderPaths.put("finderPathCountByName", _finderPathCountByName);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByScope",
+			_finderPathWithPaginationFindByScope);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByScope",
+			_finderPathWithoutPaginationFindByScope);
+
+		_finderPaths.put("finderPathCountByScope", _finderPathCountByScope);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByScope",
+			_finderPathWithPaginationCountByScope);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRoleId",
+			_finderPathWithPaginationFindByRoleId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRoleId",
+			_finderPathWithoutPaginationFindByRoleId);
+
+		_finderPaths.put("finderPathCountByRoleId", _finderPathCountByRoleId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_LikeP",
+			_finderPathWithPaginationFindByC_LikeP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_LikeP",
+			_finderPathWithPaginationCountByC_LikeP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_S_P",
+			_finderPathWithPaginationFindByC_S_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_S_P",
+			_finderPathWithoutPaginationFindByC_S_P);
+
+		_finderPaths.put("finderPathCountByC_S_P", _finderPathCountByC_S_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N_S_P",
+			_finderPathWithPaginationFindByC_N_S_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N_S_P",
+			_finderPathWithoutPaginationFindByC_N_S_P);
+
+		_finderPaths.put("finderPathCountByC_N_S_P", _finderPathCountByC_N_S_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N_S_R",
+			_finderPathWithPaginationFindByC_N_S_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N_S_R",
+			_finderPathWithoutPaginationFindByC_N_S_R);
+
+		_finderPaths.put("finderPathCountByC_N_S_R", _finderPathCountByC_N_S_R);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N_S_P_R",
+			_finderPathWithPaginationFindByC_N_S_P_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N_S_P_R",
+			_finderPathWithoutPaginationFindByC_N_S_P_R);
+
+		_finderPaths.put(
+			"finderPathFetchByC_N_S_P_R", _finderPathFetchByC_N_S_P_R);
+
+		_finderPaths.put(
+			"finderPathCountByC_N_S_P_R", _finderPathCountByC_N_S_P_R);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_N_S_P_R",
+			_finderPathWithPaginationCountByC_N_S_P_R);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_N_S_P_R_V",
+			_finderPathWithPaginationFindByC_N_S_P_R_V);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_N_S_P_R_V",
+			_finderPathWithoutPaginationFindByC_N_S_P_R_V);
+
+		_finderPaths.put(
+			"finderPathCountByC_N_S_P_R_V", _finderPathCountByC_N_S_P_R_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_N_S_P_R_V",
+			_finderPathWithPaginationCountByC_N_S_P_R_V);
 
 		_setResourcePermissionUtilPersistence(this);
 	}
@@ -7670,6 +7782,64 @@ public class ResourcePermissionPersistenceImpl
 
 		EntityCacheUtil.removeCache(ResourcePermissionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ResourcePermission> resourcePermissions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ResourcePermission>> resultMap =
+				new HashMap<>();
+
+			for (ResourcePermission resourcePermission : resourcePermissions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ResourcePermissionModelImpl resourcePermissionModelImpl =
+						(ResourcePermissionModelImpl)resourcePermission;
+
+					arguments.add(
+						resourcePermissionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), resourcePermission);
+				}
+				else {
+					List<ResourcePermission> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(resourcePermission);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ResourcePermission>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ResourcePermission> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setResourcePermissionUtilPersistence(
 		ResourcePermissionPersistence resourcePermissionPersistence) {

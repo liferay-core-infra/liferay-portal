@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectValidationRuleException;
 import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -760,5 +762,11 @@ public interface ObjectValidationRulePersistence
 	 * @return the number of object validation rules
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

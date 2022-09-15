@@ -49,10 +49,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -3461,6 +3463,65 @@ public class ExportImportConfigurationPersistenceImpl
 			},
 			new String[] {"groupId", "type_", "status"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCompanyId",
+			_finderPathWithPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCompanyId",
+			_finderPathWithoutPaginationFindByCompanyId);
+
+		_finderPaths.put(
+			"finderPathCountByCompanyId", _finderPathCountByCompanyId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T",
+			_finderPathWithPaginationFindByG_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_T",
+			_finderPathWithoutPaginationFindByG_T);
+
+		_finderPaths.put("finderPathCountByG_T", _finderPathCountByG_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_S",
+			_finderPathWithPaginationFindByG_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_S",
+			_finderPathWithoutPaginationFindByG_S);
+
+		_finderPaths.put("finderPathCountByG_S", _finderPathCountByG_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_T_S",
+			_finderPathWithPaginationFindByG_T_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_T_S",
+			_finderPathWithoutPaginationFindByG_T_S);
+
+		_finderPaths.put("finderPathCountByG_T_S", _finderPathCountByG_T_S);
+
 		_setExportImportConfigurationUtilPersistence(this);
 	}
 
@@ -3470,6 +3531,70 @@ public class ExportImportConfigurationPersistenceImpl
 		EntityCacheUtil.removeCache(
 			ExportImportConfigurationImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<ExportImportConfiguration> exportImportConfigurations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExportImportConfiguration>> resultMap =
+				new HashMap<>();
+
+			for (ExportImportConfiguration exportImportConfiguration :
+					exportImportConfigurations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExportImportConfigurationModelImpl
+						exportImportConfigurationModelImpl =
+							(ExportImportConfigurationModelImpl)
+								exportImportConfiguration;
+
+					arguments.add(
+						exportImportConfigurationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						exportImportConfiguration);
+				}
+				else {
+					List<ExportImportConfiguration> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(exportImportConfiguration);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExportImportConfiguration>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExportImportConfiguration> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setExportImportConfigurationUtilPersistence(
 		ExportImportConfigurationPersistence

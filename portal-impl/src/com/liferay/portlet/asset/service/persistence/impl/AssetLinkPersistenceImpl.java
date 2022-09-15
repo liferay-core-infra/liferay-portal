@@ -60,6 +60,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -3898,6 +3899,70 @@ public class AssetLinkPersistenceImpl
 			},
 			new String[] {"entryId1", "entryId2", "type_"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByEntryId1",
+			_finderPathWithPaginationFindByEntryId1);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByEntryId1",
+			_finderPathWithoutPaginationFindByEntryId1);
+
+		_finderPaths.put(
+			"finderPathCountByEntryId1", _finderPathCountByEntryId1);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByEntryId2",
+			_finderPathWithPaginationFindByEntryId2);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByEntryId2",
+			_finderPathWithoutPaginationFindByEntryId2);
+
+		_finderPaths.put(
+			"finderPathCountByEntryId2", _finderPathCountByEntryId2);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByE_E",
+			_finderPathWithPaginationFindByE_E);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByE_E",
+			_finderPathWithoutPaginationFindByE_E);
+
+		_finderPaths.put("finderPathCountByE_E", _finderPathCountByE_E);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByE1_T",
+			_finderPathWithPaginationFindByE1_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByE1_T",
+			_finderPathWithoutPaginationFindByE1_T);
+
+		_finderPaths.put("finderPathCountByE1_T", _finderPathCountByE1_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByE2_T",
+			_finderPathWithPaginationFindByE2_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByE2_T",
+			_finderPathWithoutPaginationFindByE2_T);
+
+		_finderPaths.put("finderPathCountByE2_T", _finderPathCountByE2_T);
+
+		_finderPaths.put("finderPathFetchByE_E_T", _finderPathFetchByE_E_T);
+
+		_finderPaths.put("finderPathCountByE_E_T", _finderPathCountByE_E_T);
+
 		_setAssetLinkUtilPersistence(this);
 	}
 
@@ -3906,6 +3971,62 @@ public class AssetLinkPersistenceImpl
 
 		EntityCacheUtil.removeCache(AssetLinkImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<AssetLink> assetLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AssetLink>> resultMap = new HashMap<>();
+
+			for (AssetLink assetLink : assetLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AssetLinkModelImpl assetLinkModelImpl =
+						(AssetLinkModelImpl)assetLink;
+
+					arguments.add(
+						assetLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), assetLink);
+				}
+				else {
+					List<AssetLink> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(assetLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AssetLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AssetLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setAssetLinkUtilPersistence(
 		AssetLinkPersistence assetLinkPersistence) {

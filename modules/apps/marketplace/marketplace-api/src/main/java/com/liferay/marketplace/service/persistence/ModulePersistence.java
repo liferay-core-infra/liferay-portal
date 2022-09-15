@@ -18,6 +18,8 @@ import com.liferay.marketplace.exception.NoSuchModuleException;
 import com.liferay.marketplace.model.Module;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -992,5 +994,11 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 * @return the number of modules
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

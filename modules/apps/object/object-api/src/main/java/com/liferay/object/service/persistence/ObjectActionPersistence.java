@@ -18,6 +18,8 @@ import com.liferay.object.exception.NoSuchObjectActionException;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -775,5 +777,11 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 * @return the number of object actions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

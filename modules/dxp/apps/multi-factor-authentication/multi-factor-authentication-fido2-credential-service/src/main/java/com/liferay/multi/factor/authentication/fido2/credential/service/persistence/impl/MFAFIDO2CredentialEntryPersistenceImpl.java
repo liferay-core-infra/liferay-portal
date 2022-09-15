@@ -50,9 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1985,6 +1988,40 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"userId", "credentialKeyHash"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUserId",
+			_finderPathWithPaginationFindByUserId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUserId",
+			_finderPathWithoutPaginationFindByUserId);
+
+		_finderPaths.put("finderPathCountByUserId", _finderPathCountByUserId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCredentialKeyHash",
+			_finderPathWithPaginationFindByCredentialKeyHash);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCredentialKeyHash",
+			_finderPathWithoutPaginationFindByCredentialKeyHash);
+
+		_finderPaths.put(
+			"finderPathCountByCredentialKeyHash",
+			_finderPathCountByCredentialKeyHash);
+
+		_finderPaths.put("finderPathFetchByU_C", _finderPathFetchByU_C);
+
+		_finderPaths.put("finderPathCountByU_C", _finderPathCountByU_C);
+
 		_setMFAFIDO2CredentialEntryUtilPersistence(this);
 	}
 
@@ -1994,6 +2031,70 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 
 		entityCache.removeCache(MFAFIDO2CredentialEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<MFAFIDO2CredentialEntry> mfaFIDO2CredentialEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MFAFIDO2CredentialEntry>> resultMap =
+				new HashMap<>();
+
+			for (MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry :
+					mfaFIDO2CredentialEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MFAFIDO2CredentialEntryModelImpl
+						mfaFIDO2CredentialEntryModelImpl =
+							(MFAFIDO2CredentialEntryModelImpl)
+								mfaFIDO2CredentialEntry;
+
+					arguments.add(
+						mfaFIDO2CredentialEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						mfaFIDO2CredentialEntry);
+				}
+				else {
+					List<MFAFIDO2CredentialEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(mfaFIDO2CredentialEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MFAFIDO2CredentialEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MFAFIDO2CredentialEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setMFAFIDO2CredentialEntryUtilPersistence(
 		MFAFIDO2CredentialEntryPersistence mfaFIDO2CredentialEntryPersistence) {

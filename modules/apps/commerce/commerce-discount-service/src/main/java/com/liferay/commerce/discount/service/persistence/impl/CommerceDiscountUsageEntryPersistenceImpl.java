@@ -50,9 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -3032,6 +3035,57 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceDiscountId",
+			_finderPathWithPaginationFindByCommerceDiscountId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceDiscountId",
+			_finderPathWithoutPaginationFindByCommerceDiscountId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceDiscountId",
+			_finderPathCountByCommerceDiscountId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCAI_CDI",
+			_finderPathWithPaginationFindByCAI_CDI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCAI_CDI",
+			_finderPathWithoutPaginationFindByCAI_CDI);
+
+		_finderPaths.put("finderPathCountByCAI_CDI", _finderPathCountByCAI_CDI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCOI_CDI",
+			_finderPathWithPaginationFindByCOI_CDI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCOI_CDI",
+			_finderPathWithoutPaginationFindByCOI_CDI);
+
+		_finderPaths.put("finderPathCountByCOI_CDI", _finderPathCountByCOI_CDI);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCAI_COI_CDI",
+			_finderPathWithPaginationFindByCAI_COI_CDI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCAI_COI_CDI",
+			_finderPathWithoutPaginationFindByCAI_COI_CDI);
+
+		_finderPaths.put(
+			"finderPathCountByCAI_COI_CDI", _finderPathCountByCAI_COI_CDI);
+
 		_setCommerceDiscountUsageEntryUtilPersistence(this);
 	}
 
@@ -3041,6 +3095,71 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 
 		entityCache.removeCache(CommerceDiscountUsageEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceDiscountUsageEntry> commerceDiscountUsageEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceDiscountUsageEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
+					commerceDiscountUsageEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceDiscountUsageEntryModelImpl
+						commerceDiscountUsageEntryModelImpl =
+							(CommerceDiscountUsageEntryModelImpl)
+								commerceDiscountUsageEntry;
+
+					arguments.add(
+						commerceDiscountUsageEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceDiscountUsageEntry);
+				}
+				else {
+					List<CommerceDiscountUsageEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceDiscountUsageEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceDiscountUsageEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceDiscountUsageEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceDiscountUsageEntryUtilPersistence(
 		CommerceDiscountUsageEntryPersistence

@@ -18,6 +18,8 @@ import com.liferay.oauth2.provider.exception.NoSuchOAuth2ApplicationScopeAliases
 import com.liferay.oauth2.provider.model.OAuth2ApplicationScopeAliases;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -460,5 +462,11 @@ public interface OAuth2ApplicationScopeAliasesPersistence
 	 * @return the number of o auth2 application scope aliaseses
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

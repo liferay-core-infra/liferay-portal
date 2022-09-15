@@ -52,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1992,6 +1993,44 @@ public class SamlSpSessionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "sessionIndex"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindBySamlPeerBindingId",
+			_finderPathWithPaginationFindBySamlPeerBindingId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindBySamlPeerBindingId",
+			_finderPathWithoutPaginationFindBySamlPeerBindingId);
+
+		_finderPaths.put(
+			"finderPathCountBySamlPeerBindingId",
+			_finderPathCountBySamlPeerBindingId);
+
+		_finderPaths.put(
+			"finderPathFetchByJSessionId", _finderPathFetchByJSessionId);
+
+		_finderPaths.put(
+			"finderPathCountByJSessionId", _finderPathCountByJSessionId);
+
+		_finderPaths.put(
+			"finderPathFetchBySamlSpSessionKey",
+			_finderPathFetchBySamlSpSessionKey);
+
+		_finderPaths.put(
+			"finderPathCountBySamlSpSessionKey",
+			_finderPathCountBySamlSpSessionKey);
+
+		_finderPaths.put("finderPathFetchByC_SI", _finderPathFetchByC_SI);
+
+		_finderPaths.put("finderPathCountByC_SI", _finderPathCountByC_SI);
+
 		_setSamlSpSessionUtilPersistence(this);
 	}
 
@@ -2001,6 +2040,62 @@ public class SamlSpSessionPersistenceImpl
 
 		entityCache.removeCache(SamlSpSessionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SamlSpSession> samlSpSessions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SamlSpSession>> resultMap = new HashMap<>();
+
+			for (SamlSpSession samlSpSession : samlSpSessions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SamlSpSessionModelImpl samlSpSessionModelImpl =
+						(SamlSpSessionModelImpl)samlSpSession;
+
+					arguments.add(
+						samlSpSessionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), samlSpSession);
+				}
+				else {
+					List<SamlSpSession> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(samlSpSession);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SamlSpSession>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SamlSpSession> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSamlSpSessionUtilPersistence(
 		SamlSpSessionPersistence samlSpSessionPersistence) {

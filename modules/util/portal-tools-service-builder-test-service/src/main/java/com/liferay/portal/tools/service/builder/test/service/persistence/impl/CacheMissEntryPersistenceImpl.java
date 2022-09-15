@@ -51,6 +51,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -795,6 +796,14 @@ public class CacheMissEntryPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
 		_setCacheMissEntryUtilPersistence(this);
 	}
 
@@ -803,6 +812,63 @@ public class CacheMissEntryPersistenceImpl
 
 		dummyEntityCache.removeCache(CacheMissEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CacheMissEntry> cacheMissEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CacheMissEntry>> resultMap = new HashMap<>();
+
+			for (CacheMissEntry cacheMissEntry : cacheMissEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CacheMissEntryModelImpl cacheMissEntryModelImpl =
+						(CacheMissEntryModelImpl)cacheMissEntry;
+
+					arguments.add(
+						cacheMissEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					dummyFinderCache.putResult(
+						finderPath, arguments.toArray(), cacheMissEntry);
+				}
+				else {
+					List<CacheMissEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(cacheMissEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CacheMissEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CacheMissEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					dummyFinderCache.putResult(
+						finderPath, key.toArray(), value);
+				}
+				else {
+					dummyFinderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCacheMissEntryUtilPersistence(
 		CacheMissEntryPersistence cacheMissEntryPersistence) {

@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.metrics.exception.NoSuchSLADefinitionException;
 import com.liferay.portal.workflow.metrics.model.WorkflowMetricsSLADefinition;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -1463,5 +1465,11 @@ public interface WorkflowMetricsSLADefinitionPersistence
 	 * @return the number of workflow metrics sla definitions
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

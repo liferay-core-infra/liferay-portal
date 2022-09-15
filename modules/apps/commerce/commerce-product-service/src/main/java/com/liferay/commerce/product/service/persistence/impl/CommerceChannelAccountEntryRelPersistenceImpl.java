@@ -59,6 +59,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -4833,6 +4834,84 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 			},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByAccountEntryId",
+			_finderPathWithPaginationFindByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByAccountEntryId",
+			_finderPathWithoutPaginationFindByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathCountByAccountEntryId",
+			_finderPathCountByAccountEntryId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByCommerceChannelId",
+			_finderPathWithPaginationFindByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByCommerceChannelId",
+			_finderPathWithoutPaginationFindByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathCountByCommerceChannelId",
+			_finderPathCountByCommerceChannelId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByA_T",
+			_finderPathWithPaginationFindByA_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByA_T",
+			_finderPathWithoutPaginationFindByA_T);
+
+		_finderPaths.put("finderPathCountByA_T", _finderPathCountByA_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_C",
+			_finderPathWithPaginationFindByC_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_C",
+			_finderPathWithoutPaginationFindByC_C);
+
+		_finderPaths.put("finderPathCountByC_C", _finderPathCountByC_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_T",
+			_finderPathWithPaginationFindByC_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_T",
+			_finderPathWithoutPaginationFindByC_T);
+
+		_finderPaths.put("finderPathCountByC_T", _finderPathCountByC_T);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByA_C_T",
+			_finderPathWithPaginationFindByA_C_T);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByA_C_T",
+			_finderPathWithoutPaginationFindByA_C_T);
+
+		_finderPaths.put("finderPathCountByA_C_T", _finderPathCountByA_C_T);
+
+		_finderPaths.put(
+			"finderPathFetchByA_C_C_C_T", _finderPathFetchByA_C_C_C_T);
+
+		_finderPaths.put(
+			"finderPathCountByA_C_C_C_T", _finderPathCountByA_C_C_C_T);
+
 		_setCommerceChannelAccountEntryRelUtilPersistence(this);
 	}
 
@@ -4842,6 +4921,72 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		entityCache.removeCache(
 			CommerceChannelAccountEntryRelImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<CommerceChannelAccountEntryRel> commerceChannelAccountEntryRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceChannelAccountEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
+					commerceChannelAccountEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceChannelAccountEntryRelModelImpl
+						commerceChannelAccountEntryRelModelImpl =
+							(CommerceChannelAccountEntryRelModelImpl)
+								commerceChannelAccountEntryRel;
+
+					arguments.add(
+						commerceChannelAccountEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceChannelAccountEntryRel);
+				}
+				else {
+					List<CommerceChannelAccountEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceChannelAccountEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceChannelAccountEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceChannelAccountEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setCommerceChannelAccountEntryRelUtilPersistence(
 		CommerceChannelAccountEntryRelPersistence

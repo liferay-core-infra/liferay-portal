@@ -2686,6 +2686,42 @@ public class LayoutSEOEntryPersistenceImpl
 			},
 			new String[] {"groupId", "privateLayout", "layoutId"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put("finderPathFetchByG_P_L", _finderPathFetchByG_P_L);
+
+		_finderPaths.put("finderPathCountByG_P_L", _finderPathCountByG_P_L);
+
 		_setLayoutSEOEntryUtilPersistence(this);
 	}
 
@@ -2695,6 +2731,62 @@ public class LayoutSEOEntryPersistenceImpl
 
 		entityCache.removeCache(LayoutSEOEntryImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<LayoutSEOEntry> layoutSEOEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutSEOEntry>> resultMap = new HashMap<>();
+
+			for (LayoutSEOEntry layoutSEOEntry : layoutSEOEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutSEOEntryModelImpl layoutSEOEntryModelImpl =
+						(LayoutSEOEntryModelImpl)layoutSEOEntry;
+
+					arguments.add(
+						layoutSEOEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), layoutSEOEntry);
+				}
+				else {
+					List<LayoutSEOEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutSEOEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutSEOEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutSEOEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setLayoutSEOEntryUtilPersistence(
 		LayoutSEOEntryPersistence layoutSEOEntryPersistence) {

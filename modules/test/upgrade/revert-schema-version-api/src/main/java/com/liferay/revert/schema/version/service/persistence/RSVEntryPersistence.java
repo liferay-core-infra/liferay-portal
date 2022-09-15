@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.revert.schema.version.exception.NoSuchEntryException;
 import com.liferay.revert.schema.version.model.RSVEntry;
 
+import java.util.Map;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -158,5 +160,11 @@ public interface RSVEntryPersistence extends BasePersistence<RSVEntry> {
 	 * @return the number of rsv entries
 	 */
 	public int countAll();
+
+	public Map<String, com.liferay.portal.kernel.dao.orm.FinderPath>
+		getFinderPaths();
+
+	public void populateFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath... finderPaths);
 
 }

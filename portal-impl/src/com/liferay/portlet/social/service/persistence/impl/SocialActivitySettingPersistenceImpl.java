@@ -3560,6 +3560,58 @@ public class SocialActivitySettingPersistenceImpl
 			new String[] {"groupId", "classNameId", "activityType", "name"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C",
+			_finderPathWithPaginationFindByG_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C",
+			_finderPathWithoutPaginationFindByG_C);
+
+		_finderPaths.put("finderPathCountByG_C", _finderPathCountByG_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_A",
+			_finderPathWithPaginationFindByG_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_A",
+			_finderPathWithoutPaginationFindByG_A);
+
+		_finderPaths.put("finderPathCountByG_A", _finderPathCountByG_A);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_C_A",
+			_finderPathWithPaginationFindByG_C_A);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_C_A",
+			_finderPathWithoutPaginationFindByG_C_A);
+
+		_finderPaths.put("finderPathCountByG_C_A", _finderPathCountByG_C_A);
+
+		_finderPaths.put("finderPathFetchByG_C_A_N", _finderPathFetchByG_C_A_N);
+
+		_finderPaths.put("finderPathCountByG_C_A_N", _finderPathCountByG_C_A_N);
+
 		_setSocialActivitySettingUtilPersistence(this);
 	}
 
@@ -3568,6 +3620,69 @@ public class SocialActivitySettingPersistenceImpl
 
 		EntityCacheUtil.removeCache(SocialActivitySettingImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SocialActivitySetting> socialActivitySettings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialActivitySetting>> resultMap =
+				new HashMap<>();
+
+			for (SocialActivitySetting socialActivitySetting :
+					socialActivitySettings) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialActivitySettingModelImpl
+						socialActivitySettingModelImpl =
+							(SocialActivitySettingModelImpl)
+								socialActivitySetting;
+
+					arguments.add(
+						socialActivitySettingModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialActivitySetting);
+				}
+				else {
+					List<SocialActivitySetting> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(socialActivitySetting);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialActivitySetting>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialActivitySetting> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSocialActivitySettingUtilPersistence(
 		SocialActivitySettingPersistence socialActivitySettingPersistence) {

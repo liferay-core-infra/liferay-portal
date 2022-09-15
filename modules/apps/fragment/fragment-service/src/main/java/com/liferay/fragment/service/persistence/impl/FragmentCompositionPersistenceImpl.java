@@ -6365,6 +6365,99 @@ public class FragmentCompositionPersistenceImpl
 			},
 			new String[] {"groupId", "fragmentCollectionId", "name", "status"},
 			false);
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid",
+			_finderPathWithPaginationFindByUuid);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid",
+			_finderPathWithoutPaginationFindByUuid);
+
+		_finderPaths.put("finderPathCountByUuid", _finderPathCountByUuid);
+
+		_finderPaths.put("finderPathFetchByUUID_G", _finderPathFetchByUUID_G);
+
+		_finderPaths.put("finderPathCountByUUID_G", _finderPathCountByUUID_G);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByUuid_C",
+			_finderPathWithPaginationFindByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByUuid_C",
+			_finderPathWithoutPaginationFindByUuid_C);
+
+		_finderPaths.put("finderPathCountByUuid_C", _finderPathCountByUuid_C);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByFragmentCollectionId",
+			_finderPathWithPaginationFindByFragmentCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByFragmentCollectionId",
+			_finderPathWithoutPaginationFindByFragmentCollectionId);
+
+		_finderPaths.put(
+			"finderPathCountByFragmentCollectionId",
+			_finderPathCountByFragmentCollectionId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_FCI",
+			_finderPathWithPaginationFindByG_FCI);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_FCI",
+			_finderPathWithoutPaginationFindByG_FCI);
+
+		_finderPaths.put("finderPathCountByG_FCI", _finderPathCountByG_FCI);
+
+		_finderPaths.put("finderPathFetchByG_FCK", _finderPathFetchByG_FCK);
+
+		_finderPaths.put("finderPathCountByG_FCK", _finderPathCountByG_FCK);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_FCI_LikeN",
+			_finderPathWithPaginationFindByG_FCI_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_FCI_LikeN",
+			_finderPathWithPaginationCountByG_FCI_LikeN);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_FCI_S",
+			_finderPathWithPaginationFindByG_FCI_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_FCI_S",
+			_finderPathWithoutPaginationFindByG_FCI_S);
+
+		_finderPaths.put("finderPathCountByG_FCI_S", _finderPathCountByG_FCI_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_FCI_LikeN_S",
+			_finderPathWithPaginationFindByG_FCI_LikeN_S);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByG_FCI_LikeN_S",
+			_finderPathWithPaginationCountByG_FCI_LikeN_S);
 
 		_setFragmentCompositionUtilPersistence(this);
 	}
@@ -6375,6 +6468,67 @@ public class FragmentCompositionPersistenceImpl
 
 		entityCache.removeCache(FragmentCompositionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<FragmentComposition> fragmentCompositions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FragmentComposition>> resultMap =
+				new HashMap<>();
+
+			for (FragmentComposition fragmentComposition :
+					fragmentCompositions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FragmentCompositionModelImpl fragmentCompositionModelImpl =
+						(FragmentCompositionModelImpl)fragmentComposition;
+
+					arguments.add(
+						fragmentCompositionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), fragmentComposition);
+				}
+				else {
+					List<FragmentComposition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(fragmentComposition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FragmentComposition>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FragmentComposition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setFragmentCompositionUtilPersistence(
 		FragmentCompositionPersistence fragmentCompositionPersistence) {

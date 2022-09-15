@@ -4156,6 +4156,68 @@ public class SocialActivityAchievementPersistenceImpl
 			},
 			new String[] {"groupId", "userId", "firstInGroup"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByGroupId",
+			_finderPathWithPaginationFindByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByGroupId",
+			_finderPathWithoutPaginationFindByGroupId);
+
+		_finderPaths.put("finderPathCountByGroupId", _finderPathCountByGroupId);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U",
+			_finderPathWithPaginationFindByG_U);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U",
+			_finderPathWithoutPaginationFindByG_U);
+
+		_finderPaths.put("finderPathCountByG_U", _finderPathCountByG_U);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_N",
+			_finderPathWithPaginationFindByG_N);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_N",
+			_finderPathWithoutPaginationFindByG_N);
+
+		_finderPaths.put("finderPathCountByG_N", _finderPathCountByG_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_F",
+			_finderPathWithPaginationFindByG_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_F",
+			_finderPathWithoutPaginationFindByG_F);
+
+		_finderPaths.put("finderPathCountByG_F", _finderPathCountByG_F);
+
+		_finderPaths.put("finderPathFetchByG_U_N", _finderPathFetchByG_U_N);
+
+		_finderPaths.put("finderPathCountByG_U_N", _finderPathCountByG_U_N);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByG_U_F",
+			_finderPathWithPaginationFindByG_U_F);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByG_U_F",
+			_finderPathWithoutPaginationFindByG_U_F);
+
+		_finderPaths.put("finderPathCountByG_U_F", _finderPathCountByG_U_F);
+
 		_setSocialActivityAchievementUtilPersistence(this);
 	}
 
@@ -4165,6 +4227,70 @@ public class SocialActivityAchievementPersistenceImpl
 		EntityCacheUtil.removeCache(
 			SocialActivityAchievementImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<SocialActivityAchievement> socialActivityAchievements = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialActivityAchievement>> resultMap =
+				new HashMap<>();
+
+			for (SocialActivityAchievement socialActivityAchievement :
+					socialActivityAchievements) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialActivityAchievementModelImpl
+						socialActivityAchievementModelImpl =
+							(SocialActivityAchievementModelImpl)
+								socialActivityAchievement;
+
+					arguments.add(
+						socialActivityAchievementModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						socialActivityAchievement);
+				}
+				else {
+					List<SocialActivityAchievement> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(socialActivityAchievement);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialActivityAchievement>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialActivityAchievement> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setSocialActivityAchievementUtilPersistence(
 		SocialActivityAchievementPersistence

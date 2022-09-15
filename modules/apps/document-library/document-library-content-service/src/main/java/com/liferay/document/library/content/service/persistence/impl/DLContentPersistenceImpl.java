@@ -3103,6 +3103,46 @@ public class DLContentPersistenceImpl
 			new String[] {"companyId", "repositoryId", "path_", "version"},
 			false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_R",
+			_finderPathWithPaginationFindByC_R);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_R",
+			_finderPathWithoutPaginationFindByC_R);
+
+		_finderPaths.put("finderPathCountByC_R", _finderPathCountByC_R);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_R_P",
+			_finderPathWithPaginationFindByC_R_P);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByC_R_P",
+			_finderPathWithoutPaginationFindByC_R_P);
+
+		_finderPaths.put("finderPathCountByC_R_P", _finderPathCountByC_R_P);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByC_R_LikeP",
+			_finderPathWithPaginationFindByC_R_LikeP);
+
+		_finderPaths.put(
+			"finderPathWithPaginationCountByC_R_LikeP",
+			_finderPathWithPaginationCountByC_R_LikeP);
+
+		_finderPaths.put("finderPathFetchByC_R_P_V", _finderPathFetchByC_R_P_V);
+
+		_finderPaths.put("finderPathCountByC_R_P_V", _finderPathCountByC_R_P_V);
+
 		_setDLContentUtilPersistence(this);
 	}
 
@@ -3112,6 +3152,62 @@ public class DLContentPersistenceImpl
 
 		entityCache.removeCache(DLContentImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DLContent> dlContents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLContent>> resultMap = new HashMap<>();
+
+			for (DLContent dlContent : dlContents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLContentModelImpl dlContentModelImpl =
+						(DLContentModelImpl)dlContent;
+
+					arguments.add(
+						dlContentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dlContent);
+				}
+				else {
+					List<DLContent> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlContent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLContent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLContent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDLContentUtilPersistence(
 		DLContentPersistence dlContentPersistence) {

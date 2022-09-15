@@ -2312,6 +2312,39 @@ public class DDLRecordSetVersionPersistenceImpl
 			new String[] {Long.class.getName(), Integer.class.getName()},
 			new String[] {"recordSetId", "status"}, false);
 
+		_finderPaths.put(
+			"finderPathWithPaginationFindAll",
+			_finderPathWithPaginationFindAll);
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindAll",
+			_finderPathWithoutPaginationFindAll);
+		_finderPaths.put("finderPathCountAll", _finderPathCountAll);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRecordSetId",
+			_finderPathWithPaginationFindByRecordSetId);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRecordSetId",
+			_finderPathWithoutPaginationFindByRecordSetId);
+
+		_finderPaths.put(
+			"finderPathCountByRecordSetId", _finderPathCountByRecordSetId);
+
+		_finderPaths.put("finderPathFetchByRS_V", _finderPathFetchByRS_V);
+
+		_finderPaths.put("finderPathCountByRS_V", _finderPathCountByRS_V);
+
+		_finderPaths.put(
+			"finderPathWithPaginationFindByRS_S",
+			_finderPathWithPaginationFindByRS_S);
+
+		_finderPaths.put(
+			"finderPathWithoutPaginationFindByRS_S",
+			_finderPathWithoutPaginationFindByRS_S);
+
+		_finderPaths.put("finderPathCountByRS_S", _finderPathCountByRS_S);
+
 		_setDDLRecordSetVersionUtilPersistence(this);
 	}
 
@@ -2321,6 +2354,67 @@ public class DDLRecordSetVersionPersistenceImpl
 
 		entityCache.removeCache(DDLRecordSetVersionImpl.class.getName());
 	}
+
+	@Override
+	public Map<String, FinderPath> getFinderPaths() {
+		return _finderPaths;
+	}
+
+	@Override
+	public void populateFinderCache(FinderPath... finderPaths) {
+		List<DDLRecordSetVersion> ddlRecordSetVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDLRecordSetVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDLRecordSetVersion ddlRecordSetVersion :
+					ddlRecordSetVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDLRecordSetVersionModelImpl ddlRecordSetVersionModelImpl =
+						(DDLRecordSetVersionModelImpl)ddlRecordSetVersion;
+
+					arguments.add(
+						ddlRecordSetVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddlRecordSetVersion);
+				}
+				else {
+					List<DDLRecordSetVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddlRecordSetVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDLRecordSetVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDLRecordSetVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
+	}
+
+	private Map<String, FinderPath> _finderPaths = new HashMap<>();
 
 	private void _setDDLRecordSetVersionUtilPersistence(
 		DDLRecordSetVersionPersistence ddlRecordSetVersionPersistence) {

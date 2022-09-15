@@ -4,6 +4,7 @@ import ${serviceBuilder.getCompatJavaClassName("ProviderType")};
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;

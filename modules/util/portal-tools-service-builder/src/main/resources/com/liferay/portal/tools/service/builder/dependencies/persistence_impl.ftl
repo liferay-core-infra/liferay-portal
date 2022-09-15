@@ -2847,6 +2847,62 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 		</#list>
 
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			FinderPath.registerFinderPaths(
+				${entity.name}.class,
+				HashMapBuilder.<String, FinderPath>put(
+					"finderPathWithPaginationFindAll", _finderPathWithPaginationFindAll
+				).put(
+					"finderPathWithoutPaginationFindAll", _finderPathWithoutPaginationFindAll
+				).put(
+					"finderPathCountAll", _finderPathCountAll
+				)
+				<#if entity.isHierarchicalTree()>
+					.put(
+						"finderPathWithPaginationCountAncestors", _finderPathWithPaginationCountAncestors
+					).put(
+						"finderPathWithPaginationCountDescendants", _finderPathWithPaginationCountDescendants
+					).put(
+						"finderPathWithPaginationGetAncestors", _finderPathWithPaginationGetAncestors
+					).put(
+						"finderPathWithPaginationGetDescendants", _finderPathWithPaginationGetDescendants
+					)
+				</#if>
+				<#list entity.entityFinders as entityFinder>
+					<#assign entityColumns = entityFinder.entityColumns />
+
+					<#if entityFinder.isCollection()>
+						.put(
+							"finderPathWithPaginationFindBy${entityFinder.name}", _finderPathWithPaginationFindBy${entityFinder.name}
+						)
+						<#if !entityFinder.hasCustomComparator()>
+							.put(
+								"finderPathWithoutPaginationFindBy${entityFinder.name}", _finderPathWithoutPaginationFindBy${entityFinder.name}
+							)
+						</#if>
+					</#if>
+
+					<#if !entityFinder.isCollection() || entityFinder.isUnique()>
+						.put(
+							"finderPathFetchBy${entityFinder.name}", _finderPathFetchBy${entityFinder.name}
+						)
+					</#if>
+
+					<#if !entityFinder.hasCustomComparator()>
+						.put(
+							"finderPathCountBy${entityFinder.name}", _finderPathCountBy${entityFinder.name}
+						)
+					</#if>
+
+					<#if entityFinder.hasArrayableOperator() || entityFinder.hasCustomComparator()>
+						.put(
+							"finderPathWithPaginationCountBy${entityFinder.name}", _finderPathWithPaginationCountBy${entityFinder.name}
+						)
+					</#if>
+				</#list>
+				.build());
+		</#if>
+
 		_set${entity.name}UtilPersistence(this);
 	}
 
@@ -2884,7 +2940,57 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			</#if>
 		</#list>
+
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			FinderPath.unregisterFinderPaths(${entity.name}.class);
+		</#if>
 	}
+
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		@Override
+		public void loadFinderCache(FinderPath[] finderPaths) {
+			if (ArrayUtil.isEmpty(finderPaths)) {
+				return;
+			}
+
+			List<${entity.name}> ${entity.variableName}s = findAll();
+
+			for (FinderPath finderPath : finderPaths) {
+				Map<List<Object>, List<${entity.name}>> resultMap = new HashMap<>();
+
+				for (${entity.name} ${entity.variableName} : ${entity.variableName}s) {
+					List<Object> arguments = new ArrayList<>();
+
+					for (String columnName : finderPath.getColumnNames()) {
+						${entity.name}ModelImpl ${entity.variableName}ModelImpl = (${entity.name}ModelImpl)${entity.variableName};
+
+						arguments.add(${entity.variableName}ModelImpl.getColumnValue(columnName));
+					}
+
+					if (Objects.equals(finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+						${finderCache}.putResult(finderPath, arguments.toArray(), ${entity.variableName});
+					}
+					else {
+						List<${entity.name}> resultList = resultMap.computeIfAbsent(arguments, key -> new ArrayList<>());
+
+						resultList.add(${entity.variableName});
+					}
+				}
+
+				for (Map.Entry<List<Object>, List<${entity.name}>> resultEntry : resultMap.entrySet()) {
+					List<Object> key = resultEntry.getKey();
+					List<${entity.name}> value = resultEntry.getValue();
+
+					if (finderPath.isBaseModelResult()) {
+						${finderCache}.putResult(finderPath, key.toArray(), value);
+					}
+					else {
+						${finderCache}.putResult(finderPath, key.toArray(), value.size());
+					}
+				}
+			}
+		}
+	</#if>
 
 	private void _set${entity.name}UtilPersistence(${entity.name}Persistence ${entity.variableName}Persistence) {
 		try {

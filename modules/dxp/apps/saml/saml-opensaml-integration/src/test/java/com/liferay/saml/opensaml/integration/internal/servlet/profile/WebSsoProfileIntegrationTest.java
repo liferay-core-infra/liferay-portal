@@ -129,7 +129,9 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		_webSsoProfileImpl.setIdentifierGenerationStrategyFactory(
 			identifierGenerationStrategyFactory);
 		_webSsoProfileImpl.setMetadataManager(metadataManagerImpl);
-		_webSsoProfileImpl.setPortal(portal);
+
+		ReflectionTestUtil.setFieldValue(_webSsoProfileImpl, "portal", portal);
+
 		_webSsoProfileImpl.setSamlBindings(samlBindings);
 
 		_webSsoProfileImpl.setSamlProviderConfigurationHelper(

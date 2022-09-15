@@ -94,7 +94,10 @@ public class SingleLogoutProfileIntegrationTest extends BaseSamlTestCase {
 		_singleLogoutProfileImpl.setIdentifierGenerationStrategyFactory(
 			identifierGenerationStrategyFactory);
 		_singleLogoutProfileImpl.setMetadataManager(metadataManagerImpl);
-		_singleLogoutProfileImpl.setPortal(portal);
+
+		ReflectionTestUtil.setFieldValue(
+			_singleLogoutProfileImpl, "portal", portal);
+
 		_singleLogoutProfileImpl.setSamlBindings(samlBindings);
 
 		ReflectionTestUtil.setFieldValue(

@@ -75,6 +75,8 @@ import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.criterion.SignatureValidationConfigurationCriterion;
 import org.opensaml.xmlsec.impl.BasicSignatureValidationParametersResolver;
 
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Mika Koivisto
  */
@@ -592,7 +594,10 @@ public abstract class BaseProfile {
 	}
 
 	protected MetadataManager metadataManager;
+
+	@Reference
 	protected Portal portal;
+
 	protected SamlProviderConfigurationHelper samlProviderConfigurationHelper;
 	protected SamlSpSessionLocalService samlSpSessionLocalService;
 

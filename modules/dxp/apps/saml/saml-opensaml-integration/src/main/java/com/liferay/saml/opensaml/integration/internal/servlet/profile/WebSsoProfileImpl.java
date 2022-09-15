@@ -65,7 +65,6 @@ import com.liferay.saml.persistence.service.SamlSpMessageLocalService;
 import com.liferay.saml.runtime.SamlException;
 import com.liferay.saml.runtime.configuration.SamlConfiguration;
 import com.liferay.saml.runtime.configuration.SamlProviderConfiguration;
-import com.liferay.saml.runtime.configuration.SamlProviderConfigurationHelper;
 import com.liferay.saml.runtime.exception.AssertionException;
 import com.liferay.saml.runtime.exception.AudienceException;
 import com.liferay.saml.runtime.exception.AuthnAgeException;
@@ -683,15 +682,6 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 	)
 	protected void setSamlBinding(SamlBinding samlBinding) {
 		addSamlBinding(samlBinding);
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	protected void setSamlProviderConfigurationHelper(
-		SamlProviderConfigurationHelper samlProviderConfigurationHelper) {
-
-		super.setSamlProviderConfigurationHelper(
-			samlProviderConfigurationHelper);
 	}
 
 	@Override

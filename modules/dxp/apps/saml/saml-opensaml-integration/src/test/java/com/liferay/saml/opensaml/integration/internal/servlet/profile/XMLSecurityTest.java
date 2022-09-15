@@ -102,7 +102,9 @@ public class XMLSecurityTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(_webSsoProfileImpl, "portal", portal);
 
 		_webSsoProfileImpl.setSamlBindings(samlBindings);
-		_webSsoProfileImpl.setSamlProviderConfigurationHelper(
+
+		ReflectionTestUtil.setFieldValue(
+			_webSsoProfileImpl, "samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
 
 		ReflectionTestUtil.setFieldValue(

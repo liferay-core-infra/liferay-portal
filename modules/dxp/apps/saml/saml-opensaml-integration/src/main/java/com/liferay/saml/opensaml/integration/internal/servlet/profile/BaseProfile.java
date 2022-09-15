@@ -561,12 +561,6 @@ public abstract class BaseProfile {
 		_samlBindings = samlBindings;
 	}
 
-	protected void setSamlProviderConfigurationHelper(
-		SamlProviderConfigurationHelper samlProviderConfigurationHelper) {
-
-		this.samlProviderConfigurationHelper = samlProviderConfigurationHelper;
-	}
-
 	protected void unsetSamlBinding(SamlBinding samlBinding) {
 		removeSamlBinding(samlBinding);
 	}
@@ -581,6 +575,7 @@ public abstract class BaseProfile {
 	@Reference
 	protected Portal portal;
 
+	@Reference
 	protected SamlProviderConfigurationHelper samlProviderConfigurationHelper;
 
 	@Reference

@@ -137,7 +137,8 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 
 		_webSsoProfileImpl.setSamlBindings(samlBindings);
 
-		_webSsoProfileImpl.setSamlProviderConfigurationHelper(
+		ReflectionTestUtil.setFieldValue(
+			_webSsoProfileImpl, "samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
 
 		ReflectionTestUtil.setFieldValue(

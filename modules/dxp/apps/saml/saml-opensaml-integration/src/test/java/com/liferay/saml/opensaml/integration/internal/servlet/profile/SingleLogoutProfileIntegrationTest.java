@@ -107,7 +107,8 @@ public class SingleLogoutProfileIntegrationTest extends BaseSamlTestCase {
 			_singleLogoutProfileImpl, "_samlPeerBindingLocalService",
 			samlPeerBindingLocalService);
 
-		_singleLogoutProfileImpl.setSamlProviderConfigurationHelper(
+		ReflectionTestUtil.setFieldValue(
+			_singleLogoutProfileImpl, "samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
 
 		ReflectionTestUtil.setFieldValue(

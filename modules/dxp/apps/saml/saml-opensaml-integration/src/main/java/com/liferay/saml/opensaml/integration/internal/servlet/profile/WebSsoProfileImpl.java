@@ -63,7 +63,6 @@ import com.liferay.saml.persistence.service.SamlIdpSsoSessionLocalService;
 import com.liferay.saml.persistence.service.SamlSpAuthRequestLocalService;
 import com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService;
 import com.liferay.saml.persistence.service.SamlSpMessageLocalService;
-import com.liferay.saml.persistence.service.SamlSpSessionLocalService;
 import com.liferay.saml.runtime.SamlException;
 import com.liferay.saml.runtime.configuration.SamlConfiguration;
 import com.liferay.saml.runtime.configuration.SamlProviderConfiguration;
@@ -709,13 +708,6 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 		super.setSamlProviderConfigurationHelper(
 			samlProviderConfigurationHelper);
-	}
-
-	@Reference(unbind = "-")
-	protected void setSamlSpSessionLocalService(
-		SamlSpSessionLocalService samlSpSessionLocalService) {
-
-		super.samlSpSessionLocalService = samlSpSessionLocalService;
 	}
 
 	@Override

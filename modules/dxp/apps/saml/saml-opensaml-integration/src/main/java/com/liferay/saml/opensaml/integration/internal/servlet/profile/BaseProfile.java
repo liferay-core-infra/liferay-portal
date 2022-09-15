@@ -599,6 +599,8 @@ public abstract class BaseProfile {
 	protected Portal portal;
 
 	protected SamlProviderConfigurationHelper samlProviderConfigurationHelper;
+
+	@Reference
 	protected SamlSpSessionLocalService samlSpSessionLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(BaseProfile.class);

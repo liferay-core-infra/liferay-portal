@@ -557,14 +557,6 @@ public abstract class BaseProfile {
 		_samlBindings.remove(samlBinding);
 	}
 
-	protected void setIdentifierGenerationStrategyFactory(
-		IdentifierGenerationStrategyFactory
-			identifierGenerationStrategyFactory) {
-
-		_identifierGenerationStrategyFactory =
-			identifierGenerationStrategyFactory;
-	}
-
 	protected void setMetadataManager(MetadataManager metadataManager) {
 		this.metadataManager = metadataManager;
 	}
@@ -595,8 +587,10 @@ public abstract class BaseProfile {
 
 	private static final Log _log = LogFactoryUtil.getLog(BaseProfile.class);
 
+	@Reference
 	private IdentifierGenerationStrategyFactory
 		_identifierGenerationStrategyFactory;
+
 	private List<SamlBinding> _samlBindings = new ArrayList<>();
 
 }

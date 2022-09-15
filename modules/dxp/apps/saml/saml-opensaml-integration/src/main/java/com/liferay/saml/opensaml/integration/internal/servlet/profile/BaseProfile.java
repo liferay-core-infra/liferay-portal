@@ -213,7 +213,7 @@ public abstract class BaseProfile {
 
 	public String generateIdentifier(int length) {
 		IdentifierGenerationStrategy identifierGenerationStrategy =
-			_identifierGenerationStrategyFactory.create(length);
+			identifierGenerationStrategyFactory.create(length);
 
 		return identifierGenerationStrategy.generateIdentifier();
 	}
@@ -575,6 +575,10 @@ public abstract class BaseProfile {
 		removeSamlBinding(samlBinding);
 	}
 
+	@Reference
+	protected IdentifierGenerationStrategyFactory
+		identifierGenerationStrategyFactory;
+
 	protected MetadataManager metadataManager;
 
 	@Reference
@@ -586,10 +590,6 @@ public abstract class BaseProfile {
 	protected SamlSpSessionLocalService samlSpSessionLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(BaseProfile.class);
-
-	@Reference
-	private IdentifierGenerationStrategyFactory
-		_identifierGenerationStrategyFactory;
 
 	private List<SamlBinding> _samlBindings = new ArrayList<>();
 

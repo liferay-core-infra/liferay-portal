@@ -57,6 +57,12 @@
 		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 	</model>
+	<model name="com.liferay.portal.tools.service.builder.test.model.FinderCachePopulationEntry">
+		<field name="pinderCachePopulationEntryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="uniqueName" type="String" />
+	</model>
 	<model name="com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry">
 		<field name="finderWhereClauseEntryId" type="long" />
 		<field name="name" type="String" />

@@ -12,6 +12,7 @@
 	<import class="com.liferay.portal.tools.service.builder.test.model.EagerBlobEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.ERCCompanyEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.ERCGroupEntry" />
+	<import class="com.liferay.portal.tools.service.builder.test.model.FinderCachePopulationEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.FinderWhereClauseEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry" />
 	<import class="com.liferay.portal.tools.service.builder.test.model.LocalizedEntry" />
@@ -102,6 +103,14 @@
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="externalReferenceCode" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.portal.tools.service.builder.test.model.impl.FinderCachePopulationEntryImpl" table="FinderCachePopulationEntry">
+		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="pinderCachePopulationEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="uniqueName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.portal.tools.service.builder.test.model.impl.FinderWhereClauseEntryImpl" table="FinderWhereClauseEntry">
 		<id access="com.liferay.portal.dao.orm.hibernate.LiferayPropertyAccessor" name="finderWhereClauseEntryId" type="long">

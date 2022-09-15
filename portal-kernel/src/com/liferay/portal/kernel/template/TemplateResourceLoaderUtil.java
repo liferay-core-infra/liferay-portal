@@ -27,14 +27,6 @@ import org.osgi.framework.BundleContext;
  */
 public class TemplateResourceLoaderUtil {
 
-	public static void clearCache() {
-		for (TemplateResourceLoader templateResourceLoader :
-				_templateResourceLoaders.values()) {
-
-			templateResourceLoader.clearCache();
-		}
-	}
-
 	public static void clearCache(String templateResourceLoaderName)
 		throws TemplateException {
 

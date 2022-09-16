@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.saml.constants.SamlWebKeys;
 import com.liferay.saml.opensaml.integration.internal.binding.SamlBinding;
-import com.liferay.saml.opensaml.integration.internal.metadata.MetadataManager;
 import com.liferay.saml.opensaml.integration.internal.resolver.AttributePublisherImpl;
 import com.liferay.saml.opensaml.integration.internal.resolver.AttributeResolverRegistry;
 import com.liferay.saml.opensaml.integration.internal.resolver.AttributeResolverSAMLContextImpl;
@@ -676,12 +675,6 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		subjectConfirmationData.setNotOnOrAfter(notOnOrAfterDateTime);
 
 		return subjectConfirmationData;
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	protected void setMetadataManager(MetadataManager metadataManager) {
-		super.setMetadataManager(metadataManager);
 	}
 
 	@Reference(

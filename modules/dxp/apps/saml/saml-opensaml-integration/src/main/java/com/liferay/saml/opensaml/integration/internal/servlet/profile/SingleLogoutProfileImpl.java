@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.constants.SamlWebKeys;
 import com.liferay.saml.opensaml.integration.internal.binding.SamlBinding;
-import com.liferay.saml.opensaml.integration.internal.metadata.MetadataManager;
 import com.liferay.saml.opensaml.integration.internal.util.OpenSamlUtil;
 import com.liferay.saml.opensaml.integration.internal.util.SamlUtil;
 import com.liferay.saml.persistence.model.SamlIdpSpSession;
@@ -317,12 +316,6 @@ public class SingleLogoutProfileImpl
 		catch (Exception exception) {
 			ExceptionHandlerUtil.handleException(exception);
 		}
-	}
-
-	@Override
-	@Reference(unbind = "-")
-	public void setMetadataManager(MetadataManager metadataManager) {
-		super.setMetadataManager(metadataManager);
 	}
 
 	@Reference(

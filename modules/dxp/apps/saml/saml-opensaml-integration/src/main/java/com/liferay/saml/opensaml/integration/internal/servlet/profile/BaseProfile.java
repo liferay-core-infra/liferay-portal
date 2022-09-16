@@ -557,10 +557,6 @@ public abstract class BaseProfile {
 		_samlBindings.remove(samlBinding);
 	}
 
-	protected void setMetadataManager(MetadataManager metadataManager) {
-		this.metadataManager = metadataManager;
-	}
-
 	protected void setSamlBindings(List<SamlBinding> samlBindings) {
 		_samlBindings = samlBindings;
 	}
@@ -579,6 +575,7 @@ public abstract class BaseProfile {
 	protected IdentifierGenerationStrategyFactory
 		identifierGenerationStrategyFactory;
 
+	@Reference
 	protected MetadataManager metadataManager;
 
 	@Reference

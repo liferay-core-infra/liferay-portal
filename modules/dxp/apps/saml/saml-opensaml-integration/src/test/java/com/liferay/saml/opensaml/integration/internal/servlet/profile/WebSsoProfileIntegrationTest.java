@@ -130,7 +130,8 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 			_webSsoProfileImpl, "identifierGenerationStrategyFactory",
 			identifierGenerationStrategyFactory);
 
-		_webSsoProfileImpl.setMetadataManager(metadataManagerImpl);
+		ReflectionTestUtil.setFieldValue(
+			_webSsoProfileImpl, "metadataManager", metadataManagerImpl);
 
 		ReflectionTestUtil.setFieldValue(_webSsoProfileImpl, "portal", portal);
 
@@ -623,7 +624,8 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		ReflectionTestUtil.invoke(
 			metadataManagerImpl, "activate", new Class<?>[0]);
 
-		_webSsoProfileImpl.setMetadataManager(metadataManagerImpl);
+		ReflectionTestUtil.setFieldValue(
+			_webSsoProfileImpl, "metadataManager", metadataManagerImpl);
 
 		Mockito.when(
 			samlSpIdpConnectionLocalService.getSamlSpIdpConnection(

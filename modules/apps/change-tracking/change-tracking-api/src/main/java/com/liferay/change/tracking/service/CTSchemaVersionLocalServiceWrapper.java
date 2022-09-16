@@ -14,6 +14,7 @@
 
 package com.liferay.change.tracking.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -347,6 +348,11 @@ public class CTSchemaVersionLocalServiceWrapper
 	public boolean isLatestCTSchemaVersion(long ctSchemaVersionId) {
 		return _ctSchemaVersionLocalService.isLatestCTSchemaVersion(
 			ctSchemaVersionId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ctSchemaVersionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

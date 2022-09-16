@@ -35,7 +35,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PortletItemPersistence;
 import com.liferay.portal.kernel.service.persistence.PortletItemUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -49,8 +51,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2212,6 +2216,38 @@ public class PortletItemPersistenceImpl
 			new String[] {"groupId", "name", "portletId", "classNameId"},
 			false);
 
+		FinderPath.registerFinderPaths(
+			PortletItem.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByG_C",
+				_finderPathWithPaginationFindByG_C
+			).put(
+				"finderPathWithoutPaginationFindByG_C",
+				_finderPathWithoutPaginationFindByG_C
+			).put(
+				"finderPathCountByG_C", _finderPathCountByG_C
+			).put(
+				"finderPathWithPaginationFindByG_P_C",
+				_finderPathWithPaginationFindByG_P_C
+			).put(
+				"finderPathWithoutPaginationFindByG_P_C",
+				_finderPathWithoutPaginationFindByG_P_C
+			).put(
+				"finderPathCountByG_P_C", _finderPathCountByG_P_C
+			).put(
+				"finderPathFetchByG_N_P_C", _finderPathFetchByG_N_P_C
+			).put(
+				"finderPathCountByG_N_P_C", _finderPathCountByG_N_P_C
+			).build());
+
 		_setPortletItemUtilPersistence(this);
 	}
 
@@ -2219,6 +2255,61 @@ public class PortletItemPersistenceImpl
 		_setPortletItemUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PortletItemImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(PortletItem.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PortletItem> portletItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortletItem>> resultMap = new HashMap<>();
+
+			for (PortletItem portletItem : portletItems) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortletItemModelImpl portletItemModelImpl =
+						(PortletItemModelImpl)portletItem;
+
+					arguments.add(
+						portletItemModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portletItem);
+				}
+				else {
+					List<PortletItem> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(portletItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortletItem>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortletItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPortletItemUtilPersistence(

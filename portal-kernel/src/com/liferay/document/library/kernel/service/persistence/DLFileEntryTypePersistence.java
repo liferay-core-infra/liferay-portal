@@ -1114,4 +1114,7 @@ public interface DLFileEntryTypePersistence
 		java.util.List<com.liferay.document.library.kernel.model.DLFolder>
 			dlFolders);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

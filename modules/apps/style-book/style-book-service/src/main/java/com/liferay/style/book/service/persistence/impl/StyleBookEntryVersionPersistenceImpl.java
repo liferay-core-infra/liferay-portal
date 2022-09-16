@@ -33,7 +33,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -9772,6 +9774,144 @@ public class StyleBookEntryVersionPersistenceImpl
 			},
 			new String[] {"groupId", "styleBookEntryKey", "version"}, false);
 
+		FinderPath.registerFinderPaths(
+			StyleBookEntryVersion.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByStyleBookEntryId",
+				_finderPathWithPaginationFindByStyleBookEntryId
+			).put(
+				"finderPathWithoutPaginationFindByStyleBookEntryId",
+				_finderPathWithoutPaginationFindByStyleBookEntryId
+			).put(
+				"finderPathCountByStyleBookEntryId",
+				_finderPathCountByStyleBookEntryId
+			).put(
+				"finderPathFetchByStyleBookEntryId_Version",
+				_finderPathFetchByStyleBookEntryId_Version
+			).put(
+				"finderPathCountByStyleBookEntryId_Version",
+				_finderPathCountByStyleBookEntryId_Version
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_Version",
+				_finderPathWithPaginationFindByUuid_Version
+			).put(
+				"finderPathWithoutPaginationFindByUuid_Version",
+				_finderPathWithoutPaginationFindByUuid_Version
+			).put(
+				"finderPathCountByUuid_Version", _finderPathCountByUuid_Version
+			).put(
+				"finderPathWithPaginationFindByUUID_G",
+				_finderPathWithPaginationFindByUUID_G
+			).put(
+				"finderPathWithoutPaginationFindByUUID_G",
+				_finderPathWithoutPaginationFindByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathFetchByUUID_G_Version",
+				_finderPathFetchByUUID_G_Version
+			).put(
+				"finderPathCountByUUID_G_Version",
+				_finderPathCountByUUID_G_Version
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByUuid_C_Version",
+				_finderPathWithPaginationFindByUuid_C_Version
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C_Version",
+				_finderPathWithoutPaginationFindByUuid_C_Version
+			).put(
+				"finderPathCountByUuid_C_Version",
+				_finderPathCountByUuid_C_Version
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByGroupId_Version",
+				_finderPathWithPaginationFindByGroupId_Version
+			).put(
+				"finderPathWithoutPaginationFindByGroupId_Version",
+				_finderPathWithoutPaginationFindByGroupId_Version
+			).put(
+				"finderPathCountByGroupId_Version",
+				_finderPathCountByGroupId_Version
+			).put(
+				"finderPathWithPaginationFindByG_D",
+				_finderPathWithPaginationFindByG_D
+			).put(
+				"finderPathWithoutPaginationFindByG_D",
+				_finderPathWithoutPaginationFindByG_D
+			).put(
+				"finderPathCountByG_D", _finderPathCountByG_D
+			).put(
+				"finderPathWithPaginationFindByG_D_Version",
+				_finderPathWithPaginationFindByG_D_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_D_Version",
+				_finderPathWithoutPaginationFindByG_D_Version
+			).put(
+				"finderPathCountByG_D_Version", _finderPathCountByG_D_Version
+			).put(
+				"finderPathWithPaginationFindByG_LikeN",
+				_finderPathWithPaginationFindByG_LikeN
+			).put(
+				"finderPathWithoutPaginationFindByG_LikeN",
+				_finderPathWithoutPaginationFindByG_LikeN
+			).put(
+				"finderPathCountByG_LikeN", _finderPathCountByG_LikeN
+			).put(
+				"finderPathWithPaginationFindByG_LikeN_Version",
+				_finderPathWithPaginationFindByG_LikeN_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_LikeN_Version",
+				_finderPathWithoutPaginationFindByG_LikeN_Version
+			).put(
+				"finderPathCountByG_LikeN_Version",
+				_finderPathCountByG_LikeN_Version
+			).put(
+				"finderPathWithPaginationFindByG_SBEK",
+				_finderPathWithPaginationFindByG_SBEK
+			).put(
+				"finderPathWithoutPaginationFindByG_SBEK",
+				_finderPathWithoutPaginationFindByG_SBEK
+			).put(
+				"finderPathCountByG_SBEK", _finderPathCountByG_SBEK
+			).put(
+				"finderPathFetchByG_SBEK_Version",
+				_finderPathFetchByG_SBEK_Version
+			).put(
+				"finderPathCountByG_SBEK_Version",
+				_finderPathCountByG_SBEK_Version
+			).build());
+
 		_setStyleBookEntryVersionUtilPersistence(this);
 	}
 
@@ -9780,6 +9920,68 @@ public class StyleBookEntryVersionPersistenceImpl
 		_setStyleBookEntryVersionUtilPersistence(null);
 
 		entityCache.removeCache(StyleBookEntryVersionImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(StyleBookEntryVersion.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<StyleBookEntryVersion> styleBookEntryVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<StyleBookEntryVersion>> resultMap =
+				new HashMap<>();
+
+			for (StyleBookEntryVersion styleBookEntryVersion :
+					styleBookEntryVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					StyleBookEntryVersionModelImpl
+						styleBookEntryVersionModelImpl =
+							(StyleBookEntryVersionModelImpl)
+								styleBookEntryVersion;
+
+					arguments.add(
+						styleBookEntryVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), styleBookEntryVersion);
+				}
+				else {
+					List<StyleBookEntryVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(styleBookEntryVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<StyleBookEntryVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<StyleBookEntryVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setStyleBookEntryVersionUtilPersistence(

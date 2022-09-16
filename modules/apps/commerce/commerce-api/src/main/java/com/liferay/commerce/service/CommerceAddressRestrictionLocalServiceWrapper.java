@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -422,6 +423,11 @@ public class CommerceAddressRestrictionLocalServiceWrapper
 		return _commerceAddressRestrictionLocalService.
 			isCommerceShippingMethodRestricted(
 				commerceShippingMethodId, countryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceAddressRestrictionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

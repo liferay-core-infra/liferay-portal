@@ -17,6 +17,7 @@ package com.liferay.commerce.product.service;
 import com.liferay.commerce.product.model.CPInstanceOptionValueRel;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -427,6 +428,10 @@ public class CPInstanceOptionValueRelLocalServiceUtil {
 
 	public static boolean hasCPInstanceOptionValueRel(long cpInstanceId) {
 		return getService().hasCPInstanceOptionValueRel(cpInstanceId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static boolean matchesCPDefinitionOptionRels(

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -792,6 +793,11 @@ public class CommerceOrderLocalServiceWrapper
 		return _commerceOrderLocalService.getUserCommerceOrdersCount(
 			groupId, userId, commerceAccountId, orderStatus, excludeOrderStatus,
 			keywords);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceOrderLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.notification.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -363,6 +364,12 @@ public class NotificationTemplateAttachmentLocalServiceWrapper
 
 		return _notificationTemplateAttachmentLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_notificationTemplateAttachmentLocalService.loadFinderCache(
+			finderPaths);
 	}
 
 	/**

@@ -3983,4 +3983,7 @@ public interface DLFolderPersistence
 			<com.liferay.document.library.kernel.model.DLFileEntryType>
 				dlFileEntryTypes);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

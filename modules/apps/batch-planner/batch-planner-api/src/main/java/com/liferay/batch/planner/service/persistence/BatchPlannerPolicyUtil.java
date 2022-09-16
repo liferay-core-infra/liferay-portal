@@ -520,6 +520,12 @@ public class BatchPlannerPolicyUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static BatchPlannerPolicyPersistence getPersistence() {
 		return _persistence;
 	}

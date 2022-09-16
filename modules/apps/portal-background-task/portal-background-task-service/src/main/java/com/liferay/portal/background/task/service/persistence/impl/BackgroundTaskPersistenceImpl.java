@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -52,7 +53,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -9501,6 +9504,124 @@ public class BackgroundTaskPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			BackgroundTask.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByCompleted",
+				_finderPathWithPaginationFindByCompleted
+			).put(
+				"finderPathWithoutPaginationFindByCompleted",
+				_finderPathWithoutPaginationFindByCompleted
+			).put(
+				"finderPathCountByCompleted", _finderPathCountByCompleted
+			).put(
+				"finderPathWithPaginationFindByStatus",
+				_finderPathWithPaginationFindByStatus
+			).put(
+				"finderPathWithoutPaginationFindByStatus",
+				_finderPathWithoutPaginationFindByStatus
+			).put(
+				"finderPathCountByStatus", _finderPathCountByStatus
+			).put(
+				"finderPathWithPaginationFindByG_T",
+				_finderPathWithPaginationFindByG_T
+			).put(
+				"finderPathWithoutPaginationFindByG_T",
+				_finderPathWithoutPaginationFindByG_T
+			).put(
+				"finderPathCountByG_T", _finderPathCountByG_T
+			).put(
+				"finderPathWithPaginationCountByG_T",
+				_finderPathWithPaginationCountByG_T
+			).put(
+				"finderPathWithPaginationFindByG_S",
+				_finderPathWithPaginationFindByG_S
+			).put(
+				"finderPathWithoutPaginationFindByG_S",
+				_finderPathWithoutPaginationFindByG_S
+			).put(
+				"finderPathCountByG_S", _finderPathCountByG_S
+			).put(
+				"finderPathWithPaginationFindByT_S",
+				_finderPathWithPaginationFindByT_S
+			).put(
+				"finderPathWithoutPaginationFindByT_S",
+				_finderPathWithoutPaginationFindByT_S
+			).put(
+				"finderPathCountByT_S", _finderPathCountByT_S
+			).put(
+				"finderPathWithPaginationCountByT_S",
+				_finderPathWithPaginationCountByT_S
+			).put(
+				"finderPathWithPaginationFindByG_N_T",
+				_finderPathWithPaginationFindByG_N_T
+			).put(
+				"finderPathWithoutPaginationFindByG_N_T",
+				_finderPathWithoutPaginationFindByG_N_T
+			).put(
+				"finderPathCountByG_N_T", _finderPathCountByG_N_T
+			).put(
+				"finderPathWithPaginationCountByG_N_T",
+				_finderPathWithPaginationCountByG_N_T
+			).put(
+				"finderPathWithPaginationFindByG_T_C",
+				_finderPathWithPaginationFindByG_T_C
+			).put(
+				"finderPathWithoutPaginationFindByG_T_C",
+				_finderPathWithoutPaginationFindByG_T_C
+			).put(
+				"finderPathCountByG_T_C", _finderPathCountByG_T_C
+			).put(
+				"finderPathWithPaginationCountByG_T_C",
+				_finderPathWithPaginationCountByG_T_C
+			).put(
+				"finderPathWithPaginationFindByG_T_S",
+				_finderPathWithPaginationFindByG_T_S
+			).put(
+				"finderPathWithoutPaginationFindByG_T_S",
+				_finderPathWithoutPaginationFindByG_T_S
+			).put(
+				"finderPathCountByG_T_S", _finderPathCountByG_T_S
+			).put(
+				"finderPathWithPaginationCountByG_T_S",
+				_finderPathWithPaginationCountByG_T_S
+			).put(
+				"finderPathWithPaginationFindByG_N_T_C",
+				_finderPathWithPaginationFindByG_N_T_C
+			).put(
+				"finderPathWithoutPaginationFindByG_N_T_C",
+				_finderPathWithoutPaginationFindByG_N_T_C
+			).put(
+				"finderPathCountByG_N_T_C", _finderPathCountByG_N_T_C
+			).put(
+				"finderPathWithPaginationCountByG_N_T_C",
+				_finderPathWithPaginationCountByG_N_T_C
+			).build());
+
 		_setBackgroundTaskUtilPersistence(this);
 	}
 
@@ -9509,6 +9630,61 @@ public class BackgroundTaskPersistenceImpl
 		_setBackgroundTaskUtilPersistence(null);
 
 		entityCache.removeCache(BackgroundTaskImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(BackgroundTask.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BackgroundTask> backgroundTasks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BackgroundTask>> resultMap = new HashMap<>();
+
+			for (BackgroundTask backgroundTask : backgroundTasks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BackgroundTaskModelImpl backgroundTaskModelImpl =
+						(BackgroundTaskModelImpl)backgroundTask;
+
+					arguments.add(
+						backgroundTaskModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), backgroundTask);
+				}
+				else {
+					List<BackgroundTask> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(backgroundTask);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BackgroundTask>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BackgroundTask> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBackgroundTaskUtilPersistence(

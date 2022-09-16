@@ -17,6 +17,7 @@ package com.liferay.announcements.kernel.service;
 import com.liferay.announcements.kernel.model.AnnouncementsEntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -481,6 +482,10 @@ public class AnnouncementsEntryLocalServiceUtil {
 
 	public static int getUserEntriesCount(long userId) {
 		return getService().getUserEntriesCount(userId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

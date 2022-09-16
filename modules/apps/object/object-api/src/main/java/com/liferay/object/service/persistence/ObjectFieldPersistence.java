@@ -1495,4 +1495,7 @@ public interface ObjectFieldPersistence extends BasePersistence<ObjectField> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -1042,4 +1042,7 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

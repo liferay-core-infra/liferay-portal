@@ -844,6 +844,12 @@ public class KaleoNotificationRecipientUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static KaleoNotificationRecipientPersistence getPersistence() {
 		return _persistence;
 	}

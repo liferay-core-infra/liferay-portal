@@ -1099,4 +1099,7 @@ public interface AccountRolePersistence extends BasePersistence<AccountRole> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

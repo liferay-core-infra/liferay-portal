@@ -43,7 +43,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -5087,6 +5089,60 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"groupId", "name"}, false);
 
+		FinderPath.registerFinderPaths(
+			LayoutPageTemplateCollection.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathFetchByG_LPTCK", _finderPathFetchByG_LPTCK
+			).put(
+				"finderPathCountByG_LPTCK", _finderPathCountByG_LPTCK
+			).put(
+				"finderPathFetchByG_N", _finderPathFetchByG_N
+			).put(
+				"finderPathCountByG_N", _finderPathCountByG_N
+			).put(
+				"finderPathWithPaginationFindByG_LikeN",
+				_finderPathWithPaginationFindByG_LikeN
+			).put(
+				"finderPathWithPaginationCountByG_LikeN",
+				_finderPathWithPaginationCountByG_LikeN
+			).build());
+
 		_setLayoutPageTemplateCollectionUtilPersistence(this);
 	}
 
@@ -5096,6 +5152,71 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 
 		entityCache.removeCache(
 			LayoutPageTemplateCollectionImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(LayoutPageTemplateCollection.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutPageTemplateCollection> layoutPageTemplateCollections =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutPageTemplateCollection>> resultMap =
+				new HashMap<>();
+
+			for (LayoutPageTemplateCollection layoutPageTemplateCollection :
+					layoutPageTemplateCollections) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutPageTemplateCollectionModelImpl
+						layoutPageTemplateCollectionModelImpl =
+							(LayoutPageTemplateCollectionModelImpl)
+								layoutPageTemplateCollection;
+
+					arguments.add(
+						layoutPageTemplateCollectionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutPageTemplateCollection);
+				}
+				else {
+					List<LayoutPageTemplateCollection> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutPageTemplateCollection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutPageTemplateCollection>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutPageTemplateCollection> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutPageTemplateCollectionUtilPersistence(

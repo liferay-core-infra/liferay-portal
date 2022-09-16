@@ -159,4 +159,7 @@ public interface RSVEntryPersistence extends BasePersistence<RSVEntry> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

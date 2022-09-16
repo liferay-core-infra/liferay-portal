@@ -14,6 +14,7 @@
 
 package com.liferay.analytics.message.storage.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -374,6 +375,11 @@ public class AnalyticsDeleteMessageLocalServiceWrapper
 
 		return _analyticsDeleteMessageLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_analyticsDeleteMessageLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

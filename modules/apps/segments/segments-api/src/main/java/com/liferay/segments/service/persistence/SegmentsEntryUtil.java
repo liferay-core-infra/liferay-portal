@@ -3040,6 +3040,12 @@ public class SegmentsEntryUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static SegmentsEntryPersistence getPersistence() {
 		return _persistence;
 	}

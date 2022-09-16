@@ -739,6 +739,12 @@ public class PortletItemUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static PortletItemPersistence getPersistence() {
 		return _persistence;
 	}

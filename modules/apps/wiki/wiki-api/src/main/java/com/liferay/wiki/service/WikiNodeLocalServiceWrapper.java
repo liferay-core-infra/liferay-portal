@@ -14,6 +14,7 @@
 
 package com.liferay.wiki.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -617,6 +618,11 @@ public class WikiNodeLocalServiceWrapper
 
 		_wikiNodeLocalService.importPages(
 			userId, nodeId, importer, inputStreams, options);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_wikiNodeLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

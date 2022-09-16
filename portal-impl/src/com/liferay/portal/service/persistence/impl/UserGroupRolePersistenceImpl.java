@@ -35,7 +35,9 @@ import com.liferay.portal.kernel.service.persistence.UserGroupRolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserGroupRoleUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -56,6 +58,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -3840,6 +3843,62 @@ public class UserGroupRolePersistenceImpl
 			},
 			new String[] {"userId", "groupId", "roleId"}, false);
 
+		FinderPath.registerFinderPaths(
+			UserGroupRole.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUserId",
+				_finderPathWithPaginationFindByUserId
+			).put(
+				"finderPathWithoutPaginationFindByUserId",
+				_finderPathWithoutPaginationFindByUserId
+			).put(
+				"finderPathCountByUserId", _finderPathCountByUserId
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByRoleId",
+				_finderPathWithPaginationFindByRoleId
+			).put(
+				"finderPathWithoutPaginationFindByRoleId",
+				_finderPathWithoutPaginationFindByRoleId
+			).put(
+				"finderPathCountByRoleId", _finderPathCountByRoleId
+			).put(
+				"finderPathWithPaginationFindByU_G",
+				_finderPathWithPaginationFindByU_G
+			).put(
+				"finderPathWithoutPaginationFindByU_G",
+				_finderPathWithoutPaginationFindByU_G
+			).put(
+				"finderPathCountByU_G", _finderPathCountByU_G
+			).put(
+				"finderPathWithPaginationFindByG_R",
+				_finderPathWithPaginationFindByG_R
+			).put(
+				"finderPathWithoutPaginationFindByG_R",
+				_finderPathWithoutPaginationFindByG_R
+			).put(
+				"finderPathCountByG_R", _finderPathCountByG_R
+			).put(
+				"finderPathFetchByU_G_R", _finderPathFetchByU_G_R
+			).put(
+				"finderPathCountByU_G_R", _finderPathCountByU_G_R
+			).build());
+
 		_setUserGroupRoleUtilPersistence(this);
 	}
 
@@ -3847,6 +3906,61 @@ public class UserGroupRolePersistenceImpl
 		_setUserGroupRoleUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(UserGroupRoleImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(UserGroupRole.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<UserGroupRole> userGroupRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserGroupRole>> resultMap = new HashMap<>();
+
+			for (UserGroupRole userGroupRole : userGroupRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserGroupRoleModelImpl userGroupRoleModelImpl =
+						(UserGroupRoleModelImpl)userGroupRole;
+
+					arguments.add(
+						userGroupRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userGroupRole);
+				}
+				else {
+					List<UserGroupRole> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(userGroupRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserGroupRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserGroupRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setUserGroupRoleUtilPersistence(

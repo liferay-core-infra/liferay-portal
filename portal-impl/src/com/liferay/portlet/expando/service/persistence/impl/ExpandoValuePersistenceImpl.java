@@ -35,7 +35,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -5910,6 +5912,90 @@ public class ExpandoValuePersistenceImpl
 			},
 			new String[] {"tableId", "columnId", "data_"}, false);
 
+		FinderPath.registerFinderPaths(
+			ExpandoValue.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByTableId",
+				_finderPathWithPaginationFindByTableId
+			).put(
+				"finderPathWithoutPaginationFindByTableId",
+				_finderPathWithoutPaginationFindByTableId
+			).put(
+				"finderPathCountByTableId", _finderPathCountByTableId
+			).put(
+				"finderPathWithPaginationFindByColumnId",
+				_finderPathWithPaginationFindByColumnId
+			).put(
+				"finderPathWithoutPaginationFindByColumnId",
+				_finderPathWithoutPaginationFindByColumnId
+			).put(
+				"finderPathCountByColumnId", _finderPathCountByColumnId
+			).put(
+				"finderPathWithPaginationFindByRowId",
+				_finderPathWithPaginationFindByRowId
+			).put(
+				"finderPathWithoutPaginationFindByRowId",
+				_finderPathWithoutPaginationFindByRowId
+			).put(
+				"finderPathCountByRowId", _finderPathCountByRowId
+			).put(
+				"finderPathWithPaginationFindByT_C",
+				_finderPathWithPaginationFindByT_C
+			).put(
+				"finderPathWithoutPaginationFindByT_C",
+				_finderPathWithoutPaginationFindByT_C
+			).put(
+				"finderPathCountByT_C", _finderPathCountByT_C
+			).put(
+				"finderPathWithPaginationFindByT_R",
+				_finderPathWithPaginationFindByT_R
+			).put(
+				"finderPathWithoutPaginationFindByT_R",
+				_finderPathWithoutPaginationFindByT_R
+			).put(
+				"finderPathCountByT_R", _finderPathCountByT_R
+			).put(
+				"finderPathWithPaginationFindByT_CPK",
+				_finderPathWithPaginationFindByT_CPK
+			).put(
+				"finderPathWithoutPaginationFindByT_CPK",
+				_finderPathWithoutPaginationFindByT_CPK
+			).put(
+				"finderPathCountByT_CPK", _finderPathCountByT_CPK
+			).put(
+				"finderPathFetchByC_R", _finderPathFetchByC_R
+			).put(
+				"finderPathCountByC_R", _finderPathCountByC_R
+			).put(
+				"finderPathWithPaginationFindByC_C",
+				_finderPathWithPaginationFindByC_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C",
+				_finderPathWithoutPaginationFindByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathFetchByT_C_C", _finderPathFetchByT_C_C
+			).put(
+				"finderPathCountByT_C_C", _finderPathCountByT_C_C
+			).put(
+				"finderPathWithPaginationFindByT_C_D",
+				_finderPathWithPaginationFindByT_C_D
+			).put(
+				"finderPathWithoutPaginationFindByT_C_D",
+				_finderPathWithoutPaginationFindByT_C_D
+			).put(
+				"finderPathCountByT_C_D", _finderPathCountByT_C_D
+			).build());
+
 		_setExpandoValueUtilPersistence(this);
 	}
 
@@ -5917,6 +6003,61 @@ public class ExpandoValuePersistenceImpl
 		_setExpandoValueUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ExpandoValueImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(ExpandoValue.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ExpandoValue> expandoValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExpandoValue>> resultMap = new HashMap<>();
+
+			for (ExpandoValue expandoValue : expandoValues) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExpandoValueModelImpl expandoValueModelImpl =
+						(ExpandoValueModelImpl)expandoValue;
+
+					arguments.add(
+						expandoValueModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), expandoValue);
+				}
+				else {
+					List<ExpandoValue> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(expandoValue);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExpandoValue>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExpandoValue> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setExpandoValueUtilPersistence(

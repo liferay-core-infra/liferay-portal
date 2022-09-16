@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -54,6 +56,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -5879,6 +5882,92 @@ public class ObjectFieldPersistenceImpl
 			},
 			new String[] {"objectDefinitionId", "dbType", "indexed"}, false);
 
+		FinderPath.registerFinderPaths(
+			ObjectField.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByListTypeDefinitionId",
+				_finderPathWithPaginationFindByListTypeDefinitionId
+			).put(
+				"finderPathWithoutPaginationFindByListTypeDefinitionId",
+				_finderPathWithoutPaginationFindByListTypeDefinitionId
+			).put(
+				"finderPathCountByListTypeDefinitionId",
+				_finderPathCountByListTypeDefinitionId
+			).put(
+				"finderPathWithPaginationFindByObjectDefinitionId",
+				_finderPathWithPaginationFindByObjectDefinitionId
+			).put(
+				"finderPathWithoutPaginationFindByObjectDefinitionId",
+				_finderPathWithoutPaginationFindByObjectDefinitionId
+			).put(
+				"finderPathCountByObjectDefinitionId",
+				_finderPathCountByObjectDefinitionId
+			).put(
+				"finderPathWithPaginationFindByLTDI_S",
+				_finderPathWithPaginationFindByLTDI_S
+			).put(
+				"finderPathWithoutPaginationFindByLTDI_S",
+				_finderPathWithoutPaginationFindByLTDI_S
+			).put(
+				"finderPathCountByLTDI_S", _finderPathCountByLTDI_S
+			).put(
+				"finderPathWithPaginationFindByODI_DTN",
+				_finderPathWithPaginationFindByODI_DTN
+			).put(
+				"finderPathWithoutPaginationFindByODI_DTN",
+				_finderPathWithoutPaginationFindByODI_DTN
+			).put(
+				"finderPathCountByODI_DTN", _finderPathCountByODI_DTN
+			).put(
+				"finderPathFetchByODI_N", _finderPathFetchByODI_N
+			).put(
+				"finderPathCountByODI_N", _finderPathCountByODI_N
+			).put(
+				"finderPathWithPaginationFindByODI_S",
+				_finderPathWithPaginationFindByODI_S
+			).put(
+				"finderPathWithoutPaginationFindByODI_S",
+				_finderPathWithoutPaginationFindByODI_S
+			).put(
+				"finderPathCountByODI_S", _finderPathCountByODI_S
+			).put(
+				"finderPathFetchByC_ERC_ODI", _finderPathFetchByC_ERC_ODI
+			).put(
+				"finderPathCountByC_ERC_ODI", _finderPathCountByC_ERC_ODI
+			).put(
+				"finderPathWithPaginationFindByODI_DBT_I",
+				_finderPathWithPaginationFindByODI_DBT_I
+			).put(
+				"finderPathWithoutPaginationFindByODI_DBT_I",
+				_finderPathWithoutPaginationFindByODI_DBT_I
+			).put(
+				"finderPathCountByODI_DBT_I", _finderPathCountByODI_DBT_I
+			).build());
+
 		_setObjectFieldUtilPersistence(this);
 	}
 
@@ -5887,6 +5976,61 @@ public class ObjectFieldPersistenceImpl
 		_setObjectFieldUtilPersistence(null);
 
 		entityCache.removeCache(ObjectFieldImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(ObjectField.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectField> objectFields = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectField>> resultMap = new HashMap<>();
+
+			for (ObjectField objectField : objectFields) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectFieldModelImpl objectFieldModelImpl =
+						(ObjectFieldModelImpl)objectField;
+
+					arguments.add(
+						objectFieldModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectField);
+				}
+				else {
+					List<ObjectField> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(objectField);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectField>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectField> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectFieldUtilPersistence(

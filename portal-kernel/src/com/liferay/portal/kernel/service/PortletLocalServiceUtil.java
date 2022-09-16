@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Portlet;
@@ -447,6 +448,10 @@ public class PortletLocalServiceUtil {
 
 		return getService().initWAR(
 			servletContextName, servletContext, xmls, pluginPackage);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static Map<String, Portlet> loadGetPortletsMap(long companyId) {

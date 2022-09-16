@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -51,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -6942,6 +6944,87 @@ public class SyncDLObjectPersistenceImpl
 			},
 			new String[] {"repositoryId", "parentFolderId", "type_"}, false);
 
+		FinderPath.registerFinderPaths(
+			SyncDLObject.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByLikeTreePath",
+				_finderPathWithPaginationFindByLikeTreePath
+			).put(
+				"finderPathWithPaginationCountByLikeTreePath",
+				_finderPathWithPaginationCountByLikeTreePath
+			).put(
+				"finderPathWithPaginationFindByGtM_R",
+				_finderPathWithPaginationFindByGtM_R
+			).put(
+				"finderPathWithPaginationCountByGtM_R",
+				_finderPathWithPaginationCountByGtM_R
+			).put(
+				"finderPathWithPaginationFindByR_P",
+				_finderPathWithPaginationFindByR_P
+			).put(
+				"finderPathWithoutPaginationFindByR_P",
+				_finderPathWithoutPaginationFindByR_P
+			).put(
+				"finderPathCountByR_P", _finderPathCountByR_P
+			).put(
+				"finderPathWithPaginationFindByR_NotE",
+				_finderPathWithPaginationFindByR_NotE
+			).put(
+				"finderPathWithPaginationCountByR_NotE",
+				_finderPathWithPaginationCountByR_NotE
+			).put(
+				"finderPathWithPaginationFindByR_T",
+				_finderPathWithPaginationFindByR_T
+			).put(
+				"finderPathWithoutPaginationFindByR_T",
+				_finderPathWithoutPaginationFindByR_T
+			).put(
+				"finderPathCountByR_T", _finderPathCountByR_T
+			).put(
+				"finderPathWithPaginationFindByLikeT_NotE",
+				_finderPathWithPaginationFindByLikeT_NotE
+			).put(
+				"finderPathWithPaginationCountByLikeT_NotE",
+				_finderPathWithPaginationCountByLikeT_NotE
+			).put(
+				"finderPathWithPaginationFindByV_T",
+				_finderPathWithPaginationFindByV_T
+			).put(
+				"finderPathWithoutPaginationFindByV_T",
+				_finderPathWithoutPaginationFindByV_T
+			).put(
+				"finderPathCountByV_T", _finderPathCountByV_T
+			).put(
+				"finderPathFetchByT_T", _finderPathFetchByT_T
+			).put(
+				"finderPathCountByT_T", _finderPathCountByT_T
+			).put(
+				"finderPathWithPaginationFindByGtM_R_NotE",
+				_finderPathWithPaginationFindByGtM_R_NotE
+			).put(
+				"finderPathWithPaginationCountByGtM_R_NotE",
+				_finderPathWithPaginationCountByGtM_R_NotE
+			).put(
+				"finderPathWithPaginationFindByR_P_T",
+				_finderPathWithPaginationFindByR_P_T
+			).put(
+				"finderPathWithoutPaginationFindByR_P_T",
+				_finderPathWithoutPaginationFindByR_P_T
+			).put(
+				"finderPathCountByR_P_T", _finderPathCountByR_P_T
+			).put(
+				"finderPathWithPaginationCountByR_P_T",
+				_finderPathWithPaginationCountByR_P_T
+			).build());
+
 		_setSyncDLObjectUtilPersistence(this);
 	}
 
@@ -6950,6 +7033,61 @@ public class SyncDLObjectPersistenceImpl
 		_setSyncDLObjectUtilPersistence(null);
 
 		entityCache.removeCache(SyncDLObjectImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(SyncDLObject.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SyncDLObject> syncDLObjects = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SyncDLObject>> resultMap = new HashMap<>();
+
+			for (SyncDLObject syncDLObject : syncDLObjects) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SyncDLObjectModelImpl syncDLObjectModelImpl =
+						(SyncDLObjectModelImpl)syncDLObject;
+
+					arguments.add(
+						syncDLObjectModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), syncDLObject);
+				}
+				else {
+					List<SyncDLObject> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(syncDLObject);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SyncDLObject>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SyncDLObject> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSyncDLObjectUtilPersistence(

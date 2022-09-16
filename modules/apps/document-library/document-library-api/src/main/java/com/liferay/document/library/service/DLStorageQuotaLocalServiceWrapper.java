@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -328,6 +329,11 @@ public class DLStorageQuotaLocalServiceWrapper
 	@Override
 	public void incrementStorageSize(long companyId, long increment) {
 		_dlStorageQuotaLocalService.incrementStorageSize(companyId, increment);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlStorageQuotaLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

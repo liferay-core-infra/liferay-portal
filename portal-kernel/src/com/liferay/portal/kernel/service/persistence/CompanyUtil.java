@@ -434,6 +434,12 @@ public class CompanyUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static CompanyPersistence getPersistence() {
 		return _persistence;
 	}

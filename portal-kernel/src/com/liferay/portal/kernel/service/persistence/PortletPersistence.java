@@ -350,4 +350,7 @@ public interface PortletPersistence extends BasePersistence<Portlet> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

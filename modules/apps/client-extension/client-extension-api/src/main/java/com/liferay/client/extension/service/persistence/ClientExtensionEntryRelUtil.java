@@ -1384,6 +1384,12 @@ public class ClientExtensionEntryRelUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static ClientExtensionEntryRelPersistence getPersistence() {
 		return _persistence;
 	}

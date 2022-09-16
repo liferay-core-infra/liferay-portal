@@ -14,6 +14,7 @@
 
 package com.liferay.wiki.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -1085,6 +1086,11 @@ public class WikiPageLocalServiceWrapper
 	@Override
 	public boolean hasDraftPage(long nodeId, String title) {
 		return _wikiPageLocalService.hasDraftPage(nodeId, title);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_wikiPageLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

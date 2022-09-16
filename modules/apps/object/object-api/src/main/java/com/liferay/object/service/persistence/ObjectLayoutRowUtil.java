@@ -794,6 +794,12 @@ public class ObjectLayoutRowUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static ObjectLayoutRowPersistence getPersistence() {
 		return _persistence;
 	}

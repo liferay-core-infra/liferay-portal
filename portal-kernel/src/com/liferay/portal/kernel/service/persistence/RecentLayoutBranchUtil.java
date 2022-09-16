@@ -876,6 +876,12 @@ public class RecentLayoutBranchUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static RecentLayoutBranchPersistence getPersistence() {
 		return _persistence;
 	}

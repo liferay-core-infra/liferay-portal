@@ -778,4 +778,7 @@ public interface BigDecimalEntryPersistence
 			<com.liferay.portal.tools.service.builder.test.model.LVEntry>
 				lvEntries);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

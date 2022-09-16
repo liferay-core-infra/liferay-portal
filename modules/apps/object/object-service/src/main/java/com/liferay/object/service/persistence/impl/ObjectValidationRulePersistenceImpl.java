@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2950,6 +2953,51 @@ public class ObjectValidationRulePersistenceImpl
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			new String[] {"objectDefinitionId", "active_"}, false);
 
+		FinderPath.registerFinderPaths(
+			ObjectValidationRule.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByObjectDefinitionId",
+				_finderPathWithPaginationFindByObjectDefinitionId
+			).put(
+				"finderPathWithoutPaginationFindByObjectDefinitionId",
+				_finderPathWithoutPaginationFindByObjectDefinitionId
+			).put(
+				"finderPathCountByObjectDefinitionId",
+				_finderPathCountByObjectDefinitionId
+			).put(
+				"finderPathWithPaginationFindByODI_A",
+				_finderPathWithPaginationFindByODI_A
+			).put(
+				"finderPathWithoutPaginationFindByODI_A",
+				_finderPathWithoutPaginationFindByODI_A
+			).put(
+				"finderPathCountByODI_A", _finderPathCountByODI_A
+			).build());
+
 		_setObjectValidationRuleUtilPersistence(this);
 	}
 
@@ -2958,6 +3006,67 @@ public class ObjectValidationRulePersistenceImpl
 		_setObjectValidationRuleUtilPersistence(null);
 
 		entityCache.removeCache(ObjectValidationRuleImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(ObjectValidationRule.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectValidationRule> objectValidationRules = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectValidationRule>> resultMap =
+				new HashMap<>();
+
+			for (ObjectValidationRule objectValidationRule :
+					objectValidationRules) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectValidationRuleModelImpl
+						objectValidationRuleModelImpl =
+							(ObjectValidationRuleModelImpl)objectValidationRule;
+
+					arguments.add(
+						objectValidationRuleModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectValidationRule);
+				}
+				else {
+					List<ObjectValidationRule> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectValidationRule);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectValidationRule>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectValidationRule> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectValidationRuleUtilPersistence(

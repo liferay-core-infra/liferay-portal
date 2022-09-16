@@ -14,6 +14,7 @@
 
 package com.liferay.oauth.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -388,6 +389,11 @@ public class OAuthUserLocalServiceWrapper
 	@Override
 	public int getUserOAuthUsersCount(long userId) {
 		return _oAuthUserLocalService.getUserOAuthUsersCount(userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_oAuthUserLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

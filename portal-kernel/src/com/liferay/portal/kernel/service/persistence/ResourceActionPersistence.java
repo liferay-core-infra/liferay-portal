@@ -353,4 +353,7 @@ public interface ResourceActionPersistence
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

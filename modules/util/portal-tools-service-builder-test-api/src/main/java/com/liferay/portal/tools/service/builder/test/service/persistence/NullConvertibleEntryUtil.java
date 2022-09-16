@@ -340,6 +340,12 @@ public class NullConvertibleEntryUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static NullConvertibleEntryPersistence getPersistence() {
 		return _persistence;
 	}

@@ -1189,6 +1189,12 @@ public class MBSuspiciousActivityUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static MBSuspiciousActivityPersistence getPersistence() {
 		return _persistence;
 	}

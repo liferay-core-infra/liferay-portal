@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.model.Region;
@@ -386,6 +387,10 @@ public class RegionLocalServiceUtil {
 
 	public static int getRegionsCount(long countryId, boolean active) {
 		return getService().getRegionsCount(countryId, active);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult<Region>

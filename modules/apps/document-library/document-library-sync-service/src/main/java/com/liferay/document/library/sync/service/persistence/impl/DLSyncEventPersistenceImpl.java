@@ -37,7 +37,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -49,9 +51,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1330,6 +1334,28 @@ public class DLSyncEventPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"typePK"},
 			false);
 
+		FinderPath.registerFinderPaths(
+			DLSyncEvent.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByGtModifiedTime",
+				_finderPathWithPaginationFindByGtModifiedTime
+			).put(
+				"finderPathWithPaginationCountByGtModifiedTime",
+				_finderPathWithPaginationCountByGtModifiedTime
+			).put(
+				"finderPathFetchByTypePK", _finderPathFetchByTypePK
+			).put(
+				"finderPathCountByTypePK", _finderPathCountByTypePK
+			).build());
+
 		_setDLSyncEventUtilPersistence(this);
 	}
 
@@ -1338,6 +1364,61 @@ public class DLSyncEventPersistenceImpl
 		_setDLSyncEventUtilPersistence(null);
 
 		entityCache.removeCache(DLSyncEventImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(DLSyncEvent.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DLSyncEvent> dlSyncEvents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLSyncEvent>> resultMap = new HashMap<>();
+
+			for (DLSyncEvent dlSyncEvent : dlSyncEvents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLSyncEventModelImpl dlSyncEventModelImpl =
+						(DLSyncEventModelImpl)dlSyncEvent;
+
+					arguments.add(
+						dlSyncEventModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dlSyncEvent);
+				}
+				else {
+					List<DLSyncEvent> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlSyncEvent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLSyncEvent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLSyncEvent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDLSyncEventUtilPersistence(

@@ -17,6 +17,7 @@ package com.liferay.commerce.product.type.virtual.order.service;
 import com.liferay.commerce.product.type.virtual.order.model.CommerceVirtualOrderItem;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -436,6 +437,10 @@ public class CommerceVirtualOrderItemLocalServiceUtil {
 
 		return getService().incrementCommerceVirtualOrderItemUsages(
 			commerceVirtualOrderItemId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static void setActive(

@@ -16,6 +16,7 @@ package com.liferay.message.boards.service;
 
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -558,6 +559,11 @@ public class MBThreadLocalServiceWrapper
 	@Override
 	public void incrementViewCounter(long threadId, int increment) {
 		_mbThreadLocalService.incrementViewCounter(threadId, increment);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mbThreadLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

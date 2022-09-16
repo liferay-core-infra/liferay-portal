@@ -15,6 +15,7 @@
 package com.liferay.portal.workflow.kaleo.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
@@ -497,6 +498,11 @@ public class KaleoDefinitionLocalServiceWrapper
 
 		return _kaleoDefinitionLocalService.getScopeKaleoDefinitionsCount(
 			scope, serviceContext);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_kaleoDefinitionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

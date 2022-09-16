@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -54,6 +55,8 @@ import java.lang.reflect.InvocationHandler;
 
 import java.math.BigDecimal;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -2629,6 +2632,39 @@ public class BigDecimalEntryPersistenceImpl
 			new String[] {BigDecimal.class.getName()},
 			new String[] {"bigDecimalValue"}, false);
 
+		FinderPath.registerFinderPaths(
+			BigDecimalEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByBigDecimalValue",
+				_finderPathWithPaginationFindByBigDecimalValue
+			).put(
+				"finderPathWithoutPaginationFindByBigDecimalValue",
+				_finderPathWithoutPaginationFindByBigDecimalValue
+			).put(
+				"finderPathCountByBigDecimalValue",
+				_finderPathCountByBigDecimalValue
+			).put(
+				"finderPathWithPaginationFindByGtBigDecimalValue",
+				_finderPathWithPaginationFindByGtBigDecimalValue
+			).put(
+				"finderPathWithPaginationCountByGtBigDecimalValue",
+				_finderPathWithPaginationCountByGtBigDecimalValue
+			).put(
+				"finderPathWithPaginationFindByLtBigDecimalValue",
+				_finderPathWithPaginationFindByLtBigDecimalValue
+			).put(
+				"finderPathWithPaginationCountByLtBigDecimalValue",
+				_finderPathWithPaginationCountByLtBigDecimalValue
+			).build());
+
 		_setBigDecimalEntryUtilPersistence(this);
 	}
 
@@ -2638,6 +2674,63 @@ public class BigDecimalEntryPersistenceImpl
 		entityCache.removeCache(BigDecimalEntryImpl.class.getName());
 
 		TableMapperFactory.removeTableMapper("BigDecimalEntries_LVEntries");
+
+		FinderPath.unregisterFinderPaths(BigDecimalEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<BigDecimalEntry> bigDecimalEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<BigDecimalEntry>> resultMap =
+				new HashMap<>();
+
+			for (BigDecimalEntry bigDecimalEntry : bigDecimalEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					BigDecimalEntryModelImpl bigDecimalEntryModelImpl =
+						(BigDecimalEntryModelImpl)bigDecimalEntry;
+
+					arguments.add(
+						bigDecimalEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), bigDecimalEntry);
+				}
+				else {
+					List<BigDecimalEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(bigDecimalEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<BigDecimalEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<BigDecimalEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setBigDecimalEntryUtilPersistence(

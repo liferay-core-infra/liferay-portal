@@ -14,6 +14,7 @@
 
 package com.liferay.announcements.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -355,6 +356,11 @@ public class AnnouncementsFlagLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _announcementsFlagLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_announcementsFlagLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

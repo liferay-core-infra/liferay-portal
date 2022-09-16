@@ -953,6 +953,12 @@ public class KaleoTimerInstanceTokenUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static KaleoTimerInstanceTokenPersistence getPersistence() {
 		return _persistence;
 	}

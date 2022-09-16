@@ -588,4 +588,7 @@ public interface UserTrackerPersistence extends BasePersistence<UserTracker> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -16,6 +16,7 @@ package com.liferay.json.storage.service;
 
 import com.liferay.json.storage.model.JSONStorageEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -390,6 +391,11 @@ public class JSONStorageEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _jsonStorageEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_jsonStorageEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

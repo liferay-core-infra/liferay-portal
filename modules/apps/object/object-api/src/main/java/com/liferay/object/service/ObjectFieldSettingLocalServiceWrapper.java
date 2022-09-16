@@ -14,6 +14,7 @@
 
 package com.liferay.object.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -397,6 +398,11 @@ public class ObjectFieldSettingLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectFieldSettingLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_objectFieldSettingLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

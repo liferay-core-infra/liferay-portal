@@ -687,6 +687,12 @@ public class VersionedEntryUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static VersionedEntryPersistence getPersistence() {
 		return _persistence;
 	}

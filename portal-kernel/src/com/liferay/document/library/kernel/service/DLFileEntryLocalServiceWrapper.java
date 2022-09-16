@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -998,6 +999,11 @@ public class DLFileEntryLocalServiceWrapper
 	@Override
 	public boolean isFileEntryCheckedOut(long fileEntryId) {
 		return _dlFileEntryLocalService.isFileEntryCheckedOut(fileEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFileEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

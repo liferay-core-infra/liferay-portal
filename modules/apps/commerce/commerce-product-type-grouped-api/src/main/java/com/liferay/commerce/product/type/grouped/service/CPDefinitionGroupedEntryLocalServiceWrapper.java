@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.product.type.grouped.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -569,6 +570,11 @@ public class CPDefinitionGroupedEntryLocalServiceWrapper
 
 		return _cpDefinitionGroupedEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpDefinitionGroupedEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

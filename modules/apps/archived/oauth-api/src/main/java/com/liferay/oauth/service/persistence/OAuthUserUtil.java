@@ -888,6 +888,12 @@ public class OAuthUserUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static OAuthUserPersistence getPersistence() {
 		return _persistence;
 	}

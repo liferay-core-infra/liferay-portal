@@ -15,6 +15,7 @@
 package com.liferay.trash.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.trash.model.TrashVersion;
@@ -334,6 +335,11 @@ public class TrashVersionLocalServiceWrapper
 		long entryId, String className) {
 
 		return _trashVersionLocalService.getVersions(entryId, className);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_trashVersionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

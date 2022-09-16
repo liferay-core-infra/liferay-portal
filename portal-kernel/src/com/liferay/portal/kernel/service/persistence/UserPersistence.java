@@ -3002,4 +3002,7 @@ public interface UserPersistence
 		long pk,
 		java.util.List<com.liferay.portal.kernel.model.UserGroup> userGroups);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -41,7 +41,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,7 +55,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -4760,6 +4764,50 @@ public class OAuthApplicationPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"userId", "name"}, false);
 
+		FinderPath.registerFinderPaths(
+			OAuthApplication.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByUserId",
+				_finderPathWithPaginationFindByUserId
+			).put(
+				"finderPathWithoutPaginationFindByUserId",
+				_finderPathWithoutPaginationFindByUserId
+			).put(
+				"finderPathCountByUserId", _finderPathCountByUserId
+			).put(
+				"finderPathFetchByConsumerKey", _finderPathFetchByConsumerKey
+			).put(
+				"finderPathCountByConsumerKey", _finderPathCountByConsumerKey
+			).put(
+				"finderPathWithPaginationFindByC_LikeN",
+				_finderPathWithPaginationFindByC_LikeN
+			).put(
+				"finderPathWithPaginationCountByC_LikeN",
+				_finderPathWithPaginationCountByC_LikeN
+			).put(
+				"finderPathWithPaginationFindByU_LikeN",
+				_finderPathWithPaginationFindByU_LikeN
+			).put(
+				"finderPathWithPaginationCountByU_LikeN",
+				_finderPathWithPaginationCountByU_LikeN
+			).build());
+
 		_setOAuthApplicationUtilPersistence(this);
 	}
 
@@ -4768,6 +4816,63 @@ public class OAuthApplicationPersistenceImpl
 		_setOAuthApplicationUtilPersistence(null);
 
 		entityCache.removeCache(OAuthApplicationImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(OAuthApplication.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuthApplication> oAuthApplications = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuthApplication>> resultMap =
+				new HashMap<>();
+
+			for (OAuthApplication oAuthApplication : oAuthApplications) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuthApplicationModelImpl oAuthApplicationModelImpl =
+						(OAuthApplicationModelImpl)oAuthApplication;
+
+					arguments.add(
+						oAuthApplicationModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), oAuthApplication);
+				}
+				else {
+					List<OAuthApplication> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuthApplication);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuthApplication>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuthApplication> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuthApplicationUtilPersistence(

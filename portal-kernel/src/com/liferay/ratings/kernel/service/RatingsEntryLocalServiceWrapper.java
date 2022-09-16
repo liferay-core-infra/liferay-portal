@@ -15,6 +15,7 @@
 package com.liferay.ratings.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.ratings.kernel.model.RatingsEntry;
@@ -401,6 +402,11 @@ public class RatingsEntryLocalServiceWrapper
 
 		return _ratingsEntryLocalService.getRatingsEntryByUuidAndCompanyId(
 			uuid, companyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ratingsEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

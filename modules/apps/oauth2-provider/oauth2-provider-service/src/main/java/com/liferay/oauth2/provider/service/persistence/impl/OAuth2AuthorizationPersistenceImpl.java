@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -56,6 +57,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -3868,6 +3870,59 @@ public class OAuth2AuthorizationPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			OAuth2Authorization.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUserId",
+				_finderPathWithPaginationFindByUserId
+			).put(
+				"finderPathWithoutPaginationFindByUserId",
+				_finderPathWithoutPaginationFindByUserId
+			).put(
+				"finderPathCountByUserId", _finderPathCountByUserId
+			).put(
+				"finderPathWithPaginationFindByOAuth2ApplicationId",
+				_finderPathWithPaginationFindByOAuth2ApplicationId
+			).put(
+				"finderPathWithoutPaginationFindByOAuth2ApplicationId",
+				_finderPathWithoutPaginationFindByOAuth2ApplicationId
+			).put(
+				"finderPathCountByOAuth2ApplicationId",
+				_finderPathCountByOAuth2ApplicationId
+			).put(
+				"finderPathWithPaginationFindByC_ATCH",
+				_finderPathWithPaginationFindByC_ATCH
+			).put(
+				"finderPathWithoutPaginationFindByC_ATCH",
+				_finderPathWithoutPaginationFindByC_ATCH
+			).put(
+				"finderPathCountByC_ATCH", _finderPathCountByC_ATCH
+			).put(
+				"finderPathWithPaginationFindByC_RTCH",
+				_finderPathWithPaginationFindByC_RTCH
+			).put(
+				"finderPathWithoutPaginationFindByC_RTCH",
+				_finderPathWithoutPaginationFindByC_RTCH
+			).put(
+				"finderPathCountByC_RTCH", _finderPathCountByC_RTCH
+			).put(
+				"finderPathWithPaginationFindByU_O_R",
+				_finderPathWithPaginationFindByU_O_R
+			).put(
+				"finderPathWithoutPaginationFindByU_O_R",
+				_finderPathWithoutPaginationFindByU_O_R
+			).put(
+				"finderPathCountByU_O_R", _finderPathCountByU_O_R
+			).build());
+
 		_setOAuth2AuthorizationUtilPersistence(this);
 	}
 
@@ -3879,6 +3934,66 @@ public class OAuth2AuthorizationPersistenceImpl
 
 		TableMapperFactory.removeTableMapper(
 			"OA2Auths_OA2ScopeGrants#oAuth2AuthorizationId");
+
+		FinderPath.unregisterFinderPaths(OAuth2Authorization.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuth2Authorization> oAuth2Authorizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuth2Authorization>> resultMap =
+				new HashMap<>();
+
+			for (OAuth2Authorization oAuth2Authorization :
+					oAuth2Authorizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuth2AuthorizationModelImpl oAuth2AuthorizationModelImpl =
+						(OAuth2AuthorizationModelImpl)oAuth2Authorization;
+
+					arguments.add(
+						oAuth2AuthorizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), oAuth2Authorization);
+				}
+				else {
+					List<OAuth2Authorization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuth2Authorization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuth2Authorization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuth2Authorization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuth2AuthorizationUtilPersistence(

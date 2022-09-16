@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,10 +55,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -3559,6 +3563,57 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 			},
 			new String[] {"groupId", "classNameId", "classPK", "sent"}, false);
 
+		FinderPath.registerFinderPaths(
+			CommerceNotificationQueueEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByCommerceNotificationTemplateId",
+				_finderPathWithPaginationFindByCommerceNotificationTemplateId
+			).put(
+				"finderPathWithoutPaginationFindByCommerceNotificationTemplateId",
+				_finderPathWithoutPaginationFindByCommerceNotificationTemplateId
+			).put(
+				"finderPathCountByCommerceNotificationTemplateId",
+				_finderPathCountByCommerceNotificationTemplateId
+			).put(
+				"finderPathWithPaginationFindBySent",
+				_finderPathWithPaginationFindBySent
+			).put(
+				"finderPathWithoutPaginationFindBySent",
+				_finderPathWithoutPaginationFindBySent
+			).put(
+				"finderPathCountBySent", _finderPathCountBySent
+			).put(
+				"finderPathWithPaginationFindByLtSentDate",
+				_finderPathWithPaginationFindByLtSentDate
+			).put(
+				"finderPathWithPaginationCountByLtSentDate",
+				_finderPathWithPaginationCountByLtSentDate
+			).put(
+				"finderPathWithPaginationFindByG_C_C_S",
+				_finderPathWithPaginationFindByG_C_C_S
+			).put(
+				"finderPathWithoutPaginationFindByG_C_C_S",
+				_finderPathWithoutPaginationFindByG_C_C_S
+			).put(
+				"finderPathCountByG_C_C_S", _finderPathCountByG_C_C_S
+			).build());
+
 		_setCommerceNotificationQueueEntryUtilPersistence(this);
 	}
 
@@ -3568,6 +3623,71 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceNotificationQueueEntryImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(CommerceNotificationQueueEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceNotificationQueueEntry> commerceNotificationQueueEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceNotificationQueueEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceNotificationQueueEntry commerceNotificationQueueEntry :
+					commerceNotificationQueueEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceNotificationQueueEntryModelImpl
+						commerceNotificationQueueEntryModelImpl =
+							(CommerceNotificationQueueEntryModelImpl)
+								commerceNotificationQueueEntry;
+
+					arguments.add(
+						commerceNotificationQueueEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceNotificationQueueEntry);
+				}
+				else {
+					List<CommerceNotificationQueueEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceNotificationQueueEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceNotificationQueueEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceNotificationQueueEntry> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceNotificationQueueEntryUtilPersistence(

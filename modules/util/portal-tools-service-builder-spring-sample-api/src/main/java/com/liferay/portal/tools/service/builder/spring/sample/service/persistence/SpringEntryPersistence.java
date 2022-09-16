@@ -601,4 +601,7 @@ public interface SpringEntryPersistence extends BasePersistence<SpringEntry> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

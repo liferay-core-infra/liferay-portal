@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link BrowserTrackerLocalService}.
  *
@@ -312,7 +314,7 @@ public class BrowserTrackerLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _browserTrackerLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -325,6 +327,11 @@ public class BrowserTrackerLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _browserTrackerLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_browserTrackerLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

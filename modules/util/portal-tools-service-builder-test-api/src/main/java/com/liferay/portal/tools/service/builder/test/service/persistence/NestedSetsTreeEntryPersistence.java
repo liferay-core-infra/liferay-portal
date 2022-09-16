@@ -187,4 +187,7 @@ public interface NestedSetsTreeEntryPersistence
 
 	public void setRebuildTreeEnabled(boolean rebuildTreeEnabled);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

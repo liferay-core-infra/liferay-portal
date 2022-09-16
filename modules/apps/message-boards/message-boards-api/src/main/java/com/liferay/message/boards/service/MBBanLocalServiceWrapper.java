@@ -16,6 +16,7 @@ package com.liferay.message.boards.service;
 
 import com.liferay.message.boards.model.MBBan;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -434,6 +435,11 @@ public class MBBanLocalServiceWrapper
 	@Override
 	public boolean hasBan(long groupId, long banUserId) {
 		return _mbBanLocalService.hasBan(groupId, banUserId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mbBanLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

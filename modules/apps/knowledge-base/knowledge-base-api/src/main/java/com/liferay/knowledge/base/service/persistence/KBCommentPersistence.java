@@ -1527,4 +1527,7 @@ public interface KBCommentPersistence extends BasePersistence<KBComment> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

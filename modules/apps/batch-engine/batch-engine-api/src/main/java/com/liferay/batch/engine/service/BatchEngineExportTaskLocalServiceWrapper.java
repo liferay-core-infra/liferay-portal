@@ -14,6 +14,7 @@
 
 package com.liferay.batch.engine.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -479,6 +480,11 @@ public class BatchEngineExportTaskLocalServiceWrapper
 
 		return _batchEngineExportTaskLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_batchEngineExportTaskLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

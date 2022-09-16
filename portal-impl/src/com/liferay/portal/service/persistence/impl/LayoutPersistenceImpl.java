@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPe
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -20707,6 +20708,197 @@ public class LayoutPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			Layout.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G_P", _finderPathFetchByUUID_G_P
+			).put(
+				"finderPathCountByUUID_G_P", _finderPathCountByUUID_G_P
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByParentPlid",
+				_finderPathWithPaginationFindByParentPlid
+			).put(
+				"finderPathWithoutPaginationFindByParentPlid",
+				_finderPathWithoutPaginationFindByParentPlid
+			).put(
+				"finderPathCountByParentPlid", _finderPathCountByParentPlid
+			).put(
+				"finderPathFetchByIconImageId", _finderPathFetchByIconImageId
+			).put(
+				"finderPathCountByIconImageId", _finderPathCountByIconImageId
+			).put(
+				"finderPathWithPaginationFindByLayoutPrototypeUuid",
+				_finderPathWithPaginationFindByLayoutPrototypeUuid
+			).put(
+				"finderPathWithoutPaginationFindByLayoutPrototypeUuid",
+				_finderPathWithoutPaginationFindByLayoutPrototypeUuid
+			).put(
+				"finderPathCountByLayoutPrototypeUuid",
+				_finderPathCountByLayoutPrototypeUuid
+			).put(
+				"finderPathWithPaginationFindBySourcePrototypeLayoutUuid",
+				_finderPathWithPaginationFindBySourcePrototypeLayoutUuid
+			).put(
+				"finderPathWithoutPaginationFindBySourcePrototypeLayoutUuid",
+				_finderPathWithoutPaginationFindBySourcePrototypeLayoutUuid
+			).put(
+				"finderPathCountBySourcePrototypeLayoutUuid",
+				_finderPathCountBySourcePrototypeLayoutUuid
+			).put(
+				"finderPathWithPaginationFindByG_P",
+				_finderPathWithPaginationFindByG_P
+			).put(
+				"finderPathWithoutPaginationFindByG_P",
+				_finderPathWithoutPaginationFindByG_P
+			).put(
+				"finderPathCountByG_P", _finderPathCountByG_P
+			).put(
+				"finderPathWithPaginationFindByG_T",
+				_finderPathWithPaginationFindByG_T
+			).put(
+				"finderPathWithoutPaginationFindByG_T",
+				_finderPathWithoutPaginationFindByG_T
+			).put(
+				"finderPathCountByG_T", _finderPathCountByG_T
+			).put(
+				"finderPathWithPaginationFindByG_MLP",
+				_finderPathWithPaginationFindByG_MLP
+			).put(
+				"finderPathWithoutPaginationFindByG_MLP",
+				_finderPathWithoutPaginationFindByG_MLP
+			).put(
+				"finderPathCountByG_MLP", _finderPathCountByG_MLP
+			).put(
+				"finderPathWithPaginationFindByC_L",
+				_finderPathWithPaginationFindByC_L
+			).put(
+				"finderPathWithoutPaginationFindByC_L",
+				_finderPathWithoutPaginationFindByC_L
+			).put(
+				"finderPathCountByC_L", _finderPathCountByC_L
+			).put(
+				"finderPathFetchByP_I", _finderPathFetchByP_I
+			).put(
+				"finderPathCountByP_I", _finderPathCountByP_I
+			).put(
+				"finderPathFetchByC_C", _finderPathFetchByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathFetchByG_P_L", _finderPathFetchByG_P_L
+			).put(
+				"finderPathCountByG_P_L", _finderPathCountByG_P_L
+			).put(
+				"finderPathWithPaginationFindByG_P_P",
+				_finderPathWithPaginationFindByG_P_P
+			).put(
+				"finderPathWithoutPaginationFindByG_P_P",
+				_finderPathWithoutPaginationFindByG_P_P
+			).put(
+				"finderPathCountByG_P_P", _finderPathCountByG_P_P
+			).put(
+				"finderPathWithPaginationCountByG_P_P",
+				_finderPathWithPaginationCountByG_P_P
+			).put(
+				"finderPathWithPaginationFindByG_P_T",
+				_finderPathWithPaginationFindByG_P_T
+			).put(
+				"finderPathWithoutPaginationFindByG_P_T",
+				_finderPathWithoutPaginationFindByG_P_T
+			).put(
+				"finderPathCountByG_P_T", _finderPathCountByG_P_T
+			).put(
+				"finderPathWithPaginationCountByG_P_T",
+				_finderPathWithPaginationCountByG_P_T
+			).put(
+				"finderPathFetchByG_P_F", _finderPathFetchByG_P_F
+			).put(
+				"finderPathCountByG_P_F", _finderPathCountByG_P_F
+			).put(
+				"finderPathFetchByG_P_SPLU", _finderPathFetchByG_P_SPLU
+			).put(
+				"finderPathCountByG_P_SPLU", _finderPathCountByG_P_SPLU
+			).put(
+				"finderPathWithPaginationFindByG_P_ST",
+				_finderPathWithPaginationFindByG_P_ST
+			).put(
+				"finderPathWithoutPaginationFindByG_P_ST",
+				_finderPathWithoutPaginationFindByG_P_ST
+			).put(
+				"finderPathCountByG_P_ST", _finderPathCountByG_P_ST
+			).put(
+				"finderPathWithPaginationCountByG_P_ST",
+				_finderPathWithPaginationCountByG_P_ST
+			).put(
+				"finderPathWithPaginationFindByG_P_P_H",
+				_finderPathWithPaginationFindByG_P_P_H
+			).put(
+				"finderPathWithoutPaginationFindByG_P_P_H",
+				_finderPathWithoutPaginationFindByG_P_P_H
+			).put(
+				"finderPathCountByG_P_P_H", _finderPathCountByG_P_P_H
+			).put(
+				"finderPathWithPaginationCountByG_P_P_H",
+				_finderPathWithPaginationCountByG_P_P_H
+			).put(
+				"finderPathWithPaginationFindByG_P_P_S",
+				_finderPathWithPaginationFindByG_P_P_S
+			).put(
+				"finderPathWithoutPaginationFindByG_P_P_S",
+				_finderPathWithoutPaginationFindByG_P_P_S
+			).put(
+				"finderPathCountByG_P_P_S", _finderPathCountByG_P_P_S
+			).put(
+				"finderPathWithPaginationCountByG_P_P_S",
+				_finderPathWithPaginationCountByG_P_P_S
+			).put(
+				"finderPathWithPaginationFindByG_P_P_LteP",
+				_finderPathWithPaginationFindByG_P_P_LteP
+			).put(
+				"finderPathWithPaginationCountByG_P_P_LteP",
+				_finderPathWithPaginationCountByG_P_P_LteP
+			).build());
+
 		_setLayoutUtilPersistence(this);
 	}
 
@@ -20714,6 +20906,59 @@ public class LayoutPersistenceImpl
 		_setLayoutUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(LayoutImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(Layout.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Layout> layouts = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Layout>> resultMap = new HashMap<>();
+
+			for (Layout layout : layouts) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutModelImpl layoutModelImpl = (LayoutModelImpl)layout;
+
+					arguments.add(layoutModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layout);
+				}
+				else {
+					List<Layout> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(layout);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Layout>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Layout> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutUtilPersistence(

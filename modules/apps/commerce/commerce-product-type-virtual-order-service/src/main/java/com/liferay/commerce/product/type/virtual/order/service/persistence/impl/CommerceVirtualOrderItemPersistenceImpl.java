@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2388,6 +2391,44 @@ public class CommerceVirtualOrderItemPersistenceImpl
 			"countByCommerceOrderItemId", new String[] {Long.class.getName()},
 			new String[] {"commerceOrderItemId"}, false);
 
+		FinderPath.registerFinderPaths(
+			CommerceVirtualOrderItem.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathFetchByCommerceOrderItemId",
+				_finderPathFetchByCommerceOrderItemId
+			).put(
+				"finderPathCountByCommerceOrderItemId",
+				_finderPathCountByCommerceOrderItemId
+			).build());
+
 		_setCommerceVirtualOrderItemUtilPersistence(this);
 	}
 
@@ -2396,6 +2437,69 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		_setCommerceVirtualOrderItemUtilPersistence(null);
 
 		entityCache.removeCache(CommerceVirtualOrderItemImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(CommerceVirtualOrderItem.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceVirtualOrderItem> commerceVirtualOrderItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceVirtualOrderItem>> resultMap =
+				new HashMap<>();
+
+			for (CommerceVirtualOrderItem commerceVirtualOrderItem :
+					commerceVirtualOrderItems) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceVirtualOrderItemModelImpl
+						commerceVirtualOrderItemModelImpl =
+							(CommerceVirtualOrderItemModelImpl)
+								commerceVirtualOrderItem;
+
+					arguments.add(
+						commerceVirtualOrderItemModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceVirtualOrderItem);
+				}
+				else {
+					List<CommerceVirtualOrderItem> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceVirtualOrderItem);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceVirtualOrderItem>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceVirtualOrderItem> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceVirtualOrderItemUtilPersistence(

@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2939,6 +2942,51 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"CPDefinitionId", "entryCProductId"}, false);
 
+		FinderPath.registerFinderPaths(
+			CPDefinitionGroupedEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByCPDefinitionId",
+				_finderPathWithPaginationFindByCPDefinitionId
+			).put(
+				"finderPathWithoutPaginationFindByCPDefinitionId",
+				_finderPathWithoutPaginationFindByCPDefinitionId
+			).put(
+				"finderPathCountByCPDefinitionId",
+				_finderPathCountByCPDefinitionId
+			).put(
+				"finderPathFetchByC_E", _finderPathFetchByC_E
+			).put(
+				"finderPathCountByC_E", _finderPathCountByC_E
+			).build());
+
 		_setCPDefinitionGroupedEntryUtilPersistence(this);
 	}
 
@@ -2947,6 +2995,69 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		_setCPDefinitionGroupedEntryUtilPersistence(null);
 
 		entityCache.removeCache(CPDefinitionGroupedEntryImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(CPDefinitionGroupedEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPDefinitionGroupedEntry> cpDefinitionGroupedEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionGroupedEntry>> resultMap =
+				new HashMap<>();
+
+			for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry :
+					cpDefinitionGroupedEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionGroupedEntryModelImpl
+						cpDefinitionGroupedEntryModelImpl =
+							(CPDefinitionGroupedEntryModelImpl)
+								cpDefinitionGroupedEntry;
+
+					arguments.add(
+						cpDefinitionGroupedEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpDefinitionGroupedEntry);
+				}
+				else {
+					List<CPDefinitionGroupedEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionGroupedEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDefinitionGroupedEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionGroupedEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPDefinitionGroupedEntryUtilPersistence(

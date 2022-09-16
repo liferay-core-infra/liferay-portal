@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link WebsiteLocalService}.
  *
@@ -34,9 +36,8 @@ public class WebsiteLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.model.Website addWebsite(
-			long userId, java.lang.String className, long classPK,
-			java.lang.String url, long typeId, boolean primary,
-			ServiceContext serviceContext)
+			long userId, String className, long classPK, String url,
+			long typeId, boolean primary, ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _websiteLocalService.addWebsite(
@@ -131,9 +132,7 @@ public class WebsiteLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteWebsites(
-		long companyId, java.lang.String className, long classPK) {
-
+	public void deleteWebsites(long companyId, String className, long classPK) {
 		_websiteLocalService.deleteWebsites(companyId, className, classPK);
 	}
 
@@ -254,7 +253,7 @@ public class WebsiteLocalServiceWrapper
 	 */
 	@Override
 	public com.liferay.portal.kernel.model.Website
-		fetchWebsiteByUuidAndCompanyId(java.lang.String uuid, long companyId) {
+		fetchWebsiteByUuidAndCompanyId(String uuid, long companyId) {
 
 		return _websiteLocalService.fetchWebsiteByUuidAndCompanyId(
 			uuid, companyId);
@@ -290,7 +289,7 @@ public class WebsiteLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _websiteLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -329,7 +328,7 @@ public class WebsiteLocalServiceWrapper
 	 */
 	@Override
 	public com.liferay.portal.kernel.model.Website getWebsiteByUuidAndCompanyId(
-			java.lang.String uuid, long companyId)
+			String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _websiteLocalService.getWebsiteByUuidAndCompanyId(
@@ -363,7 +362,7 @@ public class WebsiteLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.portal.kernel.model.Website> getWebsites(
-		long companyId, java.lang.String className, long classPK) {
+		long companyId, String className, long classPK) {
 
 		return _websiteLocalService.getWebsites(companyId, className, classPK);
 	}
@@ -379,8 +378,13 @@ public class WebsiteLocalServiceWrapper
 	}
 
 	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_websiteLocalService.loadFinderCache(finderPaths);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.Website updateWebsite(
-			long websiteId, java.lang.String url, long typeId, boolean primary)
+			long websiteId, String url, long typeId, boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _websiteLocalService.updateWebsite(

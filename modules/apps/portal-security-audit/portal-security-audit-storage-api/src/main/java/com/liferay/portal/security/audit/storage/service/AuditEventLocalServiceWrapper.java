@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.audit.storage.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -399,6 +400,11 @@ public class AuditEventLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _auditEventLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_auditEventLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

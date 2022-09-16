@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -700,6 +701,11 @@ public class DLFileEntryTypeLocalServiceWrapper
 	public boolean hasDLFolderDLFileEntryTypes(long folderId) {
 		return _dlFileEntryTypeLocalService.hasDLFolderDLFileEntryTypes(
 			folderId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFileEntryTypeLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

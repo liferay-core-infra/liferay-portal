@@ -17,6 +17,7 @@ package com.liferay.invitation.invite.members.service;
 import com.liferay.invitation.invite.members.model.MemberRequest;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -347,6 +348,10 @@ public class MemberRequestLocalServiceUtil {
 		long groupId, long receiverUserId) {
 
 		return getService().hasPendingMemberRequest(groupId, receiverUserId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static MemberRequest updateMemberRequest(

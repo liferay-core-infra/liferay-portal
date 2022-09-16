@@ -1439,6 +1439,12 @@ public class DLFileEntryTypeUtil {
 		getPersistence().setDLFolders(pk, dlFolders);
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static DLFileEntryTypePersistence getPersistence() {
 		return _persistence;
 	}

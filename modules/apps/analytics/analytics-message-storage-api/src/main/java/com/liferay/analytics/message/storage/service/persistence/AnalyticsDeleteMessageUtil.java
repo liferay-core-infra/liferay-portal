@@ -653,6 +653,12 @@ public class AnalyticsDeleteMessageUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static AnalyticsDeleteMessagePersistence getPersistence() {
 		return _persistence;
 	}

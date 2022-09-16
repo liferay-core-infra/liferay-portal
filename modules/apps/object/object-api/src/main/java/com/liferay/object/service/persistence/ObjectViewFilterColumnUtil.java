@@ -1019,6 +1019,12 @@ public class ObjectViewFilterColumnUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static ObjectViewFilterColumnPersistence getPersistence() {
 		return _persistence;
 	}

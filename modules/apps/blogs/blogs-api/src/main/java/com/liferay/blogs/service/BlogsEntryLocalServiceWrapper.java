@@ -16,6 +16,7 @@ package com.liferay.blogs.service;
 
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -791,6 +792,11 @@ public class BlogsEntryLocalServiceWrapper
 	@Override
 	public String getUniqueUrlTitle(BlogsEntry entry) {
 		return _blogsEntryLocalService.getUniqueUrlTitle(entry);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_blogsEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.order.rule.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -435,6 +436,11 @@ public class COREntryRelLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _corEntryRelLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_corEntryRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

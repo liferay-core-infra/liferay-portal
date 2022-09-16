@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service;
 
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -876,6 +877,11 @@ public class CPDefinitionLocalServiceWrapper
 
 		return _cpDefinitionLocalService.isVersionable(
 			cpDefinitionId, httpServletRequest);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpDefinitionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -681,6 +681,12 @@ public class TrashVersionUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static TrashVersionPersistence getPersistence() {
 		return _persistence;
 	}

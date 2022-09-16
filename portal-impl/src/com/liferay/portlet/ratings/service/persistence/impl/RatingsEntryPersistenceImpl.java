@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPe
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -3950,6 +3951,63 @@ public class RatingsEntryPersistenceImpl
 			},
 			new String[] {"classNameId", "classPK", "score"}, false);
 
+		FinderPath.registerFinderPaths(
+			RatingsEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByC_C",
+				_finderPathWithPaginationFindByC_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C",
+				_finderPathWithoutPaginationFindByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathWithPaginationFindByU_C_C",
+				_finderPathWithPaginationFindByU_C_C
+			).put(
+				"finderPathWithoutPaginationFindByU_C_C",
+				_finderPathWithoutPaginationFindByU_C_C
+			).put(
+				"finderPathFetchByU_C_C", _finderPathFetchByU_C_C
+			).put(
+				"finderPathCountByU_C_C", _finderPathCountByU_C_C
+			).put(
+				"finderPathWithPaginationCountByU_C_C",
+				_finderPathWithPaginationCountByU_C_C
+			).put(
+				"finderPathWithPaginationFindByC_C_S",
+				_finderPathWithPaginationFindByC_C_S
+			).put(
+				"finderPathWithoutPaginationFindByC_C_S",
+				_finderPathWithoutPaginationFindByC_C_S
+			).put(
+				"finderPathCountByC_C_S", _finderPathCountByC_C_S
+			).build());
+
 		_setRatingsEntryUtilPersistence(this);
 	}
 
@@ -3957,6 +4015,61 @@ public class RatingsEntryPersistenceImpl
 		_setRatingsEntryUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(RatingsEntryImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(RatingsEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<RatingsEntry> ratingsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RatingsEntry>> resultMap = new HashMap<>();
+
+			for (RatingsEntry ratingsEntry : ratingsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RatingsEntryModelImpl ratingsEntryModelImpl =
+						(RatingsEntryModelImpl)ratingsEntry;
+
+					arguments.add(
+						ratingsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), ratingsEntry);
+				}
+				else {
+					List<RatingsEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ratingsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RatingsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RatingsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRatingsEntryUtilPersistence(

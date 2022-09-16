@@ -17,6 +17,7 @@ package com.liferay.chat.service;
 import com.liferay.chat.model.Status;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -304,6 +305,10 @@ public class StatusLocalServiceUtil {
 
 	public static Status getUserStatus(long userId) {
 		return getService().getUserStatus(userId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static Status updateStatus(long userId, long modifiedDate) {

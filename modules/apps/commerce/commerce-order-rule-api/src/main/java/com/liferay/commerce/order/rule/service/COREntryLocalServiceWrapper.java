@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.order.rule.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -565,6 +566,11 @@ public class COREntryLocalServiceWrapper
 		getUnqualifiedCOREntries(long companyId) {
 
 		return _corEntryLocalService.getUnqualifiedCOREntries(companyId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_corEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

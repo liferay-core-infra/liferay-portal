@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPe
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -2566,6 +2567,39 @@ public class ExpandoColumnPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"tableId", "name"}, false);
 
+		FinderPath.registerFinderPaths(
+			ExpandoColumn.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByTableId",
+				_finderPathWithPaginationFindByTableId
+			).put(
+				"finderPathWithoutPaginationFindByTableId",
+				_finderPathWithoutPaginationFindByTableId
+			).put(
+				"finderPathCountByTableId", _finderPathCountByTableId
+			).put(
+				"finderPathWithPaginationFindByT_N",
+				_finderPathWithPaginationFindByT_N
+			).put(
+				"finderPathWithoutPaginationFindByT_N",
+				_finderPathWithoutPaginationFindByT_N
+			).put(
+				"finderPathFetchByT_N", _finderPathFetchByT_N
+			).put(
+				"finderPathCountByT_N", _finderPathCountByT_N
+			).put(
+				"finderPathWithPaginationCountByT_N",
+				_finderPathWithPaginationCountByT_N
+			).build());
+
 		_setExpandoColumnUtilPersistence(this);
 	}
 
@@ -2573,6 +2607,61 @@ public class ExpandoColumnPersistenceImpl
 		_setExpandoColumnUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ExpandoColumnImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(ExpandoColumn.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ExpandoColumn> expandoColumns = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExpandoColumn>> resultMap = new HashMap<>();
+
+			for (ExpandoColumn expandoColumn : expandoColumns) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExpandoColumnModelImpl expandoColumnModelImpl =
+						(ExpandoColumnModelImpl)expandoColumn;
+
+					arguments.add(
+						expandoColumnModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), expandoColumn);
+				}
+				else {
+					List<ExpandoColumn> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(expandoColumn);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExpandoColumn>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExpandoColumn> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setExpandoColumnUtilPersistence(

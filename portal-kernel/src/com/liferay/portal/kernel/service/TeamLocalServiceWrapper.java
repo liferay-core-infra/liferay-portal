@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -609,6 +610,11 @@ public class TeamLocalServiceWrapper
 	@Override
 	public boolean hasUserTeams(long userId) {
 		return _teamLocalService.hasUserTeams(userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_teamLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

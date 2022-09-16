@@ -14,6 +14,7 @@
 
 package com.liferay.exportimport.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -490,6 +491,11 @@ public class ExportImportConfigurationLocalServiceWrapper
 
 		return _exportImportConfigurationLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_exportImportConfigurationLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

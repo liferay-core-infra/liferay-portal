@@ -201,4 +201,7 @@ public interface ClassNamePersistence extends BasePersistence<ClassName> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

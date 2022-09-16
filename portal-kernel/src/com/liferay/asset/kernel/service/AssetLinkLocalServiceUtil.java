@@ -17,6 +17,7 @@ package com.liferay.asset.kernel.service;
 import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -440,6 +441,10 @@ public class AssetLinkLocalServiceUtil {
 	 */
 	public static List<AssetLink> getReverseLinks(long entryId, int typeId) {
 		return getService().getReverseLinks(entryId, typeId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

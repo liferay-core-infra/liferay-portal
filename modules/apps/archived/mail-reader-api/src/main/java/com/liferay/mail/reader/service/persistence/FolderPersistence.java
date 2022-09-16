@@ -351,4 +351,7 @@ public interface FolderPersistence extends BasePersistence<Folder> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

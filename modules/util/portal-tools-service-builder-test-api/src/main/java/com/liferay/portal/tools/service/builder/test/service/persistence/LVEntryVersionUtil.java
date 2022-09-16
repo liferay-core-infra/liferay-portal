@@ -2396,6 +2396,12 @@ public class LVEntryVersionUtil {
 		getPersistence().setBigDecimalEntries(pk, bigDecimalEntries);
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static LVEntryVersionPersistence getPersistence() {
 		return _persistence;
 	}

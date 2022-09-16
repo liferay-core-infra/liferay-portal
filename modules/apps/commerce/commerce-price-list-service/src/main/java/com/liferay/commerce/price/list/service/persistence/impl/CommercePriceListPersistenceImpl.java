@@ -45,6 +45,7 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPe
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -13641,6 +13642,126 @@ public class CommercePriceListPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		FinderPath.registerFinderPaths(
+			CommercePriceList.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByCommerceCurrencyId",
+				_finderPathWithPaginationFindByCommerceCurrencyId
+			).put(
+				"finderPathWithoutPaginationFindByCommerceCurrencyId",
+				_finderPathWithoutPaginationFindByCommerceCurrencyId
+			).put(
+				"finderPathCountByCommerceCurrencyId",
+				_finderPathCountByCommerceCurrencyId
+			).put(
+				"finderPathFetchByParentCommercePriceListId",
+				_finderPathFetchByParentCommercePriceListId
+			).put(
+				"finderPathCountByParentCommercePriceListId",
+				_finderPathCountByParentCommercePriceListId
+			).put(
+				"finderPathWithPaginationFindByG_C",
+				_finderPathWithPaginationFindByG_C
+			).put(
+				"finderPathWithoutPaginationFindByG_C",
+				_finderPathWithoutPaginationFindByG_C
+			).put(
+				"finderPathCountByG_C", _finderPathCountByG_C
+			).put(
+				"finderPathWithPaginationCountByG_C",
+				_finderPathWithPaginationCountByG_C
+			).put(
+				"finderPathFetchByG_CatalogBasePriceList",
+				_finderPathFetchByG_CatalogBasePriceList
+			).put(
+				"finderPathCountByG_CatalogBasePriceList",
+				_finderPathCountByG_CatalogBasePriceList
+			).put(
+				"finderPathWithPaginationFindByLtD_S",
+				_finderPathWithPaginationFindByLtD_S
+			).put(
+				"finderPathWithPaginationCountByLtD_S",
+				_finderPathWithPaginationCountByLtD_S
+			).put(
+				"finderPathWithPaginationFindByG_C_S",
+				_finderPathWithPaginationFindByG_C_S
+			).put(
+				"finderPathWithoutPaginationFindByG_C_S",
+				_finderPathWithoutPaginationFindByG_C_S
+			).put(
+				"finderPathCountByG_C_S", _finderPathCountByG_C_S
+			).put(
+				"finderPathWithPaginationCountByG_C_S",
+				_finderPathWithPaginationCountByG_C_S
+			).put(
+				"finderPathWithPaginationFindByG_C_NotS",
+				_finderPathWithPaginationFindByG_C_NotS
+			).put(
+				"finderPathWithPaginationCountByG_C_NotS",
+				_finderPathWithPaginationCountByG_C_NotS
+			).put(
+				"finderPathFetchByG_C_T", _finderPathFetchByG_C_T
+			).put(
+				"finderPathCountByG_C_T", _finderPathCountByG_C_T
+			).put(
+				"finderPathWithPaginationFindByG_C_T_S",
+				_finderPathWithPaginationFindByG_C_T_S
+			).put(
+				"finderPathWithoutPaginationFindByG_C_T_S",
+				_finderPathWithoutPaginationFindByG_C_T_S
+			).put(
+				"finderPathCountByG_C_T_S", _finderPathCountByG_C_T_S
+			).put(
+				"finderPathWithPaginationCountByG_C_T_S",
+				_finderPathWithPaginationCountByG_C_T_S
+			).put(
+				"finderPathWithPaginationFindByG_C_T_NotS",
+				_finderPathWithPaginationFindByG_C_T_NotS
+			).put(
+				"finderPathWithPaginationCountByG_C_T_NotS",
+				_finderPathWithPaginationCountByG_C_T_NotS
+			).put(
+				"finderPathFetchByC_ERC", _finderPathFetchByC_ERC
+			).put(
+				"finderPathCountByC_ERC", _finderPathCountByC_ERC
+			).build());
+
 		_setCommercePriceListUtilPersistence(this);
 	}
 
@@ -13649,6 +13770,63 @@ public class CommercePriceListPersistenceImpl
 		_setCommercePriceListUtilPersistence(null);
 
 		entityCache.removeCache(CommercePriceListImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(CommercePriceList.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommercePriceList> commercePriceLists = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommercePriceList>> resultMap =
+				new HashMap<>();
+
+			for (CommercePriceList commercePriceList : commercePriceLists) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommercePriceListModelImpl commercePriceListModelImpl =
+						(CommercePriceListModelImpl)commercePriceList;
+
+					arguments.add(
+						commercePriceListModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commercePriceList);
+				}
+				else {
+					List<CommercePriceList> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commercePriceList);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommercePriceList>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommercePriceList> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommercePriceListUtilPersistence(

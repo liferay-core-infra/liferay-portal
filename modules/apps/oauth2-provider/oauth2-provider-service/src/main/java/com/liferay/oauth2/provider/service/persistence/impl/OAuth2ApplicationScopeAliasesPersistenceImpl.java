@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -51,10 +53,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -1770,6 +1774,35 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 			"countByOAuth2ApplicationId", new String[] {Long.class.getName()},
 			new String[] {"oAuth2ApplicationId"}, false);
 
+		FinderPath.registerFinderPaths(
+			OAuth2ApplicationScopeAliases.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByOAuth2ApplicationId",
+				_finderPathWithPaginationFindByOAuth2ApplicationId
+			).put(
+				"finderPathWithoutPaginationFindByOAuth2ApplicationId",
+				_finderPathWithoutPaginationFindByOAuth2ApplicationId
+			).put(
+				"finderPathCountByOAuth2ApplicationId",
+				_finderPathCountByOAuth2ApplicationId
+			).build());
+
 		_setOAuth2ApplicationScopeAliasesUtilPersistence(this);
 	}
 
@@ -1779,6 +1812,71 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 		entityCache.removeCache(
 			OAuth2ApplicationScopeAliasesImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(OAuth2ApplicationScopeAliases.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuth2ApplicationScopeAliases> oAuth2ApplicationScopeAliasess =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuth2ApplicationScopeAliases>> resultMap =
+				new HashMap<>();
+
+			for (OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases :
+					oAuth2ApplicationScopeAliasess) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuth2ApplicationScopeAliasesModelImpl
+						oAuth2ApplicationScopeAliasesModelImpl =
+							(OAuth2ApplicationScopeAliasesModelImpl)
+								oAuth2ApplicationScopeAliases;
+
+					arguments.add(
+						oAuth2ApplicationScopeAliasesModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						oAuth2ApplicationScopeAliases);
+				}
+				else {
+					List<OAuth2ApplicationScopeAliases> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuth2ApplicationScopeAliases);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuth2ApplicationScopeAliases>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuth2ApplicationScopeAliases> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuth2ApplicationScopeAliasesUtilPersistence(

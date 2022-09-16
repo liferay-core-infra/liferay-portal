@@ -14,6 +14,7 @@
 
 package com.liferay.knowledge.base.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -803,6 +804,11 @@ public class KBArticleLocalServiceWrapper
 
 		_kbArticleLocalService.incrementViewCount(
 			userId, resourcePrimKey, increment);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_kbArticleLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

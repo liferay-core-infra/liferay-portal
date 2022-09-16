@@ -18,6 +18,7 @@ import com.liferay.mail.reader.model.Message;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -289,6 +290,9 @@ public interface MessageLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Message getRemoteMessage(long folderId, boolean oldest)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public int populateMessages(
 		List<Message> messages, long folderId, String keywords, int pageNumber,

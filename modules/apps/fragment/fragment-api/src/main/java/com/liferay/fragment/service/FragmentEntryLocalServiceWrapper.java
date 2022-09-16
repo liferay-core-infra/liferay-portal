@@ -16,6 +16,7 @@ package com.liferay.fragment.service;
 
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -545,6 +546,11 @@ public class FragmentEntryLocalServiceWrapper
 		getVersions(FragmentEntry fragmentEntry) {
 
 		return _fragmentEntryLocalService.getVersions(fragmentEntry);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_fragmentEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

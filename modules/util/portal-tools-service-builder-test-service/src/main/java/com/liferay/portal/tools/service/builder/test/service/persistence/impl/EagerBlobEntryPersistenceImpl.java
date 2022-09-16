@@ -25,7 +25,9 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -47,6 +49,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1454,6 +1457,30 @@ public class EagerBlobEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "groupId"}, false);
 
+		FinderPath.registerFinderPaths(
+			EagerBlobEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).build());
+
 		_setEagerBlobEntryUtilPersistence(this);
 	}
 
@@ -1461,6 +1488,62 @@ public class EagerBlobEntryPersistenceImpl
 		_setEagerBlobEntryUtilPersistence(null);
 
 		dummyEntityCache.removeCache(EagerBlobEntryImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(EagerBlobEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<EagerBlobEntry> eagerBlobEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<EagerBlobEntry>> resultMap = new HashMap<>();
+
+			for (EagerBlobEntry eagerBlobEntry : eagerBlobEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					EagerBlobEntryModelImpl eagerBlobEntryModelImpl =
+						(EagerBlobEntryModelImpl)eagerBlobEntry;
+
+					arguments.add(
+						eagerBlobEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					dummyFinderCache.putResult(
+						finderPath, arguments.toArray(), eagerBlobEntry);
+				}
+				else {
+					List<EagerBlobEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(eagerBlobEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<EagerBlobEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<EagerBlobEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					dummyFinderCache.putResult(
+						finderPath, key.toArray(), value);
+				}
+				else {
+					dummyFinderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setEagerBlobEntryUtilPersistence(

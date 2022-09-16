@@ -1071,4 +1071,7 @@ public interface SAPEntryPersistence extends BasePersistence<SAPEntry> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

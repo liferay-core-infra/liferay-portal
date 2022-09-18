@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchClientResolver;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
@@ -603,14 +604,15 @@ public class ElasticsearchSearchEngineAdapterDocumentRequestTest {
 		ElasticsearchDocumentFactory elasticsearchDocumentFactory =
 			new DefaultElasticsearchDocumentFactory();
 
-		return new ElasticsearchSearchEngineAdapterImpl() {
-			{
-				setDocumentRequestExecutor(
-					_createDocumentRequestExecutor(
-						elasticsearchClientResolver,
-						elasticsearchDocumentFactory));
-			}
-		};
+		SearchEngineAdapter elasticsearchSearchEngineAdapter =
+			new ElasticsearchSearchEngineAdapterImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSearchEngineAdapter, "_documentRequestExecutor",
+			_createDocumentRequestExecutor(
+				elasticsearchClientResolver, elasticsearchDocumentFactory));
+
+		return elasticsearchSearchEngineAdapter;
 	}
 
 	private static DocumentRequestExecutor _createDocumentRequestExecutor(

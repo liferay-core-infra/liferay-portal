@@ -14,25 +14,28 @@
 
 package com.liferay.portal.search.elasticsearch7.internal.suggest;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+
 /**
  * @author Michael C. Han
  */
 public class ElasticsearchSuggesterTranslatorFixture {
 
 	public ElasticsearchSuggesterTranslatorFixture() {
-		_elasticsearchSuggesterTranslator =
-			new ElasticsearchSuggesterTranslator() {
-				{
-					setCompletionSuggesterTranslator(
-						new CompletionSuggesterTranslatorImpl());
+		ElasticsearchSuggesterTranslator elasticsearchSuggesterTranslator =
+			new ElasticsearchSuggesterTranslator();
 
-					setPhraseSuggesterTranslator(
-						new PhraseSuggesterTranslatorImpl());
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSuggesterTranslator, "_completionSuggesterTranslator",
+			new CompletionSuggesterTranslatorImpl());
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSuggesterTranslator, "_phraseSuggesterTranslator",
+			new PhraseSuggesterTranslatorImpl());
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchSuggesterTranslator, "_termSuggesterTranslator",
+			new TermSuggesterTranslatorImpl());
 
-					setTermSuggesterTranslator(
-						new TermSuggesterTranslatorImpl());
-				}
-			};
+		_elasticsearchSuggesterTranslator = elasticsearchSuggesterTranslator;
 	}
 
 	public ElasticsearchSuggesterTranslator

@@ -17,6 +17,7 @@ package com.liferay.portal.search.elasticsearch7.internal.search.engine.adapter.
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.search.elasticsearch7.internal.connection.ElasticsearchFixture;
 import com.liferay.portal.search.elasticsearch7.internal.document.DefaultElasticsearchDocumentFactory;
 import com.liferay.portal.search.elasticsearch7.internal.document.ElasticsearchDocumentFactory;
@@ -54,21 +55,24 @@ public class BulkDocumentRequestExecutorTest {
 
 		ElasticsearchBulkableDocumentRequestTranslator
 			elasticsearchBulkableDocumentRequestTranslator =
-				new ElasticsearchBulkableDocumentRequestTranslatorImpl() {
-					{
-						setElasticsearchDocumentFactory(
-							elasticsearchDocumentFactory);
-					}
-				};
+				new ElasticsearchBulkableDocumentRequestTranslatorImpl();
 
-		_bulkDocumentRequestExecutorImpl =
-			new BulkDocumentRequestExecutorImpl() {
-				{
-					setElasticsearchBulkableDocumentRequestTranslator(
-						elasticsearchBulkableDocumentRequestTranslator);
-					setElasticsearchClientResolver(elasticsearchFixture);
-				}
-			};
+		ReflectionTestUtil.setFieldValue(
+			elasticsearchBulkableDocumentRequestTranslator,
+			"_elasticsearchDocumentFactory", elasticsearchDocumentFactory);
+
+		BulkDocumentRequestExecutorImpl bulkDocumentRequestExecutorImpl =
+			new BulkDocumentRequestExecutorImpl();
+
+		ReflectionTestUtil.setFieldValue(
+			bulkDocumentRequestExecutorImpl,
+			"_elasticsearchBulkableDocumentRequestTranslator",
+			elasticsearchBulkableDocumentRequestTranslator);
+		ReflectionTestUtil.setFieldValue(
+			bulkDocumentRequestExecutorImpl, "_elasticsearchClientResolver",
+			elasticsearchFixture);
+
+		_bulkDocumentRequestExecutorImpl = bulkDocumentRequestExecutorImpl;
 
 		_elasticsearchFixture = elasticsearchFixture;
 

@@ -130,6 +130,12 @@ public class HttpAdapter {
 
 		PortletSessionListenerManager.addHttpSessionListener(
 			_INVALIDATEHTTPSESSION_LISTENER);
+
+		Class<?> clazz = getClass();
+
+		_servletContext = (ServletContext)Proxy.newProxyInstance(
+			clazz.getClassLoader(), _INTERFACES,
+			new ServletContextAdaptor(_servletContext));
 	}
 
 	@Deactivate
@@ -148,11 +154,7 @@ public class HttpAdapter {
 
 	@Reference(target = "(original.bean=true)", unbind = "-")
 	protected void setServletContext(ServletContext servletContext) {
-		Class<?> clazz = getClass();
-
-		_servletContext = (ServletContext)Proxy.newProxyInstance(
-			clazz.getClassLoader(), _INTERFACES,
-			new ServletContextAdaptor(servletContext));
+		_servletContext = servletContext;
 	}
 
 	private static final Class<?>[] _INTERFACES = new Class<?>[] {

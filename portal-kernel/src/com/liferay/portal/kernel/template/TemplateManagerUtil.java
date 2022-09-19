@@ -14,15 +14,11 @@
 
 package com.liferay.portal.kernel.template;
 
-import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,45 +34,10 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
  */
 public class TemplateManagerUtil {
 
-	public static void destroy() {
-		for (TemplateManager templateManager : _templateManagers.values()) {
-			templateManager.destroy();
-		}
-
-		_templateManagers.clear();
-	}
-
 	public static void destroy(ClassLoader classLoader) {
 		for (TemplateManager templateManager : _templateManagers.values()) {
 			templateManager.destroy(classLoader);
 		}
-	}
-
-	public static Set<String> getSupportedLanguageTypes(String propertyKey) {
-		Set<String> supportedLanguageTypes = _supportedLanguageTypes.get(
-			propertyKey);
-
-		if (supportedLanguageTypes != null) {
-			return supportedLanguageTypes;
-		}
-
-		supportedLanguageTypes = new HashSet<>();
-
-		for (String templateManagerName : _templateManagers.keySet()) {
-			String content = PropsUtil.get(
-				propertyKey, new Filter(templateManagerName));
-
-			if (Validator.isNotNull(content)) {
-				supportedLanguageTypes.add(templateManagerName);
-			}
-		}
-
-		supportedLanguageTypes = Collections.unmodifiableSet(
-			supportedLanguageTypes);
-
-		_supportedLanguageTypes.put(propertyKey, supportedLanguageTypes);
-
-		return supportedLanguageTypes;
 	}
 
 	public static Template getTemplate(
@@ -123,9 +84,6 @@ public class TemplateManagerUtil {
 		return templateManager;
 	}
 
-	private TemplateManagerUtil() {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		TemplateManagerUtil.class);
 
@@ -133,8 +91,6 @@ public class TemplateManagerUtil {
 		SystemBundleUtil.getBundleContext();
 	private static final ServiceTracker<TemplateManager, TemplateManager>
 		_serviceTracker;
-	private static final Map<String, Set<String>> _supportedLanguageTypes =
-		new ConcurrentHashMap<>();
 	private static final Map<String, TemplateManager> _templateManagers =
 		new ConcurrentHashMap<>();
 

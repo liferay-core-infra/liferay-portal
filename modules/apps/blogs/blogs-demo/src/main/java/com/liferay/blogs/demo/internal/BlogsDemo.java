@@ -33,6 +33,7 @@ import com.liferay.users.admin.demo.data.creator.SiteAdminUserDemoDataCreator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
@@ -93,6 +94,13 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		_blogsEntryDemoDataCreators.add(_loremIpsumBlogsEntryDemoDataCreator);
+		_blogsEntryDemoDataCreators.add(
+			_creativeCommonsBlogsEntryDemoDataCreator);
+	}
+
 	@Deactivate
 	protected void deactivate() throws PortalException {
 		_multipleCommentDemoDataCreator.delete();
@@ -112,14 +120,14 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 	protected void setCreativeCommonsBlogsEntryDemoDataCreator(
 		BlogsEntryDemoDataCreator blogsEntryDemoDataCreator) {
 
-		_blogsEntryDemoDataCreators.add(blogsEntryDemoDataCreator);
+		_creativeCommonsBlogsEntryDemoDataCreator = blogsEntryDemoDataCreator;
 	}
 
 	@Reference(target = "(source=lorem-ipsum)", unbind = "-")
 	protected void setLoremIpsumBlogsEntryDemoDataCreator(
 		BlogsEntryDemoDataCreator blogsEntryDemoDataCreator) {
 
-		_blogsEntryDemoDataCreators.add(blogsEntryDemoDataCreator);
+		_loremIpsumBlogsEntryDemoDataCreator = blogsEntryDemoDataCreator;
 	}
 
 	private <T> T _getRandomElement(List<T> list) {
@@ -131,9 +139,12 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 
 	private final List<BlogsEntryDemoDataCreator> _blogsEntryDemoDataCreators =
 		new ArrayList<>();
+	private BlogsEntryDemoDataCreator _creativeCommonsBlogsEntryDemoDataCreator;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	private BlogsEntryDemoDataCreator _loremIpsumBlogsEntryDemoDataCreator;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

@@ -116,20 +116,6 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 		_siteAdminUserDemoDataCreator.delete();
 	}
 
-	@Reference(target = "(source=creative-commons)", unbind = "-")
-	protected void setCreativeCommonsBlogsEntryDemoDataCreator(
-		BlogsEntryDemoDataCreator blogsEntryDemoDataCreator) {
-
-		_creativeCommonsBlogsEntryDemoDataCreator = blogsEntryDemoDataCreator;
-	}
-
-	@Reference(target = "(source=lorem-ipsum)", unbind = "-")
-	protected void setLoremIpsumBlogsEntryDemoDataCreator(
-		BlogsEntryDemoDataCreator blogsEntryDemoDataCreator) {
-
-		_loremIpsumBlogsEntryDemoDataCreator = blogsEntryDemoDataCreator;
-	}
-
 	private <T> T _getRandomElement(List<T> list) {
 		return list.get(RandomUtil.nextInt(list.size()));
 	}
@@ -139,11 +125,14 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 
 	private final List<BlogsEntryDemoDataCreator> _blogsEntryDemoDataCreators =
 		new ArrayList<>();
+
+	@Reference(target = "(source=creative-commons)")
 	private BlogsEntryDemoDataCreator _creativeCommonsBlogsEntryDemoDataCreator;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
 
+	@Reference(target = "(source=lorem-ipsum)")
 	private BlogsEntryDemoDataCreator _loremIpsumBlogsEntryDemoDataCreator;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)

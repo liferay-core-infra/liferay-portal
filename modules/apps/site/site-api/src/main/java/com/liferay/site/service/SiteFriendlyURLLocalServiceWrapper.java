@@ -14,6 +14,7 @@
 
 package com.liferay.site.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -459,6 +460,11 @@ public class SiteFriendlyURLLocalServiceWrapper
 	@Override
 	public int getSiteFriendlyURLsCount() {
 		return _siteFriendlyURLLocalService.getSiteFriendlyURLsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_siteFriendlyURLLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

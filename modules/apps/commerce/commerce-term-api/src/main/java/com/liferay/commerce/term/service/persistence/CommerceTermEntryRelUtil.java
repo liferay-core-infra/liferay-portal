@@ -724,6 +724,12 @@ public class CommerceTermEntryRelUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static CommerceTermEntryRelPersistence getPersistence() {
 		return _persistence;
 	}

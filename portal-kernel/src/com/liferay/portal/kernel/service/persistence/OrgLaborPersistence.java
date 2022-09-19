@@ -301,4 +301,7 @@ public interface OrgLaborPersistence extends BasePersistence<OrgLabor> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

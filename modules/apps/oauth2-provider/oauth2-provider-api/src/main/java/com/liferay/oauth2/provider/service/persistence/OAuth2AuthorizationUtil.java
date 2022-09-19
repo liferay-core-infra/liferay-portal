@@ -1477,6 +1477,12 @@ public class OAuth2AuthorizationUtil {
 		getPersistence().setOAuth2ScopeGrants(pk, oAuth2ScopeGrants);
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static OAuth2AuthorizationPersistence getPersistence() {
 		return _persistence;
 	}

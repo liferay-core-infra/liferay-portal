@@ -14,6 +14,7 @@
 
 package com.liferay.portal.background.task.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -767,6 +768,11 @@ public class BackgroundTaskLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _backgroundTaskLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_backgroundTaskLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

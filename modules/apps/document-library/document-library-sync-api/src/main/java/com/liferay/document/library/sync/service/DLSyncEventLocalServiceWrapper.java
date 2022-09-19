@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.sync.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -337,6 +338,11 @@ public class DLSyncEventLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dlSyncEventLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlSyncEventLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

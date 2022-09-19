@@ -14,6 +14,7 @@
 
 package com.liferay.announcements.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -560,6 +561,11 @@ public class AnnouncementsEntryLocalServiceWrapper
 	@Override
 	public int getUserEntriesCount(long userId) {
 		return _announcementsEntryLocalService.getUserEntriesCount(userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_announcementsEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

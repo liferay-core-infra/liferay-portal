@@ -776,4 +776,7 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -24,7 +24,9 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -41,8 +43,11 @@ import java.io.Serializable;
 
 import java.lang.reflect.Field;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -583,6 +588,18 @@ public class DSLQueryStatusEntryPersistenceImpl
 			this, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0], new String[0], false);
 
+		FinderPath.registerFinderPaths(
+			DSLQueryStatusEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).build());
+
 		_setDSLQueryStatusEntryUtilPersistence(this);
 	}
 
@@ -590,6 +607,66 @@ public class DSLQueryStatusEntryPersistenceImpl
 		_setDSLQueryStatusEntryUtilPersistence(null);
 
 		entityCache.removeCache(DSLQueryStatusEntryImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(DSLQueryStatusEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DSLQueryStatusEntry> dslQueryStatusEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DSLQueryStatusEntry>> resultMap =
+				new HashMap<>();
+
+			for (DSLQueryStatusEntry dslQueryStatusEntry :
+					dslQueryStatusEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DSLQueryStatusEntryModelImpl dslQueryStatusEntryModelImpl =
+						(DSLQueryStatusEntryModelImpl)dslQueryStatusEntry;
+
+					arguments.add(
+						dslQueryStatusEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dslQueryStatusEntry);
+				}
+				else {
+					List<DSLQueryStatusEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dslQueryStatusEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DSLQueryStatusEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DSLQueryStatusEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDSLQueryStatusEntryUtilPersistence(

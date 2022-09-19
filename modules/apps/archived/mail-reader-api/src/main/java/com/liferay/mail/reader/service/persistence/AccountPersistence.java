@@ -352,4 +352,7 @@ public interface AccountPersistence extends BasePersistence<Account> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -37,7 +37,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -59,6 +61,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -4833,6 +4836,72 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			CommerceChannelAccountEntryRel.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByAccountEntryId",
+				_finderPathWithPaginationFindByAccountEntryId
+			).put(
+				"finderPathWithoutPaginationFindByAccountEntryId",
+				_finderPathWithoutPaginationFindByAccountEntryId
+			).put(
+				"finderPathCountByAccountEntryId",
+				_finderPathCountByAccountEntryId
+			).put(
+				"finderPathWithPaginationFindByCommerceChannelId",
+				_finderPathWithPaginationFindByCommerceChannelId
+			).put(
+				"finderPathWithoutPaginationFindByCommerceChannelId",
+				_finderPathWithoutPaginationFindByCommerceChannelId
+			).put(
+				"finderPathCountByCommerceChannelId",
+				_finderPathCountByCommerceChannelId
+			).put(
+				"finderPathWithPaginationFindByA_T",
+				_finderPathWithPaginationFindByA_T
+			).put(
+				"finderPathWithoutPaginationFindByA_T",
+				_finderPathWithoutPaginationFindByA_T
+			).put(
+				"finderPathCountByA_T", _finderPathCountByA_T
+			).put(
+				"finderPathWithPaginationFindByC_C",
+				_finderPathWithPaginationFindByC_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C",
+				_finderPathWithoutPaginationFindByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathWithPaginationFindByC_T",
+				_finderPathWithPaginationFindByC_T
+			).put(
+				"finderPathWithoutPaginationFindByC_T",
+				_finderPathWithoutPaginationFindByC_T
+			).put(
+				"finderPathCountByC_T", _finderPathCountByC_T
+			).put(
+				"finderPathWithPaginationFindByA_C_T",
+				_finderPathWithPaginationFindByA_C_T
+			).put(
+				"finderPathWithoutPaginationFindByA_C_T",
+				_finderPathWithoutPaginationFindByA_C_T
+			).put(
+				"finderPathCountByA_C_T", _finderPathCountByA_C_T
+			).put(
+				"finderPathFetchByA_C_C_C_T", _finderPathFetchByA_C_C_C_T
+			).put(
+				"finderPathCountByA_C_C_C_T", _finderPathCountByA_C_C_C_T
+			).build());
+
 		_setCommerceChannelAccountEntryRelUtilPersistence(this);
 	}
 
@@ -4841,6 +4910,71 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceChannelAccountEntryRelImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(CommerceChannelAccountEntryRel.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceChannelAccountEntryRel> commerceChannelAccountEntryRels =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceChannelAccountEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
+					commerceChannelAccountEntryRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceChannelAccountEntryRelModelImpl
+						commerceChannelAccountEntryRelModelImpl =
+							(CommerceChannelAccountEntryRelModelImpl)
+								commerceChannelAccountEntryRel;
+
+					arguments.add(
+						commerceChannelAccountEntryRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceChannelAccountEntryRel);
+				}
+				else {
+					List<CommerceChannelAccountEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceChannelAccountEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceChannelAccountEntryRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceChannelAccountEntryRel> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceChannelAccountEntryRelUtilPersistence(

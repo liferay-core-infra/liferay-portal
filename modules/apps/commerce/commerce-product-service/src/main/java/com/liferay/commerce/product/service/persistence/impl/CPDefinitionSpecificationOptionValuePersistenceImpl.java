@@ -37,7 +37,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -6390,6 +6392,93 @@ public class CPDefinitionSpecificationOptionValuePersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"CPDefinitionId", "CPOptionCategoryId"}, false);
 
+		FinderPath.registerFinderPaths(
+			CPDefinitionSpecificationOptionValue.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByCPDefinitionId",
+				_finderPathWithPaginationFindByCPDefinitionId
+			).put(
+				"finderPathWithoutPaginationFindByCPDefinitionId",
+				_finderPathWithoutPaginationFindByCPDefinitionId
+			).put(
+				"finderPathCountByCPDefinitionId",
+				_finderPathCountByCPDefinitionId
+			).put(
+				"finderPathWithPaginationFindByCPSpecificationOptionId",
+				_finderPathWithPaginationFindByCPSpecificationOptionId
+			).put(
+				"finderPathWithoutPaginationFindByCPSpecificationOptionId",
+				_finderPathWithoutPaginationFindByCPSpecificationOptionId
+			).put(
+				"finderPathCountByCPSpecificationOptionId",
+				_finderPathCountByCPSpecificationOptionId
+			).put(
+				"finderPathWithPaginationFindByCPOptionCategoryId",
+				_finderPathWithPaginationFindByCPOptionCategoryId
+			).put(
+				"finderPathWithoutPaginationFindByCPOptionCategoryId",
+				_finderPathWithoutPaginationFindByCPOptionCategoryId
+			).put(
+				"finderPathCountByCPOptionCategoryId",
+				_finderPathCountByCPOptionCategoryId
+			).put(
+				"finderPathFetchByC_CSOVI", _finderPathFetchByC_CSOVI
+			).put(
+				"finderPathCountByC_CSOVI", _finderPathCountByC_CSOVI
+			).put(
+				"finderPathWithPaginationFindByC_CSO",
+				_finderPathWithPaginationFindByC_CSO
+			).put(
+				"finderPathWithoutPaginationFindByC_CSO",
+				_finderPathWithoutPaginationFindByC_CSO
+			).put(
+				"finderPathCountByC_CSO", _finderPathCountByC_CSO
+			).put(
+				"finderPathWithPaginationFindByC_COC",
+				_finderPathWithPaginationFindByC_COC
+			).put(
+				"finderPathWithoutPaginationFindByC_COC",
+				_finderPathWithoutPaginationFindByC_COC
+			).put(
+				"finderPathCountByC_COC", _finderPathCountByC_COC
+			).build());
+
 		_setCPDefinitionSpecificationOptionValueUtilPersistence(this);
 	}
 
@@ -6398,6 +6487,74 @@ public class CPDefinitionSpecificationOptionValuePersistenceImpl
 
 		entityCache.removeCache(
 			CPDefinitionSpecificationOptionValueImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(
+			CPDefinitionSpecificationOptionValue.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPDefinitionSpecificationOptionValue>
+			cpDefinitionSpecificationOptionValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionSpecificationOptionValue>>
+				resultMap = new HashMap<>();
+
+			for (CPDefinitionSpecificationOptionValue
+					cpDefinitionSpecificationOptionValue :
+						cpDefinitionSpecificationOptionValues) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionSpecificationOptionValueModelImpl
+						cpDefinitionSpecificationOptionValueModelImpl =
+							(CPDefinitionSpecificationOptionValueModelImpl)
+								cpDefinitionSpecificationOptionValue;
+
+					arguments.add(
+						cpDefinitionSpecificationOptionValueModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpDefinitionSpecificationOptionValue);
+				}
+				else {
+					List<CPDefinitionSpecificationOptionValue> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionSpecificationOptionValue);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CPDefinitionSpecificationOptionValue>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionSpecificationOptionValue> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPDefinitionSpecificationOptionValueUtilPersistence(

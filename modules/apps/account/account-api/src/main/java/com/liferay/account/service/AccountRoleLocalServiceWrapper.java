@@ -14,6 +14,7 @@
 
 package com.liferay.account.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -404,6 +405,11 @@ public class AccountRoleLocalServiceWrapper
 
 		return _accountRoleLocalService.hasUserAccountRole(
 			accountEntryId, accountRoleId, userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_accountRoleLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

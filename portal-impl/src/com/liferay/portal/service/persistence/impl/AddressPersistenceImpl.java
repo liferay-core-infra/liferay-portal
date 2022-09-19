@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.AddressUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7525,6 +7527,113 @@ public class AddressPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "externalReferenceCode"}, false);
 
+		FinderPath.registerFinderPaths(
+			Address.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByUserId",
+				_finderPathWithPaginationFindByUserId
+			).put(
+				"finderPathWithoutPaginationFindByUserId",
+				_finderPathWithoutPaginationFindByUserId
+			).put(
+				"finderPathCountByUserId", _finderPathCountByUserId
+			).put(
+				"finderPathWithPaginationFindByCountryId",
+				_finderPathWithPaginationFindByCountryId
+			).put(
+				"finderPathWithoutPaginationFindByCountryId",
+				_finderPathWithoutPaginationFindByCountryId
+			).put(
+				"finderPathCountByCountryId", _finderPathCountByCountryId
+			).put(
+				"finderPathWithPaginationFindByRegionId",
+				_finderPathWithPaginationFindByRegionId
+			).put(
+				"finderPathWithoutPaginationFindByRegionId",
+				_finderPathWithoutPaginationFindByRegionId
+			).put(
+				"finderPathCountByRegionId", _finderPathCountByRegionId
+			).put(
+				"finderPathWithPaginationFindByC_C",
+				_finderPathWithPaginationFindByC_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C",
+				_finderPathWithoutPaginationFindByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathWithPaginationFindByC_C_C",
+				_finderPathWithPaginationFindByC_C_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C_C",
+				_finderPathWithoutPaginationFindByC_C_C
+			).put(
+				"finderPathCountByC_C_C", _finderPathCountByC_C_C
+			).put(
+				"finderPathWithPaginationFindByC_C_C_L",
+				_finderPathWithPaginationFindByC_C_C_L
+			).put(
+				"finderPathWithoutPaginationFindByC_C_C_L",
+				_finderPathWithoutPaginationFindByC_C_C_L
+			).put(
+				"finderPathCountByC_C_C_L", _finderPathCountByC_C_C_L
+			).put(
+				"finderPathWithPaginationCountByC_C_C_L",
+				_finderPathWithPaginationCountByC_C_C_L
+			).put(
+				"finderPathWithPaginationFindByC_C_C_M",
+				_finderPathWithPaginationFindByC_C_C_M
+			).put(
+				"finderPathWithoutPaginationFindByC_C_C_M",
+				_finderPathWithoutPaginationFindByC_C_C_M
+			).put(
+				"finderPathCountByC_C_C_M", _finderPathCountByC_C_C_M
+			).put(
+				"finderPathWithPaginationFindByC_C_C_P",
+				_finderPathWithPaginationFindByC_C_C_P
+			).put(
+				"finderPathWithoutPaginationFindByC_C_C_P",
+				_finderPathWithoutPaginationFindByC_C_C_P
+			).put(
+				"finderPathCountByC_C_C_P", _finderPathCountByC_C_C_P
+			).put(
+				"finderPathFetchByC_ERC", _finderPathFetchByC_ERC
+			).put(
+				"finderPathCountByC_ERC", _finderPathCountByC_ERC
+			).build());
+
 		_setAddressUtilPersistence(this);
 	}
 
@@ -7532,6 +7641,60 @@ public class AddressPersistenceImpl
 		_setAddressUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(AddressImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(Address.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Address> addresss = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Address>> resultMap = new HashMap<>();
+
+			for (Address address : addresss) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AddressModelImpl addressModelImpl =
+						(AddressModelImpl)address;
+
+					arguments.add(addressModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), address);
+				}
+				else {
+					List<Address> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(address);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Address>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Address> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAddressUtilPersistence(

@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPe
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -6682,6 +6683,92 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			DEDataDefinitionFieldLink.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByDDMStructureId",
+				_finderPathWithPaginationFindByDDMStructureId
+			).put(
+				"finderPathWithoutPaginationFindByDDMStructureId",
+				_finderPathWithoutPaginationFindByDDMStructureId
+			).put(
+				"finderPathCountByDDMStructureId",
+				_finderPathCountByDDMStructureId
+			).put(
+				"finderPathWithPaginationFindByC_C",
+				_finderPathWithPaginationFindByC_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C",
+				_finderPathWithoutPaginationFindByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathWithPaginationFindByC_DDMSI",
+				_finderPathWithPaginationFindByC_DDMSI
+			).put(
+				"finderPathWithoutPaginationFindByC_DDMSI",
+				_finderPathWithoutPaginationFindByC_DDMSI
+			).put(
+				"finderPathCountByC_DDMSI", _finderPathCountByC_DDMSI
+			).put(
+				"finderPathWithPaginationFindByDDMSI_F",
+				_finderPathWithPaginationFindByDDMSI_F
+			).put(
+				"finderPathWithoutPaginationFindByDDMSI_F",
+				_finderPathWithoutPaginationFindByDDMSI_F
+			).put(
+				"finderPathCountByDDMSI_F", _finderPathCountByDDMSI_F
+			).put(
+				"finderPathWithPaginationCountByDDMSI_F",
+				_finderPathWithPaginationCountByDDMSI_F
+			).put(
+				"finderPathWithPaginationFindByC_DDMSI_F",
+				_finderPathWithPaginationFindByC_DDMSI_F
+			).put(
+				"finderPathWithoutPaginationFindByC_DDMSI_F",
+				_finderPathWithoutPaginationFindByC_DDMSI_F
+			).put(
+				"finderPathCountByC_DDMSI_F", _finderPathCountByC_DDMSI_F
+			).put(
+				"finderPathWithPaginationCountByC_DDMSI_F",
+				_finderPathWithPaginationCountByC_DDMSI_F
+			).put(
+				"finderPathFetchByC_C_DDMSI_F", _finderPathFetchByC_C_DDMSI_F
+			).put(
+				"finderPathCountByC_C_DDMSI_F", _finderPathCountByC_C_DDMSI_F
+			).put(
+				"finderPathWithPaginationCountByC_C_DDMSI_F",
+				_finderPathWithPaginationCountByC_C_DDMSI_F
+			).build());
+
 		_setDEDataDefinitionFieldLinkUtilPersistence(this);
 	}
 
@@ -6690,6 +6777,69 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		_setDEDataDefinitionFieldLinkUtilPersistence(null);
 
 		entityCache.removeCache(DEDataDefinitionFieldLinkImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(DEDataDefinitionFieldLink.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DEDataDefinitionFieldLink> deDataDefinitionFieldLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DEDataDefinitionFieldLink>> resultMap =
+				new HashMap<>();
+
+			for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
+					deDataDefinitionFieldLinks) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DEDataDefinitionFieldLinkModelImpl
+						deDataDefinitionFieldLinkModelImpl =
+							(DEDataDefinitionFieldLinkModelImpl)
+								deDataDefinitionFieldLink;
+
+					arguments.add(
+						deDataDefinitionFieldLinkModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						deDataDefinitionFieldLink);
+				}
+				else {
+					List<DEDataDefinitionFieldLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(deDataDefinitionFieldLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DEDataDefinitionFieldLink>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DEDataDefinitionFieldLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDEDataDefinitionFieldLinkUtilPersistence(

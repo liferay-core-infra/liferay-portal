@@ -990,4 +990,7 @@ public interface DDMDataProviderInstancePersistence
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

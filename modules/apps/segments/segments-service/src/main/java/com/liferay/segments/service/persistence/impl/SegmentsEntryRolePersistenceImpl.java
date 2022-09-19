@@ -33,7 +33,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -61,6 +63,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2226,6 +2229,39 @@ public class SegmentsEntryRolePersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"segmentsEntryId", "roleId"}, false);
 
+		FinderPath.registerFinderPaths(
+			SegmentsEntryRole.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindBySegmentsEntryId",
+				_finderPathWithPaginationFindBySegmentsEntryId
+			).put(
+				"finderPathWithoutPaginationFindBySegmentsEntryId",
+				_finderPathWithoutPaginationFindBySegmentsEntryId
+			).put(
+				"finderPathCountBySegmentsEntryId",
+				_finderPathCountBySegmentsEntryId
+			).put(
+				"finderPathWithPaginationFindByRoleId",
+				_finderPathWithPaginationFindByRoleId
+			).put(
+				"finderPathWithoutPaginationFindByRoleId",
+				_finderPathWithoutPaginationFindByRoleId
+			).put(
+				"finderPathCountByRoleId", _finderPathCountByRoleId
+			).put(
+				"finderPathFetchByS_R", _finderPathFetchByS_R
+			).put(
+				"finderPathCountByS_R", _finderPathCountByS_R
+			).build());
+
 		_setSegmentsEntryRoleUtilPersistence(this);
 	}
 
@@ -2234,6 +2270,63 @@ public class SegmentsEntryRolePersistenceImpl
 		_setSegmentsEntryRoleUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsEntryRoleImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(SegmentsEntryRole.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsEntryRole> segmentsEntryRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsEntryRole>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsEntryRole segmentsEntryRole : segmentsEntryRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsEntryRoleModelImpl segmentsEntryRoleModelImpl =
+						(SegmentsEntryRoleModelImpl)segmentsEntryRole;
+
+					arguments.add(
+						segmentsEntryRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsEntryRole);
+				}
+				else {
+					List<SegmentsEntryRole> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsEntryRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsEntryRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsEntryRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsEntryRoleUtilPersistence(

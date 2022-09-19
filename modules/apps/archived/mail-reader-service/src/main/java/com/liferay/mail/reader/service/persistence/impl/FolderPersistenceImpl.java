@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -51,8 +53,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1415,6 +1419,30 @@ public class FolderPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"accountId", "fullName"}, false);
 
+		FinderPath.registerFinderPaths(
+			Folder.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByAccountId",
+				_finderPathWithPaginationFindByAccountId
+			).put(
+				"finderPathWithoutPaginationFindByAccountId",
+				_finderPathWithoutPaginationFindByAccountId
+			).put(
+				"finderPathCountByAccountId", _finderPathCountByAccountId
+			).put(
+				"finderPathFetchByA_F", _finderPathFetchByA_F
+			).put(
+				"finderPathCountByA_F", _finderPathCountByA_F
+			).build());
+
 		_setFolderUtilPersistence(this);
 	}
 
@@ -1423,6 +1451,59 @@ public class FolderPersistenceImpl
 		_setFolderUtilPersistence(null);
 
 		entityCache.removeCache(FolderImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(Folder.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Folder> folders = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Folder>> resultMap = new HashMap<>();
+
+			for (Folder folder : folders) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FolderModelImpl folderModelImpl = (FolderModelImpl)folder;
+
+					arguments.add(folderModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), folder);
+				}
+				else {
+					List<Folder> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(folder);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Folder>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Folder> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setFolderUtilPersistence(

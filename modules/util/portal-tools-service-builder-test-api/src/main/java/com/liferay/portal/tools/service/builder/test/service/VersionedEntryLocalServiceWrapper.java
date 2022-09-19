@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -442,6 +443,11 @@ public class VersionedEntryLocalServiceWrapper
 					VersionedEntry versionedEntry) {
 
 		return _versionedEntryLocalService.getVersions(versionedEntry);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_versionedEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

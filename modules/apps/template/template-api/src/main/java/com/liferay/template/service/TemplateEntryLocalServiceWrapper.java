@@ -15,6 +15,7 @@
 package com.liferay.template.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.template.model.TemplateEntry;
@@ -443,6 +444,11 @@ public class TemplateEntryLocalServiceWrapper
 
 		return _templateEntryLocalService.getTemplateEntryByUuidAndGroupId(
 			uuid, groupId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_templateEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

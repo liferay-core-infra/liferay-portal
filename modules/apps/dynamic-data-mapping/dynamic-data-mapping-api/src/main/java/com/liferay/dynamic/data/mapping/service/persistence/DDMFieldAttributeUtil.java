@@ -921,6 +921,12 @@ public class DDMFieldAttributeUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static DDMFieldAttributePersistence getPersistence() {
 		return _persistence;
 	}

@@ -33,7 +33,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -4260,6 +4262,62 @@ public class KaleoDefinitionPersistenceImpl
 			},
 			new String[] {"companyId", "scope", "active_"}, false);
 
+		FinderPath.registerFinderPaths(
+			KaleoDefinition.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathFetchByC_N", _finderPathFetchByC_N
+			).put(
+				"finderPathCountByC_N", _finderPathCountByC_N
+			).put(
+				"finderPathWithPaginationFindByC_S",
+				_finderPathWithPaginationFindByC_S
+			).put(
+				"finderPathWithoutPaginationFindByC_S",
+				_finderPathWithoutPaginationFindByC_S
+			).put(
+				"finderPathCountByC_S", _finderPathCountByC_S
+			).put(
+				"finderPathWithPaginationFindByC_A",
+				_finderPathWithPaginationFindByC_A
+			).put(
+				"finderPathWithoutPaginationFindByC_A",
+				_finderPathWithoutPaginationFindByC_A
+			).put(
+				"finderPathCountByC_A", _finderPathCountByC_A
+			).put(
+				"finderPathFetchByC_N_V", _finderPathFetchByC_N_V
+			).put(
+				"finderPathCountByC_N_V", _finderPathCountByC_N_V
+			).put(
+				"finderPathFetchByC_N_A", _finderPathFetchByC_N_A
+			).put(
+				"finderPathCountByC_N_A", _finderPathCountByC_N_A
+			).put(
+				"finderPathWithPaginationFindByC_S_A",
+				_finderPathWithPaginationFindByC_S_A
+			).put(
+				"finderPathWithoutPaginationFindByC_S_A",
+				_finderPathWithoutPaginationFindByC_S_A
+			).put(
+				"finderPathCountByC_S_A", _finderPathCountByC_S_A
+			).build());
+
 		_setKaleoDefinitionUtilPersistence(this);
 	}
 
@@ -4268,6 +4326,63 @@ public class KaleoDefinitionPersistenceImpl
 		_setKaleoDefinitionUtilPersistence(null);
 
 		entityCache.removeCache(KaleoDefinitionImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(KaleoDefinition.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoDefinition> kaleoDefinitions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoDefinition>> resultMap =
+				new HashMap<>();
+
+			for (KaleoDefinition kaleoDefinition : kaleoDefinitions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoDefinitionModelImpl kaleoDefinitionModelImpl =
+						(KaleoDefinitionModelImpl)kaleoDefinition;
+
+					arguments.add(
+						kaleoDefinitionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoDefinition);
+				}
+				else {
+					List<KaleoDefinition> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoDefinition);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoDefinition>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoDefinition> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoDefinitionUtilPersistence(

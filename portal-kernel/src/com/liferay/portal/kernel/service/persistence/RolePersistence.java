@@ -2713,4 +2713,7 @@ public interface RolePersistence
 	public void setUsers(
 		long pk, java.util.List<com.liferay.portal.kernel.model.User> users);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

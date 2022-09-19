@@ -566,4 +566,7 @@ public interface OAuth2ScopeGrantPersistence
 		java.util.List<com.liferay.oauth2.provider.model.OAuth2Authorization>
 			oAuth2Authorizations);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

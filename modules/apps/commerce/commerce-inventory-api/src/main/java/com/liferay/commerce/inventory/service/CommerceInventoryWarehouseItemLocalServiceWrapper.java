@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.inventory.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -672,6 +673,12 @@ public class CommerceInventoryWarehouseItemLocalServiceWrapper
 		return _commerceInventoryWarehouseItemLocalService.
 			increaseCommerceInventoryWarehouseItemQuantity(
 				userId, commerceInventoryWarehouseItemId, quantity);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceInventoryWarehouseItemLocalService.loadFinderCache(
+			finderPaths);
 	}
 
 	@Override

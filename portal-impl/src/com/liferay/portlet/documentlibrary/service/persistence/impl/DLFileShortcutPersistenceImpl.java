@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -7119,6 +7121,85 @@ public class DLFileShortcutPersistenceImpl
 			},
 			new String[] {"groupId", "folderId", "active_", "status"}, false);
 
+		FinderPath.registerFinderPaths(
+			DLFileShortcut.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByToFileEntryId",
+				_finderPathWithPaginationFindByToFileEntryId
+			).put(
+				"finderPathWithoutPaginationFindByToFileEntryId",
+				_finderPathWithoutPaginationFindByToFileEntryId
+			).put(
+				"finderPathCountByToFileEntryId",
+				_finderPathCountByToFileEntryId
+			).put(
+				"finderPathWithPaginationFindByG_F",
+				_finderPathWithPaginationFindByG_F
+			).put(
+				"finderPathWithoutPaginationFindByG_F",
+				_finderPathWithoutPaginationFindByG_F
+			).put(
+				"finderPathCountByG_F", _finderPathCountByG_F
+			).put(
+				"finderPathWithPaginationFindByC_NotS",
+				_finderPathWithPaginationFindByC_NotS
+			).put(
+				"finderPathWithPaginationCountByC_NotS",
+				_finderPathWithPaginationCountByC_NotS
+			).put(
+				"finderPathWithPaginationFindByG_F_A",
+				_finderPathWithPaginationFindByG_F_A
+			).put(
+				"finderPathWithoutPaginationFindByG_F_A",
+				_finderPathWithoutPaginationFindByG_F_A
+			).put(
+				"finderPathCountByG_F_A", _finderPathCountByG_F_A
+			).put(
+				"finderPathWithPaginationFindByG_F_A_S",
+				_finderPathWithPaginationFindByG_F_A_S
+			).put(
+				"finderPathWithoutPaginationFindByG_F_A_S",
+				_finderPathWithoutPaginationFindByG_F_A_S
+			).put(
+				"finderPathCountByG_F_A_S", _finderPathCountByG_F_A_S
+			).build());
+
 		_setDLFileShortcutUtilPersistence(this);
 	}
 
@@ -7126,6 +7207,61 @@ public class DLFileShortcutPersistenceImpl
 		_setDLFileShortcutUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(DLFileShortcutImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(DLFileShortcut.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DLFileShortcut> dlFileShortcuts = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLFileShortcut>> resultMap = new HashMap<>();
+
+			for (DLFileShortcut dlFileShortcut : dlFileShortcuts) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLFileShortcutModelImpl dlFileShortcutModelImpl =
+						(DLFileShortcutModelImpl)dlFileShortcut;
+
+					arguments.add(
+						dlFileShortcutModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), dlFileShortcut);
+				}
+				else {
+					List<DLFileShortcut> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlFileShortcut);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLFileShortcut>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLFileShortcut> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDLFileShortcutUtilPersistence(

@@ -445,4 +445,7 @@ public interface CTProcessPersistence extends BasePersistence<CTProcess> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

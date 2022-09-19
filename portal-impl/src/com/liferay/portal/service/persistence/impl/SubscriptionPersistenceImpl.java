@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.SubscriptionUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,8 +54,10 @@ import java.lang.reflect.InvocationHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -3515,6 +3518,63 @@ public class SubscriptionPersistenceImpl
 			new String[] {"companyId", "userId", "classNameId", "classPK"},
 			false);
 
+		FinderPath.registerFinderPaths(
+			Subscription.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUserId",
+				_finderPathWithPaginationFindByUserId
+			).put(
+				"finderPathWithoutPaginationFindByUserId",
+				_finderPathWithoutPaginationFindByUserId
+			).put(
+				"finderPathCountByUserId", _finderPathCountByUserId
+			).put(
+				"finderPathWithPaginationFindByG_U",
+				_finderPathWithPaginationFindByG_U
+			).put(
+				"finderPathWithoutPaginationFindByG_U",
+				_finderPathWithoutPaginationFindByG_U
+			).put(
+				"finderPathCountByG_U", _finderPathCountByG_U
+			).put(
+				"finderPathWithPaginationFindByU_C",
+				_finderPathWithPaginationFindByU_C
+			).put(
+				"finderPathWithoutPaginationFindByU_C",
+				_finderPathWithoutPaginationFindByU_C
+			).put(
+				"finderPathCountByU_C", _finderPathCountByU_C
+			).put(
+				"finderPathWithPaginationFindByC_C_C",
+				_finderPathWithPaginationFindByC_C_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C_C",
+				_finderPathWithoutPaginationFindByC_C_C
+			).put(
+				"finderPathCountByC_C_C", _finderPathCountByC_C_C
+			).put(
+				"finderPathWithPaginationFindByC_U_C_C",
+				_finderPathWithPaginationFindByC_U_C_C
+			).put(
+				"finderPathWithoutPaginationFindByC_U_C_C",
+				_finderPathWithoutPaginationFindByC_U_C_C
+			).put(
+				"finderPathFetchByC_U_C_C", _finderPathFetchByC_U_C_C
+			).put(
+				"finderPathCountByC_U_C_C", _finderPathCountByC_U_C_C
+			).put(
+				"finderPathWithPaginationCountByC_U_C_C",
+				_finderPathWithPaginationCountByC_U_C_C
+			).build());
+
 		_setSubscriptionUtilPersistence(this);
 	}
 
@@ -3522,6 +3582,61 @@ public class SubscriptionPersistenceImpl
 		_setSubscriptionUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(SubscriptionImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(Subscription.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Subscription> subscriptions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Subscription>> resultMap = new HashMap<>();
+
+			for (Subscription subscription : subscriptions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SubscriptionModelImpl subscriptionModelImpl =
+						(SubscriptionModelImpl)subscription;
+
+					arguments.add(
+						subscriptionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), subscription);
+				}
+				else {
+					List<Subscription> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(subscription);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Subscription>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Subscription> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSubscriptionUtilPersistence(

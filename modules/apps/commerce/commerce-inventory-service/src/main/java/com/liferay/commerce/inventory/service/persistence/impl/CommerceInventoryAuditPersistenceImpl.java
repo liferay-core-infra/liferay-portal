@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +55,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1833,6 +1836,32 @@ public class CommerceInventoryAuditPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"companyId", "sku"}, false);
 
+		FinderPath.registerFinderPaths(
+			CommerceInventoryAudit.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByLtCreateDate",
+				_finderPathWithPaginationFindByLtCreateDate
+			).put(
+				"finderPathWithPaginationCountByLtCreateDate",
+				_finderPathWithPaginationCountByLtCreateDate
+			).put(
+				"finderPathWithPaginationFindByC_S",
+				_finderPathWithPaginationFindByC_S
+			).put(
+				"finderPathWithoutPaginationFindByC_S",
+				_finderPathWithoutPaginationFindByC_S
+			).put(
+				"finderPathCountByC_S", _finderPathCountByC_S
+			).build());
+
 		_setCommerceInventoryAuditUtilPersistence(this);
 	}
 
@@ -1841,6 +1870,69 @@ public class CommerceInventoryAuditPersistenceImpl
 		_setCommerceInventoryAuditUtilPersistence(null);
 
 		entityCache.removeCache(CommerceInventoryAuditImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(CommerceInventoryAudit.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceInventoryAudit> commerceInventoryAudits = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceInventoryAudit>> resultMap =
+				new HashMap<>();
+
+			for (CommerceInventoryAudit commerceInventoryAudit :
+					commerceInventoryAudits) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceInventoryAuditModelImpl
+						commerceInventoryAuditModelImpl =
+							(CommerceInventoryAuditModelImpl)
+								commerceInventoryAudit;
+
+					arguments.add(
+						commerceInventoryAuditModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceInventoryAudit);
+				}
+				else {
+					List<CommerceInventoryAudit> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceInventoryAudit);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceInventoryAudit>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceInventoryAudit> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceInventoryAuditUtilPersistence(

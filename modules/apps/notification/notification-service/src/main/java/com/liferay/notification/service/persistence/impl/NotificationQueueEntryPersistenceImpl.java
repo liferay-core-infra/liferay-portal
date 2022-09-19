@@ -41,7 +41,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -55,10 +57,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -4401,6 +4405,49 @@ public class NotificationQueueEntryPersistenceImpl
 			new String[] {Integer.class.getName()}, new String[] {"status"},
 			false);
 
+		FinderPath.registerFinderPaths(
+			NotificationQueueEntry.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByNotificationTemplateId",
+				_finderPathWithPaginationFindByNotificationTemplateId
+			).put(
+				"finderPathWithoutPaginationFindByNotificationTemplateId",
+				_finderPathWithoutPaginationFindByNotificationTemplateId
+			).put(
+				"finderPathCountByNotificationTemplateId",
+				_finderPathCountByNotificationTemplateId
+			).put(
+				"finderPathWithPaginationFindBySent",
+				_finderPathWithPaginationFindBySent
+			).put(
+				"finderPathWithoutPaginationFindBySent",
+				_finderPathWithoutPaginationFindBySent
+			).put(
+				"finderPathCountBySent", _finderPathCountBySent
+			).put(
+				"finderPathWithPaginationFindByLtSentDate",
+				_finderPathWithPaginationFindByLtSentDate
+			).put(
+				"finderPathWithPaginationCountByLtSentDate",
+				_finderPathWithPaginationCountByLtSentDate
+			).put(
+				"finderPathWithPaginationFindByStatus",
+				_finderPathWithPaginationFindByStatus
+			).put(
+				"finderPathWithoutPaginationFindByStatus",
+				_finderPathWithoutPaginationFindByStatus
+			).put(
+				"finderPathCountByStatus", _finderPathCountByStatus
+			).build());
+
 		_setNotificationQueueEntryUtilPersistence(this);
 	}
 
@@ -4409,6 +4456,69 @@ public class NotificationQueueEntryPersistenceImpl
 		_setNotificationQueueEntryUtilPersistence(null);
 
 		entityCache.removeCache(NotificationQueueEntryImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(NotificationQueueEntry.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<NotificationQueueEntry> notificationQueueEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<NotificationQueueEntry>> resultMap =
+				new HashMap<>();
+
+			for (NotificationQueueEntry notificationQueueEntry :
+					notificationQueueEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					NotificationQueueEntryModelImpl
+						notificationQueueEntryModelImpl =
+							(NotificationQueueEntryModelImpl)
+								notificationQueueEntry;
+
+					arguments.add(
+						notificationQueueEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						notificationQueueEntry);
+				}
+				else {
+					List<NotificationQueueEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(notificationQueueEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<NotificationQueueEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<NotificationQueueEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setNotificationQueueEntryUtilPersistence(

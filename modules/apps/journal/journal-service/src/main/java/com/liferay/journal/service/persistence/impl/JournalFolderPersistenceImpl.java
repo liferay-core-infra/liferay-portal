@@ -43,7 +43,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -8825,6 +8827,100 @@ public class JournalFolderPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"groupId", "externalReferenceCode"}, false);
 
+		FinderPath.registerFinderPaths(
+			JournalFolder.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathWithPaginationFindByG_P",
+				_finderPathWithPaginationFindByG_P
+			).put(
+				"finderPathWithoutPaginationFindByG_P",
+				_finderPathWithoutPaginationFindByG_P
+			).put(
+				"finderPathCountByG_P", _finderPathCountByG_P
+			).put(
+				"finderPathFetchByG_N", _finderPathFetchByG_N
+			).put(
+				"finderPathCountByG_N", _finderPathCountByG_N
+			).put(
+				"finderPathWithPaginationFindByC_NotS",
+				_finderPathWithPaginationFindByC_NotS
+			).put(
+				"finderPathWithPaginationCountByC_NotS",
+				_finderPathWithPaginationCountByC_NotS
+			).put(
+				"finderPathFetchByG_P_N", _finderPathFetchByG_P_N
+			).put(
+				"finderPathCountByG_P_N", _finderPathCountByG_P_N
+			).put(
+				"finderPathWithPaginationFindByG_P_S",
+				_finderPathWithPaginationFindByG_P_S
+			).put(
+				"finderPathWithoutPaginationFindByG_P_S",
+				_finderPathWithoutPaginationFindByG_P_S
+			).put(
+				"finderPathCountByG_P_S", _finderPathCountByG_P_S
+			).put(
+				"finderPathWithPaginationFindByG_P_NotS",
+				_finderPathWithPaginationFindByG_P_NotS
+			).put(
+				"finderPathWithPaginationCountByG_P_NotS",
+				_finderPathWithPaginationCountByG_P_NotS
+			).put(
+				"finderPathWithPaginationFindByGtF_C_P_NotS",
+				_finderPathWithPaginationFindByGtF_C_P_NotS
+			).put(
+				"finderPathWithPaginationCountByGtF_C_P_NotS",
+				_finderPathWithPaginationCountByGtF_C_P_NotS
+			).put(
+				"finderPathFetchByG_ERC", _finderPathFetchByG_ERC
+			).put(
+				"finderPathCountByG_ERC", _finderPathCountByG_ERC
+			).build());
+
 		_setJournalFolderUtilPersistence(this);
 	}
 
@@ -8833,6 +8929,61 @@ public class JournalFolderPersistenceImpl
 		_setJournalFolderUtilPersistence(null);
 
 		entityCache.removeCache(JournalFolderImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(JournalFolder.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<JournalFolder> journalFolders = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<JournalFolder>> resultMap = new HashMap<>();
+
+			for (JournalFolder journalFolder : journalFolders) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					JournalFolderModelImpl journalFolderModelImpl =
+						(JournalFolderModelImpl)journalFolder;
+
+					arguments.add(
+						journalFolderModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), journalFolder);
+				}
+				else {
+					List<JournalFolder> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(journalFolder);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<JournalFolder>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<JournalFolder> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setJournalFolderUtilPersistence(

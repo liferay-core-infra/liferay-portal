@@ -14,6 +14,7 @@
 
 package com.liferay.frontend.view.state.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -381,6 +382,11 @@ public class FVSActiveEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _fvsActiveEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_fvsActiveEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

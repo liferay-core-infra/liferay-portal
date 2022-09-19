@@ -16,6 +16,7 @@ package com.liferay.data.engine.service;
 
 import com.liferay.data.engine.model.DEDataDefinitionFieldLink;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -534,6 +535,11 @@ public class DEDataDefinitionFieldLinkLocalServiceWrapper
 
 		return _deDataDefinitionFieldLinkLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_deDataDefinitionFieldLinkLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -1782,4 +1782,7 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

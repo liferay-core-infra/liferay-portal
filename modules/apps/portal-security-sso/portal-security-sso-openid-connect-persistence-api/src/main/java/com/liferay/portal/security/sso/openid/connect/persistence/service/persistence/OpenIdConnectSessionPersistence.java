@@ -538,4 +538,7 @@ public interface OpenIdConnectSessionPersistence
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

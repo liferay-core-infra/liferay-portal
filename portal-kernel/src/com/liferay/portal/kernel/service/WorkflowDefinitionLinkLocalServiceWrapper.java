@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -484,6 +485,11 @@ public class WorkflowDefinitionLinkLocalServiceWrapper
 
 		return _workflowDefinitionLinkLocalService.hasWorkflowDefinitionLink(
 			companyId, groupId, className, classPK, typePK);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_workflowDefinitionLinkLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

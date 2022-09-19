@@ -1467,6 +1467,12 @@ public class OAuth2ApplicationUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static OAuth2ApplicationPersistence getPersistence() {
 		return _persistence;
 	}

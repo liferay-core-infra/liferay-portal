@@ -33,7 +33,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -61,6 +63,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2918,6 +2921,47 @@ public class SegmentsEntryRelPersistenceImpl
 			},
 			new String[] {"segmentsEntryId", "classNameId", "classPK"}, false);
 
+		FinderPath.registerFinderPaths(
+			SegmentsEntryRel.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindBySegmentsEntryId",
+				_finderPathWithPaginationFindBySegmentsEntryId
+			).put(
+				"finderPathWithoutPaginationFindBySegmentsEntryId",
+				_finderPathWithoutPaginationFindBySegmentsEntryId
+			).put(
+				"finderPathCountBySegmentsEntryId",
+				_finderPathCountBySegmentsEntryId
+			).put(
+				"finderPathWithPaginationFindByCN_CPK",
+				_finderPathWithPaginationFindByCN_CPK
+			).put(
+				"finderPathWithoutPaginationFindByCN_CPK",
+				_finderPathWithoutPaginationFindByCN_CPK
+			).put(
+				"finderPathCountByCN_CPK", _finderPathCountByCN_CPK
+			).put(
+				"finderPathWithPaginationFindByG_CN_CPK",
+				_finderPathWithPaginationFindByG_CN_CPK
+			).put(
+				"finderPathWithoutPaginationFindByG_CN_CPK",
+				_finderPathWithoutPaginationFindByG_CN_CPK
+			).put(
+				"finderPathCountByG_CN_CPK", _finderPathCountByG_CN_CPK
+			).put(
+				"finderPathFetchByS_CN_CPK", _finderPathFetchByS_CN_CPK
+			).put(
+				"finderPathCountByS_CN_CPK", _finderPathCountByS_CN_CPK
+			).build());
+
 		_setSegmentsEntryRelUtilPersistence(this);
 	}
 
@@ -2926,6 +2970,63 @@ public class SegmentsEntryRelPersistenceImpl
 		_setSegmentsEntryRelUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsEntryRelImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(SegmentsEntryRel.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsEntryRel> segmentsEntryRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsEntryRel>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsEntryRel segmentsEntryRel : segmentsEntryRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsEntryRelModelImpl segmentsEntryRelModelImpl =
+						(SegmentsEntryRelModelImpl)segmentsEntryRel;
+
+					arguments.add(
+						segmentsEntryRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsEntryRel);
+				}
+				else {
+					List<SegmentsEntryRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsEntryRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsEntryRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsEntryRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsEntryRelUtilPersistence(

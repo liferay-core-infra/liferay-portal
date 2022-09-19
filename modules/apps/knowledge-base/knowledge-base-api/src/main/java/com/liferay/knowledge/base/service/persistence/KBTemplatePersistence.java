@@ -713,4 +713,7 @@ public interface KBTemplatePersistence extends BasePersistence<KBTemplate> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -33,7 +33,9 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.RecentLayoutBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.RecentLayoutBranchUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -46,8 +48,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -2459,6 +2464,47 @@ public class RecentLayoutBranchPersistenceImpl
 			},
 			new String[] {"userId", "layoutSetBranchId", "plid"}, false);
 
+		FinderPath.registerFinderPaths(
+			RecentLayoutBranch.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByUserId",
+				_finderPathWithPaginationFindByUserId
+			).put(
+				"finderPathWithoutPaginationFindByUserId",
+				_finderPathWithoutPaginationFindByUserId
+			).put(
+				"finderPathCountByUserId", _finderPathCountByUserId
+			).put(
+				"finderPathWithPaginationFindByLayoutBranchId",
+				_finderPathWithPaginationFindByLayoutBranchId
+			).put(
+				"finderPathWithoutPaginationFindByLayoutBranchId",
+				_finderPathWithoutPaginationFindByLayoutBranchId
+			).put(
+				"finderPathCountByLayoutBranchId",
+				_finderPathCountByLayoutBranchId
+			).put(
+				"finderPathFetchByU_L_P", _finderPathFetchByU_L_P
+			).put(
+				"finderPathCountByU_L_P", _finderPathCountByU_L_P
+			).build());
+
 		_setRecentLayoutBranchUtilPersistence(this);
 	}
 
@@ -2466,6 +2512,63 @@ public class RecentLayoutBranchPersistenceImpl
 		_setRecentLayoutBranchUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(RecentLayoutBranchImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(RecentLayoutBranch.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<RecentLayoutBranch> recentLayoutBranchs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RecentLayoutBranch>> resultMap =
+				new HashMap<>();
+
+			for (RecentLayoutBranch recentLayoutBranch : recentLayoutBranchs) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RecentLayoutBranchModelImpl recentLayoutBranchModelImpl =
+						(RecentLayoutBranchModelImpl)recentLayoutBranch;
+
+					arguments.add(
+						recentLayoutBranchModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), recentLayoutBranch);
+				}
+				else {
+					List<RecentLayoutBranch> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(recentLayoutBranch);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RecentLayoutBranch>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RecentLayoutBranch> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRecentLayoutBranchUtilPersistence(

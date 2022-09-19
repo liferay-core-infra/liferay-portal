@@ -1876,4 +1876,7 @@ public interface LVEntryPersistence extends BasePersistence<LVEntry> {
 			<com.liferay.portal.tools.service.builder.test.model.
 				BigDecimalEntry> bigDecimalEntries);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

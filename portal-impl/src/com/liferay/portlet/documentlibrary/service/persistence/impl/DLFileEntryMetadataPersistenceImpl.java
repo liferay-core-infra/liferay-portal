@@ -35,7 +35,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -3421,6 +3423,55 @@ public class DLFileEntryMetadataPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"DDMStructureId", "fileVersionId"}, false);
 
+		FinderPath.registerFinderPaths(
+			DLFileEntryMetadata.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByFileEntryId",
+				_finderPathWithPaginationFindByFileEntryId
+			).put(
+				"finderPathWithoutPaginationFindByFileEntryId",
+				_finderPathWithoutPaginationFindByFileEntryId
+			).put(
+				"finderPathCountByFileEntryId", _finderPathCountByFileEntryId
+			).put(
+				"finderPathWithPaginationFindByFileVersionId",
+				_finderPathWithPaginationFindByFileVersionId
+			).put(
+				"finderPathWithoutPaginationFindByFileVersionId",
+				_finderPathWithoutPaginationFindByFileVersionId
+			).put(
+				"finderPathCountByFileVersionId",
+				_finderPathCountByFileVersionId
+			).put(
+				"finderPathFetchByD_F", _finderPathFetchByD_F
+			).put(
+				"finderPathCountByD_F", _finderPathCountByD_F
+			).build());
+
 		_setDLFileEntryMetadataUtilPersistence(this);
 	}
 
@@ -3428,6 +3479,66 @@ public class DLFileEntryMetadataPersistenceImpl
 		_setDLFileEntryMetadataUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(DLFileEntryMetadataImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(DLFileEntryMetadata.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DLFileEntryMetadata> dlFileEntryMetadatas = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLFileEntryMetadata>> resultMap =
+				new HashMap<>();
+
+			for (DLFileEntryMetadata dlFileEntryMetadata :
+					dlFileEntryMetadatas) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLFileEntryMetadataModelImpl dlFileEntryMetadataModelImpl =
+						(DLFileEntryMetadataModelImpl)dlFileEntryMetadata;
+
+					arguments.add(
+						dlFileEntryMetadataModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), dlFileEntryMetadata);
+				}
+				else {
+					List<DLFileEntryMetadata> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(dlFileEntryMetadata);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLFileEntryMetadata>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLFileEntryMetadata> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDLFileEntryMetadataUtilPersistence(

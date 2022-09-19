@@ -1035,6 +1035,12 @@ public class TrashEntryUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static TrashEntryPersistence getPersistence() {
 		return _persistence;
 	}

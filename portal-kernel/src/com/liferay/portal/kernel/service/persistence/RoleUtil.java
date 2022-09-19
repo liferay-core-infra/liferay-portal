@@ -3307,6 +3307,12 @@ public class RoleUtil {
 		getPersistence().setUsers(pk, users);
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static RolePersistence getPersistence() {
 		return _persistence;
 	}

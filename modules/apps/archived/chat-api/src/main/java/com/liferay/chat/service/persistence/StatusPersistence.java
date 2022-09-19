@@ -640,4 +640,7 @@ public interface StatusPersistence extends BasePersistence<Status> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

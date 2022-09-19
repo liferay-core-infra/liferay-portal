@@ -30,7 +30,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -3511,6 +3513,50 @@ public class SocialActivityCounterPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			SocialActivityCounter.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByC_C",
+				_finderPathWithPaginationFindByC_C
+			).put(
+				"finderPathWithoutPaginationFindByC_C",
+				_finderPathWithoutPaginationFindByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).put(
+				"finderPathWithPaginationFindByG_C_C_O",
+				_finderPathWithPaginationFindByG_C_C_O
+			).put(
+				"finderPathWithoutPaginationFindByG_C_C_O",
+				_finderPathWithoutPaginationFindByG_C_C_O
+			).put(
+				"finderPathCountByG_C_C_O", _finderPathCountByG_C_C_O
+			).put(
+				"finderPathFetchByG_C_C_N_O_S", _finderPathFetchByG_C_C_N_O_S
+			).put(
+				"finderPathCountByG_C_C_N_O_S", _finderPathCountByG_C_C_N_O_S
+			).put(
+				"finderPathFetchByG_C_C_N_O_E", _finderPathFetchByG_C_C_N_O_E
+			).put(
+				"finderPathCountByG_C_C_N_O_E", _finderPathCountByG_C_C_N_O_E
+			).build());
+
 		_setSocialActivityCounterUtilPersistence(this);
 	}
 
@@ -3518,6 +3564,68 @@ public class SocialActivityCounterPersistenceImpl
 		_setSocialActivityCounterUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(SocialActivityCounterImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(SocialActivityCounter.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SocialActivityCounter> socialActivityCounters = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialActivityCounter>> resultMap =
+				new HashMap<>();
+
+			for (SocialActivityCounter socialActivityCounter :
+					socialActivityCounters) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialActivityCounterModelImpl
+						socialActivityCounterModelImpl =
+							(SocialActivityCounterModelImpl)
+								socialActivityCounter;
+
+					arguments.add(
+						socialActivityCounterModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialActivityCounter);
+				}
+				else {
+					List<SocialActivityCounter> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(socialActivityCounter);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialActivityCounter>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialActivityCounter> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSocialActivityCounterUtilPersistence(

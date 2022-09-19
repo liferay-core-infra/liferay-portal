@@ -1616,6 +1616,12 @@ public class CommerceWishListUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static CommerceWishListPersistence getPersistence() {
 		return _persistence;
 	}

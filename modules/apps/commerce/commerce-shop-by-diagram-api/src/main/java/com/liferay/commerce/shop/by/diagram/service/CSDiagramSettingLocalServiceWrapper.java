@@ -16,6 +16,7 @@ package com.liferay.commerce.shop.by.diagram.service;
 
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramSetting;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -395,6 +396,11 @@ public class CSDiagramSettingLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _csDiagramSettingLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_csDiagramSettingLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

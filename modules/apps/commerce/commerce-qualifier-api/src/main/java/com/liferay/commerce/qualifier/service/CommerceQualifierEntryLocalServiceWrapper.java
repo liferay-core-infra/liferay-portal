@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.qualifier.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -444,6 +445,11 @@ public class CommerceQualifierEntryLocalServiceWrapper
 			getTargetCommerceQualifierEntriesCount(
 				companyId, sourceCommerceQualifierMetadataKey, targetClassName,
 				targetClassPK, keywords);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceQualifierEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -165,4 +165,7 @@ public interface ViewCountEntryPersistence
 
 	public Set<String> getCompoundPKColumnNames();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

@@ -274,6 +274,12 @@ public class ViewCountEntryUtil {
 		return getPersistence().getCompoundPKColumnNames();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static ViewCountEntryPersistence getPersistence() {
 		return _persistence;
 	}

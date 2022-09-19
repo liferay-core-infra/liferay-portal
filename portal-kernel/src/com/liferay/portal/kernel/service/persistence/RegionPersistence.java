@@ -943,4 +943,7 @@ public interface RegionPersistence extends BasePersistence<Region> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

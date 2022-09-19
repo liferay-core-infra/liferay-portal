@@ -14,6 +14,7 @@
 
 package com.liferay.sync.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -355,6 +356,11 @@ public class SyncDLObjectLocalServiceWrapper
 	@Override
 	public int getSyncDLObjectsCount() {
 		return _syncDLObjectLocalService.getSyncDLObjectsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_syncDLObjectLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

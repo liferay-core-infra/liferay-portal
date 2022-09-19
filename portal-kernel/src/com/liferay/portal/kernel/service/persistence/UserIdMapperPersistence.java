@@ -402,4 +402,7 @@ public interface UserIdMapperPersistence extends BasePersistence<UserIdMapper> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

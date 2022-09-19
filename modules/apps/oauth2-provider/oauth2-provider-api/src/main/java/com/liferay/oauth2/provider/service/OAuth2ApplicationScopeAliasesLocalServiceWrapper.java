@@ -14,6 +14,7 @@
 
 package com.liferay.oauth2.provider.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -403,6 +404,11 @@ public class OAuth2ApplicationScopeAliasesLocalServiceWrapper
 
 		return _oAuth2ApplicationScopeAliasesLocalService.getScopeAliasesList(
 			oAuth2ApplicationScopeAliasesId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_oAuth2ApplicationScopeAliasesLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -1407,6 +1407,12 @@ public class AccountRoleUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static AccountRolePersistence getPersistence() {
 		return _persistence;
 	}

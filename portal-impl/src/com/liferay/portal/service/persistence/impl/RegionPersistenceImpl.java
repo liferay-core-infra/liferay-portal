@@ -37,7 +37,9 @@ import com.liferay.portal.kernel.service.persistence.RegionLocalizationPersisten
 import com.liferay.portal.kernel.service.persistence.RegionPersistence;
 import com.liferay.portal.kernel.service.persistence.RegionUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -3619,6 +3622,62 @@ public class RegionPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"countryId", "regionCode"}, false);
 
+		FinderPath.registerFinderPaths(
+			Region.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByCountryId",
+				_finderPathWithPaginationFindByCountryId
+			).put(
+				"finderPathWithoutPaginationFindByCountryId",
+				_finderPathWithoutPaginationFindByCountryId
+			).put(
+				"finderPathCountByCountryId", _finderPathCountByCountryId
+			).put(
+				"finderPathWithPaginationFindByActive",
+				_finderPathWithPaginationFindByActive
+			).put(
+				"finderPathWithoutPaginationFindByActive",
+				_finderPathWithoutPaginationFindByActive
+			).put(
+				"finderPathCountByActive", _finderPathCountByActive
+			).put(
+				"finderPathWithPaginationFindByC_A",
+				_finderPathWithPaginationFindByC_A
+			).put(
+				"finderPathWithoutPaginationFindByC_A",
+				_finderPathWithoutPaginationFindByC_A
+			).put(
+				"finderPathCountByC_A", _finderPathCountByC_A
+			).put(
+				"finderPathFetchByC_R", _finderPathFetchByC_R
+			).put(
+				"finderPathCountByC_R", _finderPathCountByC_R
+			).build());
+
 		_setRegionUtilPersistence(this);
 	}
 
@@ -3626,6 +3685,59 @@ public class RegionPersistenceImpl
 		_setRegionUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(RegionImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(Region.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Region> regions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Region>> resultMap = new HashMap<>();
+
+			for (Region region : regions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RegionModelImpl regionModelImpl = (RegionModelImpl)region;
+
+					arguments.add(regionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), region);
+				}
+				else {
+					List<Region> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(region);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Region>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Region> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRegionUtilPersistence(

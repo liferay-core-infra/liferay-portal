@@ -15,6 +15,7 @@
 package com.liferay.portal.workflow.kaleo.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstanceToken;
@@ -434,6 +435,11 @@ public class KaleoInstanceTokenLocalServiceWrapper
 
 		return _kaleoInstanceTokenLocalService.getRootKaleoInstanceToken(
 			kaleoInstanceId, workflowContext, serviceContext);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_kaleoInstanceTokenLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

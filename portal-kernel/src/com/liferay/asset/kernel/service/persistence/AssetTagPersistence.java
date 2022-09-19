@@ -1390,4 +1390,7 @@ public interface AssetTagPersistence
 		long pk,
 		java.util.List<com.liferay.asset.kernel.model.AssetEntry> assetEntries);
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

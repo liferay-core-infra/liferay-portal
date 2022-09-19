@@ -41,7 +41,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -5879,6 +5881,84 @@ public class LayoutClassedModelUsagePersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			LayoutClassedModelUsage.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathFetchByUUID_G", _finderPathFetchByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByPlid",
+				_finderPathWithPaginationFindByPlid
+			).put(
+				"finderPathWithoutPaginationFindByPlid",
+				_finderPathWithoutPaginationFindByPlid
+			).put(
+				"finderPathCountByPlid", _finderPathCountByPlid
+			).put(
+				"finderPathWithPaginationFindByCN_CPK",
+				_finderPathWithPaginationFindByCN_CPK
+			).put(
+				"finderPathWithoutPaginationFindByCN_CPK",
+				_finderPathWithoutPaginationFindByCN_CPK
+			).put(
+				"finderPathCountByCN_CPK", _finderPathCountByCN_CPK
+			).put(
+				"finderPathWithPaginationFindByC_CN_CT",
+				_finderPathWithPaginationFindByC_CN_CT
+			).put(
+				"finderPathWithoutPaginationFindByC_CN_CT",
+				_finderPathWithoutPaginationFindByC_CN_CT
+			).put(
+				"finderPathCountByC_CN_CT", _finderPathCountByC_CN_CT
+			).put(
+				"finderPathWithPaginationFindByCN_CPK_T",
+				_finderPathWithPaginationFindByCN_CPK_T
+			).put(
+				"finderPathWithoutPaginationFindByCN_CPK_T",
+				_finderPathWithoutPaginationFindByCN_CPK_T
+			).put(
+				"finderPathCountByCN_CPK_T", _finderPathCountByCN_CPK_T
+			).put(
+				"finderPathWithPaginationFindByCK_CT_P",
+				_finderPathWithPaginationFindByCK_CT_P
+			).put(
+				"finderPathWithoutPaginationFindByCK_CT_P",
+				_finderPathWithoutPaginationFindByCK_CT_P
+			).put(
+				"finderPathCountByCK_CT_P", _finderPathCountByCK_CT_P
+			).put(
+				"finderPathFetchByCN_CPK_CK_CT_P",
+				_finderPathFetchByCN_CPK_CK_CT_P
+			).put(
+				"finderPathCountByCN_CPK_CK_CT_P",
+				_finderPathCountByCN_CPK_CK_CT_P
+			).build());
+
 		_setLayoutClassedModelUsageUtilPersistence(this);
 	}
 
@@ -5887,6 +5967,69 @@ public class LayoutClassedModelUsagePersistenceImpl
 		_setLayoutClassedModelUsageUtilPersistence(null);
 
 		entityCache.removeCache(LayoutClassedModelUsageImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(LayoutClassedModelUsage.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutClassedModelUsage> layoutClassedModelUsages = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutClassedModelUsage>> resultMap =
+				new HashMap<>();
+
+			for (LayoutClassedModelUsage layoutClassedModelUsage :
+					layoutClassedModelUsages) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutClassedModelUsageModelImpl
+						layoutClassedModelUsageModelImpl =
+							(LayoutClassedModelUsageModelImpl)
+								layoutClassedModelUsage;
+
+					arguments.add(
+						layoutClassedModelUsageModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						layoutClassedModelUsage);
+				}
+				else {
+					List<LayoutClassedModelUsage> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutClassedModelUsage);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutClassedModelUsage>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutClassedModelUsage> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutClassedModelUsageUtilPersistence(

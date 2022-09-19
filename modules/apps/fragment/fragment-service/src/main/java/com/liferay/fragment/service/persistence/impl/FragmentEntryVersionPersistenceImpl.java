@@ -41,7 +41,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -16577,6 +16579,232 @@ public class FragmentEntryVersionPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			FragmentEntryVersion.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByFragmentEntryId",
+				_finderPathWithPaginationFindByFragmentEntryId
+			).put(
+				"finderPathWithoutPaginationFindByFragmentEntryId",
+				_finderPathWithoutPaginationFindByFragmentEntryId
+			).put(
+				"finderPathCountByFragmentEntryId",
+				_finderPathCountByFragmentEntryId
+			).put(
+				"finderPathFetchByFragmentEntryId_Version",
+				_finderPathFetchByFragmentEntryId_Version
+			).put(
+				"finderPathCountByFragmentEntryId_Version",
+				_finderPathCountByFragmentEntryId_Version
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_Version",
+				_finderPathWithPaginationFindByUuid_Version
+			).put(
+				"finderPathWithoutPaginationFindByUuid_Version",
+				_finderPathWithoutPaginationFindByUuid_Version
+			).put(
+				"finderPathCountByUuid_Version", _finderPathCountByUuid_Version
+			).put(
+				"finderPathWithPaginationFindByUUID_G",
+				_finderPathWithPaginationFindByUUID_G
+			).put(
+				"finderPathWithoutPaginationFindByUUID_G",
+				_finderPathWithoutPaginationFindByUUID_G
+			).put(
+				"finderPathCountByUUID_G", _finderPathCountByUUID_G
+			).put(
+				"finderPathFetchByUUID_G_Version",
+				_finderPathFetchByUUID_G_Version
+			).put(
+				"finderPathCountByUUID_G_Version",
+				_finderPathCountByUUID_G_Version
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByUuid_C_Version",
+				_finderPathWithPaginationFindByUuid_C_Version
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C_Version",
+				_finderPathWithoutPaginationFindByUuid_C_Version
+			).put(
+				"finderPathCountByUuid_C_Version",
+				_finderPathCountByUuid_C_Version
+			).put(
+				"finderPathWithPaginationFindByGroupId",
+				_finderPathWithPaginationFindByGroupId
+			).put(
+				"finderPathWithoutPaginationFindByGroupId",
+				_finderPathWithoutPaginationFindByGroupId
+			).put(
+				"finderPathCountByGroupId", _finderPathCountByGroupId
+			).put(
+				"finderPathWithPaginationFindByGroupId_Version",
+				_finderPathWithPaginationFindByGroupId_Version
+			).put(
+				"finderPathWithoutPaginationFindByGroupId_Version",
+				_finderPathWithoutPaginationFindByGroupId_Version
+			).put(
+				"finderPathCountByGroupId_Version",
+				_finderPathCountByGroupId_Version
+			).put(
+				"finderPathWithPaginationFindByFragmentCollectionId",
+				_finderPathWithPaginationFindByFragmentCollectionId
+			).put(
+				"finderPathWithoutPaginationFindByFragmentCollectionId",
+				_finderPathWithoutPaginationFindByFragmentCollectionId
+			).put(
+				"finderPathCountByFragmentCollectionId",
+				_finderPathCountByFragmentCollectionId
+			).put(
+				"finderPathWithPaginationFindByFragmentCollectionId_Version",
+				_finderPathWithPaginationFindByFragmentCollectionId_Version
+			).put(
+				"finderPathWithoutPaginationFindByFragmentCollectionId_Version",
+				_finderPathWithoutPaginationFindByFragmentCollectionId_Version
+			).put(
+				"finderPathCountByFragmentCollectionId_Version",
+				_finderPathCountByFragmentCollectionId_Version
+			).put(
+				"finderPathWithPaginationFindByG_FCI",
+				_finderPathWithPaginationFindByG_FCI
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI",
+				_finderPathWithoutPaginationFindByG_FCI
+			).put(
+				"finderPathCountByG_FCI", _finderPathCountByG_FCI
+			).put(
+				"finderPathWithPaginationFindByG_FCI_Version",
+				_finderPathWithPaginationFindByG_FCI_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_Version",
+				_finderPathWithoutPaginationFindByG_FCI_Version
+			).put(
+				"finderPathCountByG_FCI_Version",
+				_finderPathCountByG_FCI_Version
+			).put(
+				"finderPathWithPaginationFindByG_FEK",
+				_finderPathWithPaginationFindByG_FEK
+			).put(
+				"finderPathWithoutPaginationFindByG_FEK",
+				_finderPathWithoutPaginationFindByG_FEK
+			).put(
+				"finderPathCountByG_FEK", _finderPathCountByG_FEK
+			).put(
+				"finderPathFetchByG_FEK_Version",
+				_finderPathFetchByG_FEK_Version
+			).put(
+				"finderPathCountByG_FEK_Version",
+				_finderPathCountByG_FEK_Version
+			).put(
+				"finderPathWithPaginationFindByG_FCI_LikeN",
+				_finderPathWithPaginationFindByG_FCI_LikeN
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_LikeN",
+				_finderPathWithoutPaginationFindByG_FCI_LikeN
+			).put(
+				"finderPathCountByG_FCI_LikeN", _finderPathCountByG_FCI_LikeN
+			).put(
+				"finderPathWithPaginationFindByG_FCI_LikeN_Version",
+				_finderPathWithPaginationFindByG_FCI_LikeN_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_LikeN_Version",
+				_finderPathWithoutPaginationFindByG_FCI_LikeN_Version
+			).put(
+				"finderPathCountByG_FCI_LikeN_Version",
+				_finderPathCountByG_FCI_LikeN_Version
+			).put(
+				"finderPathWithPaginationFindByG_FCI_T",
+				_finderPathWithPaginationFindByG_FCI_T
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_T",
+				_finderPathWithoutPaginationFindByG_FCI_T
+			).put(
+				"finderPathCountByG_FCI_T", _finderPathCountByG_FCI_T
+			).put(
+				"finderPathWithPaginationFindByG_FCI_T_Version",
+				_finderPathWithPaginationFindByG_FCI_T_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_T_Version",
+				_finderPathWithoutPaginationFindByG_FCI_T_Version
+			).put(
+				"finderPathCountByG_FCI_T_Version",
+				_finderPathCountByG_FCI_T_Version
+			).put(
+				"finderPathWithPaginationFindByG_FCI_S",
+				_finderPathWithPaginationFindByG_FCI_S
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_S",
+				_finderPathWithoutPaginationFindByG_FCI_S
+			).put(
+				"finderPathCountByG_FCI_S", _finderPathCountByG_FCI_S
+			).put(
+				"finderPathWithPaginationFindByG_FCI_S_Version",
+				_finderPathWithPaginationFindByG_FCI_S_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_S_Version",
+				_finderPathWithoutPaginationFindByG_FCI_S_Version
+			).put(
+				"finderPathCountByG_FCI_S_Version",
+				_finderPathCountByG_FCI_S_Version
+			).put(
+				"finderPathWithPaginationFindByG_FCI_LikeN_S",
+				_finderPathWithPaginationFindByG_FCI_LikeN_S
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_LikeN_S",
+				_finderPathWithoutPaginationFindByG_FCI_LikeN_S
+			).put(
+				"finderPathCountByG_FCI_LikeN_S",
+				_finderPathCountByG_FCI_LikeN_S
+			).put(
+				"finderPathWithPaginationFindByG_FCI_LikeN_S_Version",
+				_finderPathWithPaginationFindByG_FCI_LikeN_S_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_LikeN_S_Version",
+				_finderPathWithoutPaginationFindByG_FCI_LikeN_S_Version
+			).put(
+				"finderPathCountByG_FCI_LikeN_S_Version",
+				_finderPathCountByG_FCI_LikeN_S_Version
+			).put(
+				"finderPathWithPaginationFindByG_FCI_T_S",
+				_finderPathWithPaginationFindByG_FCI_T_S
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_T_S",
+				_finderPathWithoutPaginationFindByG_FCI_T_S
+			).put(
+				"finderPathCountByG_FCI_T_S", _finderPathCountByG_FCI_T_S
+			).put(
+				"finderPathWithPaginationFindByG_FCI_T_S_Version",
+				_finderPathWithPaginationFindByG_FCI_T_S_Version
+			).put(
+				"finderPathWithoutPaginationFindByG_FCI_T_S_Version",
+				_finderPathWithoutPaginationFindByG_FCI_T_S_Version
+			).put(
+				"finderPathCountByG_FCI_T_S_Version",
+				_finderPathCountByG_FCI_T_S_Version
+			).build());
+
 		_setFragmentEntryVersionUtilPersistence(this);
 	}
 
@@ -16585,6 +16813,67 @@ public class FragmentEntryVersionPersistenceImpl
 		_setFragmentEntryVersionUtilPersistence(null);
 
 		entityCache.removeCache(FragmentEntryVersionImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(FragmentEntryVersion.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<FragmentEntryVersion> fragmentEntryVersions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FragmentEntryVersion>> resultMap =
+				new HashMap<>();
+
+			for (FragmentEntryVersion fragmentEntryVersion :
+					fragmentEntryVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FragmentEntryVersionModelImpl
+						fragmentEntryVersionModelImpl =
+							(FragmentEntryVersionModelImpl)fragmentEntryVersion;
+
+					arguments.add(
+						fragmentEntryVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), fragmentEntryVersion);
+				}
+				else {
+					List<FragmentEntryVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(fragmentEntryVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FragmentEntryVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FragmentEntryVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setFragmentEntryVersionUtilPersistence(

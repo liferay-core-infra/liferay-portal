@@ -1131,6 +1131,12 @@ public class CommercePricingClassUtil {
 		return getPersistence().countAll();
 	}
 
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
+	}
+
 	public static CommercePricingClassPersistence getPersistence() {
 		return _persistence;
 	}

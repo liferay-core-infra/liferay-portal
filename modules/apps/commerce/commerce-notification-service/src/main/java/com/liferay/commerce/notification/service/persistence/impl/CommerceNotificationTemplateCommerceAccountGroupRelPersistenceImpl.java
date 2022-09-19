@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -51,10 +53,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -2267,6 +2271,40 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			},
 			false);
 
+		FinderPath.registerFinderPaths(
+			CommerceNotificationTemplateCommerceAccountGroupRel.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByCommerceNotificationTemplateId",
+				_finderPathWithPaginationFindByCommerceNotificationTemplateId
+			).put(
+				"finderPathWithoutPaginationFindByCommerceNotificationTemplateId",
+				_finderPathWithoutPaginationFindByCommerceNotificationTemplateId
+			).put(
+				"finderPathCountByCommerceNotificationTemplateId",
+				_finderPathCountByCommerceNotificationTemplateId
+			).put(
+				"finderPathWithPaginationFindByCommerceAccountGroupId",
+				_finderPathWithPaginationFindByCommerceAccountGroupId
+			).put(
+				"finderPathWithoutPaginationFindByCommerceAccountGroupId",
+				_finderPathWithoutPaginationFindByCommerceAccountGroupId
+			).put(
+				"finderPathCountByCommerceAccountGroupId",
+				_finderPathCountByCommerceAccountGroupId
+			).put(
+				"finderPathFetchByC_C", _finderPathFetchByC_C
+			).put(
+				"finderPathCountByC_C", _finderPathCountByC_C
+			).build());
+
 		_setCommerceNotificationTemplateCommerceAccountGroupRelUtilPersistence(
 			this);
 	}
@@ -2279,6 +2317,78 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 		entityCache.removeCache(
 			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class.
 				getName());
+
+		FinderPath.unregisterFinderPaths(
+			CommerceNotificationTemplateCommerceAccountGroupRel.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceNotificationTemplateCommerceAccountGroupRel>
+			commerceNotificationTemplateCommerceAccountGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map
+				<List<Object>,
+				 List<CommerceNotificationTemplateCommerceAccountGroupRel>>
+					resultMap = new HashMap<>();
+
+			for (CommerceNotificationTemplateCommerceAccountGroupRel
+					commerceNotificationTemplateCommerceAccountGroupRel :
+						commerceNotificationTemplateCommerceAccountGroupRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceNotificationTemplateCommerceAccountGroupRelModelImpl
+						commerceNotificationTemplateCommerceAccountGroupRelModelImpl =
+							(CommerceNotificationTemplateCommerceAccountGroupRelModelImpl)
+								commerceNotificationTemplateCommerceAccountGroupRel;
+
+					arguments.add(
+						commerceNotificationTemplateCommerceAccountGroupRelModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceNotificationTemplateCommerceAccountGroupRel);
+				}
+				else {
+					List<CommerceNotificationTemplateCommerceAccountGroupRel>
+						resultList = resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(
+						commerceNotificationTemplateCommerceAccountGroupRel);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>,
+					 List<CommerceNotificationTemplateCommerceAccountGroupRel>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceNotificationTemplateCommerceAccountGroupRel>
+					value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void

@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -53,6 +55,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2646,6 +2649,47 @@ public class ObjectFieldSettingPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"objectFieldId", "name"}, false);
 
+		FinderPath.registerFinderPaths(
+			ObjectFieldSetting.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByUuid",
+				_finderPathWithPaginationFindByUuid
+			).put(
+				"finderPathWithoutPaginationFindByUuid",
+				_finderPathWithoutPaginationFindByUuid
+			).put(
+				"finderPathCountByUuid", _finderPathCountByUuid
+			).put(
+				"finderPathWithPaginationFindByUuid_C",
+				_finderPathWithPaginationFindByUuid_C
+			).put(
+				"finderPathWithoutPaginationFindByUuid_C",
+				_finderPathWithoutPaginationFindByUuid_C
+			).put(
+				"finderPathCountByUuid_C", _finderPathCountByUuid_C
+			).put(
+				"finderPathWithPaginationFindByObjectFieldId",
+				_finderPathWithPaginationFindByObjectFieldId
+			).put(
+				"finderPathWithoutPaginationFindByObjectFieldId",
+				_finderPathWithoutPaginationFindByObjectFieldId
+			).put(
+				"finderPathCountByObjectFieldId",
+				_finderPathCountByObjectFieldId
+			).put(
+				"finderPathFetchByOFI_N", _finderPathFetchByOFI_N
+			).put(
+				"finderPathCountByOFI_N", _finderPathCountByOFI_N
+			).build());
+
 		_setObjectFieldSettingUtilPersistence(this);
 	}
 
@@ -2654,6 +2698,63 @@ public class ObjectFieldSettingPersistenceImpl
 		_setObjectFieldSettingUtilPersistence(null);
 
 		entityCache.removeCache(ObjectFieldSettingImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(ObjectFieldSetting.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectFieldSetting> objectFieldSettings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectFieldSetting>> resultMap =
+				new HashMap<>();
+
+			for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectFieldSettingModelImpl objectFieldSettingModelImpl =
+						(ObjectFieldSettingModelImpl)objectFieldSetting;
+
+					arguments.add(
+						objectFieldSettingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectFieldSetting);
+				}
+				else {
+					List<ObjectFieldSetting> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(objectFieldSetting);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectFieldSetting>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectFieldSetting> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectFieldSettingUtilPersistence(

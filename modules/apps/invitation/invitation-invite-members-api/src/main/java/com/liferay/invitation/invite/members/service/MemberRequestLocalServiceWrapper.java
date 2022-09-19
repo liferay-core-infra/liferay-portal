@@ -14,6 +14,7 @@
 
 package com.liferay.invitation.invite.members.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -402,6 +403,11 @@ public class MemberRequestLocalServiceWrapper
 	public boolean hasPendingMemberRequest(long groupId, long receiverUserId) {
 		return _memberRequestLocalService.hasPendingMemberRequest(
 			groupId, receiverUserId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_memberRequestLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

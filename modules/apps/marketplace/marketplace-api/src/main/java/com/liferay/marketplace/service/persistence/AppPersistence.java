@@ -777,4 +777,7 @@ public interface AppPersistence extends BasePersistence<App> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

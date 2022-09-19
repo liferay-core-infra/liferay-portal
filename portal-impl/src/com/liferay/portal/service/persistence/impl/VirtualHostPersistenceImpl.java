@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPe
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -3436,6 +3437,48 @@ public class VirtualHostPersistenceImpl
 			new String[] {"companyId", "layoutSetId", "defaultVirtualHost"},
 			false);
 
+		FinderPath.registerFinderPaths(
+			VirtualHost.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByCompanyId",
+				_finderPathWithPaginationFindByCompanyId
+			).put(
+				"finderPathWithoutPaginationFindByCompanyId",
+				_finderPathWithoutPaginationFindByCompanyId
+			).put(
+				"finderPathCountByCompanyId", _finderPathCountByCompanyId
+			).put(
+				"finderPathFetchByHostname", _finderPathFetchByHostname
+			).put(
+				"finderPathCountByHostname", _finderPathCountByHostname
+			).put(
+				"finderPathWithPaginationFindByC_L",
+				_finderPathWithPaginationFindByC_L
+			).put(
+				"finderPathWithoutPaginationFindByC_L",
+				_finderPathWithoutPaginationFindByC_L
+			).put(
+				"finderPathCountByC_L", _finderPathCountByC_L
+			).put(
+				"finderPathWithPaginationFindByNotL_H",
+				_finderPathWithPaginationFindByNotL_H
+			).put(
+				"finderPathWithPaginationCountByNotL_H",
+				_finderPathWithPaginationCountByNotL_H
+			).put(
+				"finderPathFetchByC_L_D", _finderPathFetchByC_L_D
+			).put(
+				"finderPathCountByC_L_D", _finderPathCountByC_L_D
+			).build());
+
 		_setVirtualHostUtilPersistence(this);
 	}
 
@@ -3443,6 +3486,61 @@ public class VirtualHostPersistenceImpl
 		_setVirtualHostUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(VirtualHostImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(VirtualHost.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<VirtualHost> virtualHosts = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<VirtualHost>> resultMap = new HashMap<>();
+
+			for (VirtualHost virtualHost : virtualHosts) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					VirtualHostModelImpl virtualHostModelImpl =
+						(VirtualHostModelImpl)virtualHost;
+
+					arguments.add(
+						virtualHostModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), virtualHost);
+				}
+				else {
+					List<VirtualHost> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(virtualHost);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<VirtualHost>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<VirtualHost> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setVirtualHostUtilPersistence(

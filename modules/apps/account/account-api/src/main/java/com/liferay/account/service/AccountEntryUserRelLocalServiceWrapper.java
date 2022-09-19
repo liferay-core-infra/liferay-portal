@@ -14,6 +14,7 @@
 
 package com.liferay.account.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -481,6 +482,11 @@ public class AccountEntryUserRelLocalServiceWrapper
 	@Override
 	public boolean isAccountEntryUser(long userId) {
 		return _accountEntryUserRelLocalService.isAccountEntryUser(userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_accountEntryUserRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

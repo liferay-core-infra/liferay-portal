@@ -16,6 +16,7 @@ package com.liferay.asset.auto.tagger.service;
 
 import com.liferay.asset.auto.tagger.model.AssetAutoTaggerEntry;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -370,6 +371,11 @@ public class AssetAutoTaggerEntryLocalServiceWrapper
 
 		return _assetAutoTaggerEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_assetAutoTaggerEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

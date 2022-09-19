@@ -823,4 +823,7 @@ public interface DEDataListViewPersistence
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

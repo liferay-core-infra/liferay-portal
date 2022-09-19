@@ -33,7 +33,9 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.LayoutBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutBranchUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -46,6 +48,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -2601,6 +2605,47 @@ public class LayoutBranchPersistenceImpl
 			},
 			new String[] {"layoutSetBranchId", "plid", "master"}, false);
 
+		FinderPath.registerFinderPaths(
+			LayoutBranch.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathWithPaginationFindByLayoutSetBranchId",
+				_finderPathWithPaginationFindByLayoutSetBranchId
+			).put(
+				"finderPathWithoutPaginationFindByLayoutSetBranchId",
+				_finderPathWithoutPaginationFindByLayoutSetBranchId
+			).put(
+				"finderPathCountByLayoutSetBranchId",
+				_finderPathCountByLayoutSetBranchId
+			).put(
+				"finderPathWithPaginationFindByL_P",
+				_finderPathWithPaginationFindByL_P
+			).put(
+				"finderPathWithoutPaginationFindByL_P",
+				_finderPathWithoutPaginationFindByL_P
+			).put(
+				"finderPathCountByL_P", _finderPathCountByL_P
+			).put(
+				"finderPathFetchByL_P_N", _finderPathFetchByL_P_N
+			).put(
+				"finderPathCountByL_P_N", _finderPathCountByL_P_N
+			).put(
+				"finderPathWithPaginationFindByL_P_M",
+				_finderPathWithPaginationFindByL_P_M
+			).put(
+				"finderPathWithoutPaginationFindByL_P_M",
+				_finderPathWithoutPaginationFindByL_P_M
+			).put(
+				"finderPathCountByL_P_M", _finderPathCountByL_P_M
+			).build());
+
 		_setLayoutBranchUtilPersistence(this);
 	}
 
@@ -2608,6 +2653,61 @@ public class LayoutBranchPersistenceImpl
 		_setLayoutBranchUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(LayoutBranchImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(LayoutBranch.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutBranch> layoutBranchs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutBranch>> resultMap = new HashMap<>();
+
+			for (LayoutBranch layoutBranch : layoutBranchs) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutBranchModelImpl layoutBranchModelImpl =
+						(LayoutBranchModelImpl)layoutBranch;
+
+					arguments.add(
+						layoutBranchModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layoutBranch);
+				}
+				else {
+					List<LayoutBranch> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutBranch);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutBranch>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutBranch> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutBranchUtilPersistence(

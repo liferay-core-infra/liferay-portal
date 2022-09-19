@@ -344,4 +344,7 @@ public interface DLSyncEventPersistence extends BasePersistence<DLSyncEvent> {
 	 */
 	public int countAll();
 
+	public void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths);
+
 }

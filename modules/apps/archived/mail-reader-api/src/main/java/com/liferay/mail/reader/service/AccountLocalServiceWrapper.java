@@ -14,6 +14,7 @@
 
 package com.liferay.mail.reader.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -343,6 +344,11 @@ public class AccountLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_accountLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

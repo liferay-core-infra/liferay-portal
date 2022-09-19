@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -490,6 +491,11 @@ public class CommerceOrderTypeRelLocalServiceWrapper
 
 		return _commerceOrderTypeRelLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceOrderTypeRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

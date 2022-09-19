@@ -34,7 +34,9 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -49,6 +51,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -1366,6 +1369,30 @@ public class CompanyPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"logoId"},
 			false);
 
+		FinderPath.registerFinderPaths(
+			Company.class,
+			HashMapBuilder.<String, FinderPath>put(
+				"finderPathWithPaginationFindAll",
+				_finderPathWithPaginationFindAll
+			).put(
+				"finderPathWithoutPaginationFindAll",
+				_finderPathWithoutPaginationFindAll
+			).put(
+				"finderPathCountAll", _finderPathCountAll
+			).put(
+				"finderPathFetchByWebId", _finderPathFetchByWebId
+			).put(
+				"finderPathCountByWebId", _finderPathCountByWebId
+			).put(
+				"finderPathFetchByMx", _finderPathFetchByMx
+			).put(
+				"finderPathCountByMx", _finderPathCountByMx
+			).put(
+				"finderPathFetchByLogoId", _finderPathFetchByLogoId
+			).put(
+				"finderPathCountByLogoId", _finderPathCountByLogoId
+			).build());
+
 		_setCompanyUtilPersistence(this);
 	}
 
@@ -1373,6 +1400,60 @@ public class CompanyPersistenceImpl
 		_setCompanyUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(CompanyImpl.class.getName());
+
+		FinderPath.unregisterFinderPaths(Company.class);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Company> companys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Company>> resultMap = new HashMap<>();
+
+			for (Company company : companys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CompanyModelImpl companyModelImpl =
+						(CompanyModelImpl)company;
+
+					arguments.add(companyModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), company);
+				}
+				else {
+					List<Company> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(company);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Company>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Company> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCompanyUtilPersistence(

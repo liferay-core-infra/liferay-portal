@@ -30,7 +30,7 @@ import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.commerce.model.CommerceShipment;
 import com.liferay.commerce.model.CommerceShipmentItem;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
-import com.liferay.commerce.service.CommerceShipmentLocalService;
+import com.liferay.commerce.service.CommerceShipmentLocalServiceUtil;
 import com.liferay.commerce.service.base.CommerceShipmentItemLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -92,7 +92,7 @@ public class CommerceShipmentItemLocalServiceImpl
 		if (validateInventory) {
 			validate(
 				commerceOrderItem,
-				_commerceShipmentLocalService.getCommerceShipment(
+				CommerceShipmentLocalServiceUtil.getCommerceShipment(
 					commerceShipmentId),
 				commerceInventoryWarehouseId, quantity, quantity);
 		}
@@ -606,9 +606,6 @@ public class CommerceShipmentItemLocalServiceImpl
 
 	@Reference
 	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
-
-	@Reference
-	private CommerceShipmentLocalService _commerceShipmentLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -74,6 +74,12 @@ public class HttpAdapter {
 
 		};
 
+		Class<?> clazz = getClass();
+
+		_servletContextProxy = (ServletContext)Proxy.newProxyInstance(
+			clazz.getClassLoader(), _INTERFACES,
+			new ServletContextAdaptor(_servletContext));
+
 		ServletConfig servletConfig = new ServletConfig() {
 
 			@Override
@@ -81,21 +87,21 @@ public class HttpAdapter {
 				if (name.equals(
 						HttpServiceRuntimeConstants.HTTP_SERVICE_ENDPOINT)) {
 
-					return _servletContext.getContextPath() +
-						_servletContext.getInitParameter(name);
+					return _servletContextProxy.getContextPath() +
+						_servletContextProxy.getInitParameter(name);
 				}
 
-				return _servletContext.getInitParameter(name);
+				return _servletContextProxy.getInitParameter(name);
 			}
 
 			@Override
 			public Enumeration<String> getInitParameterNames() {
-				return _servletContext.getInitParameterNames();
+				return _servletContextProxy.getInitParameterNames();
 			}
 
 			@Override
 			public ServletContext getServletContext() {
-				return _servletContext;
+				return _servletContextProxy;
 			}
 
 			@Override
@@ -109,7 +115,7 @@ public class HttpAdapter {
 			_httpServiceServlet.init(servletConfig);
 		}
 		catch (ServletException servletException) {
-			_servletContext.log(
+			_servletContextProxy.log(
 				servletException.getMessage(), servletException);
 
 			return;
@@ -148,11 +154,7 @@ public class HttpAdapter {
 
 	@Reference(target = "(original.bean=true)", unbind = "-")
 	protected void setServletContext(ServletContext servletContext) {
-		Class<?> clazz = getClass();
-
-		_servletContext = (ServletContext)Proxy.newProxyInstance(
-			clazz.getClassLoader(), _INTERFACES,
-			new ServletContextAdaptor(servletContext));
+		_servletContext = servletContext;
 	}
 
 	private static final Class<?>[] _INTERFACES = new Class<?>[] {
@@ -178,6 +180,7 @@ public class HttpAdapter {
 	private HttpServiceServlet _httpServiceServlet;
 	private ServiceRegistration<?> _serviceRegistration;
 	private ServletContext _servletContext;
+	private ServletContext _servletContextProxy;
 
 	private static class ServletContextAdaptor implements InvocationHandler {
 

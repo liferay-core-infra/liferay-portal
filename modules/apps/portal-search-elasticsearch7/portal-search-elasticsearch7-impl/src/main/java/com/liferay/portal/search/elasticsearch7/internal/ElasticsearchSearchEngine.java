@@ -145,6 +145,16 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	}
 
 	@Override
+	public IndexSearcher getIndexSearcher() {
+		return _indexSearcher;
+	}
+
+	@Override
+	public IndexWriter getIndexWriter() {
+		return _indexWriter;
+	}
+
+	@Override
 	public void initialize(long companyId) {
 		super.initialize(companyId);
 

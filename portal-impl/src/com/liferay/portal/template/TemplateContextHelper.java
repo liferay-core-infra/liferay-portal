@@ -105,7 +105,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletRequest;
@@ -158,51 +157,34 @@ public class TemplateContextHelper {
 		return templateVariableGroups;
 	}
 
-	public Map<String, Object> getHelperUtilities(
-		ClassLoader classLoader, boolean restricted) {
+	public Map<String, Object> getHelperUtilities(boolean restricted) {
+		if (_helperUtilitiesMapArray == null) {
+			_helperUtilitiesMapArray = (Map<String, Object>[])new Map<?, ?>[2];
 
-		Map<String, Object>[] helperUtilitiesArray = _helperUtilitiesMaps.get(
-			classLoader);
+			Map<String, Object> helperUtilities = new HashMap<>();
 
-		if (helperUtilitiesArray == null) {
-			helperUtilitiesArray = (Map<String, Object>[])new Map<?, ?>[2];
-
-			_helperUtilitiesMaps.put(classLoader, helperUtilitiesArray);
-		}
-		else {
-			Map<String, Object> helperUtilities = null;
+			populateCommonHelperUtilities(helperUtilities);
+			populateExtraHelperUtilities(helperUtilities, restricted);
 
 			if (restricted) {
-				helperUtilities = helperUtilitiesArray[1];
+				Set<String> restrictedVariables = getRestrictedVariables();
+
+				for (String restrictedVariable : restrictedVariables) {
+					helperUtilities.remove(restrictedVariable);
+				}
+
+				_helperUtilitiesMapArray[1] = helperUtilities;
 			}
 			else {
-				helperUtilities = helperUtilitiesArray[0];
-			}
-
-			if (helperUtilities != null) {
-				return helperUtilities;
+				_helperUtilitiesMapArray[0] = helperUtilities;
 			}
 		}
-
-		Map<String, Object> helperUtilities = new HashMap<>();
-
-		populateCommonHelperUtilities(helperUtilities);
-		populateExtraHelperUtilities(helperUtilities, restricted);
 
 		if (restricted) {
-			Set<String> restrictedVariables = getRestrictedVariables();
-
-			for (String restrictedVariable : restrictedVariables) {
-				helperUtilities.remove(restrictedVariable);
-			}
-
-			helperUtilitiesArray[1] = helperUtilities;
-		}
-		else {
-			helperUtilitiesArray[0] = helperUtilities;
+			return _helperUtilitiesMapArray[1];
 		}
 
-		return helperUtilities;
+		return _helperUtilitiesMapArray[0];
 	}
 
 	public Set<String> getRestrictedVariables() {
@@ -381,11 +363,7 @@ public class TemplateContextHelper {
 	}
 
 	public void removeAllHelperUtilities() {
-		_helperUtilitiesMaps.clear();
-	}
-
-	public void removeHelperUtilities(ClassLoader classLoader) {
-		_helperUtilitiesMaps.remove(classLoader);
+		_helperUtilitiesMapArray = null;
 	}
 
 	protected void populateCommonHelperUtilities(
@@ -894,8 +872,7 @@ public class TemplateContextHelper {
 	private static final Log _log = LogFactoryUtil.getLog(
 		TemplateContextHelper.class);
 
-	private final Map<ClassLoader, Map<String, Object>[]> _helperUtilitiesMaps =
-		new ConcurrentHashMap<>();
+	private Map<String, Object>[] _helperUtilitiesMapArray;
 
 	private static class HttpWrapper implements Http {
 

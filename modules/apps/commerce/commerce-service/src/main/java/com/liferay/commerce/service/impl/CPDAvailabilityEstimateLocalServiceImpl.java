@@ -19,7 +19,7 @@ import com.liferay.commerce.model.CPDAvailabilityEstimate;
 import com.liferay.commerce.model.CommerceAvailabilityEstimate;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
-import com.liferay.commerce.service.CommerceAvailabilityEstimateLocalService;
+import com.liferay.commerce.service.CommerceAvailabilityEstimateLocalServiceUtil;
 import com.liferay.commerce.service.base.CPDAvailabilityEstimateLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -215,7 +215,7 @@ public class CPDAvailabilityEstimateLocalServiceImpl
 
 		if (commerceAvailabilityEstimateId > 0) {
 			CommerceAvailabilityEstimate commerceAvailabilityEstimate =
-				_commerceAvailabilityEstimateLocalService.
+				CommerceAvailabilityEstimateLocalServiceUtil.
 					fetchCommerceAvailabilityEstimate(
 						commerceAvailabilityEstimateId);
 
@@ -224,10 +224,6 @@ public class CPDAvailabilityEstimateLocalServiceImpl
 			}
 		}
 	}
-
-	@Reference
-	private CommerceAvailabilityEstimateLocalService
-		_commerceAvailabilityEstimateLocalService;
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;

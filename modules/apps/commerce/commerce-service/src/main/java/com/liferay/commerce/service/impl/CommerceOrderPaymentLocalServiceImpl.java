@@ -16,7 +16,7 @@ package com.liferay.commerce.service.impl;
 
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderPayment;
-import com.liferay.commerce.service.CommerceOrderLocalService;
+import com.liferay.commerce.service.CommerceOrderLocalServiceUtil;
 import com.liferay.commerce.service.base.CommerceOrderPaymentLocalServiceBaseImpl;
 import com.liferay.commerce.util.comparator.CommerceOrderPaymentCreateDateComparator;
 import com.liferay.portal.aop.AopService;
@@ -50,7 +50,7 @@ public class CommerceOrderPaymentLocalServiceImpl
 		throws PortalException {
 
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			CommerceOrderLocalServiceUtil.getCommerceOrder(commerceOrderId);
 
 		User user = _userLocalService.getUser(commerceOrder.getUserId());
 
@@ -65,7 +65,7 @@ public class CommerceOrderPaymentLocalServiceImpl
 
 		return _getCommerceOrderPayment(
 			status, content,
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId),
+			CommerceOrderLocalServiceUtil.getCommerceOrder(commerceOrderId),
 			_userLocalService.getUser(serviceContext.getUserId()));
 	}
 
@@ -120,9 +120,6 @@ public class CommerceOrderPaymentLocalServiceImpl
 
 		return commerceOrderPaymentPersistence.update(commerceOrderPayment);
 	}
-
-	@Reference
-	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

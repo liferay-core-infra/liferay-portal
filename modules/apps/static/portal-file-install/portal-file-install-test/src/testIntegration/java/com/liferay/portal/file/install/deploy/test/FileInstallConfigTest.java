@@ -15,7 +15,9 @@
 package com.liferay.portal.file.install.deploy.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.petra.function.UnsafeTriConsumer;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -325,226 +327,116 @@ public class FileInstallConfigTest {
 
 	@Test
 	public void testFindConfigurationWithFelixFileName() throws Exception {
-		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testFindConfigurationWithFelixFileName");
-
-		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		_configuration = _createConfiguration(
-			configurationPid, StringPool.BLANK);
-
-		Configuration[] configurations = _findExistingConfigurations(
-			_configurationPath);
-
-		Assert.assertNotNull(configurations);
-		Assert.assertEquals(
-			Arrays.toString(configurations), 1, configurations.length);
-		Assert.assertEquals(_configuration, configurations[0]);
+		_testFindConfiguration(
+			_CONFIGURATION_PID_PREFIX.concat(
+				".testFindConfigurationWithFelixFileName"),
+			(configurationPid, targetConfigurationPath) ->
+				_configuration = _createConfiguration(
+					configurationPid, StringPool.BLANK),
+			false);
 	}
 
 	@Test
 	public void testFindConfigurationWithFelixFileNameWhenUsingSymlink()
 		throws Exception {
 
-		String configurationPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testFindConfigurationWithFelixFileNameWhenUsingSymlink");
+		_testFindConfiguration(
+			_CONFIGURATION_PID_PREFIX.concat(
+				".testFindConfigurationWithFelixFileNameWhenUsingSymlink"),
+			(configurationPid, targetConfigurationPath) -> {
+				Files.createSymbolicLink(
+					_configurationPath, targetConfigurationPath);
 
-		_configurationPath = Paths.get(
-			FileUtil.createTempFileName(configurationPid, "config"));
-
-		Path symlinkConfigurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		try {
-			Files.createSymbolicLink(
-				symlinkConfigurationPath, _configurationPath);
-
-			_configuration = _createConfiguration(
-				configurationPid, StringPool.BLANK);
-
-			Configuration[] configurations = _findExistingConfigurations(
-				symlinkConfigurationPath);
-
-			Assert.assertNotNull(configurations);
-			Assert.assertEquals(
-				Arrays.toString(configurations), 1, configurations.length);
-			Assert.assertEquals(_configuration, configurations[0]);
-		}
-		finally {
-			Files.delete(symlinkConfigurationPath);
-		}
+				_configuration = _createConfiguration(
+					configurationPid, StringPool.BLANK);
+			},
+			true);
 	}
 
 	@Test
 	public void testFindConfigurationWithFelixFileNameWhenUsingSymlinkAfterReloadingConfiguration()
 		throws Exception {
 
-		String configurationPid = StringBundler.concat(
-			_CONFIGURATION_PID_PREFIX,
-			".testFindConfigurationWithFelixFileNameWhenUsingSymlinkAfter",
-			"ReloadingConfiguration");
+		_testFindConfiguration(
+			StringBundler.concat(
+				_CONFIGURATION_PID_PREFIX,
+				".testFindConfigurationWithFelixFileNameWhenUsingSymlinkAfter",
+				"ReloadingConfiguration"),
+			(configurationPid, targetConfigurationPath) -> {
+				Files.createSymbolicLink(
+					_configurationPath, targetConfigurationPath);
 
-		_configurationPath = Paths.get(
-			FileUtil.createTempFileName(configurationPid, "config"));
+				_configuration = _createConfiguration(
+					configurationPid, StringPool.BLANK);
 
-		Path symlinkConfigurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		try {
-			Files.createSymbolicLink(
-				symlinkConfigurationPath, _configurationPath);
-
-			_configuration = _createConfiguration(
-				configurationPid, StringPool.BLANK);
-
-			_reloadablePersistenceManager.reload(configurationPid);
-
-			Configuration[] configurations = _findExistingConfigurations(
-				symlinkConfigurationPath);
-
-			Assert.assertNotNull(configurations);
-			Assert.assertEquals(
-				Arrays.toString(configurations), 1, configurations.length);
-			Assert.assertEquals(_configuration, configurations[0]);
-		}
-		finally {
-			Files.delete(symlinkConfigurationPath);
-		}
+				_reloadablePersistenceManager.reload(configurationPid);
+			},
+			true);
 	}
 
 	@Test
 	public void testFindFactoryConfigurationWithFelixFileName()
 		throws Exception {
 
-		String factoryConfigurationName = "abc";
-		String factoryPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testFindFactoryConfigurationWithFelixFileName");
+		_testFindFactoryConfiguration(
+			_CONFIGURATION_PID_PREFIX.concat(
+				".testFindFactoryConfigurationWithFelixFileName"),
+			(factoryPid, configurationPid, targetConfigurationPath) ->
+				_createFactoryConfiguration(
+					factoryPid,
+					() -> {
+						String content = StringPool.BLANK;
 
-		String configurationPid = StringBundler.concat(
-			factoryPid, CharPool.TILDE, factoryConfigurationName);
-
-		_configurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		_createFactoryConfiguration(
-			factoryPid,
-			() -> {
-				String content = StringPool.BLANK;
-
-				Files.write(_configurationPath, content.getBytes());
-			});
-
-		Configuration[] configurations = _findExistingConfigurations(
-			_configurationPath);
-
-		_configuration = _configurationAdmin.getFactoryConfiguration(
-			factoryPid, factoryConfigurationName, StringPool.QUESTION);
-
-		Assert.assertNotNull(configurations);
-		Assert.assertEquals(
-			Arrays.toString(configurations), 1, configurations.length);
-		Assert.assertEquals(_configuration, configurations[0]);
+						Files.write(_configurationPath, content.getBytes());
+					}),
+			false);
 	}
 
 	@Test
 	public void testFindFactoryConfigurationWithFelixFileNameWhenUsingSymlink()
 		throws Exception {
 
-		String factoryConfigurationName = "abc";
-		String factoryPid = _CONFIGURATION_PID_PREFIX.concat(
-			".testFindFactoryConfigurationWithFelixFileNameUsingSymlink");
+		_testFindFactoryConfiguration(
+			_CONFIGURATION_PID_PREFIX.concat(
+				".testFindFactoryConfigurationWithFelixFileNameUsingSymlink"),
+			(factoryPid, configurationPid, targetConfigurationPath) ->
+				_createFactoryConfiguration(
+					factoryPid,
+					() -> {
+						Files.createSymbolicLink(
+							_configurationPath, targetConfigurationPath);
 
-		String configurationPid = StringBundler.concat(
-			factoryPid, CharPool.TILDE, factoryConfigurationName);
+						String content = StringPool.BLANK;
 
-		_configurationPath = Paths.get(
-			FileUtil.createTempFileName(configurationPid, "config"));
-
-		Path symlinkConfigurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		try {
-			_createFactoryConfiguration(
-				factoryPid,
-				() -> {
-					String content = StringPool.BLANK;
-
-					Files.write(_configurationPath, content.getBytes());
-
-					Files.createSymbolicLink(
-						symlinkConfigurationPath, _configurationPath);
-				});
-
-			Configuration[] configurations = _findExistingConfigurations(
-				symlinkConfigurationPath);
-
-			_configuration = _configurationAdmin.getFactoryConfiguration(
-				factoryPid, factoryConfigurationName, StringPool.QUESTION);
-
-			Assert.assertNotNull(configurations);
-			Assert.assertEquals(
-				Arrays.toString(configurations), 1, configurations.length);
-			Assert.assertEquals(_configuration, configurations[0]);
-		}
-		finally {
-			Files.delete(symlinkConfigurationPath);
-		}
+						Files.write(_configurationPath, content.getBytes());
+					}),
+			true);
 	}
 
 	@Test
 	public void testFindFactoryConfigurationWithFelixFileNameWhenUsingSymlinkAfterReloadingConfiguration()
 		throws Exception {
 
-		String factoryConfigurationName = "abc";
-		String factoryPid = StringBundler.concat(
-			_CONFIGURATION_PID_PREFIX,
-			".testFindFactoryConfigurationWithFelixFileNameUsingSymlinkAfter",
-			"ReloadingConfiguration");
+		_testFindFactoryConfiguration(
+			StringBundler.concat(
+				_CONFIGURATION_PID_PREFIX,
+				".testFindFactoryConfigurationWithFelixFileNameUsingSymlinkAft",
+				"erReloadingConfiguration"),
+			(factoryPid, configurationPid, targetConfigurationPath) -> {
+				_createFactoryConfiguration(
+					factoryPid,
+					() -> {
+						Files.createSymbolicLink(
+							_configurationPath, targetConfigurationPath);
 
-		String configurationPid = StringBundler.concat(
-			factoryPid, CharPool.TILDE, factoryConfigurationName);
+						String content = StringPool.BLANK;
 
-		_configurationPath = Paths.get(
-			FileUtil.createTempFileName(configurationPid, "config"));
+						Files.write(_configurationPath, content.getBytes());
+					});
 
-		Path symlinkConfigurationPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-			configurationPid.concat(".config"));
-
-		try {
-			_createFactoryConfiguration(
-				factoryPid,
-				() -> {
-					String content = StringPool.BLANK;
-
-					Files.write(_configurationPath, content.getBytes());
-
-					Files.createSymbolicLink(
-						symlinkConfigurationPath, _configurationPath);
-				});
-
-			_reloadablePersistenceManager.reload(configurationPid);
-
-			Configuration[] configurations = _findExistingConfigurations(
-				symlinkConfigurationPath);
-
-			_configuration = _configurationAdmin.getFactoryConfiguration(
-				factoryPid, factoryConfigurationName, StringPool.QUESTION);
-
-			Assert.assertNotNull(configurations);
-			Assert.assertEquals(
-				Arrays.toString(configurations), 1, configurations.length);
-			Assert.assertEquals(_configuration, configurations[0]);
-		}
-		finally {
-			Files.delete(symlinkConfigurationPath);
-		}
+				_reloadablePersistenceManager.reload(configurationPid);
+			},
+			true);
 	}
 
 	@Ignore
@@ -567,6 +459,26 @@ public class FileInstallConfigTest {
 		Assert.assertTrue(
 			configurationAttributes.contains(
 				Configuration.ConfigurationAttribute.READ_ONLY));
+	}
+
+	private void _assertConfiguration(Configuration expectedConfiguration)
+		throws Exception {
+
+		File file = _configurationPath.toFile();
+
+		URI uri = file.toURI();
+
+		Configuration[] configurations = _configurationAdmin.listConfigurations(
+			StringBundler.concat(
+				StringPool.OPEN_PARENTHESIS,
+				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
+				StringPool.EQUAL, uri.toString(),
+				StringPool.CLOSE_PARENTHESIS));
+
+		Assert.assertNotNull(configurations);
+		Assert.assertEquals(
+			Arrays.toString(configurations), 1, configurations.length);
+		Assert.assertEquals(expectedConfiguration, configurations[0]);
 	}
 
 	private Configuration _createConfiguration(
@@ -675,28 +587,6 @@ public class FileInstallConfigTest {
 		}
 	}
 
-	private Configuration[] _findExistingConfigurations(Path configurationPath)
-		throws Exception {
-
-		Path configurationDirPath = configurationPath.getParent();
-
-		configurationDirPath = configurationDirPath.toRealPath();
-
-		configurationPath = configurationDirPath.resolve(
-			configurationPath.getFileName());
-
-		File file = configurationPath.toFile();
-
-		URI uri = file.toURI();
-
-		return _configurationAdmin.listConfigurations(
-			StringBundler.concat(
-				StringPool.OPEN_PARENTHESIS,
-				FileInstallConstants.FELIX_FILE_INSTALL_FILENAME,
-				StringPool.EQUAL, uri.toString(),
-				StringPool.CLOSE_PARENTHESIS));
-	}
-
 	private void _testFactoryConfiguration(char separator) throws Exception {
 		String factoryConfigurationName = StringBundler.concat(
 			StringUtil.randomId(), CharPool.DASH, StringUtil.randomId());
@@ -734,6 +624,62 @@ public class FileInstallConfigTest {
 		Dictionary<String, Object> dictionary = _configuration.getProperties();
 
 		Assert.assertEquals("testValue", dictionary.get(testKey));
+	}
+
+	private void _testFindConfiguration(
+			String configurationPid,
+			UnsafeBiConsumer<String, Path, Exception>
+				createConfigurationUnsafeBiConsumer,
+			boolean symlink)
+		throws Exception {
+
+		_configurationPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			configurationPid.concat(".config"));
+
+		if (symlink) {
+			createConfigurationUnsafeBiConsumer.accept(
+				configurationPid,
+				Paths.get(
+					FileUtil.createTempFileName(configurationPid, "config")));
+		}
+		else {
+			createConfigurationUnsafeBiConsumer.accept(configurationPid, null);
+		}
+
+		_assertConfiguration(_configuration);
+	}
+
+	private void _testFindFactoryConfiguration(
+			String factoryPid,
+			UnsafeTriConsumer<String, String, Path, Exception>
+				createConfigurationUnsafeTriConsumer,
+			boolean symlink)
+		throws Exception {
+
+		String factoryConfigurationName = "abc";
+
+		String configurationPid = StringBundler.concat(
+			factoryPid, CharPool.TILDE, factoryConfigurationName);
+
+		_configurationPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
+			configurationPid.concat(".config"));
+
+		if (symlink) {
+			createConfigurationUnsafeTriConsumer.accept(
+				factoryPid, configurationPid,
+				Paths.get(
+					FileUtil.createTempFileName(configurationPid, "config")));
+		}
+		else {
+			createConfigurationUnsafeTriConsumer.accept(
+				factoryPid, configurationPid, null);
+		}
+
+		_assertConfiguration(
+			_configurationAdmin.getFactoryConfiguration(
+				factoryPid, factoryConfigurationName, StringPool.QUESTION));
 	}
 
 	private static final String _CONFIGURATION_PID_PREFIX =

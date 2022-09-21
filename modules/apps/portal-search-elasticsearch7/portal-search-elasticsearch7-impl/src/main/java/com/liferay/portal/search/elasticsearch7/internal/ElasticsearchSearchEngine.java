@@ -145,6 +145,16 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	}
 
 	@Override
+	public IndexSearcher getIndexSearcher() {
+		return _indexSearcher;
+	}
+
+	@Override
+	public IndexWriter getIndexWriter() {
+		return _indexWriter;
+	}
+
+	@Override
 	public void initialize(long companyId) {
 		super.initialize(companyId);
 
@@ -237,18 +247,6 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 		_searchEngineAdapter.execute(restoreSnapshotRequest);
 
 		_waitForYellowStatus();
-	}
-
-	@Override
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
-	public void setIndexSearcher(IndexSearcher indexSearcher) {
-		super.setIndexSearcher(indexSearcher);
-	}
-
-	@Override
-	@Reference(target = "(search.engine.impl=Elasticsearch)", unbind = "-")
-	public void setIndexWriter(IndexWriter indexWriter) {
-		super.setIndexWriter(indexWriter);
 	}
 
 	public void unsetElasticsearchConnectionManager(
@@ -471,6 +469,13 @@ public class ElasticsearchSearchEngine extends BaseSearchEngine {
 	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 	private IndexFactory _indexFactory;
 	private IndexNameBuilder _indexNameBuilder;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
+	private IndexSearcher _indexSearcher;
+
+	@Reference(target = "(search.engine.impl=Elasticsearch)")
+	private IndexWriter _indexWriter;
+
 	private SearchEngineAdapter _searchEngineAdapter;
 	private SearchEngineInformation _searchEngineInformation;
 

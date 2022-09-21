@@ -81,14 +81,6 @@ public class BaseSearchEngine implements SearchEngine {
 		throws SearchException {
 	}
 
-	public void setIndexSearcher(IndexSearcher indexSearcher) {
-		_indexSearcher = indexSearcher;
-	}
-
-	public void setIndexWriter(IndexWriter indexWriter) {
-		_indexWriter = indexWriter;
-	}
-
 	public void setVendor(String vendor) {
 		_vendor = vendor;
 	}

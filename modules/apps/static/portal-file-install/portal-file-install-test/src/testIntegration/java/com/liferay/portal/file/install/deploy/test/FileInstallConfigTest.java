@@ -574,13 +574,6 @@ public class FileInstallConfigTest {
 	private Configuration[] _findExistingConfigurations(Path configurationPath)
 		throws Exception {
 
-		Path configurationDirPath = configurationPath.getParent();
-
-		configurationDirPath = configurationDirPath.toRealPath();
-
-		configurationPath = configurationDirPath.resolve(
-			configurationPath.getFileName());
-
 		File file = configurationPath.toFile();
 
 		URI uri = file.toURI();

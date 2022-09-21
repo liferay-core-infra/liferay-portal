@@ -384,11 +384,7 @@ public class FileInstallConfigTest {
 			(factoryPid, configurationPid, targetConfigurationPath) ->
 				_createFactoryConfiguration(
 					factoryPid,
-					() -> {
-						String content = StringPool.BLANK;
-
-						Files.write(_configurationPath, content.getBytes());
-					}),
+					() -> Files.write(_configurationPath, new byte[0])),
 			false);
 	}
 
@@ -403,9 +399,7 @@ public class FileInstallConfigTest {
 				_createFactoryConfiguration(
 					factoryPid,
 					() -> {
-						String content = StringPool.BLANK;
-
-						Files.write(_configurationPath, content.getBytes());
+						Files.write(_configurationPath, new byte[0]);
 
 						Files.createSymbolicLink(
 							_configurationPath, targetConfigurationPath);
@@ -426,9 +420,7 @@ public class FileInstallConfigTest {
 				_createFactoryConfiguration(
 					factoryPid,
 					() -> {
-						String content = StringPool.BLANK;
-
-						Files.write(_configurationPath, content.getBytes());
+						Files.write(_configurationPath, new byte[0]);
 
 						Files.createSymbolicLink(
 							_configurationPath, targetConfigurationPath);

@@ -14,6 +14,9 @@
 
 package com.liferay.portal.kernel.search;
 
+import com.liferay.portal.kernel.search.dummy.DummyIndexSearcher;
+import com.liferay.portal.kernel.search.dummy.DummyIndexWriter;
+
 import java.util.Collection;
 import java.util.Collections;
 
@@ -41,12 +44,12 @@ public class BaseSearchEngine implements SearchEngine {
 
 	@Override
 	public IndexSearcher getIndexSearcher() {
-		return _indexSearcher;
+		return new DummyIndexSearcher();
 	}
 
 	@Override
 	public IndexWriter getIndexWriter() {
-		return _indexWriter;
+		return new DummyIndexWriter();
 	}
 
 	@Override

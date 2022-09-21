@@ -399,10 +399,10 @@ public class FileInstallConfigTest {
 				_createFactoryConfiguration(
 					factoryPid,
 					() -> {
-						Files.write(_configurationPath, new byte[0]);
-
 						Files.createSymbolicLink(
 							_configurationPath, targetConfigurationPath);
+
+						Files.write(_configurationPath, new byte[0]);
 					}),
 			true);
 	}
@@ -420,10 +420,10 @@ public class FileInstallConfigTest {
 				_createFactoryConfiguration(
 					factoryPid,
 					() -> {
-						Files.write(_configurationPath, new byte[0]);
-
 						Files.createSymbolicLink(
 							_configurationPath, targetConfigurationPath);
+
+						Files.write(_configurationPath, new byte[0]);
 					});
 
 				_reloadablePersistenceManager.reload(configurationPid);

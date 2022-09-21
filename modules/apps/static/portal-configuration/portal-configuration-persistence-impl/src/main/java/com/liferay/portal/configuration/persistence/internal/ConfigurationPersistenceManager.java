@@ -41,9 +41,6 @@ import java.io.OutputStream;
 
 import java.net.URI;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -410,14 +407,10 @@ public class ConfigurationPersistenceManager
 	}
 
 	private File _getConfigFile(String fileName) throws IOException {
-		Path configsDirPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
+		File configFile = new File(
+			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
 
-		configsDirPath = configsDirPath.toRealPath();
-
-		Path configFilePath = configsDirPath.resolve(fileName);
-
-		return configFilePath.toFile();
+		return configFile.getAbsoluteFile();
 	}
 
 	private Dictionary<Object, Object> _getDictionary(String pid)

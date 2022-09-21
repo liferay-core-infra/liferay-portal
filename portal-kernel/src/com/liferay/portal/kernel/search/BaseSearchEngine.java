@@ -14,9 +14,6 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.portal.kernel.search.dummy.DummyIndexSearcher;
-import com.liferay.portal.kernel.search.dummy.DummyIndexWriter;
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -81,20 +78,10 @@ public class BaseSearchEngine implements SearchEngine {
 		throws SearchException {
 	}
 
-	public void setIndexSearcher(IndexSearcher indexSearcher) {
-		_indexSearcher = indexSearcher;
-	}
-
-	public void setIndexWriter(IndexWriter indexWriter) {
-		_indexWriter = indexWriter;
-	}
-
 	public void setVendor(String vendor) {
 		_vendor = vendor;
 	}
 
-	private IndexSearcher _indexSearcher = new DummyIndexSearcher();
-	private IndexWriter _indexWriter = new DummyIndexWriter();
 	private String _vendor;
 
 }

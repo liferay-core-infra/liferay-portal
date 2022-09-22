@@ -407,8 +407,11 @@ public class ConfigurationPersistenceManager
 	}
 
 	private File _getConfigFile(String fileName) throws IOException {
-		File configFile = new File(
-			PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR, fileName);
+		File dir = new File(PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
+
+		dir = dir.getCanonicalFile();
+
+		File configFile = new File(dir, fileName);
 
 		return configFile.getAbsoluteFile();
 	}

@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 
@@ -34,6 +34,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Leonardo Barros
@@ -73,11 +74,10 @@ public class UpdateTemplateMVCActionCommand
 		long templateId = ParamUtil.getLong(uploadPortletRequest, "templateId");
 
 		long classPK = ParamUtil.getLong(uploadPortletRequest, "classPK");
-		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
+		Map<Locale, String> nameMap = _localization.getLocalizationMap(
 			uploadPortletRequest, "name");
-		Map<Locale, String> descriptionMap =
-			LocalizationUtil.getLocalizationMap(
-				uploadPortletRequest, "description");
+		Map<Locale, String> descriptionMap = _localization.getLocalizationMap(
+			uploadPortletRequest, "description");
 		String type = ParamUtil.getString(uploadPortletRequest, "type");
 		String mode = ParamUtil.getString(uploadPortletRequest, "mode");
 		String language = ParamUtil.getString(
@@ -101,5 +101,8 @@ public class UpdateTemplateMVCActionCommand
 			script, cacheable, smallImage, smallImageURL, smallImageFile,
 			serviceContext);
 	}
+
+	@Reference
+	private Localization _localization;
 
 }

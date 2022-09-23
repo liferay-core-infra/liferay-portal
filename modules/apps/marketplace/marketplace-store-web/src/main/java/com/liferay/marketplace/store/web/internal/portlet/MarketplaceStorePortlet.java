@@ -500,16 +500,6 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			"supportsHotDeploy", new String[] {Boolean.TRUE.toString()});
 	}
 
-	@Reference(unbind = "-")
-	protected void setAppLocalService(AppLocalService appLocalService) {
-		_appLocalService = appLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setAppService(AppService appService) {
-		_appService = appService;
-	}
-
 	@Override
 	@Reference(unbind = "-")
 	protected void setOAuthManager(OAuthManager oAuthManager) {
@@ -566,8 +556,12 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	private static final Log _log = LogFactoryUtil.getLog(
 		MarketplaceStorePortlet.class);
 
+	@Reference
 	private AppLocalService _appLocalService;
+
+	@Reference
 	private AppService _appService;
+
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 
 }

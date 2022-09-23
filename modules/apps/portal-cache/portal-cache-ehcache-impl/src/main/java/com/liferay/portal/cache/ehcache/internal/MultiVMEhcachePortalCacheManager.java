@@ -46,6 +46,9 @@ public class MultiVMEhcachePortalCacheManager
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		baseEhcachePortalCacheManagerConfigurator =
+			_multiVMEhcachePortalCacheManagerConfigurator;
+
 		this.bundleContext = bundleContext;
 
 		setClusterAware(true);
@@ -63,15 +66,6 @@ public class MultiVMEhcachePortalCacheManager
 	@Deactivate
 	protected void deactivate() {
 		destroy();
-	}
-
-	@Reference(unbind = "-")
-	protected void setMultiVMEhcachePortalCacheManagerConfigurator(
-		MultiVMEhcachePortalCacheManagerConfigurator
-			multiVMEhcachePortalCacheManagerConfigurator) {
-
-		baseEhcachePortalCacheManagerConfigurator =
-			multiVMEhcachePortalCacheManagerConfigurator;
 	}
 
 	@Reference(unbind = "-")

@@ -14,9 +14,6 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.portal.kernel.search.dummy.DummyIndexSearcher;
-import com.liferay.portal.kernel.search.dummy.DummyIndexWriter;
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -25,7 +22,7 @@ import java.util.Collections;
  * @author Carlos Sierra Andrés
  * @author Marcellus Tavares
  */
-public class BaseSearchEngine implements SearchEngine {
+public abstract class BaseSearchEngine implements SearchEngine {
 
 	/**
 	 * @throws SearchException
@@ -40,16 +37,6 @@ public class BaseSearchEngine implements SearchEngine {
 	@Override
 	public Collection<Long> getIndexedCompanyIds() {
 		return Collections.emptySet();
-	}
-
-	@Override
-	public IndexSearcher getIndexSearcher() {
-		return _indexSearcher;
-	}
-
-	@Override
-	public IndexWriter getIndexWriter() {
-		return _indexWriter;
 	}
 
 	@Override
@@ -85,8 +72,6 @@ public class BaseSearchEngine implements SearchEngine {
 		_vendor = vendor;
 	}
 
-	private IndexSearcher _indexSearcher = new DummyIndexSearcher();
-	private IndexWriter _indexWriter = new DummyIndexWriter();
 	private String _vendor;
 
 }

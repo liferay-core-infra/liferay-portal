@@ -101,4 +101,8 @@ public class MultiVMEhcachePortalCacheManager
 	private static final Log _log = LogFactoryUtil.getLog(
 		MultiVMEhcachePortalCacheManager.class);
 
+	@Reference
+	private MultiVMEhcachePortalCacheManagerConfigurator
+		_multiVMEhcachePortalCacheManagerConfigurator;
+
 }

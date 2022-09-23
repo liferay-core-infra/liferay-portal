@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
@@ -77,7 +77,7 @@ public class EditObjectDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "enableCategorization");
 		boolean enableComments = ParamUtil.getBoolean(
 			actionRequest, "enableComments");
-		Map<Locale, String> labelMap = LocalizationUtil.getLocalizationMap(
+		Map<Locale, String> labelMap = _localization.getLocalizationMap(
 			actionRequest, "label");
 		String name = ParamUtil.getString(actionRequest, "shortName");
 		String panelCategoryOrder = ParamUtil.getString(
@@ -85,8 +85,8 @@ public class EditObjectDefinitionMVCActionCommand extends BaseMVCActionCommand {
 		String panelCategoryKey = ParamUtil.getString(
 			actionRequest, "panelCategoryKey");
 		boolean portlet = ParamUtil.getBoolean(actionRequest, "portlet");
-		Map<Locale, String> pluralLabelMap =
-			LocalizationUtil.getLocalizationMap(actionRequest, "pluralLabel");
+		Map<Locale, String> pluralLabelMap = _localization.getLocalizationMap(
+			actionRequest, "pluralLabel");
 		String scope = ParamUtil.getString(actionRequest, "scope");
 
 		try {
@@ -140,6 +140,9 @@ public class EditObjectDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 	}
+
+	@Reference
+	private Localization _localization;
 
 	@Reference
 	private ObjectDefinitionService _objectDefinitionService;

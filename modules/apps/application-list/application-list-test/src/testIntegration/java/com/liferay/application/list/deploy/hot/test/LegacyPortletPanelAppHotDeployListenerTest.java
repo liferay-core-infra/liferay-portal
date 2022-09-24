@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.deploy.hot.DependencyManagementThreadLocal;
 import com.liferay.portal.kernel.deploy.hot.HotDeployEvent;
 import com.liferay.portal.kernel.deploy.hot.HotDeployListener;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -173,11 +172,8 @@ public class LegacyPortletPanelAppHotDeployListenerTest {
 
 		@Override
 		public String getServletContextName() {
-			return _SERVLET_CONTEXT_NAME;
+			return null;
 		}
-
-		private static final String _SERVLET_CONTEXT_NAME =
-			StringUtil.randomString();
 
 	}
 

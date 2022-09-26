@@ -335,6 +335,7 @@ public class VerifyProperties {
 			"module.framework.marketplace.dir",
 			"module.framework.marketplace.dir"
 		},
+		{"module.framework.modules.dir", "module.framework.modules.dir"},
 		{
 			"module.framework.properties.eclipse.stateSaveDelayInterval",
 			"module.framework.properties.eclipse.stateSaveDelayInterval"

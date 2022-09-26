@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,7 +177,8 @@ public class FileInstallDeployTest {
 	@Test
 	public void testDeployAndDelete() throws Exception {
 		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			_TEST_JAR_NAME);
 
 		CountDownLatch installCountDownLatch = new CountDownLatch(1);
 
@@ -269,10 +269,11 @@ public class FileInstallDeployTest {
 			".fragment");
 
 		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			_TEST_JAR_NAME);
 
 		Path fragmentPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MODULES_DIR,
 			testFragmentSymbolicName.concat(".jar"));
 
 		CountDownLatch installCountDownLatch = new CountDownLatch(1);
@@ -410,10 +411,11 @@ public class FileInstallDeployTest {
 		_bundleContext.addBundleListener(bundleListener);
 
 		Path path = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR, _TEST_JAR_NAME);
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			_TEST_JAR_NAME);
 
 		Path optionalProviderPath = Paths.get(
-			PropsValues.MODULE_FRAMEWORK_MODULES_DIR,
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MODULES_DIR,
 			testOptionalProviderSymbolicName.concat(".jar"));
 
 		try {

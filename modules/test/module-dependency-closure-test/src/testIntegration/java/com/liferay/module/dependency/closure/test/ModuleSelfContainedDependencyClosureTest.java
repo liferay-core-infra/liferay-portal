@@ -16,7 +16,6 @@ package com.liferay.module.dependency.closure.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,7 +101,8 @@ public class ModuleSelfContainedDependencyClosureTest {
 
 		testBundles.add(bundleContext.getBundle());
 
-		Path modulesPath = Paths.get(PropsValues.MODULE_FRAMEWORK_MODULES_DIR);
+		Path modulesPath = Paths.get(
+			ModuleFrameworkPropsValues.MODULE_FRAMEWORK_MODULES_DIR);
 
 		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
 				Paths.get(

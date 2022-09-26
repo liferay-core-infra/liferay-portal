@@ -86,7 +86,9 @@ public class DirectoryWatcher extends Thread implements BundleListener {
 		_systemBundle = bundleContext.getBundle(
 			Constants.SYSTEM_BUNDLE_LOCATION);
 
-		for (String dir : PropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
+		for (String dir :
+				ModuleFrameworkPropsValues.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS) {
+
 			_watchedDirs.add(new File(dir));
 		}
 

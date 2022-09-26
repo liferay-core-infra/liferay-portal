@@ -310,6 +310,10 @@ public class VerifyProperties {
 		},
 		{"liferay.home", "liferay.home"},
 		{
+			"module.framework.auto.deploy.dirs",
+			"module.framework.auto.deploy.dirs"
+		},
+		{
 			"module.framework.beginning.start.level",
 			"module.framework.beginning.start.level"
 		},

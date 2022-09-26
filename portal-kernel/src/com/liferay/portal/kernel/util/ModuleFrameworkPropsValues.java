@@ -19,6 +19,10 @@ package com.liferay.portal.kernel.util;
  */
 public class ModuleFrameworkPropsValues {
 
+	public static final String[] MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS =
+		SystemProperties.getArray(
+			SystemPropsKeys.MODULE_FRAMEWORK_AUTO_DEPLOY_DIRS);
+
 	public static final int MODULE_FRAMEWORK_BEGINNING_START_LEVEL =
 		GetterUtil.getInteger(
 			SystemProperties.get("module.framework.beginning.start.level"));

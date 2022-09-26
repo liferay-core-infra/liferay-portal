@@ -26,7 +26,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpMethods;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +73,8 @@ public class JSONServerServlet extends HttpServlet {
 		_objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		File repositoryDir = new File(
-			PropsValues.LIFERAY_HOME, "data/json_server");
+			SystemProperties.get(SystemPropsKeys.LIFERAY_HOME),
+			"data/json_server");
 
 		if (!repositoryDir.exists()) {
 			repositoryDir.mkdirs();

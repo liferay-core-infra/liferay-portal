@@ -21,8 +21,9 @@ import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.io.unsync.UnsyncPrintWriter;
 import com.liferay.portal.kernel.test.rule.ClassTestRule;
 import com.liferay.portal.kernel.util.Props;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.util.PropsImpl;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
 import java.io.IOException;
@@ -222,7 +223,8 @@ public class HypersonicServerClassTestRule extends ClassTestRule<Server> {
 	private static final boolean _HYPERSONIC;
 
 	private static final String _HYPERSONIC_TEMP_DIR_NAME =
-		PropsValues.LIFERAY_HOME + "/data/hypersonic_temp/";
+		SystemProperties.get(SystemPropsKeys.LIFERAY_HOME) +
+			"/data/hypersonic_temp/";
 
 	static {
 		Props props = new PropsImpl();

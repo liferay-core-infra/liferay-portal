@@ -445,7 +445,7 @@
 							<p class="lfr-setup-notice">
 
 								<%
-								String taglibArguments = "<span class=\"lfr-inline-code\">" + PropsValues.LIFERAY_HOME + StringPool.SLASH + SetupWizardUtil.PROPERTIES_FILE_NAME + "</span>";
+								String taglibArguments = "<span class=\"lfr-inline-code\">" + SystemProperties.get(SystemPropsKeys.LIFERAY_HOME) + StringPool.SLASH + SetupWizardUtil.PROPERTIES_FILE_NAME + "</span>";
 								%>
 
 								<liferay-ui:message arguments="<%= taglibArguments %>" key="the-configuration-was-saved-in" translateArguments="<%= false %>" />
@@ -481,7 +481,7 @@
 									</span>
 
 									<%
-									String taglibArguments = "<span class=\"lfr-inline-code\">" + PropsValues.LIFERAY_HOME + "</span>";
+									String taglibArguments = "<span class=\"lfr-inline-code\">" + SystemProperties.get(SystemPropsKeys.LIFERAY_HOME) + "</span>";
 									%>
 
 									<strong class="lead"><liferay-ui:message key="warning-colon" /></strong><liferay-ui:message arguments="<%= taglibArguments %>" key="sorry,-we-were-not-able-to-save-the-configuration-file-in-x" translateArguments="<%= false %>" />

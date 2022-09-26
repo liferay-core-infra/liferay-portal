@@ -25,9 +25,10 @@ import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.PropsValuesTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsUtil;
-import com.liferay.portal.util.PropsValues;
 
 import java.io.InputStream;
 
@@ -204,7 +205,8 @@ public class ExternalDataSourceControllerTest {
 	private static final String _EXTERNAL_DATABASE_NAME = "external";
 
 	private static final String _HYPERSONIC_TEMP_DIR_NAME =
-		PropsValues.LIFERAY_HOME + "/data/hypersonic_temp/";
+		SystemProperties.get(SystemPropsKeys.LIFERAY_HOME) +
+			"/data/hypersonic_temp/";
 
 	private static final String _JDBC_URL = StringBundler.concat(
 		"jdbc:hsqldb:", _HYPERSONIC_TEMP_DIR_NAME, _EXTERNAL_DATABASE_NAME,

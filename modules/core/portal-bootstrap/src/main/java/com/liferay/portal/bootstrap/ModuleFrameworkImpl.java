@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.SystemPropsKeys;
 import com.liferay.portal.module.framework.ModuleFramework;
 import com.liferay.portal.util.PropsValues;
 
@@ -458,7 +459,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		properties.put("java.security.manager", null);
 		properties.put("org.osgi.framework.security", null);
 
-		File file = new File(PropsValues.LIFERAY_HOME);
+		File file = new File(
+			SystemProperties.get(SystemPropsKeys.LIFERAY_HOME));
 
 		URI uri = file.toURI();
 

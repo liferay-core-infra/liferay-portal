@@ -110,7 +110,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			downloadApp(
 				actionRequest, actionResponse, appPackageId, unlicensed, file);
 
-			App app = _appService.updateApp(file);
+			App app = appService.updateApp(file);
 
 			JSONObject jsonObject = _getAppJSONObject(app.getRemoteAppId());
 
@@ -187,7 +187,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			"getPrepackagedApps");
 
 		Map<String, String> prepackagedApps =
-			_appLocalService.getPrepackagedApps();
+			appLocalService.getPrepackagedApps();
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -215,7 +215,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		long remoteAppId = ParamUtil.getLong(actionRequest, "appId");
 
-		_appService.installApp(remoteAppId);
+		appService.installApp(remoteAppId);
 
 		JSONObject jsonObject = _getAppJSONObject(remoteAppId);
 
@@ -251,7 +251,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		long remoteAppId = ParamUtil.getLong(actionRequest, "appId");
 
-		_appService.uninstallApp(remoteAppId);
+		appService.uninstallApp(remoteAppId);
 
 		JSONObject jsonObject = _getAppJSONObject(remoteAppId);
 
@@ -282,7 +282,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			downloadApp(
 				actionRequest, actionResponse, appPackageId, unlicensed, file);
 
-			App app = _appService.updateApp(file);
+			App app = appService.updateApp(file);
 
 			if (Validator.isNull(orderUuid) &&
 				Validator.isNotNull(productEntryName)) {
@@ -295,7 +295,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 					orderUuid, productEntryName);
 			}
 
-			_appService.installApp(app.getRemoteAppId());
+			appService.installApp(app.getRemoteAppId());
 
 			JSONObject jsonObject = _getAppJSONObject(app.getRemoteAppId());
 
@@ -369,9 +369,9 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 							actionRequest, actionResponse, appPackageId, false,
 							file);
 
-						App app = _appService.updateApp(file);
+						App app = appService.updateApp(file);
 
-						_appService.installApp(app.getRemoteAppId());
+						appService.installApp(app.getRemoteAppId());
 
 						jsonArray.put(_getAppJSONObject(app));
 					}
@@ -507,6 +507,12 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	}
 
 	@Reference
+	protected AppLocalService appLocalService;
+
+	@Reference
+	protected AppService appService;
+
+	@Reference
 	protected Patcher patcher;
 
 	private JSONObject _getAppJSONObject(App app) throws Exception {
@@ -522,7 +528,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	}
 
 	private JSONObject _getAppJSONObject(long remoteAppId) throws Exception {
-		App app = _appLocalService.fetchRemoteApp(remoteAppId);
+		App app = appLocalService.fetchRemoteApp(remoteAppId);
 
 		if (app != null) {
 			return _getAppJSONObject(app);
@@ -542,7 +548,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	private JSONArray _getInstalledAppsJSONArray() throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<App> apps = _appLocalService.getInstalledApps();
+		List<App> apps = appLocalService.getInstalledApps();
 
 		for (App app : apps) {
 			if (app.getRemoteAppId() > 0) {
@@ -555,12 +561,6 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MarketplaceStorePortlet.class);
-
-	@Reference
-	private AppLocalService _appLocalService;
-
-	@Reference
-	private AppService _appService;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 

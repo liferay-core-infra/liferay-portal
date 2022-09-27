@@ -359,12 +359,7 @@ public class PortletManager
 		_serverStatistics.reset(webId);
 	}
 
-	protected void setPortletSummaryStatistics(
-		PortletSummaryStatistics portletSummaryStatistics) {
-
-		_portletSummaryStatistics = portletSummaryStatistics;
-	}
-
+	@Reference
 	private PortletSummaryStatistics _portletSummaryStatistics;
 
 	@Reference

@@ -14,13 +14,10 @@
 
 package com.liferay.portal.monitoring.internal.statistics.jmx;
 
-import com.liferay.portal.monitoring.internal.statistics.portlet.ResourceRequestSummaryStatistics;
-
 import javax.management.DynamicMBean;
 import javax.management.NotCompliantMBeanException;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -37,13 +34,6 @@ public class ResourceRequestPortletManager extends PortletManager {
 
 	public ResourceRequestPortletManager() throws NotCompliantMBeanException {
 		super(PortletManagerMBean.class);
-	}
-
-	@Reference(unbind = "-")
-	protected void setResourceRequestSummaryStatistics(
-		ResourceRequestSummaryStatistics resourceRequestSummaryStatistics) {
-
-		super.setPortletSummaryStatistics(resourceRequestSummaryStatistics);
 	}
 
 }

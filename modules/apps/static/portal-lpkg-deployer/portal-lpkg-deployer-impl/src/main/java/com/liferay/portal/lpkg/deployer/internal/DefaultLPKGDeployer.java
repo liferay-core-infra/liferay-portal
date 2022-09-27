@@ -97,9 +97,11 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	public List<Bundle> deploy(BundleContext bundleContext, File lpkgFile)
 		throws IOException {
 
-		lpkgFile = lpkgFile.getCanonicalFile();
-
 		Path lpkgFilePath = lpkgFile.toPath();
+
+		lpkgFilePath = lpkgFilePath.toRealPath();
+
+		lpkgFile = lpkgFilePath.toFile();
 
 		if (!lpkgFilePath.startsWith(_deploymentDirPath)) {
 			throw new LPKGVerifyException(
@@ -414,14 +416,16 @@ public class DefaultLPKGDeployer implements LPKGDeployer {
 	}
 
 	private Path _getDeploymentDirPath() throws Exception {
-		File deploymentDir = new File(
+		Path deploymentDirPath = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 
-		deploymentDir = deploymentDir.getCanonicalFile();
+		deploymentDirPath = deploymentDirPath.toRealPath();
+
+		File deploymentDir = deploymentDirPath.toFile();
 
 		deploymentDir.mkdirs();
 
-		return deploymentDir.toPath();
+		return deploymentDirPath;
 	}
 
 	private void _installLPKGs(

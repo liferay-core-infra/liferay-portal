@@ -60,6 +60,7 @@ import java.net.URL;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
@@ -890,9 +891,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		BundleContext bundleContext = _framework.getBundleContext();
 
-		File dir = new File(dirPath);
+		Path path = Paths.get(dirPath);
 
-		dir = dir.getCanonicalFile();
+		path = path.toRealPath();
+
+		File dir = path.toFile();
 
 		for (File file :
 				dir.listFiles((folder, name) -> name.endsWith(".jar"))) {
@@ -984,11 +987,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			ModuleFrameworkPropsValues.
 				MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING);
 
-		File dir = new File(PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
+		Path dirPath = Paths.get(PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR);
 
-		dir = dir.getCanonicalFile();
+		dirPath = dirPath.toRealPath();
 
-		for (File file : _listConfigs(dir)) {
+		for (File file : _listConfigs(dirPath.toFile())) {
 			if ((boolean)canTransformURLMethod.invoke(
 					configurationFileInstaller, file)) {
 
@@ -1392,9 +1395,9 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		for (Path jarPath : jarPaths) {
 			try (InputStream inputStream = Files.newInputStream(jarPath)) {
-				File file = jarPath.toFile();
+				jarPath = jarPath.toRealPath();
 
-				file = file.getCanonicalFile();
+				File file = jarPath.toFile();
 
 				String uriString = String.valueOf(file.toURI());
 
@@ -1412,19 +1415,26 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 			}
 		}
 
-		String deployDir = PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR;
+		Path deployDirPath = Paths.get(
+			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
+
+		deployDirPath = deployDirPath.toRealPath();
+
+		String deployDir = deployDirPath.toString();
 
 		for (String staticFileName :
 				StaticLPKGResolver.getStaticLPKGFileNames()) {
 
-			File file = new File(deployDir + StringPool.SLASH + staticFileName);
+			Path path = Paths.get(deployDir, staticFileName);
 
-			file = file.getCanonicalFile();
+			try {
+				path = path.toRealPath();
 
-			if (file.exists()) {
 				bundles.addAll(
 					_deployStaticBundlesFromFile(
-						file, overrideStaticFileNames));
+						path.toFile(), overrideStaticFileNames));
+			}
+			catch (NoSuchFileException noSuchFileException) {
 			}
 		}
 

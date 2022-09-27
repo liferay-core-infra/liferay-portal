@@ -27,8 +27,6 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 
-import java.io.File;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -105,13 +103,12 @@ public class BundleBlacklistTest {
 
 		bundleTracker.open();
 
-		File deploymentDir = new File(
+		Path configsDirPath = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 
-		deploymentDir = deploymentDir.getCanonicalFile();
+		configsDirPath = configsDirPath.toRealPath();
 
-		_lpkgPath = Paths.get(
-			deploymentDir.toString(), _LPKG_NAME.concat(".lpkg"));
+		_lpkgPath = configsDirPath.resolve(_LPKG_NAME.concat(".lpkg"));
 
 		LPKGTestUtil.createLPKG(_lpkgPath, _SYMBOLIC_NAME, true);
 

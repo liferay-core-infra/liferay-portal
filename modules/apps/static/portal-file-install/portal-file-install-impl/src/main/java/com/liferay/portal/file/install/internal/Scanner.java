@@ -144,7 +144,11 @@ public class Scanner {
 
 		for (File file : files) {
 			try {
-				canonicalFiles.add(file.getCanonicalFile());
+				Path path = file.toPath();
+
+				path = path.toRealPath();
+
+				canonicalFiles.add(path.toFile());
 			}
 			catch (IOException ioException) {
 				if (_log.isDebugEnabled()) {

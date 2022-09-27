@@ -73,7 +73,7 @@ import org.scribe.oauth.OAuthService;
  * @author Douglas Wong
  * @author Haote Chou
  */
-public class RemoteMVCPortlet extends MVCPortlet {
+public abstract class RemoteMVCPortlet extends MVCPortlet {
 
 	public void authorize(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -114,6 +114,8 @@ public class RemoteMVCPortlet extends MVCPortlet {
 				"/view.jsp"
 			).buildString());
 	}
+
+	public abstract OAuthManager getOAuthManager();
 
 	@Override
 	public void processAction(

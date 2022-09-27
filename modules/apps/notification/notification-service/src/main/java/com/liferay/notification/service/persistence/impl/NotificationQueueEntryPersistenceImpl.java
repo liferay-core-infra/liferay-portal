@@ -205,7 +205,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<NotificationQueueEntry>)finderCache.getResult(
-				finderPath, finderArgs);
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (NotificationQueueEntry notificationQueueEntry : list) {
@@ -928,7 +928,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {notificationTemplateId};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1116,7 +1116,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<NotificationQueueEntry>)finderCache.getResult(
-				finderPath, finderArgs);
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (NotificationQueueEntry notificationQueueEntry : list) {
@@ -1819,7 +1819,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {sent};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1994,7 +1994,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<NotificationQueueEntry>)finderCache.getResult(
-				finderPath, finderArgs);
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (NotificationQueueEntry notificationQueueEntry : list) {
@@ -2747,7 +2747,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {_getTime(sentDate)};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -2955,7 +2955,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<NotificationQueueEntry>)finderCache.getResult(
-				finderPath, finderArgs);
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (NotificationQueueEntry notificationQueueEntry : list) {
@@ -3659,7 +3659,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		Object[] finderArgs = new Object[] {status};
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -4188,7 +4188,7 @@ public class NotificationQueueEntryPersistenceImpl
 
 		if (useFinderCache) {
 			list = (List<NotificationQueueEntry>)finderCache.getResult(
-				finderPath, finderArgs);
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -4258,7 +4258,7 @@ public class NotificationQueueEntryPersistenceImpl
 	@Override
 	public int countAll() {
 		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY);
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;

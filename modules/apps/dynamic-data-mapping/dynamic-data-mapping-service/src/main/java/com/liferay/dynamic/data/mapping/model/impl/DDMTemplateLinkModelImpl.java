@@ -681,7 +681,18 @@ public class DDMTemplateLinkModelImpl
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((DDMTemplateLink)this));
+
+			String attribute = String.valueOf(
+				attributeGetterFunction.apply((DDMTemplateLink)this));
+
+			attribute = StringUtil.replace(
+				attribute, "]]><", "[$SPECIAL_CHARACTER$]");
+			attribute = StringUtil.replace(attribute, "]]>", "]]]]><![CDATA[>");
+			attribute = StringUtil.replace(
+				attribute, "[$SPECIAL_CHARACTER$]", "]]><");
+
+			sb.append(attribute);
+
 			sb.append("]]></column-value></column>");
 		}
 

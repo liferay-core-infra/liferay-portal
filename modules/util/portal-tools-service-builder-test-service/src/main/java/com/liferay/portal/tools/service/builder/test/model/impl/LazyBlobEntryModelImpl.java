@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntry;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntryBlob1BlobModel;
 import com.liferay.portal.tools.service.builder.test.model.LazyBlobEntryBlob2BlobModel;
@@ -606,19 +607,40 @@ public class LazyBlobEntryModelImpl
 		sb.append(
 			"<column><column-name>uuid</column-name><column-value><![CDATA[");
 
-		sb.append(getUuid());
+		String uuid = String.valueOf(getUuid());
+
+		uuid = StringUtil.replace(uuid, "]]><", "[$SPECIAL_CHARACTER$]");
+		uuid = StringUtil.replace(uuid, "]]>", "]]]]><![CDATA[>");
+		uuid = StringUtil.replace(uuid, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(uuid);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lazyBlobEntryId</column-name><column-value><![CDATA[");
 
-		sb.append(getLazyBlobEntryId());
+		String lazyBlobEntryId = String.valueOf(getLazyBlobEntryId());
+
+		lazyBlobEntryId = StringUtil.replace(
+			lazyBlobEntryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		lazyBlobEntryId = StringUtil.replace(
+			lazyBlobEntryId, "]]>", "]]]]><![CDATA[>");
+		lazyBlobEntryId = StringUtil.replace(
+			lazyBlobEntryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(lazyBlobEntryId);
 
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>groupId</column-name><column-value><![CDATA[");
 
-		sb.append(getGroupId());
+		String groupId = String.valueOf(getGroupId());
+
+		groupId = StringUtil.replace(groupId, "]]><", "[$SPECIAL_CHARACTER$]");
+		groupId = StringUtil.replace(groupId, "]]>", "]]]]><![CDATA[>");
+		groupId = StringUtil.replace(groupId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(groupId);
 
 		sb.append("]]></column-value></column>");
 

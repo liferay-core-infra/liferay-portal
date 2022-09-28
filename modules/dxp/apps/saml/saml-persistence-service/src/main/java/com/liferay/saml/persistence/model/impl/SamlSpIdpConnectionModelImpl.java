@@ -1219,7 +1219,18 @@ public class SamlSpIdpConnectionModelImpl
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((SamlSpIdpConnection)this));
+
+			String attribute = String.valueOf(
+				attributeGetterFunction.apply((SamlSpIdpConnection)this));
+
+			attribute = StringUtil.replace(
+				attribute, "]]><", "[$SPECIAL_CHARACTER$]");
+			attribute = StringUtil.replace(attribute, "]]>", "]]]]><![CDATA[>");
+			attribute = StringUtil.replace(
+				attribute, "[$SPECIAL_CHARACTER$]", "]]><");
+
+			sb.append(attribute);
+
 			sb.append("]]></column-value></column>");
 		}
 

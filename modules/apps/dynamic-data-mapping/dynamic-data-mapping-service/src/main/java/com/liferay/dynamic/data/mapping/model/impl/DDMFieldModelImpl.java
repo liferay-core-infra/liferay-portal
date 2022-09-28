@@ -840,7 +840,18 @@ public class DDMFieldModelImpl
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
-			sb.append(attributeGetterFunction.apply((DDMField)this));
+
+			String attribute = String.valueOf(
+				attributeGetterFunction.apply((DDMField)this));
+
+			attribute = StringUtil.replace(
+				attribute, "]]><", "[$SPECIAL_CHARACTER$]");
+			attribute = StringUtil.replace(attribute, "]]>", "]]]]><![CDATA[>");
+			attribute = StringUtil.replace(
+				attribute, "[$SPECIAL_CHARACTER$]", "]]><");
+
+			sb.append(attribute);
+
 			sb.append("]]></column-value></column>");
 		}
 

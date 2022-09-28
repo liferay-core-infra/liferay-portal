@@ -19,6 +19,7 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.uad.constants.JournalUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,27 +64,87 @@ public abstract class BaseJournalArticleUADExporter
 
 		sb.append(
 			"<column><column-name>id</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getId());
+
+		String id = String.valueOf(journalArticle.getId());
+
+		id = StringUtil.replace(id, "]]><", "[$SPECIAL_CHARACTER$]");
+		id = StringUtil.replace(id, "]]>", "]]]]><![CDATA[>");
+		id = StringUtil.replace(id, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(id);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(
+			journalArticle.getStatusByUserId());
+
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]>", "]]]]><![CDATA[>");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			journalArticle.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getUserId());
+
+		String userId = String.valueOf(journalArticle.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getUserName());
+
+		String userName = String.valueOf(journalArticle.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>urlTitle</column-name><column-value><![CDATA[");
-		sb.append(journalArticle.getUrlTitle());
+
+		String urlTitle = String.valueOf(journalArticle.getUrlTitle());
+
+		urlTitle = StringUtil.replace(
+			urlTitle, "]]><", "[$SPECIAL_CHARACTER$]");
+		urlTitle = StringUtil.replace(urlTitle, "]]>", "]]]]><![CDATA[>");
+		urlTitle = StringUtil.replace(
+			urlTitle, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(urlTitle);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

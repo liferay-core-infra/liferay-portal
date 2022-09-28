@@ -19,6 +19,7 @@ import com.liferay.blogs.service.BlogsEntryLocalService;
 import com.liferay.blogs.uad.constants.BlogsUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,51 +64,167 @@ public abstract class BaseBlogsEntryUADExporter
 
 		sb.append(
 			"<column><column-name>entryId</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getEntryId());
+
+		String entryId = String.valueOf(blogsEntry.getEntryId());
+
+		entryId = StringUtil.replace(entryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		entryId = StringUtil.replace(entryId, "]]>", "]]]]><![CDATA[>");
+		entryId = StringUtil.replace(entryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(entryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(blogsEntry.getStatusByUserId());
+
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "]]>", "]]]]><![CDATA[>");
+		statusByUserId = StringUtil.replace(
+			statusByUserId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			blogsEntry.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]><", "[$SPECIAL_CHARACTER$]");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getUserId());
+
+		String userId = String.valueOf(blogsEntry.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getUserName());
+
+		String userName = String.valueOf(blogsEntry.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getTitle());
+
+		String title = String.valueOf(blogsEntry.getTitle());
+
+		title = StringUtil.replace(title, "]]><", "[$SPECIAL_CHARACTER$]");
+		title = StringUtil.replace(title, "]]>", "]]]]><![CDATA[>");
+		title = StringUtil.replace(title, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(title);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>subtitle</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getSubtitle());
+
+		String subtitle = String.valueOf(blogsEntry.getSubtitle());
+
+		subtitle = StringUtil.replace(
+			subtitle, "]]><", "[$SPECIAL_CHARACTER$]");
+		subtitle = StringUtil.replace(subtitle, "]]>", "]]]]><![CDATA[>");
+		subtitle = StringUtil.replace(
+			subtitle, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(subtitle);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>urlTitle</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getUrlTitle());
+
+		String urlTitle = String.valueOf(blogsEntry.getUrlTitle());
+
+		urlTitle = StringUtil.replace(
+			urlTitle, "]]><", "[$SPECIAL_CHARACTER$]");
+		urlTitle = StringUtil.replace(urlTitle, "]]>", "]]]]><![CDATA[>");
+		urlTitle = StringUtil.replace(
+			urlTitle, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(urlTitle);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getDescription());
+
+		String description = String.valueOf(blogsEntry.getDescription());
+
+		description = StringUtil.replace(
+			description, "]]><", "[$SPECIAL_CHARACTER$]");
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+		description = StringUtil.replace(
+			description, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getContent());
+
+		String content = String.valueOf(blogsEntry.getContent());
+
+		content = StringUtil.replace(content, "]]><", "[$SPECIAL_CHARACTER$]");
+		content = StringUtil.replace(content, "]]>", "]]]]><![CDATA[>");
+		content = StringUtil.replace(content, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(content);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImage</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getSmallImage());
+
+		String smallImage = String.valueOf(blogsEntry.getSmallImage());
+
+		smallImage = StringUtil.replace(
+			smallImage, "]]><", "[$SPECIAL_CHARACTER$]");
+		smallImage = StringUtil.replace(smallImage, "]]>", "]]]]><![CDATA[>");
+		smallImage = StringUtil.replace(
+			smallImage, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(smallImage);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>smallImageId</column-name><column-value><![CDATA[");
-		sb.append(blogsEntry.getSmallImageId());
+
+		String smallImageId = String.valueOf(blogsEntry.getSmallImageId());
+
+		smallImageId = StringUtil.replace(
+			smallImageId, "]]><", "[$SPECIAL_CHARACTER$]");
+		smallImageId = StringUtil.replace(
+			smallImageId, "]]>", "]]]]><![CDATA[>");
+		smallImageId = StringUtil.replace(
+			smallImageId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(smallImageId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

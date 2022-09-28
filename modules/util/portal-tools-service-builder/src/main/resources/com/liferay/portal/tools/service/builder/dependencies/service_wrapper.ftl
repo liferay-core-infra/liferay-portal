@@ -1,5 +1,6 @@
 package ${apiPackagePath}.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 <#if entity.isChangeTrackingEnabled()>

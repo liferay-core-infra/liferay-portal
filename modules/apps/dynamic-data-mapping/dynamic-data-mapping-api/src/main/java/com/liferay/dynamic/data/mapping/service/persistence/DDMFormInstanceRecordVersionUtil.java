@@ -125,6 +125,44 @@ public class DDMFormInstanceRecordVersionUtil {
 			ddmFormInstanceRecordVersion, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByFormInstanceRecordId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByFormInstanceRecordId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByFormInstanceRecordId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByFormInstanceRecordId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFormInstanceRecordId() {
+
+		return getPersistence().getFinderPathCountByFormInstanceRecordId();
+	}
+
 	/**
 	 * Returns all the ddm form instance record versions where formInstanceRecordId = &#63;.
 	 *
@@ -309,6 +347,24 @@ public class DDMFormInstanceRecordVersionUtil {
 	public static int countByFormInstanceRecordId(long formInstanceRecordId) {
 		return getPersistence().countByFormInstanceRecordId(
 			formInstanceRecordId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_F() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_F() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_F() {
+
+		return getPersistence().getFinderPathCountByU_F();
 	}
 
 	/**
@@ -500,6 +556,24 @@ public class DDMFormInstanceRecordVersionUtil {
 	 */
 	public static int countByU_F(long userId, long formInstanceId) {
 		return getPersistence().countByU_F(userId, formInstanceId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByF_F() {
+
+		return getPersistence().getFinderPathWithPaginationFindByF_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByF_F() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByF_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByF_F() {
+
+		return getPersistence().getFinderPathCountByF_F();
 	}
 
 	/**
@@ -699,6 +773,18 @@ public class DDMFormInstanceRecordVersionUtil {
 		return getPersistence().countByF_F(formInstanceId, formInstanceVersion);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByF_V() {
+
+		return getPersistence().getFinderPathFetchByF_V();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByF_V() {
+
+		return getPersistence().getFinderPathCountByF_V();
+	}
+
 	/**
 	 * Returns the ddm form instance record version where formInstanceRecordId = &#63; and version = &#63; or throws a <code>NoSuchFormInstanceRecordVersionException</code> if it could not be found.
 	 *
@@ -767,6 +853,24 @@ public class DDMFormInstanceRecordVersionUtil {
 	 */
 	public static int countByF_V(long formInstanceRecordId, String version) {
 		return getPersistence().countByF_V(formInstanceRecordId, version);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByF_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByF_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByF_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByF_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByF_S() {
+
+		return getPersistence().getFinderPathCountByF_S();
 	}
 
 	/**
@@ -960,6 +1064,24 @@ public class DDMFormInstanceRecordVersionUtil {
 	 */
 	public static int countByF_S(long formInstanceRecordId, int status) {
 		return getPersistence().countByF_S(formInstanceRecordId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_F_F_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_F_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_F_F_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_F_F_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_F_F_S() {
+
+		return getPersistence().getFinderPathCountByU_F_F_S();
 	}
 
 	/**
@@ -1362,6 +1484,12 @@ public class DDMFormInstanceRecordVersionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DDMFormInstanceRecordVersionPersistence getPersistence() {

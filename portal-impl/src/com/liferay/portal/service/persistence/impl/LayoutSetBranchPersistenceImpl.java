@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetBranchUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,6 +52,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,9 +91,42 @@ public class LayoutSetBranchPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the layout set branches where groupId = &#63;.
@@ -967,8 +1002,25 @@ public class LayoutSetBranchPersistenceImpl
 		"layoutSetBranch.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P() {
+		return _finderPathWithPaginationFindByG_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P() {
+		return _finderPathWithoutPaginationFindByG_P;
+	}
+
 	private FinderPath _finderPathCountByG_P;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P() {
+		return _finderPathCountByG_P;
+	}
 
 	/**
 	 * Returns all the layout set branches where groupId = &#63; and privateLayout = &#63;.
@@ -1914,7 +1966,18 @@ public class LayoutSetBranchPersistenceImpl
 		"layoutSetBranch.privateLayout = ?";
 
 	private FinderPath _finderPathFetchByG_P_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_P_N() {
+		return _finderPathFetchByG_P_N;
+	}
+
 	private FinderPath _finderPathCountByG_P_N;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_N() {
+		return _finderPathCountByG_P_N;
+	}
 
 	/**
 	 * Returns the layout set branch where groupId = &#63; and privateLayout = &#63; and name = &#63; or throws a <code>NoSuchLayoutSetBranchException</code> if it could not be found.
@@ -2190,8 +2253,25 @@ public class LayoutSetBranchPersistenceImpl
 		"(layoutSetBranch.name IS NULL OR layoutSetBranch.name = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_M;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_M() {
+		return _finderPathWithPaginationFindByG_P_M;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P_M;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_M() {
+		return _finderPathWithoutPaginationFindByG_P_M;
+	}
+
 	private FinderPath _finderPathCountByG_P_M;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_M() {
+		return _finderPathCountByG_P_M;
+	}
 
 	/**
 	 * Returns all the layout set branches where groupId = &#63; and privateLayout = &#63; and master = &#63;.
@@ -3870,6 +3950,61 @@ public class LayoutSetBranchPersistenceImpl
 		_setLayoutSetBranchUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(LayoutSetBranchImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutSetBranch> layoutSetBranchs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutSetBranch>> resultMap =
+				new HashMap<>();
+
+			for (LayoutSetBranch layoutSetBranch : layoutSetBranchs) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutSetBranchModelImpl layoutSetBranchModelImpl =
+						(LayoutSetBranchModelImpl)layoutSetBranch;
+
+					arguments.add(
+						layoutSetBranchModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layoutSetBranch);
+				}
+				else {
+					List<LayoutSetBranch> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutSetBranch);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutSetBranch>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutSetBranch> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutSetBranchUtilPersistence(

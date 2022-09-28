@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -101,9 +102,42 @@ public class DLContentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByC_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_R() {
+		return _finderPathWithPaginationFindByC_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_R() {
+		return _finderPathWithoutPaginationFindByC_R;
+	}
+
 	private FinderPath _finderPathCountByC_R;
+
+	@Override
+	public FinderPath getFinderPathCountByC_R() {
+		return _finderPathCountByC_R;
+	}
 
 	/**
 	 * Returns all the document library contents where companyId = &#63; and repositoryId = &#63;.
@@ -656,8 +690,25 @@ public class DLContentPersistenceImpl
 		"dlContent.repositoryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_R_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_R_P() {
+		return _finderPathWithPaginationFindByC_R_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_R_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_R_P() {
+		return _finderPathWithoutPaginationFindByC_R_P;
+	}
+
 	private FinderPath _finderPathCountByC_R_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_R_P() {
+		return _finderPathCountByC_R_P;
+	}
 
 	/**
 	 * Returns all the document library contents where companyId = &#63; and repositoryId = &#63; and path = &#63;.
@@ -1288,7 +1339,18 @@ public class DLContentPersistenceImpl
 		"(dlContent.path IS NULL OR dlContent.path = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_R_LikeP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_R_LikeP() {
+		return _finderPathWithPaginationFindByC_R_LikeP;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_R_LikeP;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_R_LikeP() {
+		return _finderPathWithPaginationCountByC_R_LikeP;
+	}
 
 	/**
 	 * Returns all the document library contents where companyId = &#63; and repositoryId = &#63; and path LIKE &#63;.
@@ -1914,7 +1976,18 @@ public class DLContentPersistenceImpl
 		"(dlContent.path IS NULL OR dlContent.path LIKE '')";
 
 	private FinderPath _finderPathFetchByC_R_P_V;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_R_P_V() {
+		return _finderPathFetchByC_R_P_V;
+	}
+
 	private FinderPath _finderPathCountByC_R_P_V;
+
+	@Override
+	public FinderPath getFinderPathCountByC_R_P_V() {
+		return _finderPathCountByC_R_P_V;
+	}
 
 	/**
 	 * Returns the document library content where companyId = &#63; and repositoryId = &#63; and path = &#63; and version = &#63; or throws a <code>NoSuchContentException</code> if it could not be found.
@@ -3111,6 +3184,59 @@ public class DLContentPersistenceImpl
 		_setDLContentUtilPersistence(null);
 
 		entityCache.removeCache(DLContentImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DLContent> dlContents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLContent>> resultMap = new HashMap<>();
+
+			for (DLContent dlContent : dlContents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLContentModelImpl dlContentModelImpl =
+						(DLContentModelImpl)dlContent;
+
+					arguments.add(
+						dlContentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dlContent);
+				}
+				else {
+					List<DLContent> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlContent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLContent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLContent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDLContentUtilPersistence(

@@ -16,6 +16,7 @@ package com.liferay.commerce.notification.service.persistence;
 
 import com.liferay.commerce.notification.exception.NoSuchNotificationQueueEntryException;
 import com.liferay.commerce.notification.model.CommerceNotificationQueueEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceNotificationQueueEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceNotificationQueueEntryUtil} to access the commerce notification queue entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the commerce notification queue entries where groupId = &#63;.
@@ -186,6 +198,14 @@ public interface CommerceNotificationQueueEntryPersistence
 	 * @return the number of matching commerce notification queue entries
 	 */
 	public int countByGroupId(long groupId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceNotificationTemplateId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceNotificationTemplateId();
+
+	public FinderPath getFinderPathCountByCommerceNotificationTemplateId();
 
 	/**
 	 * Returns all the commerce notification queue entries where commerceNotificationTemplateId = &#63;.
@@ -343,6 +363,12 @@ public interface CommerceNotificationQueueEntryPersistence
 	public int countByCommerceNotificationTemplateId(
 		long commerceNotificationTemplateId);
 
+	public FinderPath getFinderPathWithPaginationFindBySent();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySent();
+
+	public FinderPath getFinderPathCountBySent();
+
 	/**
 	 * Returns all the commerce notification queue entries where sent = &#63;.
 	 *
@@ -487,6 +513,10 @@ public interface CommerceNotificationQueueEntryPersistence
 	 */
 	public int countBySent(boolean sent);
 
+	public FinderPath getFinderPathWithPaginationFindByLtSentDate();
+
+	public FinderPath getFinderPathWithPaginationCountByLtSentDate();
+
 	/**
 	 * Returns all the commerce notification queue entries where sentDate &lt; &#63;.
 	 *
@@ -630,6 +660,12 @@ public interface CommerceNotificationQueueEntryPersistence
 	 * @return the number of matching commerce notification queue entries
 	 */
 	public int countByLtSentDate(Date sentDate);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_S();
+
+	public FinderPath getFinderPathCountByG_C_C_S();
 
 	/**
 	 * Returns all the commerce notification queue entries where groupId = &#63; and classNameId = &#63; and classPK = &#63; and sent = &#63;.
@@ -942,5 +978,7 @@ public interface CommerceNotificationQueueEntryPersistence
 	 * @return the number of commerce notification queue entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -120,6 +120,42 @@ public class BlogsEntryUtil {
 		return getPersistence().update(blogsEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the blogs entries where uuid = &#63;.
 	 *
@@ -282,6 +318,18 @@ public class BlogsEntryUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the blogs entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -343,6 +391,24 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -527,6 +593,24 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByUuid_C(String uuid, long companyId) {
 		return getPersistence().countByUuid_C(uuid, companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByGroupId() {
+
+		return getPersistence().getFinderPathCountByGroupId();
 	}
 
 	/**
@@ -772,6 +856,24 @@ public class BlogsEntryUtil {
 		return getPersistence().filterCountByGroupId(groupId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the blogs entries where companyId = &#63;.
 	 *
@@ -941,6 +1043,18 @@ public class BlogsEntryUtil {
 		return getPersistence().countByCompanyId(companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_UT() {
+
+		return getPersistence().getFinderPathFetchByG_UT();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_UT() {
+
+		return getPersistence().getFinderPathCountByG_UT();
+	}
+
 	/**
 	 * Returns the blogs entry where groupId = &#63; and urlTitle = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -1002,6 +1116,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByG_UT(long groupId, String urlTitle) {
 		return getPersistence().countByG_UT(groupId, urlTitle);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_LtD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_LtD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_LtD() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_LtD();
 	}
 
 	/**
@@ -1274,6 +1400,24 @@ public class BlogsEntryUtil {
 		return getPersistence().filterCountByG_LtD(groupId, displayDate);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_S() {
+
+		return getPersistence().getFinderPathCountByG_S();
+	}
+
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and status = &#63;.
 	 *
@@ -1538,6 +1682,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int filterCountByG_S(long groupId, int status) {
 		return getPersistence().filterCountByG_S(groupId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_NotS();
 	}
 
 	/**
@@ -1808,6 +1964,24 @@ public class BlogsEntryUtil {
 		return getPersistence().filterCountByG_NotS(groupId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_U() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_U() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_U() {
+
+		return getPersistence().getFinderPathCountByC_U();
+	}
+
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and userId = &#63;.
 	 *
@@ -1990,6 +2164,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByC_U(long companyId, long userId) {
 		return getPersistence().countByC_U(companyId, userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LtD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LtD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LtD() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LtD();
 	}
 
 	/**
@@ -2179,6 +2365,24 @@ public class BlogsEntryUtil {
 		return getPersistence().countByC_LtD(companyId, displayDate);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_S() {
+
+		return getPersistence().getFinderPathCountByC_S();
+	}
+
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and status = &#63;.
 	 *
@@ -2361,6 +2565,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByC_S(long companyId, int status) {
 		return getPersistence().countByC_S(companyId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_NotS();
 	}
 
 	/**
@@ -2547,6 +2763,18 @@ public class BlogsEntryUtil {
 		return getPersistence().countByC_NotS(companyId, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByLtD_S();
+	}
+
 	/**
 	 * Returns all the blogs entries where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -2729,6 +2957,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByLtD_S(Date displayDate, int status) {
 		return getPersistence().countByLtD_S(displayDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_LtD() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_LtD();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_LtD() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_U_LtD();
 	}
 
 	/**
@@ -3026,6 +3266,30 @@ public class BlogsEntryUtil {
 
 		return getPersistence().filterCountByG_U_LtD(
 			groupId, userId, displayDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_U_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_U_S() {
+
+		return getPersistence().getFinderPathCountByG_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_U_S();
 	}
 
 	/**
@@ -3491,6 +3755,18 @@ public class BlogsEntryUtil {
 		return getPersistence().filterCountByG_U_S(groupId, userId, statuses);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_U_NotS();
+	}
+
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and status &ne; &#63;.
 	 *
@@ -3780,6 +4056,24 @@ public class BlogsEntryUtil {
 		long groupId, long userId, int status) {
 
 		return getPersistence().filterCountByG_U_NotS(groupId, userId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_D_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_D_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_D_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_D_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_D_S() {
+
+		return getPersistence().getFinderPathCountByG_D_S();
 	}
 
 	/**
@@ -4074,6 +4368,18 @@ public class BlogsEntryUtil {
 
 		return getPersistence().filterCountByG_D_S(
 			groupId, displayDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_GtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_GtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_GtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_GtD_S();
 	}
 
 	/**
@@ -4373,6 +4679,18 @@ public class BlogsEntryUtil {
 			groupId, displayDate, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_LtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_LtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_LtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_LtD_S();
+	}
+
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -4668,6 +4986,18 @@ public class BlogsEntryUtil {
 
 		return getPersistence().filterCountByG_LtD_S(
 			groupId, displayDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_LtD_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_LtD_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_LtD_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_LtD_NotS();
 	}
 
 	/**
@@ -4967,6 +5297,24 @@ public class BlogsEntryUtil {
 			groupId, displayDate, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_U_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_U_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_U_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_U_S() {
+
+		return getPersistence().getFinderPathCountByC_U_S();
+	}
+
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and userId = &#63; and status = &#63;.
 	 *
@@ -5164,6 +5512,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByC_U_S(long companyId, long userId, int status) {
 		return getPersistence().countByC_U_S(companyId, userId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_U_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_U_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_U_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_U_NotS();
 	}
 
 	/**
@@ -5365,6 +5725,18 @@ public class BlogsEntryUtil {
 	 */
 	public static int countByC_U_NotS(long companyId, long userId, int status) {
 		return getPersistence().countByC_U_NotS(companyId, userId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LtD_S();
 	}
 
 	/**
@@ -5570,6 +5942,18 @@ public class BlogsEntryUtil {
 		return getPersistence().countByC_LtD_S(companyId, displayDate, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LtD_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LtD_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LtD_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LtD_NotS();
+	}
+
 	/**
 	 * Returns all the blogs entries where companyId = &#63; and displayDate &lt; &#63; and status &ne; &#63;.
 	 *
@@ -5773,6 +6157,18 @@ public class BlogsEntryUtil {
 
 		return getPersistence().countByC_LtD_NotS(
 			companyId, displayDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_LtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_LtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_LtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_U_LtD_S();
 	}
 
 	/**
@@ -6095,6 +6491,19 @@ public class BlogsEntryUtil {
 			groupId, userId, displayDate, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_U_LtD_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_U_LtD_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_U_LtD_NotS() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByG_U_LtD_NotS();
+	}
+
 	/**
 	 * Returns all the blogs entries where groupId = &#63; and userId = &#63; and displayDate &lt; &#63; and status &ne; &#63;.
 	 *
@@ -6415,6 +6824,18 @@ public class BlogsEntryUtil {
 			groupId, userId, displayDate, status);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_ERC() {
+
+		return getPersistence().getFinderPathFetchByG_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_ERC() {
+
+		return getPersistence().getFinderPathCountByG_ERC();
+	}
+
 	/**
 	 * Returns the blogs entry where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -6628,6 +7049,12 @@ public class BlogsEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BlogsEntryPersistence getPersistence() {

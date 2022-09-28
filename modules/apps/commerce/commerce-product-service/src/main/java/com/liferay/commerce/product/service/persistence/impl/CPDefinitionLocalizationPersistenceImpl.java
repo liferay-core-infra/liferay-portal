@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -95,9 +96,42 @@ public class CPDefinitionLocalizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPDefinitionId() {
+		return _finderPathWithPaginationFindByCPDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPDefinitionId() {
+		return _finderPathWithoutPaginationFindByCPDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByCPDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPDefinitionId() {
+		return _finderPathCountByCPDefinitionId;
+	}
 
 	/**
 	 * Returns all the cp definition localizations where CPDefinitionId = &#63;.
@@ -624,7 +658,18 @@ public class CPDefinitionLocalizationPersistenceImpl
 		"cpDefinitionLocalization.CPDefinitionId = ?";
 
 	private FinderPath _finderPathFetchByCPDefinitionId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByCPDefinitionId_LanguageId() {
+		return _finderPathFetchByCPDefinitionId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByCPDefinitionId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPDefinitionId_LanguageId() {
+		return _finderPathCountByCPDefinitionId_LanguageId;
+	}
 
 	/**
 	 * Returns the cp definition localization where CPDefinitionId = &#63; and languageId = &#63; or throws a <code>NoSuchCPDefinitionLocalizationException</code> if it could not be found.
@@ -1780,6 +1825,67 @@ public class CPDefinitionLocalizationPersistenceImpl
 		_setCPDefinitionLocalizationUtilPersistence(null);
 
 		entityCache.removeCache(CPDefinitionLocalizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPDefinitionLocalization> cpDefinitionLocalizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDefinitionLocalization>> resultMap =
+				new HashMap<>();
+
+			for (CPDefinitionLocalization cpDefinitionLocalization :
+					cpDefinitionLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDefinitionLocalizationModelImpl
+						cpDefinitionLocalizationModelImpl =
+							(CPDefinitionLocalizationModelImpl)
+								cpDefinitionLocalization;
+
+					arguments.add(
+						cpDefinitionLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpDefinitionLocalization);
+				}
+				else {
+					List<CPDefinitionLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDefinitionLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDefinitionLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDefinitionLocalization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPDefinitionLocalizationUtilPersistence(

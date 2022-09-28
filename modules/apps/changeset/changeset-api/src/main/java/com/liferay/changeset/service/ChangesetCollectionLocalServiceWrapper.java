@@ -14,6 +14,7 @@
 
 package com.liferay.changeset.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -362,6 +363,11 @@ public class ChangesetCollectionLocalServiceWrapper
 
 		return _changesetCollectionLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_changesetCollectionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

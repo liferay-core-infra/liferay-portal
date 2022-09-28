@@ -16,6 +16,7 @@ package com.liferay.commerce.payment.service.persistence;
 
 import com.liferay.commerce.payment.exception.NoSuchPaymentMethodGroupRelQualifierException;
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRelQualifier;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,19 @@ public interface CommercePaymentMethodGroupRelQualifierPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommercePaymentMethodGroupRelQualifierUtil} to access the commerce payment method group rel qualifier persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath
+		getFinderPathWithPaginationFindByCommercePaymentMethodGroupRelId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommercePaymentMethodGroupRelId();
+
+	public FinderPath getFinderPathCountByCommercePaymentMethodGroupRelId();
 
 	/**
 	 * Returns all the commerce payment method group rel qualifiers where CommercePaymentMethodGroupRelId = &#63;.
@@ -196,6 +210,12 @@ public interface CommercePaymentMethodGroupRelQualifierPersistence
 	 */
 	public int countByCommercePaymentMethodGroupRelId(
 		long CommercePaymentMethodGroupRelId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the commerce payment method group rel qualifiers where classNameId = &#63; and CommercePaymentMethodGroupRelId = &#63;.
@@ -357,6 +377,10 @@ public interface CommercePaymentMethodGroupRelQualifierPersistence
 	 */
 	public int countByC_C(
 		long classNameId, long CommercePaymentMethodGroupRelId);
+
+	public FinderPath getFinderPathFetchByC_C_C();
+
+	public FinderPath getFinderPathCountByC_C_C();
 
 	/**
 	 * Returns the commerce payment method group rel qualifier where classNameId = &#63; and classPK = &#63; and CommercePaymentMethodGroupRelId = &#63; or throws a <code>NoSuchPaymentMethodGroupRelQualifierException</code> if it could not be found.
@@ -550,5 +574,7 @@ public interface CommercePaymentMethodGroupRelQualifierPersistence
 	 * @return the number of commerce payment method group rel qualifiers
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

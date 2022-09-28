@@ -14,6 +14,7 @@
 
 package com.liferay.knowledge.base.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -542,6 +543,11 @@ public class KBCommentLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _kbCommentLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_kbCommentLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

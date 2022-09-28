@@ -14,6 +14,7 @@
 
 package com.liferay.external.data.source.test.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -311,6 +312,11 @@ public class TestEntityLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _testEntityLocalService.getTestEntity(id);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_testEntityLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

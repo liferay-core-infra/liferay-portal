@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -40,6 +41,17 @@ public interface GroupPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link GroupUtil} to access the group persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the groups where uuid = &#63;.
@@ -183,6 +195,10 @@ public interface GroupPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the group where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
 	 *
@@ -232,6 +248,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the groups where uuid = &#63; and companyId = &#63;.
@@ -387,6 +409,12 @@ public interface GroupPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the groups where companyId = &#63;.
 	 *
@@ -530,6 +558,10 @@ public interface GroupPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathFetchByLiveGroupId();
+
+	public FinderPath getFinderPathCountByLiveGroupId();
+
 	/**
 	 * Returns the group where liveGroupId = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
 	 *
@@ -573,6 +605,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByLiveGroupId(long liveGroupId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and classNameId = &#63;.
@@ -728,6 +766,12 @@ public interface GroupPersistence
 	 */
 	public int countByC_C(long companyId, long classNameId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_P();
+
+	public FinderPath getFinderPathCountByC_P();
+
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63;.
 	 *
@@ -882,6 +926,16 @@ public interface GroupPersistence
 	 */
 	public int countByC_P(long companyId, long parentGroupId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_GK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_GK();
+
+	public FinderPath getFinderPathFetchByC_GK();
+
+	public FinderPath getFinderPathCountByC_GK();
+
+	public FinderPath getFinderPathWithPaginationCountByC_GK();
+
 	/**
 	 * Returns all the groups where companyId = &#63; and groupKey = any &#63;.
 	 *
@@ -1010,6 +1064,10 @@ public interface GroupPersistence
 	 */
 	public int countByC_GK(long companyId, String[] groupKeys);
 
+	public FinderPath getFinderPathFetchByC_F();
+
+	public FinderPath getFinderPathCountByC_F();
+
 	/**
 	 * Returns the group where companyId = &#63; and friendlyURL = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
 	 *
@@ -1059,6 +1117,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByC_F(long companyId, String friendlyURL);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and site = &#63;.
@@ -1214,6 +1278,12 @@ public interface GroupPersistence
 	 */
 	public int countByC_S(long companyId, boolean site);
 
+	public FinderPath getFinderPathWithPaginationFindByC_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A();
+
+	public FinderPath getFinderPathCountByC_A();
+
 	/**
 	 * Returns all the groups where companyId = &#63; and active = &#63;.
 	 *
@@ -1367,6 +1437,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByC_A(long companyId, boolean active);
+
+	public FinderPath getFinderPathWithPaginationFindByC_CPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_CPK();
+
+	public FinderPath getFinderPathCountByC_CPK();
 
 	/**
 	 * Returns all the groups where classNameId = &#63; and classPK = &#63;.
@@ -1522,6 +1598,12 @@ public interface GroupPersistence
 	 */
 	public int countByC_CPK(long classNameId, long classPK);
 
+	public FinderPath getFinderPathWithPaginationFindByT_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByT_A();
+
+	public FinderPath getFinderPathCountByT_A();
+
 	/**
 	 * Returns all the groups where type = &#63; and active = &#63;.
 	 *
@@ -1676,6 +1758,10 @@ public interface GroupPersistence
 	 */
 	public int countByT_A(int type, boolean active);
 
+	public FinderPath getFinderPathWithPaginationFindByGtG_C_P();
+
+	public FinderPath getFinderPathWithPaginationCountByGtG_C_P();
+
 	/**
 	 * Returns all the groups where groupId &gt; &#63; and companyId = &#63; and parentGroupId = &#63;.
 	 *
@@ -1826,6 +1912,10 @@ public interface GroupPersistence
 	 */
 	public int countByGtG_C_P(long groupId, long companyId, long parentGroupId);
 
+	public FinderPath getFinderPathFetchByC_C_C();
+
+	public FinderPath getFinderPathCountByC_C_C();
+
 	/**
 	 * Returns the group where companyId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
 	 *
@@ -1880,6 +1970,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByC_C_C(long companyId, long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_P();
+
+	public FinderPath getFinderPathCountByC_C_P();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and classNameId = &#63; and parentGroupId = &#63;.
@@ -2052,6 +2148,12 @@ public interface GroupPersistence
 	public int countByC_C_P(
 		long companyId, long classNameId, long parentGroupId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S();
+
+	public FinderPath getFinderPathCountByC_C_S();
+
 	/**
 	 * Returns all the groups where companyId = &#63; and classNameId = &#63; and site = &#63;.
 	 *
@@ -2217,6 +2319,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByC_C_S(long companyId, long classNameId, boolean site);
+
+	public FinderPath getFinderPathWithPaginationFindByC_P_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_P_S();
+
+	public FinderPath getFinderPathCountByC_P_S();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63; and site = &#63;.
@@ -2384,6 +2492,10 @@ public interface GroupPersistence
 	 */
 	public int countByC_P_S(long companyId, long parentGroupId, boolean site);
 
+	public FinderPath getFinderPathFetchByC_L_GK();
+
+	public FinderPath getFinderPathCountByC_L_GK();
+
 	/**
 	 * Returns the group where companyId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
 	 *
@@ -2441,6 +2553,10 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByC_L_GK(long companyId, long liveGroupId, String groupKey);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LikeT_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeT_S();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and treePath LIKE &#63; and site = &#63;.
@@ -2609,6 +2725,10 @@ public interface GroupPersistence
 	 */
 	public int countByC_LikeT_S(long companyId, String treePath, boolean site);
 
+	public FinderPath getFinderPathWithPaginationFindByC_LikeN_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeN_S();
+
 	/**
 	 * Returns all the groups where companyId = &#63; and name LIKE &#63; and site = &#63;.
 	 *
@@ -2774,6 +2894,12 @@ public interface GroupPersistence
 	 * @return the number of matching groups
 	 */
 	public int countByC_LikeN_S(long companyId, String name, boolean site);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S_A();
+
+	public FinderPath getFinderPathCountByC_S_A();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and site = &#63; and active = &#63;.
@@ -2941,6 +3067,10 @@ public interface GroupPersistence
 	 */
 	public int countByC_S_A(long companyId, boolean site, boolean active);
 
+	public FinderPath getFinderPathWithPaginationFindByGtG_C_C_P();
+
+	public FinderPath getFinderPathWithPaginationCountByGtG_C_C_P();
+
 	/**
 	 * Returns all the groups where groupId &gt; &#63; and companyId = &#63; and classNameId = &#63; and parentGroupId = &#63;.
 	 *
@@ -3104,6 +3234,10 @@ public interface GroupPersistence
 	 */
 	public int countByGtG_C_C_P(
 		long groupId, long companyId, long classNameId, long parentGroupId);
+
+	public FinderPath getFinderPathWithPaginationFindByGtG_C_P_S();
+
+	public FinderPath getFinderPathWithPaginationCountByGtG_C_P_S();
 
 	/**
 	 * Returns all the groups where groupId &gt; &#63; and companyId = &#63; and parentGroupId = &#63; and site = &#63;.
@@ -3269,6 +3403,10 @@ public interface GroupPersistence
 	public int countByGtG_C_P_S(
 		long groupId, long companyId, long parentGroupId, boolean site);
 
+	public FinderPath getFinderPathFetchByC_C_L_GK();
+
+	public FinderPath getFinderPathCountByC_C_L_GK();
+
 	/**
 	 * Returns the group where companyId = &#63; and classNameId = &#63; and liveGroupId = &#63; and groupKey = &#63; or throws a <code>NoSuchGroupException</code> if it could not be found.
 	 *
@@ -3333,6 +3471,10 @@ public interface GroupPersistence
 	 */
 	public int countByC_C_L_GK(
 		long companyId, long classNameId, long liveGroupId, String groupKey);
+
+	public FinderPath getFinderPathWithPaginationFindByC_P_LikeN_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_P_LikeN_S();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63; and name LIKE &#63; and site = &#63;.
@@ -3516,6 +3658,12 @@ public interface GroupPersistence
 	 */
 	public int countByC_P_LikeN_S(
 		long companyId, long parentGroupId, String name, boolean site);
+
+	public FinderPath getFinderPathWithPaginationFindByC_P_S_I();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_P_S_I();
+
+	public FinderPath getFinderPathCountByC_P_S_I();
 
 	/**
 	 * Returns all the groups where companyId = &#63; and parentGroupId = &#63; and site = &#63; and inheritContent = &#63;.
@@ -4500,5 +4648,7 @@ public interface GroupPersistence
 	 */
 	public void setUsers(
 		long pk, java.util.List<com.liferay.portal.kernel.model.User> users);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

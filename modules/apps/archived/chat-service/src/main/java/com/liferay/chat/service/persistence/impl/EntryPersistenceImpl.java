@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -47,6 +48,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -90,9 +93,42 @@ public class EntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCreateDate() {
+		return _finderPathWithPaginationFindByCreateDate;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCreateDate() {
+		return _finderPathWithoutPaginationFindByCreateDate;
+	}
+
 	private FinderPath _finderPathCountByCreateDate;
+
+	@Override
+	public FinderPath getFinderPathCountByCreateDate() {
+		return _finderPathCountByCreateDate;
+	}
 
 	/**
 	 * Returns all the entries where createDate = &#63;.
@@ -583,8 +619,25 @@ public class EntryPersistenceImpl
 		"entry.createDate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByFromUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFromUserId() {
+		return _finderPathWithPaginationFindByFromUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFromUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByFromUserId() {
+		return _finderPathWithoutPaginationFindByFromUserId;
+	}
+
 	private FinderPath _finderPathCountByFromUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByFromUserId() {
+		return _finderPathCountByFromUserId;
+	}
 
 	/**
 	 * Returns all the entries where fromUserId = &#63;.
@@ -1075,8 +1128,25 @@ public class EntryPersistenceImpl
 		"entry.fromUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByToUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByToUserId() {
+		return _finderPathWithPaginationFindByToUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByToUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByToUserId() {
+		return _finderPathWithoutPaginationFindByToUserId;
+	}
+
 	private FinderPath _finderPathCountByToUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByToUserId() {
+		return _finderPathCountByToUserId;
+	}
 
 	/**
 	 * Returns all the entries where toUserId = &#63;.
@@ -1563,8 +1633,25 @@ public class EntryPersistenceImpl
 		"entry.toUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_F() {
+		return _finderPathWithPaginationFindByC_F;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_F;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_F() {
+		return _finderPathWithoutPaginationFindByC_F;
+	}
+
 	private FinderPath _finderPathCountByC_F;
+
+	@Override
+	public FinderPath getFinderPathCountByC_F() {
+		return _finderPathCountByC_F;
+	}
 
 	/**
 	 * Returns all the entries where createDate = &#63; and fromUserId = &#63;.
@@ -2100,8 +2187,25 @@ public class EntryPersistenceImpl
 		"entry.fromUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_T() {
+		return _finderPathWithPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_T() {
+		return _finderPathWithoutPaginationFindByC_T;
+	}
+
 	private FinderPath _finderPathCountByC_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_T() {
+		return _finderPathCountByC_T;
+	}
 
 	/**
 	 * Returns all the entries where createDate = &#63; and toUserId = &#63;.
@@ -2633,8 +2737,25 @@ public class EntryPersistenceImpl
 		"entry.toUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByF_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByF_T() {
+		return _finderPathWithPaginationFindByF_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByF_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByF_T() {
+		return _finderPathWithoutPaginationFindByF_T;
+	}
+
 	private FinderPath _finderPathCountByF_T;
+
+	@Override
+	public FinderPath getFinderPathCountByF_T() {
+		return _finderPathCountByF_T;
+	}
 
 	/**
 	 * Returns all the entries where fromUserId = &#63; and toUserId = &#63;.
@@ -3166,8 +3287,25 @@ public class EntryPersistenceImpl
 		"entry.toUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_F_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_F_T() {
+		return _finderPathWithPaginationFindByC_F_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_F_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_F_T() {
+		return _finderPathWithoutPaginationFindByC_F_T;
+	}
+
 	private FinderPath _finderPathCountByC_F_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_F_T() {
+		return _finderPathCountByC_F_T;
+	}
 
 	/**
 	 * Returns all the entries where createDate = &#63; and fromUserId = &#63; and toUserId = &#63;.
@@ -3742,8 +3880,25 @@ public class EntryPersistenceImpl
 		"entry.toUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByF_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByF_T_C() {
+		return _finderPathWithPaginationFindByF_T_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByF_T_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByF_T_C() {
+		return _finderPathWithoutPaginationFindByF_T_C;
+	}
+
 	private FinderPath _finderPathCountByF_T_C;
+
+	@Override
+	public FinderPath getFinderPathCountByF_T_C() {
+		return _finderPathCountByF_T_C;
+	}
 
 	/**
 	 * Returns all the entries where fromUserId = &#63; and toUserId = &#63; and content = &#63;.
@@ -5025,6 +5180,57 @@ public class EntryPersistenceImpl
 		_setEntryUtilPersistence(null);
 
 		entityCache.removeCache(EntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Entry> entrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Entry>> resultMap = new HashMap<>();
+
+			for (Entry entry : entrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					EntryModelImpl entryModelImpl = (EntryModelImpl)entry;
+
+					arguments.add(entryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), entry);
+				}
+				else {
+					List<Entry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(entry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Entry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Entry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setEntryUtilPersistence(EntryPersistence entryPersistence) {

@@ -119,6 +119,42 @@ public class DDLRecordVersionUtil {
 		return getPersistence().update(ddlRecordVersion, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByRecordId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByRecordId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByRecordId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByRecordId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByRecordId() {
+
+		return getPersistence().getFinderPathCountByRecordId();
+	}
+
 	/**
 	 * Returns all the ddl record versions where recordId = &#63;.
 	 *
@@ -291,6 +327,24 @@ public class DDLRecordVersionUtil {
 	 */
 	public static int countByRecordId(long recordId) {
 		return getPersistence().countByRecordId(recordId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_R() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_R();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByR_R() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByR_R();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_R() {
+
+		return getPersistence().getFinderPathCountByR_R();
 	}
 
 	/**
@@ -484,6 +538,18 @@ public class DDLRecordVersionUtil {
 		return getPersistence().countByR_R(recordSetId, recordSetVersion);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByR_V() {
+
+		return getPersistence().getFinderPathFetchByR_V();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_V() {
+
+		return getPersistence().getFinderPathCountByR_V();
+	}
+
 	/**
 	 * Returns the ddl record version where recordId = &#63; and version = &#63; or throws a <code>NoSuchRecordVersionException</code> if it could not be found.
 	 *
@@ -547,6 +613,24 @@ public class DDLRecordVersionUtil {
 	 */
 	public static int countByR_V(long recordId, String version) {
 		return getPersistence().countByR_V(recordId, version);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByR_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByR_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_S() {
+
+		return getPersistence().getFinderPathCountByR_S();
 	}
 
 	/**
@@ -734,6 +818,24 @@ public class DDLRecordVersionUtil {
 	 */
 	public static int countByR_S(long recordId, int status) {
 		return getPersistence().countByR_S(recordId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_R_R_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_R_R_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_R_R_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_R_R_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_R_R_S() {
+
+		return getPersistence().getFinderPathCountByU_R_R_S();
 	}
 
 	/**
@@ -1113,6 +1215,12 @@ public class DDLRecordVersionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DDLRecordVersionPersistence getPersistence() {

@@ -17,6 +17,7 @@ package com.liferay.calendar.service;
 import com.liferay.calendar.model.Calendar;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -401,6 +402,10 @@ public class CalendarLocalServiceUtil {
 
 	public static boolean isStagingCalendar(Calendar calendar) {
 		return getService().isStagingCalendar(calendar);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static List<Calendar> search(

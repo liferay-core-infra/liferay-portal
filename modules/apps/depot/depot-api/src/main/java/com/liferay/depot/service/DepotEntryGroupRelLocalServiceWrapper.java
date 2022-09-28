@@ -14,6 +14,7 @@
 
 package com.liferay.depot.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -486,6 +487,11 @@ public class DepotEntryGroupRelLocalServiceWrapper
 	public int getSearchableDepotEntryGroupRelsCount(long groupId) {
 		return _depotEntryGroupRelLocalService.
 			getSearchableDepotEntryGroupRelsCount(groupId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_depotEntryGroupRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

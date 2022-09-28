@@ -14,6 +14,7 @@
 
 package com.liferay.view.count.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -355,6 +356,11 @@ public class ViewCountEntryLocalServiceWrapper
 	@Override
 	public boolean isViewCountEnabled(long classNameId) {
 		return _viewCountEntryLocalService.isViewCountEnabled(classNameId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_viewCountEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

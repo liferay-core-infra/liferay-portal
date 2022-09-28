@@ -105,9 +105,42 @@ public class DDMStorageLinkPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the ddm storage links where uuid = &#63;.
@@ -653,8 +686,25 @@ public class DDMStorageLinkPersistenceImpl
 		"(ddmStorageLink.uuid IS NULL OR ddmStorageLink.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the ddm storage links where uuid = &#63; and companyId = &#63;.
@@ -1250,7 +1300,18 @@ public class DDMStorageLinkPersistenceImpl
 		"ddmStorageLink.companyId = ?";
 
 	private FinderPath _finderPathFetchByClassPK;
+
+	@Override
+	public FinderPath getFinderPathFetchByClassPK() {
+		return _finderPathFetchByClassPK;
+	}
+
 	private FinderPath _finderPathCountByClassPK;
+
+	@Override
+	public FinderPath getFinderPathCountByClassPK() {
+		return _finderPathCountByClassPK;
+	}
 
 	/**
 	 * Returns the ddm storage link where classPK = &#63; or throws a <code>NoSuchStorageLinkException</code> if it could not be found.
@@ -1461,8 +1522,25 @@ public class DDMStorageLinkPersistenceImpl
 		"ddmStorageLink.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByStructureId() {
+		return _finderPathWithPaginationFindByStructureId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByStructureId() {
+		return _finderPathWithoutPaginationFindByStructureId;
+	}
+
 	private FinderPath _finderPathCountByStructureId;
+
+	@Override
+	public FinderPath getFinderPathCountByStructureId() {
+		return _finderPathCountByStructureId;
+	}
 
 	/**
 	 * Returns all the ddm storage links where structureId = &#63;.
@@ -1976,9 +2054,32 @@ public class DDMStorageLinkPersistenceImpl
 		"ddmStorageLink.structureId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByStructureVersionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByStructureVersionId() {
+		return _finderPathWithPaginationFindByStructureVersionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByStructureVersionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByStructureVersionId() {
+		return _finderPathWithoutPaginationFindByStructureVersionId;
+	}
+
 	private FinderPath _finderPathCountByStructureVersionId;
+
+	@Override
+	public FinderPath getFinderPathCountByStructureVersionId() {
+		return _finderPathCountByStructureVersionId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByStructureVersionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByStructureVersionId() {
+		return _finderPathWithPaginationCountByStructureVersionId;
+	}
 
 	/**
 	 * Returns all the ddm storage links where structureVersionId = &#63;.
@@ -3652,6 +3753,59 @@ public class DDMStorageLinkPersistenceImpl
 		_setDDMStorageLinkUtilPersistence(null);
 
 		entityCache.removeCache(DDMStorageLinkImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DDMStorageLink> ddmStorageLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMStorageLink>> resultMap = new HashMap<>();
+
+			for (DDMStorageLink ddmStorageLink : ddmStorageLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMStorageLinkModelImpl ddmStorageLinkModelImpl =
+						(DDMStorageLinkModelImpl)ddmStorageLink;
+
+					arguments.add(
+						ddmStorageLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), ddmStorageLink);
+				}
+				else {
+					List<DDMStorageLink> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmStorageLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMStorageLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMStorageLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDDMStorageLinkUtilPersistence(

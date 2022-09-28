@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1682,6 +1683,11 @@ public class GroupLocalServiceWrapper
 	@Override
 	public Group loadFetchGroup(long companyId, String groupKey) {
 		return _groupLocalService.loadFetchGroup(companyId, groupKey);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_groupLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.model.ServiceComponentTable;
 import com.liferay.portal.kernel.service.persistence.ServiceComponentPersistence;
 import com.liferay.portal.kernel.service.persistence.ServiceComponentUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -46,6 +47,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,9 +85,42 @@ public class ServiceComponentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByBuildNamespace;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByBuildNamespace() {
+		return _finderPathWithPaginationFindByBuildNamespace;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByBuildNamespace;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByBuildNamespace() {
+		return _finderPathWithoutPaginationFindByBuildNamespace;
+	}
+
 	private FinderPath _finderPathCountByBuildNamespace;
+
+	@Override
+	public FinderPath getFinderPathCountByBuildNamespace() {
+		return _finderPathCountByBuildNamespace;
+	}
 
 	/**
 	 * Returns all the service components where buildNamespace = &#63;.
@@ -637,7 +672,18 @@ public class ServiceComponentPersistenceImpl
 		"(serviceComponent.buildNamespace IS NULL OR serviceComponent.buildNamespace = '')";
 
 	private FinderPath _finderPathFetchByBNS_BNU;
+
+	@Override
+	public FinderPath getFinderPathFetchByBNS_BNU() {
+		return _finderPathFetchByBNS_BNU;
+	}
+
 	private FinderPath _finderPathCountByBNS_BNU;
+
+	@Override
+	public FinderPath getFinderPathCountByBNS_BNU() {
+		return _finderPathCountByBNS_BNU;
+	}
 
 	/**
 	 * Returns the service component where buildNamespace = &#63; and buildNumber = &#63; or throws a <code>NoSuchServiceComponentException</code> if it could not be found.
@@ -1483,6 +1529,61 @@ public class ServiceComponentPersistenceImpl
 		_setServiceComponentUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ServiceComponentImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ServiceComponent> serviceComponents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ServiceComponent>> resultMap =
+				new HashMap<>();
+
+			for (ServiceComponent serviceComponent : serviceComponents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ServiceComponentModelImpl serviceComponentModelImpl =
+						(ServiceComponentModelImpl)serviceComponent;
+
+					arguments.add(
+						serviceComponentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), serviceComponent);
+				}
+				else {
+					List<ServiceComponent> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(serviceComponent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ServiceComponent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ServiceComponent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setServiceComponentUtilPersistence(

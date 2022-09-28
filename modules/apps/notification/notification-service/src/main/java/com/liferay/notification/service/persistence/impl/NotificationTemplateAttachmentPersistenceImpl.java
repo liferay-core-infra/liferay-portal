@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,9 +50,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -97,9 +100,46 @@ public class NotificationTemplateAttachmentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByNotificationTemplateId() {
+
+		return _finderPathWithPaginationFindByNotificationTemplateId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByNotificationTemplateId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByNotificationTemplateId() {
+
+		return _finderPathWithoutPaginationFindByNotificationTemplateId;
+	}
+
 	private FinderPath _finderPathCountByNotificationTemplateId;
+
+	@Override
+	public FinderPath getFinderPathCountByNotificationTemplateId() {
+		return _finderPathCountByNotificationTemplateId;
+	}
 
 	/**
 	 * Returns all the notification template attachments where notificationTemplateId = &#63;.
@@ -630,7 +670,18 @@ public class NotificationTemplateAttachmentPersistenceImpl
 			"notificationTemplateAttachment.notificationTemplateId = ?";
 
 	private FinderPath _finderPathFetchByNTI_OFI;
+
+	@Override
+	public FinderPath getFinderPathFetchByNTI_OFI() {
+		return _finderPathFetchByNTI_OFI;
+	}
+
 	private FinderPath _finderPathCountByNTI_OFI;
+
+	@Override
+	public FinderPath getFinderPathCountByNTI_OFI() {
+		return _finderPathCountByNTI_OFI;
+	}
 
 	/**
 	 * Returns the notification template attachment where notificationTemplateId = &#63; and objectFieldId = &#63; or throws a <code>NoSuchNotificationTemplateAttachmentException</code> if it could not be found.
@@ -1513,6 +1564,69 @@ public class NotificationTemplateAttachmentPersistenceImpl
 
 		entityCache.removeCache(
 			NotificationTemplateAttachmentImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<NotificationTemplateAttachment> notificationTemplateAttachments =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<NotificationTemplateAttachment>> resultMap =
+				new HashMap<>();
+
+			for (NotificationTemplateAttachment notificationTemplateAttachment :
+					notificationTemplateAttachments) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					NotificationTemplateAttachmentModelImpl
+						notificationTemplateAttachmentModelImpl =
+							(NotificationTemplateAttachmentModelImpl)
+								notificationTemplateAttachment;
+
+					arguments.add(
+						notificationTemplateAttachmentModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						notificationTemplateAttachment);
+				}
+				else {
+					List<NotificationTemplateAttachment> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(notificationTemplateAttachment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<NotificationTemplateAttachment>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<NotificationTemplateAttachment> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setNotificationTemplateAttachmentUtilPersistence(

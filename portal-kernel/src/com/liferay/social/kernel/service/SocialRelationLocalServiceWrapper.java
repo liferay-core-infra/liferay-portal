@@ -15,6 +15,7 @@
 package com.liferay.social.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.social.kernel.model.SocialRelation;
@@ -605,6 +606,11 @@ public class SocialRelationLocalServiceWrapper
 	@Override
 	public boolean isRelatable(long userId1, long userId2, int type) {
 		return _socialRelationLocalService.isRelatable(userId1, userId2, type);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_socialRelationLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

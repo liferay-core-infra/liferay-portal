@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -61,6 +62,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -104,9 +106,42 @@ public class SegmentsEntryRolePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindBySegmentsEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySegmentsEntryId() {
+		return _finderPathWithPaginationFindBySegmentsEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySegmentsEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySegmentsEntryId() {
+		return _finderPathWithoutPaginationFindBySegmentsEntryId;
+	}
+
 	private FinderPath _finderPathCountBySegmentsEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountBySegmentsEntryId() {
+		return _finderPathCountBySegmentsEntryId;
+	}
 
 	/**
 	 * Returns all the segments entry roles where segmentsEntryId = &#63;.
@@ -631,8 +666,25 @@ public class SegmentsEntryRolePersistenceImpl
 			"segmentsEntryRole.segmentsEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByRoleId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRoleId() {
+		return _finderPathWithPaginationFindByRoleId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRoleId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRoleId() {
+		return _finderPathWithoutPaginationFindByRoleId;
+	}
+
 	private FinderPath _finderPathCountByRoleId;
+
+	@Override
+	public FinderPath getFinderPathCountByRoleId() {
+		return _finderPathCountByRoleId;
+	}
 
 	/**
 	 * Returns all the segments entry roles where roleId = &#63;.
@@ -1142,7 +1194,18 @@ public class SegmentsEntryRolePersistenceImpl
 		"segmentsEntryRole.roleId = ?";
 
 	private FinderPath _finderPathFetchByS_R;
+
+	@Override
+	public FinderPath getFinderPathFetchByS_R() {
+		return _finderPathFetchByS_R;
+	}
+
 	private FinderPath _finderPathCountByS_R;
+
+	@Override
+	public FinderPath getFinderPathCountByS_R() {
+		return _finderPathCountByS_R;
+	}
 
 	/**
 	 * Returns the segments entry role where segmentsEntryId = &#63; and roleId = &#63; or throws a <code>NoSuchEntryRoleException</code> if it could not be found.
@@ -2234,6 +2297,61 @@ public class SegmentsEntryRolePersistenceImpl
 		_setSegmentsEntryRoleUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsEntryRoleImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsEntryRole> segmentsEntryRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsEntryRole>> resultMap =
+				new HashMap<>();
+
+			for (SegmentsEntryRole segmentsEntryRole : segmentsEntryRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsEntryRoleModelImpl segmentsEntryRoleModelImpl =
+						(SegmentsEntryRoleModelImpl)segmentsEntryRole;
+
+					arguments.add(
+						segmentsEntryRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsEntryRole);
+				}
+				else {
+					List<SegmentsEntryRole> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsEntryRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsEntryRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsEntryRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsEntryRoleUtilPersistence(

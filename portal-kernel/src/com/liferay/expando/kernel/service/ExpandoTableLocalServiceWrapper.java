@@ -16,6 +16,7 @@ package com.liferay.expando.kernel.service;
 
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -445,6 +446,11 @@ public class ExpandoTableLocalServiceWrapper
 		long companyId, String className) {
 
 		return _expandoTableLocalService.getTables(companyId, className);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_expandoTableLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

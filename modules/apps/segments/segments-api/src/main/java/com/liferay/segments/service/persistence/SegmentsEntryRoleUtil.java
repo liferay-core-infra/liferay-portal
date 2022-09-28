@@ -121,6 +121,44 @@ public class SegmentsEntryRoleUtil {
 		return getPersistence().update(segmentsEntryRole, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySegmentsEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindBySegmentsEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySegmentsEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindBySegmentsEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySegmentsEntryId() {
+
+		return getPersistence().getFinderPathCountBySegmentsEntryId();
+	}
+
 	/**
 	 * Returns all the segments entry roles where segmentsEntryId = &#63;.
 	 *
@@ -297,6 +335,24 @@ public class SegmentsEntryRoleUtil {
 		return getPersistence().countBySegmentsEntryId(segmentsEntryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByRoleId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByRoleId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByRoleId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByRoleId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByRoleId() {
+
+		return getPersistence().getFinderPathCountByRoleId();
+	}
+
 	/**
 	 * Returns all the segments entry roles where roleId = &#63;.
 	 *
@@ -460,6 +516,18 @@ public class SegmentsEntryRoleUtil {
 	 */
 	public static int countByRoleId(long roleId) {
 		return getPersistence().countByRoleId(roleId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByS_R() {
+
+		return getPersistence().getFinderPathFetchByS_R();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByS_R() {
+
+		return getPersistence().getFinderPathCountByS_R();
 	}
 
 	/**
@@ -680,6 +748,12 @@ public class SegmentsEntryRoleUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SegmentsEntryRolePersistence getPersistence() {

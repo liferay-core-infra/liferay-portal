@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.discount.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -395,6 +396,11 @@ public class CommerceDiscountUsageEntryLocalServiceWrapper
 
 		return _commerceDiscountUsageEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceDiscountUsageEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

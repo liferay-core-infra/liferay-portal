@@ -124,6 +124,42 @@ public class SiteNavigationMenuItemUtil {
 		return getPersistence().update(siteNavigationMenuItem, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the site navigation menu items where uuid = &#63;.
 	 *
@@ -292,6 +328,18 @@ public class SiteNavigationMenuItemUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the site navigation menu item where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchMenuItemException</code> if it could not be found.
 	 *
@@ -356,6 +404,24 @@ public class SiteNavigationMenuItemUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -544,6 +610,24 @@ public class SiteNavigationMenuItemUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the site navigation menu items where companyId = &#63;.
 	 *
@@ -715,6 +799,26 @@ public class SiteNavigationMenuItemUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySiteNavigationMenuId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindBySiteNavigationMenuId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySiteNavigationMenuId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindBySiteNavigationMenuId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySiteNavigationMenuId() {
+
+		return getPersistence().getFinderPathCountBySiteNavigationMenuId();
 	}
 
 	/**
@@ -895,6 +999,27 @@ public class SiteNavigationMenuItemUtil {
 	public static int countBySiteNavigationMenuId(long siteNavigationMenuId) {
 		return getPersistence().countBySiteNavigationMenuId(
 			siteNavigationMenuId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByParentSiteNavigationMenuItemId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByParentSiteNavigationMenuItemId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByParentSiteNavigationMenuItemId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByParentSiteNavigationMenuItemId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByParentSiteNavigationMenuItemId() {
+
+		return getPersistence().
+			getFinderPathCountByParentSiteNavigationMenuItemId();
 	}
 
 	/**
@@ -1091,6 +1216,24 @@ public class SiteNavigationMenuItemUtil {
 
 		return getPersistence().countByParentSiteNavigationMenuItemId(
 			parentSiteNavigationMenuItemId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByS_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByS_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByS_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByS_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByS_P() {
+
+		return getPersistence().getFinderPathCountByS_P();
 	}
 
 	/**
@@ -1296,6 +1439,18 @@ public class SiteNavigationMenuItemUtil {
 
 		return getPersistence().countByS_P(
 			siteNavigationMenuId, parentSiteNavigationMenuItemId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByS_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByS_LikeN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByS_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationCountByS_LikeN();
 	}
 
 	/**
@@ -1644,6 +1799,12 @@ public class SiteNavigationMenuItemUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SiteNavigationMenuItemPersistence getPersistence() {

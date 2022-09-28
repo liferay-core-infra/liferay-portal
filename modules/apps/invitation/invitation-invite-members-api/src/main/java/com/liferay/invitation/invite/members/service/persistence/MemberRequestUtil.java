@@ -119,6 +119,36 @@ public class MemberRequestUtil {
 		return getPersistence().update(memberRequest, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByKey() {
+
+		return getPersistence().getFinderPathFetchByKey();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKey() {
+
+		return getPersistence().getFinderPathCountByKey();
+	}
+
 	/**
 	 * Returns the member request where key = &#63; or throws a <code>NoSuchMemberRequestException</code> if it could not be found.
 	 *
@@ -175,6 +205,26 @@ public class MemberRequestUtil {
 	 */
 	public static int countByKey(String key) {
 		return getPersistence().countByKey(key);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByReceiverUserId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByReceiverUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByReceiverUserId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByReceiverUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByReceiverUserId() {
+
+		return getPersistence().getFinderPathCountByReceiverUserId();
 	}
 
 	/**
@@ -354,6 +404,24 @@ public class MemberRequestUtil {
 	 */
 	public static int countByReceiverUserId(long receiverUserId) {
 		return getPersistence().countByReceiverUserId(receiverUserId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByR_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByR_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByR_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByR_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByR_S() {
+
+		return getPersistence().getFinderPathCountByR_S();
 	}
 
 	/**
@@ -544,6 +612,18 @@ public class MemberRequestUtil {
 	 */
 	public static int countByR_S(long receiverUserId, int status) {
 		return getPersistence().countByR_S(receiverUserId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_R_S() {
+
+		return getPersistence().getFinderPathFetchByG_R_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_R_S() {
+
+		return getPersistence().getFinderPathCountByG_R_S();
 	}
 
 	/**
@@ -771,6 +851,12 @@ public class MemberRequestUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static MemberRequestPersistence getPersistence() {

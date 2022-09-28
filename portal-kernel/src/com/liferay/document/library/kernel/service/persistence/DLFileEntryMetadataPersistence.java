@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service.persistence;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryMetadataException;
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface DLFileEntryMetadataPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DLFileEntryMetadataUtil} to access the document library file entry metadata persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the document library file entry metadatas where uuid = &#63;.
@@ -185,6 +197,12 @@ public interface DLFileEntryMetadataPersistence
 	 * @return the number of matching document library file entry metadatas
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the document library file entry metadatas where uuid = &#63; and companyId = &#63;.
@@ -341,6 +359,12 @@ public interface DLFileEntryMetadataPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByFileEntryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByFileEntryId();
+
+	public FinderPath getFinderPathCountByFileEntryId();
+
 	/**
 	 * Returns all the document library file entry metadatas where fileEntryId = &#63;.
 	 *
@@ -485,6 +509,12 @@ public interface DLFileEntryMetadataPersistence
 	 */
 	public int countByFileEntryId(long fileEntryId);
 
+	public FinderPath getFinderPathWithPaginationFindByFileVersionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByFileVersionId();
+
+	public FinderPath getFinderPathCountByFileVersionId();
+
 	/**
 	 * Returns all the document library file entry metadatas where fileVersionId = &#63;.
 	 *
@@ -628,6 +658,10 @@ public interface DLFileEntryMetadataPersistence
 	 * @return the number of matching document library file entry metadatas
 	 */
 	public int countByFileVersionId(long fileVersionId);
+
+	public FinderPath getFinderPathFetchByD_F();
+
+	public FinderPath getFinderPathCountByD_F();
 
 	/**
 	 * Returns the document library file entry metadata where DDMStructureId = &#63; and fileVersionId = &#63; or throws a <code>NoSuchFileEntryMetadataException</code> if it could not be found.
@@ -803,5 +837,7 @@ public interface DLFileEntryMetadataPersistence
 	 * @return the number of document library file entry metadatas
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -16,6 +16,7 @@ package com.liferay.commerce.payment.service.persistence;
 
 import com.liferay.commerce.payment.exception.NoSuchPaymentMethodGroupRelException;
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface CommercePaymentMethodGroupRelPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommercePaymentMethodGroupRelUtil} to access the commerce payment method group rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the commerce payment method group rels where groupId = &#63;.
@@ -250,6 +262,10 @@ public interface CommercePaymentMethodGroupRelPersistence
 	 */
 	public int filterCountByGroupId(long groupId);
 
+	public FinderPath getFinderPathFetchByG_E();
+
+	public FinderPath getFinderPathCountByG_E();
+
 	/**
 	 * Returns the commerce payment method group rel where groupId = &#63; and engineKey = &#63; or throws a <code>NoSuchPaymentMethodGroupRelException</code> if it could not be found.
 	 *
@@ -302,6 +318,12 @@ public interface CommercePaymentMethodGroupRelPersistence
 	 * @return the number of matching commerce payment method group rels
 	 */
 	public int countByG_E(long groupId, String engineKey);
+
+	public FinderPath getFinderPathWithPaginationFindByG_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_A();
+
+	public FinderPath getFinderPathCountByG_A();
 
 	/**
 	 * Returns all the commerce payment method group rels where groupId = &#63; and active = &#63;.
@@ -656,5 +678,7 @@ public interface CommercePaymentMethodGroupRelPersistence
 	 * @return the number of commerce payment method group rels
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

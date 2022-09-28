@@ -119,6 +119,43 @@ public class DDMTemplateLinkUtil {
 		return getPersistence().update(ddmTemplateLink, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByTemplateId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByTemplateId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByTemplateId() {
+
+		return getPersistence().getFinderPathCountByTemplateId();
+	}
+
 	/**
 	 * Returns all the ddm template links where templateId = &#63;.
 	 *
@@ -291,6 +328,18 @@ public class DDMTemplateLinkUtil {
 	 */
 	public static int countByTemplateId(long templateId) {
 		return getPersistence().countByTemplateId(templateId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C() {
+
+		return getPersistence().getFinderPathFetchByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -508,6 +557,12 @@ public class DDMTemplateLinkUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DDMTemplateLinkPersistence getPersistence() {

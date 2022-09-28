@@ -51,6 +51,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,8 +97,35 @@ public class SyncDLObjectPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLikeTreePath;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLikeTreePath() {
+		return _finderPathWithPaginationFindByLikeTreePath;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLikeTreePath;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLikeTreePath() {
+		return _finderPathWithPaginationCountByLikeTreePath;
+	}
 
 	/**
 	 * Returns all the sync dl objects where treePath LIKE &#63;.
@@ -626,7 +654,18 @@ public class SyncDLObjectPersistenceImpl
 		"(syncDLObject.treePath IS NULL OR syncDLObject.treePath LIKE '')";
 
 	private FinderPath _finderPathWithPaginationFindByGtM_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtM_R() {
+		return _finderPathWithPaginationFindByGtM_R;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtM_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtM_R() {
+		return _finderPathWithPaginationCountByGtM_R;
+	}
 
 	/**
 	 * Returns all the sync dl objects where modifiedTime &gt; &#63; and repositoryId = &#63;.
@@ -1157,8 +1196,25 @@ public class SyncDLObjectPersistenceImpl
 		"syncDLObject.repositoryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByR_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_P() {
+		return _finderPathWithPaginationFindByR_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_P() {
+		return _finderPathWithoutPaginationFindByR_P;
+	}
+
 	private FinderPath _finderPathCountByR_P;
+
+	@Override
+	public FinderPath getFinderPathCountByR_P() {
+		return _finderPathCountByR_P;
+	}
 
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and parentFolderId = &#63;.
@@ -1699,7 +1755,18 @@ public class SyncDLObjectPersistenceImpl
 		"syncDLObject.parentFolderId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByR_NotE;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_NotE() {
+		return _finderPathWithPaginationFindByR_NotE;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByR_NotE;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByR_NotE() {
+		return _finderPathWithPaginationCountByR_NotE;
+	}
 
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and event &ne; &#63;.
@@ -2269,8 +2336,25 @@ public class SyncDLObjectPersistenceImpl
 		"(syncDLObject.event IS NULL OR syncDLObject.event != '')";
 
 	private FinderPath _finderPathWithPaginationFindByR_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_T() {
+		return _finderPathWithPaginationFindByR_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_T() {
+		return _finderPathWithoutPaginationFindByR_T;
+	}
+
 	private FinderPath _finderPathCountByR_T;
+
+	@Override
+	public FinderPath getFinderPathCountByR_T() {
+		return _finderPathCountByR_T;
+	}
 
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and type = &#63;.
@@ -2850,7 +2934,18 @@ public class SyncDLObjectPersistenceImpl
 		"(syncDLObject.type IS NULL OR syncDLObject.type = '')";
 
 	private FinderPath _finderPathWithPaginationFindByLikeT_NotE;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLikeT_NotE() {
+		return _finderPathWithPaginationFindByLikeT_NotE;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLikeT_NotE;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLikeT_NotE() {
+		return _finderPathWithPaginationCountByLikeT_NotE;
+	}
 
 	/**
 	 * Returns all the sync dl objects where treePath LIKE &#63; and event &ne; &#63;.
@@ -3461,8 +3556,25 @@ public class SyncDLObjectPersistenceImpl
 		"(syncDLObject.event IS NULL OR syncDLObject.event != '')";
 
 	private FinderPath _finderPathWithPaginationFindByV_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByV_T() {
+		return _finderPathWithPaginationFindByV_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByV_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByV_T() {
+		return _finderPathWithoutPaginationFindByV_T;
+	}
+
 	private FinderPath _finderPathCountByV_T;
+
+	@Override
+	public FinderPath getFinderPathCountByV_T() {
+		return _finderPathCountByV_T;
+	}
 
 	/**
 	 * Returns all the sync dl objects where version = &#63; and type = &#63;.
@@ -4077,7 +4189,18 @@ public class SyncDLObjectPersistenceImpl
 		"(syncDLObject.type IS NULL OR syncDLObject.type = '')";
 
 	private FinderPath _finderPathFetchByT_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByT_T() {
+		return _finderPathFetchByT_T;
+	}
+
 	private FinderPath _finderPathCountByT_T;
+
+	@Override
+	public FinderPath getFinderPathCountByT_T() {
+		return _finderPathCountByT_T;
+	}
 
 	/**
 	 * Returns the sync dl object where type = &#63; and typePK = &#63; or throws a <code>NoSuchDLObjectException</code> if it could not be found.
@@ -4325,7 +4448,18 @@ public class SyncDLObjectPersistenceImpl
 		"syncDLObject.typePK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGtM_R_NotE;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtM_R_NotE() {
+		return _finderPathWithPaginationFindByGtM_R_NotE;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtM_R_NotE;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtM_R_NotE() {
+		return _finderPathWithPaginationCountByGtM_R_NotE;
+	}
 
 	/**
 	 * Returns all the sync dl objects where modifiedTime &gt; &#63; and repositoryId = &#63; and event &ne; &#63;.
@@ -5270,9 +5404,32 @@ public class SyncDLObjectPersistenceImpl
 		"(syncDLObject.event IS NULL OR syncDLObject.event != '')";
 
 	private FinderPath _finderPathWithPaginationFindByR_P_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_P_T() {
+		return _finderPathWithPaginationFindByR_P_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_P_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_P_T() {
+		return _finderPathWithoutPaginationFindByR_P_T;
+	}
+
 	private FinderPath _finderPathCountByR_P_T;
+
+	@Override
+	public FinderPath getFinderPathCountByR_P_T() {
+		return _finderPathCountByR_P_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByR_P_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByR_P_T() {
+		return _finderPathWithPaginationCountByR_P_T;
+	}
 
 	/**
 	 * Returns all the sync dl objects where repositoryId = &#63; and parentFolderId = &#63; and type = &#63;.
@@ -6951,6 +7108,59 @@ public class SyncDLObjectPersistenceImpl
 		_setSyncDLObjectUtilPersistence(null);
 
 		entityCache.removeCache(SyncDLObjectImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SyncDLObject> syncDLObjects = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SyncDLObject>> resultMap = new HashMap<>();
+
+			for (SyncDLObject syncDLObject : syncDLObjects) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SyncDLObjectModelImpl syncDLObjectModelImpl =
+						(SyncDLObjectModelImpl)syncDLObject;
+
+					arguments.add(
+						syncDLObjectModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), syncDLObject);
+				}
+				else {
+					List<SyncDLObject> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(syncDLObject);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SyncDLObject>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SyncDLObject> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSyncDLObjectUtilPersistence(

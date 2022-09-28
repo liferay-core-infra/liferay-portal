@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -109,9 +110,42 @@ public class MBSuspiciousActivityPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the message boards suspicious activities where uuid = &#63;.
@@ -666,7 +700,18 @@ public class MBSuspiciousActivityPersistenceImpl
 		"(mbSuspiciousActivity.uuid IS NULL OR mbSuspiciousActivity.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the message boards suspicious activity where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchSuspiciousActivityException</code> if it could not be found.
@@ -931,8 +976,25 @@ public class MBSuspiciousActivityPersistenceImpl
 		"mbSuspiciousActivity.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the message boards suspicious activities where uuid = &#63; and companyId = &#63;.
@@ -1532,8 +1594,25 @@ public class MBSuspiciousActivityPersistenceImpl
 		"mbSuspiciousActivity.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByMessageId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByMessageId() {
+		return _finderPathWithPaginationFindByMessageId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByMessageId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByMessageId() {
+		return _finderPathWithoutPaginationFindByMessageId;
+	}
+
 	private FinderPath _finderPathCountByMessageId;
+
+	@Override
+	public FinderPath getFinderPathCountByMessageId() {
+		return _finderPathCountByMessageId;
+	}
 
 	/**
 	 * Returns all the message boards suspicious activities where messageId = &#63;.
@@ -2053,8 +2132,25 @@ public class MBSuspiciousActivityPersistenceImpl
 		"mbSuspiciousActivity.messageId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByThreadId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByThreadId() {
+		return _finderPathWithPaginationFindByThreadId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByThreadId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByThreadId() {
+		return _finderPathWithoutPaginationFindByThreadId;
+	}
+
 	private FinderPath _finderPathCountByThreadId;
+
+	@Override
+	public FinderPath getFinderPathCountByThreadId() {
+		return _finderPathCountByThreadId;
+	}
 
 	/**
 	 * Returns all the message boards suspicious activities where threadId = &#63;.
@@ -2572,7 +2668,18 @@ public class MBSuspiciousActivityPersistenceImpl
 		"mbSuspiciousActivity.threadId = ?";
 
 	private FinderPath _finderPathFetchByU_M;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_M() {
+		return _finderPathFetchByU_M;
+	}
+
 	private FinderPath _finderPathCountByU_M;
+
+	@Override
+	public FinderPath getFinderPathCountByU_M() {
+		return _finderPathCountByU_M;
+	}
 
 	/**
 	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or throws a <code>NoSuchSuspiciousActivityException</code> if it could not be found.
@@ -2824,7 +2931,18 @@ public class MBSuspiciousActivityPersistenceImpl
 		"mbSuspiciousActivity.messageId = ?";
 
 	private FinderPath _finderPathFetchByU_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_T() {
+		return _finderPathFetchByU_T;
+	}
+
 	private FinderPath _finderPathCountByU_T;
+
+	@Override
+	public FinderPath getFinderPathCountByU_T() {
+		return _finderPathCountByU_T;
+	}
 
 	/**
 	 * Returns the message boards suspicious activity where userId = &#63; and threadId = &#63; or throws a <code>NoSuchSuspiciousActivityException</code> if it could not be found.
@@ -4060,6 +4178,65 @@ public class MBSuspiciousActivityPersistenceImpl
 		_setMBSuspiciousActivityUtilPersistence(null);
 
 		entityCache.removeCache(MBSuspiciousActivityImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<MBSuspiciousActivity> mbSuspiciousActivitys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MBSuspiciousActivity>> resultMap =
+				new HashMap<>();
+
+			for (MBSuspiciousActivity mbSuspiciousActivity :
+					mbSuspiciousActivitys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MBSuspiciousActivityModelImpl
+						mbSuspiciousActivityModelImpl =
+							(MBSuspiciousActivityModelImpl)mbSuspiciousActivity;
+
+					arguments.add(
+						mbSuspiciousActivityModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), mbSuspiciousActivity);
+				}
+				else {
+					List<MBSuspiciousActivity> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(mbSuspiciousActivity);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MBSuspiciousActivity>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MBSuspiciousActivity> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setMBSuspiciousActivityUtilPersistence(

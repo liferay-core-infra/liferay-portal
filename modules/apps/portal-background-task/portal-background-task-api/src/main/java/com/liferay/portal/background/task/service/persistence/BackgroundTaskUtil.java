@@ -119,6 +119,42 @@ public class BackgroundTaskUtil {
 		return getPersistence().update(backgroundTask, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByGroupId() {
+
+		return getPersistence().getFinderPathCountByGroupId();
+	}
+
 	/**
 	 * Returns all the background tasks where groupId = &#63;.
 	 *
@@ -286,6 +322,24 @@ public class BackgroundTaskUtil {
 	 */
 	public static int countByGroupId(long groupId) {
 		return getPersistence().countByGroupId(groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
 	}
 
 	/**
@@ -458,6 +512,24 @@ public class BackgroundTaskUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompleted() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompleted();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompleted() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompleted();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompleted() {
+
+		return getPersistence().getFinderPathCountByCompleted();
 	}
 
 	/**
@@ -636,6 +708,24 @@ public class BackgroundTaskUtil {
 		return getPersistence().countByCompleted(completed);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByStatus() {
+
+		return getPersistence().getFinderPathWithPaginationFindByStatus();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByStatus() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByStatus();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByStatus() {
+
+		return getPersistence().getFinderPathCountByStatus();
+	}
+
 	/**
 	 * Returns all the background tasks where status = &#63;.
 	 *
@@ -802,6 +892,30 @@ public class BackgroundTaskUtil {
 	 */
 	public static int countByStatus(int status) {
 		return getPersistence().countByStatus(status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_T() {
+
+		return getPersistence().getFinderPathCountByG_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_T() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_T();
 	}
 
 	/**
@@ -1093,6 +1207,24 @@ public class BackgroundTaskUtil {
 		return getPersistence().countByG_T(groupIds, taskExecutorClassNames);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_S() {
+
+		return getPersistence().getFinderPathCountByG_S();
+	}
+
 	/**
 	 * Returns all the background tasks where groupId = &#63; and status = &#63;.
 	 *
@@ -1278,6 +1410,30 @@ public class BackgroundTaskUtil {
 	 */
 	public static int countByG_S(long groupId, int status) {
 		return getPersistence().countByG_S(groupId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByT_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByT_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByT_S() {
+
+		return getPersistence().getFinderPathCountByT_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByT_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByT_S();
 	}
 
 	/**
@@ -1564,6 +1720,30 @@ public class BackgroundTaskUtil {
 	 */
 	public static int countByT_S(String[] taskExecutorClassNames, int status) {
 		return getPersistence().countByT_S(taskExecutorClassNames, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_N_T() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_N_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_N_T() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_N_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_N_T() {
+
+		return getPersistence().getFinderPathCountByG_N_T();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_N_T() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_N_T();
 	}
 
 	/**
@@ -1883,6 +2063,30 @@ public class BackgroundTaskUtil {
 
 		return getPersistence().countByG_N_T(
 			groupIds, name, taskExecutorClassNames);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_T_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_T_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_T_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_T_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_T_C() {
+
+		return getPersistence().getFinderPathCountByG_T_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_T_C() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_T_C();
 	}
 
 	/**
@@ -2206,6 +2410,30 @@ public class BackgroundTaskUtil {
 			groupIds, taskExecutorClassNames, completed);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_T_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_T_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_T_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_T_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_T_S() {
+
+		return getPersistence().getFinderPathCountByG_T_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_T_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_T_S();
+	}
+
 	/**
 	 * Returns all the background tasks where groupId = &#63; and taskExecutorClassName = &#63; and status = &#63;.
 	 *
@@ -2521,6 +2749,30 @@ public class BackgroundTaskUtil {
 
 		return getPersistence().countByG_T_S(
 			groupId, taskExecutorClassNames, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_N_T_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_N_T_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_N_T_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_N_T_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_N_T_C() {
+
+		return getPersistence().getFinderPathCountByG_N_T_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_N_T_C() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_N_T_C();
 	}
 
 	/**
@@ -3019,6 +3271,12 @@ public class BackgroundTaskUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static BackgroundTaskPersistence getPersistence() {

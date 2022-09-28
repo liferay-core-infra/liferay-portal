@@ -16,6 +16,7 @@ package com.liferay.microblogs.service.persistence;
 
 import com.liferay.microblogs.exception.NoSuchEntryException;
 import com.liferay.microblogs.model.MicroblogsEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface MicroblogsEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MicroblogsEntryUtil} to access the microblogs entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63;.
@@ -251,6 +263,12 @@ public interface MicroblogsEntryPersistence
 	 */
 	public int filterCountByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the microblogs entries where userId = &#63;.
 	 *
@@ -457,6 +475,12 @@ public interface MicroblogsEntryPersistence
 	 * @return the number of matching microblogs entries that the user has permission to view
 	 */
 	public int filterCountByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByU_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_T();
+
+	public FinderPath getFinderPathCountByU_T();
 
 	/**
 	 * Returns all the microblogs entries where userId = &#63; and type = &#63;.
@@ -681,6 +705,14 @@ public interface MicroblogsEntryPersistence
 	 * @return the number of matching microblogs entries that the user has permission to view
 	 */
 	public int filterCountByU_T(long userId, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByCCNI_CCPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCCNI_CCPK();
+
+	public FinderPath getFinderPathCountByCCNI_CCPK();
+
+	public FinderPath getFinderPathWithPaginationCountByCCNI_CCPK();
 
 	/**
 	 * Returns all the microblogs entries where creatorClassNameId = &#63; and creatorClassPK = &#63;.
@@ -1045,6 +1077,12 @@ public interface MicroblogsEntryPersistence
 	public int filterCountByCCNI_CCPK(
 		long creatorClassNameId, long[] creatorClassPKs);
 
+	public FinderPath getFinderPathWithPaginationFindByCCNI_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCCNI_T();
+
+	public FinderPath getFinderPathCountByCCNI_T();
+
 	/**
 	 * Returns all the microblogs entries where creatorClassNameId = &#63; and type = &#63;.
 	 *
@@ -1270,6 +1308,12 @@ public interface MicroblogsEntryPersistence
 	 */
 	public int filterCountByCCNI_T(long creatorClassNameId, int type);
 
+	public FinderPath getFinderPathWithPaginationFindByT_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByT_P();
+
+	public FinderPath getFinderPathCountByT_P();
+
 	/**
 	 * Returns all the microblogs entries where type = &#63; and parentMicroblogsEntryId = &#63;.
 	 *
@@ -1494,6 +1538,14 @@ public interface MicroblogsEntryPersistence
 	 * @return the number of matching microblogs entries that the user has permission to view
 	 */
 	public int filterCountByT_P(int type, long parentMicroblogsEntryId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_CCNI_CCPK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_CCNI_CCPK();
+
+	public FinderPath getFinderPathCountByC_CCNI_CCPK();
+
+	public FinderPath getFinderPathWithPaginationCountByC_CCNI_CCPK();
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63; and creatorClassNameId = &#63; and creatorClassPK = &#63;.
@@ -1895,6 +1947,12 @@ public interface MicroblogsEntryPersistence
 	public int filterCountByC_CCNI_CCPK(
 		long companyId, long creatorClassNameId, long[] creatorClassPKs);
 
+	public FinderPath getFinderPathWithPaginationFindByC_CCNI_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_CCNI_T();
+
+	public FinderPath getFinderPathCountByC_CCNI_T();
+
 	/**
 	 * Returns all the microblogs entries where companyId = &#63; and creatorClassNameId = &#63; and type = &#63;.
 	 *
@@ -2140,6 +2198,14 @@ public interface MicroblogsEntryPersistence
 	 */
 	public int filterCountByC_CCNI_T(
 		long companyId, long creatorClassNameId, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByCCNI_CCPK_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCCNI_CCPK_T();
+
+	public FinderPath getFinderPathCountByCCNI_CCPK_T();
+
+	public FinderPath getFinderPathWithPaginationCountByCCNI_CCPK_T();
 
 	/**
 	 * Returns all the microblogs entries where creatorClassNameId = &#63; and creatorClassPK = &#63; and type = &#63;.
@@ -2540,6 +2606,14 @@ public interface MicroblogsEntryPersistence
 	 */
 	public int filterCountByCCNI_CCPK_T(
 		long creatorClassNameId, long[] creatorClassPKs, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByC_CCNI_CCPK_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_CCNI_CCPK_T();
+
+	public FinderPath getFinderPathCountByC_CCNI_CCPK_T();
+
+	public FinderPath getFinderPathWithPaginationCountByC_CCNI_CCPK_T();
 
 	/**
 	 * Returns all the microblogs entries where companyId = &#63; and creatorClassNameId = &#63; and creatorClassPK = &#63; and type = &#63;.
@@ -2972,6 +3046,12 @@ public interface MicroblogsEntryPersistence
 		long companyId, long creatorClassNameId, long[] creatorClassPKs,
 		int type);
 
+	public FinderPath getFinderPathWithPaginationFindByU_C_T_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_C_T_S();
+
+	public FinderPath getFinderPathCountByU_C_T_S();
+
 	/**
 	 * Returns all the microblogs entries where userId = &#63; and createDate = &#63; and type = &#63; and socialRelationType = &#63;.
 	 *
@@ -3358,5 +3438,7 @@ public interface MicroblogsEntryPersistence
 	 * @return the number of microblogs entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

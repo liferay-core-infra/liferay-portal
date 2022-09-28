@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -102,9 +103,42 @@ public class JournalContentSearchPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the journal content searches where companyId = &#63;.
@@ -624,8 +658,25 @@ public class JournalContentSearchPersistenceImpl
 		"journalContentSearch.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByPortletId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByPortletId() {
+		return _finderPathWithPaginationFindByPortletId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByPortletId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByPortletId() {
+		return _finderPathWithoutPaginationFindByPortletId;
+	}
+
 	private FinderPath _finderPathCountByPortletId;
+
+	@Override
+	public FinderPath getFinderPathCountByPortletId() {
+		return _finderPathCountByPortletId;
+	}
 
 	/**
 	 * Returns all the journal content searches where portletId = &#63;.
@@ -1189,8 +1240,25 @@ public class JournalContentSearchPersistenceImpl
 		"(journalContentSearch.portletId IS NULL OR journalContentSearch.portletId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByArticleId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByArticleId() {
+		return _finderPathWithPaginationFindByArticleId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByArticleId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByArticleId() {
+		return _finderPathWithoutPaginationFindByArticleId;
+	}
+
 	private FinderPath _finderPathCountByArticleId;
+
+	@Override
+	public FinderPath getFinderPathCountByArticleId() {
+		return _finderPathCountByArticleId;
+	}
 
 	/**
 	 * Returns all the journal content searches where articleId = &#63;.
@@ -1754,8 +1822,25 @@ public class JournalContentSearchPersistenceImpl
 		"(journalContentSearch.articleId IS NULL OR journalContentSearch.articleId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P() {
+		return _finderPathWithPaginationFindByG_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P() {
+		return _finderPathWithoutPaginationFindByG_P;
+	}
+
 	private FinderPath _finderPathCountByG_P;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P() {
+		return _finderPathCountByG_P;
+	}
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63;.
@@ -2314,8 +2399,25 @@ public class JournalContentSearchPersistenceImpl
 		"journalContentSearch.privateLayout = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_A() {
+		return _finderPathWithPaginationFindByG_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_A() {
+		return _finderPathWithoutPaginationFindByG_A;
+	}
+
 	private FinderPath _finderPathCountByG_A;
+
+	@Override
+	public FinderPath getFinderPathCountByG_A() {
+		return _finderPathCountByG_A;
+	}
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and articleId = &#63;.
@@ -2916,8 +3018,25 @@ public class JournalContentSearchPersistenceImpl
 		"(journalContentSearch.articleId IS NULL OR journalContentSearch.articleId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_L() {
+		return _finderPathWithPaginationFindByG_P_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_L() {
+		return _finderPathWithoutPaginationFindByG_P_L;
+	}
+
 	private FinderPath _finderPathCountByG_P_L;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_L() {
+		return _finderPathCountByG_P_L;
+	}
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and layoutId = &#63;.
@@ -3518,8 +3637,25 @@ public class JournalContentSearchPersistenceImpl
 		"journalContentSearch.layoutId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_A() {
+		return _finderPathWithPaginationFindByG_P_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_A() {
+		return _finderPathWithoutPaginationFindByG_P_A;
+	}
+
 	private FinderPath _finderPathCountByG_P_A;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_A() {
+		return _finderPathCountByG_P_A;
+	}
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and articleId = &#63;.
@@ -4163,8 +4299,25 @@ public class JournalContentSearchPersistenceImpl
 		"(journalContentSearch.articleId IS NULL OR journalContentSearch.articleId = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_L_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_P_L_P() {
+		return _finderPathWithPaginationFindByG_P_L_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_P_L_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_L_P() {
+		return _finderPathWithoutPaginationFindByG_P_L_P;
+	}
+
 	private FinderPath _finderPathCountByG_P_L_P;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_L_P() {
+		return _finderPathCountByG_P_L_P;
+	}
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and layoutId = &#63; and portletId = &#63;.
@@ -4852,7 +5005,18 @@ public class JournalContentSearchPersistenceImpl
 		"(journalContentSearch.portletId IS NULL OR journalContentSearch.portletId = '')";
 
 	private FinderPath _finderPathFetchByG_P_L_P_A;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_P_L_P_A() {
+		return _finderPathFetchByG_P_L_P_A;
+	}
+
 	private FinderPath _finderPathCountByG_P_L_P_A;
+
+	@Override
+	public FinderPath getFinderPathCountByG_P_L_P_A() {
+		return _finderPathCountByG_P_L_P_A;
+	}
 
 	/**
 	 * Returns the journal content search where groupId = &#63; and privateLayout = &#63; and layoutId = &#63; and portletId = &#63; and articleId = &#63; or throws a <code>NoSuchContentSearchException</code> if it could not be found.
@@ -6222,6 +6386,65 @@ public class JournalContentSearchPersistenceImpl
 		_setJournalContentSearchUtilPersistence(null);
 
 		entityCache.removeCache(JournalContentSearchImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<JournalContentSearch> journalContentSearchs = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<JournalContentSearch>> resultMap =
+				new HashMap<>();
+
+			for (JournalContentSearch journalContentSearch :
+					journalContentSearchs) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					JournalContentSearchModelImpl
+						journalContentSearchModelImpl =
+							(JournalContentSearchModelImpl)journalContentSearch;
+
+					arguments.add(
+						journalContentSearchModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), journalContentSearch);
+				}
+				else {
+					List<JournalContentSearch> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(journalContentSearch);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<JournalContentSearch>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<JournalContentSearch> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setJournalContentSearchUtilPersistence(

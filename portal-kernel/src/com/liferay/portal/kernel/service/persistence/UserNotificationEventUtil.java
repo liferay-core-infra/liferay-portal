@@ -122,6 +122,42 @@ public class UserNotificationEventUtil {
 		return getPersistence().update(userNotificationEvent, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the user notification events where uuid = &#63;.
 	 *
@@ -291,6 +327,24 @@ public class UserNotificationEventUtil {
 	 */
 	public static int countByUuid(String uuid) {
 		return getPersistence().countByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -482,6 +536,24 @@ public class UserNotificationEventUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63;.
 	 *
@@ -654,6 +726,24 @@ public class UserNotificationEventUtil {
 		return getPersistence().countByUserId(userId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByType() {
+
+		return getPersistence().getFinderPathWithPaginationFindByType();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByType() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByType();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByType() {
+
+		return getPersistence().getFinderPathCountByType();
+	}
+
 	/**
 	 * Returns all the user notification events where type = &#63;.
 	 *
@@ -823,6 +913,24 @@ public class UserNotificationEventUtil {
 	 */
 	public static int countByType(String type) {
 		return getPersistence().countByType(type);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_DT();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT() {
+
+		return getPersistence().getFinderPathCountByU_DT();
 	}
 
 	/**
@@ -1015,6 +1123,24 @@ public class UserNotificationEventUtil {
 		return getPersistence().countByU_DT(userId, deliveryType);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_D() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_D() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_D() {
+
+		return getPersistence().getFinderPathCountByU_D();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63; and delivered = &#63;.
 	 *
@@ -1204,6 +1330,24 @@ public class UserNotificationEventUtil {
 		return getPersistence().countByU_D(userId, delivered);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_A() {
+
+		return getPersistence().getFinderPathCountByU_A();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63; and archived = &#63;.
 	 *
@@ -1391,6 +1535,24 @@ public class UserNotificationEventUtil {
 	 */
 	public static int countByU_A(long userId, boolean archived) {
 		return getPersistence().countByU_A(userId, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT_D() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT_D() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_DT_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT_D() {
+
+		return getPersistence().getFinderPathCountByU_DT_D();
 	}
 
 	/**
@@ -1601,6 +1763,24 @@ public class UserNotificationEventUtil {
 		return getPersistence().countByU_DT_D(userId, deliveryType, delivered);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_DT_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT_A() {
+
+		return getPersistence().getFinderPathCountByU_DT_A();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63; and deliveryType = &#63; and archived = &#63;.
 	 *
@@ -1807,6 +1987,24 @@ public class UserNotificationEventUtil {
 		long userId, int deliveryType, boolean archived) {
 
 		return getPersistence().countByU_DT_A(userId, deliveryType, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_D_AR() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_D_AR();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_D_AR() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_D_AR();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_D_AR() {
+
+		return getPersistence().getFinderPathCountByU_D_AR();
 	}
 
 	/**
@@ -2019,6 +2217,24 @@ public class UserNotificationEventUtil {
 			userId, delivered, actionRequired);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_D_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_D_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_D_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_D_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_D_A() {
+
+		return getPersistence().getFinderPathCountByU_D_A();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63; and delivered = &#63; and archived = &#63;.
 	 *
@@ -2225,6 +2441,24 @@ public class UserNotificationEventUtil {
 		long userId, boolean delivered, boolean archived) {
 
 		return getPersistence().countByU_D_A(userId, delivered, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_AR_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_AR_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_AR_A() {
+
+		return getPersistence().getFinderPathCountByU_AR_A();
 	}
 
 	/**
@@ -2434,6 +2668,24 @@ public class UserNotificationEventUtil {
 		long userId, boolean actionRequired, boolean archived) {
 
 		return getPersistence().countByU_AR_A(userId, actionRequired, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_T_DT_D() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_T_DT_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_T_DT_D() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_T_DT_D();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_T_DT_D() {
+
+		return getPersistence().getFinderPathCountByU_T_DT_D();
 	}
 
 	/**
@@ -2660,6 +2912,24 @@ public class UserNotificationEventUtil {
 
 		return getPersistence().countByU_T_DT_D(
 			userId, type, deliveryType, delivered);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT_D_AR() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT_D_AR();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT_D_AR() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_DT_D_AR();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT_D_AR() {
+
+		return getPersistence().getFinderPathCountByU_DT_D_AR();
 	}
 
 	/**
@@ -2895,6 +3165,24 @@ public class UserNotificationEventUtil {
 			userId, deliveryType, delivered, actionRequired);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT_D_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT_D_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT_D_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_DT_D_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT_D_A() {
+
+		return getPersistence().getFinderPathCountByU_DT_D_A();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63; and deliveryType = &#63; and delivered = &#63; and archived = &#63;.
 	 *
@@ -3119,6 +3407,24 @@ public class UserNotificationEventUtil {
 
 		return getPersistence().countByU_DT_D_A(
 			userId, deliveryType, delivered, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT_AR_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT_AR_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_DT_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT_AR_A() {
+
+		return getPersistence().getFinderPathCountByU_DT_AR_A();
 	}
 
 	/**
@@ -3352,6 +3658,24 @@ public class UserNotificationEventUtil {
 			userId, deliveryType, actionRequired, archived);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_D_AR_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_D_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_D_AR_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByU_D_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_D_AR_A() {
+
+		return getPersistence().getFinderPathCountByU_D_AR_A();
+	}
+
 	/**
 	 * Returns all the user notification events where userId = &#63; and delivered = &#63; and actionRequired = &#63; and archived = &#63;.
 	 *
@@ -3583,6 +3907,25 @@ public class UserNotificationEventUtil {
 
 		return getPersistence().countByU_D_AR_A(
 			userId, delivered, actionRequired, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_T_DT_D_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_T_DT_D_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_T_DT_D_A() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByU_T_DT_D_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_T_DT_D_A() {
+
+		return getPersistence().getFinderPathCountByU_T_DT_D_A();
 	}
 
 	/**
@@ -3827,6 +4170,25 @@ public class UserNotificationEventUtil {
 
 		return getPersistence().countByU_T_DT_D_A(
 			userId, type, deliveryType, delivered, archived);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByU_DT_D_AR_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByU_DT_D_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByU_DT_D_AR_A() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByU_DT_D_AR_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_DT_D_AR_A() {
+
+		return getPersistence().getFinderPathCountByU_DT_D_AR_A();
 	}
 
 	/**
@@ -4236,6 +4598,12 @@ public class UserNotificationEventUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static UserNotificationEventPersistence getPersistence() {

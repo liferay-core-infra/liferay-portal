@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 
 import java.util.List;
 
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -204,7 +205,7 @@ public class CommerceQualifierEntryServiceImpl
 			long classNameId)
 		throws PortalException {
 
-		ClassName className = classNameLocalService.getClassName(classNameId);
+		ClassName className = _classNameLocalService.getClassName(classNameId);
 
 		return _getModelResourcePermission(className.getClassName());
 	}
@@ -222,5 +223,8 @@ public class CommerceQualifierEntryServiceImpl
 	@Reference
 	private CommerceQualifierMetadataRegistry
 		_commerceQualifierMetadataRegistry;
+
+    @Reference
+    private ClassNameLocalService _classNameLocalService;
 
 }

@@ -17,8 +17,6 @@ package com.liferay.frontend.taglib.soy.internal.template;
 import com.liferay.frontend.js.module.launcher.JSModuleLauncher;
 import com.liferay.portal.kernel.template.TemplateException;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.template.soy.renderer.ComponentDescriptor;
-import com.liferay.portal.template.soy.renderer.SoyComponentRenderer;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -27,28 +25,41 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Iván Zaera Avellón
+ * @author Julius Lee
  */
-@Component(immediate = true, service = SoyComponentRenderer.class)
-public class SoyComponentRendererImpl implements SoyComponentRenderer {
+@Component(immediate = true, service = {})
+public class SoyComponentRendererUtil {
 
-	@Override
-	public void renderSoyComponent(
+	public static void renderSoyComponent(
 			HttpServletRequest httpServletRequest, Writer writer,
 			ComponentDescriptor componentDescriptor, Map<String, ?> context)
 		throws IOException, TemplateException {
 
+		if (_soyComponentRendererUtil == null) {
+			return;
+		}
+
 		SoyComponentRendererHelper soyComponentRendererHelper =
 			new SoyComponentRendererHelper(
 				httpServletRequest, componentDescriptor, context,
-				_jsModuleLauncher, _portal);
+				_soyComponentRendererUtil._jsModuleLauncher,
+				_soyComponentRendererUtil._portal);
 
 		soyComponentRendererHelper.renderSoyComponent(writer);
 	}
+
+	@Activate
+	protected void activate() {
+		_soyComponentRendererUtil = this;
+	}
+
+	private static SoyComponentRendererUtil _soyComponentRendererUtil;
 
 	@Reference
 	private JSModuleLauncher _jsModuleLauncher;

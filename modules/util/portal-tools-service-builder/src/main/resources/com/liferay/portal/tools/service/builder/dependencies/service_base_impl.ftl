@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
@@ -956,6 +957,13 @@ import org.osgi.service.component.annotations.Reference;
 		public int get${entity.pluralName}Count() {
 			return ${entity.variableName}Persistence.countAll();
 		}
+
+		<#if serviceBuilder.isVersionGTE_7_4_0()>
+			@Override
+			public void loadFinderCache(FinderPath[] finderPaths) {
+				${entity.variableName}Persistence.loadFinderCache(finderPaths);
+			}
+		</#if>
 
 		<#assign serviceBaseExceptions = serviceBuilder.getServiceBaseExceptions(methods, "update" + entity.name, [apiPackagePath + ".model." + entity.name], []) />
 

@@ -273,6 +273,45 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		private FinderPath _finderPathWithPaginationGetDescendants;
 	</#if>
 
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		@Override
+		public FinderPath getFinderPathWithPaginationFindAll() {
+			return _finderPathWithPaginationFindAll;
+		}
+
+		@Override
+		public FinderPath getFinderPathWithoutPaginationFindAll() {
+			return _finderPathWithoutPaginationFindAll;
+		}
+
+		@Override
+		public FinderPath getFinderPathCountAll() {
+			return _finderPathCountAll;
+		}
+
+		<#if entity.isHierarchicalTree()>
+			@Override
+			public FinderPath getFinderPathWithPaginationCountAncestors() {
+				return _finderPathWithPaginationCountAncestors;
+			}
+
+			@Override
+			public FinderPath getFinderPathWithPaginationCountDescendants() {
+				return _finderPathWithPaginationCountDescendants;
+			}
+
+			@Override
+			public FinderPath getFinderPathWithPaginationGetAncestors() {
+				return _finderPathWithPaginationGetAncestors;
+			}
+
+			@Override
+			public FinderPath getFinderPathWithPaginationGetDescendants() {
+				return _finderPathWithPaginationGetDescendants;
+			}
+		</#if>
+	</#if>
+
 	<#list entity.entityFinders as entityFinder>
 		<#include "persistence_impl_finder_finder_path.ftl">
 
@@ -2857,6 +2896,52 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 		</#list>
 	}
+
+	<#if serviceBuilder.isVersionGTE_7_4_0()>
+		@Override
+		public void loadFinderCache(FinderPath[] finderPaths) {
+			if (ArrayUtil.isEmpty(finderPaths)) {
+				return;
+			}
+
+			List<${entity.name}> ${entity.variableName}s = findAll();
+
+			for (FinderPath finderPath : finderPaths) {
+				Map<List<Object>, List<${entity.name}>> resultMap = new HashMap<>();
+
+				for (${entity.name} ${entity.variableName} : ${entity.variableName}s) {
+					List<Object> arguments = new ArrayList<>();
+
+					for (String columnName : finderPath.getColumnNames()) {
+						${entity.name}ModelImpl ${entity.variableName}ModelImpl = (${entity.name}ModelImpl)${entity.variableName};
+
+						arguments.add(${entity.variableName}ModelImpl.getColumnValue(columnName));
+					}
+
+					if (Objects.equals(finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+						${finderCache}.putResult(finderPath, arguments.toArray(), ${entity.variableName});
+					}
+					else {
+						List<${entity.name}> resultList = resultMap.computeIfAbsent(arguments, key -> new ArrayList<>());
+
+						resultList.add(${entity.variableName});
+					}
+				}
+
+				for (Map.Entry<List<Object>, List<${entity.name}>> resultEntry : resultMap.entrySet()) {
+					List<Object> key = resultEntry.getKey();
+					List<${entity.name}> value = resultEntry.getValue();
+
+					if (finderPath.isBaseModelResult()) {
+						${finderCache}.putResult(finderPath, key.toArray(), value);
+					}
+					else {
+						${finderCache}.putResult(finderPath, key.toArray(), value.size());
+					}
+				}
+			}
+		}
+	</#if>
 
 	private void _set${entity.name}UtilPersistence(${entity.name}Persistence ${entity.variableName}Persistence) {
 		try {

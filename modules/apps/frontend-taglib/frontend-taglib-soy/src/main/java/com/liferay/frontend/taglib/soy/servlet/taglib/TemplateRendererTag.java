@@ -16,13 +16,12 @@ package com.liferay.frontend.taglib.soy.servlet.taglib;
 
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolvedPackageNameUtil;
 import com.liferay.frontend.taglib.soy.internal.template.ComponentDescriptor;
-import com.liferay.frontend.taglib.soy.internal.util.SoyComponentRendererProvider;
+import com.liferay.frontend.taglib.soy.internal.template.SoyComponentRendererUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.template.soy.renderer.SoyComponentRenderer;
 import com.liferay.taglib.util.ParamAndPropertyAncestorTagImpl;
 
 import java.util.HashMap;
@@ -55,10 +54,7 @@ public class TemplateRendererTag extends ParamAndPropertyAncestorTagImpl {
 				_dependencies, isWrapper(), isRenderJavaScript(),
 				isPositionInLine());
 
-			SoyComponentRenderer soyComponentRenderer =
-				SoyComponentRendererProvider.getSoyComponentRenderer();
-
-			soyComponentRenderer.renderSoyComponent(
+			SoyComponentRendererUtil.renderSoyComponent(
 				getRequest(), jspWriter, componentDescriptor, context);
 		}
 		catch (Exception exception) {

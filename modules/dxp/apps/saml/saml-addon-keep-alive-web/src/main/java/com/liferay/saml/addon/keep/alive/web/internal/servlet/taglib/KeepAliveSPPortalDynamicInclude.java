@@ -43,7 +43,6 @@ import com.liferay.saml.util.PortletPropsKeys;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -218,10 +217,5 @@ public class KeepAliveSPPortalDynamicInclude extends BaseDynamicInclude {
 
 	@Reference
 	private SamlSpSessionLocalService _samlSpSessionLocalService;
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.saml.addon.keep.alive.web)"
-	)
-	private ServletContext _servletContext;
 
 }

@@ -23,7 +23,6 @@ import com.liferay.saml.addon.keep.alive.web.internal.constants.SamlKeepAliveCon
 import com.liferay.saml.constants.SamlWebKeys;
 import com.liferay.saml.persistence.model.SamlIdpSpConnection;
 import com.liferay.saml.persistence.model.SamlSpIdpConnection;
-import com.liferay.saml.persistence.service.SamlSpIdpConnectionLocalService;
 import com.liferay.saml.persistence.service.SamlSpSessionLocalService;
 import com.liferay.saml.util.PortletPropsKeys;
 
@@ -143,9 +142,6 @@ public class KeepAliveSamlWebDynamicInclude extends BaseDynamicInclude {
 
 	private static final String _KEY_SERVICE_PROVIDER =
 		"com.liferay.saml.web#/admin/edit_service_provider_connection.jsp#post";
-
-	@Reference
-	private SamlSpIdpConnectionLocalService _samlSpIdpConnectionLocalService;
 
 	@Reference
 	private SamlSpSessionLocalService _samlSpSessionLocalService;

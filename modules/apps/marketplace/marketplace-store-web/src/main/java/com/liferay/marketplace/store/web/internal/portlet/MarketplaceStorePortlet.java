@@ -161,6 +161,11 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			));
 	}
 
+	@Override
+	public OAuthManager getOAuthManager() {
+		return _oAuthManager;
+	}
+
 	public void getPrepackagedApps(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -411,7 +416,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-			Token accessToken = oAuthManager.getAccessToken(
+			Token accessToken = _oAuthManager.getAccessToken(
 				themeDisplay.getUser());
 
 			if (accessToken == null) {
@@ -500,12 +505,6 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			"supportsHotDeploy", new String[] {Boolean.TRUE.toString()});
 	}
 
-	@Override
-	@Reference(unbind = "-")
-	protected void setOAuthManager(OAuthManager oAuthManager) {
-		super.setOAuthManager(oAuthManager);
-	}
-
 	@Reference
 	protected AppLocalService appLocalService;
 
@@ -561,6 +560,9 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MarketplaceStorePortlet.class);
+
+	@Reference
+	private OAuthManager _oAuthManager;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 

@@ -82,6 +82,8 @@ public abstract class RemoteMVCPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		OAuthManager oAuthManager = getOAuthManager();
+
 		OAuthService oAuthService = oAuthManager.getOAuthService();
 
 		Token requestToken = oAuthService.getRequestToken();
@@ -104,6 +106,8 @@ public abstract class RemoteMVCPortlet extends MVCPortlet {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		OAuthManager oAuthManager = getOAuthManager();
 
 		oAuthManager.deleteAccessToken(themeDisplay.getUser());
 
@@ -226,6 +230,8 @@ public abstract class RemoteMVCPortlet extends MVCPortlet {
 	protected Response getResponse(User user, OAuthRequest oAuthRequest)
 		throws Exception {
 
+		OAuthManager oAuthManager = getOAuthManager();
+
 		Token token = oAuthManager.getAccessToken(user);
 
 		if (token != null) {
@@ -274,12 +280,6 @@ public abstract class RemoteMVCPortlet extends MVCPortlet {
 			PortalUtil.getCurrentCompleteURL(httpServletRequest));
 		addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
 	}
-
-	protected void setOAuthManager(OAuthManager oAuthManager) {
-		this.oAuthManager = oAuthManager;
-	}
-
-	protected OAuthManager oAuthManager;
 
 	private void _checkOmniAdmin() throws PortletException {
 		PermissionChecker permissionChecker =
@@ -440,6 +440,8 @@ public abstract class RemoteMVCPortlet extends MVCPortlet {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		OAuthManager oAuthManager = getOAuthManager();
 
 		Token requestToken = oAuthManager.getRequestToken(
 			themeDisplay.getUser());

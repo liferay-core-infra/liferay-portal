@@ -163,7 +163,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 	@Override
 	public OAuthManager getOAuthManager() {
-		return _oAuthManager;
+		return oAuthManager;
 	}
 
 	public void getPrepackagedApps(
@@ -416,7 +416,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-			Token accessToken = _oAuthManager.getAccessToken(
+			Token accessToken = oAuthManager.getAccessToken(
 				themeDisplay.getUser());
 
 			if (accessToken == null) {
@@ -512,6 +512,9 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	protected AppService appService;
 
 	@Reference
+	protected OAuthManager oAuthManager;
+
+	@Reference
 	protected Patcher patcher;
 
 	private JSONObject _getAppJSONObject(App app) throws Exception {
@@ -560,9 +563,6 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MarketplaceStorePortlet.class);
-
-	@Reference
-	private OAuthManager _oAuthManager;
 
 	private final ReentrantLock _reentrantLock = new ReentrantLock();
 

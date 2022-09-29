@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.servlet.ServletContextClassLoaderPool;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.model.impl.PortletAppImpl;
 import com.liferay.portal.model.impl.PortletImpl;
 import com.liferay.portal.test.rule.Inject;
@@ -80,29 +81,25 @@ public class LegacyPortletPanelAppHotDeployListenerTest {
 			"classpath:/com/liferay/application/list/deploy/hot/test" +
 				"/dependencies/control-panel-entry-liferay-portlet.xml");
 
-		ServletContext servletContext = hotDeployEvent.getServletContext();
-
-		String servletContextName = servletContext.getServletContextName();
-
-		String portletName = "testLegacyPortlet";
-
 		_testPortlet = new PortletImpl() {
 			{
 				setPortletId(
-					portletName + PortletConstants.WAR_SEPARATOR +
-						servletContextName);
+					"1" + PortletConstants.WAR_SEPARATOR +
+						hotDeployEvent.getServletContextName());
 				setPortletClass(MVCPortlet.class.getName());
 				setPortletApp(
 					new PortletAppImpl(StringPool.BLANK) {
 						{
-							setServletContext(servletContext);
+							setServletContext(
+								hotDeployEvent.getServletContext());
 						}
 					});
 			}
 		};
 
 		ServletContextClassLoaderPool.register(
-			servletContextName, hotDeployEvent.getContextClassLoader());
+			hotDeployEvent.getServletContextName(),
+			hotDeployEvent.getContextClassLoader());
 
 		_portletLocalService.deployPortlet(_testPortlet);
 
@@ -218,8 +215,11 @@ public class LegacyPortletPanelAppHotDeployListenerTest {
 
 		@Override
 		public String getServletContextName() {
-			return "LegacyTestServletContextName";
+			return _SERVLET_CONTEXT_NAME;
 		}
+
+		private static final String _SERVLET_CONTEXT_NAME =
+			StringUtil.randomString();
 
 	}
 

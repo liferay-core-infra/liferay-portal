@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.PortletItem;
 import com.liferay.portal.kernel.service.PortletItemLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,44 @@ public abstract class BasePortletItemUADExporter
 
 		sb.append(
 			"<column><column-name>portletItemId</column-name><column-value><![CDATA[");
-		sb.append(portletItem.getPortletItemId());
+
+		String portletItemId = String.valueOf(portletItem.getPortletItemId());
+
+		portletItemId = StringUtil.replace(
+			portletItemId, "]]><", "[$SPECIAL_CHARACTER$]");
+		portletItemId = StringUtil.replace(
+			portletItemId, "]]>", "]]]]><![CDATA[>");
+		portletItemId = StringUtil.replace(
+			portletItemId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(portletItemId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(portletItem.getUserId());
+
+		String userId = String.valueOf(portletItem.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(portletItem.getUserName());
+
+		String userName = String.valueOf(portletItem.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

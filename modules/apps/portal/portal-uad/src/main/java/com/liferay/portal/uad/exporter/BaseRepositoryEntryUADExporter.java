@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.RepositoryEntry;
 import com.liferay.portal.kernel.service.RepositoryEntryLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,45 @@ public abstract class BaseRepositoryEntryUADExporter
 
 		sb.append(
 			"<column><column-name>repositoryEntryId</column-name><column-value><![CDATA[");
-		sb.append(repositoryEntry.getRepositoryEntryId());
+
+		String repositoryEntryId = String.valueOf(
+			repositoryEntry.getRepositoryEntryId());
+
+		repositoryEntryId = StringUtil.replace(
+			repositoryEntryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		repositoryEntryId = StringUtil.replace(
+			repositoryEntryId, "]]>", "]]]]><![CDATA[>");
+		repositoryEntryId = StringUtil.replace(
+			repositoryEntryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(repositoryEntryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(repositoryEntry.getUserId());
+
+		String userId = String.valueOf(repositoryEntry.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(repositoryEntry.getUserName());
+
+		String userName = String.valueOf(repositoryEntry.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

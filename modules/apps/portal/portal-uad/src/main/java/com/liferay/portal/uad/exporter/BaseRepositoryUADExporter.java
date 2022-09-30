@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,44 @@ public abstract class BaseRepositoryUADExporter
 
 		sb.append(
 			"<column><column-name>repositoryId</column-name><column-value><![CDATA[");
-		sb.append(repository.getRepositoryId());
+
+		String repositoryId = String.valueOf(repository.getRepositoryId());
+
+		repositoryId = StringUtil.replace(
+			repositoryId, "]]><", "[$SPECIAL_CHARACTER$]");
+		repositoryId = StringUtil.replace(
+			repositoryId, "]]>", "]]]]><![CDATA[>");
+		repositoryId = StringUtil.replace(
+			repositoryId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(repositoryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(repository.getUserId());
+
+		String userId = String.valueOf(repository.getUserId());
+
+		userId = StringUtil.replace(userId, "]]><", "[$SPECIAL_CHARACTER$]");
+		userId = StringUtil.replace(userId, "]]>", "]]]]><![CDATA[>");
+		userId = StringUtil.replace(userId, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(repository.getUserName());
+
+		String userName = String.valueOf(repository.getUserName());
+
+		userName = StringUtil.replace(
+			userName, "]]><", "[$SPECIAL_CHARACTER$]");
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+		userName = StringUtil.replace(
+			userName, "[$SPECIAL_CHARACTER$]", "]]><");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

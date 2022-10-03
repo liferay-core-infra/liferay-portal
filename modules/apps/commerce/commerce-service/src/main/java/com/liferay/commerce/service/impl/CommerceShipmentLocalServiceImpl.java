@@ -31,6 +31,7 @@ import com.liferay.commerce.service.CommerceAddressLocalService;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
 import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceShipmentItemLocalService;
+import com.liferay.commerce.service.CommerceShipmentLocalService;
 import com.liferay.commerce.service.CommerceShippingMethodLocalService;
 import com.liferay.commerce.service.base.CommerceShipmentLocalServiceBaseImpl;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
@@ -437,6 +438,14 @@ public class CommerceShipmentLocalServiceImpl
 			CommerceShipment.class.getName());
 
 		return indexer.searchCount(searchContext);
+	}
+
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		super.setAopProxy(aopProxy);
+
+		CommerceServiceCircularDependencies.setCommerceShipmentLocalService(
+			(CommerceShipmentLocalService)aopProxy);
 	}
 
 	/**

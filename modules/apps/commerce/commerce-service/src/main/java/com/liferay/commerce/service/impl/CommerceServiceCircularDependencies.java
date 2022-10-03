@@ -16,6 +16,7 @@ package com.liferay.commerce.service.impl;
 
 import com.liferay.commerce.service.CommerceAvailabilityEstimateLocalService;
 import com.liferay.commerce.service.CommerceOrderLocalService;
+import com.liferay.commerce.service.CommerceShipmentLocalService;
 
 /**
  * @author Tina Tian
@@ -32,6 +33,12 @@ public class CommerceServiceCircularDependencies {
 		return _commerceOrderLocalService;
 	}
 
+	protected static CommerceShipmentLocalService
+		getCommerceShipmentLocalService() {
+
+		return _commerceShipmentLocalService;
+	}
+
 	protected static void setCommerceAvailabilityEstimateLocalService(
 		CommerceAvailabilityEstimateLocalService
 			commerceAvailabilityEstimateLocalService) {
@@ -46,8 +53,15 @@ public class CommerceServiceCircularDependencies {
 		_commerceOrderLocalService = commerceOrderLocalService;
 	}
 
+	protected static void setCommerceShipmentLocalService(
+		CommerceShipmentLocalService commerceShipmentLocalService) {
+
+		_commerceShipmentLocalService = commerceShipmentLocalService;
+	}
+
 	private static CommerceAvailabilityEstimateLocalService
 		_commerceAvailabilityEstimateLocalService;
 	private static CommerceOrderLocalService _commerceOrderLocalService;
+	private static CommerceShipmentLocalService _commerceShipmentLocalService;
 
 }

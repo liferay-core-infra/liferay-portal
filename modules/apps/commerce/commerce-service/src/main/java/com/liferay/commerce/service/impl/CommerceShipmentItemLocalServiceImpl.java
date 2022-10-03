@@ -90,9 +90,13 @@ public class CommerceShipmentItemLocalServiceImpl
 				commerceOrderItemId);
 
 		if (validateInventory) {
+			CommerceShipmentLocalService commerceShipmentLocalService =
+				CommerceServiceCircularDependencies.
+					getCommerceShipmentLocalService();
+
 			validate(
 				commerceOrderItem,
-				_commerceShipmentLocalService.getCommerceShipment(
+				commerceShipmentLocalService.getCommerceShipment(
 					commerceShipmentId),
 				commerceInventoryWarehouseId, quantity, quantity);
 		}
@@ -606,9 +610,6 @@ public class CommerceShipmentItemLocalServiceImpl
 
 	@Reference
 	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
-
-	@Reference
-	private CommerceShipmentLocalService _commerceShipmentLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

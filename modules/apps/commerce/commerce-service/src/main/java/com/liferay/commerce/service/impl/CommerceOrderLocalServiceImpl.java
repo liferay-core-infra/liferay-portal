@@ -57,6 +57,7 @@ import com.liferay.commerce.product.util.JsonHelper;
 import com.liferay.commerce.search.facet.NegatableMultiValueFacet;
 import com.liferay.commerce.service.CommerceAddressLocalService;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceOrderNoteLocalService;
 import com.liferay.commerce.service.CommerceOrderPaymentLocalService;
 import com.liferay.commerce.service.CommerceOrderTypeLocalService;
@@ -1088,6 +1089,14 @@ public class CommerceOrderLocalServiceImpl
 			CommerceOrder.class.getName());
 
 		return indexer.searchCount(searchContext);
+	}
+
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		super.setAopProxy(aopProxy);
+
+		CommerceServiceCircularDependencies.setCommerceOrderLocalService(
+			(CommerceOrderLocalService)aopProxy);
 	}
 
 	@Override

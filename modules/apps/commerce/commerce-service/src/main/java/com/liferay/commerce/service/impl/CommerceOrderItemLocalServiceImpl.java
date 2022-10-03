@@ -132,8 +132,11 @@ public class CommerceOrderItemLocalServiceImpl
 			json = _getCPInstanceOptionValueRelsJSONString(cpInstanceId);
 		}
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
 
 		CPInstance cpInstance = _cpInstanceLocalService.getCPInstance(
 			cpInstanceId);
@@ -202,7 +205,7 @@ public class CommerceOrderItemLocalServiceImpl
 			commerceOrderItemPersistence.update(childCommerceOrderItem);
 		}
 
-		_commerceOrderLocalService.recalculatePrice(
+		commerceOrderLocalService.recalculatePrice(
 			commerceOrderItem.getCommerceOrderId(), commerceContext);
 
 		return commerceOrderItem;
@@ -281,13 +284,16 @@ public class CommerceOrderItemLocalServiceImpl
 
 		CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		if (_commerceShippingHelper.isFreeShipping(commerceOrder)) {
-			_commerceOrderLocalService.updateCommerceShippingMethod(
+			commerceOrderLocalService.updateCommerceShippingMethod(
 				commerceOrder.getCommerceOrderId(), 0, null, BigDecimal.ZERO,
 				commerceContext);
 		}
 
-		_commerceOrderLocalService.recalculatePrice(
+		commerceOrderLocalService.recalculatePrice(
 			commerceOrder.getCommerceOrderId(), commerceContext);
 
 		return commerceOrderItem;
@@ -510,8 +516,11 @@ public class CommerceOrderItemLocalServiceImpl
 			int quantity, int shippedQuantity, ServiceContext serviceContext)
 		throws PortalException {
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
 
 		CPInstance cpInstance = _cpInstanceLocalService.getCPInstance(
 			cpInstanceId);
@@ -1198,8 +1207,11 @@ public class CommerceOrderItemLocalServiceImpl
 
 		SearchContext searchContext = new SearchContext();
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
 
 		searchContext.setAttribute(
 			CommerceOrderItemIndexer.FIELD_COMMERCE_ORDER_ID, commerceOrderId);
@@ -1287,7 +1299,11 @@ public class CommerceOrderItemLocalServiceImpl
 				CommerceOrderConstants.TYPE_PK_APPROVAL, true);
 
 		if ((workflowDefinitionLink != null) && commerceOrder.isApproved()) {
-			return _commerceOrderLocalService.updateStatus(
+			CommerceOrderLocalService commerceOrderLocalService =
+				CommerceServiceCircularDependencies.
+					getCommerceOrderLocalService();
+
+			return commerceOrderLocalService.updateStatus(
 				serviceContext.getUserId(), commerceOrder.getCommerceOrderId(),
 				WorkflowConstants.STATUS_DRAFT, serviceContext,
 				Collections.emptyMap());
@@ -2252,7 +2268,11 @@ public class CommerceOrderItemLocalServiceImpl
 			commerceOrderItem);
 
 		if (commerceOrder.isOpen()) {
-			_commerceOrderLocalService.recalculatePrice(
+			CommerceOrderLocalService commerceOrderLocalService =
+				CommerceServiceCircularDependencies.
+					getCommerceOrderLocalService();
+
+			commerceOrderLocalService.recalculatePrice(
 				commerceOrderItem.getCommerceOrderId(), commerceContext);
 		}
 
@@ -2310,9 +2330,6 @@ public class CommerceOrderItemLocalServiceImpl
 
 	@Reference
 	private CommerceOrderConfiguration _commerceOrderConfiguration;
-
-	@Reference
-	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private CommerceOrderValidatorRegistry _commerceOrderValidatorRegistry;

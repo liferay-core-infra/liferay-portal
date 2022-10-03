@@ -214,8 +214,13 @@ public class CPDAvailabilityEstimateLocalServiceImpl
 		throws PortalException {
 
 		if (commerceAvailabilityEstimateId > 0) {
+			CommerceAvailabilityEstimateLocalService
+				commerceAvailabilityEstimateLocalService =
+					CommerceServiceCircularDependencies.
+						getCommerceAvailabilityEstimateLocalService();
+
 			CommerceAvailabilityEstimate commerceAvailabilityEstimate =
-				_commerceAvailabilityEstimateLocalService.
+				commerceAvailabilityEstimateLocalService.
 					fetchCommerceAvailabilityEstimate(
 						commerceAvailabilityEstimateId);
 
@@ -224,10 +229,6 @@ public class CPDAvailabilityEstimateLocalServiceImpl
 			}
 		}
 	}
-
-	@Reference
-	private CommerceAvailabilityEstimateLocalService
-		_commerceAvailabilityEstimateLocalService;
 
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;

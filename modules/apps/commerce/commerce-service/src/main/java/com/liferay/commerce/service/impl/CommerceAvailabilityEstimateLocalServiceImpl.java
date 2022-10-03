@@ -16,6 +16,7 @@ package com.liferay.commerce.service.impl;
 
 import com.liferay.commerce.model.CommerceAvailabilityEstimate;
 import com.liferay.commerce.service.CPDAvailabilityEstimateLocalService;
+import com.liferay.commerce.service.CommerceAvailabilityEstimateLocalService;
 import com.liferay.commerce.service.base.CommerceAvailabilityEstimateLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -129,6 +130,15 @@ public class CommerceAvailabilityEstimateLocalServiceImpl
 	public int getCommerceAvailabilityEstimatesCount(long companyId) {
 		return commerceAvailabilityEstimatePersistence.countByCompanyId(
 			companyId);
+	}
+
+	@Override
+	public void setAopProxy(Object aopProxy) {
+		super.setAopProxy(aopProxy);
+
+		CommerceServiceCircularDependencies.
+			setCommerceAvailabilityEstimateLocalService(
+				(CommerceAvailabilityEstimateLocalService)aopProxy);
 	}
 
 	@Override

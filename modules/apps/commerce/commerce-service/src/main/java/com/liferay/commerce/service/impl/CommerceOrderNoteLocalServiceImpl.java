@@ -59,8 +59,12 @@ public class CommerceOrderNoteLocalServiceImpl
 			boolean restricted, ServiceContext serviceContext)
 		throws PortalException {
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+
 		User user = _userLocalService.getUser(serviceContext.getUserId());
 
 		validate(content);
@@ -236,9 +240,6 @@ public class CommerceOrderNoteLocalServiceImpl
 					"reference code " + externalReferenceCode);
 		}
 	}
-
-	@Reference
-	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

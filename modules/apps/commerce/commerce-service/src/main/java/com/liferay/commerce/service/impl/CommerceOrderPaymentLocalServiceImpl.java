@@ -49,8 +49,11 @@ public class CommerceOrderPaymentLocalServiceImpl
 			long commerceOrderId, int status, String result)
 		throws PortalException {
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		CommerceOrder commerceOrder =
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId);
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId);
 
 		User user = _userLocalService.getUser(commerceOrder.getUserId());
 
@@ -63,9 +66,12 @@ public class CommerceOrderPaymentLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		CommerceOrderLocalService commerceOrderLocalService =
+			CommerceServiceCircularDependencies.getCommerceOrderLocalService();
+
 		return _getCommerceOrderPayment(
 			status, content,
-			_commerceOrderLocalService.getCommerceOrder(commerceOrderId),
+			commerceOrderLocalService.getCommerceOrder(commerceOrderId),
 			_userLocalService.getUser(serviceContext.getUserId()));
 	}
 
@@ -120,9 +126,6 @@ public class CommerceOrderPaymentLocalServiceImpl
 
 		return commerceOrderPaymentPersistence.update(commerceOrderPayment);
 	}
-
-	@Reference
-	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

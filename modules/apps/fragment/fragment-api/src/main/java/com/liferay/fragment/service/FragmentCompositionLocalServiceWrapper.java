@@ -16,6 +16,7 @@ package com.liferay.fragment.service;
 
 import com.liferay.fragment.model.FragmentComposition;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -493,6 +494,11 @@ public class FragmentCompositionLocalServiceWrapper
 
 		return _fragmentCompositionLocalService.getTempFileNames(
 			userId, groupId, folderName);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_fragmentCompositionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -316,6 +317,11 @@ public class ImageLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _imageLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_imageLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

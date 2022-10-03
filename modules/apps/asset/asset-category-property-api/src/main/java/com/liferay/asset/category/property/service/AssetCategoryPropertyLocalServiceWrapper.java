@@ -16,6 +16,7 @@ package com.liferay.asset.category.property.service;
 
 import com.liferay.asset.category.property.model.AssetCategoryProperty;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -401,6 +402,11 @@ public class AssetCategoryPropertyLocalServiceWrapper
 
 		return _assetCategoryPropertyLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_assetCategoryPropertyLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

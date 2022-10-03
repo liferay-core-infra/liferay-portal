@@ -16,6 +16,7 @@ package com.liferay.change.tracking.service.persistence;
 
 import com.liferay.change.tracking.exception.NoSuchCollectionException;
 import com.liferay.change.tracking.model.CTCollection;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface CTCollectionPersistence extends BasePersistence<CTCollection> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CTCollectionUtil} to access the ct collection persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the ct collections where companyId = &#63;.
@@ -246,6 +258,12 @@ public interface CTCollectionPersistence extends BasePersistence<CTCollection> {
 	 * @return the number of matching ct collections that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindBySchemaVersionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySchemaVersionId();
+
+	public FinderPath getFinderPathCountBySchemaVersionId();
 
 	/**
 	 * Returns all the ct collections where schemaVersionId = &#63;.
@@ -455,6 +473,14 @@ public interface CTCollectionPersistence extends BasePersistence<CTCollection> {
 	 * @return the number of matching ct collections that the user has permission to view
 	 */
 	public int filterCountBySchemaVersionId(long schemaVersionId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_S();
+
+	public FinderPath getFinderPathCountByC_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_S();
 
 	/**
 	 * Returns all the ct collections where companyId = &#63; and status = &#63;.
@@ -932,5 +958,7 @@ public interface CTCollectionPersistence extends BasePersistence<CTCollection> {
 	 * @return the number of ct collections
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

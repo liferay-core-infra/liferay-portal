@@ -16,6 +16,7 @@ package com.liferay.commerce.product.type.virtual.order.service.persistence;
 
 import com.liferay.commerce.product.type.virtual.order.exception.NoSuchVirtualOrderItemException;
 import com.liferay.commerce.product.type.virtual.order.model.CommerceVirtualOrderItem;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface CommerceVirtualOrderItemPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceVirtualOrderItemUtil} to access the commerce virtual order item persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce virtual order items where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface CommerceVirtualOrderItemPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the commerce virtual order item where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchVirtualOrderItemException</code> if it could not be found.
 	 *
@@ -233,6 +249,12 @@ public interface CommerceVirtualOrderItemPersistence
 	 * @return the number of matching commerce virtual order items
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce virtual order items where uuid = &#63; and companyId = &#63;.
@@ -388,6 +410,10 @@ public interface CommerceVirtualOrderItemPersistence
 	 * @return the number of matching commerce virtual order items
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathFetchByCommerceOrderItemId();
+
+	public FinderPath getFinderPathCountByCommerceOrderItemId();
 
 	/**
 	 * Returns the commerce virtual order item where commerceOrderItemId = &#63; or throws a <code>NoSuchVirtualOrderItemException</code> if it could not be found.
@@ -560,5 +586,7 @@ public interface CommerceVirtualOrderItemPersistence
 	 * @return the number of commerce virtual order items
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

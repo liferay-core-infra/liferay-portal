@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service.persistence;
 
 import com.liferay.asset.kernel.exception.NoSuchCategoryException;
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface AssetCategoryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetCategoryUtil} to access the asset category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the asset categories where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface AssetCategoryPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the asset category where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCategoryException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface AssetCategoryPersistence
 	 * @return the number of matching asset categories
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the asset categories where uuid = &#63; and companyId = &#63;.
@@ -389,6 +411,12 @@ public interface AssetCategoryPersistence
 	 * @return the number of matching asset categories
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the asset categories where groupId = &#63;.
@@ -597,6 +625,12 @@ public interface AssetCategoryPersistence
 	 */
 	public int filterCountByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByParentCategoryId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByParentCategoryId();
+
+	public FinderPath getFinderPathCountByParentCategoryId();
+
 	/**
 	 * Returns all the asset categories where parentCategoryId = &#63;.
 	 *
@@ -741,6 +775,12 @@ public interface AssetCategoryPersistence
 	 */
 	public int countByParentCategoryId(long parentCategoryId);
 
+	public FinderPath getFinderPathWithPaginationFindByVocabularyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByVocabularyId();
+
+	public FinderPath getFinderPathCountByVocabularyId();
+
 	/**
 	 * Returns all the asset categories where vocabularyId = &#63;.
 	 *
@@ -883,6 +923,12 @@ public interface AssetCategoryPersistence
 	 * @return the number of matching asset categories
 	 */
 	public int countByVocabularyId(long vocabularyId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P();
+
+	public FinderPath getFinderPathCountByG_P();
 
 	/**
 	 * Returns all the asset categories where groupId = &#63; and parentCategoryId = &#63;.
@@ -1108,6 +1154,14 @@ public interface AssetCategoryPersistence
 	 * @return the number of matching asset categories that the user has permission to view
 	 */
 	public int filterCountByG_P(long groupId, long parentCategoryId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_V();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_V();
+
+	public FinderPath getFinderPathCountByG_V();
+
+	public FinderPath getFinderPathWithPaginationCountByG_V();
 
 	/**
 	 * Returns all the asset categories where groupId = &#63; and vocabularyId = &#63;.
@@ -1467,6 +1521,12 @@ public interface AssetCategoryPersistence
 	 */
 	public int filterCountByG_V(long[] groupIds, long[] vocabularyIds);
 
+	public FinderPath getFinderPathWithPaginationFindByP_N();
+
+	public FinderPath getFinderPathWithoutPaginationFindByP_N();
+
+	public FinderPath getFinderPathCountByP_N();
+
 	/**
 	 * Returns all the asset categories where parentCategoryId = &#63; and name = &#63;.
 	 *
@@ -1621,6 +1681,12 @@ public interface AssetCategoryPersistence
 	 * @return the number of matching asset categories
 	 */
 	public int countByP_N(long parentCategoryId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByP_V();
+
+	public FinderPath getFinderPathWithoutPaginationFindByP_V();
+
+	public FinderPath getFinderPathCountByP_V();
 
 	/**
 	 * Returns all the asset categories where parentCategoryId = &#63; and vocabularyId = &#63;.
@@ -1777,6 +1843,12 @@ public interface AssetCategoryPersistence
 	 */
 	public int countByP_V(long parentCategoryId, long vocabularyId);
 
+	public FinderPath getFinderPathWithPaginationFindByN_V();
+
+	public FinderPath getFinderPathWithoutPaginationFindByN_V();
+
+	public FinderPath getFinderPathCountByN_V();
+
 	/**
 	 * Returns all the asset categories where name = &#63; and vocabularyId = &#63;.
 	 *
@@ -1931,6 +2003,12 @@ public interface AssetCategoryPersistence
 	 * @return the number of matching asset categories
 	 */
 	public int countByN_V(String name, long vocabularyId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P_V();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_V();
+
+	public FinderPath getFinderPathCountByG_P_V();
 
 	/**
 	 * Returns all the asset categories where groupId = &#63; and parentCategoryId = &#63; and vocabularyId = &#63;.
@@ -2183,6 +2261,10 @@ public interface AssetCategoryPersistence
 	public int filterCountByG_P_V(
 		long groupId, long parentCategoryId, long vocabularyId);
 
+	public FinderPath getFinderPathWithPaginationFindByG_LikeT_V();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeT_V();
+
 	/**
 	 * Returns all the asset categories where groupId = &#63; and treePath LIKE &#63; and vocabularyId = &#63;.
 	 *
@@ -2426,6 +2508,10 @@ public interface AssetCategoryPersistence
 	 */
 	public int filterCountByG_LikeT_V(
 		long groupId, String treePath, long vocabularyId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN_V();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN_V();
 
 	/**
 	 * Returns all the asset categories where groupId = &#63; and name LIKE &#63; and vocabularyId = &#63;.
@@ -2813,6 +2899,10 @@ public interface AssetCategoryPersistence
 	public int filterCountByG_LikeN_V(
 		long[] groupIds, String name, long[] vocabularyIds);
 
+	public FinderPath getFinderPathFetchByP_N_V();
+
+	public FinderPath getFinderPathCountByP_N_V();
+
 	/**
 	 * Returns the asset category where parentCategoryId = &#63; and name = &#63; and vocabularyId = &#63; or throws a <code>NoSuchCategoryException</code> if it could not be found.
 	 *
@@ -2872,6 +2962,10 @@ public interface AssetCategoryPersistence
 	 */
 	public int countByP_N_V(
 		long parentCategoryId, String name, long vocabularyId);
+
+	public FinderPath getFinderPathFetchByG_ERC();
+
+	public FinderPath getFinderPathCountByG_ERC();
 
 	/**
 	 * Returns the asset category where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCategoryException</code> if it could not be found.
@@ -3043,5 +3137,7 @@ public interface AssetCategoryPersistence
 	 * @return the number of asset categories
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

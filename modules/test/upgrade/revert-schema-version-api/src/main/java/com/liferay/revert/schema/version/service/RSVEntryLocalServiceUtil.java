@@ -16,6 +16,7 @@ package com.liferay.revert.schema.version.service;
 
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -273,6 +274,10 @@ public class RSVEntryLocalServiceUtil {
 	 */
 	public static RSVEntry getRSVEntry(long rsvEntryId) throws PortalException {
 		return getService().getRSVEntry(rsvEntryId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

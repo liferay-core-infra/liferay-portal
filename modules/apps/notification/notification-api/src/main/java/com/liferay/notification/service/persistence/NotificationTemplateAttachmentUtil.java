@@ -125,6 +125,44 @@ public class NotificationTemplateAttachmentUtil {
 			notificationTemplateAttachment, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByNotificationTemplateId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByNotificationTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByNotificationTemplateId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByNotificationTemplateId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByNotificationTemplateId() {
+
+		return getPersistence().getFinderPathCountByNotificationTemplateId();
+	}
+
 	/**
 	 * Returns all the notification template attachments where notificationTemplateId = &#63;.
 	 *
@@ -325,6 +363,18 @@ public class NotificationTemplateAttachmentUtil {
 
 		return getPersistence().countByNotificationTemplateId(
 			notificationTemplateId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByNTI_OFI() {
+
+		return getPersistence().getFinderPathFetchByNTI_OFI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByNTI_OFI() {
+
+		return getPersistence().getFinderPathCountByNTI_OFI();
 	}
 
 	/**
@@ -569,6 +619,12 @@ public class NotificationTemplateAttachmentUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static NotificationTemplateAttachmentPersistence getPersistence() {

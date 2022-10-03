@@ -16,6 +16,7 @@ package com.liferay.commerce.service.persistence;
 
 import com.liferay.commerce.exception.NoSuchShipmentException;
 import com.liferay.commerce.model.CommerceShipment;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface CommerceShipmentPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceShipmentUtil} to access the commerce shipment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce shipments where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface CommerceShipmentPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the commerce shipment where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchShipmentException</code> if it could not be found.
 	 *
@@ -233,6 +249,12 @@ public interface CommerceShipmentPersistence
 	 * @return the number of matching commerce shipments
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce shipments where uuid = &#63; and companyId = &#63;.
@@ -388,6 +410,14 @@ public interface CommerceShipmentPersistence
 	 * @return the number of matching commerce shipments
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the commerce shipments where groupId = &#63;.
@@ -604,6 +634,14 @@ public interface CommerceShipmentPersistence
 	 * @return the number of matching commerce shipments
 	 */
 	public int countByGroupId(long[] groupIds);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C();
+
+	public FinderPath getFinderPathCountByG_C();
+
+	public FinderPath getFinderPathWithPaginationCountByG_C();
 
 	/**
 	 * Returns all the commerce shipments where groupId = &#63; and commerceAddressId = &#63;.
@@ -839,6 +877,14 @@ public interface CommerceShipmentPersistence
 	 */
 	public int countByG_C(long[] groupIds, long commerceAddressId);
 
+	public FinderPath getFinderPathWithPaginationFindByG_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_S();
+
+	public FinderPath getFinderPathCountByG_S();
+
+	public FinderPath getFinderPathWithPaginationCountByG_S();
+
 	/**
 	 * Returns all the commerce shipments where groupId = &#63; and status = &#63;.
 	 *
@@ -1072,6 +1118,10 @@ public interface CommerceShipmentPersistence
 	 */
 	public int countByG_S(long[] groupIds, int status);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the commerce shipment where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchShipmentException</code> if it could not be found.
 	 *
@@ -1244,5 +1294,7 @@ public interface CommerceShipmentPersistence
 	 * @return the number of commerce shipments
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

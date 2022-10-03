@@ -19,6 +19,7 @@ import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -291,6 +292,9 @@ public interface VirtualHostLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long getVirtualHostsCount(
 		long excludedLayoutSetId, String[] virtualHostNames);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	/**
 	 * @deprecated As of Mueller (7.2.x), replaced by {@link

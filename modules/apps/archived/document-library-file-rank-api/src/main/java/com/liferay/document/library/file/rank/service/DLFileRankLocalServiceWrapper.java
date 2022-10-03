@@ -14,6 +14,7 @@
 
 package com.liferay.document.library.file.rank.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -384,6 +385,11 @@ public class DLFileRankLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dlFileRankLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFileRankLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

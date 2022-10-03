@@ -16,6 +16,7 @@ package com.liferay.marketplace.service.persistence;
 
 import com.liferay.marketplace.exception.NoSuchModuleException;
 import com.liferay.marketplace.model.Module;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ModuleUtil} to access the module persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the modules where uuid = &#63;.
@@ -181,6 +193,12 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 * @return the number of matching modules
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the modules where uuid = &#63; and companyId = &#63;.
@@ -336,6 +354,12 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByAppId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByAppId();
+
+	public FinderPath getFinderPathCountByAppId();
+
 	/**
 	 * Returns all the modules where appId = &#63;.
 	 *
@@ -477,6 +501,12 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 * @return the number of matching modules
 	 */
 	public int countByAppId(long appId);
+
+	public FinderPath getFinderPathWithPaginationFindByBundleSymbolicName();
+
+	public FinderPath getFinderPathWithoutPaginationFindByBundleSymbolicName();
+
+	public FinderPath getFinderPathCountByBundleSymbolicName();
 
 	/**
 	 * Returns all the modules where bundleSymbolicName = &#63;.
@@ -622,6 +652,12 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 */
 	public int countByBundleSymbolicName(String bundleSymbolicName);
 
+	public FinderPath getFinderPathWithPaginationFindByContextName();
+
+	public FinderPath getFinderPathWithoutPaginationFindByContextName();
+
+	public FinderPath getFinderPathCountByContextName();
+
 	/**
 	 * Returns all the modules where contextName = &#63;.
 	 *
@@ -765,6 +801,10 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 */
 	public int countByContextName(String contextName);
 
+	public FinderPath getFinderPathFetchByA_CN();
+
+	public FinderPath getFinderPathCountByA_CN();
+
 	/**
 	 * Returns the module where appId = &#63; and contextName = &#63; or throws a <code>NoSuchModuleException</code> if it could not be found.
 	 *
@@ -814,6 +854,10 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 * @return the number of matching modules
 	 */
 	public int countByA_CN(long appId, String contextName);
+
+	public FinderPath getFinderPathFetchByA_BSN_BV();
+
+	public FinderPath getFinderPathCountByA_BSN_BV();
 
 	/**
 	 * Returns the module where appId = &#63; and bundleSymbolicName = &#63; and bundleVersion = &#63; or throws a <code>NoSuchModuleException</code> if it could not be found.
@@ -992,5 +1036,7 @@ public interface ModulePersistence extends BasePersistence<Module> {
 	 * @return the number of modules
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

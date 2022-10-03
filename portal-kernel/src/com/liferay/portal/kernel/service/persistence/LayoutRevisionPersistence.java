@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchLayoutRevisionException;
 import com.liferay.portal.kernel.model.LayoutRevision;
 
@@ -39,6 +40,17 @@ public interface LayoutRevisionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LayoutRevisionUtil} to access the layout revision persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByLayoutSetBranchId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLayoutSetBranchId();
+
+	public FinderPath getFinderPathCountByLayoutSetBranchId();
 
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63;.
@@ -184,6 +196,12 @@ public interface LayoutRevisionPersistence
 	 */
 	public int countByLayoutSetBranchId(long layoutSetBranchId);
 
+	public FinderPath getFinderPathWithPaginationFindByPlid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByPlid();
+
+	public FinderPath getFinderPathCountByPlid();
+
 	/**
 	 * Returns all the layout revisions where plid = &#63;.
 	 *
@@ -327,6 +345,12 @@ public interface LayoutRevisionPersistence
 	 */
 	public int countByPlid(long plid);
 
+	public FinderPath getFinderPathWithPaginationFindByStatus();
+
+	public FinderPath getFinderPathWithoutPaginationFindByStatus();
+
+	public FinderPath getFinderPathCountByStatus();
+
 	/**
 	 * Returns all the layout revisions where status = &#63;.
 	 *
@@ -469,6 +493,12 @@ public interface LayoutRevisionPersistence
 	 * @return the number of matching layout revisions
 	 */
 	public int countByStatus(int status);
+
+	public FinderPath getFinderPathWithPaginationFindByL_H();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_H();
+
+	public FinderPath getFinderPathCountByL_H();
 
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and head = &#63;.
@@ -625,6 +655,12 @@ public interface LayoutRevisionPersistence
 	 */
 	public int countByL_H(long layoutSetBranchId, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByL_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_P();
+
+	public FinderPath getFinderPathCountByL_P();
+
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and plid = &#63;.
 	 *
@@ -779,6 +815,12 @@ public interface LayoutRevisionPersistence
 	 * @return the number of matching layout revisions
 	 */
 	public int countByL_P(long layoutSetBranchId, long plid);
+
+	public FinderPath getFinderPathWithPaginationFindByL_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_S();
+
+	public FinderPath getFinderPathCountByL_S();
 
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and status = &#63;.
@@ -935,6 +977,12 @@ public interface LayoutRevisionPersistence
 	 */
 	public int countByL_S(long layoutSetBranchId, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByH_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByH_P();
+
+	public FinderPath getFinderPathCountByH_P();
+
 	/**
 	 * Returns all the layout revisions where head = &#63; and plid = &#63;.
 	 *
@@ -1089,6 +1137,10 @@ public interface LayoutRevisionPersistence
 	 */
 	public int countByH_P(boolean head, long plid);
 
+	public FinderPath getFinderPathWithPaginationFindByP_NotS();
+
+	public FinderPath getFinderPathWithPaginationCountByP_NotS();
+
 	/**
 	 * Returns all the layout revisions where plid = &#63; and status &ne; &#63;.
 	 *
@@ -1242,6 +1294,12 @@ public interface LayoutRevisionPersistence
 	 * @return the number of matching layout revisions
 	 */
 	public int countByP_NotS(long plid, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByL_L_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_L_P();
+
+	public FinderPath getFinderPathCountByL_L_P();
 
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and layoutBranchId = &#63; and plid = &#63;.
@@ -1415,6 +1473,12 @@ public interface LayoutRevisionPersistence
 	public int countByL_L_P(
 		long layoutSetBranchId, long layoutBranchId, long plid);
 
+	public FinderPath getFinderPathWithPaginationFindByL_P_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_P_P();
+
+	public FinderPath getFinderPathCountByL_P_P();
+
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and parentLayoutRevisionId = &#63; and plid = &#63;.
 	 *
@@ -1587,6 +1651,10 @@ public interface LayoutRevisionPersistence
 	public int countByL_P_P(
 		long layoutSetBranchId, long parentLayoutRevisionId, long plid);
 
+	public FinderPath getFinderPathFetchByL_H_P();
+
+	public FinderPath getFinderPathCountByL_H_P();
+
 	/**
 	 * Returns the layout revision where layoutSetBranchId = &#63; and head = &#63; and plid = &#63; or throws a <code>NoSuchLayoutRevisionException</code> if it could not be found.
 	 *
@@ -1645,6 +1713,12 @@ public interface LayoutRevisionPersistence
 	 * @return the number of matching layout revisions
 	 */
 	public int countByL_H_P(long layoutSetBranchId, boolean head, long plid);
+
+	public FinderPath getFinderPathWithPaginationFindByL_H_P_Collection();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_H_P_Collection();
+
+	public FinderPath getFinderPathCountByL_H_P_Collection();
 
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and head = &#63; and plid = &#63;.
@@ -1815,6 +1889,12 @@ public interface LayoutRevisionPersistence
 	public int countByL_H_P_Collection(
 		long layoutSetBranchId, boolean head, long plid);
 
+	public FinderPath getFinderPathWithPaginationFindByL_H_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_H_S();
+
+	public FinderPath getFinderPathCountByL_H_S();
+
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and head = &#63; and status = &#63;.
 	 *
@@ -1982,6 +2062,12 @@ public interface LayoutRevisionPersistence
 	 */
 	public int countByL_H_S(long layoutSetBranchId, boolean head, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByL_P_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByL_P_S();
+
+	public FinderPath getFinderPathCountByL_P_S();
+
 	/**
 	 * Returns all the layout revisions where layoutSetBranchId = &#63; and plid = &#63; and status = &#63;.
 	 *
@@ -2148,6 +2234,10 @@ public interface LayoutRevisionPersistence
 	 * @return the number of matching layout revisions
 	 */
 	public int countByL_P_S(long layoutSetBranchId, long plid, int status);
+
+	public FinderPath getFinderPathFetchByL_L_H_P();
+
+	public FinderPath getFinderPathCountByL_L_H_P();
 
 	/**
 	 * Returns the layout revision where layoutSetBranchId = &#63; and layoutBranchId = &#63; and head = &#63; and plid = &#63; or throws a <code>NoSuchLayoutRevisionException</code> if it could not be found.
@@ -2335,5 +2425,7 @@ public interface LayoutRevisionPersistence
 	 * @return the number of layout revisions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

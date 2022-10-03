@@ -108,9 +108,42 @@ public class CalendarBookingPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the calendar bookings where uuid = &#63;.
@@ -657,7 +690,18 @@ public class CalendarBookingPersistenceImpl
 		"(calendarBooking.uuid IS NULL OR calendarBooking.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the calendar booking where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchBookingException</code> if it could not be found.
@@ -920,8 +964,25 @@ public class CalendarBookingPersistenceImpl
 		"calendarBooking.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the calendar bookings where uuid = &#63; and companyId = &#63;.
@@ -1517,8 +1578,25 @@ public class CalendarBookingPersistenceImpl
 		"calendarBooking.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCalendarId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCalendarId() {
+		return _finderPathWithPaginationFindByCalendarId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCalendarId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCalendarId() {
+		return _finderPathWithoutPaginationFindByCalendarId;
+	}
+
 	private FinderPath _finderPathCountByCalendarId;
+
+	@Override
+	public FinderPath getFinderPathCountByCalendarId() {
+		return _finderPathCountByCalendarId;
+	}
 
 	/**
 	 * Returns all the calendar bookings where calendarId = &#63;.
@@ -2033,8 +2111,25 @@ public class CalendarBookingPersistenceImpl
 		"calendarBooking.calendarId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCalendarResourceId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCalendarResourceId() {
+		return _finderPathWithPaginationFindByCalendarResourceId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCalendarResourceId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCalendarResourceId() {
+		return _finderPathWithoutPaginationFindByCalendarResourceId;
+	}
+
 	private FinderPath _finderPathCountByCalendarResourceId;
+
+	@Override
+	public FinderPath getFinderPathCountByCalendarResourceId() {
+		return _finderPathCountByCalendarResourceId;
+	}
 
 	/**
 	 * Returns all the calendar bookings where calendarResourceId = &#63;.
@@ -2561,9 +2656,30 @@ public class CalendarBookingPersistenceImpl
 			"calendarBooking.calendarResourceId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByParentCalendarBookingId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByParentCalendarBookingId() {
+
+		return _finderPathWithPaginationFindByParentCalendarBookingId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByParentCalendarBookingId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByParentCalendarBookingId() {
+
+		return _finderPathWithoutPaginationFindByParentCalendarBookingId;
+	}
+
 	private FinderPath _finderPathCountByParentCalendarBookingId;
+
+	@Override
+	public FinderPath getFinderPathCountByParentCalendarBookingId() {
+		return _finderPathCountByParentCalendarBookingId;
+	}
 
 	/**
 	 * Returns all the calendar bookings where parentCalendarBookingId = &#63;.
@@ -3096,9 +3212,30 @@ public class CalendarBookingPersistenceImpl
 
 	private FinderPath
 		_finderPathWithPaginationFindByRecurringCalendarBookingId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByRecurringCalendarBookingId() {
+
+		return _finderPathWithPaginationFindByRecurringCalendarBookingId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByRecurringCalendarBookingId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByRecurringCalendarBookingId() {
+
+		return _finderPathWithoutPaginationFindByRecurringCalendarBookingId;
+	}
+
 	private FinderPath _finderPathCountByRecurringCalendarBookingId;
+
+	@Override
+	public FinderPath getFinderPathCountByRecurringCalendarBookingId() {
+		return _finderPathCountByRecurringCalendarBookingId;
+	}
 
 	/**
 	 * Returns all the calendar bookings where recurringCalendarBookingId = &#63;.
@@ -3638,7 +3775,18 @@ public class CalendarBookingPersistenceImpl
 			"calendarBooking.recurringCalendarBookingId = ?";
 
 	private FinderPath _finderPathFetchByC_P;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_P() {
+		return _finderPathFetchByC_P;
+	}
+
 	private FinderPath _finderPathCountByC_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_P() {
+		return _finderPathCountByC_P;
+	}
 
 	/**
 	 * Returns the calendar booking where calendarId = &#63; and parentCalendarBookingId = &#63; or throws a <code>NoSuchBookingException</code> if it could not be found.
@@ -3879,7 +4027,18 @@ public class CalendarBookingPersistenceImpl
 		"calendarBooking.parentCalendarBookingId = ?";
 
 	private FinderPath _finderPathFetchByC_V;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_V() {
+		return _finderPathFetchByC_V;
+	}
+
 	private FinderPath _finderPathCountByC_V;
+
+	@Override
+	public FinderPath getFinderPathCountByC_V() {
+		return _finderPathCountByC_V;
+	}
 
 	/**
 	 * Returns the calendar booking where calendarId = &#63; and vEventUid = &#63; or throws a <code>NoSuchBookingException</code> if it could not be found.
@@ -4142,9 +4301,32 @@ public class CalendarBookingPersistenceImpl
 		"(calendarBooking.vEventUid IS NULL OR calendarBooking.vEventUid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_S() {
+		return _finderPathWithPaginationCountByC_S;
+	}
 
 	/**
 	 * Returns all the calendar bookings where calendarId = &#63; and status = &#63;.
@@ -4982,8 +5164,25 @@ public class CalendarBookingPersistenceImpl
 		"calendarBooking.status IN (";
 
 	private FinderPath _finderPathWithPaginationFindByP_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByP_S() {
+		return _finderPathWithPaginationFindByP_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByP_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByP_S() {
+		return _finderPathWithoutPaginationFindByP_S;
+	}
+
 	private FinderPath _finderPathCountByP_S;
+
+	@Override
+	public FinderPath getFinderPathCountByP_S() {
+		return _finderPathCountByP_S;
+	}
 
 	/**
 	 * Returns all the calendar bookings where parentCalendarBookingId = &#63; and status = &#63;.
@@ -6619,6 +6818,61 @@ public class CalendarBookingPersistenceImpl
 		_setCalendarBookingUtilPersistence(null);
 
 		entityCache.removeCache(CalendarBookingImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CalendarBooking> calendarBookings = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CalendarBooking>> resultMap =
+				new HashMap<>();
+
+			for (CalendarBooking calendarBooking : calendarBookings) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CalendarBookingModelImpl calendarBookingModelImpl =
+						(CalendarBookingModelImpl)calendarBooking;
+
+					arguments.add(
+						calendarBookingModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), calendarBooking);
+				}
+				else {
+					List<CalendarBooking> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(calendarBooking);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CalendarBooking>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CalendarBooking> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCalendarBookingUtilPersistence(

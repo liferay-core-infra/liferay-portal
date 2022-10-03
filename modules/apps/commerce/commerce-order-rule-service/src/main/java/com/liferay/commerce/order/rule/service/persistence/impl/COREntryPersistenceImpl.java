@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -58,6 +59,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,9 +105,42 @@ public class COREntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the cor entries where uuid = &#63;.
@@ -1046,8 +1081,25 @@ public class COREntryPersistenceImpl
 		"(corEntry.uuid_ IS NULL OR corEntry.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the cor entries where uuid = &#63; and companyId = &#63;.
@@ -2057,8 +2109,25 @@ public class COREntryPersistenceImpl
 		"corEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A() {
+		return _finderPathWithPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A() {
+		return _finderPathWithoutPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathCountByC_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A() {
+		return _finderPathCountByC_A;
+	}
 
 	/**
 	 * Returns all the cor entries where companyId = &#63; and active = &#63;.
@@ -2984,7 +3053,18 @@ public class COREntryPersistenceImpl
 		"corEntry.active_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeType() {
+		return _finderPathWithPaginationFindByC_LikeType;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeType() {
+		return _finderPathWithPaginationCountByC_LikeType;
+	}
 
 	/**
 	 * Returns all the cor entries where companyId = &#63; and type LIKE &#63;.
@@ -3986,7 +4066,18 @@ public class COREntryPersistenceImpl
 		"(corEntry.type_ IS NULL OR corEntry.type_ LIKE '')";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtD_S() {
+		return _finderPathWithPaginationFindByLtD_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtD_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtD_S() {
+		return _finderPathWithPaginationCountByLtD_S;
+	}
 
 	/**
 	 * Returns all the cor entries where displayDate &lt; &#63; and status = &#63;.
@@ -4973,7 +5064,18 @@ public class COREntryPersistenceImpl
 		"corEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtE_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtE_S() {
+		return _finderPathWithPaginationFindByLtE_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtE_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtE_S() {
+		return _finderPathWithPaginationCountByLtE_S;
+	}
 
 	/**
 	 * Returns all the cor entries where expirationDate &lt; &#63; and status = &#63;.
@@ -5960,7 +6062,18 @@ public class COREntryPersistenceImpl
 		"corEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A_LikeType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A_LikeType() {
+		return _finderPathWithPaginationFindByC_A_LikeType;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_A_LikeType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_A_LikeType() {
+		return _finderPathWithPaginationCountByC_A_LikeType;
+	}
 
 	/**
 	 * Returns all the cor entries where companyId = &#63; and active = &#63; and type LIKE &#63;.
@@ -7034,7 +7147,18 @@ public class COREntryPersistenceImpl
 		"(corEntry.type_ IS NULL OR corEntry.type_ LIKE '')";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the cor entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCOREntryException</code> if it could not be found.
@@ -7997,6 +8121,58 @@ public class COREntryPersistenceImpl
 		_setCOREntryUtilPersistence(null);
 
 		entityCache.removeCache(COREntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<COREntry> corEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<COREntry>> resultMap = new HashMap<>();
+
+			for (COREntry corEntry : corEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					COREntryModelImpl corEntryModelImpl =
+						(COREntryModelImpl)corEntry;
+
+					arguments.add(corEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), corEntry);
+				}
+				else {
+					List<COREntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(corEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<COREntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<COREntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCOREntryUtilPersistence(

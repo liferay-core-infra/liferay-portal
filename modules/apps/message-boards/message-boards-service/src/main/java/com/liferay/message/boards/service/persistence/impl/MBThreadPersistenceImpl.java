@@ -117,9 +117,42 @@ public class MBThreadPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the message boards threads where uuid = &#63;.
@@ -661,7 +694,18 @@ public class MBThreadPersistenceImpl
 		"(mbThread.uuid IS NULL OR mbThread.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the message boards thread where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchThreadException</code> if it could not be found.
@@ -924,8 +968,25 @@ public class MBThreadPersistenceImpl
 		"mbThread.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the message boards threads where uuid = &#63; and companyId = &#63;.
@@ -1516,8 +1577,25 @@ public class MBThreadPersistenceImpl
 		"mbThread.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63;.
@@ -2391,7 +2469,18 @@ public class MBThreadPersistenceImpl
 		"mbThread.groupId = ? AND mbThread.categoryId != -1";
 
 	private FinderPath _finderPathFetchByRootMessageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByRootMessageId() {
+		return _finderPathFetchByRootMessageId;
+	}
+
 	private FinderPath _finderPathCountByRootMessageId;
+
+	@Override
+	public FinderPath getFinderPathCountByRootMessageId() {
+		return _finderPathCountByRootMessageId;
+	}
 
 	/**
 	 * Returns the message boards thread where rootMessageId = &#63; or throws a <code>NoSuchThreadException</code> if it could not be found.
@@ -2619,9 +2708,32 @@ public class MBThreadPersistenceImpl
 		"mbThread.rootMessageId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C() {
+		return _finderPathWithPaginationCountByG_C;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId = &#63;.
@@ -4064,7 +4176,18 @@ public class MBThreadPersistenceImpl
 		"mbThread.categoryId IN (";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotC;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_NotC() {
+		return _finderPathWithPaginationFindByG_NotC;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_NotC;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_NotC() {
+		return _finderPathWithPaginationCountByG_NotC;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId &ne; &#63;.
@@ -4997,8 +5120,25 @@ public class MBThreadPersistenceImpl
 		"mbThread.categoryId != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and status = &#63;.
@@ -5934,8 +6074,25 @@ public class MBThreadPersistenceImpl
 		"mbThread.status = ? AND mbThread.categoryId != -1";
 
 	private FinderPath _finderPathWithPaginationFindByC_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_P() {
+		return _finderPathWithPaginationFindByC_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_P() {
+		return _finderPathWithoutPaginationFindByC_P;
+	}
+
 	private FinderPath _finderPathCountByC_P;
+
+	@Override
+	public FinderPath getFinderPathCountByC_P() {
+		return _finderPathCountByC_P;
+	}
 
 	/**
 	 * Returns all the message boards threads where categoryId = &#63; and priority = &#63;.
@@ -6486,8 +6643,25 @@ public class MBThreadPersistenceImpl
 		"mbThread.priority = ?";
 
 	private FinderPath _finderPathWithPaginationFindByL_P;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByL_P() {
+		return _finderPathWithPaginationFindByL_P;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByL_P;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByL_P() {
+		return _finderPathWithoutPaginationFindByL_P;
+	}
+
 	private FinderPath _finderPathCountByL_P;
+
+	@Override
+	public FinderPath getFinderPathCountByL_P() {
+		return _finderPathCountByL_P;
+	}
 
 	/**
 	 * Returns all the message boards threads where lastPostDate = &#63; and priority = &#63;.
@@ -7075,8 +7249,25 @@ public class MBThreadPersistenceImpl
 		"mbThread.priority = ? AND mbThread.categoryId != -1";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_L() {
+		return _finderPathWithPaginationFindByG_C_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_L() {
+		return _finderPathWithoutPaginationFindByG_C_L;
+	}
+
 	private FinderPath _finderPathCountByG_C_L;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_L() {
+		return _finderPathCountByG_C_L;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId = &#63; and lastPostDate = &#63;.
@@ -8160,9 +8351,32 @@ public class MBThreadPersistenceImpl
 		"mbThread.lastPostDate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_S() {
+		return _finderPathWithPaginationFindByG_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_S() {
+		return _finderPathWithoutPaginationFindByG_C_S;
+	}
+
 	private FinderPath _finderPathCountByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_S() {
+		return _finderPathCountByG_C_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_S() {
+		return _finderPathWithPaginationCountByG_C_S;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId = &#63; and status = &#63;.
@@ -9709,7 +9923,18 @@ public class MBThreadPersistenceImpl
 		"mbThread.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_NotS() {
+		return _finderPathWithPaginationFindByG_C_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C_NotS() {
+		return _finderPathWithPaginationCountByG_C_NotS;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId = &#63; and status &ne; &#63;.
@@ -11250,7 +11475,18 @@ public class MBThreadPersistenceImpl
 		"mbThread.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_NotC_S() {
+		return _finderPathWithPaginationFindByG_NotC_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_NotC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_NotC_S() {
+		return _finderPathWithPaginationCountByG_NotC_S;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId &ne; &#63; and status = &#63;.
@@ -12244,7 +12480,18 @@ public class MBThreadPersistenceImpl
 		"mbThread.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_NotC_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_NotC_NotS() {
+		return _finderPathWithPaginationFindByG_NotC_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_NotC_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_NotC_NotS() {
+		return _finderPathWithPaginationCountByG_NotC_NotS;
+	}
 
 	/**
 	 * Returns all the message boards threads where groupId = &#63; and categoryId &ne; &#63; and status &ne; &#63;.
@@ -14361,6 +14608,58 @@ public class MBThreadPersistenceImpl
 		_setMBThreadUtilPersistence(null);
 
 		entityCache.removeCache(MBThreadImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<MBThread> mbThreads = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MBThread>> resultMap = new HashMap<>();
+
+			for (MBThread mbThread : mbThreads) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MBThreadModelImpl mbThreadModelImpl =
+						(MBThreadModelImpl)mbThread;
+
+					arguments.add(mbThreadModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), mbThread);
+				}
+				else {
+					List<MBThread> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(mbThread);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MBThread>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MBThread> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setMBThreadUtilPersistence(

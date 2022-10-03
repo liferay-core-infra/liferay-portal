@@ -17,6 +17,7 @@ package com.liferay.oauth.service;
 import com.liferay.oauth.model.OAuthUser;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -344,6 +345,10 @@ public class OAuthUserLocalServiceUtil {
 
 	public static int getUserOAuthUsersCount(long userId) {
 		return getService().getUserOAuthUsersCount(userId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	public static OAuthUser updateOAuthUser(

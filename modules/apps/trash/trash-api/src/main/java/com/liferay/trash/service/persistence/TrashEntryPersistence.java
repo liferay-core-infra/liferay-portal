@@ -14,6 +14,7 @@
 
 package com.liferay.trash.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.trash.exception.NoSuchEntryException;
@@ -43,6 +44,17 @@ public interface TrashEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TrashEntryUtil} to access the trash entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the trash entries where groupId = &#63;.
@@ -187,6 +199,12 @@ public interface TrashEntryPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the trash entries where companyId = &#63;.
 	 *
@@ -329,6 +347,10 @@ public interface TrashEntryPersistence
 	 * @return the number of matching trash entries
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LtCD();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LtCD();
 
 	/**
 	 * Returns all the trash entries where groupId = &#63; and createDate &lt; &#63;.
@@ -485,6 +507,12 @@ public interface TrashEntryPersistence
 	 */
 	public int countByG_LtCD(long groupId, Date createDate);
 
+	public FinderPath getFinderPathWithPaginationFindByG_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C();
+
+	public FinderPath getFinderPathCountByG_C();
+
 	/**
 	 * Returns all the trash entries where groupId = &#63; and classNameId = &#63;.
 	 *
@@ -638,6 +666,10 @@ public interface TrashEntryPersistence
 	 * @return the number of matching trash entries
 	 */
 	public int countByG_C(long groupId, long classNameId);
+
+	public FinderPath getFinderPathFetchByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns the trash entry where classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -807,5 +839,7 @@ public interface TrashEntryPersistence
 	 * @return the number of trash entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

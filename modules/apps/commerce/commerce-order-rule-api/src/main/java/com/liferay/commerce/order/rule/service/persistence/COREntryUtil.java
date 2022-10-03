@@ -120,6 +120,42 @@ public class COREntryUtil {
 		return getPersistence().update(corEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the cor entries where uuid = &#63;.
 	 *
@@ -360,6 +396,24 @@ public class COREntryUtil {
 	 */
 	public static int filterCountByUuid(String uuid) {
 		return getPersistence().filterCountByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -633,6 +687,24 @@ public class COREntryUtil {
 		return getPersistence().filterCountByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_A() {
+
+		return getPersistence().getFinderPathCountByC_A();
+	}
+
 	/**
 	 * Returns all the cor entries where companyId = &#63; and active = &#63;.
 	 *
@@ -902,6 +974,18 @@ public class COREntryUtil {
 	 */
 	public static int filterCountByC_A(long companyId, boolean active) {
 		return getPersistence().filterCountByC_A(companyId, active);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LikeType() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LikeType();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LikeType() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LikeType();
 	}
 
 	/**
@@ -1176,6 +1260,18 @@ public class COREntryUtil {
 		return getPersistence().filterCountByC_LikeType(companyId, type);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtD_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtD_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByLtD_S();
+	}
+
 	/**
 	 * Returns all the cor entries where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1446,6 +1542,18 @@ public class COREntryUtil {
 	 */
 	public static int filterCountByLtD_S(Date displayDate, int status) {
 		return getPersistence().filterCountByLtD_S(displayDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtE_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByLtE_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtE_S() {
+
+		return getPersistence().getFinderPathWithPaginationCountByLtE_S();
 	}
 
 	/**
@@ -1719,6 +1827,19 @@ public class COREntryUtil {
 	 */
 	public static int filterCountByLtE_S(Date expirationDate, int status) {
 		return getPersistence().filterCountByLtE_S(expirationDate, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_A_LikeType() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_A_LikeType();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_A_LikeType() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByC_A_LikeType();
 	}
 
 	/**
@@ -2021,6 +2142,18 @@ public class COREntryUtil {
 			companyId, active, type);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_ERC() {
+
+		return getPersistence().getFinderPathFetchByC_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ERC() {
+
+		return getPersistence().getFinderPathCountByC_ERC();
+	}
+
 	/**
 	 * Returns the cor entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCOREntryException</code> if it could not be found.
 	 *
@@ -2240,6 +2373,12 @@ public class COREntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static COREntryPersistence getPersistence() {

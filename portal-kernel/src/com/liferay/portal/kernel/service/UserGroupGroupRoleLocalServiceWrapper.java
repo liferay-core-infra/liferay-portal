@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.UserGroupGroupRole;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -447,6 +448,11 @@ public class UserGroupGroupRoleLocalServiceWrapper
 
 		return _userGroupGroupRoleLocalService.hasUserGroupGroupRole(
 			userGroupId, groupId, roleName);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_userGroupGroupRoleLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -14,6 +14,7 @@
 
 package com.liferay.dispatch.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -499,6 +500,11 @@ public class DispatchTriggerLocalServiceWrapper
 	public int getUserDispatchTriggersCount(long companyId, long userId) {
 		return _dispatchTriggerLocalService.getUserDispatchTriggersCount(
 			companyId, userId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dispatchTriggerLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

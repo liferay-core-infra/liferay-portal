@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -514,6 +515,11 @@ public class KaleoProcessLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _kaleoProcessLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_kaleoProcessLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

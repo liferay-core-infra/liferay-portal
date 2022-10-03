@@ -119,6 +119,38 @@ public class DLSyncEventUtil {
 		return getPersistence().update(dlSyncEvent, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGtModifiedTime() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByGtModifiedTime();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByGtModifiedTime() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByGtModifiedTime();
+	}
+
 	/**
 	 * Returns all the dl sync events where modifiedTime &gt; &#63;.
 	 *
@@ -289,6 +321,18 @@ public class DLSyncEventUtil {
 	 */
 	public static int countByGtModifiedTime(long modifiedTime) {
 		return getPersistence().countByGtModifiedTime(modifiedTime);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByTypePK() {
+
+		return getPersistence().getFinderPathFetchByTypePK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByTypePK() {
+
+		return getPersistence().getFinderPathCountByTypePK();
 	}
 
 	/**
@@ -498,6 +542,12 @@ public class DLSyncEventUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DLSyncEventPersistence getPersistence() {

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -51,8 +52,10 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -99,9 +102,42 @@ public class SamlIdpSpConnectionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the saml idp sp connections where companyId = &#63;.
@@ -606,7 +642,18 @@ public class SamlIdpSpConnectionPersistenceImpl
 		"samlIdpSpConnection.companyId = ?";
 
 	private FinderPath _finderPathFetchByC_SSEI;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_SSEI() {
+		return _finderPathFetchByC_SSEI;
+	}
+
 	private FinderPath _finderPathCountByC_SSEI;
+
+	@Override
+	public FinderPath getFinderPathCountByC_SSEI() {
+		return _finderPathCountByC_SSEI;
+	}
 
 	/**
 	 * Returns the saml idp sp connection where companyId = &#63; and samlSpEntityId = &#63; or throws a <code>NoSuchIdpSpConnectionException</code> if it could not be found.
@@ -1492,6 +1539,64 @@ public class SamlIdpSpConnectionPersistenceImpl
 		_setSamlIdpSpConnectionUtilPersistence(null);
 
 		entityCache.removeCache(SamlIdpSpConnectionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SamlIdpSpConnection> samlIdpSpConnections = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SamlIdpSpConnection>> resultMap =
+				new HashMap<>();
+
+			for (SamlIdpSpConnection samlIdpSpConnection :
+					samlIdpSpConnections) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SamlIdpSpConnectionModelImpl samlIdpSpConnectionModelImpl =
+						(SamlIdpSpConnectionModelImpl)samlIdpSpConnection;
+
+					arguments.add(
+						samlIdpSpConnectionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), samlIdpSpConnection);
+				}
+				else {
+					List<SamlIdpSpConnection> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(samlIdpSpConnection);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SamlIdpSpConnection>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SamlIdpSpConnection> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSamlIdpSpConnectionUtilPersistence(

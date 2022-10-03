@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.currency.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -458,6 +459,11 @@ public class CommerceCurrencyLocalServiceWrapper
 		throws Exception {
 
 		_commerceCurrencyLocalService.importDefaultValues(serviceContext);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceCurrencyLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

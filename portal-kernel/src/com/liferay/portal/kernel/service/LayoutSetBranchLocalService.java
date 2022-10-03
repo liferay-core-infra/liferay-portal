@@ -17,6 +17,7 @@ package com.liferay.portal.kernel.service;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -304,6 +305,9 @@ public interface LayoutSetBranchLocalService
 			long userId, long groupId, boolean privateLayout, long layoutSetId,
 			long layoutSetBranchId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public LayoutSetBranch mergeLayoutSetBranch(
 			long layoutSetBranchId, long mergeLayoutSetBranchId,

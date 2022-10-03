@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -527,6 +528,11 @@ public abstract class KBCommentLocalServiceBaseImpl
 	@Override
 	public int getKBCommentsCount() {
 		return kbCommentPersistence.countAll();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		kbCommentPersistence.loadFinderCache(finderPaths);
 	}
 
 	/**

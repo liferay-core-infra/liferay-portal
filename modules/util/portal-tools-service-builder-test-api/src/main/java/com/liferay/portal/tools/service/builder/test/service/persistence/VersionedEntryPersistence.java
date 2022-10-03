@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.tools.service.builder.test.exception.NoSuchVersionedEntryException;
 import com.liferay.portal.tools.service.builder.test.model.VersionedEntry;
@@ -40,6 +41,17 @@ public interface VersionedEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link VersionedEntryUtil} to access the versioned entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the versioned entries where groupId = &#63;.
@@ -183,6 +195,12 @@ public interface VersionedEntryPersistence
 	 * @return the number of matching versioned entries
 	 */
 	public int countByGroupId(long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId_Head();
+
+	public FinderPath getFinderPathCountByGroupId_Head();
 
 	/**
 	 * Returns all the versioned entries where groupId = &#63; and head = &#63;.
@@ -338,6 +356,10 @@ public interface VersionedEntryPersistence
 	 * @return the number of matching versioned entries
 	 */
 	public int countByGroupId_Head(long groupId, boolean head);
+
+	public FinderPath getFinderPathFetchByHeadId();
+
+	public FinderPath getFinderPathCountByHeadId();
 
 	/**
 	 * Returns the versioned entry where headId = &#63; or throws a <code>NoSuchVersionedEntryException</code> if it could not be found.
@@ -502,5 +524,7 @@ public interface VersionedEntryPersistence
 	 * @return the number of versioned entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

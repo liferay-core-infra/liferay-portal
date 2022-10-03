@@ -16,6 +16,7 @@ package com.liferay.commerce.discount.service.persistence;
 
 import com.liferay.commerce.discount.exception.NoSuchDiscountOrderTypeRelException;
 import com.liferay.commerce.discount.model.CommerceDiscountOrderTypeRel;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceDiscountOrderTypeRelUtil} to access the commerce discount order type rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce discount order type rels where uuid = &#63;.
@@ -183,6 +195,12 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 * @return the number of matching commerce discount order type rels
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce discount order type rels where uuid = &#63; and companyId = &#63;.
@@ -339,6 +357,12 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCommerceDiscountId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceDiscountId();
+
+	public FinderPath getFinderPathCountByCommerceDiscountId();
+
 	/**
 	 * Returns all the commerce discount order type rels where commerceDiscountId = &#63;.
 	 *
@@ -485,6 +509,12 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 */
 	public int countByCommerceDiscountId(long commerceDiscountId);
 
+	public FinderPath getFinderPathWithPaginationFindByCommerceOrderTypeId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceOrderTypeId();
+
+	public FinderPath getFinderPathCountByCommerceOrderTypeId();
+
 	/**
 	 * Returns all the commerce discount order type rels where commerceOrderTypeId = &#63;.
 	 *
@@ -630,6 +660,10 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 * @return the number of matching commerce discount order type rels
 	 */
 	public int countByCommerceOrderTypeId(long commerceOrderTypeId);
+
+	public FinderPath getFinderPathFetchByCDI_COTI();
+
+	public FinderPath getFinderPathCountByCDI_COTI();
 
 	/**
 	 * Returns the commerce discount order type rel where commerceDiscountId = &#63; and commerceOrderTypeId = &#63; or throws a <code>NoSuchDiscountOrderTypeRelException</code> if it could not be found.
@@ -814,5 +848,7 @@ public interface CommerceDiscountOrderTypeRelPersistence
 	 * @return the number of commerce discount order type rels
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

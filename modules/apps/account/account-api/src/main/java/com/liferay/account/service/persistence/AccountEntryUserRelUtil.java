@@ -122,6 +122,44 @@ public class AccountEntryUserRelUtil {
 		return getPersistence().update(accountEntryUserRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByAccountEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByAccountEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByAccountEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByAccountEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAccountEntryId() {
+
+		return getPersistence().getFinderPathCountByAccountEntryId();
+	}
+
 	/**
 	 * Returns all the account entry user rels where accountEntryId = &#63;.
 	 *
@@ -298,6 +336,26 @@ public class AccountEntryUserRelUtil {
 		return getPersistence().countByAccountEntryId(accountEntryId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByAccountUserId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByAccountUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByAccountUserId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByAccountUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAccountUserId() {
+
+		return getPersistence().getFinderPathCountByAccountUserId();
+	}
+
 	/**
 	 * Returns all the account entry user rels where accountUserId = &#63;.
 	 *
@@ -471,6 +529,18 @@ public class AccountEntryUserRelUtil {
 	 */
 	public static int countByAccountUserId(long accountUserId) {
 		return getPersistence().countByAccountUserId(accountUserId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByAEI_AUI() {
+
+		return getPersistence().getFinderPathFetchByAEI_AUI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAEI_AUI() {
+
+		return getPersistence().getFinderPathCountByAEI_AUI();
 	}
 
 	/**
@@ -695,6 +765,12 @@ public class AccountEntryUserRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static AccountEntryUserRelPersistence getPersistence() {

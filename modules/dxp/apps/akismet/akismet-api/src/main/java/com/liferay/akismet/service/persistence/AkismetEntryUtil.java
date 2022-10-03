@@ -120,6 +120,38 @@ public class AkismetEntryUtil {
 		return getPersistence().update(akismetEntry, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtModifiedDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLtModifiedDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtModifiedDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtModifiedDate();
+	}
+
 	/**
 	 * Returns all the akismet entries where modifiedDate &lt; &#63;.
 	 *
@@ -289,6 +321,18 @@ public class AkismetEntryUtil {
 	 */
 	public static int countByLtModifiedDate(Date modifiedDate) {
 		return getPersistence().countByLtModifiedDate(modifiedDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C() {
+
+		return getPersistence().getFinderPathFetchByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -500,6 +544,12 @@ public class AkismetEntryUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static AkismetEntryPersistence getPersistence() {

@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.lists.service.persistence;
 
 import com.liferay.dynamic.data.lists.exception.NoSuchRecordException;
 import com.liferay.dynamic.data.lists.model.DDLRecord;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface DDLRecordPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDLRecordUtil} to access the ddl record persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the ddl records where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface DDLRecordPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the ddl record where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchRecordException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface DDLRecordPersistence
 	 * @return the number of matching ddl records
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the ddl records where uuid = &#63; and companyId = &#63;.
@@ -389,6 +411,12 @@ public interface DDLRecordPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the ddl records where companyId = &#63;.
 	 *
@@ -532,6 +560,12 @@ public interface DDLRecordPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByRecordSetId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByRecordSetId();
+
+	public FinderPath getFinderPathCountByRecordSetId();
+
 	/**
 	 * Returns all the ddl records where recordSetId = &#63;.
 	 *
@@ -674,6 +708,12 @@ public interface DDLRecordPersistence
 	 * @return the number of matching ddl records
 	 */
 	public int countByRecordSetId(long recordSetId);
+
+	public FinderPath getFinderPathWithPaginationFindByR_U();
+
+	public FinderPath getFinderPathWithoutPaginationFindByR_U();
+
+	public FinderPath getFinderPathCountByR_U();
 
 	/**
 	 * Returns all the ddl records where recordSetId = &#63; and userId = &#63;.
@@ -829,6 +869,12 @@ public interface DDLRecordPersistence
 	 */
 	public int countByR_U(long recordSetId, long userId);
 
+	public FinderPath getFinderPathWithPaginationFindByR_R();
+
+	public FinderPath getFinderPathWithoutPaginationFindByR_R();
+
+	public FinderPath getFinderPathCountByR_R();
+
 	/**
 	 * Returns all the ddl records where recordSetId = &#63; and recordSetVersion = &#63;.
 	 *
@@ -983,6 +1029,12 @@ public interface DDLRecordPersistence
 	 * @return the number of matching ddl records
 	 */
 	public int countByR_R(long recordSetId, String recordSetVersion);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the ddl records where className = &#63; and classPK = &#63;.
@@ -1256,5 +1308,7 @@ public interface DDLRecordPersistence
 	 * @return the number of ddl records
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -122,6 +122,44 @@ public class CommerceOrderPaymentUtil {
 		return getPersistence().update(commerceOrderPayment, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceOrderId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceOrderId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceOrderId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceOrderId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceOrderId() {
+
+		return getPersistence().getFinderPathCountByCommerceOrderId();
+	}
+
 	/**
 	 * Returns all the commerce order payments where commerceOrderId = &#63;.
 	 *
@@ -452,6 +490,12 @@ public class CommerceOrderPaymentUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceOrderPaymentPersistence getPersistence() {

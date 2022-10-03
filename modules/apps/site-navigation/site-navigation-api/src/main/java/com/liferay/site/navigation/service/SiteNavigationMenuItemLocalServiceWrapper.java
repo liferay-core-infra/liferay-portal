@@ -15,6 +15,7 @@
 package com.liferay.site.navigation.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
@@ -487,6 +488,11 @@ public class SiteNavigationMenuItemLocalServiceWrapper
 	public int getSiteNavigationMenuItemsCount(long siteNavigationMenuId) {
 		return _siteNavigationMenuItemLocalService.
 			getSiteNavigationMenuItemsCount(siteNavigationMenuId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_siteNavigationMenuItemLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

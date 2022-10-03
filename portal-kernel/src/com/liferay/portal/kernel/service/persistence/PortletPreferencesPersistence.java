@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchPortletPreferencesException;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
@@ -41,6 +42,17 @@ public interface PortletPreferencesPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link PortletPreferencesUtil} to access the portlet preferences persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByOwnerId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByOwnerId();
+
+	public FinderPath getFinderPathCountByOwnerId();
 
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63;.
@@ -185,6 +197,12 @@ public interface PortletPreferencesPersistence
 	 */
 	public int countByOwnerId(long ownerId);
 
+	public FinderPath getFinderPathWithPaginationFindByPlid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByPlid();
+
+	public FinderPath getFinderPathCountByPlid();
+
 	/**
 	 * Returns all the portlet preferenceses where plid = &#63;.
 	 *
@@ -328,6 +346,12 @@ public interface PortletPreferencesPersistence
 	 */
 	public int countByPlid(long plid);
 
+	public FinderPath getFinderPathWithPaginationFindByPortletId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByPortletId();
+
+	public FinderPath getFinderPathCountByPortletId();
+
 	/**
 	 * Returns all the portlet preferenceses where portletId = &#63;.
 	 *
@@ -470,6 +494,12 @@ public interface PortletPreferencesPersistence
 	 * @return the number of matching portlet preferenceses
 	 */
 	public int countByPortletId(String portletId);
+
+	public FinderPath getFinderPathWithPaginationFindByO_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByO_P();
+
+	public FinderPath getFinderPathCountByO_P();
 
 	/**
 	 * Returns all the portlet preferenceses where ownerType = &#63; and portletId = &#63;.
@@ -626,6 +656,12 @@ public interface PortletPreferencesPersistence
 	 */
 	public int countByO_P(int ownerType, String portletId);
 
+	public FinderPath getFinderPathWithPaginationFindByP_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByP_P();
+
+	public FinderPath getFinderPathCountByP_P();
+
 	/**
 	 * Returns all the portlet preferenceses where plid = &#63; and portletId = &#63;.
 	 *
@@ -780,6 +816,12 @@ public interface PortletPreferencesPersistence
 	 * @return the number of matching portlet preferenceses
 	 */
 	public int countByP_P(long plid, String portletId);
+
+	public FinderPath getFinderPathWithPaginationFindByO_O_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByO_O_P();
+
+	public FinderPath getFinderPathCountByO_O_P();
 
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63; and ownerType = &#63; and plid = &#63;.
@@ -946,6 +988,12 @@ public interface PortletPreferencesPersistence
 	 * @return the number of matching portlet preferenceses
 	 */
 	public int countByO_O_P(long ownerId, int ownerType, long plid);
+
+	public FinderPath getFinderPathWithPaginationFindByO_O_PI();
+
+	public FinderPath getFinderPathWithoutPaginationFindByO_O_PI();
+
+	public FinderPath getFinderPathCountByO_O_PI();
 
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63; and ownerType = &#63; and portletId = &#63;.
@@ -1114,6 +1162,12 @@ public interface PortletPreferencesPersistence
 	 */
 	public int countByO_O_PI(long ownerId, int ownerType, String portletId);
 
+	public FinderPath getFinderPathWithPaginationFindByO_P_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByO_P_P();
+
+	public FinderPath getFinderPathCountByO_P_P();
+
 	/**
 	 * Returns all the portlet preferenceses where ownerType = &#63; and plid = &#63; and portletId = &#63;.
 	 *
@@ -1280,6 +1334,10 @@ public interface PortletPreferencesPersistence
 	 * @return the number of matching portlet preferenceses
 	 */
 	public int countByO_P_P(int ownerType, long plid, String portletId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_O_O_LikeP();
+
+	public FinderPath getFinderPathWithPaginationCountByC_O_O_LikeP();
 
 	/**
 	 * Returns all the portlet preferenceses where companyId = &#63; and ownerId = &#63; and ownerType = &#63; and portletId LIKE &#63;.
@@ -1463,6 +1521,10 @@ public interface PortletPreferencesPersistence
 	 */
 	public int countByC_O_O_LikeP(
 		long companyId, long ownerId, int ownerType, String portletId);
+
+	public FinderPath getFinderPathFetchByO_O_P_P();
+
+	public FinderPath getFinderPathCountByO_O_P_P();
 
 	/**
 	 * Returns the portlet preferences where ownerId = &#63; and ownerType = &#63; and plid = &#63; and portletId = &#63; or throws a <code>NoSuchPortletPreferencesException</code> if it could not be found.
@@ -1649,5 +1711,7 @@ public interface PortletPreferencesPersistence
 	 * @return the number of portlet preferenceses
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

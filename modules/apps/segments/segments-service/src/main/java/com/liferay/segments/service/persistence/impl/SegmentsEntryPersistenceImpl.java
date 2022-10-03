@@ -110,9 +110,42 @@ public class SegmentsEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the segments entries where uuid = &#63;.
@@ -657,7 +690,18 @@ public class SegmentsEntryPersistenceImpl
 		"(segmentsEntry.uuid IS NULL OR segmentsEntry.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the segments entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -920,8 +964,25 @@ public class SegmentsEntryPersistenceImpl
 		"segmentsEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the segments entries where uuid = &#63; and companyId = &#63;.
@@ -1517,9 +1578,32 @@ public class SegmentsEntryPersistenceImpl
 		"segmentsEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGroupId() {
+		return _finderPathWithPaginationCountByGroupId;
+	}
 
 	/**
 	 * Returns all the segments entries where groupId = &#63;.
@@ -2872,8 +2956,25 @@ public class SegmentsEntryPersistenceImpl
 		"segmentsEntry.groupId IN (";
 
 	private FinderPath _finderPathWithPaginationFindBySource;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySource() {
+		return _finderPathWithPaginationFindBySource;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySource;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySource() {
+		return _finderPathWithoutPaginationFindBySource;
+	}
+
 	private FinderPath _finderPathCountBySource;
+
+	@Override
+	public FinderPath getFinderPathCountBySource() {
+		return _finderPathCountBySource;
+	}
 
 	/**
 	 * Returns all the segments entries where source = &#63;.
@@ -3421,8 +3522,25 @@ public class SegmentsEntryPersistenceImpl
 		"(segmentsEntry.source IS NULL OR segmentsEntry.source = '')";
 
 	private FinderPath _finderPathWithPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByType() {
+		return _finderPathWithPaginationFindByType;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByType;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByType() {
+		return _finderPathWithoutPaginationFindByType;
+	}
+
 	private FinderPath _finderPathCountByType;
+
+	@Override
+	public FinderPath getFinderPathCountByType() {
+		return _finderPathCountByType;
+	}
 
 	/**
 	 * Returns all the segments entries where type = &#63;.
@@ -3967,7 +4085,18 @@ public class SegmentsEntryPersistenceImpl
 		"(segmentsEntry.type IS NULL OR segmentsEntry.type = '')";
 
 	private FinderPath _finderPathFetchByG_S;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_S() {
+		return _finderPathFetchByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns the segments entry where groupId = &#63; and segmentsEntryKey = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -4231,9 +4360,32 @@ public class SegmentsEntryPersistenceImpl
 		"(segmentsEntry.segmentsEntryKey IS NULL OR segmentsEntry.segmentsEntryKey = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_A() {
+		return _finderPathWithPaginationFindByG_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_A() {
+		return _finderPathWithoutPaginationFindByG_A;
+	}
+
 	private FinderPath _finderPathCountByG_A;
+
+	@Override
+	public FinderPath getFinderPathCountByG_A() {
+		return _finderPathCountByG_A;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_A() {
+		return _finderPathWithPaginationCountByG_A;
+	}
 
 	/**
 	 * Returns all the segments entries where groupId = &#63; and active = &#63;.
@@ -5699,8 +5851,25 @@ public class SegmentsEntryPersistenceImpl
 		"segmentsEntry.active_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByA_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByA_T() {
+		return _finderPathWithPaginationFindByA_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByA_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByA_T() {
+		return _finderPathWithoutPaginationFindByA_T;
+	}
+
 	private FinderPath _finderPathCountByA_T;
+
+	@Override
+	public FinderPath getFinderPathCountByA_T() {
+		return _finderPathCountByA_T;
+	}
 
 	/**
 	 * Returns all the segments entries where active = &#63; and type = &#63;.
@@ -6292,9 +6461,32 @@ public class SegmentsEntryPersistenceImpl
 		"(segmentsEntry.type IS NULL OR segmentsEntry.type = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_A_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_A_T() {
+		return _finderPathWithPaginationFindByG_A_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_A_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_A_T() {
+		return _finderPathWithoutPaginationFindByG_A_T;
+	}
+
 	private FinderPath _finderPathCountByG_A_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_A_T() {
+		return _finderPathCountByG_A_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_A_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_A_T() {
+		return _finderPathWithPaginationCountByG_A_T;
+	}
 
 	/**
 	 * Returns all the segments entries where groupId = &#63; and active = &#63; and type = &#63;.
@@ -7992,9 +8184,32 @@ public class SegmentsEntryPersistenceImpl
 		"(segmentsEntry.type_ IS NULL OR segmentsEntry.type_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_A_S_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_A_S_T() {
+		return _finderPathWithPaginationFindByG_A_S_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_A_S_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_A_S_T() {
+		return _finderPathWithoutPaginationFindByG_A_S_T;
+	}
+
 	private FinderPath _finderPathCountByG_A_S_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_A_S_T() {
+		return _finderPathCountByG_A_S_T;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_A_S_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_A_S_T() {
+		return _finderPathWithPaginationCountByG_A_S_T;
+	}
 
 	/**
 	 * Returns all the segments entries where groupId = &#63; and active = &#63; and source = &#63; and type = &#63;.
@@ -10985,6 +11200,59 @@ public class SegmentsEntryPersistenceImpl
 		_setSegmentsEntryUtilPersistence(null);
 
 		entityCache.removeCache(SegmentsEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SegmentsEntry> segmentsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SegmentsEntry>> resultMap = new HashMap<>();
+
+			for (SegmentsEntry segmentsEntry : segmentsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SegmentsEntryModelImpl segmentsEntryModelImpl =
+						(SegmentsEntryModelImpl)segmentsEntry;
+
+					arguments.add(
+						segmentsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), segmentsEntry);
+				}
+				else {
+					List<SegmentsEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(segmentsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SegmentsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SegmentsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSegmentsEntryUtilPersistence(

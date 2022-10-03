@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link PhoneLocalService}.
  *
@@ -34,9 +36,9 @@ public class PhoneLocalServiceWrapper
 
 	@Override
 	public com.liferay.portal.kernel.model.Phone addPhone(
-			long userId, java.lang.String className, long classPK,
-			java.lang.String number, java.lang.String extension,
-			long listTypeId, boolean primary, ServiceContext serviceContext)
+			long userId, String className, long classPK, String number,
+			String extension, long listTypeId, boolean primary,
+			ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _phoneLocalService.addPhone(
@@ -130,9 +132,7 @@ public class PhoneLocalServiceWrapper
 	}
 
 	@Override
-	public void deletePhones(
-		long companyId, java.lang.String className, long classPK) {
-
+	public void deletePhones(long companyId, String className, long classPK) {
 		_phoneLocalService.deletePhones(companyId, className, classPK);
 	}
 
@@ -251,7 +251,7 @@ public class PhoneLocalServiceWrapper
 	 */
 	@Override
 	public com.liferay.portal.kernel.model.Phone fetchPhoneByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
+		String uuid, long companyId) {
 
 		return _phoneLocalService.fetchPhoneByUuidAndCompanyId(uuid, companyId);
 	}
@@ -286,7 +286,7 @@ public class PhoneLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _phoneLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -325,7 +325,7 @@ public class PhoneLocalServiceWrapper
 	 */
 	@Override
 	public com.liferay.portal.kernel.model.Phone getPhoneByUuidAndCompanyId(
-			java.lang.String uuid, long companyId)
+			String uuid, long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _phoneLocalService.getPhoneByUuidAndCompanyId(uuid, companyId);
@@ -356,7 +356,7 @@ public class PhoneLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.portal.kernel.model.Phone> getPhones(
-		long companyId, java.lang.String className, long classPK) {
+		long companyId, String className, long classPK) {
 
 		return _phoneLocalService.getPhones(companyId, className, classPK);
 	}
@@ -372,9 +372,14 @@ public class PhoneLocalServiceWrapper
 	}
 
 	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_phoneLocalService.loadFinderCache(finderPaths);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.Phone updatePhone(
-			long phoneId, java.lang.String number, java.lang.String extension,
-			long listTypeId, boolean primary)
+			long phoneId, String number, String extension, long listTypeId,
+			boolean primary)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _phoneLocalService.updatePhone(

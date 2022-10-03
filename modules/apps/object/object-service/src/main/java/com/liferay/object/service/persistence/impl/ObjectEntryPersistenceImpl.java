@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -98,9 +100,42 @@ public class ObjectEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the object entries where uuid = &#63;.
@@ -628,7 +663,18 @@ public class ObjectEntryPersistenceImpl
 		"(objectEntry.uuid IS NULL OR objectEntry.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the object entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchObjectEntryException</code> if it could not be found.
@@ -876,8 +922,25 @@ public class ObjectEntryPersistenceImpl
 		"objectEntry.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the object entries where uuid = &#63; and companyId = &#63;.
@@ -1455,8 +1518,25 @@ public class ObjectEntryPersistenceImpl
 		"objectEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId() {
+		return _finderPathWithPaginationFindByObjectDefinitionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId() {
+		return _finderPathWithoutPaginationFindByObjectDefinitionId;
+	}
+
 	private FinderPath _finderPathCountByObjectDefinitionId;
+
+	@Override
+	public FinderPath getFinderPathCountByObjectDefinitionId() {
+		return _finderPathCountByObjectDefinitionId;
+	}
 
 	/**
 	 * Returns all the object entries where objectDefinitionId = &#63;.
@@ -1963,8 +2043,25 @@ public class ObjectEntryPersistenceImpl
 			"objectEntry.objectDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_ODI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_ODI() {
+		return _finderPathWithPaginationFindByG_ODI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_ODI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_ODI() {
+		return _finderPathWithoutPaginationFindByG_ODI;
+	}
+
 	private FinderPath _finderPathCountByG_ODI;
+
+	@Override
+	public FinderPath getFinderPathCountByG_ODI() {
+		return _finderPathCountByG_ODI;
+	}
 
 	/**
 	 * Returns all the object entries where groupId = &#63; and objectDefinitionId = &#63;.
@@ -2506,8 +2603,25 @@ public class ObjectEntryPersistenceImpl
 		"objectEntry.objectDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_ODI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_ODI() {
+		return _finderPathWithPaginationFindByU_ODI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_ODI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_ODI() {
+		return _finderPathWithoutPaginationFindByU_ODI;
+	}
+
 	private FinderPath _finderPathCountByU_ODI;
+
+	@Override
+	public FinderPath getFinderPathCountByU_ODI() {
+		return _finderPathCountByU_ODI;
+	}
 
 	/**
 	 * Returns all the object entries where userId = &#63; and objectDefinitionId = &#63;.
@@ -3047,7 +3161,18 @@ public class ObjectEntryPersistenceImpl
 		"objectEntry.objectDefinitionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByODI_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByODI_NotS() {
+		return _finderPathWithPaginationFindByODI_NotS;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByODI_NotS;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByODI_NotS() {
+		return _finderPathWithPaginationCountByODI_NotS;
+	}
 
 	/**
 	 * Returns all the object entries where objectDefinitionId = &#63; and status &ne; &#63;.
@@ -3579,7 +3704,18 @@ public class ObjectEntryPersistenceImpl
 		"objectEntry.status != ?";
 
 	private FinderPath _finderPathFetchByG_C_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_ERC() {
+		return _finderPathFetchByG_C_ERC;
+	}
+
 	private FinderPath _finderPathCountByG_C_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_ERC() {
+		return _finderPathCountByG_C_ERC;
+	}
 
 	/**
 	 * Returns the object entry where groupId = &#63; and companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchObjectEntryException</code> if it could not be found.
@@ -3862,8 +3998,25 @@ public class ObjectEntryPersistenceImpl
 		"(objectEntry.externalReferenceCode IS NULL OR objectEntry.externalReferenceCode = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_ODI_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_ODI_S() {
+		return _finderPathWithPaginationFindByG_ODI_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_ODI_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_ODI_S() {
+		return _finderPathWithoutPaginationFindByG_ODI_S;
+	}
+
 	private FinderPath _finderPathCountByG_ODI_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_ODI_S() {
+		return _finderPathCountByG_ODI_S;
+	}
 
 	/**
 	 * Returns all the object entries where groupId = &#63; and objectDefinitionId = &#63; and status = &#63;.
@@ -4448,7 +4601,18 @@ public class ObjectEntryPersistenceImpl
 		"objectEntry.status = ?";
 
 	private FinderPath _finderPathFetchByC_ERC_ODI;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC_ODI() {
+		return _finderPathFetchByC_ERC_ODI;
+	}
+
 	private FinderPath _finderPathCountByC_ERC_ODI;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC_ODI() {
+		return _finderPathCountByC_ERC_ODI;
+	}
 
 	/**
 	 * Returns the object entry where companyId = &#63; and externalReferenceCode = &#63; and objectDefinitionId = &#63; or throws a <code>NoSuchObjectEntryException</code> if it could not be found.
@@ -5545,6 +5709,59 @@ public class ObjectEntryPersistenceImpl
 		_setObjectEntryUtilPersistence(null);
 
 		entityCache.removeCache(ObjectEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ObjectEntry> objectEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ObjectEntry>> resultMap = new HashMap<>();
+
+			for (ObjectEntry objectEntry : objectEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ObjectEntryModelImpl objectEntryModelImpl =
+						(ObjectEntryModelImpl)objectEntry;
+
+					arguments.add(
+						objectEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), objectEntry);
+				}
+				else {
+					List<ObjectEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(objectEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ObjectEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ObjectEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setObjectEntryUtilPersistence(

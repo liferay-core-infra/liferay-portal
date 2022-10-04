@@ -234,7 +234,4 @@ public interface TrashVersionModel extends AttachedModel, BaseModel<TrashVersion
 
 	@Override
 	public String toString();
-
-	@Override
-	public String toXmlString();
 }

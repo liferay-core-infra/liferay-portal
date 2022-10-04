@@ -557,8 +557,6 @@ public interface ${entity.name}Model extends ${entity.getModelBaseInterfaceNames
 		@Override
 		public String toString();
 
-		@Override
-		public String toXmlString();
 	</#if>
 
 	<#if serviceBuilder.isVersionGTE_7_4_0()>

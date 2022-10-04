@@ -1,0 +1,67 @@
+diff --git a/org/jsoup/nodes/Element.java b/org/jsoup/nodes/Element.java
+index eed137ac4231..a51fa7ca2c55 100644
+--- a/org/jsoup/nodes/Element.java
++++ b/org/jsoup/nodes/Element.java
+@@ -46,6 +46,7 @@ public class Element extends Node {
+     private static final Pattern ClassSplit = Pattern.compile("\\s+");
+     private static final String BaseUriKey = Attributes.internalKey("baseUri");
+     private Tag tag;
++    private boolean useSquareBrackets;
+     private @Nullable WeakReference<List<Element>> shadowChildrenRef; // points to child elements shadowed from node children
+     List<Node> childNodes;
+     @Nullable Attributes attributes; // field is nullable but all methods for attributes are non-null
+@@ -58,6 +59,17 @@ public class Element extends Node {
+         this(Tag.valueOf(tag), "", null);
+     }
+ 
++    /**
++     * Create a new, standalone element with posibility to use square brackets
++     * instead of normal "<" and ">" characters;
++     * @param tag tag name
++     */
++    public Element(String tag, boolean useSquareBrackets) {
++        this(tag);
++
++        this.useSquareBrackets = useSquareBrackets;
++    }
++
+     /**
+      * Create a new, standalone Element. (Standalone in that is has no parent.)
+      *
+@@ -1700,18 +1712,18 @@ public class Element extends Node {
+                 indent(accum, depth, out);
+             }
+         }
+-        accum.append('<').append(tagName());
++        accum.append(useSquareBrackets ? "[" : "<").append(tagName());
+         if (attributes != null) attributes.html(accum, out);
+ 
+         // selfclosing includes unknown tags, isEmpty defines tags that are always empty
+         if (childNodes.isEmpty() && tag.isSelfClosing()) {
+             if (out.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty())
+-                accum.append('>');
++                accum.append(useSquareBrackets ? ']' : '>');
+             else
+-                accum.append(" />"); // <img> in html, <img /> in xml
++                accum.append(useSquareBrackets ? " /]" : " />"); // <img> in html, <img /> in xml
+         }
+         else
+-            accum.append('>');
++            accum.append(useSquareBrackets ? "]" : ">");
+     }
+ 
+     void outerHtmlTail(Appendable accum, int depth, Document.OutputSettings out) throws IOException {
+@@ -1720,7 +1732,7 @@ public class Element extends Node {
+                     tag.formatAsBlock() || (out.outline() && (childNodes.size()>1 || (childNodes.size()==1 && (childNodes.get(0) instanceof Element))))
+             )))
+                 indent(accum, depth, out);
+-            accum.append("</").append(tagName()).append('>');
++            accum.append(useSquareBrackets ? "[/" : "</").append(tagName()).append(useSquareBrackets ? "]" : ">");
+         }
+     }
+ 
+@@ -1856,3 +1868,4 @@ public class Element extends Node {
+             && !out.outline();
+     }
+ }
++/* @generated */

@@ -1656,7 +1656,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 */
 	@Override
 	public void removeAll() {
-		for (${entity.name} ${entity.variableName} : findAll()) {
+		for (${entity.name} ${entity.variableName} : _findAll(QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 			remove(${entity.variableName});
 		}
 	}

@@ -18,13 +18,13 @@
 	</#list>
 
 	) {
-		for (${entity.name} ${entity.variableName} : findBy${entityFinder.name}(
+		for (${entity.name} ${entity.variableName} : _findBy${entityFinder.name}(
 
 		<#list entityColumns as entityColumn>
 			${entityColumn.name},
 		</#list>
 
-		QueryUtil.ALL_POS, QueryUtil.ALL_POS, null
+		QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true
 		)) {
 			remove(${entity.variableName});
 		}
@@ -53,16 +53,14 @@
 	</#list>
 
 	) throws ${noSuchEntity}Exception {
-		${entity.name} ${entity.variableName} = findBy${entityFinder.name}(
+		${entity.name} ${entity.variableName} = _findBy${entityFinder.name}(
 
 		<#list entityColumns as entityColumn>
 			${entityColumn.name}
 
-			<#if entityColumn_has_next>
-				,
-			</#if>
+			,
 		</#list>
-
+		true
 		);
 
 		return remove(${entity.variableName});

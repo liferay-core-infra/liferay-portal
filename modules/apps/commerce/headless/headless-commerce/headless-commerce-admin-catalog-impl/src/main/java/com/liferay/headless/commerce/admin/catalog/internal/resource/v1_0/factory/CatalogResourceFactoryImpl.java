@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true, service = CatalogResource.Factory.class
+	 immediate = true, service = CatalogResource.Factory.class
 )
 @Generated("")
 public class CatalogResourceFactoryImpl implements CatalogResource.Factory {

@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alessio Antonio Rendina
  */
-@Component(enabled = false, service = CommerceOrderResource.class)
+@Component(service = CommerceOrderResource.class)
 public class CommerceOrderResource {
 
 	public OrderList getOrderList(

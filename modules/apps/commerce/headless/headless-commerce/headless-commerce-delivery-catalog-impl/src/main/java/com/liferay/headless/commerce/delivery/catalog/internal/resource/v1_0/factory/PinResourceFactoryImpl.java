@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true, service = PinResource.Factory.class
+	 immediate = true, service = PinResource.Factory.class
 )
 @Generated("")
 public class PinResourceFactoryImpl implements PinResource.Factory {

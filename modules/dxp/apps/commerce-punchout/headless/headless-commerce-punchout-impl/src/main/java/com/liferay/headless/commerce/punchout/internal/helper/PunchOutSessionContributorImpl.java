@@ -27,10 +27,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Jaclyn Ong
  */
-@Component(
-	enabled = false, immediate = true,
-	service = PunchOutSessionContributor.class
-)
+@Component(immediate = true, service = PunchOutSessionContributor.class)
 public class PunchOutSessionContributorImpl
 	implements PunchOutSessionContributor {
 

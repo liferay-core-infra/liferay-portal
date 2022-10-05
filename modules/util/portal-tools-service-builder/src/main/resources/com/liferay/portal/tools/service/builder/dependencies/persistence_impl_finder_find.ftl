@@ -198,6 +198,22 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache) {
+		return _findBy${entityFinder.name}(
+
+		<#list entityColumns as entityColumn>
+			${entityColumn.name},
+		</#list>
+
+		start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<${entity.name}> _findBy${entityFinder.name}(
+
+	<#list entityColumns as entityColumn>
+		${entityColumn.type} ${entityColumn.name},
+	</#list>
+
+	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache, boolean readOnlyCache) {
 		<#list entityColumns as entityColumn>
 			<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
 				${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
@@ -296,10 +312,12 @@ that may or may not be enforced with a unique index at the database level. Case
 
 				list = (List<${entity.name}>)QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (${useCache}) {
-					${finderCache}.putResult(finderPath, finderArgs, list);
+					if (${useCache}) {
+						${finderCache}.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1533,6 +1551,31 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache) {
+
+		return _findBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				<#if entityColumn.hasArrayableOperator()>
+					${entityColumn.pluralName},
+				<#else>
+					${entityColumn.name},
+				</#if>
+			</#list>
+
+			start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<${entity.name}> _findBy${entityFinder.name}(
+
+	<#list entityColumns as entityColumn>
+		<#if entityColumn.hasArrayableOperator()>
+			${entityColumn.type}[] ${entityColumn.pluralName},
+		<#else>
+			${entityColumn.type} ${entityColumn.name},
+		</#if>
+	</#list>
+
+	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache, boolean readOnlyCache) {
 		<#list entityColumns as entityColumn>
 			<#if entityColumn.hasArrayableOperator()>
 				if (${entityColumn.pluralName} == null) {
@@ -1712,10 +1755,12 @@ that may or may not be enforced with a unique index at the database level. Case
 
 				list = (List<${entity.name}>)QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (${useCache}) {
-					${finderCache}.putResult(_finderPathWithPaginationFindBy${entityFinder.name}, finderArgs, list);
+					if (${useCache}) {
+						${finderCache}.putResult(_finderPathWithPaginationFindBy${entityFinder.name}, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1903,6 +1948,30 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache) {
+		return _findBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				<#if entityColumn.hasArrayableOperator()>
+					${entityColumn.pluralName},
+				<#else>
+					${entityColumn.name},
+				</#if>
+			</#list>
+
+			start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<${entity.name}> _findBy${entityFinder.name}(
+
+	<#list entityColumns as entityColumn>
+		<#if entityColumn.hasArrayableOperator()>
+			${entityColumn.type}[] ${entityColumn.pluralName},
+		<#else>
+			${entityColumn.type} ${entityColumn.name},
+		</#if>
+	</#list>
+
+	int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache, boolean readOnlyCache) {
 		<#list entityColumns as entityColumn>
 			<#if entityColumn.hasArrayableOperator()>
 				if (${entityColumn.pluralName} == null) {
@@ -2107,10 +2176,12 @@ that may or may not be enforced with a unique index at the database level. Case
 					start, end, orderByComparator);
 				}
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (${useCache}) {
-					${finderCache}.putResult(_finderPathWithPaginationFindBy${entityFinder.name}, finderArgs, list);
+					if (${useCache}) {
+						${finderCache}.putResult(_finderPathWithPaginationFindBy${entityFinder.name}, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2199,16 +2270,32 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	) throws ${noSuchEntity}Exception {
-		${entity.name} ${entity.variableName} = fetchBy${entityFinder.name}(
+		return _findBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				${entityColumn.name}
+				,
+			</#list>
+			false);
+	}
+
+	private ${entity.name} _findBy${entityFinder.name}(
+
+	<#list entityColumns as entityColumn>
+		${entityColumn.type} ${entityColumn.name}
+		,
+	</#list>
+	boolean readOnlyCache
+
+	) throws ${noSuchEntity}Exception {
+		${entity.name} ${entity.variableName} = _fetchBy${entityFinder.name}(
 
 		<#list entityColumns as entityColumn>
 			${entityColumn.name}
 
-			<#if entityColumn_has_next>
-				,
-			</#if>
+			,
 		</#list>
-
+		true, readOnlyCache
 		);
 
 		if ( ${entity.variableName} == null) {
@@ -2283,6 +2370,26 @@ that may or may not be enforced with a unique index at the database level. Case
 	</#list>
 
 	boolean useFinderCache) {
+		return _fetchBy${entityFinder.name}(
+
+			<#list entityColumns as entityColumn>
+				${entityColumn.name}
+
+				,
+			</#list>
+
+			useFinderCache, false);
+	}
+
+	private ${entity.name} _fetchBy${entityFinder.name}(
+
+	<#list entityColumns as entityColumn>
+		${entityColumn.type} ${entityColumn.name}
+
+		,
+	</#list>
+
+	boolean useFinderCache, boolean readOnlyCache) {
 		<#list entityColumns as entityColumn>
 			<#if stringUtil.equals(entityColumn.type, "String") && entityColumn.isConvertNull()>
 				${entityColumn.name} = Objects.toString(${entityColumn.name}, "");
@@ -2405,9 +2512,11 @@ that may or may not be enforced with a unique index at the database level. Case
 
 					${entity.name} ${entity.variableName} = list.get(0);
 
-					result = ${entity.variableName};
+					if (!readOnlyCache) {
+						result = ${entity.variableName};
 
-					cacheResult(${entity.variableName});
+						cacheResult(${entity.variableName});
+					}
 				}
 			}
 			catch (Exception exception) {

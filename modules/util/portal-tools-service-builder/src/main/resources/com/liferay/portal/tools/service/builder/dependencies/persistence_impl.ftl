@@ -1565,6 +1565,10 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	 */
 	@Override
 	public List<${entity.name}> findAll(int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache) {
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<${entity.name}> _findAll(int start, int end, OrderByComparator<${entity.name}> orderByComparator, boolean useFinderCache, boolean readOnlyCache) {
 		<#if entity.isChangeTrackingEnabled()>
 			boolean productionMode = ${ctPersistenceHelper}.isProductionMode(${entity.name}.class);
 		</#if>
@@ -1621,10 +1625,12 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 
 				list = (List<${entity.name}>)QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (${useCache}) {
-					${finderCache}.putResult(finderPath, finderArgs, list);
+					if (${useCache}) {
+						${finderCache}.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {

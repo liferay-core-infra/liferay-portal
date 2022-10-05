@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true,
+	 immediate = true,
 	service = ShippingFixedOptionTermResource.Factory.class
 )
 @Generated("")

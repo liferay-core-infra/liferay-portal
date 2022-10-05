@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true, service = ChannelResource.Factory.class
+	 immediate = true, service = ChannelResource.Factory.class
 )
 @Generated("")
 public class ChannelResourceFactoryImpl implements ChannelResource.Factory {

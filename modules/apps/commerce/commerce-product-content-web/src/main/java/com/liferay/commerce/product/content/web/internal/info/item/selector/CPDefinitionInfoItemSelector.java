@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Alec Sloan
  */
-@Component(enabled = false, service = InfoItemSelector.class)
+@Component(service = InfoItemSelector.class)
 public class CPDefinitionInfoItemSelector
 	implements InfoItemSelector<CPDefinition> {
 

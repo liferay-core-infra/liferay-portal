@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true, service = PriceListResource.Factory.class
+	 immediate = true, service = PriceListResource.Factory.class
 )
 @Generated("")
 public class PriceListResourceFactoryImpl implements PriceListResource.Factory {

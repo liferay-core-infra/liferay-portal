@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true, service = OrderRuleResource.Factory.class
+	 immediate = true, service = OrderRuleResource.Factory.class
 )
 @Generated("")
 public class OrderRuleResourceFactoryImpl implements OrderRuleResource.Factory {

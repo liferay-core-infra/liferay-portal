@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true, service = DiagramResource.Factory.class
+	 immediate = true, service = DiagramResource.Factory.class
 )
 @Generated("")
 public class DiagramResourceFactoryImpl implements DiagramResource.Factory {

@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Riccardo Ferrari
  */
 @Component(
-	enabled = false, immediate = true,
+	immediate = true,
 	property = "batch.engine.task.item.delegate.name=" + SkuForecastBatchEngineTaskItemDelegate.KEY,
 	service = BatchEngineTaskItemDelegate.class
 )

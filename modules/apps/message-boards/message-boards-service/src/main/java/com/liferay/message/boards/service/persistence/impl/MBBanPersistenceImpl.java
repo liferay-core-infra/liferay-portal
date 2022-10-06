@@ -177,6 +177,15 @@ public class MBBanPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBBan> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -264,10 +273,12 @@ public class MBBanPersistenceImpl
 				list = (List<MBBan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -560,7 +571,9 @@ public class MBBanPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBBan mbBan :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbBan);
 		}
@@ -660,7 +673,14 @@ public class MBBanPersistenceImpl
 	public MBBan findByUUID_G(String uuid, long groupId)
 		throws NoSuchBanException {
 
-		MBBan mbBan = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBBan _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchBanException {
+
+		MBBan mbBan = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (mbBan == null) {
 			StringBundler sb = new StringBundler(6);
@@ -708,6 +728,13 @@ public class MBBanPersistenceImpl
 	@Override
 	public MBBan fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBBan _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -783,9 +810,11 @@ public class MBBanPersistenceImpl
 				else {
 					MBBan mbBan = list.get(0);
 
-					result = mbBan;
+					if (!readOnlyCache) {
+						result = mbBan;
 
-					cacheResult(mbBan);
+						cacheResult(mbBan);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -815,7 +844,7 @@ public class MBBanPersistenceImpl
 	public MBBan removeByUUID_G(String uuid, long groupId)
 		throws NoSuchBanException {
 
-		MBBan mbBan = findByUUID_G(uuid, groupId);
+		MBBan mbBan = _findByUUID_G(uuid, groupId, true);
 
 		return remove(mbBan);
 	}
@@ -988,6 +1017,16 @@ public class MBBanPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBBan> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1083,10 +1122,12 @@ public class MBBanPersistenceImpl
 				list = (List<MBBan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1401,9 +1442,9 @@ public class MBBanPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBBan mbBan :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbBan);
 		}
@@ -1570,6 +1611,15 @@ public class MBBanPersistenceImpl
 		long groupId, int start, int end,
 		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBBan> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBBan.class);
 
@@ -1644,10 +1694,12 @@ public class MBBanPersistenceImpl
 				list = (List<MBBan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1928,8 +1980,9 @@ public class MBBanPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (MBBan mbBan :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbBan);
 		}
@@ -2071,6 +2124,15 @@ public class MBBanPersistenceImpl
 		long userId, int start, int end,
 		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBBan> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBBan.class);
 
@@ -2145,10 +2207,12 @@ public class MBBanPersistenceImpl
 				list = (List<MBBan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2428,8 +2492,9 @@ public class MBBanPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (MBBan mbBan :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbBan);
 		}
@@ -2572,6 +2637,15 @@ public class MBBanPersistenceImpl
 		long banUserId, int start, int end,
 		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache) {
 
+		return _findByBanUserId(
+			banUserId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBBan> _findByBanUserId(
+		long banUserId, int start, int end,
+		OrderByComparator<MBBan> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBBan.class);
 
@@ -2648,10 +2722,12 @@ public class MBBanPersistenceImpl
 				list = (List<MBBan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2932,8 +3008,9 @@ public class MBBanPersistenceImpl
 	@Override
 	public void removeByBanUserId(long banUserId) {
 		for (MBBan mbBan :
-				findByBanUserId(
-					banUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByBanUserId(
+					banUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbBan);
 		}
@@ -3018,7 +3095,14 @@ public class MBBanPersistenceImpl
 	public MBBan findByG_B(long groupId, long banUserId)
 		throws NoSuchBanException {
 
-		MBBan mbBan = fetchByG_B(groupId, banUserId);
+		return _findByG_B(groupId, banUserId, false);
+	}
+
+	private MBBan _findByG_B(
+			long groupId, long banUserId, boolean readOnlyCache)
+		throws NoSuchBanException {
+
+		MBBan mbBan = _fetchByG_B(groupId, banUserId, true, readOnlyCache);
 
 		if (mbBan == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3066,6 +3150,13 @@ public class MBBanPersistenceImpl
 	@Override
 	public MBBan fetchByG_B(
 		long groupId, long banUserId, boolean useFinderCache) {
+
+		return _fetchByG_B(groupId, banUserId, useFinderCache, false);
+	}
+
+	private MBBan _fetchByG_B(
+		long groupId, long banUserId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBBan.class);
@@ -3127,9 +3218,11 @@ public class MBBanPersistenceImpl
 				else {
 					MBBan mbBan = list.get(0);
 
-					result = mbBan;
+					if (!readOnlyCache) {
+						result = mbBan;
 
-					cacheResult(mbBan);
+						cacheResult(mbBan);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3159,7 +3252,7 @@ public class MBBanPersistenceImpl
 	public MBBan removeByG_B(long groupId, long banUserId)
 		throws NoSuchBanException {
 
-		MBBan mbBan = findByG_B(groupId, banUserId);
+		MBBan mbBan = _findByG_B(groupId, banUserId, true);
 
 		return remove(mbBan);
 	}
@@ -3795,6 +3888,13 @@ public class MBBanPersistenceImpl
 		int start, int end, OrderByComparator<MBBan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBBan> _findAll(
+		int start, int end, OrderByComparator<MBBan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBBan.class);
 
@@ -3851,10 +3951,12 @@ public class MBBanPersistenceImpl
 				list = (List<MBBan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3874,7 +3976,10 @@ public class MBBanPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBBan mbBan : findAll()) {
+		for (MBBan mbBan :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbBan);
 		}
 	}

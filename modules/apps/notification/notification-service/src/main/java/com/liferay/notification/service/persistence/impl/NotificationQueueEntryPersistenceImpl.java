@@ -182,6 +182,16 @@ public class NotificationQueueEntryPersistenceImpl
 		OrderByComparator<NotificationQueueEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotificationTemplateId(
+			notificationTemplateId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<NotificationQueueEntry> _findByNotificationTemplateId(
+		long notificationTemplateId, int start, int end,
+		OrderByComparator<NotificationQueueEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -261,10 +271,12 @@ public class NotificationQueueEntryPersistenceImpl
 				list = (List<NotificationQueueEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -908,9 +920,9 @@ public class NotificationQueueEntryPersistenceImpl
 	@Override
 	public void removeByNotificationTemplateId(long notificationTemplateId) {
 		for (NotificationQueueEntry notificationQueueEntry :
-				findByNotificationTemplateId(
+				_findByNotificationTemplateId(
 					notificationTemplateId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(notificationQueueEntry);
 		}
@@ -1096,6 +1108,15 @@ public class NotificationQueueEntryPersistenceImpl
 		OrderByComparator<NotificationQueueEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtSentDate(
+			sentDate, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationQueueEntry> _findByLtSentDate(
+		Date sentDate, int start, int end,
+		OrderByComparator<NotificationQueueEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1174,10 +1195,12 @@ public class NotificationQueueEntryPersistenceImpl
 				list = (List<NotificationQueueEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1842,8 +1865,9 @@ public class NotificationQueueEntryPersistenceImpl
 	@Override
 	public void removeByLtSentDate(Date sentDate) {
 		for (NotificationQueueEntry notificationQueueEntry :
-				findByLtSentDate(
-					sentDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLtSentDate(
+					sentDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(notificationQueueEntry);
 		}
@@ -2049,6 +2073,15 @@ public class NotificationQueueEntryPersistenceImpl
 		OrderByComparator<NotificationQueueEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStatus(
+			status, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationQueueEntry> _findByStatus(
+		int status, int start, int end,
+		OrderByComparator<NotificationQueueEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2121,10 +2154,12 @@ public class NotificationQueueEntryPersistenceImpl
 				list = (List<NotificationQueueEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2754,8 +2789,9 @@ public class NotificationQueueEntryPersistenceImpl
 	@Override
 	public void removeByStatus(int status) {
 		for (NotificationQueueEntry notificationQueueEntry :
-				findByStatus(
-					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStatus(
+					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(notificationQueueEntry);
 		}
@@ -3282,6 +3318,14 @@ public class NotificationQueueEntryPersistenceImpl
 		OrderByComparator<NotificationQueueEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationQueueEntry> _findAll(
+		int start, int end,
+		OrderByComparator<NotificationQueueEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3336,10 +3380,12 @@ public class NotificationQueueEntryPersistenceImpl
 				list = (List<NotificationQueueEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3359,7 +3405,10 @@ public class NotificationQueueEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (NotificationQueueEntry notificationQueueEntry : findAll()) {
+		for (NotificationQueueEntry notificationQueueEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(notificationQueueEntry);
 		}
 	}

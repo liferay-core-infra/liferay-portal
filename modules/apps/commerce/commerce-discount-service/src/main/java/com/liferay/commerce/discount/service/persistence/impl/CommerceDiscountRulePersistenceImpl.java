@@ -177,6 +177,16 @@ public class CommerceDiscountRulePersistenceImpl
 		OrderByComparator<CommerceDiscountRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceDiscountId(
+			commerceDiscountId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceDiscountRule> _findByCommerceDiscountId(
+		long commerceDiscountId, int start, int end,
+		OrderByComparator<CommerceDiscountRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -254,10 +264,12 @@ public class CommerceDiscountRulePersistenceImpl
 				list = (List<CommerceDiscountRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,9 +565,9 @@ public class CommerceDiscountRulePersistenceImpl
 	@Override
 	public void removeByCommerceDiscountId(long commerceDiscountId) {
 		for (CommerceDiscountRule commerceDiscountRule :
-				findByCommerceDiscountId(
+				_findByCommerceDiscountId(
 					commerceDiscountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceDiscountRule);
 		}
@@ -1025,6 +1037,14 @@ public class CommerceDiscountRulePersistenceImpl
 		OrderByComparator<CommerceDiscountRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscountRule> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceDiscountRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1079,10 +1099,12 @@ public class CommerceDiscountRulePersistenceImpl
 				list = (List<CommerceDiscountRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1102,7 +1124,10 @@ public class CommerceDiscountRulePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceDiscountRule commerceDiscountRule : findAll()) {
+		for (CommerceDiscountRule commerceDiscountRule :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceDiscountRule);
 		}
 	}

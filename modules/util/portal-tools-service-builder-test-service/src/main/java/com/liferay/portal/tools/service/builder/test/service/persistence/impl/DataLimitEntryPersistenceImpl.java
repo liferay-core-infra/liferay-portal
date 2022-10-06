@@ -471,6 +471,13 @@ public class DataLimitEntryPersistenceImpl
 		int start, int end, OrderByComparator<DataLimitEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DataLimitEntry> _findAll(
+		int start, int end, OrderByComparator<DataLimitEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -525,10 +532,12 @@ public class DataLimitEntryPersistenceImpl
 				list = (List<DataLimitEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -548,7 +557,10 @@ public class DataLimitEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DataLimitEntry dataLimitEntry : findAll()) {
+		for (DataLimitEntry dataLimitEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dataLimitEntry);
 		}
 	}

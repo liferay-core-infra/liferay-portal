@@ -172,6 +172,15 @@ public class AppPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<App> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<App> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<App> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -256,10 +265,12 @@ public class AppPersistenceImpl
 				list = (List<App>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -551,7 +562,9 @@ public class AppPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (App app :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(app);
 		}
@@ -704,6 +717,16 @@ public class AppPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<App> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<App> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<App> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -796,10 +819,12 @@ public class AppPersistenceImpl
 				list = (List<App>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1111,9 +1136,9 @@ public class AppPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (App app :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(app);
 		}
@@ -1268,6 +1293,15 @@ public class AppPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<App> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<App> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<App> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1341,10 +1375,12 @@ public class AppPersistenceImpl
 				list = (List<App>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1625,8 +1661,9 @@ public class AppPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (App app :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(app);
 		}
@@ -1696,7 +1733,13 @@ public class AppPersistenceImpl
 	 */
 	@Override
 	public App findByRemoteAppId(long remoteAppId) throws NoSuchAppException {
-		App app = fetchByRemoteAppId(remoteAppId);
+		return _findByRemoteAppId(remoteAppId, false);
+	}
+
+	private App _findByRemoteAppId(long remoteAppId, boolean readOnlyCache)
+		throws NoSuchAppException {
+
+		App app = _fetchByRemoteAppId(remoteAppId, true, readOnlyCache);
 
 		if (app == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1738,6 +1781,12 @@ public class AppPersistenceImpl
 	 */
 	@Override
 	public App fetchByRemoteAppId(long remoteAppId, boolean useFinderCache) {
+		return _fetchByRemoteAppId(remoteAppId, useFinderCache, false);
+	}
+
+	private App _fetchByRemoteAppId(
+		long remoteAppId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -1805,9 +1854,11 @@ public class AppPersistenceImpl
 
 					App app = list.get(0);
 
-					result = app;
+					if (!readOnlyCache) {
+						result = app;
 
-					cacheResult(app);
+						cacheResult(app);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1834,7 +1885,7 @@ public class AppPersistenceImpl
 	 */
 	@Override
 	public App removeByRemoteAppId(long remoteAppId) throws NoSuchAppException {
-		App app = findByRemoteAppId(remoteAppId);
+		App app = _findByRemoteAppId(remoteAppId, true);
 
 		return remove(app);
 	}
@@ -1964,6 +2015,15 @@ public class AppPersistenceImpl
 		String category, int start, int end,
 		OrderByComparator<App> orderByComparator, boolean useFinderCache) {
 
+		return _findByCategory(
+			category, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<App> _findByCategory(
+		String category, int start, int end,
+		OrderByComparator<App> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		category = Objects.toString(category, "");
 
 		FinderPath finderPath = null;
@@ -2048,10 +2108,12 @@ public class AppPersistenceImpl
 				list = (List<App>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2345,8 +2407,9 @@ public class AppPersistenceImpl
 	@Override
 	public void removeByCategory(String category) {
 		for (App app :
-				findByCategory(
-					category, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCategory(
+					category, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(app);
 		}
@@ -2820,6 +2883,13 @@ public class AppPersistenceImpl
 		int start, int end, OrderByComparator<App> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<App> _findAll(
+		int start, int end, OrderByComparator<App> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2873,10 +2943,12 @@ public class AppPersistenceImpl
 				list = (List<App>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2896,7 +2968,10 @@ public class AppPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (App app : findAll()) {
+		for (App app :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(app);
 		}
 	}

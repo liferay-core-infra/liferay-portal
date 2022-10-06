@@ -163,6 +163,15 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShipment> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -248,10 +257,12 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,7 +561,9 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceShipment commerceShipment :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceShipment);
 		}
@@ -639,7 +652,15 @@ public class CommerceShipmentPersistenceImpl
 	public CommerceShipment findByUUID_G(String uuid, long groupId)
 		throws NoSuchShipmentException {
 
-		CommerceShipment commerceShipment = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CommerceShipment _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchShipmentException {
+
+		CommerceShipment commerceShipment = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (commerceShipment == null) {
 			StringBundler sb = new StringBundler(6);
@@ -687,6 +708,13 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public CommerceShipment fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CommerceShipment _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -759,9 +787,11 @@ public class CommerceShipmentPersistenceImpl
 				else {
 					CommerceShipment commerceShipment = list.get(0);
 
-					result = commerceShipment;
+					if (!readOnlyCache) {
+						result = commerceShipment;
 
-					cacheResult(commerceShipment);
+						cacheResult(commerceShipment);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -791,7 +821,7 @@ public class CommerceShipmentPersistenceImpl
 	public CommerceShipment removeByUUID_G(String uuid, long groupId)
 		throws NoSuchShipmentException {
 
-		CommerceShipment commerceShipment = findByUUID_G(uuid, groupId);
+		CommerceShipment commerceShipment = _findByUUID_G(uuid, groupId, true);
 
 		return remove(commerceShipment);
 	}
@@ -953,6 +983,16 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceShipment> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1046,10 +1086,12 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1371,9 +1413,9 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceShipment commerceShipment :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceShipment);
 		}
@@ -1532,6 +1574,15 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShipment> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1604,10 +1655,12 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1962,6 +2015,15 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShipment> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2047,12 +2109,14 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2074,8 +2138,9 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CommerceShipment commerceShipment :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceShipment);
 		}
@@ -2286,6 +2351,16 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, commerceAddressId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceShipment> _findByG_C(
+		long groupId, long commerceAddressId, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2367,10 +2442,12 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2755,6 +2832,16 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupIds, commerceAddressId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceShipment> _findByG_C(
+		long[] groupIds, long commerceAddressId, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2854,11 +2941,14 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_C, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2881,9 +2971,9 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long commerceAddressId) {
 		for (CommerceShipment commerceShipment :
-				findByG_C(
+				_findByG_C(
 					groupId, commerceAddressId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceShipment);
 		}
@@ -3109,6 +3199,16 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceShipment> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3189,10 +3289,12 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3572,6 +3674,16 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupIds, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceShipment> _findByG_S(
+		long[] groupIds, int status, int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -3668,11 +3780,14 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3695,9 +3810,9 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (CommerceShipment commerceShipment :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceShipment);
 		}
@@ -3856,8 +3971,15 @@ public class CommerceShipmentPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchShipmentException {
 
-		CommerceShipment commerceShipment = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceShipment _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchShipmentException {
+
+		CommerceShipment commerceShipment = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceShipment == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3907,6 +4029,14 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public CommerceShipment fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceShipment _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3980,9 +4110,11 @@ public class CommerceShipmentPersistenceImpl
 				else {
 					CommerceShipment commerceShipment = list.get(0);
 
-					result = commerceShipment;
+					if (!readOnlyCache) {
+						result = commerceShipment;
 
-					cacheResult(commerceShipment);
+						cacheResult(commerceShipment);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4013,8 +4145,8 @@ public class CommerceShipmentPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchShipmentException {
 
-		CommerceShipment commerceShipment = findByC_ERC(
-			companyId, externalReferenceCode);
+		CommerceShipment commerceShipment = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(commerceShipment);
 	}
@@ -4546,6 +4678,14 @@ public class CommerceShipmentPersistenceImpl
 		OrderByComparator<CommerceShipment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShipment> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceShipment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4600,10 +4740,12 @@ public class CommerceShipmentPersistenceImpl
 				list = (List<CommerceShipment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4623,7 +4765,10 @@ public class CommerceShipmentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceShipment commerceShipment : findAll()) {
+		for (CommerceShipment commerceShipment :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceShipment);
 		}
 	}

@@ -172,6 +172,16 @@ public class DispatchLogPersistenceImpl
 		OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDispatchTriggerId(
+			dispatchTriggerId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DispatchLog> _findByDispatchTriggerId(
+		long dispatchTriggerId, int start, int end,
+		OrderByComparator<DispatchLog> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +259,12 @@ public class DispatchLogPersistenceImpl
 				list = (List<DispatchLog>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,9 +554,9 @@ public class DispatchLogPersistenceImpl
 	@Override
 	public void removeByDispatchTriggerId(long dispatchTriggerId) {
 		for (DispatchLog dispatchLog :
-				findByDispatchTriggerId(
+				_findByDispatchTriggerId(
 					dispatchTriggerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(dispatchLog);
 		}
@@ -685,6 +697,16 @@ public class DispatchLogPersistenceImpl
 		OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDTI_S(
+			dispatchTriggerId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DispatchLog> _findByDTI_S(
+		long dispatchTriggerId, int status, int start, int end,
+		OrderByComparator<DispatchLog> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -766,10 +788,12 @@ public class DispatchLogPersistenceImpl
 				list = (List<DispatchLog>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1076,9 +1100,9 @@ public class DispatchLogPersistenceImpl
 	@Override
 	public void removeByDTI_S(long dispatchTriggerId, int status) {
 		for (DispatchLog dispatchLog :
-				findByDTI_S(
+				_findByDTI_S(
 					dispatchTriggerId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dispatchLog);
 		}
@@ -1530,6 +1554,13 @@ public class DispatchLogPersistenceImpl
 		int start, int end, OrderByComparator<DispatchLog> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DispatchLog> _findAll(
+		int start, int end, OrderByComparator<DispatchLog> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1584,10 +1615,12 @@ public class DispatchLogPersistenceImpl
 				list = (List<DispatchLog>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1607,7 +1640,10 @@ public class DispatchLogPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DispatchLog dispatchLog : findAll()) {
+		for (DispatchLog dispatchLog :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dispatchLog);
 		}
 	}

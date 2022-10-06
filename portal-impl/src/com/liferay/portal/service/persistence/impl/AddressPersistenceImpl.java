@@ -162,6 +162,15 @@ public class AddressPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -247,10 +256,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,7 +555,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Address address :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(address);
 		}
@@ -697,6 +710,16 @@ public class AddressPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Address> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -790,10 +813,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1110,9 +1135,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Address address :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(address);
 		}
@@ -1267,6 +1292,15 @@ public class AddressPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1341,10 +1375,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1626,8 +1662,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Address address :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(address);
 		}
@@ -1757,6 +1794,15 @@ public class AddressPersistenceImpl
 		long userId, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1829,10 +1875,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2113,8 +2161,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (Address address :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(address);
 		}
@@ -2245,6 +2294,15 @@ public class AddressPersistenceImpl
 		long countryId, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByCountryId(
+			countryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByCountryId(
+		long countryId, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2319,10 +2377,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2604,8 +2664,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByCountryId(long countryId) {
 		for (Address address :
-				findByCountryId(
-					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCountryId(
+					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(address);
 		}
@@ -2736,6 +2797,15 @@ public class AddressPersistenceImpl
 		long regionId, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByRegionId(
+			regionId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByRegionId(
+		long regionId, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2808,10 +2878,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3092,8 +3164,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByRegionId(long regionId) {
 		for (Address address :
-				findByRegionId(
-					regionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRegionId(
+					regionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(address);
 		}
@@ -3231,6 +3304,16 @@ public class AddressPersistenceImpl
 		long companyId, long classNameId, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Address> _findByC_C(
+		long companyId, long classNameId, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3311,10 +3394,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3620,9 +3705,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, long classNameId) {
 		for (Address address :
-				findByC_C(
+				_findByC_C(
 					companyId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(address);
 		}
@@ -3776,6 +3861,16 @@ public class AddressPersistenceImpl
 		long companyId, long classNameId, long classPK, int start, int end,
 		OrderByComparator<Address> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C_C(
+			companyId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Address> _findByC_C_C(
+		long companyId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<Address> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3861,10 +3956,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4188,9 +4285,9 @@ public class AddressPersistenceImpl
 	@Override
 	public void removeByC_C_C(long companyId, long classNameId, long classPK) {
 		for (Address address :
-				findByC_C_C(
+				_findByC_C_C(
 					companyId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(address);
 		}
@@ -4360,6 +4457,16 @@ public class AddressPersistenceImpl
 		int start, int end, OrderByComparator<Address> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_L(
+			companyId, classNameId, classPK, listTypeId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByC_C_C_L(
+		long companyId, long classNameId, long classPK, long listTypeId,
+		int start, int end, OrderByComparator<Address> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4453,10 +4560,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4881,6 +4990,16 @@ public class AddressPersistenceImpl
 		int start, int end, OrderByComparator<Address> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_L(
+			companyId, classNameId, classPK, listTypeIds, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByC_C_C_L(
+		long companyId, long classNameId, long classPK, long[] listTypeIds,
+		int start, int end, OrderByComparator<Address> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (listTypeIds == null) {
 			listTypeIds = new long[0];
 		}
@@ -4989,12 +5108,14 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_C_C_L, finderArgs,
-						list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_C_C_L, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5021,9 +5142,9 @@ public class AddressPersistenceImpl
 		long companyId, long classNameId, long classPK, long listTypeId) {
 
 		for (Address address :
-				findByC_C_C_L(
+				_findByC_C_C_L(
 					companyId, classNameId, classPK, listTypeId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(address);
 		}
@@ -5293,6 +5414,16 @@ public class AddressPersistenceImpl
 		int start, int end, OrderByComparator<Address> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_M(
+			companyId, classNameId, classPK, mailing, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByC_C_C_M(
+		long companyId, long classNameId, long classPK, boolean mailing,
+		int start, int end, OrderByComparator<Address> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5386,10 +5517,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5731,9 +5864,9 @@ public class AddressPersistenceImpl
 		long companyId, long classNameId, long classPK, boolean mailing) {
 
 		for (Address address :
-				findByC_C_C_M(
+				_findByC_C_C_M(
 					companyId, classNameId, classPK, mailing, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(address);
 		}
@@ -5914,6 +6047,16 @@ public class AddressPersistenceImpl
 		int start, int end, OrderByComparator<Address> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_P(
+			companyId, classNameId, classPK, primary, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findByC_C_C_P(
+		long companyId, long classNameId, long classPK, boolean primary,
+		int start, int end, OrderByComparator<Address> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6007,10 +6150,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6352,9 +6497,9 @@ public class AddressPersistenceImpl
 		long companyId, long classNameId, long classPK, boolean primary) {
 
 		for (Address address :
-				findByC_C_C_P(
+				_findByC_C_C_P(
 					companyId, classNameId, classPK, primary, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(address);
 		}
@@ -6455,7 +6600,15 @@ public class AddressPersistenceImpl
 	public Address findByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchAddressException {
 
-		Address address = fetchByC_ERC(companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private Address _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchAddressException {
+
+		Address address = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (address == null) {
 			StringBundler sb = new StringBundler(6);
@@ -6503,6 +6656,14 @@ public class AddressPersistenceImpl
 	@Override
 	public Address fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private Address _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -6577,9 +6738,11 @@ public class AddressPersistenceImpl
 				else {
 					Address address = list.get(0);
 
-					result = address;
+					if (!readOnlyCache) {
+						result = address;
 
-					cacheResult(address);
+						cacheResult(address);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6609,7 +6772,7 @@ public class AddressPersistenceImpl
 	public Address removeByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchAddressException {
 
-		Address address = findByC_ERC(companyId, externalReferenceCode);
+		Address address = _findByC_ERC(companyId, externalReferenceCode, true);
 
 		return remove(address);
 	}
@@ -7109,6 +7272,13 @@ public class AddressPersistenceImpl
 		int start, int end, OrderByComparator<Address> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Address> _findAll(
+		int start, int end, OrderByComparator<Address> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7163,10 +7333,12 @@ public class AddressPersistenceImpl
 				list = (List<Address>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7186,7 +7358,10 @@ public class AddressPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Address address : findAll()) {
+		for (Address address :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(address);
 		}
 	}

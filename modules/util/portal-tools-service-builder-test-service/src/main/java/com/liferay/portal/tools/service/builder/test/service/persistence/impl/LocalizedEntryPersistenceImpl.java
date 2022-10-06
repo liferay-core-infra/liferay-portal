@@ -423,6 +423,13 @@ public class LocalizedEntryPersistenceImpl
 		int start, int end, OrderByComparator<LocalizedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LocalizedEntry> _findAll(
+		int start, int end, OrderByComparator<LocalizedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -477,10 +484,12 @@ public class LocalizedEntryPersistenceImpl
 				list = (List<LocalizedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -500,7 +509,10 @@ public class LocalizedEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LocalizedEntry localizedEntry : findAll()) {
+		for (LocalizedEntry localizedEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(localizedEntry);
 		}
 	}

@@ -176,6 +176,16 @@ public class AccountEntryOrganizationRelPersistenceImpl
 		OrderByComparator<AccountEntryOrganizationRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountEntryId(
+			accountEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountEntryOrganizationRel> _findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<AccountEntryOrganizationRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -254,10 +264,12 @@ public class AccountEntryOrganizationRelPersistenceImpl
 				list = (List<AccountEntryOrganizationRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,9 +565,9 @@ public class AccountEntryOrganizationRelPersistenceImpl
 	@Override
 	public void removeByAccountEntryId(long accountEntryId) {
 		for (AccountEntryOrganizationRel accountEntryOrganizationRel :
-				findByAccountEntryId(
-					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByAccountEntryId(
+					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(accountEntryOrganizationRel);
 		}
@@ -692,6 +704,16 @@ public class AccountEntryOrganizationRelPersistenceImpl
 		OrderByComparator<AccountEntryOrganizationRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOrganizationId(
+			organizationId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountEntryOrganizationRel> _findByOrganizationId(
+		long organizationId, int start, int end,
+		OrderByComparator<AccountEntryOrganizationRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -770,10 +792,12 @@ public class AccountEntryOrganizationRelPersistenceImpl
 				list = (List<AccountEntryOrganizationRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1069,9 +1093,9 @@ public class AccountEntryOrganizationRelPersistenceImpl
 	@Override
 	public void removeByOrganizationId(long organizationId) {
 		for (AccountEntryOrganizationRel accountEntryOrganizationRel :
-				findByOrganizationId(
-					organizationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByOrganizationId(
+					organizationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(accountEntryOrganizationRel);
 		}
@@ -1145,8 +1169,15 @@ public class AccountEntryOrganizationRelPersistenceImpl
 			long accountEntryId, long organizationId)
 		throws NoSuchEntryOrganizationRelException {
 
-		AccountEntryOrganizationRel accountEntryOrganizationRel = fetchByA_O(
-			accountEntryId, organizationId);
+		return _findByA_O(accountEntryId, organizationId, false);
+	}
+
+	private AccountEntryOrganizationRel _findByA_O(
+			long accountEntryId, long organizationId, boolean readOnlyCache)
+		throws NoSuchEntryOrganizationRelException {
+
+		AccountEntryOrganizationRel accountEntryOrganizationRel = _fetchByA_O(
+			accountEntryId, organizationId, true, readOnlyCache);
 
 		if (accountEntryOrganizationRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1196,6 +1227,14 @@ public class AccountEntryOrganizationRelPersistenceImpl
 	@Override
 	public AccountEntryOrganizationRel fetchByA_O(
 		long accountEntryId, long organizationId, boolean useFinderCache) {
+
+		return _fetchByA_O(
+			accountEntryId, organizationId, useFinderCache, false);
+	}
+
+	private AccountEntryOrganizationRel _fetchByA_O(
+		long accountEntryId, long organizationId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1275,9 +1314,11 @@ public class AccountEntryOrganizationRelPersistenceImpl
 					AccountEntryOrganizationRel accountEntryOrganizationRel =
 						list.get(0);
 
-					result = accountEntryOrganizationRel;
+					if (!readOnlyCache) {
+						result = accountEntryOrganizationRel;
 
-					cacheResult(accountEntryOrganizationRel);
+						cacheResult(accountEntryOrganizationRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1308,8 +1349,8 @@ public class AccountEntryOrganizationRelPersistenceImpl
 			long accountEntryId, long organizationId)
 		throws NoSuchEntryOrganizationRelException {
 
-		AccountEntryOrganizationRel accountEntryOrganizationRel = findByA_O(
-			accountEntryId, organizationId);
+		AccountEntryOrganizationRel accountEntryOrganizationRel = _findByA_O(
+			accountEntryId, organizationId, true);
 
 		return remove(accountEntryOrganizationRel);
 	}
@@ -1804,6 +1845,14 @@ public class AccountEntryOrganizationRelPersistenceImpl
 		OrderByComparator<AccountEntryOrganizationRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AccountEntryOrganizationRel> _findAll(
+		int start, int end,
+		OrderByComparator<AccountEntryOrganizationRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1859,10 +1908,12 @@ public class AccountEntryOrganizationRelPersistenceImpl
 				list = (List<AccountEntryOrganizationRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1883,7 +1934,8 @@ public class AccountEntryOrganizationRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (AccountEntryOrganizationRel accountEntryOrganizationRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(accountEntryOrganizationRel);
 		}

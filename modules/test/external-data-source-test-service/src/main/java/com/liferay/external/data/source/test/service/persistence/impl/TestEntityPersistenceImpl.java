@@ -418,6 +418,13 @@ public class TestEntityPersistenceImpl
 		int start, int end, OrderByComparator<TestEntity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TestEntity> _findAll(
+		int start, int end, OrderByComparator<TestEntity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -472,10 +479,12 @@ public class TestEntityPersistenceImpl
 				list = (List<TestEntity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -495,7 +504,10 @@ public class TestEntityPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (TestEntity testEntity : findAll()) {
+		for (TestEntity testEntity :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(testEntity);
 		}
 	}

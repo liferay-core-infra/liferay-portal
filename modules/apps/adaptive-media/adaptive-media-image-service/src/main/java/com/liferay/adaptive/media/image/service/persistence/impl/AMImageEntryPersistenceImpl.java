@@ -172,6 +172,15 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AMImageEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -257,10 +266,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -554,7 +565,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (AMImageEntry amImageEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(amImageEntry);
 		}
@@ -643,7 +656,15 @@ public class AMImageEntryPersistenceImpl
 	public AMImageEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchAMImageEntryException {
 
-		AMImageEntry amImageEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private AMImageEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchAMImageEntryException {
+
+		AMImageEntry amImageEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (amImageEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -691,6 +712,13 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public AMImageEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private AMImageEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -763,9 +791,11 @@ public class AMImageEntryPersistenceImpl
 				else {
 					AMImageEntry amImageEntry = list.get(0);
 
-					result = amImageEntry;
+					if (!readOnlyCache) {
+						result = amImageEntry;
 
-					cacheResult(amImageEntry);
+						cacheResult(amImageEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -795,7 +825,7 @@ public class AMImageEntryPersistenceImpl
 	public AMImageEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchAMImageEntryException {
 
-		AMImageEntry amImageEntry = findByUUID_G(uuid, groupId);
+		AMImageEntry amImageEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(amImageEntry);
 	}
@@ -957,6 +987,16 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AMImageEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1050,10 +1090,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1372,9 +1414,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (AMImageEntry amImageEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(amImageEntry);
 		}
@@ -1530,6 +1572,15 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AMImageEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1602,10 +1653,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1889,8 +1942,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (AMImageEntry amImageEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(amImageEntry);
 		}
@@ -2024,6 +2078,15 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AMImageEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2098,10 +2161,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2385,8 +2450,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AMImageEntry amImageEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(amImageEntry);
 		}
@@ -2523,6 +2589,16 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByConfigurationUuid(
+			configurationUuid, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AMImageEntry> _findByConfigurationUuid(
+		String configurationUuid, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		configurationUuid = Objects.toString(configurationUuid, "");
 
 		FinderPath finderPath = null;
@@ -2613,10 +2689,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2919,9 +2997,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByConfigurationUuid(String configurationUuid) {
 		for (AMImageEntry amImageEntry :
-				findByConfigurationUuid(
+				_findByConfigurationUuid(
 					configurationUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(amImageEntry);
 		}
@@ -3074,6 +3152,16 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileVersionId(
+			fileVersionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AMImageEntry> _findByFileVersionId(
+		long fileVersionId, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3148,10 +3236,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3437,9 +3527,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByFileVersionId(long fileVersionId) {
 		for (AMImageEntry amImageEntry :
-				findByFileVersionId(
-					fileVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByFileVersionId(
+					fileVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(amImageEntry);
 		}
@@ -3581,6 +3671,16 @@ public class AMImageEntryPersistenceImpl
 		OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, configurationUuid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AMImageEntry> _findByC_C(
+		long companyId, String configurationUuid, int start, int end,
+		OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		configurationUuid = Objects.toString(configurationUuid, "");
 
 		FinderPath finderPath = null;
@@ -3675,10 +3775,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3998,9 +4100,9 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, String configurationUuid) {
 		for (AMImageEntry amImageEntry :
-				findByC_C(
+				_findByC_C(
 					companyId, configurationUuid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(amImageEntry);
 		}
@@ -4097,8 +4199,15 @@ public class AMImageEntryPersistenceImpl
 	public AMImageEntry findByC_F(String configurationUuid, long fileVersionId)
 		throws NoSuchAMImageEntryException {
 
-		AMImageEntry amImageEntry = fetchByC_F(
-			configurationUuid, fileVersionId);
+		return _findByC_F(configurationUuid, fileVersionId, false);
+	}
+
+	private AMImageEntry _findByC_F(
+			String configurationUuid, long fileVersionId, boolean readOnlyCache)
+		throws NoSuchAMImageEntryException {
+
+		AMImageEntry amImageEntry = _fetchByC_F(
+			configurationUuid, fileVersionId, true, readOnlyCache);
 
 		if (amImageEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4148,6 +4257,14 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public AMImageEntry fetchByC_F(
 		String configurationUuid, long fileVersionId, boolean useFinderCache) {
+
+		return _fetchByC_F(
+			configurationUuid, fileVersionId, useFinderCache, false);
+	}
+
+	private AMImageEntry _fetchByC_F(
+		String configurationUuid, long fileVersionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		configurationUuid = Objects.toString(configurationUuid, "");
 
@@ -4220,9 +4337,11 @@ public class AMImageEntryPersistenceImpl
 				else {
 					AMImageEntry amImageEntry = list.get(0);
 
-					result = amImageEntry;
+					if (!readOnlyCache) {
+						result = amImageEntry;
 
-					cacheResult(amImageEntry);
+						cacheResult(amImageEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4253,7 +4372,8 @@ public class AMImageEntryPersistenceImpl
 			String configurationUuid, long fileVersionId)
 		throws NoSuchAMImageEntryException {
 
-		AMImageEntry amImageEntry = findByC_F(configurationUuid, fileVersionId);
+		AMImageEntry amImageEntry = _findByC_F(
+			configurationUuid, fileVersionId, true);
 
 		return remove(amImageEntry);
 	}
@@ -4760,6 +4880,13 @@ public class AMImageEntryPersistenceImpl
 		int start, int end, OrderByComparator<AMImageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AMImageEntry> _findAll(
+		int start, int end, OrderByComparator<AMImageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4814,10 +4941,12 @@ public class AMImageEntryPersistenceImpl
 				list = (List<AMImageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4837,7 +4966,10 @@ public class AMImageEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AMImageEntry amImageEntry : findAll()) {
+		for (AMImageEntry amImageEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(amImageEntry);
 		}
 	}

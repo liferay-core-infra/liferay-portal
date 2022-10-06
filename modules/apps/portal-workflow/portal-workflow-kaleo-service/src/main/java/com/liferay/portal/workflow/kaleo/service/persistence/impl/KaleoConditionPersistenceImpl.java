@@ -179,6 +179,15 @@ public class KaleoConditionPersistenceImpl
 		OrderByComparator<KaleoCondition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoCondition> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<KaleoCondition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoCondition.class);
 
@@ -256,10 +265,12 @@ public class KaleoConditionPersistenceImpl
 				list = (List<KaleoCondition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,8 +555,9 @@ public class KaleoConditionPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (KaleoCondition kaleoCondition :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kaleoCondition);
 		}
@@ -697,6 +709,16 @@ public class KaleoConditionPersistenceImpl
 		OrderByComparator<KaleoCondition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KaleoCondition> _findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoCondition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoCondition.class);
 
@@ -779,10 +801,12 @@ public class KaleoConditionPersistenceImpl
 				list = (List<KaleoCondition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1077,9 +1101,9 @@ public class KaleoConditionPersistenceImpl
 		long kaleoDefinitionVersionId) {
 
 		for (KaleoCondition kaleoCondition :
-				findByKaleoDefinitionVersionId(
+				_findByKaleoDefinitionVersionId(
 					kaleoDefinitionVersionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoCondition);
 		}
@@ -1165,7 +1189,15 @@ public class KaleoConditionPersistenceImpl
 	public KaleoCondition findByKaleoNodeId(long kaleoNodeId)
 		throws NoSuchConditionException {
 
-		KaleoCondition kaleoCondition = fetchByKaleoNodeId(kaleoNodeId);
+		return _findByKaleoNodeId(kaleoNodeId, false);
+	}
+
+	private KaleoCondition _findByKaleoNodeId(
+			long kaleoNodeId, boolean readOnlyCache)
+		throws NoSuchConditionException {
+
+		KaleoCondition kaleoCondition = _fetchByKaleoNodeId(
+			kaleoNodeId, true, readOnlyCache);
 
 		if (kaleoCondition == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1208,6 +1240,12 @@ public class KaleoConditionPersistenceImpl
 	@Override
 	public KaleoCondition fetchByKaleoNodeId(
 		long kaleoNodeId, boolean useFinderCache) {
+
+		return _fetchByKaleoNodeId(kaleoNodeId, useFinderCache, false);
+	}
+
+	private KaleoCondition _fetchByKaleoNodeId(
+		long kaleoNodeId, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoCondition.class);
@@ -1279,9 +1317,11 @@ public class KaleoConditionPersistenceImpl
 
 					KaleoCondition kaleoCondition = list.get(0);
 
-					result = kaleoCondition;
+					if (!readOnlyCache) {
+						result = kaleoCondition;
 
-					cacheResult(kaleoCondition);
+						cacheResult(kaleoCondition);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1310,7 +1350,7 @@ public class KaleoConditionPersistenceImpl
 	public KaleoCondition removeByKaleoNodeId(long kaleoNodeId)
 		throws NoSuchConditionException {
 
-		KaleoCondition kaleoCondition = findByKaleoNodeId(kaleoNodeId);
+		KaleoCondition kaleoCondition = _findByKaleoNodeId(kaleoNodeId, true);
 
 		return remove(kaleoCondition);
 	}
@@ -1940,6 +1980,13 @@ public class KaleoConditionPersistenceImpl
 		int start, int end, OrderByComparator<KaleoCondition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoCondition> _findAll(
+		int start, int end, OrderByComparator<KaleoCondition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoCondition.class);
 
@@ -1997,10 +2044,12 @@ public class KaleoConditionPersistenceImpl
 				list = (List<KaleoCondition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2020,7 +2069,10 @@ public class KaleoConditionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KaleoCondition kaleoCondition : findAll()) {
+		for (KaleoCondition kaleoCondition :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kaleoCondition);
 		}
 	}

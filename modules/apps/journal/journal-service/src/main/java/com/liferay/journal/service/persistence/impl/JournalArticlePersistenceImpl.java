@@ -189,6 +189,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByResourcePrimKey(
+			resourcePrimKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByResourcePrimKey(
+		long resourcePrimKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -268,10 +278,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -562,9 +574,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByResourcePrimKey(long resourcePrimKey) {
 		for (JournalArticle journalArticle :
-				findByResourcePrimKey(
-					resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByResourcePrimKey(
+					resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -708,6 +720,15 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -796,10 +817,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1096,7 +1119,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (JournalArticle journalArticle :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(journalArticle);
 		}
@@ -1197,7 +1222,15 @@ public class JournalArticlePersistenceImpl
 	public JournalArticle findByUUID_G(String uuid, long groupId)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private JournalArticle _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		JournalArticle journalArticle = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (journalArticle == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1245,6 +1278,13 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public JournalArticle fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private JournalArticle _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -1320,9 +1360,11 @@ public class JournalArticlePersistenceImpl
 				else {
 					JournalArticle journalArticle = list.get(0);
 
-					result = journalArticle;
+					if (!readOnlyCache) {
+						result = journalArticle;
 
-					cacheResult(journalArticle);
+						cacheResult(journalArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1352,7 +1394,7 @@ public class JournalArticlePersistenceImpl
 	public JournalArticle removeByUUID_G(String uuid, long groupId)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = findByUUID_G(uuid, groupId);
+		JournalArticle journalArticle = _findByUUID_G(uuid, groupId, true);
 
 		return remove(journalArticle);
 	}
@@ -1526,6 +1568,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1622,10 +1674,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1946,9 +2000,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (JournalArticle journalArticle :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -2118,6 +2172,15 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -2193,10 +2256,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2811,8 +2876,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (JournalArticle journalArticle :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(journalArticle);
 		}
@@ -3006,6 +3072,15 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -3083,10 +3158,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3371,8 +3448,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (JournalArticle journalArticle :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(journalArticle);
 		}
@@ -3520,6 +3598,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMStructureKey(
+			DDMStructureKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByDDMStructureKey(
+		String DDMStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		DDMStructureKey = Objects.toString(DDMStructureKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3612,10 +3700,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3990,6 +4080,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMStructureKey(
+			DDMStructureKeys, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByDDMStructureKey(
+		String[] DDMStructureKeys, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (DDMStructureKeys == null) {
 			DDMStructureKeys = new String[0];
 		}
@@ -4106,12 +4206,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByDDMStructureKey,
-						finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByDDMStructureKey,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4133,9 +4235,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByDDMStructureKey(String DDMStructureKey) {
 		for (JournalArticle journalArticle :
-				findByDDMStructureKey(
-					DDMStructureKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByDDMStructureKey(
+					DDMStructureKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -4402,6 +4504,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMTemplateKey(
+			DDMTemplateKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByDDMTemplateKey(
+		String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		DDMTemplateKey = Objects.toString(DDMTemplateKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -4494,10 +4606,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4801,9 +4915,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByDDMTemplateKey(String DDMTemplateKey) {
 		for (JournalArticle journalArticle :
-				findByDDMTemplateKey(
-					DDMTemplateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByDDMTemplateKey(
+					DDMTemplateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -4966,6 +5080,15 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLayoutUuid(
+			layoutUuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByLayoutUuid(
+		String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		layoutUuid = Objects.toString(layoutUuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -5056,10 +5179,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5361,8 +5486,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByLayoutUuid(String layoutUuid) {
 		for (JournalArticle journalArticle :
-				findByLayoutUuid(
-					layoutUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLayoutUuid(
+					layoutUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -5525,6 +5651,15 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySmallImageId(
+			smallImageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findBySmallImageId(
+		long smallImageId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -5602,10 +5737,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5895,8 +6032,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeBySmallImageId(long smallImageId) {
 		for (JournalArticle journalArticle :
-				findBySmallImageId(
-					smallImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findBySmallImageId(
+					smallImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -6050,6 +6188,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_I(
+			resourcePrimKey, indexable, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByR_I(
+		long resourcePrimKey, boolean indexable, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -6134,10 +6282,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6445,9 +6595,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByR_I(long resourcePrimKey, boolean indexable) {
 		for (JournalArticle journalArticle :
-				findByR_I(
+				_findByR_I(
 					resourcePrimKey, indexable, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -6608,6 +6758,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_ST(
+			resourcePrimKey, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByR_ST(
+		long resourcePrimKey, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -6692,10 +6852,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7078,6 +7240,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_ST(
+			resourcePrimKey, statuses, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByR_ST(
+		long resourcePrimKey, int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -7178,11 +7350,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_ST, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_ST, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7205,9 +7380,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByR_ST(long resourcePrimKey, int status) {
 		for (JournalArticle journalArticle :
-				findByR_ST(
+				_findByR_ST(
 					resourcePrimKey, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -7454,6 +7629,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U(
+			groupId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -7537,10 +7722,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8194,9 +8381,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_U(long groupId, long userId) {
 		for (JournalArticle journalArticle :
-				findByG_U(
-					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_U(
+					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -8412,6 +8599,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_ERC(
+			groupId, externalReferenceCode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_ERC(
+		long groupId, String externalReferenceCode, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -8509,10 +8706,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9211,9 +9410,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_ERC(long groupId, String externalReferenceCode) {
 		for (JournalArticle journalArticle :
-				findByG_ERC(
+				_findByG_ERC(
 					groupId, externalReferenceCode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -9455,6 +9654,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F(
+			groupId, folderId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_F(
+		long groupId, long folderId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -9538,10 +9747,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10418,6 +10629,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F(
+			groupId, folderIds, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_F(
+		long groupId, long[] folderIds, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -10517,11 +10738,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_F, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_F, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10544,9 +10768,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_F(long groupId, long folderId) {
 		for (JournalArticle journalArticle :
-				findByG_F(
+				_findByG_F(
 					groupId, folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -10915,6 +11139,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupId, articleId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_A(
+		long groupId, String articleId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		articleId = Objects.toString(articleId, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -11011,10 +11245,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11709,9 +11945,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_A(long groupId, String articleId) {
 		for (JournalArticle journalArticle :
-				findByG_A(
+				_findByG_A(
 					groupId, articleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -11952,6 +12188,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_UT(
+			groupId, urlTitle, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_UT(
+		long groupId, String urlTitle, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		urlTitle = Objects.toString(urlTitle, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -12048,10 +12294,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12746,9 +12994,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_UT(long groupId, String urlTitle) {
 		for (JournalArticle journalArticle :
-				findByG_UT(
+				_findByG_UT(
 					groupId, urlTitle, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -12992,6 +13240,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_DDMSK(
+			groupId, DDMStructureKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_DDMSK(
+		long groupId, String DDMStructureKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		DDMStructureKey = Objects.toString(DDMStructureKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -13089,10 +13347,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13789,9 +14049,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_DDMSK(long groupId, String DDMStructureKey) {
 		for (JournalArticle journalArticle :
-				findByG_DDMSK(
+				_findByG_DDMSK(
 					groupId, DDMStructureKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -14035,6 +14295,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_DDMTK(
+			groupId, DDMTemplateKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_DDMTK(
+		long groupId, String DDMTemplateKey, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		DDMTemplateKey = Objects.toString(DDMTemplateKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -14132,10 +14402,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14832,9 +15104,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_DDMTK(long groupId, String DDMTemplateKey) {
 		for (JournalArticle journalArticle :
-				findByG_DDMTK(
+				_findByG_DDMTK(
 					groupId, DDMTemplateKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -15075,6 +15347,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_L(
+			groupId, layoutUuid, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_L(
+		long groupId, String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		layoutUuid = Objects.toString(layoutUuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -15171,10 +15453,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15870,9 +16154,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_L(long groupId, String layoutUuid) {
 		for (JournalArticle journalArticle :
-				findByG_L(
+				_findByG_L(
 					groupId, layoutUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -16112,6 +16396,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_NotL(
+			groupId, layoutUuid, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_NotL(
+		long groupId, String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		layoutUuid = Objects.toString(layoutUuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -16198,10 +16492,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17142,6 +17438,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_NotL(
+			groupId, layoutUuids, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_NotL(
+		long groupId, String[] layoutUuids, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (layoutUuids == null) {
 			layoutUuids = new String[0];
 		}
@@ -17260,12 +17566,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_NotL, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_NotL, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17288,9 +17596,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_NotL(long groupId, String layoutUuid) {
 		for (JournalArticle journalArticle :
-				findByG_NotL(
+				_findByG_NotL(
 					groupId, layoutUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -17723,6 +18031,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_ST(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByG_ST(
+		long groupId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -17806,10 +18124,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -18463,9 +18783,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_ST(long groupId, int status) {
 		for (JournalArticle journalArticle :
-				findByG_ST(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_ST(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalArticle);
 		}
@@ -18677,6 +18997,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_V(
+			companyId, version, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByC_V(
+		long companyId, double version, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -18760,10 +19090,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19071,9 +19403,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByC_V(long companyId, double version) {
 		for (JournalArticle journalArticle :
-				findByC_V(
+				_findByC_V(
 					companyId, version, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -19232,6 +19564,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_ST(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByC_ST(
+		long companyId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -19315,10 +19657,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19626,9 +19970,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByC_ST(long companyId, int status) {
 		for (JournalArticle journalArticle :
-				findByC_ST(
+				_findByC_ST(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -19786,6 +20130,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_NotST(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByC_NotST(
+		long companyId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -19859,10 +20213,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -20170,9 +20526,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByC_NotST(long companyId, int status) {
 		for (JournalArticle journalArticle :
-				findByC_NotST(
+				_findByC_NotST(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -20330,6 +20686,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtD_S(
+			displayDate, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalArticle> _findByLtD_S(
+		Date displayDate, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -20415,10 +20781,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -20737,9 +21105,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByLtD_S(Date displayDate, int status) {
 		for (JournalArticle journalArticle :
-				findByLtD_S(
+				_findByLtD_S(
 					displayDate, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -20923,6 +21291,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_I_S(
+			resourcePrimKey, indexable, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByR_I_S(
+		long resourcePrimKey, boolean indexable, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -21013,10 +21391,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21422,6 +21802,16 @@ public class JournalArticlePersistenceImpl
 		int end, OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_I_S(
+			resourcePrimKey, indexable, statuses, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByR_I_S(
+		long resourcePrimKey, boolean indexable, int[] statuses, int start,
+		int end, OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -21528,11 +21918,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_I_S, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_I_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21558,9 +21951,9 @@ public class JournalArticlePersistenceImpl
 		long resourcePrimKey, boolean indexable, int status) {
 
 		for (JournalArticle journalArticle :
-				findByR_I_S(
+				_findByR_I_S(
 					resourcePrimKey, indexable, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -21832,6 +22225,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_C(
+			groupId, userId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_U_C(
+		long groupId, long userId, long classNameId, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -21920,10 +22323,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22610,9 +23015,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_U_C(long groupId, long userId, long classNameId) {
 		for (JournalArticle journalArticle :
-				findByG_U_C(
+				_findByG_U_C(
 					groupId, userId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -22773,8 +23178,16 @@ public class JournalArticlePersistenceImpl
 			long groupId, String externalReferenceCode, double version)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = fetchByG_ERC_V(
-			groupId, externalReferenceCode, version);
+		return _findByG_ERC_V(groupId, externalReferenceCode, version, false);
+	}
+
+	private JournalArticle _findByG_ERC_V(
+			long groupId, String externalReferenceCode, double version,
+			boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		JournalArticle journalArticle = _fetchByG_ERC_V(
+			groupId, externalReferenceCode, version, true, readOnlyCache);
 
 		if (journalArticle == null) {
 			StringBundler sb = new StringBundler(8);
@@ -22830,6 +23243,14 @@ public class JournalArticlePersistenceImpl
 	public JournalArticle fetchByG_ERC_V(
 		long groupId, String externalReferenceCode, double version,
 		boolean useFinderCache) {
+
+		return _fetchByG_ERC_V(
+			groupId, externalReferenceCode, version, useFinderCache, false);
+	}
+
+	private JournalArticle _fetchByG_ERC_V(
+		long groupId, String externalReferenceCode, double version,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -22912,9 +23333,11 @@ public class JournalArticlePersistenceImpl
 				else {
 					JournalArticle journalArticle = list.get(0);
 
-					result = journalArticle;
+					if (!readOnlyCache) {
+						result = journalArticle;
 
-					cacheResult(journalArticle);
+						cacheResult(journalArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22946,8 +23369,8 @@ public class JournalArticlePersistenceImpl
 			long groupId, String externalReferenceCode, double version)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = findByG_ERC_V(
-			groupId, externalReferenceCode, version);
+		JournalArticle journalArticle = _findByG_ERC_V(
+			groupId, externalReferenceCode, version, true);
 
 		return remove(journalArticle);
 	}
@@ -23139,6 +23562,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_ST(
+			groupId, folderId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_F_ST(
+		long groupId, long folderId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -23227,10 +23660,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -24155,6 +24590,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_ST(
+			groupId, folderId, statuses, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_F_ST(
+		long groupId, long folderId, int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -24259,12 +24704,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_F_ST, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_F_ST, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -24288,9 +24735,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_F_ST(long groupId, long folderId, int status) {
 		for (JournalArticle journalArticle :
-				findByG_F_ST(
+				_findByG_F_ST(
 					groupId, folderId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -24694,6 +25141,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_C_C(
+		long groupId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -24782,10 +25239,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -25472,9 +25931,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_C_C(long groupId, long classNameId, long classPK) {
 		for (JournalArticle journalArticle :
-				findByG_C_C(
+				_findByG_C_C(
 					groupId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -25637,8 +26096,16 @@ public class JournalArticlePersistenceImpl
 			long groupId, long classNameId, String DDMStructureKey)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = fetchByG_C_DDMSK(
-			groupId, classNameId, DDMStructureKey);
+		return _findByG_C_DDMSK(groupId, classNameId, DDMStructureKey, false);
+	}
+
+	private JournalArticle _findByG_C_DDMSK(
+			long groupId, long classNameId, String DDMStructureKey,
+			boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		JournalArticle journalArticle = _fetchByG_C_DDMSK(
+			groupId, classNameId, DDMStructureKey, true, readOnlyCache);
 
 		if (journalArticle == null) {
 			StringBundler sb = new StringBundler(8);
@@ -25694,6 +26161,14 @@ public class JournalArticlePersistenceImpl
 	public JournalArticle fetchByG_C_DDMSK(
 		long groupId, long classNameId, String DDMStructureKey,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_DDMSK(
+			groupId, classNameId, DDMStructureKey, useFinderCache, false);
+	}
+
+	private JournalArticle _fetchByG_C_DDMSK(
+		long groupId, long classNameId, String DDMStructureKey,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		DDMStructureKey = Objects.toString(DDMStructureKey, "");
 
@@ -25792,9 +26267,11 @@ public class JournalArticlePersistenceImpl
 
 					JournalArticle journalArticle = list.get(0);
 
-					result = journalArticle;
+					if (!readOnlyCache) {
+						result = journalArticle;
 
-					cacheResult(journalArticle);
+						cacheResult(journalArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -25826,8 +26303,8 @@ public class JournalArticlePersistenceImpl
 			long groupId, long classNameId, String DDMStructureKey)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = findByG_C_DDMSK(
-			groupId, classNameId, DDMStructureKey);
+		JournalArticle journalArticle = _findByG_C_DDMSK(
+			groupId, classNameId, DDMStructureKey, true);
 
 		return remove(journalArticle);
 	}
@@ -26021,6 +26498,16 @@ public class JournalArticlePersistenceImpl
 		int end, OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_DDMTK(
+			groupId, classNameId, DDMTemplateKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_C_DDMTK(
+		long groupId, long classNameId, String DDMTemplateKey, int start,
+		int end, OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		DDMTemplateKey = Objects.toString(DDMTemplateKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -26126,10 +26613,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -26860,9 +27349,9 @@ public class JournalArticlePersistenceImpl
 		long groupId, long classNameId, String DDMTemplateKey) {
 
 		for (JournalArticle journalArticle :
-				findByG_C_DDMTK(
+				_findByG_C_DDMTK(
 					groupId, classNameId, DDMTemplateKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -27128,6 +27617,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_L(
+			groupId, classNameId, layoutUuid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_C_L(
+		long groupId, long classNameId, String layoutUuid, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		layoutUuid = Objects.toString(layoutUuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -27229,10 +27728,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -27962,9 +28463,9 @@ public class JournalArticlePersistenceImpl
 		long groupId, long classNameId, String layoutUuid) {
 
 		for (JournalArticle journalArticle :
-				findByG_C_L(
+				_findByG_C_L(
 					groupId, classNameId, layoutUuid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -28156,8 +28657,16 @@ public class JournalArticlePersistenceImpl
 			long groupId, String articleId, double version)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = fetchByG_A_V(
-			groupId, articleId, version);
+		return _findByG_A_V(groupId, articleId, version, false);
+	}
+
+	private JournalArticle _findByG_A_V(
+			long groupId, String articleId, double version,
+			boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		JournalArticle journalArticle = _fetchByG_A_V(
+			groupId, articleId, version, true, readOnlyCache);
 
 		if (journalArticle == null) {
 			StringBundler sb = new StringBundler(8);
@@ -28213,6 +28722,14 @@ public class JournalArticlePersistenceImpl
 	public JournalArticle fetchByG_A_V(
 		long groupId, String articleId, double version,
 		boolean useFinderCache) {
+
+		return _fetchByG_A_V(
+			groupId, articleId, version, useFinderCache, false);
+	}
+
+	private JournalArticle _fetchByG_A_V(
+		long groupId, String articleId, double version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		articleId = Objects.toString(articleId, "");
 
@@ -28292,9 +28809,11 @@ public class JournalArticlePersistenceImpl
 				else {
 					JournalArticle journalArticle = list.get(0);
 
-					result = journalArticle;
+					if (!readOnlyCache) {
+						result = journalArticle;
 
-					cacheResult(journalArticle);
+						cacheResult(journalArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -28326,8 +28845,8 @@ public class JournalArticlePersistenceImpl
 			long groupId, String articleId, double version)
 		throws NoSuchArticleException {
 
-		JournalArticle journalArticle = findByG_A_V(
-			groupId, articleId, version);
+		JournalArticle journalArticle = _findByG_A_V(
+			groupId, articleId, version, true);
 
 		return remove(journalArticle);
 	}
@@ -28517,6 +29036,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_ST(
+			groupId, articleId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_A_ST(
+		long groupId, String articleId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		articleId = Objects.toString(articleId, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -28618,10 +29147,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -29598,6 +30129,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_ST(
+			groupId, articleId, statuses, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_A_ST(
+		long groupId, String articleId, int[] statuses, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		articleId = Objects.toString(articleId, "");
 
 		if (statuses == null) {
@@ -29715,12 +30256,14 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_A_ST, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_A_ST, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -29744,9 +30287,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_A_ST(long groupId, String articleId, int status) {
 		for (JournalArticle journalArticle :
-				findByG_A_ST(
+				_findByG_A_ST(
 					groupId, articleId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -30204,6 +30747,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_NotST(
+			groupId, articleId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_A_NotST(
+		long groupId, String articleId, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		articleId = Objects.toString(articleId, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -30295,10 +30848,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -31024,9 +31579,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_A_NotST(long groupId, String articleId, int status) {
 		for (JournalArticle journalArticle :
-				findByG_A_NotST(
+				_findByG_A_NotST(
 					groupId, articleId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -31289,6 +31844,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_UT_ST(
+			groupId, urlTitle, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_UT_ST(
+		long groupId, String urlTitle, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		urlTitle = Objects.toString(urlTitle, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -31390,10 +31955,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -32118,9 +32685,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByG_UT_ST(long groupId, String urlTitle, int status) {
 		for (JournalArticle journalArticle :
-				findByG_UT_ST(
+				_findByG_UT_ST(
 					groupId, urlTitle, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -32381,6 +32948,16 @@ public class JournalArticlePersistenceImpl
 		OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_V_ST(
+			companyId, version, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByC_V_ST(
+		long companyId, double version, int status, int start, int end,
+		OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -32469,10 +33046,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -32796,9 +33375,9 @@ public class JournalArticlePersistenceImpl
 	@Override
 	public void removeByC_V_ST(long companyId, double version, int status) {
 		for (JournalArticle journalArticle :
-				findByC_V_ST(
+				_findByC_V_ST(
 					companyId, version, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -32978,6 +33557,16 @@ public class JournalArticlePersistenceImpl
 		int end, OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_C_NotST(
+			groupId, folderId, classNameId, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findByG_F_C_NotST(
+		long groupId, long folderId, long classNameId, int status, int start,
+		int end, OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -33062,10 +33651,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -33785,9 +34376,9 @@ public class JournalArticlePersistenceImpl
 		long groupId, long folderId, long classNameId, int status) {
 
 		for (JournalArticle journalArticle :
-				findByG_F_C_NotST(
+				_findByG_F_C_NotST(
 					groupId, folderId, classNameId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(journalArticle);
 		}
@@ -34589,6 +35180,13 @@ public class JournalArticlePersistenceImpl
 		int start, int end, OrderByComparator<JournalArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalArticle> _findAll(
+		int start, int end, OrderByComparator<JournalArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalArticle.class);
 
@@ -34646,10 +35244,12 @@ public class JournalArticlePersistenceImpl
 				list = (List<JournalArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -34669,7 +35269,10 @@ public class JournalArticlePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (JournalArticle journalArticle : findAll()) {
+		for (JournalArticle journalArticle :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(journalArticle);
 		}
 	}

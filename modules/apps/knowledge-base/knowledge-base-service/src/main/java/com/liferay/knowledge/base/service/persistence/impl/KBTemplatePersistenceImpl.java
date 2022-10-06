@@ -179,6 +179,15 @@ public class KBTemplatePersistenceImpl
 		OrderByComparator<KBTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBTemplate> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<KBTemplate> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -264,10 +273,12 @@ public class KBTemplatePersistenceImpl
 				list = (List<KBTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -561,7 +572,9 @@ public class KBTemplatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (KBTemplate kbTemplate :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbTemplate);
 		}
@@ -650,7 +663,15 @@ public class KBTemplatePersistenceImpl
 	public KBTemplate findByUUID_G(String uuid, long groupId)
 		throws NoSuchTemplateException {
 
-		KBTemplate kbTemplate = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private KBTemplate _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchTemplateException {
+
+		KBTemplate kbTemplate = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (kbTemplate == null) {
 			StringBundler sb = new StringBundler(6);
@@ -698,6 +719,13 @@ public class KBTemplatePersistenceImpl
 	@Override
 	public KBTemplate fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private KBTemplate _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -770,9 +798,11 @@ public class KBTemplatePersistenceImpl
 				else {
 					KBTemplate kbTemplate = list.get(0);
 
-					result = kbTemplate;
+					if (!readOnlyCache) {
+						result = kbTemplate;
 
-					cacheResult(kbTemplate);
+						cacheResult(kbTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -802,7 +832,7 @@ public class KBTemplatePersistenceImpl
 	public KBTemplate removeByUUID_G(String uuid, long groupId)
 		throws NoSuchTemplateException {
 
-		KBTemplate kbTemplate = findByUUID_G(uuid, groupId);
+		KBTemplate kbTemplate = _findByUUID_G(uuid, groupId, true);
 
 		return remove(kbTemplate);
 	}
@@ -964,6 +994,16 @@ public class KBTemplatePersistenceImpl
 		OrderByComparator<KBTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBTemplate> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<KBTemplate> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1057,10 +1097,12 @@ public class KBTemplatePersistenceImpl
 				list = (List<KBTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1377,9 +1419,9 @@ public class KBTemplatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (KBTemplate kbTemplate :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbTemplate);
 		}
@@ -1535,6 +1577,15 @@ public class KBTemplatePersistenceImpl
 		OrderByComparator<KBTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBTemplate> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<KBTemplate> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1607,10 +1658,12 @@ public class KBTemplatePersistenceImpl
 				list = (List<KBTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2216,8 +2269,9 @@ public class KBTemplatePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (KBTemplate kbTemplate :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbTemplate);
 		}
@@ -2762,6 +2816,13 @@ public class KBTemplatePersistenceImpl
 		int start, int end, OrderByComparator<KBTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBTemplate> _findAll(
+		int start, int end, OrderByComparator<KBTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2816,10 +2877,12 @@ public class KBTemplatePersistenceImpl
 				list = (List<KBTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2839,7 +2902,10 @@ public class KBTemplatePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KBTemplate kbTemplate : findAll()) {
+		for (KBTemplate kbTemplate :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kbTemplate);
 		}
 	}

@@ -179,6 +179,16 @@ public class CTermEntryLocalizationPersistenceImpl
 		OrderByComparator<CTermEntryLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceTermEntryId(
+			commerceTermEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTermEntryLocalization> _findByCommerceTermEntryId(
+		long commerceTermEntryId, int start, int end,
+		OrderByComparator<CTermEntryLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -256,10 +266,12 @@ public class CTermEntryLocalizationPersistenceImpl
 				list = (List<CTermEntryLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,9 +567,9 @@ public class CTermEntryLocalizationPersistenceImpl
 	@Override
 	public void removeByCommerceTermEntryId(long commerceTermEntryId) {
 		for (CTermEntryLocalization cTermEntryLocalization :
-				findByCommerceTermEntryId(
+				_findByCommerceTermEntryId(
 					commerceTermEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(cTermEntryLocalization);
 		}
@@ -632,9 +644,17 @@ public class CTermEntryLocalizationPersistenceImpl
 			long commerceTermEntryId, String languageId)
 		throws NoSuchCTermEntryLocalizationException {
 
+		return _findByCommerceTermEntryId_LanguageId(
+			commerceTermEntryId, languageId, false);
+	}
+
+	private CTermEntryLocalization _findByCommerceTermEntryId_LanguageId(
+			long commerceTermEntryId, String languageId, boolean readOnlyCache)
+		throws NoSuchCTermEntryLocalizationException {
+
 		CTermEntryLocalization cTermEntryLocalization =
-			fetchByCommerceTermEntryId_LanguageId(
-				commerceTermEntryId, languageId);
+			_fetchByCommerceTermEntryId_LanguageId(
+				commerceTermEntryId, languageId, true, readOnlyCache);
 
 		if (cTermEntryLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -685,6 +705,14 @@ public class CTermEntryLocalizationPersistenceImpl
 	@Override
 	public CTermEntryLocalization fetchByCommerceTermEntryId_LanguageId(
 		long commerceTermEntryId, String languageId, boolean useFinderCache) {
+
+		return _fetchByCommerceTermEntryId_LanguageId(
+			commerceTermEntryId, languageId, useFinderCache, false);
+	}
+
+	private CTermEntryLocalization _fetchByCommerceTermEntryId_LanguageId(
+		long commerceTermEntryId, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -764,9 +792,11 @@ public class CTermEntryLocalizationPersistenceImpl
 				else {
 					CTermEntryLocalization cTermEntryLocalization = list.get(0);
 
-					result = cTermEntryLocalization;
+					if (!readOnlyCache) {
+						result = cTermEntryLocalization;
 
-					cacheResult(cTermEntryLocalization);
+						cacheResult(cTermEntryLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -798,8 +828,8 @@ public class CTermEntryLocalizationPersistenceImpl
 		throws NoSuchCTermEntryLocalizationException {
 
 		CTermEntryLocalization cTermEntryLocalization =
-			findByCommerceTermEntryId_LanguageId(
-				commerceTermEntryId, languageId);
+			_findByCommerceTermEntryId_LanguageId(
+				commerceTermEntryId, languageId, true);
 
 		return remove(cTermEntryLocalization);
 	}
@@ -1332,6 +1362,14 @@ public class CTermEntryLocalizationPersistenceImpl
 		OrderByComparator<CTermEntryLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTermEntryLocalization> _findAll(
+		int start, int end,
+		OrderByComparator<CTermEntryLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1386,10 +1424,12 @@ public class CTermEntryLocalizationPersistenceImpl
 				list = (List<CTermEntryLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1409,7 +1449,10 @@ public class CTermEntryLocalizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTermEntryLocalization cTermEntryLocalization : findAll()) {
+		for (CTermEntryLocalization cTermEntryLocalization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cTermEntryLocalization);
 		}
 	}

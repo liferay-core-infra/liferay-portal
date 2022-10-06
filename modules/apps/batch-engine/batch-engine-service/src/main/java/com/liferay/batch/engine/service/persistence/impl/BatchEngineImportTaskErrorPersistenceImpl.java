@@ -180,6 +180,16 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 		OrderByComparator<BatchEngineImportTaskError> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByBatchEngineImportTaskId(
+			batchEngineImportTaskId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BatchEngineImportTaskError> _findByBatchEngineImportTaskId(
+		long batchEngineImportTaskId, int start, int end,
+		OrderByComparator<BatchEngineImportTaskError> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -261,10 +271,12 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 				list = (List<BatchEngineImportTaskError>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -565,9 +577,9 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 	@Override
 	public void removeByBatchEngineImportTaskId(long batchEngineImportTaskId) {
 		for (BatchEngineImportTaskError batchEngineImportTaskError :
-				findByBatchEngineImportTaskId(
+				_findByBatchEngineImportTaskId(
 					batchEngineImportTaskId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(batchEngineImportTaskError);
 		}
@@ -1053,6 +1065,14 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 		OrderByComparator<BatchEngineImportTaskError> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchEngineImportTaskError> _findAll(
+		int start, int end,
+		OrderByComparator<BatchEngineImportTaskError> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1108,10 +1128,12 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 				list = (List<BatchEngineImportTaskError>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1132,7 +1154,8 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (BatchEngineImportTaskError batchEngineImportTaskError :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(batchEngineImportTaskError);
 		}

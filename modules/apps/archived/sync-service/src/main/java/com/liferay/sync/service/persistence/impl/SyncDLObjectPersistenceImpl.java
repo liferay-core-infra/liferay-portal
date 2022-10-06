@@ -172,6 +172,15 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLikeTreePath(
+			treePath, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByLikeTreePath(
+		String treePath, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		treePath = Objects.toString(treePath, "");
 
 		FinderPath finderPath = null;
@@ -250,10 +259,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,8 +561,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByLikeTreePath(String treePath) {
 		for (SyncDLObject syncDLObject :
-				findByLikeTreePath(
-					treePath, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLikeTreePath(
+					treePath, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(syncDLObject);
 		}
@@ -708,6 +720,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtM_R(
+			modifiedTime, repositoryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByGtM_R(
+		long modifiedTime, long repositoryId, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -778,10 +800,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1088,9 +1112,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByGtM_R(long modifiedTime, long repositoryId) {
 		for (SyncDLObject syncDLObject :
-				findByGtM_R(
+				_findByGtM_R(
 					modifiedTime, repositoryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -1240,6 +1264,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_P(
+			repositoryId, parentFolderId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByR_P(
+		long repositoryId, long parentFolderId, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1320,10 +1354,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1630,9 +1666,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByR_P(long repositoryId, long parentFolderId) {
 		for (SyncDLObject syncDLObject :
-				findByR_P(
+				_findByR_P(
 					repositoryId, parentFolderId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -1778,6 +1814,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_NotE(
+			repositoryId, event, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDLObject> _findByR_NotE(
+		long repositoryId, String event, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		event = Objects.toString(event, "");
 
 		FinderPath finderPath = null;
@@ -1861,10 +1907,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2184,9 +2232,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByR_NotE(long repositoryId, String event) {
 		for (SyncDLObject syncDLObject :
-				findByR_NotE(
+				_findByR_NotE(
 					repositoryId, event, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -2349,6 +2397,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_T(
+			repositoryId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDLObject> _findByR_T(
+		long repositoryId, String type, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -2442,10 +2500,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2765,9 +2825,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByR_T(long repositoryId, String type) {
 		for (SyncDLObject syncDLObject :
-				findByR_T(
+				_findByR_T(
 					repositoryId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -2929,6 +2989,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLikeT_NotE(
+			treePath, event, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDLObject> _findByLikeT_NotE(
+		String treePath, String event, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		treePath = Objects.toString(treePath, "");
 		event = Objects.toString(event, "");
 
@@ -3026,10 +3096,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3361,9 +3433,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByLikeT_NotE(String treePath, String event) {
 		for (SyncDLObject syncDLObject :
-				findByLikeT_NotE(
-					treePath, event, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByLikeT_NotE(
+					treePath, event, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -3540,6 +3612,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByV_T(
+			version, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDLObject> _findByV_T(
+		String version, String type, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		version = Objects.toString(version, "");
 		type = Objects.toString(type, "");
 
@@ -3645,10 +3727,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3977,9 +4061,9 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public void removeByV_T(String version, String type) {
 		for (SyncDLObject syncDLObject :
-				findByV_T(
-					version, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByV_T(
+					version, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -4091,7 +4175,15 @@ public class SyncDLObjectPersistenceImpl
 	public SyncDLObject findByT_T(String type, long typePK)
 		throws NoSuchDLObjectException {
 
-		SyncDLObject syncDLObject = fetchByT_T(type, typePK);
+		return _findByT_T(type, typePK, false);
+	}
+
+	private SyncDLObject _findByT_T(
+			String type, long typePK, boolean readOnlyCache)
+		throws NoSuchDLObjectException {
+
+		SyncDLObject syncDLObject = _fetchByT_T(
+			type, typePK, true, readOnlyCache);
 
 		if (syncDLObject == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4139,6 +4231,13 @@ public class SyncDLObjectPersistenceImpl
 	@Override
 	public SyncDLObject fetchByT_T(
 		String type, long typePK, boolean useFinderCache) {
+
+		return _fetchByT_T(type, typePK, useFinderCache, false);
+	}
+
+	private SyncDLObject _fetchByT_T(
+		String type, long typePK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		type = Objects.toString(type, "");
 
@@ -4210,9 +4309,11 @@ public class SyncDLObjectPersistenceImpl
 				else {
 					SyncDLObject syncDLObject = list.get(0);
 
-					result = syncDLObject;
+					if (!readOnlyCache) {
+						result = syncDLObject;
 
-					cacheResult(syncDLObject);
+						cacheResult(syncDLObject);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4242,7 +4343,7 @@ public class SyncDLObjectPersistenceImpl
 	public SyncDLObject removeByT_T(String type, long typePK)
 		throws NoSuchDLObjectException {
 
-		SyncDLObject syncDLObject = findByT_T(type, typePK);
+		SyncDLObject syncDLObject = _findByT_T(type, typePK, true);
 
 		return remove(syncDLObject);
 	}
@@ -4413,6 +4514,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtM_R_NotE(
+			modifiedTime, repositoryId, event, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByGtM_R_NotE(
+		long modifiedTime, long repositoryId, String event, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		event = Objects.toString(event, "");
 
 		FinderPath finderPath = null;
@@ -4501,10 +4612,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4922,6 +5035,16 @@ public class SyncDLObjectPersistenceImpl
 		int end, OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtM_R_NotE(
+			modifiedTime, repositoryId, events, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByGtM_R_NotE(
+		long modifiedTime, long repositoryId, String[] events, int start,
+		int end, OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (events == null) {
 			events = new String[0];
 		}
@@ -5042,12 +5165,14 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByGtM_R_NotE, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByGtM_R_NotE,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5073,9 +5198,9 @@ public class SyncDLObjectPersistenceImpl
 		long modifiedTime, long repositoryId, String event) {
 
 		for (SyncDLObject syncDLObject :
-				findByGtM_R_NotE(
+				_findByGtM_R_NotE(
 					modifiedTime, repositoryId, event, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -5360,6 +5485,16 @@ public class SyncDLObjectPersistenceImpl
 		OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_P_T(
+			repositoryId, parentFolderId, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByR_P_T(
+		long repositoryId, long parentFolderId, String type, int start, int end,
+		OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -5459,10 +5594,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5880,6 +6017,16 @@ public class SyncDLObjectPersistenceImpl
 		int end, OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_P_T(
+			repositoryId, parentFolderId, types, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findByR_P_T(
+		long repositoryId, long parentFolderId, String[] types, int start,
+		int end, OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (types == null) {
 			types = new String[0];
 		}
@@ -6000,11 +6147,14 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_P_T, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_P_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6030,9 +6180,9 @@ public class SyncDLObjectPersistenceImpl
 		long repositoryId, long parentFolderId, String type) {
 
 		for (SyncDLObject syncDLObject :
-				findByR_P_T(
+				_findByR_P_T(
 					repositoryId, parentFolderId, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(syncDLObject);
 		}
@@ -6609,6 +6759,13 @@ public class SyncDLObjectPersistenceImpl
 		int start, int end, OrderByComparator<SyncDLObject> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDLObject> _findAll(
+		int start, int end, OrderByComparator<SyncDLObject> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6663,10 +6820,12 @@ public class SyncDLObjectPersistenceImpl
 				list = (List<SyncDLObject>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6686,7 +6845,10 @@ public class SyncDLObjectPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SyncDLObject syncDLObject : findAll()) {
+		for (SyncDLObject syncDLObject :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(syncDLObject);
 		}
 	}

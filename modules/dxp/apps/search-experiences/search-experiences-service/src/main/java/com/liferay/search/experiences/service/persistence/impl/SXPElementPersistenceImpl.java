@@ -179,6 +179,15 @@ public class SXPElementPersistenceImpl
 		OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SXPElement> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -264,10 +273,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -909,7 +920,9 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SXPElement sxpElement :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sxpElement);
 		}
@@ -1131,6 +1144,16 @@ public class SXPElementPersistenceImpl
 		OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SXPElement> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1224,10 +1247,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1906,9 +1931,9 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SXPElement sxpElement :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(sxpElement);
 		}
@@ -2138,6 +2163,15 @@ public class SXPElementPersistenceImpl
 		OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SXPElement> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2212,10 +2246,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2823,8 +2859,9 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (SXPElement sxpElement :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sxpElement);
 		}
@@ -3011,6 +3048,16 @@ public class SXPElementPersistenceImpl
 		OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R(
+			companyId, readOnly, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SXPElement> _findByC_R(
+		long companyId, boolean readOnly, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3091,10 +3138,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3741,9 +3790,9 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void removeByC_R(long companyId, boolean readOnly) {
 		for (SXPElement sxpElement :
-				findByC_R(
+				_findByC_R(
 					companyId, readOnly, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(sxpElement);
 		}
@@ -3942,6 +3991,16 @@ public class SXPElementPersistenceImpl
 		OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_T(
+			companyId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SXPElement> _findByC_T(
+		long companyId, int type, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4022,10 +4081,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4665,9 +4726,9 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void removeByC_T(long companyId, int type) {
 		for (SXPElement sxpElement :
-				findByC_T(
-					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_T(
+					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(sxpElement);
 		}
@@ -4875,6 +4936,16 @@ public class SXPElementPersistenceImpl
 		OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_T_S(
+			companyId, type, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SXPElement> _findByC_T_S(
+		long companyId, int type, int status, int start, int end,
+		OrderByComparator<SXPElement> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4960,10 +5031,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5641,9 +5714,9 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void removeByC_T_S(long companyId, int type, int status) {
 		for (SXPElement sxpElement :
-				findByC_T_S(
+				_findByC_T_S(
 					companyId, type, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(sxpElement);
 		}
@@ -5793,7 +5866,15 @@ public class SXPElementPersistenceImpl
 	public SXPElement findByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchSXPElementException {
 
-		SXPElement sxpElement = fetchByC_ERC(companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private SXPElement _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchSXPElementException {
+
+		SXPElement sxpElement = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (sxpElement == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5843,6 +5924,14 @@ public class SXPElementPersistenceImpl
 	@Override
 	public SXPElement fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private SXPElement _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -5916,9 +6005,11 @@ public class SXPElementPersistenceImpl
 				else {
 					SXPElement sxpElement = list.get(0);
 
-					result = sxpElement;
+					if (!readOnlyCache) {
+						result = sxpElement;
 
-					cacheResult(sxpElement);
+						cacheResult(sxpElement);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5949,7 +6040,8 @@ public class SXPElementPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchSXPElementException {
 
-		SXPElement sxpElement = findByC_ERC(companyId, externalReferenceCode);
+		SXPElement sxpElement = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(sxpElement);
 	}
@@ -6480,6 +6572,13 @@ public class SXPElementPersistenceImpl
 		int start, int end, OrderByComparator<SXPElement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SXPElement> _findAll(
+		int start, int end, OrderByComparator<SXPElement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6534,10 +6633,12 @@ public class SXPElementPersistenceImpl
 				list = (List<SXPElement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6557,7 +6658,10 @@ public class SXPElementPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SXPElement sxpElement : findAll()) {
+		for (SXPElement sxpElement :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(sxpElement);
 		}
 	}

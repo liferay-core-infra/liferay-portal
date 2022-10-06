@@ -167,6 +167,15 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOwnerId(
+			ownerId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByOwnerId(
+		long ownerId, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			PortletPreferences.class);
 
@@ -242,10 +251,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -534,8 +545,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByOwnerId(long ownerId) {
 		for (PortletPreferences portletPreferences :
-				findByOwnerId(
-					ownerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByOwnerId(
+					ownerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(portletPreferences);
 		}
@@ -678,6 +690,15 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPlid(
+			plid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByPlid(
+		long plid, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			PortletPreferences.class);
 
@@ -753,10 +774,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1043,7 +1066,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByPlid(long plid) {
 		for (PortletPreferences portletPreferences :
-				findByPlid(plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByPlid(
+					plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(portletPreferences);
 		}
@@ -1189,6 +1214,15 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPortletId(
+			portletId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByPortletId(
+		String portletId, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1279,10 +1313,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1589,8 +1625,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByPortletId(String portletId) {
 		for (PortletPreferences portletPreferences :
-				findByPortletId(
-					portletId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByPortletId(
+					portletId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(portletPreferences);
 		}
@@ -1757,6 +1794,16 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByO_P(
+			ownerType, portletId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PortletPreferences> _findByO_P(
+		int ownerType, String portletId, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1853,10 +1900,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2179,9 +2228,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByO_P(int ownerType, String portletId) {
 		for (PortletPreferences portletPreferences :
-				findByO_P(
+				_findByO_P(
 					ownerType, portletId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(portletPreferences);
 		}
@@ -2355,6 +2404,16 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_P(
+			plid, portletId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PortletPreferences> _findByP_P(
+		long plid, String portletId, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -2451,10 +2510,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2777,9 +2838,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByP_P(long plid, String portletId) {
 		for (PortletPreferences portletPreferences :
-				findByP_P(
-					plid, portletId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByP_P(
+					plid, portletId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(portletPreferences);
 		}
@@ -2961,6 +3022,16 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByO_O_P(
+			ownerId, ownerType, plid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByO_O_P(
+		long ownerId, int ownerType, long plid, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			PortletPreferences.class);
 
@@ -3049,10 +3120,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3378,9 +3451,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByO_O_P(long ownerId, int ownerType, long plid) {
 		for (PortletPreferences portletPreferences :
-				findByO_O_P(
+				_findByO_O_P(
 					ownerId, ownerType, plid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portletPreferences);
 		}
@@ -3554,6 +3627,16 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByO_O_PI(
+			ownerId, ownerType, portletId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByO_O_PI(
+		long ownerId, int ownerType, String portletId, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -3655,10 +3738,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3998,9 +4083,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByO_O_PI(long ownerId, int ownerType, String portletId) {
 		for (PortletPreferences portletPreferences :
-				findByO_O_PI(
+				_findByO_O_PI(
 					ownerId, ownerType, portletId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portletPreferences);
 		}
@@ -4190,6 +4275,16 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByO_P_P(
+			ownerType, plid, portletId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByO_P_P(
+		int ownerType, long plid, String portletId, int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -4291,10 +4386,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4634,9 +4731,9 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void removeByO_P_P(int ownerType, long plid, String portletId) {
 		for (PortletPreferences portletPreferences :
-				findByO_P_P(
+				_findByO_P_P(
 					ownerType, plid, portletId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portletPreferences);
 		}
@@ -4834,6 +4931,17 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_O_O_LikeP(
+			companyId, ownerId, ownerType, portletId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findByC_O_O_LikeP(
+		long companyId, long ownerId, int ownerType, String portletId,
+		int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -4933,10 +5041,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5296,9 +5406,9 @@ public class PortletPreferencesPersistenceImpl
 		long companyId, long ownerId, int ownerType, String portletId) {
 
 		for (PortletPreferences portletPreferences :
-				findByC_O_O_LikeP(
+				_findByC_O_O_LikeP(
 					companyId, ownerId, ownerType, portletId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portletPreferences);
 		}
@@ -5430,8 +5540,16 @@ public class PortletPreferencesPersistenceImpl
 			long ownerId, int ownerType, long plid, String portletId)
 		throws NoSuchPortletPreferencesException {
 
-		PortletPreferences portletPreferences = fetchByO_O_P_P(
-			ownerId, ownerType, plid, portletId);
+		return _findByO_O_P_P(ownerId, ownerType, plid, portletId, false);
+	}
+
+	private PortletPreferences _findByO_O_P_P(
+			long ownerId, int ownerType, long plid, String portletId,
+			boolean readOnlyCache)
+		throws NoSuchPortletPreferencesException {
+
+		PortletPreferences portletPreferences = _fetchByO_O_P_P(
+			ownerId, ownerType, plid, portletId, true, readOnlyCache);
 
 		if (portletPreferences == null) {
 			StringBundler sb = new StringBundler(10);
@@ -5492,6 +5610,14 @@ public class PortletPreferencesPersistenceImpl
 	public PortletPreferences fetchByO_O_P_P(
 		long ownerId, int ownerType, long plid, String portletId,
 		boolean useFinderCache) {
+
+		return _fetchByO_O_P_P(
+			ownerId, ownerType, plid, portletId, useFinderCache, false);
+	}
+
+	private PortletPreferences _fetchByO_O_P_P(
+		long ownerId, int ownerType, long plid, String portletId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		portletId = Objects.toString(portletId, "");
 
@@ -5577,9 +5703,11 @@ public class PortletPreferencesPersistenceImpl
 				else {
 					PortletPreferences portletPreferences = list.get(0);
 
-					result = portletPreferences;
+					if (!readOnlyCache) {
+						result = portletPreferences;
 
-					cacheResult(portletPreferences);
+						cacheResult(portletPreferences);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5612,8 +5740,8 @@ public class PortletPreferencesPersistenceImpl
 			long ownerId, int ownerType, long plid, String portletId)
 		throws NoSuchPortletPreferencesException {
 
-		PortletPreferences portletPreferences = findByO_O_P_P(
-			ownerId, ownerType, plid, portletId);
+		PortletPreferences portletPreferences = _findByO_O_P_P(
+			ownerId, ownerType, plid, portletId, true);
 
 		return remove(portletPreferences);
 	}
@@ -6286,6 +6414,14 @@ public class PortletPreferencesPersistenceImpl
 		OrderByComparator<PortletPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortletPreferences> _findAll(
+		int start, int end,
+		OrderByComparator<PortletPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			PortletPreferences.class);
 
@@ -6343,10 +6479,12 @@ public class PortletPreferencesPersistenceImpl
 				list = (List<PortletPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6366,7 +6504,10 @@ public class PortletPreferencesPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PortletPreferences portletPreferences : findAll()) {
+		for (PortletPreferences portletPreferences :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(portletPreferences);
 		}
 	}

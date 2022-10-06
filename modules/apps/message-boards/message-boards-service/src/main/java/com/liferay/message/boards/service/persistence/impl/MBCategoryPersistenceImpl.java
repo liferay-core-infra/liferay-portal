@@ -182,6 +182,15 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -270,10 +279,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBCategory mbCategory :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbCategory);
 		}
@@ -668,7 +681,15 @@ public class MBCategoryPersistenceImpl
 	public MBCategory findByUUID_G(String uuid, long groupId)
 		throws NoSuchCategoryException {
 
-		MBCategory mbCategory = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBCategory _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCategoryException {
+
+		MBCategory mbCategory = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (mbCategory == null) {
 			StringBundler sb = new StringBundler(6);
@@ -716,6 +737,13 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public MBCategory fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBCategory _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +819,11 @@ public class MBCategoryPersistenceImpl
 				else {
 					MBCategory mbCategory = list.get(0);
 
-					result = mbCategory;
+					if (!readOnlyCache) {
+						result = mbCategory;
 
-					cacheResult(mbCategory);
+						cacheResult(mbCategory);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,7 +853,7 @@ public class MBCategoryPersistenceImpl
 	public MBCategory removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCategoryException {
 
-		MBCategory mbCategory = findByUUID_G(uuid, groupId);
+		MBCategory mbCategory = _findByUUID_G(uuid, groupId, true);
 
 		return remove(mbCategory);
 	}
@@ -997,6 +1027,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBCategory> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1093,10 +1133,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1413,9 +1455,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBCategory mbCategory :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbCategory);
 		}
@@ -1583,6 +1625,15 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -1658,10 +1709,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2267,8 +2320,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (MBCategory mbCategory :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbCategory);
 		}
@@ -2462,6 +2516,15 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -2539,10 +2602,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2826,8 +2891,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (MBCategory mbCategory :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbCategory);
 		}
@@ -2980,6 +3046,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P(
+			groupId, parentCategoryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByG_P(
+		long groupId, long parentCategoryId, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -3064,10 +3140,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3939,6 +4017,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P(
+			groupId, parentCategoryIds, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByG_P(
+		long groupId, long[] parentCategoryIds, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (parentCategoryIds == null) {
 			parentCategoryIds = new long[0];
 		}
@@ -4039,11 +4127,14 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4066,9 +4157,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByG_P(long groupId, long parentCategoryId) {
 		for (MBCategory mbCategory :
-				findByG_P(
+				_findByG_P(
 					groupId, parentCategoryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbCategory);
 		}
@@ -4438,6 +4529,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBCategory> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -4521,10 +4622,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5164,9 +5267,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (MBCategory mbCategory :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbCategory);
 		}
@@ -5378,6 +5481,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBCategory> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -5461,10 +5574,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5770,9 +5885,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (MBCategory mbCategory :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbCategory);
 		}
@@ -5940,6 +6055,16 @@ public class MBCategoryPersistenceImpl
 		int end, OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotC_G_P(
+			categoryId, groupId, parentCategoryId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByNotC_G_P(
+		long categoryId, long groupId, long parentCategoryId, int start,
+		int end, OrderByComparator<MBCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -6019,10 +6144,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6589,6 +6716,16 @@ public class MBCategoryPersistenceImpl
 		int end, OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotC_G_P(
+			categoryIds, groupId, parentCategoryIds, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByNotC_G_P(
+		long[] categoryIds, long groupId, long[] parentCategoryIds, int start,
+		int end, OrderByComparator<MBCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (categoryIds == null) {
 			categoryIds = new long[0];
 		}
@@ -6715,12 +6852,14 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByNotC_G_P, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByNotC_G_P, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6746,9 +6885,9 @@ public class MBCategoryPersistenceImpl
 		long categoryId, long groupId, long parentCategoryId) {
 
 		for (MBCategory mbCategory :
-				findByNotC_G_P(
+				_findByNotC_G_P(
 					categoryId, groupId, parentCategoryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbCategory);
 		}
@@ -7198,6 +7337,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_S(
+			groupId, parentCategoryId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByG_P_S(
+		long groupId, long parentCategoryId, int status, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -7287,10 +7436,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8214,6 +8365,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_S(
+			groupId, parentCategoryIds, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByG_P_S(
+		long groupId, long[] parentCategoryIds, int status, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (parentCategoryIds == null) {
 			parentCategoryIds = new long[0];
 		}
@@ -8322,11 +8483,14 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P_S, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8350,9 +8514,9 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void removeByG_P_S(long groupId, long parentCategoryId, int status) {
 		for (MBCategory mbCategory :
-				findByG_P_S(
+				_findByG_P_S(
 					groupId, parentCategoryId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbCategory);
 		}
@@ -8765,6 +8929,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_NotS(
+			groupId, parentCategoryId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByG_P_NotS(
+		long groupId, long parentCategoryId, int status, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -8844,10 +9018,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9771,6 +9947,16 @@ public class MBCategoryPersistenceImpl
 		OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_NotS(
+			groupId, parentCategoryIds, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByG_P_NotS(
+		long groupId, long[] parentCategoryIds, int status, int start, int end,
+		OrderByComparator<MBCategory> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (parentCategoryIds == null) {
 			parentCategoryIds = new long[0];
 		}
@@ -9879,12 +10065,14 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P_NotS, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P_NotS, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9910,9 +10098,9 @@ public class MBCategoryPersistenceImpl
 		long groupId, long parentCategoryId, int status) {
 
 		for (MBCategory mbCategory :
-				findByG_P_NotS(
+				_findByG_P_NotS(
 					groupId, parentCategoryId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbCategory);
 		}
@@ -10332,6 +10520,16 @@ public class MBCategoryPersistenceImpl
 		int start, int end, OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotC_G_P_S(
+			categoryId, groupId, parentCategoryId, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByNotC_G_P_S(
+		long categoryId, long groupId, long parentCategoryId, int status,
+		int start, int end, OrderByComparator<MBCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -10417,10 +10615,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11021,6 +11221,16 @@ public class MBCategoryPersistenceImpl
 		int start, int end, OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotC_G_P_S(
+			categoryIds, groupId, parentCategoryIds, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findByNotC_G_P_S(
+		long[] categoryIds, long groupId, long[] parentCategoryIds, int status,
+		int start, int end, OrderByComparator<MBCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (categoryIds == null) {
 			categoryIds = new long[0];
 		}
@@ -11154,12 +11364,14 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByNotC_G_P_S, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByNotC_G_P_S,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11186,9 +11398,9 @@ public class MBCategoryPersistenceImpl
 		long categoryId, long groupId, long parentCategoryId, int status) {
 
 		for (MBCategory mbCategory :
-				findByNotC_G_P_S(
+				_findByNotC_G_P_S(
 					categoryId, groupId, parentCategoryId, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbCategory);
 		}
@@ -12149,6 +12361,13 @@ public class MBCategoryPersistenceImpl
 		int start, int end, OrderByComparator<MBCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBCategory> _findAll(
+		int start, int end, OrderByComparator<MBCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBCategory.class);
 
@@ -12206,10 +12425,12 @@ public class MBCategoryPersistenceImpl
 				list = (List<MBCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12229,7 +12450,10 @@ public class MBCategoryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBCategory mbCategory : findAll()) {
+		for (MBCategory mbCategory :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbCategory);
 		}
 	}

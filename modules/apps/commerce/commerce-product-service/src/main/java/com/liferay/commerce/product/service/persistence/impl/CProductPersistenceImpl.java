@@ -166,6 +166,15 @@ public class CProductPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<CProduct> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CProduct> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CProduct> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -254,10 +263,12 @@ public class CProductPersistenceImpl
 				list = (List<CProduct>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -551,7 +562,9 @@ public class CProductPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CProduct cProduct :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cProduct);
 		}
@@ -652,7 +665,14 @@ public class CProductPersistenceImpl
 	public CProduct findByUUID_G(String uuid, long groupId)
 		throws NoSuchCProductException {
 
-		CProduct cProduct = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CProduct _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCProductException {
+
+		CProduct cProduct = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (cProduct == null) {
 			StringBundler sb = new StringBundler(6);
@@ -700,6 +720,13 @@ public class CProductPersistenceImpl
 	@Override
 	public CProduct fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CProduct _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -775,9 +802,11 @@ public class CProductPersistenceImpl
 				else {
 					CProduct cProduct = list.get(0);
 
-					result = cProduct;
+					if (!readOnlyCache) {
+						result = cProduct;
 
-					cacheResult(cProduct);
+						cacheResult(cProduct);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -807,7 +836,7 @@ public class CProductPersistenceImpl
 	public CProduct removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCProductException {
 
-		CProduct cProduct = findByUUID_G(uuid, groupId);
+		CProduct cProduct = _findByUUID_G(uuid, groupId, true);
 
 		return remove(cProduct);
 	}
@@ -980,6 +1009,16 @@ public class CProductPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<CProduct> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CProduct> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CProduct> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1076,10 +1115,12 @@ public class CProductPersistenceImpl
 				list = (List<CProduct>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1396,9 +1437,9 @@ public class CProductPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CProduct cProduct :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cProduct);
 		}
@@ -1565,6 +1606,15 @@ public class CProductPersistenceImpl
 		long groupId, int start, int end,
 		OrderByComparator<CProduct> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CProduct> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CProduct> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CProduct.class);
 
@@ -1640,10 +1690,12 @@ public class CProductPersistenceImpl
 				list = (List<CProduct>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1924,8 +1976,9 @@ public class CProductPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CProduct cProduct :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cProduct);
 		}
@@ -2010,7 +2063,15 @@ public class CProductPersistenceImpl
 	public CProduct findByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchCProductException {
 
-		CProduct cProduct = fetchByC_ERC(companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CProduct _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchCProductException {
+
+		CProduct cProduct = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (cProduct == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2058,6 +2119,14 @@ public class CProductPersistenceImpl
 	@Override
 	public CProduct fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CProduct _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -2134,9 +2203,11 @@ public class CProductPersistenceImpl
 				else {
 					CProduct cProduct = list.get(0);
 
-					result = cProduct;
+					if (!readOnlyCache) {
+						result = cProduct;
 
-					cacheResult(cProduct);
+						cacheResult(cProduct);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2166,7 +2237,8 @@ public class CProductPersistenceImpl
 	public CProduct removeByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchCProductException {
 
-		CProduct cProduct = findByC_ERC(companyId, externalReferenceCode);
+		CProduct cProduct = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(cProduct);
 	}
@@ -2837,6 +2909,13 @@ public class CProductPersistenceImpl
 		int start, int end, OrderByComparator<CProduct> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CProduct> _findAll(
+		int start, int end, OrderByComparator<CProduct> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CProduct.class);
 
@@ -2894,10 +2973,12 @@ public class CProductPersistenceImpl
 				list = (List<CProduct>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2917,7 +2998,10 @@ public class CProductPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CProduct cProduct : findAll()) {
+		for (CProduct cProduct :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cProduct);
 		}
 	}

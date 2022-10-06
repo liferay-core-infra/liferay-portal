@@ -205,6 +205,18 @@ public class SamlPeerBindingPersistenceImpl
 		int end, OrderByComparator<SamlPeerBinding> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U_D_SNIF_SNINQ_SPEI(
+			companyId, userId, deleted, samlNameIdFormat,
+			samlNameIdNameQualifier, samlPeerEntityId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlPeerBinding> _findByC_U_D_SNIF_SNINQ_SPEI(
+		long companyId, long userId, boolean deleted, String samlNameIdFormat,
+		String samlNameIdNameQualifier, String samlPeerEntityId, int start,
+		int end, OrderByComparator<SamlPeerBinding> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		samlNameIdFormat = Objects.toString(samlNameIdFormat, "");
 		samlNameIdNameQualifier = Objects.toString(samlNameIdNameQualifier, "");
 		samlPeerEntityId = Objects.toString(samlPeerEntityId, "");
@@ -357,10 +369,12 @@ public class SamlPeerBindingPersistenceImpl
 				list = (List<SamlPeerBinding>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -793,10 +807,10 @@ public class SamlPeerBindingPersistenceImpl
 		String samlNameIdNameQualifier, String samlPeerEntityId) {
 
 		for (SamlPeerBinding samlPeerBinding :
-				findByC_U_D_SNIF_SNINQ_SPEI(
+				_findByC_U_D_SNIF_SNINQ_SPEI(
 					companyId, userId, deleted, samlNameIdFormat,
 					samlNameIdNameQualifier, samlPeerEntityId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(samlPeerBinding);
 		}
@@ -1073,6 +1087,19 @@ public class SamlPeerBindingPersistenceImpl
 		OrderByComparator<SamlPeerBinding> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_D_SNIF_SNINQ_SNIV_SPEI(
+			companyId, deleted, samlNameIdFormat, samlNameIdNameQualifier,
+			samlNameIdValue, samlPeerEntityId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SamlPeerBinding> _findByC_D_SNIF_SNINQ_SNIV_SPEI(
+		long companyId, boolean deleted, String samlNameIdFormat,
+		String samlNameIdNameQualifier, String samlNameIdValue,
+		String samlPeerEntityId, int start, int end,
+		OrderByComparator<SamlPeerBinding> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		samlNameIdFormat = Objects.toString(samlNameIdFormat, "");
 		samlNameIdNameQualifier = Objects.toString(samlNameIdNameQualifier, "");
 		samlNameIdValue = Objects.toString(samlNameIdValue, "");
@@ -1240,10 +1267,12 @@ public class SamlPeerBindingPersistenceImpl
 				list = (List<SamlPeerBinding>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1698,10 +1727,10 @@ public class SamlPeerBindingPersistenceImpl
 		String samlPeerEntityId) {
 
 		for (SamlPeerBinding samlPeerBinding :
-				findByC_D_SNIF_SNINQ_SNIV_SPEI(
+				_findByC_D_SNIF_SNINQ_SNIV_SPEI(
 					companyId, deleted, samlNameIdFormat,
 					samlNameIdNameQualifier, samlNameIdValue, samlPeerEntityId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(samlPeerBinding);
 		}
@@ -2266,6 +2295,14 @@ public class SamlPeerBindingPersistenceImpl
 		OrderByComparator<SamlPeerBinding> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlPeerBinding> _findAll(
+		int start, int end,
+		OrderByComparator<SamlPeerBinding> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2320,10 +2357,12 @@ public class SamlPeerBindingPersistenceImpl
 				list = (List<SamlPeerBinding>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2343,7 +2382,10 @@ public class SamlPeerBindingPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SamlPeerBinding samlPeerBinding : findAll()) {
+		for (SamlPeerBinding samlPeerBinding :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(samlPeerBinding);
 		}
 	}

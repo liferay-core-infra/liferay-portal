@@ -169,6 +169,15 @@ public class AuditEventPersistenceImpl
 		OrderByComparator<AuditEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AuditEvent> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AuditEvent> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -243,10 +252,12 @@ public class AuditEventPersistenceImpl
 				list = (List<AuditEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -530,8 +541,9 @@ public class AuditEventPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AuditEvent auditEvent :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(auditEvent);
 		}
@@ -958,6 +970,13 @@ public class AuditEventPersistenceImpl
 		int start, int end, OrderByComparator<AuditEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AuditEvent> _findAll(
+		int start, int end, OrderByComparator<AuditEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1012,10 +1031,12 @@ public class AuditEventPersistenceImpl
 				list = (List<AuditEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1035,7 +1056,10 @@ public class AuditEventPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AuditEvent auditEvent : findAll()) {
+		for (AuditEvent auditEvent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(auditEvent);
 		}
 	}

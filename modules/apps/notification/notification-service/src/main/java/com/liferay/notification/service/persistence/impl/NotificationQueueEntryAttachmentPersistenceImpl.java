@@ -184,6 +184,18 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByNotificationQueueEntryId(
+			notificationQueueEntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<NotificationQueueEntryAttachment>
+		_findByNotificationQueueEntryId(
+			long notificationQueueEntryId, int start, int end,
+			OrderByComparator<NotificationQueueEntryAttachment>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -268,10 +280,12 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 				list = (List<NotificationQueueEntryAttachment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -588,9 +602,9 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 		long notificationQueueEntryId) {
 
 		for (NotificationQueueEntryAttachment notificationQueueEntryAttachment :
-				findByNotificationQueueEntryId(
+				_findByNotificationQueueEntryId(
 					notificationQueueEntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(notificationQueueEntryAttachment);
 		}
@@ -1071,6 +1085,14 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 		OrderByComparator<NotificationQueueEntryAttachment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationQueueEntryAttachment> _findAll(
+		int start, int end,
+		OrderByComparator<NotificationQueueEntryAttachment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1127,10 +1149,12 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 				list = (List<NotificationQueueEntryAttachment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1151,7 +1175,8 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (NotificationQueueEntryAttachment notificationQueueEntryAttachment :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(notificationQueueEntryAttachment);
 		}

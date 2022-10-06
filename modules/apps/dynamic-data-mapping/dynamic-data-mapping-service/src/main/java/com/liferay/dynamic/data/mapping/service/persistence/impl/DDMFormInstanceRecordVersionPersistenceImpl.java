@@ -187,6 +187,16 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFormInstanceRecordId(
+			formInstanceRecordId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMFormInstanceRecordVersion> _findByFormInstanceRecordId(
+		long formInstanceRecordId, int start, int end,
+		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstanceRecordVersion.class);
 
@@ -271,10 +281,12 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 				list = (List<DDMFormInstanceRecordVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -575,9 +587,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	@Override
 	public void removeByFormInstanceRecordId(long formInstanceRecordId) {
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				findByFormInstanceRecordId(
+				_findByFormInstanceRecordId(
 					formInstanceRecordId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmFormInstanceRecordVersion);
 		}
@@ -732,6 +744,16 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_F(
+			userId, formInstanceId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMFormInstanceRecordVersion> _findByU_F(
+		long userId, long formInstanceId, int start, int end,
+		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstanceRecordVersion.class);
 
@@ -818,10 +840,12 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 				list = (List<DDMFormInstanceRecordVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1133,9 +1157,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	@Override
 	public void removeByU_F(long userId, long formInstanceId) {
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				findByU_F(
+				_findByU_F(
 					userId, formInstanceId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmFormInstanceRecordVersion);
 		}
@@ -1298,6 +1322,16 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByF_F(
+			formInstanceId, formInstanceVersion, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMFormInstanceRecordVersion> _findByF_F(
+		long formInstanceId, String formInstanceVersion, int start, int end,
+		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		formInstanceVersion = Objects.toString(formInstanceVersion, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1400,10 +1434,12 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 				list = (List<DDMFormInstanceRecordVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1732,9 +1768,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	@Override
 	public void removeByF_F(long formInstanceId, String formInstanceVersion) {
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				findByF_F(
+				_findByF_F(
 					formInstanceId, formInstanceVersion, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmFormInstanceRecordVersion);
 		}
@@ -1844,8 +1880,15 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 			long formInstanceRecordId, String version)
 		throws NoSuchFormInstanceRecordVersionException {
 
-		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion = fetchByF_V(
-			formInstanceRecordId, version);
+		return _findByF_V(formInstanceRecordId, version, false);
+	}
+
+	private DDMFormInstanceRecordVersion _findByF_V(
+			long formInstanceRecordId, String version, boolean readOnlyCache)
+		throws NoSuchFormInstanceRecordVersionException {
+
+		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion = _fetchByF_V(
+			formInstanceRecordId, version, true, readOnlyCache);
 
 		if (ddmFormInstanceRecordVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1895,6 +1938,14 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	@Override
 	public DDMFormInstanceRecordVersion fetchByF_V(
 		long formInstanceRecordId, String version, boolean useFinderCache) {
+
+		return _fetchByF_V(
+			formInstanceRecordId, version, useFinderCache, false);
+	}
+
+	private DDMFormInstanceRecordVersion _fetchByF_V(
+		long formInstanceRecordId, String version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		version = Objects.toString(version, "");
 
@@ -1973,9 +2024,11 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 					DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion =
 						list.get(0);
 
-					result = ddmFormInstanceRecordVersion;
+					if (!readOnlyCache) {
+						result = ddmFormInstanceRecordVersion;
 
-					cacheResult(ddmFormInstanceRecordVersion);
+						cacheResult(ddmFormInstanceRecordVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2006,8 +2059,8 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 			long formInstanceRecordId, String version)
 		throws NoSuchFormInstanceRecordVersionException {
 
-		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion = findByF_V(
-			formInstanceRecordId, version);
+		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion = _findByF_V(
+			formInstanceRecordId, version, true);
 
 		return remove(ddmFormInstanceRecordVersion);
 	}
@@ -2184,6 +2237,16 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByF_S(
+			formInstanceRecordId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMFormInstanceRecordVersion> _findByF_S(
+		long formInstanceRecordId, int status, int start, int end,
+		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstanceRecordVersion.class);
 
@@ -2271,10 +2334,12 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 				list = (List<DDMFormInstanceRecordVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2587,9 +2652,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	@Override
 	public void removeByF_S(long formInstanceRecordId, int status) {
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				findByF_S(
+				_findByF_S(
 					formInstanceRecordId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmFormInstanceRecordVersion);
 		}
@@ -2766,6 +2831,17 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_F_F_S(
+			userId, formInstanceId, formInstanceVersion, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstanceRecordVersion> _findByU_F_F_S(
+		long userId, long formInstanceId, String formInstanceVersion,
+		int status, int start, int end,
+		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		formInstanceVersion = Objects.toString(formInstanceVersion, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2880,10 +2956,12 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 				list = (List<DDMFormInstanceRecordVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3255,9 +3333,9 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		int status) {
 
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				findByU_F_F_S(
+				_findByU_F_F_S(
 					userId, formInstanceId, formInstanceVersion, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmFormInstanceRecordVersion);
 		}
@@ -3982,6 +4060,14 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstanceRecordVersion> _findAll(
+		int start, int end,
+		OrderByComparator<DDMFormInstanceRecordVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstanceRecordVersion.class);
 
@@ -4040,10 +4126,12 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 				list = (List<DDMFormInstanceRecordVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4064,7 +4152,8 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmFormInstanceRecordVersion);
 		}

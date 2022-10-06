@@ -174,6 +174,15 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharingEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -259,10 +268,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -556,7 +567,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SharingEntry sharingEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sharingEntry);
 		}
@@ -645,7 +658,15 @@ public class SharingEntryPersistenceImpl
 	public SharingEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		SharingEntry sharingEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private SharingEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		SharingEntry sharingEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (sharingEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -693,6 +714,13 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public SharingEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private SharingEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -765,9 +793,11 @@ public class SharingEntryPersistenceImpl
 				else {
 					SharingEntry sharingEntry = list.get(0);
 
-					result = sharingEntry;
+					if (!readOnlyCache) {
+						result = sharingEntry;
 
-					cacheResult(sharingEntry);
+						cacheResult(sharingEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -797,7 +827,7 @@ public class SharingEntryPersistenceImpl
 	public SharingEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		SharingEntry sharingEntry = findByUUID_G(uuid, groupId);
+		SharingEntry sharingEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(sharingEntry);
 	}
@@ -959,6 +989,16 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SharingEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1052,10 +1092,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1374,9 +1416,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SharingEntry sharingEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(sharingEntry);
 		}
@@ -1532,6 +1574,15 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharingEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1604,10 +1655,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1891,8 +1944,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SharingEntry sharingEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sharingEntry);
 		}
@@ -2023,6 +2077,15 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharingEntry> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2095,10 +2158,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2381,8 +2446,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (SharingEntry sharingEntry :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sharingEntry);
 		}
@@ -2516,6 +2582,15 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByToUserId(
+			toUserId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharingEntry> _findByToUserId(
+		long toUserId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2588,10 +2663,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2875,8 +2952,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByToUserId(long toUserId) {
 		for (SharingEntry sharingEntry :
-				findByToUserId(
-					toUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByToUserId(
+					toUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sharingEntry);
 		}
@@ -3010,6 +3088,16 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtExpirationDate(
+			expirationDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SharingEntry> _findByLtExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3088,10 +3176,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3391,9 +3481,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByLtExpirationDate(Date expirationDate) {
 		for (SharingEntry sharingEntry :
-				findByLtExpirationDate(
-					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByLtExpirationDate(
+					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(sharingEntry);
 		}
@@ -3549,6 +3639,16 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C(
+			userId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SharingEntry> _findByU_C(
+		long userId, long classNameId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3629,10 +3729,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3939,9 +4041,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByU_C(long userId, long classNameId) {
 		for (SharingEntry sharingEntry :
-				findByU_C(
+				_findByU_C(
 					userId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(sharingEntry);
 		}
@@ -4088,6 +4190,16 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTU_C(
+			toUserId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SharingEntry> _findByTU_C(
+		long toUserId, long classNameId, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4168,10 +4280,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4478,9 +4592,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByTU_C(long toUserId, long classNameId) {
 		for (SharingEntry sharingEntry :
-				findByTU_C(
+				_findByTU_C(
 					toUserId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(sharingEntry);
 		}
@@ -4627,6 +4741,16 @@ public class SharingEntryPersistenceImpl
 		OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SharingEntry> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4707,10 +4831,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5017,9 +5143,9 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (SharingEntry sharingEntry :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(sharingEntry);
 		}
@@ -5102,8 +5228,16 @@ public class SharingEntryPersistenceImpl
 			long toUserId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		SharingEntry sharingEntry = fetchByTU_C_C(
-			toUserId, classNameId, classPK);
+		return _findByTU_C_C(toUserId, classNameId, classPK, false);
+	}
+
+	private SharingEntry _findByTU_C_C(
+			long toUserId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		SharingEntry sharingEntry = _fetchByTU_C_C(
+			toUserId, classNameId, classPK, true, readOnlyCache);
 
 		if (sharingEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -5158,6 +5292,14 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public SharingEntry fetchByTU_C_C(
 		long toUserId, long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByTU_C_C(
+			toUserId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private SharingEntry _fetchByTU_C_C(
+		long toUserId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -5222,9 +5364,11 @@ public class SharingEntryPersistenceImpl
 				else {
 					SharingEntry sharingEntry = list.get(0);
 
-					result = sharingEntry;
+					if (!readOnlyCache) {
+						result = sharingEntry;
 
-					cacheResult(sharingEntry);
+						cacheResult(sharingEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5256,8 +5400,8 @@ public class SharingEntryPersistenceImpl
 			long toUserId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		SharingEntry sharingEntry = findByTU_C_C(
-			toUserId, classNameId, classPK);
+		SharingEntry sharingEntry = _findByTU_C_C(
+			toUserId, classNameId, classPK, true);
 
 		return remove(sharingEntry);
 	}
@@ -5766,6 +5910,13 @@ public class SharingEntryPersistenceImpl
 		int start, int end, OrderByComparator<SharingEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharingEntry> _findAll(
+		int start, int end, OrderByComparator<SharingEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5820,10 +5971,12 @@ public class SharingEntryPersistenceImpl
 				list = (List<SharingEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5843,7 +5996,10 @@ public class SharingEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SharingEntry sharingEntry : findAll()) {
+		for (SharingEntry sharingEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(sharingEntry);
 		}
 	}

@@ -183,6 +183,15 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -582,7 +593,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -683,8 +696,15 @@ public class LayoutClassedModelUsagePersistenceImpl
 	public LayoutClassedModelUsage findByUUID_G(String uuid, long groupId)
 		throws NoSuchLayoutClassedModelUsageException {
 
-		LayoutClassedModelUsage layoutClassedModelUsage = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private LayoutClassedModelUsage _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchLayoutClassedModelUsageException {
+
+		LayoutClassedModelUsage layoutClassedModelUsage = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (layoutClassedModelUsage == null) {
 			StringBundler sb = new StringBundler(6);
@@ -732,6 +752,13 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public LayoutClassedModelUsage fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private LayoutClassedModelUsage _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -809,9 +836,11 @@ public class LayoutClassedModelUsagePersistenceImpl
 					LayoutClassedModelUsage layoutClassedModelUsage = list.get(
 						0);
 
-					result = layoutClassedModelUsage;
+					if (!readOnlyCache) {
+						result = layoutClassedModelUsage;
 
-					cacheResult(layoutClassedModelUsage);
+						cacheResult(layoutClassedModelUsage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -841,8 +870,8 @@ public class LayoutClassedModelUsagePersistenceImpl
 	public LayoutClassedModelUsage removeByUUID_G(String uuid, long groupId)
 		throws NoSuchLayoutClassedModelUsageException {
 
-		LayoutClassedModelUsage layoutClassedModelUsage = findByUUID_G(
-			uuid, groupId);
+		LayoutClassedModelUsage layoutClassedModelUsage = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(layoutClassedModelUsage);
 	}
@@ -1018,6 +1047,16 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1114,10 +1153,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1441,9 +1482,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -1612,6 +1653,15 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPlid(
+			plid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByPlid(
+		long plid, int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutClassedModelUsage.class);
 
@@ -1687,10 +1737,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1984,7 +2036,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void removeByPlid(long plid) {
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByPlid(plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByPlid(
+					plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -2137,6 +2191,16 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCN_CPK(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByCN_CPK(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutClassedModelUsage.class);
 
@@ -2221,10 +2285,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2535,9 +2601,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void removeByCN_CPK(long classNameId, long classPK) {
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByCN_CPK(
+				_findByCN_CPK(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -2706,6 +2772,16 @@ public class LayoutClassedModelUsagePersistenceImpl
 		int end, OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_CN_CT(
+			companyId, classNameId, containerType, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByC_CN_CT(
+		long companyId, long classNameId, long containerType, int start,
+		int end, OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutClassedModelUsage.class);
 
@@ -2799,10 +2875,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3133,9 +3211,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 		long companyId, long classNameId, long containerType) {
 
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByC_CN_CT(
+				_findByC_CN_CT(
 					companyId, classNameId, containerType, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -3311,6 +3389,16 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCN_CPK_T(
+			classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByCN_CPK_T(
+		long classNameId, long classPK, int type, int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutClassedModelUsage.class);
 
@@ -3400,10 +3488,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3731,9 +3821,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void removeByCN_CPK_T(long classNameId, long classPK, int type) {
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByCN_CPK_T(
+				_findByCN_CPK_T(
 					classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -3910,6 +4000,16 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCK_CT_P(
+			containerKey, containerType, plid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutClassedModelUsage> _findByCK_CT_P(
+		String containerKey, long containerType, long plid, int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		containerKey = Objects.toString(containerKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -4013,10 +4113,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4360,9 +4462,9 @@ public class LayoutClassedModelUsagePersistenceImpl
 		String containerKey, long containerType, long plid) {
 
 		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				findByCK_CT_P(
+				_findByCK_CT_P(
 					containerKey, containerType, plid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutClassedModelUsage);
 		}
@@ -4486,8 +4588,19 @@ public class LayoutClassedModelUsagePersistenceImpl
 			long containerType, long plid)
 		throws NoSuchLayoutClassedModelUsageException {
 
-		LayoutClassedModelUsage layoutClassedModelUsage = fetchByCN_CPK_CK_CT_P(
-			classNameId, classPK, containerKey, containerType, plid);
+		return _findByCN_CPK_CK_CT_P(
+			classNameId, classPK, containerKey, containerType, plid, false);
+	}
+
+	private LayoutClassedModelUsage _findByCN_CPK_CK_CT_P(
+			long classNameId, long classPK, String containerKey,
+			long containerType, long plid, boolean readOnlyCache)
+		throws NoSuchLayoutClassedModelUsageException {
+
+		LayoutClassedModelUsage layoutClassedModelUsage =
+			_fetchByCN_CPK_CK_CT_P(
+				classNameId, classPK, containerKey, containerType, plid, true,
+				readOnlyCache);
 
 		if (layoutClassedModelUsage == null) {
 			StringBundler sb = new StringBundler(12);
@@ -4555,6 +4668,15 @@ public class LayoutClassedModelUsagePersistenceImpl
 	public LayoutClassedModelUsage fetchByCN_CPK_CK_CT_P(
 		long classNameId, long classPK, String containerKey, long containerType,
 		long plid, boolean useFinderCache) {
+
+		return _fetchByCN_CPK_CK_CT_P(
+			classNameId, classPK, containerKey, containerType, plid,
+			useFinderCache, false);
+	}
+
+	private LayoutClassedModelUsage _fetchByCN_CPK_CK_CT_P(
+		long classNameId, long classPK, String containerKey, long containerType,
+		long plid, boolean useFinderCache, boolean readOnlyCache) {
 
 		containerKey = Objects.toString(containerKey, "");
 
@@ -4650,9 +4772,11 @@ public class LayoutClassedModelUsagePersistenceImpl
 					LayoutClassedModelUsage layoutClassedModelUsage = list.get(
 						0);
 
-					result = layoutClassedModelUsage;
+					if (!readOnlyCache) {
+						result = layoutClassedModelUsage;
 
-					cacheResult(layoutClassedModelUsage);
+						cacheResult(layoutClassedModelUsage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4687,8 +4811,8 @@ public class LayoutClassedModelUsagePersistenceImpl
 			long containerType, long plid)
 		throws NoSuchLayoutClassedModelUsageException {
 
-		LayoutClassedModelUsage layoutClassedModelUsage = findByCN_CPK_CK_CT_P(
-			classNameId, classPK, containerKey, containerType, plid);
+		LayoutClassedModelUsage layoutClassedModelUsage = _findByCN_CPK_CK_CT_P(
+			classNameId, classPK, containerKey, containerType, plid, true);
 
 		return remove(layoutClassedModelUsage);
 	}
@@ -5452,6 +5576,14 @@ public class LayoutClassedModelUsagePersistenceImpl
 		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutClassedModelUsage> _findAll(
+		int start, int end,
+		OrderByComparator<LayoutClassedModelUsage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutClassedModelUsage.class);
 
@@ -5510,10 +5642,12 @@ public class LayoutClassedModelUsagePersistenceImpl
 				list = (List<LayoutClassedModelUsage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5533,7 +5667,10 @@ public class LayoutClassedModelUsagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutClassedModelUsage layoutClassedModelUsage : findAll()) {
+		for (LayoutClassedModelUsage layoutClassedModelUsage :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutClassedModelUsage);
 		}
 	}

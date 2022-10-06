@@ -166,6 +166,15 @@ public class AssetLinkPersistenceImpl
 		OrderByComparator<AssetLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByEntryId1(
+			entryId1, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetLink> _findByEntryId1(
+		long entryId1, int start, int end,
+		OrderByComparator<AssetLink> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
 
@@ -241,10 +250,12 @@ public class AssetLinkPersistenceImpl
 				list = (List<AssetLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -527,8 +538,9 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public void removeByEntryId1(long entryId1) {
 		for (AssetLink assetLink :
-				findByEntryId1(
-					entryId1, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByEntryId1(
+					entryId1, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetLink);
 		}
@@ -672,6 +684,15 @@ public class AssetLinkPersistenceImpl
 		OrderByComparator<AssetLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByEntryId2(
+			entryId2, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetLink> _findByEntryId2(
+		long entryId2, int start, int end,
+		OrderByComparator<AssetLink> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
 
@@ -747,10 +768,12 @@ public class AssetLinkPersistenceImpl
 				list = (List<AssetLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1033,8 +1056,9 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public void removeByEntryId2(long entryId2) {
 		for (AssetLink assetLink :
-				findByEntryId2(
-					entryId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByEntryId2(
+					entryId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetLink);
 		}
@@ -1185,6 +1209,16 @@ public class AssetLinkPersistenceImpl
 		OrderByComparator<AssetLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByE_E(
+			entryId1, entryId2, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetLink> _findByE_E(
+		long entryId1, long entryId2, int start, int end,
+		OrderByComparator<AssetLink> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
 
@@ -1268,10 +1302,12 @@ public class AssetLinkPersistenceImpl
 				list = (List<AssetLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1577,9 +1613,9 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public void removeByE_E(long entryId1, long entryId2) {
 		for (AssetLink assetLink :
-				findByE_E(
+				_findByE_E(
 					entryId1, entryId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(assetLink);
 		}
@@ -1737,6 +1773,16 @@ public class AssetLinkPersistenceImpl
 		OrderByComparator<AssetLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByE1_T(
+			entryId1, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetLink> _findByE1_T(
+		long entryId1, int type, int start, int end,
+		OrderByComparator<AssetLink> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
 
@@ -1820,10 +1866,12 @@ public class AssetLinkPersistenceImpl
 				list = (List<AssetLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2127,9 +2175,9 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public void removeByE1_T(long entryId1, int type) {
 		for (AssetLink assetLink :
-				findByE1_T(
-					entryId1, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByE1_T(
+					entryId1, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetLink);
 		}
@@ -2287,6 +2335,16 @@ public class AssetLinkPersistenceImpl
 		OrderByComparator<AssetLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByE2_T(
+			entryId2, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetLink> _findByE2_T(
+		long entryId2, int type, int start, int end,
+		OrderByComparator<AssetLink> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
 
@@ -2370,10 +2428,12 @@ public class AssetLinkPersistenceImpl
 				list = (List<AssetLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2677,9 +2737,9 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public void removeByE2_T(long entryId2, int type) {
 		for (AssetLink assetLink :
-				findByE2_T(
-					entryId2, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByE2_T(
+					entryId2, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetLink);
 		}
@@ -2773,7 +2833,15 @@ public class AssetLinkPersistenceImpl
 	public AssetLink findByE_E_T(long entryId1, long entryId2, int type)
 		throws NoSuchLinkException {
 
-		AssetLink assetLink = fetchByE_E_T(entryId1, entryId2, type);
+		return _findByE_E_T(entryId1, entryId2, type, false);
+	}
+
+	private AssetLink _findByE_E_T(
+			long entryId1, long entryId2, int type, boolean readOnlyCache)
+		throws NoSuchLinkException {
+
+		AssetLink assetLink = _fetchByE_E_T(
+			entryId1, entryId2, type, true, readOnlyCache);
 
 		if (assetLink == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2826,6 +2894,13 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public AssetLink fetchByE_E_T(
 		long entryId1, long entryId2, int type, boolean useFinderCache) {
+
+		return _fetchByE_E_T(entryId1, entryId2, type, useFinderCache, false);
+	}
+
+	private AssetLink _fetchByE_E_T(
+		long entryId1, long entryId2, int type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
@@ -2893,9 +2968,11 @@ public class AssetLinkPersistenceImpl
 				else {
 					AssetLink assetLink = list.get(0);
 
-					result = assetLink;
+					if (!readOnlyCache) {
+						result = assetLink;
 
-					cacheResult(assetLink);
+						cacheResult(assetLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2926,7 +3003,7 @@ public class AssetLinkPersistenceImpl
 	public AssetLink removeByE_E_T(long entryId1, long entryId2, int type)
 		throws NoSuchLinkException {
 
-		AssetLink assetLink = findByE_E_T(entryId1, entryId2, type);
+		AssetLink assetLink = _findByE_E_T(entryId1, entryId2, type, true);
 
 		return remove(assetLink);
 	}
@@ -3560,6 +3637,13 @@ public class AssetLinkPersistenceImpl
 		int start, int end, OrderByComparator<AssetLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetLink> _findAll(
+		int start, int end, OrderByComparator<AssetLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetLink.class);
 
@@ -3617,10 +3701,12 @@ public class AssetLinkPersistenceImpl
 				list = (List<AssetLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3640,7 +3726,10 @@ public class AssetLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AssetLink assetLink : findAll()) {
+		for (AssetLink assetLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(assetLink);
 		}
 	}

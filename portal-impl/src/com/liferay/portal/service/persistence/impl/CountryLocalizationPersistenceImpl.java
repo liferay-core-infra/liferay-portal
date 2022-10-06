@@ -158,6 +158,15 @@ public class CountryLocalizationPersistenceImpl
 		OrderByComparator<CountryLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCountryId(
+			countryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CountryLocalization> _findByCountryId(
+		long countryId, int start, int end,
+		OrderByComparator<CountryLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -232,10 +241,12 @@ public class CountryLocalizationPersistenceImpl
 				list = (List<CountryLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -529,8 +540,9 @@ public class CountryLocalizationPersistenceImpl
 	@Override
 	public void removeByCountryId(long countryId) {
 		for (CountryLocalization countryLocalization :
-				findByCountryId(
-					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCountryId(
+					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(countryLocalization);
 		}
@@ -604,8 +616,15 @@ public class CountryLocalizationPersistenceImpl
 			long countryId, String languageId)
 		throws NoSuchCountryLocalizationException {
 
-		CountryLocalization countryLocalization = fetchByCountryId_LanguageId(
-			countryId, languageId);
+		return _findByCountryId_LanguageId(countryId, languageId, false);
+	}
+
+	private CountryLocalization _findByCountryId_LanguageId(
+			long countryId, String languageId, boolean readOnlyCache)
+		throws NoSuchCountryLocalizationException {
+
+		CountryLocalization countryLocalization = _fetchByCountryId_LanguageId(
+			countryId, languageId, true, readOnlyCache);
 
 		if (countryLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -655,6 +674,14 @@ public class CountryLocalizationPersistenceImpl
 	@Override
 	public CountryLocalization fetchByCountryId_LanguageId(
 		long countryId, String languageId, boolean useFinderCache) {
+
+		return _fetchByCountryId_LanguageId(
+			countryId, languageId, useFinderCache, false);
+	}
+
+	private CountryLocalization _fetchByCountryId_LanguageId(
+		long countryId, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -730,9 +757,11 @@ public class CountryLocalizationPersistenceImpl
 				else {
 					CountryLocalization countryLocalization = list.get(0);
 
-					result = countryLocalization;
+					if (!readOnlyCache) {
+						result = countryLocalization;
 
-					cacheResult(countryLocalization);
+						cacheResult(countryLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -763,8 +792,8 @@ public class CountryLocalizationPersistenceImpl
 			long countryId, String languageId)
 		throws NoSuchCountryLocalizationException {
 
-		CountryLocalization countryLocalization = findByCountryId_LanguageId(
-			countryId, languageId);
+		CountryLocalization countryLocalization = _findByCountryId_LanguageId(
+			countryId, languageId, true);
 
 		return remove(countryLocalization);
 	}
@@ -1247,6 +1276,14 @@ public class CountryLocalizationPersistenceImpl
 		OrderByComparator<CountryLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CountryLocalization> _findAll(
+		int start, int end,
+		OrderByComparator<CountryLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1301,10 +1338,12 @@ public class CountryLocalizationPersistenceImpl
 				list = (List<CountryLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1324,7 +1363,10 @@ public class CountryLocalizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CountryLocalization countryLocalization : findAll()) {
+		for (CountryLocalization countryLocalization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(countryLocalization);
 		}
 	}

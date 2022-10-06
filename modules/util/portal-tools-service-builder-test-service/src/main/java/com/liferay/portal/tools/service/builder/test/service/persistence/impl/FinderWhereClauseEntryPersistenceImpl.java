@@ -156,6 +156,15 @@ public class FinderWhereClauseEntryPersistenceImpl
 		OrderByComparator<FinderWhereClauseEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByName_Nickname(
+			name, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FinderWhereClauseEntry> _findByName_Nickname(
+		String name, int start, int end,
+		OrderByComparator<FinderWhereClauseEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -241,10 +250,12 @@ public class FinderWhereClauseEntryPersistenceImpl
 				list = (List<FinderWhereClauseEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,8 +561,9 @@ public class FinderWhereClauseEntryPersistenceImpl
 	@Override
 	public void removeByName_Nickname(String name) {
 		for (FinderWhereClauseEntry finderWhereClauseEntry :
-				findByName_Nickname(
-					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByName_Nickname(
+					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(finderWhereClauseEntry);
 		}
@@ -1012,6 +1024,14 @@ public class FinderWhereClauseEntryPersistenceImpl
 		OrderByComparator<FinderWhereClauseEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FinderWhereClauseEntry> _findAll(
+		int start, int end,
+		OrderByComparator<FinderWhereClauseEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1066,10 +1086,12 @@ public class FinderWhereClauseEntryPersistenceImpl
 				list = (List<FinderWhereClauseEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1089,7 +1111,10 @@ public class FinderWhereClauseEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (FinderWhereClauseEntry finderWhereClauseEntry : findAll()) {
+		for (FinderWhereClauseEntry finderWhereClauseEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(finderWhereClauseEntry);
 		}
 	}

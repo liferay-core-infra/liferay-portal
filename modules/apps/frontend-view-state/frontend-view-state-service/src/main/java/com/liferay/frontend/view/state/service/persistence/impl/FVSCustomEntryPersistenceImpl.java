@@ -172,6 +172,15 @@ public class FVSCustomEntryPersistenceImpl
 		OrderByComparator<FVSCustomEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FVSCustomEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<FVSCustomEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -257,10 +266,12 @@ public class FVSCustomEntryPersistenceImpl
 				list = (List<FVSCustomEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,7 +568,9 @@ public class FVSCustomEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (FVSCustomEntry fvsCustomEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(fvsCustomEntry);
 		}
@@ -712,6 +725,16 @@ public class FVSCustomEntryPersistenceImpl
 		OrderByComparator<FVSCustomEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<FVSCustomEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<FVSCustomEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -805,10 +828,12 @@ public class FVSCustomEntryPersistenceImpl
 				list = (List<FVSCustomEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1129,9 +1154,9 @@ public class FVSCustomEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (FVSCustomEntry fvsCustomEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fvsCustomEntry);
 		}
@@ -1617,6 +1642,13 @@ public class FVSCustomEntryPersistenceImpl
 		int start, int end, OrderByComparator<FVSCustomEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FVSCustomEntry> _findAll(
+		int start, int end, OrderByComparator<FVSCustomEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1671,10 +1703,12 @@ public class FVSCustomEntryPersistenceImpl
 				list = (List<FVSCustomEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1694,7 +1728,10 @@ public class FVSCustomEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (FVSCustomEntry fvsCustomEntry : findAll()) {
+		for (FVSCustomEntry fvsCustomEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(fvsCustomEntry);
 		}
 	}

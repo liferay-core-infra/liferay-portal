@@ -192,6 +192,16 @@ public class CTSContentPersistenceImpl
 		OrderByComparator<CTSContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R_S(
+			companyId, repositoryId, storeType, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CTSContent> _findByC_R_S(
+		long companyId, long repositoryId, String storeType, int start, int end,
+		OrderByComparator<CTSContent> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		storeType = Objects.toString(storeType, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -294,10 +304,12 @@ public class CTSContentPersistenceImpl
 				list = (List<CTSContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -636,9 +648,9 @@ public class CTSContentPersistenceImpl
 		long companyId, long repositoryId, String storeType) {
 
 		for (CTSContent ctsContent :
-				findByC_R_S(
+				_findByC_R_S(
 					companyId, repositoryId, storeType, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctsContent);
 		}
@@ -837,6 +849,16 @@ public class CTSContentPersistenceImpl
 		int start, int end, OrderByComparator<CTSContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R_P_S(
+			companyId, repositoryId, path, storeType, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTSContent> _findByC_R_P_S(
+		long companyId, long repositoryId, String path, String storeType,
+		int start, int end, OrderByComparator<CTSContent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		path = Objects.toString(path, "");
 		storeType = Objects.toString(storeType, "");
 
@@ -958,10 +980,12 @@ public class CTSContentPersistenceImpl
 				list = (List<CTSContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1328,9 +1352,9 @@ public class CTSContentPersistenceImpl
 		long companyId, long repositoryId, String path, String storeType) {
 
 		for (CTSContent ctsContent :
-				findByC_R_P_S(
+				_findByC_R_P_S(
 					companyId, repositoryId, path, storeType, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctsContent);
 		}
@@ -1553,6 +1577,16 @@ public class CTSContentPersistenceImpl
 		int start, int end, OrderByComparator<CTSContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R_LikeP_S(
+			companyId, repositoryId, path, storeType, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTSContent> _findByC_R_LikeP_S(
+		long companyId, long repositoryId, String path, String storeType,
+		int start, int end, OrderByComparator<CTSContent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		path = Objects.toString(path, "");
 		storeType = Objects.toString(storeType, "");
 
@@ -1663,10 +1697,12 @@ public class CTSContentPersistenceImpl
 				list = (List<CTSContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2034,9 +2070,9 @@ public class CTSContentPersistenceImpl
 		long companyId, long repositoryId, String path, String storeType) {
 
 		for (CTSContent ctsContent :
-				findByC_R_LikeP_S(
+				_findByC_R_LikeP_S(
 					companyId, repositoryId, path, storeType, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctsContent);
 		}
@@ -2185,8 +2221,18 @@ public class CTSContentPersistenceImpl
 			String storeType)
 		throws NoSuchContentException {
 
-		CTSContent ctsContent = fetchByC_R_P_V_S(
-			companyId, repositoryId, path, version, storeType);
+		return _findByC_R_P_V_S(
+			companyId, repositoryId, path, version, storeType, false);
+	}
+
+	private CTSContent _findByC_R_P_V_S(
+			long companyId, long repositoryId, String path, String version,
+			String storeType, boolean readOnlyCache)
+		throws NoSuchContentException {
+
+		CTSContent ctsContent = _fetchByC_R_P_V_S(
+			companyId, repositoryId, path, version, storeType, true,
+			readOnlyCache);
 
 		if (ctsContent == null) {
 			StringBundler sb = new StringBundler(12);
@@ -2254,6 +2300,15 @@ public class CTSContentPersistenceImpl
 	public CTSContent fetchByC_R_P_V_S(
 		long companyId, long repositoryId, String path, String version,
 		String storeType, boolean useFinderCache) {
+
+		return _fetchByC_R_P_V_S(
+			companyId, repositoryId, path, version, storeType, useFinderCache,
+			false);
+	}
+
+	private CTSContent _fetchByC_R_P_V_S(
+		long companyId, long repositoryId, String path, String version,
+		String storeType, boolean useFinderCache, boolean readOnlyCache) {
 
 		path = Objects.toString(path, "");
 		version = Objects.toString(version, "");
@@ -2370,9 +2425,11 @@ public class CTSContentPersistenceImpl
 				else {
 					CTSContent ctsContent = list.get(0);
 
-					result = ctsContent;
+					if (!readOnlyCache) {
+						result = ctsContent;
 
-					cacheResult(ctsContent);
+						cacheResult(ctsContent);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2407,8 +2464,8 @@ public class CTSContentPersistenceImpl
 			String storeType)
 		throws NoSuchContentException {
 
-		CTSContent ctsContent = findByC_R_P_V_S(
-			companyId, repositoryId, path, version, storeType);
+		CTSContent ctsContent = _findByC_R_P_V_S(
+			companyId, repositoryId, path, version, storeType, true);
 
 		return remove(ctsContent);
 	}
@@ -3110,6 +3167,13 @@ public class CTSContentPersistenceImpl
 		int start, int end, OrderByComparator<CTSContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTSContent> _findAll(
+		int start, int end, OrderByComparator<CTSContent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CTSContent.class);
 
@@ -3167,10 +3231,12 @@ public class CTSContentPersistenceImpl
 				list = (List<CTSContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3190,7 +3256,10 @@ public class CTSContentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTSContent ctsContent : findAll()) {
+		for (CTSContent ctsContent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctsContent);
 		}
 	}

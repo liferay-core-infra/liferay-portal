@@ -100,7 +100,13 @@ public class TicketPersistenceImpl
 	 */
 	@Override
 	public Ticket findByKey(String key) throws NoSuchTicketException {
-		Ticket ticket = fetchByKey(key);
+		return _findByKey(key, false);
+	}
+
+	private Ticket _findByKey(String key, boolean readOnlyCache)
+		throws NoSuchTicketException {
+
+		Ticket ticket = _fetchByKey(key, true, readOnlyCache);
 
 		if (ticket == null) {
 			StringBundler sb = new StringBundler(4);
@@ -142,6 +148,12 @@ public class TicketPersistenceImpl
 	 */
 	@Override
 	public Ticket fetchByKey(String key, boolean useFinderCache) {
+		return _fetchByKey(key, useFinderCache, false);
+	}
+
+	private Ticket _fetchByKey(
+		String key, boolean useFinderCache, boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 
 		Object[] finderArgs = null;
@@ -222,9 +234,11 @@ public class TicketPersistenceImpl
 
 					Ticket ticket = list.get(0);
 
-					result = ticket;
+					if (!readOnlyCache) {
+						result = ticket;
 
-					cacheResult(ticket);
+						cacheResult(ticket);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -251,7 +265,7 @@ public class TicketPersistenceImpl
 	 */
 	@Override
 	public Ticket removeByKey(String key) throws NoSuchTicketException {
-		Ticket ticket = findByKey(key);
+		Ticket ticket = _findByKey(key, true);
 
 		return remove(ticket);
 	}
@@ -411,6 +425,16 @@ public class TicketPersistenceImpl
 		long companyId, long classNameId, long classPK, int start, int end,
 		OrderByComparator<Ticket> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C_C(
+			companyId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Ticket> _findByC_C_C(
+		long companyId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<Ticket> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -496,10 +520,12 @@ public class TicketPersistenceImpl
 				list = (List<Ticket>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,9 +849,9 @@ public class TicketPersistenceImpl
 	@Override
 	public void removeByC_C_C(long companyId, long classNameId, long classPK) {
 		for (Ticket ticket :
-				findByC_C_C(
+				_findByC_C_C(
 					companyId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ticket);
 		}
@@ -984,6 +1010,16 @@ public class TicketPersistenceImpl
 		long classNameId, long classPK, int type, int start, int end,
 		OrderByComparator<Ticket> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C_T(
+			classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Ticket> _findByC_C_T(
+		long classNameId, long classPK, int type, int start, int end,
+		OrderByComparator<Ticket> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1069,10 +1105,12 @@ public class TicketPersistenceImpl
 				list = (List<Ticket>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1395,9 +1433,9 @@ public class TicketPersistenceImpl
 	@Override
 	public void removeByC_C_T(long classNameId, long classPK, int type) {
 		for (Ticket ticket :
-				findByC_C_T(
+				_findByC_C_T(
 					classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ticket);
 		}
@@ -1565,6 +1603,16 @@ public class TicketPersistenceImpl
 		int end, OrderByComparator<Ticket> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_T(
+			companyId, classNameId, classPK, type, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Ticket> _findByC_C_C_T(
+		long companyId, long classNameId, long classPK, int type, int start,
+		int end, OrderByComparator<Ticket> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1658,10 +1706,12 @@ public class TicketPersistenceImpl
 				list = (List<Ticket>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2003,9 +2053,9 @@ public class TicketPersistenceImpl
 		long companyId, long classNameId, long classPK, int type) {
 
 		for (Ticket ticket :
-				findByC_C_C_T(
+				_findByC_C_C_T(
 					companyId, classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ticket);
 		}
@@ -2473,6 +2523,13 @@ public class TicketPersistenceImpl
 		int start, int end, OrderByComparator<Ticket> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Ticket> _findAll(
+		int start, int end, OrderByComparator<Ticket> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2527,10 +2584,12 @@ public class TicketPersistenceImpl
 				list = (List<Ticket>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2550,7 +2609,10 @@ public class TicketPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Ticket ticket : findAll()) {
+		for (Ticket ticket :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ticket);
 		}
 	}

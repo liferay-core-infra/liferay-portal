@@ -181,6 +181,16 @@ public class RatingsStatsPersistenceImpl
 		OrderByComparator<RatingsStats> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPKs, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<RatingsStats> _findByC_C(
+		long classNameId, long[] classPKs, int start, int end,
+		OrderByComparator<RatingsStats> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (classPKs == null) {
 			classPKs = new long[0];
 		}
@@ -268,11 +278,14 @@ public class RatingsStatsPersistenceImpl
 						classNameId, classPKs, start, end, orderByComparator);
 				}
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -356,7 +369,15 @@ public class RatingsStatsPersistenceImpl
 	public RatingsStats findByC_C(long classNameId, long classPK)
 		throws NoSuchStatsException {
 
-		RatingsStats ratingsStats = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private RatingsStats _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchStatsException {
+
+		RatingsStats ratingsStats = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (ratingsStats == null) {
 			StringBundler sb = new StringBundler(6);
@@ -404,6 +425,13 @@ public class RatingsStatsPersistenceImpl
 	@Override
 	public RatingsStats fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private RatingsStats _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RatingsStats.class);
@@ -466,9 +494,11 @@ public class RatingsStatsPersistenceImpl
 				else {
 					RatingsStats ratingsStats = list.get(0);
 
-					result = ratingsStats;
+					if (!readOnlyCache) {
+						result = ratingsStats;
 
-					cacheResult(ratingsStats);
+						cacheResult(ratingsStats);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -498,7 +528,7 @@ public class RatingsStatsPersistenceImpl
 	public RatingsStats removeByC_C(long classNameId, long classPK)
 		throws NoSuchStatsException {
 
-		RatingsStats ratingsStats = findByC_C(classNameId, classPK);
+		RatingsStats ratingsStats = _findByC_C(classNameId, classPK, true);
 
 		return remove(ratingsStats);
 	}
@@ -1247,6 +1277,13 @@ public class RatingsStatsPersistenceImpl
 		int start, int end, OrderByComparator<RatingsStats> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RatingsStats> _findAll(
+		int start, int end, OrderByComparator<RatingsStats> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RatingsStats.class);
 
@@ -1304,10 +1341,12 @@ public class RatingsStatsPersistenceImpl
 				list = (List<RatingsStats>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1327,7 +1366,10 @@ public class RatingsStatsPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RatingsStats ratingsStats : findAll()) {
+		for (RatingsStats ratingsStats :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ratingsStats);
 		}
 	}

@@ -166,6 +166,15 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialRelation> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -254,10 +263,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -554,7 +565,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SocialRelation socialRelation :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialRelation);
 		}
@@ -721,6 +734,16 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialRelation> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -817,10 +840,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1141,9 +1166,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SocialRelation socialRelation :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(socialRelation);
 		}
@@ -1313,6 +1338,15 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialRelation> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -1390,10 +1424,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1678,8 +1714,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (SocialRelation socialRelation :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialRelation);
 		}
@@ -1825,6 +1862,15 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId1(
+			userId1, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialRelation> _findByUserId1(
+		long userId1, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -1900,10 +1946,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2188,8 +2236,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByUserId1(long userId1) {
 		for (SocialRelation socialRelation :
-				findByUserId1(
-					userId1, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId1(
+					userId1, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialRelation);
 		}
@@ -2335,6 +2384,15 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId2(
+			userId2, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialRelation> _findByUserId2(
+		long userId2, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -2410,10 +2468,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2698,8 +2758,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByUserId2(long userId2) {
 		for (SocialRelation socialRelation :
-				findByUserId2(
-					userId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId2(
+					userId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialRelation);
 		}
@@ -2842,6 +2903,15 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialRelation> _findByType(
+		int type, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -2917,10 +2987,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3204,7 +3276,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByType(int type) {
 		for (SocialRelation socialRelation :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialRelation);
 		}
@@ -3354,6 +3428,16 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_T(
+			companyId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialRelation> _findByC_T(
+		long companyId, int type, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -3437,10 +3521,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3748,9 +3834,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByC_T(long companyId, int type) {
 		for (SocialRelation socialRelation :
-				findByC_T(
-					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_T(
+					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(socialRelation);
 		}
@@ -3909,6 +3995,16 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU1_U2(
+			userId1, userId2, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialRelation> _findByU1_U2(
+		long userId1, long userId2, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -3992,10 +4088,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4303,9 +4401,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByU1_U2(long userId1, long userId2) {
 		for (SocialRelation socialRelation :
-				findByU1_U2(
+				_findByU1_U2(
 					userId1, userId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(socialRelation);
 		}
@@ -4463,6 +4561,16 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU1_T(
+			userId1, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialRelation> _findByU1_T(
+		long userId1, int type, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -4546,10 +4654,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4856,9 +4966,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByU1_T(long userId1, int type) {
 		for (SocialRelation socialRelation :
-				findByU1_T(
-					userId1, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByU1_T(
+					userId1, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(socialRelation);
 		}
@@ -5016,6 +5126,16 @@ public class SocialRelationPersistenceImpl
 		OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU2_T(
+			userId2, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialRelation> _findByU2_T(
+		long userId2, int type, int start, int end,
+		OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -5099,10 +5219,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5409,9 +5531,9 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public void removeByU2_T(long userId2, int type) {
 		for (SocialRelation socialRelation :
-				findByU2_T(
-					userId2, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByU2_T(
+					userId2, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(socialRelation);
 		}
@@ -5505,7 +5627,15 @@ public class SocialRelationPersistenceImpl
 	public SocialRelation findByU1_U2_T(long userId1, long userId2, int type)
 		throws NoSuchRelationException {
 
-		SocialRelation socialRelation = fetchByU1_U2_T(userId1, userId2, type);
+		return _findByU1_U2_T(userId1, userId2, type, false);
+	}
+
+	private SocialRelation _findByU1_U2_T(
+			long userId1, long userId2, int type, boolean readOnlyCache)
+		throws NoSuchRelationException {
+
+		SocialRelation socialRelation = _fetchByU1_U2_T(
+			userId1, userId2, type, true, readOnlyCache);
 
 		if (socialRelation == null) {
 			StringBundler sb = new StringBundler(8);
@@ -5558,6 +5688,13 @@ public class SocialRelationPersistenceImpl
 	@Override
 	public SocialRelation fetchByU1_U2_T(
 		long userId1, long userId2, int type, boolean useFinderCache) {
+
+		return _fetchByU1_U2_T(userId1, userId2, type, useFinderCache, false);
+	}
+
+	private SocialRelation _fetchByU1_U2_T(
+		long userId1, long userId2, int type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
@@ -5625,9 +5762,11 @@ public class SocialRelationPersistenceImpl
 				else {
 					SocialRelation socialRelation = list.get(0);
 
-					result = socialRelation;
+					if (!readOnlyCache) {
+						result = socialRelation;
 
-					cacheResult(socialRelation);
+						cacheResult(socialRelation);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5658,7 +5797,8 @@ public class SocialRelationPersistenceImpl
 	public SocialRelation removeByU1_U2_T(long userId1, long userId2, int type)
 		throws NoSuchRelationException {
 
-		SocialRelation socialRelation = findByU1_U2_T(userId1, userId2, type);
+		SocialRelation socialRelation = _findByU1_U2_T(
+			userId1, userId2, type, true);
 
 		return remove(socialRelation);
 	}
@@ -6305,6 +6445,13 @@ public class SocialRelationPersistenceImpl
 		int start, int end, OrderByComparator<SocialRelation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialRelation> _findAll(
+		int start, int end, OrderByComparator<SocialRelation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialRelation.class);
 
@@ -6362,10 +6509,12 @@ public class SocialRelationPersistenceImpl
 				list = (List<SocialRelation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6385,7 +6534,10 @@ public class SocialRelationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SocialRelation socialRelation : findAll()) {
+		for (SocialRelation socialRelation :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(socialRelation);
 		}
 	}

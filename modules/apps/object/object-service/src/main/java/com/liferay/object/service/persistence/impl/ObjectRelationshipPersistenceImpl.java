@@ -178,6 +178,15 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectRelationship> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -263,10 +272,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -568,7 +579,9 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectRelationship objectRelationship :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectRelationship);
 		}
@@ -723,6 +736,16 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectRelationship> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -816,10 +839,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1141,9 +1166,9 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectRelationship objectRelationship :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -1304,6 +1329,16 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectDefinitionId1(
+			objectDefinitionId1, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectRelationship> _findByObjectDefinitionId1(
+		long objectDefinitionId1, int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1381,10 +1416,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1679,9 +1716,9 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public void removeByObjectDefinitionId1(long objectDefinitionId1) {
 		for (ObjectRelationship objectRelationship :
-				findByObjectDefinitionId1(
+				_findByObjectDefinitionId1(
 					objectDefinitionId1, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -1819,6 +1856,16 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectDefinitionId2(
+			objectDefinitionId2, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectRelationship> _findByObjectDefinitionId2(
+		long objectDefinitionId2, int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1896,10 +1943,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2194,9 +2243,9 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public void removeByObjectDefinitionId2(long objectDefinitionId2) {
 		for (ObjectRelationship objectRelationship :
-				findByObjectDefinitionId2(
+				_findByObjectDefinitionId2(
 					objectDefinitionId2, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -2269,8 +2318,15 @@ public class ObjectRelationshipPersistenceImpl
 	public ObjectRelationship findByObjectFieldId2(long objectFieldId2)
 		throws NoSuchObjectRelationshipException {
 
-		ObjectRelationship objectRelationship = fetchByObjectFieldId2(
-			objectFieldId2);
+		return _findByObjectFieldId2(objectFieldId2, false);
+	}
+
+	private ObjectRelationship _findByObjectFieldId2(
+			long objectFieldId2, boolean readOnlyCache)
+		throws NoSuchObjectRelationshipException {
+
+		ObjectRelationship objectRelationship = _fetchByObjectFieldId2(
+			objectFieldId2, true, readOnlyCache);
 
 		if (objectRelationship == null) {
 			StringBundler sb = new StringBundler(4);
@@ -2313,6 +2369,12 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public ObjectRelationship fetchByObjectFieldId2(
 		long objectFieldId2, boolean useFinderCache) {
+
+		return _fetchByObjectFieldId2(objectFieldId2, useFinderCache, false);
+	}
+
+	private ObjectRelationship _fetchByObjectFieldId2(
+		long objectFieldId2, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2381,9 +2443,11 @@ public class ObjectRelationshipPersistenceImpl
 
 					ObjectRelationship objectRelationship = list.get(0);
 
-					result = objectRelationship;
+					if (!readOnlyCache) {
+						result = objectRelationship;
 
-					cacheResult(objectRelationship);
+						cacheResult(objectRelationship);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2412,8 +2476,8 @@ public class ObjectRelationshipPersistenceImpl
 	public ObjectRelationship removeByObjectFieldId2(long objectFieldId2)
 		throws NoSuchObjectRelationshipException {
 
-		ObjectRelationship objectRelationship = findByObjectFieldId2(
-			objectFieldId2);
+		ObjectRelationship objectRelationship = _findByObjectFieldId2(
+			objectFieldId2, true);
 
 		return remove(objectRelationship);
 	}
@@ -2554,6 +2618,16 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI1_N(
+			objectDefinitionId1, name, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectRelationship> _findByODI1_N(
+		long objectDefinitionId1, String name, int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -2648,10 +2722,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2974,9 +3050,9 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public void removeByODI1_N(long objectDefinitionId1, String name) {
 		for (ObjectRelationship objectRelationship :
-				findByODI1_N(
+				_findByODI1_N(
 					objectDefinitionId1, name, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -3151,6 +3227,17 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI1_ODI2_T(
+			objectDefinitionId1, objectDefinitionId2, type, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectRelationship> _findByODI1_ODI2_T(
+		long objectDefinitionId1, long objectDefinitionId2, String type,
+		int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -3254,10 +3341,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3602,9 +3691,9 @@ public class ObjectRelationshipPersistenceImpl
 		long objectDefinitionId1, long objectDefinitionId2, String type) {
 
 		for (ObjectRelationship objectRelationship :
-				findByODI1_ODI2_T(
+				_findByODI1_ODI2_T(
 					objectDefinitionId1, objectDefinitionId2, type,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -3793,6 +3882,17 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI1_DT_R(
+			objectDefinitionId1, deletionType, reverse, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectRelationship> _findByODI1_DT_R(
+		long objectDefinitionId1, String deletionType, boolean reverse,
+		int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		deletionType = Objects.toString(deletionType, "");
 
 		FinderPath finderPath = null;
@@ -3896,10 +3996,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4244,9 +4346,9 @@ public class ObjectRelationshipPersistenceImpl
 		long objectDefinitionId1, String deletionType, boolean reverse) {
 
 		for (ObjectRelationship objectRelationship :
-				findByODI1_DT_R(
+				_findByODI1_DT_R(
 					objectDefinitionId1, deletionType, reverse,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -4439,6 +4541,17 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI1_ODI2_N_T(
+			objectDefinitionId1, objectDefinitionId2, name, type, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectRelationship> _findByODI1_ODI2_N_T(
+		long objectDefinitionId1, long objectDefinitionId2, String name,
+		String type, int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		type = Objects.toString(type, "");
 
@@ -4559,10 +4672,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4940,9 +5055,9 @@ public class ObjectRelationshipPersistenceImpl
 		String type) {
 
 		for (ObjectRelationship objectRelationship :
-				findByODI1_ODI2_N_T(
+				_findByODI1_ODI2_N_T(
 					objectDefinitionId1, objectDefinitionId2, name, type,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectRelationship);
 		}
@@ -5082,8 +5197,19 @@ public class ObjectRelationshipPersistenceImpl
 			boolean reverse, String type)
 		throws NoSuchObjectRelationshipException {
 
-		ObjectRelationship objectRelationship = fetchByODI1_ODI2_N_R_T(
-			objectDefinitionId1, objectDefinitionId2, name, reverse, type);
+		return _findByODI1_ODI2_N_R_T(
+			objectDefinitionId1, objectDefinitionId2, name, reverse, type,
+			false);
+	}
+
+	private ObjectRelationship _findByODI1_ODI2_N_R_T(
+			long objectDefinitionId1, long objectDefinitionId2, String name,
+			boolean reverse, String type, boolean readOnlyCache)
+		throws NoSuchObjectRelationshipException {
+
+		ObjectRelationship objectRelationship = _fetchByODI1_ODI2_N_R_T(
+			objectDefinitionId1, objectDefinitionId2, name, reverse, type, true,
+			readOnlyCache);
 
 		if (objectRelationship == null) {
 			StringBundler sb = new StringBundler(12);
@@ -5152,6 +5278,16 @@ public class ObjectRelationshipPersistenceImpl
 	public ObjectRelationship fetchByODI1_ODI2_N_R_T(
 		long objectDefinitionId1, long objectDefinitionId2, String name,
 		boolean reverse, String type, boolean useFinderCache) {
+
+		return _fetchByODI1_ODI2_N_R_T(
+			objectDefinitionId1, objectDefinitionId2, name, reverse, type,
+			useFinderCache, false);
+	}
+
+	private ObjectRelationship _fetchByODI1_ODI2_N_R_T(
+		long objectDefinitionId1, long objectDefinitionId2, String name,
+		boolean reverse, String type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 		type = Objects.toString(type, "");
@@ -5274,9 +5410,11 @@ public class ObjectRelationshipPersistenceImpl
 
 					ObjectRelationship objectRelationship = list.get(0);
 
-					result = objectRelationship;
+					if (!readOnlyCache) {
+						result = objectRelationship;
 
-					cacheResult(objectRelationship);
+						cacheResult(objectRelationship);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5311,8 +5449,9 @@ public class ObjectRelationshipPersistenceImpl
 			boolean reverse, String type)
 		throws NoSuchObjectRelationshipException {
 
-		ObjectRelationship objectRelationship = findByODI1_ODI2_N_R_T(
-			objectDefinitionId1, objectDefinitionId2, name, reverse, type);
+		ObjectRelationship objectRelationship = _findByODI1_ODI2_N_R_T(
+			objectDefinitionId1, objectDefinitionId2, name, reverse, type,
+			true);
 
 		return remove(objectRelationship);
 	}
@@ -5899,6 +6038,14 @@ public class ObjectRelationshipPersistenceImpl
 		OrderByComparator<ObjectRelationship> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectRelationship> _findAll(
+		int start, int end,
+		OrderByComparator<ObjectRelationship> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5953,10 +6100,12 @@ public class ObjectRelationshipPersistenceImpl
 				list = (List<ObjectRelationship>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5976,7 +6125,10 @@ public class ObjectRelationshipPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectRelationship objectRelationship : findAll()) {
+		for (ObjectRelationship objectRelationship :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectRelationship);
 		}
 	}

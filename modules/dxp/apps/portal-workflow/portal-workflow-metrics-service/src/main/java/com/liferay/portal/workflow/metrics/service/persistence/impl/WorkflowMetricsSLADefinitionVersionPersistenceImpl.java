@@ -183,6 +183,16 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinitionVersion> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinitionVersion>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -275,10 +285,12 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 					(List<WorkflowMetricsSLADefinitionVersion>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -598,8 +610,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	public void removeByUuid(String uuid) {
 		for (WorkflowMetricsSLADefinitionVersion
 				workflowMetricsSLADefinitionVersion :
-					findByUuid(
-						uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					_findByUuid(
+						uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(workflowMetricsSLADefinitionVersion);
 		}
@@ -689,8 +702,16 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			String uuid, long groupId)
 		throws NoSuchSLADefinitionVersionException {
 
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private WorkflowMetricsSLADefinitionVersion _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchSLADefinitionVersionException {
+
 		WorkflowMetricsSLADefinitionVersion
-			workflowMetricsSLADefinitionVersion = fetchByUUID_G(uuid, groupId);
+			workflowMetricsSLADefinitionVersion = _fetchByUUID_G(
+				uuid, groupId, true, readOnlyCache);
 
 		if (workflowMetricsSLADefinitionVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -740,6 +761,13 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	@Override
 	public WorkflowMetricsSLADefinitionVersion fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private WorkflowMetricsSLADefinitionVersion _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -816,9 +844,11 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 					WorkflowMetricsSLADefinitionVersion
 						workflowMetricsSLADefinitionVersion = list.get(0);
 
-					result = workflowMetricsSLADefinitionVersion;
+					if (!readOnlyCache) {
+						result = workflowMetricsSLADefinitionVersion;
 
-					cacheResult(workflowMetricsSLADefinitionVersion);
+						cacheResult(workflowMetricsSLADefinitionVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -850,7 +880,8 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 		throws NoSuchSLADefinitionVersionException {
 
 		WorkflowMetricsSLADefinitionVersion
-			workflowMetricsSLADefinitionVersion = findByUUID_G(uuid, groupId);
+			workflowMetricsSLADefinitionVersion = _findByUUID_G(
+				uuid, groupId, true);
 
 		return remove(workflowMetricsSLADefinitionVersion);
 	}
@@ -1016,6 +1047,17 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WorkflowMetricsSLADefinitionVersion> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinitionVersion>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1117,10 +1159,12 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 					(List<WorkflowMetricsSLADefinitionVersion>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1457,9 +1501,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (WorkflowMetricsSLADefinitionVersion
 				workflowMetricsSLADefinitionVersion :
-					findByUuid_C(
+					_findByUuid_C(
 						uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(workflowMetricsSLADefinitionVersion);
 		}
@@ -1631,6 +1675,18 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByWorkflowMetricsSLADefinitionId(
+			workflowMetricsSLADefinitionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinitionVersion>
+		_findByWorkflowMetricsSLADefinitionId(
+			long workflowMetricsSLADefinitionId, int start, int end,
+			OrderByComparator<WorkflowMetricsSLADefinitionVersion>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1716,10 +1772,12 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 					(List<WorkflowMetricsSLADefinitionVersion>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2043,9 +2101,9 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 		for (WorkflowMetricsSLADefinitionVersion
 				workflowMetricsSLADefinitionVersion :
-					findByWorkflowMetricsSLADefinitionId(
+					_findByWorkflowMetricsSLADefinitionId(
 						workflowMetricsSLADefinitionId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowMetricsSLADefinitionVersion);
 		}
@@ -2124,9 +2182,17 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			String version, long workflowMetricsSLADefinitionId)
 		throws NoSuchSLADefinitionVersionException {
 
+		return _findByV_WMSLAD(version, workflowMetricsSLADefinitionId, false);
+	}
+
+	private WorkflowMetricsSLADefinitionVersion _findByV_WMSLAD(
+			String version, long workflowMetricsSLADefinitionId,
+			boolean readOnlyCache)
+		throws NoSuchSLADefinitionVersionException {
+
 		WorkflowMetricsSLADefinitionVersion
-			workflowMetricsSLADefinitionVersion = fetchByV_WMSLAD(
-				version, workflowMetricsSLADefinitionId);
+			workflowMetricsSLADefinitionVersion = _fetchByV_WMSLAD(
+				version, workflowMetricsSLADefinitionId, true, readOnlyCache);
 
 		if (workflowMetricsSLADefinitionVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2177,6 +2243,14 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	public WorkflowMetricsSLADefinitionVersion fetchByV_WMSLAD(
 		String version, long workflowMetricsSLADefinitionId,
 		boolean useFinderCache) {
+
+		return _fetchByV_WMSLAD(
+			version, workflowMetricsSLADefinitionId, useFinderCache, false);
+	}
+
+	private WorkflowMetricsSLADefinitionVersion _fetchByV_WMSLAD(
+		String version, long workflowMetricsSLADefinitionId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		version = Objects.toString(version, "");
 
@@ -2273,9 +2347,11 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 					WorkflowMetricsSLADefinitionVersion
 						workflowMetricsSLADefinitionVersion = list.get(0);
 
-					result = workflowMetricsSLADefinitionVersion;
+					if (!readOnlyCache) {
+						result = workflowMetricsSLADefinitionVersion;
 
-					cacheResult(workflowMetricsSLADefinitionVersion);
+						cacheResult(workflowMetricsSLADefinitionVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2307,8 +2383,8 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 		throws NoSuchSLADefinitionVersionException {
 
 		WorkflowMetricsSLADefinitionVersion
-			workflowMetricsSLADefinitionVersion = findByV_WMSLAD(
-				version, workflowMetricsSLADefinitionId);
+			workflowMetricsSLADefinitionVersion = _findByV_WMSLAD(
+				version, workflowMetricsSLADefinitionId, true);
 
 		return remove(workflowMetricsSLADefinitionVersion);
 	}
@@ -2917,6 +2993,15 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinitionVersion> _findAll(
+		int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinitionVersion>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2974,10 +3059,12 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 					(List<WorkflowMetricsSLADefinitionVersion>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2998,7 +3085,10 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (WorkflowMetricsSLADefinitionVersion
-				workflowMetricsSLADefinitionVersion : findAll()) {
+				workflowMetricsSLADefinitionVersion :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(workflowMetricsSLADefinitionVersion);
 		}

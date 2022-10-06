@@ -190,6 +190,16 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePriceListCommerceAccountGroupRel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommercePriceListCommerceAccountGroupRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -288,10 +298,12 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 					(List<CommercePriceListCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -615,8 +627,9 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 	public void removeByUuid(String uuid) {
 		for (CommercePriceListCommerceAccountGroupRel
 				commercePriceListCommerceAccountGroupRel :
-					findByUuid(
-						uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					_findByUuid(
+						uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commercePriceListCommerceAccountGroupRel);
 		}
@@ -788,6 +801,17 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePriceListCommerceAccountGroupRel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommercePriceListCommerceAccountGroupRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -895,10 +919,12 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 					(List<CommercePriceListCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1239,9 +1265,9 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommercePriceListCommerceAccountGroupRel
 				commercePriceListCommerceAccountGroupRel :
-					findByUuid_C(
+					_findByUuid_C(
 						uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commercePriceListCommerceAccountGroupRel);
 		}
@@ -1420,6 +1446,18 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommercePriceListId(
+			commercePriceListId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePriceListCommerceAccountGroupRel>
+		_findByCommercePriceListId(
+			long commercePriceListId, int start, int end,
+			OrderByComparator<CommercePriceListCommerceAccountGroupRel>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceListCommerceAccountGroupRel.class);
 
@@ -1508,10 +1546,12 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 					(List<CommercePriceListCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1833,9 +1873,9 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 	public void removeByCommercePriceListId(long commercePriceListId) {
 		for (CommercePriceListCommerceAccountGroupRel
 				commercePriceListCommerceAccountGroupRel :
-					findByCommercePriceListId(
+					_findByCommercePriceListId(
 						commercePriceListId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePriceListCommerceAccountGroupRel);
 		}
@@ -1923,9 +1963,19 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 			long commercePriceListId, long commerceAccountGroupId)
 		throws NoSuchPriceListCommerceAccountGroupRelException {
 
+		return _findByCAGI_CPI(
+			commercePriceListId, commerceAccountGroupId, false);
+	}
+
+	private CommercePriceListCommerceAccountGroupRel _findByCAGI_CPI(
+			long commercePriceListId, long commerceAccountGroupId,
+			boolean readOnlyCache)
+		throws NoSuchPriceListCommerceAccountGroupRelException {
+
 		CommercePriceListCommerceAccountGroupRel
-			commercePriceListCommerceAccountGroupRel = fetchByCAGI_CPI(
-				commercePriceListId, commerceAccountGroupId);
+			commercePriceListCommerceAccountGroupRel = _fetchByCAGI_CPI(
+				commercePriceListId, commerceAccountGroupId, true,
+				readOnlyCache);
 
 		if (commercePriceListCommerceAccountGroupRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1978,6 +2028,14 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 	public CommercePriceListCommerceAccountGroupRel fetchByCAGI_CPI(
 		long commercePriceListId, long commerceAccountGroupId,
 		boolean useFinderCache) {
+
+		return _fetchByCAGI_CPI(
+			commercePriceListId, commerceAccountGroupId, useFinderCache, false);
+	}
+
+	private CommercePriceListCommerceAccountGroupRel _fetchByCAGI_CPI(
+		long commercePriceListId, long commerceAccountGroupId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceListCommerceAccountGroupRel.class);
@@ -2051,9 +2109,11 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 					CommercePriceListCommerceAccountGroupRel
 						commercePriceListCommerceAccountGroupRel = list.get(0);
 
-					result = commercePriceListCommerceAccountGroupRel;
+					if (!readOnlyCache) {
+						result = commercePriceListCommerceAccountGroupRel;
 
-					cacheResult(commercePriceListCommerceAccountGroupRel);
+						cacheResult(commercePriceListCommerceAccountGroupRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2085,8 +2145,8 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 		throws NoSuchPriceListCommerceAccountGroupRelException {
 
 		CommercePriceListCommerceAccountGroupRel
-			commercePriceListCommerceAccountGroupRel = findByCAGI_CPI(
-				commercePriceListId, commerceAccountGroupId);
+			commercePriceListCommerceAccountGroupRel = _findByCAGI_CPI(
+				commercePriceListId, commerceAccountGroupId, true);
 
 		return remove(commercePriceListCommerceAccountGroupRel);
 	}
@@ -2863,6 +2923,15 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePriceListCommerceAccountGroupRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommercePriceListCommerceAccountGroupRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceListCommerceAccountGroupRel.class);
 
@@ -2924,10 +2993,12 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 					(List<CommercePriceListCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2948,7 +3019,10 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommercePriceListCommerceAccountGroupRel
-				commercePriceListCommerceAccountGroupRel : findAll()) {
+				commercePriceListCommerceAccountGroupRel :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commercePriceListCommerceAccountGroupRel);
 		}

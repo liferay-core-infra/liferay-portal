@@ -176,6 +176,16 @@ public class BatchPlannerPolicyPersistenceImpl
 		OrderByComparator<BatchPlannerPolicy> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByBatchPlannerPlanId(
+			batchPlannerPlanId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchPlannerPolicy> _findByBatchPlannerPlanId(
+		long batchPlannerPlanId, int start, int end,
+		OrderByComparator<BatchPlannerPolicy> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -253,10 +263,12 @@ public class BatchPlannerPolicyPersistenceImpl
 				list = (List<BatchPlannerPolicy>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,9 +562,9 @@ public class BatchPlannerPolicyPersistenceImpl
 	@Override
 	public void removeByBatchPlannerPlanId(long batchPlannerPlanId) {
 		for (BatchPlannerPolicy batchPlannerPolicy :
-				findByBatchPlannerPlanId(
+				_findByBatchPlannerPlanId(
 					batchPlannerPlanId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(batchPlannerPolicy);
 		}
@@ -626,8 +638,15 @@ public class BatchPlannerPolicyPersistenceImpl
 	public BatchPlannerPolicy findByBPPI_N(long batchPlannerPlanId, String name)
 		throws NoSuchPolicyException {
 
-		BatchPlannerPolicy batchPlannerPolicy = fetchByBPPI_N(
-			batchPlannerPlanId, name);
+		return _findByBPPI_N(batchPlannerPlanId, name, false);
+	}
+
+	private BatchPlannerPolicy _findByBPPI_N(
+			long batchPlannerPlanId, String name, boolean readOnlyCache)
+		throws NoSuchPolicyException {
+
+		BatchPlannerPolicy batchPlannerPolicy = _fetchByBPPI_N(
+			batchPlannerPlanId, name, true, readOnlyCache);
 
 		if (batchPlannerPolicy == null) {
 			StringBundler sb = new StringBundler(6);
@@ -677,6 +696,13 @@ public class BatchPlannerPolicyPersistenceImpl
 	@Override
 	public BatchPlannerPolicy fetchByBPPI_N(
 		long batchPlannerPlanId, String name, boolean useFinderCache) {
+
+		return _fetchByBPPI_N(batchPlannerPlanId, name, useFinderCache, false);
+	}
+
+	private BatchPlannerPolicy _fetchByBPPI_N(
+		long batchPlannerPlanId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -750,9 +776,11 @@ public class BatchPlannerPolicyPersistenceImpl
 				else {
 					BatchPlannerPolicy batchPlannerPolicy = list.get(0);
 
-					result = batchPlannerPolicy;
+					if (!readOnlyCache) {
+						result = batchPlannerPolicy;
 
-					cacheResult(batchPlannerPolicy);
+						cacheResult(batchPlannerPolicy);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -783,8 +811,8 @@ public class BatchPlannerPolicyPersistenceImpl
 			long batchPlannerPlanId, String name)
 		throws NoSuchPolicyException {
 
-		BatchPlannerPolicy batchPlannerPolicy = findByBPPI_N(
-			batchPlannerPlanId, name);
+		BatchPlannerPolicy batchPlannerPolicy = _findByBPPI_N(
+			batchPlannerPlanId, name, true);
 
 		return remove(batchPlannerPolicy);
 	}
@@ -1286,6 +1314,14 @@ public class BatchPlannerPolicyPersistenceImpl
 		OrderByComparator<BatchPlannerPolicy> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchPlannerPolicy> _findAll(
+		int start, int end,
+		OrderByComparator<BatchPlannerPolicy> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1340,10 +1376,12 @@ public class BatchPlannerPolicyPersistenceImpl
 				list = (List<BatchPlannerPolicy>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1363,7 +1401,10 @@ public class BatchPlannerPolicyPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BatchPlannerPolicy batchPlannerPolicy : findAll()) {
+		for (BatchPlannerPolicy batchPlannerPolicy :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(batchPlannerPolicy);
 		}
 	}

@@ -166,6 +166,15 @@ public class SocialActivityAchievementPersistenceImpl
 		OrderByComparator<SocialActivityAchievement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivityAchievement> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityAchievement.class);
 
@@ -243,10 +252,12 @@ public class SocialActivityAchievementPersistenceImpl
 				list = (List<SocialActivityAchievement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -541,8 +552,9 @@ public class SocialActivityAchievementPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SocialActivityAchievement socialActivityAchievement :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialActivityAchievement);
 		}
@@ -694,6 +706,16 @@ public class SocialActivityAchievementPersistenceImpl
 		OrderByComparator<SocialActivityAchievement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U(
+			groupId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialActivityAchievement> _findByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityAchievement.class);
 
@@ -779,10 +801,12 @@ public class SocialActivityAchievementPersistenceImpl
 				list = (List<SocialActivityAchievement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1093,9 +1117,9 @@ public class SocialActivityAchievementPersistenceImpl
 	@Override
 	public void removeByG_U(long groupId, long userId) {
 		for (SocialActivityAchievement socialActivityAchievement :
-				findByG_U(
-					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_U(
+					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(socialActivityAchievement);
 		}
@@ -1255,6 +1279,16 @@ public class SocialActivityAchievementPersistenceImpl
 		OrderByComparator<SocialActivityAchievement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N(
+			groupId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialActivityAchievement> _findByG_N(
+		long groupId, String name, int start, int end,
+		OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1353,10 +1387,12 @@ public class SocialActivityAchievementPersistenceImpl
 				list = (List<SocialActivityAchievement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1680,9 +1716,9 @@ public class SocialActivityAchievementPersistenceImpl
 	@Override
 	public void removeByG_N(long groupId, String name) {
 		for (SocialActivityAchievement socialActivityAchievement :
-				findByG_N(
-					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_N(
+					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(socialActivityAchievement);
 		}
@@ -1859,6 +1895,16 @@ public class SocialActivityAchievementPersistenceImpl
 		OrderByComparator<SocialActivityAchievement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F(
+			groupId, firstInGroup, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SocialActivityAchievement> _findByG_F(
+		long groupId, boolean firstInGroup, int start, int end,
+		OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityAchievement.class);
 
@@ -1945,10 +1991,12 @@ public class SocialActivityAchievementPersistenceImpl
 				list = (List<SocialActivityAchievement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2259,9 +2307,9 @@ public class SocialActivityAchievementPersistenceImpl
 	@Override
 	public void removeByG_F(long groupId, boolean firstInGroup) {
 		for (SocialActivityAchievement socialActivityAchievement :
-				findByG_F(
+				_findByG_F(
 					groupId, firstInGroup, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(socialActivityAchievement);
 		}
@@ -2356,8 +2404,15 @@ public class SocialActivityAchievementPersistenceImpl
 			long groupId, long userId, String name)
 		throws NoSuchActivityAchievementException {
 
-		SocialActivityAchievement socialActivityAchievement = fetchByG_U_N(
-			groupId, userId, name);
+		return _findByG_U_N(groupId, userId, name, false);
+	}
+
+	private SocialActivityAchievement _findByG_U_N(
+			long groupId, long userId, String name, boolean readOnlyCache)
+		throws NoSuchActivityAchievementException {
+
+		SocialActivityAchievement socialActivityAchievement = _fetchByG_U_N(
+			groupId, userId, name, true, readOnlyCache);
 
 		if (socialActivityAchievement == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2412,6 +2467,13 @@ public class SocialActivityAchievementPersistenceImpl
 	@Override
 	public SocialActivityAchievement fetchByG_U_N(
 		long groupId, long userId, String name, boolean useFinderCache) {
+
+		return _fetchByG_U_N(groupId, userId, name, useFinderCache, false);
+	}
+
+	private SocialActivityAchievement _fetchByG_U_N(
+		long groupId, long userId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -2494,9 +2556,11 @@ public class SocialActivityAchievementPersistenceImpl
 					SocialActivityAchievement socialActivityAchievement =
 						list.get(0);
 
-					result = socialActivityAchievement;
+					if (!readOnlyCache) {
+						result = socialActivityAchievement;
 
-					cacheResult(socialActivityAchievement);
+						cacheResult(socialActivityAchievement);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2528,8 +2592,8 @@ public class SocialActivityAchievementPersistenceImpl
 			long groupId, long userId, String name)
 		throws NoSuchActivityAchievementException {
 
-		SocialActivityAchievement socialActivityAchievement = findByG_U_N(
-			groupId, userId, name);
+		SocialActivityAchievement socialActivityAchievement = _findByG_U_N(
+			groupId, userId, name, true);
 
 		return remove(socialActivityAchievement);
 	}
@@ -2718,6 +2782,16 @@ public class SocialActivityAchievementPersistenceImpl
 		OrderByComparator<SocialActivityAchievement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_F(
+			groupId, userId, firstInGroup, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SocialActivityAchievement> _findByG_U_F(
+		long groupId, long userId, boolean firstInGroup, int start, int end,
+		OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityAchievement.class);
 
@@ -2809,10 +2883,12 @@ public class SocialActivityAchievementPersistenceImpl
 				list = (List<SocialActivityAchievement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3141,9 +3217,9 @@ public class SocialActivityAchievementPersistenceImpl
 	@Override
 	public void removeByG_U_F(long groupId, long userId, boolean firstInGroup) {
 		for (SocialActivityAchievement socialActivityAchievement :
-				findByG_U_F(
+				_findByG_U_F(
 					groupId, userId, firstInGroup, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(socialActivityAchievement);
 		}
@@ -3816,6 +3892,14 @@ public class SocialActivityAchievementPersistenceImpl
 		OrderByComparator<SocialActivityAchievement> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivityAchievement> _findAll(
+		int start, int end,
+		OrderByComparator<SocialActivityAchievement> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityAchievement.class);
 
@@ -3874,10 +3958,12 @@ public class SocialActivityAchievementPersistenceImpl
 				list = (List<SocialActivityAchievement>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3897,7 +3983,10 @@ public class SocialActivityAchievementPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SocialActivityAchievement socialActivityAchievement : findAll()) {
+		for (SocialActivityAchievement socialActivityAchievement :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(socialActivityAchievement);
 		}
 	}

@@ -171,6 +171,15 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -256,10 +265,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,7 +564,9 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectEntry objectEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectEntry);
 		}
@@ -642,7 +655,15 @@ public class ObjectEntryPersistenceImpl
 	public ObjectEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchObjectEntryException {
 
-		ObjectEntry objectEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private ObjectEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchObjectEntryException {
+
+		ObjectEntry objectEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (objectEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -690,6 +711,13 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public ObjectEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private ObjectEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -762,9 +790,11 @@ public class ObjectEntryPersistenceImpl
 				else {
 					ObjectEntry objectEntry = list.get(0);
 
-					result = objectEntry;
+					if (!readOnlyCache) {
+						result = objectEntry;
 
-					cacheResult(objectEntry);
+						cacheResult(objectEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -794,7 +824,7 @@ public class ObjectEntryPersistenceImpl
 	public ObjectEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchObjectEntryException {
 
-		ObjectEntry objectEntry = findByUUID_G(uuid, groupId);
+		ObjectEntry objectEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(objectEntry);
 	}
@@ -956,6 +986,16 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1049,10 +1089,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1370,9 +1412,9 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectEntry objectEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectEntry);
 		}
@@ -1531,6 +1573,16 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectDefinitionId(
+			objectDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectEntry> _findByObjectDefinitionId(
+		long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1608,10 +1660,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1901,9 +1955,9 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void removeByObjectDefinitionId(long objectDefinitionId) {
 		for (ObjectEntry objectEntry :
-				findByObjectDefinitionId(
+				_findByObjectDefinitionId(
 					objectDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectEntry);
 		}
@@ -2046,6 +2100,16 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_ODI(
+			groupId, objectDefinitionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectEntry> _findByG_ODI(
+		long groupId, long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2127,10 +2191,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2437,9 +2503,9 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void removeByG_ODI(long groupId, long objectDefinitionId) {
 		for (ObjectEntry objectEntry :
-				findByG_ODI(
+				_findByG_ODI(
 					groupId, objectDefinitionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectEntry);
 		}
@@ -2587,6 +2653,16 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_ODI(
+			userId, objectDefinitionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectEntry> _findByU_ODI(
+		long userId, long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2668,10 +2744,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2978,9 +3056,9 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void removeByU_ODI(long userId, long objectDefinitionId) {
 		for (ObjectEntry objectEntry :
-				findByU_ODI(
+				_findByU_ODI(
 					userId, objectDefinitionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectEntry);
 		}
@@ -3129,6 +3207,16 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI_NotS(
+			objectDefinitionId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectEntry> _findByODI_NotS(
+		long objectDefinitionId, int status, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3200,10 +3288,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3510,9 +3600,9 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void removeByODI_NotS(long objectDefinitionId, int status) {
 		for (ObjectEntry objectEntry :
-				findByODI_NotS(
+				_findByODI_NotS(
 					objectDefinitionId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectEntry);
 		}
@@ -3595,8 +3685,16 @@ public class ObjectEntryPersistenceImpl
 			long groupId, long companyId, String externalReferenceCode)
 		throws NoSuchObjectEntryException {
 
-		ObjectEntry objectEntry = fetchByG_C_ERC(
-			groupId, companyId, externalReferenceCode);
+		return _findByG_C_ERC(groupId, companyId, externalReferenceCode, false);
+	}
+
+	private ObjectEntry _findByG_C_ERC(
+			long groupId, long companyId, String externalReferenceCode,
+			boolean readOnlyCache)
+		throws NoSuchObjectEntryException {
+
+		ObjectEntry objectEntry = _fetchByG_C_ERC(
+			groupId, companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (objectEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -3652,6 +3750,14 @@ public class ObjectEntryPersistenceImpl
 	public ObjectEntry fetchByG_C_ERC(
 		long groupId, long companyId, String externalReferenceCode,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_ERC(
+			groupId, companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private ObjectEntry _fetchByG_C_ERC(
+		long groupId, long companyId, String externalReferenceCode,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3733,9 +3839,11 @@ public class ObjectEntryPersistenceImpl
 				else {
 					ObjectEntry objectEntry = list.get(0);
 
-					result = objectEntry;
+					if (!readOnlyCache) {
+						result = objectEntry;
 
-					cacheResult(objectEntry);
+						cacheResult(objectEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3767,8 +3875,8 @@ public class ObjectEntryPersistenceImpl
 			long groupId, long companyId, String externalReferenceCode)
 		throws NoSuchObjectEntryException {
 
-		ObjectEntry objectEntry = findByG_C_ERC(
-			groupId, companyId, externalReferenceCode);
+		ObjectEntry objectEntry = _findByG_C_ERC(
+			groupId, companyId, externalReferenceCode, true);
 
 		return remove(objectEntry);
 	}
@@ -3951,6 +4059,16 @@ public class ObjectEntryPersistenceImpl
 		OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_ODI_S(
+			groupId, objectDefinitionId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectEntry> _findByG_ODI_S(
+		long groupId, long objectDefinitionId, int status, int start, int end,
+		OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4038,10 +4156,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4367,9 +4487,9 @@ public class ObjectEntryPersistenceImpl
 		long groupId, long objectDefinitionId, int status) {
 
 		for (ObjectEntry objectEntry :
-				findByG_ODI_S(
+				_findByG_ODI_S(
 					groupId, objectDefinitionId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectEntry);
 		}
@@ -4465,8 +4585,18 @@ public class ObjectEntryPersistenceImpl
 			long objectDefinitionId)
 		throws NoSuchObjectEntryException {
 
-		ObjectEntry objectEntry = fetchByC_ERC_ODI(
-			companyId, externalReferenceCode, objectDefinitionId);
+		return _findByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId, false);
+	}
+
+	private ObjectEntry _findByC_ERC_ODI(
+			long companyId, String externalReferenceCode,
+			long objectDefinitionId, boolean readOnlyCache)
+		throws NoSuchObjectEntryException {
+
+		ObjectEntry objectEntry = _fetchByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId, true,
+			readOnlyCache);
 
 		if (objectEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -4523,6 +4653,15 @@ public class ObjectEntryPersistenceImpl
 	public ObjectEntry fetchByC_ERC_ODI(
 		long companyId, String externalReferenceCode, long objectDefinitionId,
 		boolean useFinderCache) {
+
+		return _fetchByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId,
+			useFinderCache, false);
+	}
+
+	private ObjectEntry _fetchByC_ERC_ODI(
+		long companyId, String externalReferenceCode, long objectDefinitionId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -4604,9 +4743,11 @@ public class ObjectEntryPersistenceImpl
 				else {
 					ObjectEntry objectEntry = list.get(0);
 
-					result = objectEntry;
+					if (!readOnlyCache) {
+						result = objectEntry;
 
-					cacheResult(objectEntry);
+						cacheResult(objectEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4639,8 +4780,8 @@ public class ObjectEntryPersistenceImpl
 			long objectDefinitionId)
 		throws NoSuchObjectEntryException {
 
-		ObjectEntry objectEntry = findByC_ERC_ODI(
-			companyId, externalReferenceCode, objectDefinitionId);
+		ObjectEntry objectEntry = _findByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId, true);
 
 		return remove(objectEntry);
 	}
@@ -5194,6 +5335,13 @@ public class ObjectEntryPersistenceImpl
 		int start, int end, OrderByComparator<ObjectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectEntry> _findAll(
+		int start, int end, OrderByComparator<ObjectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5248,10 +5396,12 @@ public class ObjectEntryPersistenceImpl
 				list = (List<ObjectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5271,7 +5421,10 @@ public class ObjectEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectEntry objectEntry : findAll()) {
+		for (ObjectEntry objectEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectEntry);
 		}
 	}

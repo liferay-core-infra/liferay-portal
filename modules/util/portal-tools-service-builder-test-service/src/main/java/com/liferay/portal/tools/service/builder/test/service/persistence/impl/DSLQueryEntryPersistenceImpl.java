@@ -416,6 +416,13 @@ public class DSLQueryEntryPersistenceImpl
 		int start, int end, OrderByComparator<DSLQueryEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DSLQueryEntry> _findAll(
+		int start, int end, OrderByComparator<DSLQueryEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -470,10 +477,12 @@ public class DSLQueryEntryPersistenceImpl
 				list = (List<DSLQueryEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -493,7 +502,10 @@ public class DSLQueryEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DSLQueryEntry dslQueryEntry : findAll()) {
+		for (DSLQueryEntry dslQueryEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dslQueryEntry);
 		}
 	}

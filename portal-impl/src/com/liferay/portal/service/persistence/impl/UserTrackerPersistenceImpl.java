@@ -160,6 +160,15 @@ public class UserTrackerPersistenceImpl
 		OrderByComparator<UserTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserTracker> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<UserTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -234,10 +243,12 @@ public class UserTrackerPersistenceImpl
 				list = (List<UserTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -521,8 +532,9 @@ public class UserTrackerPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (UserTracker userTracker :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userTracker);
 		}
@@ -653,6 +665,15 @@ public class UserTrackerPersistenceImpl
 		OrderByComparator<UserTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserTracker> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<UserTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -725,10 +746,12 @@ public class UserTrackerPersistenceImpl
 				list = (List<UserTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1010,8 +1033,9 @@ public class UserTrackerPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (UserTracker userTracker :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userTracker);
 		}
@@ -1145,6 +1169,15 @@ public class UserTrackerPersistenceImpl
 		OrderByComparator<UserTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySessionId(
+			sessionId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserTracker> _findBySessionId(
+		String sessionId, int start, int end,
+		OrderByComparator<UserTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sessionId = Objects.toString(sessionId, "");
 
 		FinderPath finderPath = null;
@@ -1232,10 +1265,12 @@ public class UserTrackerPersistenceImpl
 				list = (List<UserTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1532,8 +1567,9 @@ public class UserTrackerPersistenceImpl
 	@Override
 	public void removeBySessionId(String sessionId) {
 		for (UserTracker userTracker :
-				findBySessionId(
-					sessionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findBySessionId(
+					sessionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userTracker);
 		}
@@ -1980,6 +2016,13 @@ public class UserTrackerPersistenceImpl
 		int start, int end, OrderByComparator<UserTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserTracker> _findAll(
+		int start, int end, OrderByComparator<UserTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2034,10 +2077,12 @@ public class UserTrackerPersistenceImpl
 				list = (List<UserTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2057,7 +2102,10 @@ public class UserTrackerPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserTracker userTracker : findAll()) {
+		for (UserTracker userTracker :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userTracker);
 		}
 	}

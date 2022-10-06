@@ -183,6 +183,15 @@ public class ClientExtensionEntryRelPersistenceImpl
 		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ClientExtensionEntryRel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class ClientExtensionEntryRelPersistenceImpl
 				list = (List<ClientExtensionEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -582,7 +593,9 @@ public class ClientExtensionEntryRelPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(clientExtensionEntryRel);
 		}
@@ -683,8 +696,15 @@ public class ClientExtensionEntryRelPersistenceImpl
 	public ClientExtensionEntryRel findByUUID_G(String uuid, long groupId)
 		throws NoSuchClientExtensionEntryRelException {
 
-		ClientExtensionEntryRel clientExtensionEntryRel = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private ClientExtensionEntryRel _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchClientExtensionEntryRelException {
+
+		ClientExtensionEntryRel clientExtensionEntryRel = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (clientExtensionEntryRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -732,6 +752,13 @@ public class ClientExtensionEntryRelPersistenceImpl
 	@Override
 	public ClientExtensionEntryRel fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private ClientExtensionEntryRel _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -809,9 +836,11 @@ public class ClientExtensionEntryRelPersistenceImpl
 					ClientExtensionEntryRel clientExtensionEntryRel = list.get(
 						0);
 
-					result = clientExtensionEntryRel;
+					if (!readOnlyCache) {
+						result = clientExtensionEntryRel;
 
-					cacheResult(clientExtensionEntryRel);
+						cacheResult(clientExtensionEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -841,8 +870,8 @@ public class ClientExtensionEntryRelPersistenceImpl
 	public ClientExtensionEntryRel removeByUUID_G(String uuid, long groupId)
 		throws NoSuchClientExtensionEntryRelException {
 
-		ClientExtensionEntryRel clientExtensionEntryRel = findByUUID_G(
-			uuid, groupId);
+		ClientExtensionEntryRel clientExtensionEntryRel = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(clientExtensionEntryRel);
 	}
@@ -1018,6 +1047,16 @@ public class ClientExtensionEntryRelPersistenceImpl
 		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ClientExtensionEntryRel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1114,10 +1153,12 @@ public class ClientExtensionEntryRelPersistenceImpl
 				list = (List<ClientExtensionEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1441,9 +1482,9 @@ public class ClientExtensionEntryRelPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(clientExtensionEntryRel);
 		}
@@ -1623,6 +1664,16 @@ public class ClientExtensionEntryRelPersistenceImpl
 		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_CETERC(
+			companyId, cetExternalReferenceCode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ClientExtensionEntryRel> _findByC_CETERC(
+		long companyId, String cetExternalReferenceCode, int start, int end,
+		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		cetExternalReferenceCode = Objects.toString(
 			cetExternalReferenceCode, "");
 
@@ -1723,10 +1774,12 @@ public class ClientExtensionEntryRelPersistenceImpl
 				list = (List<ClientExtensionEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2055,9 +2108,9 @@ public class ClientExtensionEntryRelPersistenceImpl
 		long companyId, String cetExternalReferenceCode) {
 
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
-				findByC_CETERC(
+				_findByC_CETERC(
 					companyId, cetExternalReferenceCode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(clientExtensionEntryRel);
 		}
@@ -2239,6 +2292,16 @@ public class ClientExtensionEntryRelPersistenceImpl
 		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ClientExtensionEntryRel> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			ClientExtensionEntryRel.class);
 
@@ -2323,10 +2386,12 @@ public class ClientExtensionEntryRelPersistenceImpl
 				list = (List<ClientExtensionEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2637,9 +2702,9 @@ public class ClientExtensionEntryRelPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(clientExtensionEntryRel);
 		}
@@ -2805,6 +2870,16 @@ public class ClientExtensionEntryRelPersistenceImpl
 		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_T(
+			classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ClientExtensionEntryRel> _findByC_C_T(
+		long classNameId, long classPK, String type, int start, int end,
+		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2907,10 +2982,12 @@ public class ClientExtensionEntryRelPersistenceImpl
 				list = (List<ClientExtensionEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3251,9 +3328,9 @@ public class ClientExtensionEntryRelPersistenceImpl
 	@Override
 	public void removeByC_C_T(long classNameId, long classPK, String type) {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
-				findByC_C_T(
+				_findByC_C_T(
 					classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(clientExtensionEntryRel);
 		}
@@ -3371,8 +3448,15 @@ public class ClientExtensionEntryRelPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchClientExtensionEntryRelException {
 
-		ClientExtensionEntryRel clientExtensionEntryRel = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private ClientExtensionEntryRel _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchClientExtensionEntryRelException {
+
+		ClientExtensionEntryRel clientExtensionEntryRel = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (clientExtensionEntryRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3422,6 +3506,14 @@ public class ClientExtensionEntryRelPersistenceImpl
 	@Override
 	public ClientExtensionEntryRel fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private ClientExtensionEntryRel _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3500,9 +3592,11 @@ public class ClientExtensionEntryRelPersistenceImpl
 					ClientExtensionEntryRel clientExtensionEntryRel = list.get(
 						0);
 
-					result = clientExtensionEntryRel;
+					if (!readOnlyCache) {
+						result = clientExtensionEntryRel;
 
-					cacheResult(clientExtensionEntryRel);
+						cacheResult(clientExtensionEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3533,8 +3627,8 @@ public class ClientExtensionEntryRelPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchClientExtensionEntryRelException {
 
-		ClientExtensionEntryRel clientExtensionEntryRel = findByC_ERC(
-			companyId, externalReferenceCode);
+		ClientExtensionEntryRel clientExtensionEntryRel = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(clientExtensionEntryRel);
 	}
@@ -4268,6 +4362,14 @@ public class ClientExtensionEntryRelPersistenceImpl
 		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ClientExtensionEntryRel> _findAll(
+		int start, int end,
+		OrderByComparator<ClientExtensionEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			ClientExtensionEntryRel.class);
 
@@ -4326,10 +4428,12 @@ public class ClientExtensionEntryRelPersistenceImpl
 				list = (List<ClientExtensionEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4349,7 +4453,10 @@ public class ClientExtensionEntryRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ClientExtensionEntryRel clientExtensionEntryRel : findAll()) {
+		for (ClientExtensionEntryRel clientExtensionEntryRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(clientExtensionEntryRel);
 		}
 	}

@@ -172,6 +172,15 @@ public class SamlIdpSpSessionPersistenceImpl
 		OrderByComparator<SamlIdpSpSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtCreateDate(
+			createDate, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlIdpSpSession> _findByLtCreateDate(
+		Date createDate, int start, int end,
+		OrderByComparator<SamlIdpSpSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +258,12 @@ public class SamlIdpSpSessionPersistenceImpl
 				list = (List<SamlIdpSpSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,8 +566,9 @@ public class SamlIdpSpSessionPersistenceImpl
 	@Override
 	public void removeByLtCreateDate(Date createDate) {
 		for (SamlIdpSpSession samlIdpSpSession :
-				findByLtCreateDate(
-					createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLtCreateDate(
+					createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(samlIdpSpSession);
 		}
@@ -707,6 +719,16 @@ public class SamlIdpSpSessionPersistenceImpl
 		OrderByComparator<SamlIdpSpSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySamlIdpSsoSessionId(
+			samlIdpSsoSessionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SamlIdpSpSession> _findBySamlIdpSsoSessionId(
+		long samlIdpSsoSessionId, int start, int end,
+		OrderByComparator<SamlIdpSpSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -784,10 +806,12 @@ public class SamlIdpSpSessionPersistenceImpl
 				list = (List<SamlIdpSpSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1081,9 +1105,9 @@ public class SamlIdpSpSessionPersistenceImpl
 	@Override
 	public void removeBySamlIdpSsoSessionId(long samlIdpSsoSessionId) {
 		for (SamlIdpSpSession samlIdpSpSession :
-				findBySamlIdpSsoSessionId(
+				_findBySamlIdpSsoSessionId(
 					samlIdpSsoSessionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(samlIdpSpSession);
 		}
@@ -1533,6 +1557,14 @@ public class SamlIdpSpSessionPersistenceImpl
 		OrderByComparator<SamlIdpSpSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlIdpSpSession> _findAll(
+		int start, int end,
+		OrderByComparator<SamlIdpSpSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1587,10 +1619,12 @@ public class SamlIdpSpSessionPersistenceImpl
 				list = (List<SamlIdpSpSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1610,7 +1644,10 @@ public class SamlIdpSpSessionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SamlIdpSpSession samlIdpSpSession : findAll()) {
+		for (SamlIdpSpSession samlIdpSpSession :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(samlIdpSpSession);
 		}
 	}

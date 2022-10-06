@@ -176,6 +176,15 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionGroupedEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				list = (List<CPDefinitionGroupedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -572,7 +583,9 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDefinitionGroupedEntry);
 		}
@@ -661,8 +674,15 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	public CPDefinitionGroupedEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionGroupedEntryException {
 
-		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPDefinitionGroupedEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionGroupedEntryException {
+
+		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpDefinitionGroupedEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -710,6 +730,13 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	@Override
 	public CPDefinitionGroupedEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPDefinitionGroupedEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -784,9 +811,11 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 					CPDefinitionGroupedEntry cpDefinitionGroupedEntry =
 						list.get(0);
 
-					result = cpDefinitionGroupedEntry;
+					if (!readOnlyCache) {
+						result = cpDefinitionGroupedEntry;
 
-					cacheResult(cpDefinitionGroupedEntry);
+						cacheResult(cpDefinitionGroupedEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -816,8 +845,8 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	public CPDefinitionGroupedEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionGroupedEntryException {
 
-		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = findByUUID_G(
-			uuid, groupId);
+		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(cpDefinitionGroupedEntry);
 	}
@@ -981,6 +1010,16 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionGroupedEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1075,10 +1114,12 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				list = (List<CPDefinitionGroupedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1402,9 +1443,9 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionGroupedEntry);
 		}
@@ -1565,6 +1606,16 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDefinitionId(
+			CPDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionGroupedEntry> _findByCPDefinitionId(
+		long CPDefinitionId, int start, int end,
+		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1641,10 +1692,12 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				list = (List<CPDefinitionGroupedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1939,9 +1992,9 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	@Override
 	public void removeByCPDefinitionId(long CPDefinitionId) {
 		for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry :
-				findByCPDefinitionId(
-					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPDefinitionId(
+					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionGroupedEntry);
 		}
@@ -2015,8 +2068,15 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 			long CPDefinitionId, long entryCProductId)
 		throws NoSuchCPDefinitionGroupedEntryException {
 
-		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = fetchByC_E(
-			CPDefinitionId, entryCProductId);
+		return _findByC_E(CPDefinitionId, entryCProductId, false);
+	}
+
+	private CPDefinitionGroupedEntry _findByC_E(
+			long CPDefinitionId, long entryCProductId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionGroupedEntryException {
+
+		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = _fetchByC_E(
+			CPDefinitionId, entryCProductId, true, readOnlyCache);
 
 		if (cpDefinitionGroupedEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2066,6 +2126,14 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	@Override
 	public CPDefinitionGroupedEntry fetchByC_E(
 		long CPDefinitionId, long entryCProductId, boolean useFinderCache) {
+
+		return _fetchByC_E(
+			CPDefinitionId, entryCProductId, useFinderCache, false);
+	}
+
+	private CPDefinitionGroupedEntry _fetchByC_E(
+		long CPDefinitionId, long entryCProductId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2128,9 +2196,11 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 					CPDefinitionGroupedEntry cpDefinitionGroupedEntry =
 						list.get(0);
 
-					result = cpDefinitionGroupedEntry;
+					if (!readOnlyCache) {
+						result = cpDefinitionGroupedEntry;
 
-					cacheResult(cpDefinitionGroupedEntry);
+						cacheResult(cpDefinitionGroupedEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2161,8 +2231,8 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 			long CPDefinitionId, long entryCProductId)
 		throws NoSuchCPDefinitionGroupedEntryException {
 
-		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = findByC_E(
-			CPDefinitionId, entryCProductId);
+		CPDefinitionGroupedEntry cpDefinitionGroupedEntry = _findByC_E(
+			CPDefinitionId, entryCProductId, true);
 
 		return remove(cpDefinitionGroupedEntry);
 	}
@@ -2700,6 +2770,14 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionGroupedEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CPDefinitionGroupedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2755,10 +2833,12 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 				list = (List<CPDefinitionGroupedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2778,7 +2858,10 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry : findAll()) {
+		for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpDefinitionGroupedEntry);
 		}
 	}

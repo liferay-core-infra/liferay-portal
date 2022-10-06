@@ -165,6 +165,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLayoutSetBranchId(
+			layoutSetBranchId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutRevision> _findByLayoutSetBranchId(
+		long layoutSetBranchId, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +252,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -536,9 +548,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByLayoutSetBranchId(long layoutSetBranchId) {
 		for (LayoutRevision layoutRevision :
-				findByLayoutSetBranchId(
+				_findByLayoutSetBranchId(
 					layoutSetBranchId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -670,6 +682,15 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPlid(
+			plid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByPlid(
+		long plid, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -742,10 +763,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1029,7 +1052,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByPlid(long plid) {
 		for (LayoutRevision layoutRevision :
-				findByPlid(plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByPlid(
+					plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutRevision);
 		}
@@ -1160,6 +1185,15 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStatus(
+			status, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByStatus(
+		int status, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1232,10 +1266,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1520,8 +1556,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByStatus(int status) {
 		for (LayoutRevision layoutRevision :
-				findByStatus(
-					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStatus(
+					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutRevision);
 		}
@@ -1663,6 +1700,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_H(
+			layoutSetBranchId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_H(
+		long layoutSetBranchId, boolean head, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1744,10 +1791,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2055,9 +2104,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByL_H(long layoutSetBranchId, boolean head) {
 		for (LayoutRevision layoutRevision :
-				findByL_H(
+				_findByL_H(
 					layoutSetBranchId, head, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -2205,6 +2254,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_P(
+			layoutSetBranchId, plid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_P(
+		long layoutSetBranchId, long plid, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2286,10 +2345,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2597,9 +2658,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByL_P(long layoutSetBranchId, long plid) {
 		for (LayoutRevision layoutRevision :
-				findByL_P(
+				_findByL_P(
 					layoutSetBranchId, plid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -2747,6 +2808,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_S(
+			layoutSetBranchId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_S(
+		long layoutSetBranchId, int status, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2828,10 +2899,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3139,9 +3212,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByL_S(long layoutSetBranchId, int status) {
 		for (LayoutRevision layoutRevision :
-				findByL_S(
+				_findByL_S(
 					layoutSetBranchId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -3287,6 +3360,15 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByH_P(
+			head, plid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByH_P(
+		boolean head, long plid, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3367,10 +3449,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3675,8 +3759,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByH_P(boolean head, long plid) {
 		for (LayoutRevision layoutRevision :
-				findByH_P(
-					head, plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByH_P(
+					head, plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -3821,6 +3906,15 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_NotS(
+			plid, status, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByP_NotS(
+		long plid, int status, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3889,10 +3983,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4198,8 +4294,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByP_NotS(long plid, int status) {
 		for (LayoutRevision layoutRevision :
-				findByP_NotS(
-					plid, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByP_NotS(
+					plid, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -4356,6 +4453,16 @@ public class LayoutRevisionPersistenceImpl
 		int end, OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_L_P(
+			layoutSetBranchId, layoutBranchId, plid, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_L_P(
+		long layoutSetBranchId, long layoutBranchId, long plid, int start,
+		int end, OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4446,10 +4553,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4776,9 +4885,9 @@ public class LayoutRevisionPersistenceImpl
 		long layoutSetBranchId, long layoutBranchId, long plid) {
 
 		for (LayoutRevision layoutRevision :
-				findByL_L_P(
+				_findByL_L_P(
 					layoutSetBranchId, layoutBranchId, plid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -4948,6 +5057,16 @@ public class LayoutRevisionPersistenceImpl
 		int start, int end, OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_P_P(
+			layoutSetBranchId, parentLayoutRevisionId, plid, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_P_P(
+		long layoutSetBranchId, long parentLayoutRevisionId, long plid,
+		int start, int end, OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5038,10 +5157,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5371,9 +5492,9 @@ public class LayoutRevisionPersistenceImpl
 		long layoutSetBranchId, long parentLayoutRevisionId, long plid) {
 
 		for (LayoutRevision layoutRevision :
-				findByL_P_P(
+				_findByL_P_P(
 					layoutSetBranchId, parentLayoutRevisionId, plid,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -5468,8 +5589,16 @@ public class LayoutRevisionPersistenceImpl
 			long layoutSetBranchId, boolean head, long plid)
 		throws NoSuchLayoutRevisionException {
 
-		LayoutRevision layoutRevision = fetchByL_H_P(
-			layoutSetBranchId, head, plid);
+		return _findByL_H_P(layoutSetBranchId, head, plid, false);
+	}
+
+	private LayoutRevision _findByL_H_P(
+			long layoutSetBranchId, boolean head, long plid,
+			boolean readOnlyCache)
+		throws NoSuchLayoutRevisionException {
+
+		LayoutRevision layoutRevision = _fetchByL_H_P(
+			layoutSetBranchId, head, plid, true, readOnlyCache);
 
 		if (layoutRevision == null) {
 			StringBundler sb = new StringBundler(8);
@@ -5525,6 +5654,14 @@ public class LayoutRevisionPersistenceImpl
 	public LayoutRevision fetchByL_H_P(
 		long layoutSetBranchId, boolean head, long plid,
 		boolean useFinderCache) {
+
+		return _fetchByL_H_P(
+			layoutSetBranchId, head, plid, useFinderCache, false);
+	}
+
+	private LayoutRevision _fetchByL_H_P(
+		long layoutSetBranchId, boolean head, long plid, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -5606,9 +5743,11 @@ public class LayoutRevisionPersistenceImpl
 
 					LayoutRevision layoutRevision = list.get(0);
 
-					result = layoutRevision;
+					if (!readOnlyCache) {
+						result = layoutRevision;
 
-					cacheResult(layoutRevision);
+						cacheResult(layoutRevision);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5640,8 +5779,8 @@ public class LayoutRevisionPersistenceImpl
 			long layoutSetBranchId, boolean head, long plid)
 		throws NoSuchLayoutRevisionException {
 
-		LayoutRevision layoutRevision = findByL_H_P(
-			layoutSetBranchId, head, plid);
+		LayoutRevision layoutRevision = _findByL_H_P(
+			layoutSetBranchId, head, plid, true);
 
 		return remove(layoutRevision);
 	}
@@ -5803,6 +5942,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_H_P_Collection(
+			layoutSetBranchId, head, plid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_H_P_Collection(
+		long layoutSetBranchId, boolean head, long plid, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5889,10 +6038,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6218,9 +6369,9 @@ public class LayoutRevisionPersistenceImpl
 		long layoutSetBranchId, boolean head, long plid) {
 
 		for (LayoutRevision layoutRevision :
-				findByL_H_P_Collection(
+				_findByL_H_P_Collection(
 					layoutSetBranchId, head, plid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -6386,6 +6537,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_H_S(
+			layoutSetBranchId, head, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_H_S(
+		long layoutSetBranchId, boolean head, int status, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6472,10 +6633,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6802,9 +6965,9 @@ public class LayoutRevisionPersistenceImpl
 		long layoutSetBranchId, boolean head, int status) {
 
 		for (LayoutRevision layoutRevision :
-				findByL_H_S(
+				_findByL_H_S(
 					layoutSetBranchId, head, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -6967,6 +7130,16 @@ public class LayoutRevisionPersistenceImpl
 		OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_P_S(
+			layoutSetBranchId, plid, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findByL_P_S(
+		long layoutSetBranchId, long plid, int status, int start, int end,
+		OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7053,10 +7226,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7381,9 +7556,9 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void removeByL_P_S(long layoutSetBranchId, long plid, int status) {
 		for (LayoutRevision layoutRevision :
-				findByL_P_S(
+				_findByL_P_S(
 					layoutSetBranchId, plid, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutRevision);
 		}
@@ -7476,8 +7651,17 @@ public class LayoutRevisionPersistenceImpl
 			long plid)
 		throws NoSuchLayoutRevisionException {
 
-		LayoutRevision layoutRevision = fetchByL_L_H_P(
-			layoutSetBranchId, layoutBranchId, head, plid);
+		return _findByL_L_H_P(
+			layoutSetBranchId, layoutBranchId, head, plid, false);
+	}
+
+	private LayoutRevision _findByL_L_H_P(
+			long layoutSetBranchId, long layoutBranchId, boolean head,
+			long plid, boolean readOnlyCache)
+		throws NoSuchLayoutRevisionException {
+
+		LayoutRevision layoutRevision = _fetchByL_L_H_P(
+			layoutSetBranchId, layoutBranchId, head, plid, true, readOnlyCache);
 
 		if (layoutRevision == null) {
 			StringBundler sb = new StringBundler(10);
@@ -7539,6 +7723,15 @@ public class LayoutRevisionPersistenceImpl
 	public LayoutRevision fetchByL_L_H_P(
 		long layoutSetBranchId, long layoutBranchId, boolean head, long plid,
 		boolean useFinderCache) {
+
+		return _fetchByL_L_H_P(
+			layoutSetBranchId, layoutBranchId, head, plid, useFinderCache,
+			false);
+	}
+
+	private LayoutRevision _fetchByL_L_H_P(
+		long layoutSetBranchId, long layoutBranchId, boolean head, long plid,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -7628,9 +7821,11 @@ public class LayoutRevisionPersistenceImpl
 
 					LayoutRevision layoutRevision = list.get(0);
 
-					result = layoutRevision;
+					if (!readOnlyCache) {
+						result = layoutRevision;
 
-					cacheResult(layoutRevision);
+						cacheResult(layoutRevision);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7664,8 +7859,8 @@ public class LayoutRevisionPersistenceImpl
 			long plid)
 		throws NoSuchLayoutRevisionException {
 
-		LayoutRevision layoutRevision = findByL_L_H_P(
-			layoutSetBranchId, layoutBranchId, head, plid);
+		LayoutRevision layoutRevision = _findByL_L_H_P(
+			layoutSetBranchId, layoutBranchId, head, plid, true);
 
 		return remove(layoutRevision);
 	}
@@ -8182,6 +8377,13 @@ public class LayoutRevisionPersistenceImpl
 		int start, int end, OrderByComparator<LayoutRevision> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutRevision> _findAll(
+		int start, int end, OrderByComparator<LayoutRevision> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8236,10 +8438,12 @@ public class LayoutRevisionPersistenceImpl
 				list = (List<LayoutRevision>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8259,7 +8463,10 @@ public class LayoutRevisionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutRevision layoutRevision : findAll()) {
+		for (LayoutRevision layoutRevision :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutRevision);
 		}
 	}

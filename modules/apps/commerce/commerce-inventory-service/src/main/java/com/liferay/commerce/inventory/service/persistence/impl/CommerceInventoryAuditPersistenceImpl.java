@@ -177,6 +177,15 @@ public class CommerceInventoryAuditPersistenceImpl
 		OrderByComparator<CommerceInventoryAudit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtCreateDate(
+			createDate, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryAudit> _findByLtCreateDate(
+		Date createDate, int start, int end,
+		OrderByComparator<CommerceInventoryAudit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -255,10 +264,12 @@ public class CommerceInventoryAuditPersistenceImpl
 				list = (List<CommerceInventoryAudit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -563,8 +574,9 @@ public class CommerceInventoryAuditPersistenceImpl
 	@Override
 	public void removeByLtCreateDate(Date createDate) {
 		for (CommerceInventoryAudit commerceInventoryAudit :
-				findByLtCreateDate(
-					createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLtCreateDate(
+					createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryAudit);
 		}
@@ -716,6 +728,16 @@ public class CommerceInventoryAuditPersistenceImpl
 		OrderByComparator<CommerceInventoryAudit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, sku, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryAudit> _findByC_S(
+		long companyId, String sku, int start, int end,
+		OrderByComparator<CommerceInventoryAudit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -809,10 +831,12 @@ public class CommerceInventoryAuditPersistenceImpl
 				list = (List<CommerceInventoryAudit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1135,9 +1159,9 @@ public class CommerceInventoryAuditPersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, String sku) {
 		for (CommerceInventoryAudit commerceInventoryAudit :
-				findByC_S(
-					companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_S(
+					companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryAudit);
 		}
@@ -1639,6 +1663,14 @@ public class CommerceInventoryAuditPersistenceImpl
 		OrderByComparator<CommerceInventoryAudit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryAudit> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceInventoryAudit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1693,10 +1725,12 @@ public class CommerceInventoryAuditPersistenceImpl
 				list = (List<CommerceInventoryAudit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1716,7 +1750,10 @@ public class CommerceInventoryAuditPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceInventoryAudit commerceInventoryAudit : findAll()) {
+		for (CommerceInventoryAudit commerceInventoryAudit :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceInventoryAudit);
 		}
 	}

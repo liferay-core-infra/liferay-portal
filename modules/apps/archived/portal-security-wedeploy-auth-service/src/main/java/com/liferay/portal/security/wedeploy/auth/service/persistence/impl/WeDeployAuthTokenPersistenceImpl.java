@@ -116,7 +116,15 @@ public class WeDeployAuthTokenPersistenceImpl
 	public WeDeployAuthToken findByT_T(String token, int type)
 		throws NoSuchTokenException {
 
-		WeDeployAuthToken weDeployAuthToken = fetchByT_T(token, type);
+		return _findByT_T(token, type, false);
+	}
+
+	private WeDeployAuthToken _findByT_T(
+			String token, int type, boolean readOnlyCache)
+		throws NoSuchTokenException {
+
+		WeDeployAuthToken weDeployAuthToken = _fetchByT_T(
+			token, type, true, readOnlyCache);
 
 		if (weDeployAuthToken == null) {
 			StringBundler sb = new StringBundler(6);
@@ -164,6 +172,12 @@ public class WeDeployAuthTokenPersistenceImpl
 	@Override
 	public WeDeployAuthToken fetchByT_T(
 		String token, int type, boolean useFinderCache) {
+
+		return _fetchByT_T(token, type, useFinderCache, false);
+	}
+
+	private WeDeployAuthToken _fetchByT_T(
+		String token, int type, boolean useFinderCache, boolean readOnlyCache) {
 
 		token = Objects.toString(token, "");
 
@@ -250,9 +264,11 @@ public class WeDeployAuthTokenPersistenceImpl
 
 					WeDeployAuthToken weDeployAuthToken = list.get(0);
 
-					result = weDeployAuthToken;
+					if (!readOnlyCache) {
+						result = weDeployAuthToken;
 
-					cacheResult(weDeployAuthToken);
+						cacheResult(weDeployAuthToken);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -282,7 +298,7 @@ public class WeDeployAuthTokenPersistenceImpl
 	public WeDeployAuthToken removeByT_T(String token, int type)
 		throws NoSuchTokenException {
 
-		WeDeployAuthToken weDeployAuthToken = findByT_T(token, type);
+		WeDeployAuthToken weDeployAuthToken = _findByT_T(token, type, true);
 
 		return remove(weDeployAuthToken);
 	}
@@ -380,8 +396,15 @@ public class WeDeployAuthTokenPersistenceImpl
 			String clientId, String token, int type)
 		throws NoSuchTokenException {
 
-		WeDeployAuthToken weDeployAuthToken = fetchByCI_T_T(
-			clientId, token, type);
+		return _findByCI_T_T(clientId, token, type, false);
+	}
+
+	private WeDeployAuthToken _findByCI_T_T(
+			String clientId, String token, int type, boolean readOnlyCache)
+		throws NoSuchTokenException {
+
+		WeDeployAuthToken weDeployAuthToken = _fetchByCI_T_T(
+			clientId, token, type, true, readOnlyCache);
 
 		if (weDeployAuthToken == null) {
 			StringBundler sb = new StringBundler(8);
@@ -436,6 +459,13 @@ public class WeDeployAuthTokenPersistenceImpl
 	@Override
 	public WeDeployAuthToken fetchByCI_T_T(
 		String clientId, String token, int type, boolean useFinderCache) {
+
+		return _fetchByCI_T_T(clientId, token, type, useFinderCache, false);
+	}
+
+	private WeDeployAuthToken _fetchByCI_T_T(
+		String clientId, String token, int type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		clientId = Objects.toString(clientId, "");
 		token = Objects.toString(token, "");
@@ -542,9 +572,11 @@ public class WeDeployAuthTokenPersistenceImpl
 
 					WeDeployAuthToken weDeployAuthToken = list.get(0);
 
-					result = weDeployAuthToken;
+					if (!readOnlyCache) {
+						result = weDeployAuthToken;
 
-					cacheResult(weDeployAuthToken);
+						cacheResult(weDeployAuthToken);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -576,8 +608,8 @@ public class WeDeployAuthTokenPersistenceImpl
 			String clientId, String token, int type)
 		throws NoSuchTokenException {
 
-		WeDeployAuthToken weDeployAuthToken = findByCI_T_T(
-			clientId, token, type);
+		WeDeployAuthToken weDeployAuthToken = _findByCI_T_T(
+			clientId, token, type, true);
 
 		return remove(weDeployAuthToken);
 	}
@@ -1123,6 +1155,14 @@ public class WeDeployAuthTokenPersistenceImpl
 		OrderByComparator<WeDeployAuthToken> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WeDeployAuthToken> _findAll(
+		int start, int end,
+		OrderByComparator<WeDeployAuthToken> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1177,10 +1217,12 @@ public class WeDeployAuthTokenPersistenceImpl
 				list = (List<WeDeployAuthToken>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1200,7 +1242,10 @@ public class WeDeployAuthTokenPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WeDeployAuthToken weDeployAuthToken : findAll()) {
+		for (WeDeployAuthToken weDeployAuthToken :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(weDeployAuthToken);
 		}
 	}

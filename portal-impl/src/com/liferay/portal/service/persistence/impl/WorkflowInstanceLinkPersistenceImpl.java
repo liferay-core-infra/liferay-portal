@@ -181,6 +181,16 @@ public class WorkflowInstanceLinkPersistenceImpl
 		OrderByComparator<WorkflowInstanceLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupId, companyId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowInstanceLink> _findByG_C_C(
+		long groupId, long companyId, long classNameId, int start, int end,
+		OrderByComparator<WorkflowInstanceLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowInstanceLink.class);
 
@@ -270,10 +280,12 @@ public class WorkflowInstanceLinkPersistenceImpl
 				list = (List<WorkflowInstanceLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -601,9 +613,9 @@ public class WorkflowInstanceLinkPersistenceImpl
 	@Override
 	public void removeByG_C_C(long groupId, long companyId, long classNameId) {
 		for (WorkflowInstanceLink workflowInstanceLink :
-				findByG_C_C(
+				_findByG_C_C(
 					groupId, companyId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowInstanceLink);
 		}
@@ -784,6 +796,16 @@ public class WorkflowInstanceLinkPersistenceImpl
 		int end, OrderByComparator<WorkflowInstanceLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_C(
+			groupId, companyId, classNameId, classPK, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowInstanceLink> _findByG_C_C_C(
+		long groupId, long companyId, long classNameId, long classPK, int start,
+		int end, OrderByComparator<WorkflowInstanceLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowInstanceLink.class);
 
@@ -881,10 +903,12 @@ public class WorkflowInstanceLinkPersistenceImpl
 				list = (List<WorkflowInstanceLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1230,9 +1254,9 @@ public class WorkflowInstanceLinkPersistenceImpl
 		long groupId, long companyId, long classNameId, long classPK) {
 
 		for (WorkflowInstanceLink workflowInstanceLink :
-				findByG_C_C_C(
+				_findByG_C_C_C(
 					groupId, companyId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowInstanceLink);
 		}
@@ -1897,6 +1921,14 @@ public class WorkflowInstanceLinkPersistenceImpl
 		OrderByComparator<WorkflowInstanceLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowInstanceLink> _findAll(
+		int start, int end,
+		OrderByComparator<WorkflowInstanceLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowInstanceLink.class);
 
@@ -1954,10 +1986,12 @@ public class WorkflowInstanceLinkPersistenceImpl
 				list = (List<WorkflowInstanceLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1977,7 +2011,10 @@ public class WorkflowInstanceLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WorkflowInstanceLink workflowInstanceLink : findAll()) {
+		for (WorkflowInstanceLink workflowInstanceLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(workflowInstanceLink);
 		}
 	}

@@ -171,6 +171,15 @@ public class CommerceChannelPersistenceImpl
 		OrderByComparator<CommerceChannel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceChannel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceChannel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -259,10 +268,12 @@ public class CommerceChannelPersistenceImpl
 				list = (List<CommerceChannel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -918,7 +929,9 @@ public class CommerceChannelPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceChannel commerceChannel :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceChannel);
 		}
@@ -1152,6 +1165,16 @@ public class CommerceChannelPersistenceImpl
 		OrderByComparator<CommerceChannel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceChannel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceChannel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1248,10 +1271,12 @@ public class CommerceChannelPersistenceImpl
 				list = (List<CommerceChannel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1946,9 +1971,9 @@ public class CommerceChannelPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceChannel commerceChannel :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceChannel);
 		}
@@ -2190,6 +2215,15 @@ public class CommerceChannelPersistenceImpl
 		OrderByComparator<CommerceChannel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceChannel> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CommerceChannel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannel.class);
 
@@ -2267,10 +2301,12 @@ public class CommerceChannelPersistenceImpl
 				list = (List<CommerceChannel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2890,8 +2926,9 @@ public class CommerceChannelPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CommerceChannel commerceChannel :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceChannel);
 		}
@@ -3023,7 +3060,15 @@ public class CommerceChannelPersistenceImpl
 	public CommerceChannel findBySiteGroupId(long siteGroupId)
 		throws NoSuchChannelException {
 
-		CommerceChannel commerceChannel = fetchBySiteGroupId(siteGroupId);
+		return _findBySiteGroupId(siteGroupId, false);
+	}
+
+	private CommerceChannel _findBySiteGroupId(
+			long siteGroupId, boolean readOnlyCache)
+		throws NoSuchChannelException {
+
+		CommerceChannel commerceChannel = _fetchBySiteGroupId(
+			siteGroupId, true, readOnlyCache);
 
 		if (commerceChannel == null) {
 			StringBundler sb = new StringBundler(4);
@@ -3066,6 +3111,12 @@ public class CommerceChannelPersistenceImpl
 	@Override
 	public CommerceChannel fetchBySiteGroupId(
 		long siteGroupId, boolean useFinderCache) {
+
+		return _fetchBySiteGroupId(siteGroupId, useFinderCache, false);
+	}
+
+	private CommerceChannel _fetchBySiteGroupId(
+		long siteGroupId, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannel.class);
@@ -3137,9 +3188,11 @@ public class CommerceChannelPersistenceImpl
 
 					CommerceChannel commerceChannel = list.get(0);
 
-					result = commerceChannel;
+					if (!readOnlyCache) {
+						result = commerceChannel;
 
-					cacheResult(commerceChannel);
+						cacheResult(commerceChannel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3168,7 +3221,7 @@ public class CommerceChannelPersistenceImpl
 	public CommerceChannel removeBySiteGroupId(long siteGroupId)
 		throws NoSuchChannelException {
 
-		CommerceChannel commerceChannel = findBySiteGroupId(siteGroupId);
+		CommerceChannel commerceChannel = _findBySiteGroupId(siteGroupId, true);
 
 		return remove(commerceChannel);
 	}
@@ -3253,8 +3306,15 @@ public class CommerceChannelPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchChannelException {
 
-		CommerceChannel commerceChannel = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceChannel _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchChannelException {
+
+		CommerceChannel commerceChannel = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceChannel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3304,6 +3364,14 @@ public class CommerceChannelPersistenceImpl
 	@Override
 	public CommerceChannel fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceChannel _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3380,9 +3448,11 @@ public class CommerceChannelPersistenceImpl
 				else {
 					CommerceChannel commerceChannel = list.get(0);
 
-					result = commerceChannel;
+					if (!readOnlyCache) {
+						result = commerceChannel;
 
-					cacheResult(commerceChannel);
+						cacheResult(commerceChannel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3413,8 +3483,8 @@ public class CommerceChannelPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchChannelException {
 
-		CommerceChannel commerceChannel = findByC_ERC(
-			companyId, externalReferenceCode);
+		CommerceChannel commerceChannel = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(commerceChannel);
 	}
@@ -4112,6 +4182,14 @@ public class CommerceChannelPersistenceImpl
 		OrderByComparator<CommerceChannel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceChannel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceChannel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannel.class);
 
@@ -4169,10 +4247,12 @@ public class CommerceChannelPersistenceImpl
 				list = (List<CommerceChannel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4192,7 +4272,10 @@ public class CommerceChannelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceChannel commerceChannel : findAll()) {
+		for (CommerceChannel commerceChannel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceChannel);
 		}
 	}

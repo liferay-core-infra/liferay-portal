@@ -162,6 +162,15 @@ public class CommerceShippingMethodPersistenceImpl
 		OrderByComparator<CommerceShippingMethod> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShippingMethod> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CommerceShippingMethod> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -234,10 +243,12 @@ public class CommerceShippingMethodPersistenceImpl
 				list = (List<CommerceShippingMethod>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -531,8 +542,9 @@ public class CommerceShippingMethodPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CommerceShippingMethod commerceShippingMethod :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceShippingMethod);
 		}
@@ -672,6 +684,16 @@ public class CommerceShippingMethodPersistenceImpl
 		OrderByComparator<CommerceShippingMethod> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceShippingMethod> _findByG_A(
+		long groupId, boolean active, int start, int end,
+		OrderByComparator<CommerceShippingMethod> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -752,10 +774,12 @@ public class CommerceShippingMethodPersistenceImpl
 				list = (List<CommerceShippingMethod>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1065,9 +1089,9 @@ public class CommerceShippingMethodPersistenceImpl
 	@Override
 	public void removeByG_A(long groupId, boolean active) {
 		for (CommerceShippingMethod commerceShippingMethod :
-				findByG_A(
-					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_A(
+					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceShippingMethod);
 		}
@@ -1148,8 +1172,15 @@ public class CommerceShippingMethodPersistenceImpl
 	public CommerceShippingMethod findByG_E(long groupId, String engineKey)
 		throws NoSuchShippingMethodException {
 
-		CommerceShippingMethod commerceShippingMethod = fetchByG_E(
-			groupId, engineKey);
+		return _findByG_E(groupId, engineKey, false);
+	}
+
+	private CommerceShippingMethod _findByG_E(
+			long groupId, String engineKey, boolean readOnlyCache)
+		throws NoSuchShippingMethodException {
+
+		CommerceShippingMethod commerceShippingMethod = _fetchByG_E(
+			groupId, engineKey, true, readOnlyCache);
 
 		if (commerceShippingMethod == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1197,6 +1228,13 @@ public class CommerceShippingMethodPersistenceImpl
 	@Override
 	public CommerceShippingMethod fetchByG_E(
 		long groupId, String engineKey, boolean useFinderCache) {
+
+		return _fetchByG_E(groupId, engineKey, useFinderCache, false);
+	}
+
+	private CommerceShippingMethod _fetchByG_E(
+		long groupId, String engineKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		engineKey = Objects.toString(engineKey, "");
 
@@ -1270,9 +1308,11 @@ public class CommerceShippingMethodPersistenceImpl
 				else {
 					CommerceShippingMethod commerceShippingMethod = list.get(0);
 
-					result = commerceShippingMethod;
+					if (!readOnlyCache) {
+						result = commerceShippingMethod;
 
-					cacheResult(commerceShippingMethod);
+						cacheResult(commerceShippingMethod);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1302,8 +1342,8 @@ public class CommerceShippingMethodPersistenceImpl
 	public CommerceShippingMethod removeByG_E(long groupId, String engineKey)
 		throws NoSuchShippingMethodException {
 
-		CommerceShippingMethod commerceShippingMethod = findByG_E(
-			groupId, engineKey);
+		CommerceShippingMethod commerceShippingMethod = _findByG_E(
+			groupId, engineKey, true);
 
 		return remove(commerceShippingMethod);
 	}
@@ -1827,6 +1867,14 @@ public class CommerceShippingMethodPersistenceImpl
 		OrderByComparator<CommerceShippingMethod> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShippingMethod> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceShippingMethod> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1881,10 +1929,12 @@ public class CommerceShippingMethodPersistenceImpl
 				list = (List<CommerceShippingMethod>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1904,7 +1954,10 @@ public class CommerceShippingMethodPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceShippingMethod commerceShippingMethod : findAll()) {
+		for (CommerceShippingMethod commerceShippingMethod :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceShippingMethod);
 		}
 	}

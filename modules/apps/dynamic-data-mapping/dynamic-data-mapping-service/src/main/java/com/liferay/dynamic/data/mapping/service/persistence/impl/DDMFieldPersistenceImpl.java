@@ -172,6 +172,15 @@ public class DDMFieldPersistenceImpl
 		long storageId, int start, int end,
 		OrderByComparator<DDMField> orderByComparator, boolean useFinderCache) {
 
+		return _findByStorageId(
+			storageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMField> _findByStorageId(
+		long storageId, int start, int end,
+		OrderByComparator<DDMField> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMField.class);
 
@@ -249,10 +258,12 @@ public class DDMFieldPersistenceImpl
 				list = (List<DDMField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -535,8 +546,9 @@ public class DDMFieldPersistenceImpl
 	@Override
 	public void removeByStorageId(long storageId) {
 		for (DDMField ddmField :
-				findByStorageId(
-					storageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStorageId(
+					storageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmField);
 		}
@@ -682,6 +694,16 @@ public class DDMFieldPersistenceImpl
 		long structureVersionId, int start, int end,
 		OrderByComparator<DDMField> orderByComparator, boolean useFinderCache) {
 
+		return _findByStructureVersionId(
+			structureVersionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMField> _findByStructureVersionId(
+		long structureVersionId, int start, int end,
+		OrderByComparator<DDMField> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMField.class);
 
@@ -762,10 +784,12 @@ public class DDMFieldPersistenceImpl
 				list = (List<DDMField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1054,9 +1078,9 @@ public class DDMFieldPersistenceImpl
 	@Override
 	public void removeByStructureVersionId(long structureVersionId) {
 		for (DDMField ddmField :
-				findByStructureVersionId(
+				_findByStructureVersionId(
 					structureVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmField);
 		}
@@ -1207,6 +1231,16 @@ public class DDMFieldPersistenceImpl
 		long companyId, String fieldType, int start, int end,
 		OrderByComparator<DDMField> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_F(
+			companyId, fieldType, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMField> _findByC_F(
+		long companyId, String fieldType, int start, int end,
+		OrderByComparator<DDMField> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		fieldType = Objects.toString(fieldType, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1303,10 +1337,12 @@ public class DDMFieldPersistenceImpl
 				list = (List<DDMField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1625,9 +1661,9 @@ public class DDMFieldPersistenceImpl
 	@Override
 	public void removeByC_F(long companyId, String fieldType) {
 		for (DDMField ddmField :
-				findByC_F(
+				_findByC_F(
 					companyId, fieldType, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmField);
 		}
@@ -1736,7 +1772,15 @@ public class DDMFieldPersistenceImpl
 	public DDMField findByS_I(long storageId, String instanceId)
 		throws NoSuchFieldException {
 
-		DDMField ddmField = fetchByS_I(storageId, instanceId);
+		return _findByS_I(storageId, instanceId, false);
+	}
+
+	private DDMField _findByS_I(
+			long storageId, String instanceId, boolean readOnlyCache)
+		throws NoSuchFieldException {
+
+		DDMField ddmField = _fetchByS_I(
+			storageId, instanceId, true, readOnlyCache);
 
 		if (ddmField == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1784,6 +1828,13 @@ public class DDMFieldPersistenceImpl
 	@Override
 	public DDMField fetchByS_I(
 		long storageId, String instanceId, boolean useFinderCache) {
+
+		return _fetchByS_I(storageId, instanceId, useFinderCache, false);
+	}
+
+	private DDMField _fetchByS_I(
+		long storageId, String instanceId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		instanceId = Objects.toString(instanceId, "");
 
@@ -1858,9 +1909,11 @@ public class DDMFieldPersistenceImpl
 				else {
 					DDMField ddmField = list.get(0);
 
-					result = ddmField;
+					if (!readOnlyCache) {
+						result = ddmField;
 
-					cacheResult(ddmField);
+						cacheResult(ddmField);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1890,7 +1943,7 @@ public class DDMFieldPersistenceImpl
 	public DDMField removeByS_I(long storageId, String instanceId)
 		throws NoSuchFieldException {
 
-		DDMField ddmField = findByS_I(storageId, instanceId);
+		DDMField ddmField = _findByS_I(storageId, instanceId, true);
 
 		return remove(ddmField);
 	}
@@ -2501,6 +2554,13 @@ public class DDMFieldPersistenceImpl
 		int start, int end, OrderByComparator<DDMField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMField> _findAll(
+		int start, int end, OrderByComparator<DDMField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMField.class);
 
@@ -2558,10 +2618,12 @@ public class DDMFieldPersistenceImpl
 				list = (List<DDMField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2581,7 +2643,10 @@ public class DDMFieldPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMField ddmField : findAll()) {
+		for (DDMField ddmField :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmField);
 		}
 	}

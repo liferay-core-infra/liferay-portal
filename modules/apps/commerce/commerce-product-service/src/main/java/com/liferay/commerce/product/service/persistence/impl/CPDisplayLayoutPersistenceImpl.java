@@ -168,6 +168,15 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDisplayLayout> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -256,10 +265,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,7 +568,9 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPDisplayLayout cpDisplayLayout :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDisplayLayout);
 		}
@@ -658,7 +671,15 @@ public class CPDisplayLayoutPersistenceImpl
 	public CPDisplayLayout findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDisplayLayoutException {
 
-		CPDisplayLayout cpDisplayLayout = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPDisplayLayout _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPDisplayLayoutException {
+
+		CPDisplayLayout cpDisplayLayout = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpDisplayLayout == null) {
 			StringBundler sb = new StringBundler(6);
@@ -706,6 +727,13 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public CPDisplayLayout fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPDisplayLayout _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -781,9 +809,11 @@ public class CPDisplayLayoutPersistenceImpl
 				else {
 					CPDisplayLayout cpDisplayLayout = list.get(0);
 
-					result = cpDisplayLayout;
+					if (!readOnlyCache) {
+						result = cpDisplayLayout;
 
-					cacheResult(cpDisplayLayout);
+						cacheResult(cpDisplayLayout);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -813,7 +843,7 @@ public class CPDisplayLayoutPersistenceImpl
 	public CPDisplayLayout removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDisplayLayoutException {
 
-		CPDisplayLayout cpDisplayLayout = findByUUID_G(uuid, groupId);
+		CPDisplayLayout cpDisplayLayout = _findByUUID_G(uuid, groupId, true);
 
 		return remove(cpDisplayLayout);
 	}
@@ -987,6 +1017,16 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDisplayLayout> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1083,10 +1123,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1407,9 +1449,9 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPDisplayLayout cpDisplayLayout :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDisplayLayout);
 		}
@@ -1579,6 +1621,15 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDisplayLayout> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDisplayLayout.class);
 
@@ -1654,10 +1705,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1943,8 +1996,9 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CPDisplayLayout cpDisplayLayout :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDisplayLayout);
 		}
@@ -2095,6 +2149,16 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDisplayLayout> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDisplayLayout.class);
 
@@ -2178,10 +2242,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2489,9 +2555,9 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (CPDisplayLayout cpDisplayLayout :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(cpDisplayLayout);
 		}
@@ -2650,6 +2716,16 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_L(
+			groupId, layoutUuid, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDisplayLayout> _findByG_L(
+		long groupId, String layoutUuid, int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		layoutUuid = Objects.toString(layoutUuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2746,10 +2822,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3070,9 +3148,9 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void removeByG_L(long groupId, String layoutUuid) {
 		for (CPDisplayLayout cpDisplayLayout :
-				findByG_L(
+				_findByG_L(
 					groupId, layoutUuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(cpDisplayLayout);
 		}
@@ -3247,6 +3325,16 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDisplayLayout> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDisplayLayout.class);
 
@@ -3330,10 +3418,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3641,9 +3731,9 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (CPDisplayLayout cpDisplayLayout :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(cpDisplayLayout);
 		}
@@ -3738,8 +3828,15 @@ public class CPDisplayLayoutPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchCPDisplayLayoutException {
 
-		CPDisplayLayout cpDisplayLayout = fetchByG_C_C(
-			groupId, classNameId, classPK);
+		return _findByG_C_C(groupId, classNameId, classPK, false);
+	}
+
+	private CPDisplayLayout _findByG_C_C(
+			long groupId, long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchCPDisplayLayoutException {
+
+		CPDisplayLayout cpDisplayLayout = _fetchByG_C_C(
+			groupId, classNameId, classPK, true, readOnlyCache);
 
 		if (cpDisplayLayout == null) {
 			StringBundler sb = new StringBundler(8);
@@ -3794,6 +3891,14 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public CPDisplayLayout fetchByG_C_C(
 		long groupId, long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByG_C_C(
+			groupId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private CPDisplayLayout _fetchByG_C_C(
+		long groupId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDisplayLayout.class);
@@ -3860,9 +3965,11 @@ public class CPDisplayLayoutPersistenceImpl
 				else {
 					CPDisplayLayout cpDisplayLayout = list.get(0);
 
-					result = cpDisplayLayout;
+					if (!readOnlyCache) {
+						result = cpDisplayLayout;
 
-					cacheResult(cpDisplayLayout);
+						cacheResult(cpDisplayLayout);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3894,8 +4001,8 @@ public class CPDisplayLayoutPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchCPDisplayLayoutException {
 
-		CPDisplayLayout cpDisplayLayout = findByG_C_C(
-			groupId, classNameId, classPK);
+		CPDisplayLayout cpDisplayLayout = _findByG_C_C(
+			groupId, classNameId, classPK, true);
 
 		return remove(cpDisplayLayout);
 	}
@@ -4584,6 +4691,14 @@ public class CPDisplayLayoutPersistenceImpl
 		OrderByComparator<CPDisplayLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDisplayLayout> _findAll(
+		int start, int end,
+		OrderByComparator<CPDisplayLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDisplayLayout.class);
 
@@ -4641,10 +4756,12 @@ public class CPDisplayLayoutPersistenceImpl
 				list = (List<CPDisplayLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4664,7 +4781,10 @@ public class CPDisplayLayoutPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPDisplayLayout cpDisplayLayout : findAll()) {
+		for (CPDisplayLayout cpDisplayLayout :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpDisplayLayout);
 		}
 	}

@@ -96,7 +96,14 @@ public class CompanyInfoPersistenceImpl
 	public CompanyInfo findByCompanyId(long companyId)
 		throws NoSuchCompanyInfoException {
 
-		CompanyInfo companyInfo = fetchByCompanyId(companyId);
+		return _findByCompanyId(companyId, false);
+	}
+
+	private CompanyInfo _findByCompanyId(long companyId, boolean readOnlyCache)
+		throws NoSuchCompanyInfoException {
+
+		CompanyInfo companyInfo = _fetchByCompanyId(
+			companyId, true, readOnlyCache);
 
 		if (companyInfo == null) {
 			StringBundler sb = new StringBundler(4);
@@ -139,6 +146,12 @@ public class CompanyInfoPersistenceImpl
 	@Override
 	public CompanyInfo fetchByCompanyId(
 		long companyId, boolean useFinderCache) {
+
+		return _fetchByCompanyId(companyId, useFinderCache, false);
+	}
+
+	private CompanyInfo _fetchByCompanyId(
+		long companyId, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -192,9 +205,11 @@ public class CompanyInfoPersistenceImpl
 				else {
 					CompanyInfo companyInfo = list.get(0);
 
-					result = companyInfo;
+					if (!readOnlyCache) {
+						result = companyInfo;
 
-					cacheResult(companyInfo);
+						cacheResult(companyInfo);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -223,7 +238,7 @@ public class CompanyInfoPersistenceImpl
 	public CompanyInfo removeByCompanyId(long companyId)
 		throws NoSuchCompanyInfoException {
 
-		CompanyInfo companyInfo = findByCompanyId(companyId);
+		CompanyInfo companyInfo = _findByCompanyId(companyId, true);
 
 		return remove(companyInfo);
 	}
@@ -661,6 +676,13 @@ public class CompanyInfoPersistenceImpl
 		int start, int end, OrderByComparator<CompanyInfo> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CompanyInfo> _findAll(
+		int start, int end, OrderByComparator<CompanyInfo> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -715,10 +737,12 @@ public class CompanyInfoPersistenceImpl
 				list = (List<CompanyInfo>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -738,7 +762,10 @@ public class CompanyInfoPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CompanyInfo companyInfo : findAll()) {
+		for (CompanyInfo companyInfo :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(companyInfo);
 		}
 	}

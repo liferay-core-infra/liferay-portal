@@ -176,6 +176,15 @@ public class ObjectStateTransitionPersistenceImpl
 		OrderByComparator<ObjectStateTransition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectStateTransition> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectStateTransition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class ObjectStateTransitionPersistenceImpl
 				list = (List<ObjectStateTransition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -568,7 +579,9 @@ public class ObjectStateTransitionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectStateTransition objectStateTransition :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectStateTransition);
 		}
@@ -725,6 +738,16 @@ public class ObjectStateTransitionPersistenceImpl
 		OrderByComparator<ObjectStateTransition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectStateTransition> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectStateTransition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -818,10 +841,12 @@ public class ObjectStateTransitionPersistenceImpl
 				list = (List<ObjectStateTransition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1144,9 +1169,9 @@ public class ObjectStateTransitionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectStateTransition objectStateTransition :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectStateTransition);
 		}
@@ -1307,6 +1332,16 @@ public class ObjectStateTransitionPersistenceImpl
 		OrderByComparator<ObjectStateTransition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectStateFlowId(
+			objectStateFlowId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectStateTransition> _findByObjectStateFlowId(
+		long objectStateFlowId, int start, int end,
+		OrderByComparator<ObjectStateTransition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1384,10 +1419,12 @@ public class ObjectStateTransitionPersistenceImpl
 				list = (List<ObjectStateTransition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1682,9 +1719,9 @@ public class ObjectStateTransitionPersistenceImpl
 	@Override
 	public void removeByObjectStateFlowId(long objectStateFlowId) {
 		for (ObjectStateTransition objectStateTransition :
-				findByObjectStateFlowId(
+				_findByObjectStateFlowId(
 					objectStateFlowId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectStateTransition);
 		}
@@ -1822,6 +1859,16 @@ public class ObjectStateTransitionPersistenceImpl
 		OrderByComparator<ObjectStateTransition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySourceObjectStateId(
+			sourceObjectStateId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectStateTransition> _findBySourceObjectStateId(
+		long sourceObjectStateId, int start, int end,
+		OrderByComparator<ObjectStateTransition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1899,10 +1946,12 @@ public class ObjectStateTransitionPersistenceImpl
 				list = (List<ObjectStateTransition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2198,9 +2247,9 @@ public class ObjectStateTransitionPersistenceImpl
 	@Override
 	public void removeBySourceObjectStateId(long sourceObjectStateId) {
 		for (ObjectStateTransition objectStateTransition :
-				findBySourceObjectStateId(
+				_findBySourceObjectStateId(
 					sourceObjectStateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectStateTransition);
 		}
@@ -2338,6 +2387,16 @@ public class ObjectStateTransitionPersistenceImpl
 		OrderByComparator<ObjectStateTransition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTargetObjectStateId(
+			targetObjectStateId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectStateTransition> _findByTargetObjectStateId(
+		long targetObjectStateId, int start, int end,
+		OrderByComparator<ObjectStateTransition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2415,10 +2474,12 @@ public class ObjectStateTransitionPersistenceImpl
 				list = (List<ObjectStateTransition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2714,9 +2775,9 @@ public class ObjectStateTransitionPersistenceImpl
 	@Override
 	public void removeByTargetObjectStateId(long targetObjectStateId) {
 		for (ObjectStateTransition objectStateTransition :
-				findByTargetObjectStateId(
+				_findByTargetObjectStateId(
 					targetObjectStateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectStateTransition);
 		}
@@ -3202,6 +3263,14 @@ public class ObjectStateTransitionPersistenceImpl
 		OrderByComparator<ObjectStateTransition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectStateTransition> _findAll(
+		int start, int end,
+		OrderByComparator<ObjectStateTransition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3256,10 +3325,12 @@ public class ObjectStateTransitionPersistenceImpl
 				list = (List<ObjectStateTransition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3279,7 +3350,10 @@ public class ObjectStateTransitionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectStateTransition objectStateTransition : findAll()) {
+		for (ObjectStateTransition objectStateTransition :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectStateTransition);
 		}
 	}

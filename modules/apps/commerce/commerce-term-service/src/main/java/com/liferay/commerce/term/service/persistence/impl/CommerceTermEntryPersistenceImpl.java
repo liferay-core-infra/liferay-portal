@@ -180,6 +180,15 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTermEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -265,10 +274,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -929,7 +940,9 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceTermEntry commerceTermEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -1151,6 +1164,16 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTermEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1244,10 +1267,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1946,9 +1971,9 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceTermEntry commerceTermEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -2183,6 +2208,16 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTermEntry> _findByC_A(
+		long companyId, boolean active, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2263,10 +2298,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2926,9 +2963,9 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, boolean active) {
 		for (CommerceTermEntry commerceTermEntry :
-				findByC_A(
+				_findByC_A(
 					companyId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -3065,7 +3102,15 @@ public class CommerceTermEntryPersistenceImpl
 	public CommerceTermEntry findByC_N(long companyId, String name)
 		throws NoSuchTermEntryException {
 
-		CommerceTermEntry commerceTermEntry = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private CommerceTermEntry _findByC_N(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchTermEntryException {
+
+		CommerceTermEntry commerceTermEntry = _fetchByC_N(
+			companyId, name, true, readOnlyCache);
 
 		if (commerceTermEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3113,6 +3158,13 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public CommerceTermEntry fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private CommerceTermEntry _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -3184,9 +3236,11 @@ public class CommerceTermEntryPersistenceImpl
 				else {
 					CommerceTermEntry commerceTermEntry = list.get(0);
 
-					result = commerceTermEntry;
+					if (!readOnlyCache) {
+						result = commerceTermEntry;
 
-					cacheResult(commerceTermEntry);
+						cacheResult(commerceTermEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3216,7 +3270,7 @@ public class CommerceTermEntryPersistenceImpl
 	public CommerceTermEntry removeByC_N(long companyId, String name)
 		throws NoSuchTermEntryException {
 
-		CommerceTermEntry commerceTermEntry = findByC_N(companyId, name);
+		CommerceTermEntry commerceTermEntry = _findByC_N(companyId, name, true);
 
 		return remove(commerceTermEntry);
 	}
@@ -3379,6 +3433,16 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeType(
+			companyId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTermEntry> _findByC_LikeType(
+		long companyId, String type, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -3464,10 +3528,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4167,9 +4233,9 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void removeByC_LikeType(long companyId, String type) {
 		for (CommerceTermEntry commerceTermEntry :
-				findByC_LikeType(
-					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_LikeType(
+					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -4403,6 +4469,16 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtD_S(
+			displayDate, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTermEntry> _findByLtD_S(
+		Date displayDate, int status, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4486,10 +4562,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5183,9 +5261,9 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void removeByLtD_S(Date displayDate, int status) {
 		for (CommerceTermEntry commerceTermEntry :
-				findByLtD_S(
+				_findByLtD_S(
 					displayDate, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -5411,6 +5489,16 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtE_S(
+			expirationDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceTermEntry> _findByLtE_S(
+		Date expirationDate, int status, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5494,10 +5582,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6193,9 +6283,9 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void removeByLtE_S(Date expirationDate, int status) {
 		for (CommerceTermEntry commerceTermEntry :
-				findByLtE_S(
+				_findByLtE_S(
 					expirationDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -6426,6 +6516,16 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_LikeType(
+			companyId, active, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceTermEntry> _findByC_A_LikeType(
+		long companyId, boolean active, String type, int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -6516,10 +6616,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7254,9 +7356,9 @@ public class CommerceTermEntryPersistenceImpl
 		long companyId, boolean active, String type) {
 
 		for (CommerceTermEntry commerceTermEntry :
-				findByC_A_LikeType(
+				_findByC_A_LikeType(
 					companyId, active, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceTermEntry);
 		}
@@ -7447,8 +7549,15 @@ public class CommerceTermEntryPersistenceImpl
 			long companyId, double priority, String type)
 		throws NoSuchTermEntryException {
 
-		CommerceTermEntry commerceTermEntry = fetchByC_P_T(
-			companyId, priority, type);
+		return _findByC_P_T(companyId, priority, type, false);
+	}
+
+	private CommerceTermEntry _findByC_P_T(
+			long companyId, double priority, String type, boolean readOnlyCache)
+		throws NoSuchTermEntryException {
+
+		CommerceTermEntry commerceTermEntry = _fetchByC_P_T(
+			companyId, priority, type, true, readOnlyCache);
 
 		if (commerceTermEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -7503,6 +7612,13 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public CommerceTermEntry fetchByC_P_T(
 		long companyId, double priority, String type, boolean useFinderCache) {
+
+		return _fetchByC_P_T(companyId, priority, type, useFinderCache, false);
+	}
+
+	private CommerceTermEntry _fetchByC_P_T(
+		long companyId, double priority, String type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		type = Objects.toString(type, "");
 
@@ -7579,9 +7695,11 @@ public class CommerceTermEntryPersistenceImpl
 				else {
 					CommerceTermEntry commerceTermEntry = list.get(0);
 
-					result = commerceTermEntry;
+					if (!readOnlyCache) {
+						result = commerceTermEntry;
 
-					cacheResult(commerceTermEntry);
+						cacheResult(commerceTermEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7613,8 +7731,8 @@ public class CommerceTermEntryPersistenceImpl
 			long companyId, double priority, String type)
 		throws NoSuchTermEntryException {
 
-		CommerceTermEntry commerceTermEntry = findByC_P_T(
-			companyId, priority, type);
+		CommerceTermEntry commerceTermEntry = _findByC_P_T(
+			companyId, priority, type, true);
 
 		return remove(commerceTermEntry);
 	}
@@ -7719,8 +7837,15 @@ public class CommerceTermEntryPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchTermEntryException {
 
-		CommerceTermEntry commerceTermEntry = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceTermEntry _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchTermEntryException {
+
+		CommerceTermEntry commerceTermEntry = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceTermEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -7770,6 +7895,14 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public CommerceTermEntry fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceTermEntry _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -7843,9 +7976,11 @@ public class CommerceTermEntryPersistenceImpl
 				else {
 					CommerceTermEntry commerceTermEntry = list.get(0);
 
-					result = commerceTermEntry;
+					if (!readOnlyCache) {
+						result = commerceTermEntry;
 
-					cacheResult(commerceTermEntry);
+						cacheResult(commerceTermEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7876,8 +8011,8 @@ public class CommerceTermEntryPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchTermEntryException {
 
-		CommerceTermEntry commerceTermEntry = findByC_ERC(
-			companyId, externalReferenceCode);
+		CommerceTermEntry commerceTermEntry = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(commerceTermEntry);
 	}
@@ -8437,6 +8572,14 @@ public class CommerceTermEntryPersistenceImpl
 		OrderByComparator<CommerceTermEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTermEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceTermEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8491,10 +8634,12 @@ public class CommerceTermEntryPersistenceImpl
 				list = (List<CommerceTermEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8514,7 +8659,10 @@ public class CommerceTermEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceTermEntry commerceTermEntry : findAll()) {
+		for (CommerceTermEntry commerceTermEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceTermEntry);
 		}
 	}

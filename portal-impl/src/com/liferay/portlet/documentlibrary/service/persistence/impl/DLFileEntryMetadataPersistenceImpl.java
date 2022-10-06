@@ -168,6 +168,15 @@ public class DLFileEntryMetadataPersistenceImpl
 		OrderByComparator<DLFileEntryMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryMetadata> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DLFileEntryMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -256,10 +265,12 @@ public class DLFileEntryMetadataPersistenceImpl
 				list = (List<DLFileEntryMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -561,7 +572,9 @@ public class DLFileEntryMetadataPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DLFileEntryMetadata dlFileEntryMetadata :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntryMetadata);
 		}
@@ -728,6 +741,16 @@ public class DLFileEntryMetadataPersistenceImpl
 		OrderByComparator<DLFileEntryMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntryMetadata> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DLFileEntryMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -824,10 +847,12 @@ public class DLFileEntryMetadataPersistenceImpl
 				list = (List<DLFileEntryMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1150,9 +1175,9 @@ public class DLFileEntryMetadataPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DLFileEntryMetadata dlFileEntryMetadata :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntryMetadata);
 		}
@@ -1323,6 +1348,15 @@ public class DLFileEntryMetadataPersistenceImpl
 		OrderByComparator<DLFileEntryMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileEntryId(
+			fileEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryMetadata> _findByFileEntryId(
+		long fileEntryId, int start, int end,
+		OrderByComparator<DLFileEntryMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryMetadata.class);
 
@@ -1400,10 +1434,12 @@ public class DLFileEntryMetadataPersistenceImpl
 				list = (List<DLFileEntryMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1697,8 +1733,9 @@ public class DLFileEntryMetadataPersistenceImpl
 	@Override
 	public void removeByFileEntryId(long fileEntryId) {
 		for (DLFileEntryMetadata dlFileEntryMetadata :
-				findByFileEntryId(
-					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByFileEntryId(
+					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntryMetadata);
 		}
@@ -1845,6 +1882,16 @@ public class DLFileEntryMetadataPersistenceImpl
 		OrderByComparator<DLFileEntryMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileVersionId(
+			fileVersionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntryMetadata> _findByFileVersionId(
+		long fileVersionId, int start, int end,
+		OrderByComparator<DLFileEntryMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryMetadata.class);
 
@@ -1924,10 +1971,12 @@ public class DLFileEntryMetadataPersistenceImpl
 				list = (List<DLFileEntryMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2221,9 +2270,9 @@ public class DLFileEntryMetadataPersistenceImpl
 	@Override
 	public void removeByFileVersionId(long fileVersionId) {
 		for (DLFileEntryMetadata dlFileEntryMetadata :
-				findByFileVersionId(
-					fileVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByFileVersionId(
+					fileVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntryMetadata);
 		}
@@ -2309,8 +2358,15 @@ public class DLFileEntryMetadataPersistenceImpl
 			long DDMStructureId, long fileVersionId)
 		throws NoSuchFileEntryMetadataException {
 
-		DLFileEntryMetadata dlFileEntryMetadata = fetchByD_F(
-			DDMStructureId, fileVersionId);
+		return _findByD_F(DDMStructureId, fileVersionId, false);
+	}
+
+	private DLFileEntryMetadata _findByD_F(
+			long DDMStructureId, long fileVersionId, boolean readOnlyCache)
+		throws NoSuchFileEntryMetadataException {
+
+		DLFileEntryMetadata dlFileEntryMetadata = _fetchByD_F(
+			DDMStructureId, fileVersionId, true, readOnlyCache);
 
 		if (dlFileEntryMetadata == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2360,6 +2416,14 @@ public class DLFileEntryMetadataPersistenceImpl
 	@Override
 	public DLFileEntryMetadata fetchByD_F(
 		long DDMStructureId, long fileVersionId, boolean useFinderCache) {
+
+		return _fetchByD_F(
+			DDMStructureId, fileVersionId, useFinderCache, false);
+	}
+
+	private DLFileEntryMetadata _fetchByD_F(
+		long DDMStructureId, long fileVersionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryMetadata.class);
@@ -2423,9 +2487,11 @@ public class DLFileEntryMetadataPersistenceImpl
 				else {
 					DLFileEntryMetadata dlFileEntryMetadata = list.get(0);
 
-					result = dlFileEntryMetadata;
+					if (!readOnlyCache) {
+						result = dlFileEntryMetadata;
 
-					cacheResult(dlFileEntryMetadata);
+						cacheResult(dlFileEntryMetadata);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2456,8 +2522,8 @@ public class DLFileEntryMetadataPersistenceImpl
 			long DDMStructureId, long fileVersionId)
 		throws NoSuchFileEntryMetadataException {
 
-		DLFileEntryMetadata dlFileEntryMetadata = findByD_F(
-			DDMStructureId, fileVersionId);
+		DLFileEntryMetadata dlFileEntryMetadata = _findByD_F(
+			DDMStructureId, fileVersionId, true);
 
 		return remove(dlFileEntryMetadata);
 	}
@@ -3109,6 +3175,14 @@ public class DLFileEntryMetadataPersistenceImpl
 		OrderByComparator<DLFileEntryMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryMetadata> _findAll(
+		int start, int end,
+		OrderByComparator<DLFileEntryMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryMetadata.class);
 
@@ -3166,10 +3240,12 @@ public class DLFileEntryMetadataPersistenceImpl
 				list = (List<DLFileEntryMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3189,7 +3265,10 @@ public class DLFileEntryMetadataPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLFileEntryMetadata dlFileEntryMetadata : findAll()) {
+		for (DLFileEntryMetadata dlFileEntryMetadata :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlFileEntryMetadata);
 		}
 	}

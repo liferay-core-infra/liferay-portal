@@ -174,6 +174,15 @@ public class AnalyticsDeleteMessagePersistenceImpl
 		OrderByComparator<AnalyticsDeleteMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsDeleteMessage> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AnalyticsDeleteMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -248,10 +257,12 @@ public class AnalyticsDeleteMessagePersistenceImpl
 				list = (List<AnalyticsDeleteMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -545,8 +556,9 @@ public class AnalyticsDeleteMessagePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AnalyticsDeleteMessage analyticsDeleteMessage :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(analyticsDeleteMessage);
 		}
@@ -687,6 +699,16 @@ public class AnalyticsDeleteMessagePersistenceImpl
 		OrderByComparator<AnalyticsDeleteMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_GtM(
+			companyId, modifiedDate, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AnalyticsDeleteMessage> _findByC_GtM(
+		long companyId, Date modifiedDate, int start, int end,
+		OrderByComparator<AnalyticsDeleteMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -770,10 +792,12 @@ public class AnalyticsDeleteMessagePersistenceImpl
 				list = (List<AnalyticsDeleteMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1094,9 +1118,9 @@ public class AnalyticsDeleteMessagePersistenceImpl
 	@Override
 	public void removeByC_GtM(long companyId, Date modifiedDate) {
 		for (AnalyticsDeleteMessage analyticsDeleteMessage :
-				findByC_GtM(
+				_findByC_GtM(
 					companyId, modifiedDate, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(analyticsDeleteMessage);
 		}
@@ -1590,6 +1614,14 @@ public class AnalyticsDeleteMessagePersistenceImpl
 		OrderByComparator<AnalyticsDeleteMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsDeleteMessage> _findAll(
+		int start, int end,
+		OrderByComparator<AnalyticsDeleteMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1644,10 +1676,12 @@ public class AnalyticsDeleteMessagePersistenceImpl
 				list = (List<AnalyticsDeleteMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1667,7 +1701,10 @@ public class AnalyticsDeleteMessagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AnalyticsDeleteMessage analyticsDeleteMessage : findAll()) {
+		for (AnalyticsDeleteMessage analyticsDeleteMessage :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(analyticsDeleteMessage);
 		}
 	}

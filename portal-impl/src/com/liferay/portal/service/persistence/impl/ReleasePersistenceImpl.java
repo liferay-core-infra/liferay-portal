@@ -100,7 +100,15 @@ public class ReleasePersistenceImpl
 	public Release findByServletContextName(String servletContextName)
 		throws NoSuchReleaseException {
 
-		Release release = fetchByServletContextName(servletContextName);
+		return _findByServletContextName(servletContextName, false);
+	}
+
+	private Release _findByServletContextName(
+			String servletContextName, boolean readOnlyCache)
+		throws NoSuchReleaseException {
+
+		Release release = _fetchByServletContextName(
+			servletContextName, true, readOnlyCache);
 
 		if (release == null) {
 			StringBundler sb = new StringBundler(4);
@@ -143,6 +151,14 @@ public class ReleasePersistenceImpl
 	@Override
 	public Release fetchByServletContextName(
 		String servletContextName, boolean useFinderCache) {
+
+		return _fetchByServletContextName(
+			servletContextName, useFinderCache, false);
+	}
+
+	private Release _fetchByServletContextName(
+		String servletContextName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		servletContextName = Objects.toString(servletContextName, "");
 
@@ -214,9 +230,11 @@ public class ReleasePersistenceImpl
 				else {
 					Release release = list.get(0);
 
-					result = release;
+					if (!readOnlyCache) {
+						result = release;
 
-					cacheResult(release);
+						cacheResult(release);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -245,7 +263,7 @@ public class ReleasePersistenceImpl
 	public Release removeByServletContextName(String servletContextName)
 		throws NoSuchReleaseException {
 
-		Release release = findByServletContextName(servletContextName);
+		Release release = _findByServletContextName(servletContextName, true);
 
 		return remove(release);
 	}
@@ -718,6 +736,13 @@ public class ReleasePersistenceImpl
 		int start, int end, OrderByComparator<Release> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Release> _findAll(
+		int start, int end, OrderByComparator<Release> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -772,10 +797,12 @@ public class ReleasePersistenceImpl
 				list = (List<Release>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -795,7 +822,10 @@ public class ReleasePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Release release : findAll()) {
+		for (Release release :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(release);
 		}
 	}

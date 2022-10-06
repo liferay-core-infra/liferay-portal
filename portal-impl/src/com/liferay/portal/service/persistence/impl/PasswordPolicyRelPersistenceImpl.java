@@ -160,6 +160,16 @@ public class PasswordPolicyRelPersistenceImpl
 		OrderByComparator<PasswordPolicyRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPasswordPolicyId(
+			passwordPolicyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PasswordPolicyRel> _findByPasswordPolicyId(
+		long passwordPolicyId, int start, int end,
+		OrderByComparator<PasswordPolicyRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -236,10 +246,12 @@ public class PasswordPolicyRelPersistenceImpl
 				list = (List<PasswordPolicyRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -533,9 +545,9 @@ public class PasswordPolicyRelPersistenceImpl
 	@Override
 	public void removeByPasswordPolicyId(long passwordPolicyId) {
 		for (PasswordPolicyRel passwordPolicyRel :
-				findByPasswordPolicyId(
+				_findByPasswordPolicyId(
 					passwordPolicyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(passwordPolicyRel);
 		}
@@ -609,7 +621,15 @@ public class PasswordPolicyRelPersistenceImpl
 	public PasswordPolicyRel findByC_C(long classNameId, long classPK)
 		throws NoSuchPasswordPolicyRelException {
 
-		PasswordPolicyRel passwordPolicyRel = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private PasswordPolicyRel _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchPasswordPolicyRelException {
+
+		PasswordPolicyRel passwordPolicyRel = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (passwordPolicyRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -657,6 +677,13 @@ public class PasswordPolicyRelPersistenceImpl
 	@Override
 	public PasswordPolicyRel fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private PasswordPolicyRel _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -716,9 +743,11 @@ public class PasswordPolicyRelPersistenceImpl
 				else {
 					PasswordPolicyRel passwordPolicyRel = list.get(0);
 
-					result = passwordPolicyRel;
+					if (!readOnlyCache) {
+						result = passwordPolicyRel;
 
-					cacheResult(passwordPolicyRel);
+						cacheResult(passwordPolicyRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -748,7 +777,8 @@ public class PasswordPolicyRelPersistenceImpl
 	public PasswordPolicyRel removeByC_C(long classNameId, long classPK)
 		throws NoSuchPasswordPolicyRelException {
 
-		PasswordPolicyRel passwordPolicyRel = findByC_C(classNameId, classPK);
+		PasswordPolicyRel passwordPolicyRel = _findByC_C(
+			classNameId, classPK, true);
 
 		return remove(passwordPolicyRel);
 	}
@@ -1208,6 +1238,14 @@ public class PasswordPolicyRelPersistenceImpl
 		OrderByComparator<PasswordPolicyRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PasswordPolicyRel> _findAll(
+		int start, int end,
+		OrderByComparator<PasswordPolicyRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1262,10 +1300,12 @@ public class PasswordPolicyRelPersistenceImpl
 				list = (List<PasswordPolicyRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1285,7 +1325,10 @@ public class PasswordPolicyRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PasswordPolicyRel passwordPolicyRel : findAll()) {
+		for (PasswordPolicyRel passwordPolicyRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(passwordPolicyRel);
 		}
 	}

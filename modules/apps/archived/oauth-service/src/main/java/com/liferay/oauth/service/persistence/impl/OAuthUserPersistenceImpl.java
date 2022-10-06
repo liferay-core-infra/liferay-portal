@@ -169,6 +169,15 @@ public class OAuthUserPersistenceImpl
 		OrderByComparator<OAuthUser> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthUser> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<OAuthUser> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -241,10 +250,12 @@ public class OAuthUserPersistenceImpl
 				list = (List<OAuthUser>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -847,8 +858,9 @@ public class OAuthUserPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (OAuthUser oAuthUser :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthUser);
 		}
@@ -1031,6 +1043,16 @@ public class OAuthUserPersistenceImpl
 		OrderByComparator<OAuthUser> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOAuthApplicationId(
+			oAuthApplicationId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<OAuthUser> _findByOAuthApplicationId(
+		long oAuthApplicationId, int start, int end,
+		OrderByComparator<OAuthUser> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1108,10 +1130,12 @@ public class OAuthUserPersistenceImpl
 				list = (List<OAuthUser>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1731,9 +1755,9 @@ public class OAuthUserPersistenceImpl
 	@Override
 	public void removeByOAuthApplicationId(long oAuthApplicationId) {
 		for (OAuthUser oAuthUser :
-				findByOAuthApplicationId(
+				_findByOAuthApplicationId(
 					oAuthApplicationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(oAuthUser);
 		}
@@ -1854,7 +1878,15 @@ public class OAuthUserPersistenceImpl
 	public OAuthUser findByAccessToken(String accessToken)
 		throws NoSuchUserException {
 
-		OAuthUser oAuthUser = fetchByAccessToken(accessToken);
+		return _findByAccessToken(accessToken, false);
+	}
+
+	private OAuthUser _findByAccessToken(
+			String accessToken, boolean readOnlyCache)
+		throws NoSuchUserException {
+
+		OAuthUser oAuthUser = _fetchByAccessToken(
+			accessToken, true, readOnlyCache);
 
 		if (oAuthUser == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1897,6 +1929,12 @@ public class OAuthUserPersistenceImpl
 	@Override
 	public OAuthUser fetchByAccessToken(
 		String accessToken, boolean useFinderCache) {
+
+		return _fetchByAccessToken(accessToken, useFinderCache, false);
+	}
+
+	private OAuthUser _fetchByAccessToken(
+		String accessToken, boolean useFinderCache, boolean readOnlyCache) {
 
 		accessToken = Objects.toString(accessToken, "");
 
@@ -1963,9 +2001,11 @@ public class OAuthUserPersistenceImpl
 				else {
 					OAuthUser oAuthUser = list.get(0);
 
-					result = oAuthUser;
+					if (!readOnlyCache) {
+						result = oAuthUser;
 
-					cacheResult(oAuthUser);
+						cacheResult(oAuthUser);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1994,7 +2034,7 @@ public class OAuthUserPersistenceImpl
 	public OAuthUser removeByAccessToken(String accessToken)
 		throws NoSuchUserException {
 
-		OAuthUser oAuthUser = findByAccessToken(accessToken);
+		OAuthUser oAuthUser = _findByAccessToken(accessToken, true);
 
 		return remove(oAuthUser);
 	}
@@ -2082,7 +2122,15 @@ public class OAuthUserPersistenceImpl
 	public OAuthUser findByU_OAI(long userId, long oAuthApplicationId)
 		throws NoSuchUserException {
 
-		OAuthUser oAuthUser = fetchByU_OAI(userId, oAuthApplicationId);
+		return _findByU_OAI(userId, oAuthApplicationId, false);
+	}
+
+	private OAuthUser _findByU_OAI(
+			long userId, long oAuthApplicationId, boolean readOnlyCache)
+		throws NoSuchUserException {
+
+		OAuthUser oAuthUser = _fetchByU_OAI(
+			userId, oAuthApplicationId, true, readOnlyCache);
 
 		if (oAuthUser == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2130,6 +2178,13 @@ public class OAuthUserPersistenceImpl
 	@Override
 	public OAuthUser fetchByU_OAI(
 		long userId, long oAuthApplicationId, boolean useFinderCache) {
+
+		return _fetchByU_OAI(userId, oAuthApplicationId, useFinderCache, false);
+	}
+
+	private OAuthUser _fetchByU_OAI(
+		long userId, long oAuthApplicationId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2188,9 +2243,11 @@ public class OAuthUserPersistenceImpl
 				else {
 					OAuthUser oAuthUser = list.get(0);
 
-					result = oAuthUser;
+					if (!readOnlyCache) {
+						result = oAuthUser;
 
-					cacheResult(oAuthUser);
+						cacheResult(oAuthUser);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2220,7 +2277,7 @@ public class OAuthUserPersistenceImpl
 	public OAuthUser removeByU_OAI(long userId, long oAuthApplicationId)
 		throws NoSuchUserException {
 
-		OAuthUser oAuthUser = findByU_OAI(userId, oAuthApplicationId);
+		OAuthUser oAuthUser = _findByU_OAI(userId, oAuthApplicationId, true);
 
 		return remove(oAuthUser);
 	}
@@ -2695,6 +2752,13 @@ public class OAuthUserPersistenceImpl
 		int start, int end, OrderByComparator<OAuthUser> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthUser> _findAll(
+		int start, int end, OrderByComparator<OAuthUser> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2749,10 +2813,12 @@ public class OAuthUserPersistenceImpl
 				list = (List<OAuthUser>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2772,7 +2838,10 @@ public class OAuthUserPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OAuthUser oAuthUser : findAll()) {
+		for (OAuthUser oAuthUser :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(oAuthUser);
 		}
 	}

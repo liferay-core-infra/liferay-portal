@@ -170,6 +170,15 @@ public class ChangesetEntryPersistenceImpl
 		OrderByComparator<ChangesetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ChangesetEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<ChangesetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +251,12 @@ public class ChangesetEntryPersistenceImpl
 				list = (List<ChangesetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -530,8 +541,9 @@ public class ChangesetEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (ChangesetEntry changesetEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(changesetEntry);
 		}
@@ -665,6 +677,15 @@ public class ChangesetEntryPersistenceImpl
 		OrderByComparator<ChangesetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ChangesetEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<ChangesetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -739,10 +760,12 @@ public class ChangesetEntryPersistenceImpl
 				list = (List<ChangesetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1027,8 +1050,9 @@ public class ChangesetEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (ChangesetEntry changesetEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(changesetEntry);
 		}
@@ -1166,6 +1190,16 @@ public class ChangesetEntryPersistenceImpl
 		OrderByComparator<ChangesetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByChangesetCollectionId(
+			changesetCollectionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ChangesetEntry> _findByChangesetCollectionId(
+		long changesetCollectionId, int start, int end,
+		OrderByComparator<ChangesetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1244,10 +1278,12 @@ public class ChangesetEntryPersistenceImpl
 				list = (List<ChangesetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1539,9 +1575,9 @@ public class ChangesetEntryPersistenceImpl
 	@Override
 	public void removeByChangesetCollectionId(long changesetCollectionId) {
 		for (ChangesetEntry changesetEntry :
-				findByChangesetCollectionId(
+				_findByChangesetCollectionId(
 					changesetCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(changesetEntry);
 		}
@@ -1682,6 +1718,16 @@ public class ChangesetEntryPersistenceImpl
 		OrderByComparator<ChangesetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ChangesetEntry> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<ChangesetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1762,10 +1808,12 @@ public class ChangesetEntryPersistenceImpl
 				list = (List<ChangesetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2073,9 +2121,9 @@ public class ChangesetEntryPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (ChangesetEntry changesetEntry :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(changesetEntry);
 		}
@@ -2226,6 +2274,16 @@ public class ChangesetEntryPersistenceImpl
 		OrderByComparator<ChangesetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			changesetCollectionId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ChangesetEntry> _findByC_C(
+		long changesetCollectionId, long classNameId, int start, int end,
+		OrderByComparator<ChangesetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2308,10 +2366,12 @@ public class ChangesetEntryPersistenceImpl
 				list = (List<ChangesetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2620,9 +2680,9 @@ public class ChangesetEntryPersistenceImpl
 	@Override
 	public void removeByC_C(long changesetCollectionId, long classNameId) {
 		for (ChangesetEntry changesetEntry :
-				findByC_C(
+				_findByC_C(
 					changesetCollectionId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(changesetEntry);
 		}
@@ -2705,8 +2765,16 @@ public class ChangesetEntryPersistenceImpl
 			long changesetCollectionId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		ChangesetEntry changesetEntry = fetchByC_C_C(
-			changesetCollectionId, classNameId, classPK);
+		return _findByC_C_C(changesetCollectionId, classNameId, classPK, false);
+	}
+
+	private ChangesetEntry _findByC_C_C(
+			long changesetCollectionId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		ChangesetEntry changesetEntry = _fetchByC_C_C(
+			changesetCollectionId, classNameId, classPK, true, readOnlyCache);
 
 		if (changesetEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2762,6 +2830,14 @@ public class ChangesetEntryPersistenceImpl
 	public ChangesetEntry fetchByC_C_C(
 		long changesetCollectionId, long classNameId, long classPK,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			changesetCollectionId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private ChangesetEntry _fetchByC_C_C(
+		long changesetCollectionId, long classNameId, long classPK,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2828,9 +2904,11 @@ public class ChangesetEntryPersistenceImpl
 				else {
 					ChangesetEntry changesetEntry = list.get(0);
 
-					result = changesetEntry;
+					if (!readOnlyCache) {
+						result = changesetEntry;
 
-					cacheResult(changesetEntry);
+						cacheResult(changesetEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2862,8 +2940,8 @@ public class ChangesetEntryPersistenceImpl
 			long changesetCollectionId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		ChangesetEntry changesetEntry = findByC_C_C(
-			changesetCollectionId, classNameId, classPK);
+		ChangesetEntry changesetEntry = _findByC_C_C(
+			changesetCollectionId, classNameId, classPK, true);
 
 		return remove(changesetEntry);
 	}
@@ -3352,6 +3430,13 @@ public class ChangesetEntryPersistenceImpl
 		int start, int end, OrderByComparator<ChangesetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ChangesetEntry> _findAll(
+		int start, int end, OrderByComparator<ChangesetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3406,10 +3491,12 @@ public class ChangesetEntryPersistenceImpl
 				list = (List<ChangesetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3429,7 +3516,10 @@ public class ChangesetEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ChangesetEntry changesetEntry : findAll()) {
+		for (ChangesetEntry changesetEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(changesetEntry);
 		}
 	}

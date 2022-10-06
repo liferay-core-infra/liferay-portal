@@ -156,6 +156,16 @@ public class OrgLaborPersistenceImpl
 		long organizationId, int start, int end,
 		OrderByComparator<OrgLabor> orderByComparator, boolean useFinderCache) {
 
+		return _findByOrganizationId(
+			organizationId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<OrgLabor> _findByOrganizationId(
+		long organizationId, int start, int end,
+		OrderByComparator<OrgLabor> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -230,10 +240,12 @@ public class OrgLaborPersistenceImpl
 				list = (List<OrgLabor>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -517,9 +529,9 @@ public class OrgLaborPersistenceImpl
 	@Override
 	public void removeByOrganizationId(long organizationId) {
 		for (OrgLabor orgLabor :
-				findByOrganizationId(
-					organizationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByOrganizationId(
+					organizationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(orgLabor);
 		}
@@ -931,6 +943,13 @@ public class OrgLaborPersistenceImpl
 		int start, int end, OrderByComparator<OrgLabor> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OrgLabor> _findAll(
+		int start, int end, OrderByComparator<OrgLabor> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -985,10 +1004,12 @@ public class OrgLaborPersistenceImpl
 				list = (List<OrgLabor>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1008,7 +1029,10 @@ public class OrgLaborPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OrgLabor orgLabor : findAll()) {
+		for (OrgLabor orgLabor :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(orgLabor);
 		}
 	}

@@ -183,6 +183,15 @@ public class DDMFormInstancePersistenceImpl
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstance> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class DDMFormInstancePersistenceImpl
 				list = (List<DDMFormInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -572,7 +583,9 @@ public class DDMFormInstancePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDMFormInstance ddmFormInstance :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmFormInstance);
 		}
@@ -673,7 +686,15 @@ public class DDMFormInstancePersistenceImpl
 	public DDMFormInstance findByUUID_G(String uuid, long groupId)
 		throws NoSuchFormInstanceException {
 
-		DDMFormInstance ddmFormInstance = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DDMFormInstance _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFormInstanceException {
+
+		DDMFormInstance ddmFormInstance = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ddmFormInstance == null) {
 			StringBundler sb = new StringBundler(6);
@@ -721,6 +742,13 @@ public class DDMFormInstancePersistenceImpl
 	@Override
 	public DDMFormInstance fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DDMFormInstance _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -796,9 +824,11 @@ public class DDMFormInstancePersistenceImpl
 				else {
 					DDMFormInstance ddmFormInstance = list.get(0);
 
-					result = ddmFormInstance;
+					if (!readOnlyCache) {
+						result = ddmFormInstance;
 
-					cacheResult(ddmFormInstance);
+						cacheResult(ddmFormInstance);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -828,7 +858,7 @@ public class DDMFormInstancePersistenceImpl
 	public DDMFormInstance removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFormInstanceException {
 
-		DDMFormInstance ddmFormInstance = findByUUID_G(uuid, groupId);
+		DDMFormInstance ddmFormInstance = _findByUUID_G(uuid, groupId, true);
 
 		return remove(ddmFormInstance);
 	}
@@ -1002,6 +1032,16 @@ public class DDMFormInstancePersistenceImpl
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMFormInstance> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1098,10 +1138,12 @@ public class DDMFormInstancePersistenceImpl
 				list = (List<DDMFormInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1422,9 +1464,9 @@ public class DDMFormInstancePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDMFormInstance ddmFormInstance :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmFormInstance);
 		}
@@ -1595,6 +1637,15 @@ public class DDMFormInstancePersistenceImpl
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstance> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstance.class);
 
@@ -1670,10 +1721,12 @@ public class DDMFormInstancePersistenceImpl
 				list = (List<DDMFormInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2499,6 +2552,15 @@ public class DDMFormInstancePersistenceImpl
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstance> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2587,12 +2649,14 @@ public class DDMFormInstancePersistenceImpl
 				list = (List<DDMFormInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2614,8 +2678,9 @@ public class DDMFormInstancePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DDMFormInstance ddmFormInstance :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmFormInstance);
 		}
@@ -3474,6 +3539,14 @@ public class DDMFormInstancePersistenceImpl
 		OrderByComparator<DDMFormInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstance> _findAll(
+		int start, int end,
+		OrderByComparator<DDMFormInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstance.class);
 
@@ -3531,10 +3604,12 @@ public class DDMFormInstancePersistenceImpl
 				list = (List<DDMFormInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3554,7 +3629,10 @@ public class DDMFormInstancePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMFormInstance ddmFormInstance : findAll()) {
+		for (DDMFormInstance ddmFormInstance :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmFormInstance);
 		}
 	}

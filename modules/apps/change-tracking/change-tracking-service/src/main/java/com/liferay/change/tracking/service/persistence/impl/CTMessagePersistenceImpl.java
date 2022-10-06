@@ -167,6 +167,16 @@ public class CTMessagePersistenceImpl
 		OrderByComparator<CTMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCtCollectionId(
+			ctCollectionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTMessage> _findByCtCollectionId(
+		long ctCollectionId, int start, int end,
+		OrderByComparator<CTMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -241,10 +251,12 @@ public class CTMessagePersistenceImpl
 				list = (List<CTMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -528,9 +540,9 @@ public class CTMessagePersistenceImpl
 	@Override
 	public void removeByCtCollectionId(long ctCollectionId) {
 		for (CTMessage ctMessage :
-				findByCtCollectionId(
-					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCtCollectionId(
+					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ctMessage);
 		}
@@ -942,6 +954,13 @@ public class CTMessagePersistenceImpl
 		int start, int end, OrderByComparator<CTMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTMessage> _findAll(
+		int start, int end, OrderByComparator<CTMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -996,10 +1015,12 @@ public class CTMessagePersistenceImpl
 				list = (List<CTMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1019,7 +1040,10 @@ public class CTMessagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTMessage ctMessage : findAll()) {
+		for (CTMessage ctMessage :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctMessage);
 		}
 	}

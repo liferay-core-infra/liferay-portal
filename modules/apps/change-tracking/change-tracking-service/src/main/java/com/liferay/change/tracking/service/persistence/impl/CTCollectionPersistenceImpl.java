@@ -174,6 +174,15 @@ public class CTCollectionPersistenceImpl
 		OrderByComparator<CTCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTCollection> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CTCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -248,10 +257,12 @@ public class CTCollectionPersistenceImpl
 				list = (List<CTCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -865,8 +876,9 @@ public class CTCollectionPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CTCollection ctCollection :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ctCollection);
 		}
@@ -1049,6 +1061,16 @@ public class CTCollectionPersistenceImpl
 		OrderByComparator<CTCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySchemaVersionId(
+			schemaVersionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTCollection> _findBySchemaVersionId(
+		long schemaVersionId, int start, int end,
+		OrderByComparator<CTCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1123,10 +1145,12 @@ public class CTCollectionPersistenceImpl
 				list = (List<CTCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1751,9 +1775,9 @@ public class CTCollectionPersistenceImpl
 	@Override
 	public void removeBySchemaVersionId(long schemaVersionId) {
 		for (CTCollection ctCollection :
-				findBySchemaVersionId(
-					schemaVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findBySchemaVersionId(
+					schemaVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ctCollection);
 		}
@@ -1942,6 +1966,16 @@ public class CTCollectionPersistenceImpl
 		OrderByComparator<CTCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTCollection> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<CTCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2022,10 +2056,12 @@ public class CTCollectionPersistenceImpl
 				list = (List<CTCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2897,6 +2933,16 @@ public class CTCollectionPersistenceImpl
 		OrderByComparator<CTCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, statuses, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTCollection> _findByC_S(
+		long companyId, int[] statuses, int start, int end,
+		OrderByComparator<CTCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -2993,11 +3039,14 @@ public class CTCollectionPersistenceImpl
 				list = (List<CTCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3020,9 +3069,9 @@ public class CTCollectionPersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (CTCollection ctCollection :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ctCollection);
 		}
@@ -3672,6 +3721,13 @@ public class CTCollectionPersistenceImpl
 		int start, int end, OrderByComparator<CTCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTCollection> _findAll(
+		int start, int end, OrderByComparator<CTCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3726,10 +3782,12 @@ public class CTCollectionPersistenceImpl
 				list = (List<CTCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3749,7 +3807,10 @@ public class CTCollectionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTCollection ctCollection : findAll()) {
+		for (CTCollection ctCollection :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctCollection);
 		}
 	}

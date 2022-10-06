@@ -169,6 +169,15 @@ public class FolderPersistenceImpl
 		long accountId, int start, int end,
 		OrderByComparator<Folder> orderByComparator, boolean useFinderCache) {
 
+		return _findByAccountId(
+			accountId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Folder> _findByAccountId(
+		long accountId, int start, int end,
+		OrderByComparator<Folder> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +251,12 @@ public class FolderPersistenceImpl
 				list = (List<Folder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -526,8 +537,9 @@ public class FolderPersistenceImpl
 	@Override
 	public void removeByAccountId(long accountId) {
 		for (Folder folder :
-				findByAccountId(
-					accountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByAccountId(
+					accountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(folder);
 		}
@@ -600,7 +612,14 @@ public class FolderPersistenceImpl
 	public Folder findByA_F(long accountId, String fullName)
 		throws NoSuchFolderException {
 
-		Folder folder = fetchByA_F(accountId, fullName);
+		return _findByA_F(accountId, fullName, false);
+	}
+
+	private Folder _findByA_F(
+			long accountId, String fullName, boolean readOnlyCache)
+		throws NoSuchFolderException {
+
+		Folder folder = _fetchByA_F(accountId, fullName, true, readOnlyCache);
 
 		if (folder == null) {
 			StringBundler sb = new StringBundler(6);
@@ -648,6 +667,13 @@ public class FolderPersistenceImpl
 	@Override
 	public Folder fetchByA_F(
 		long accountId, String fullName, boolean useFinderCache) {
+
+		return _fetchByA_F(accountId, fullName, useFinderCache, false);
+	}
+
+	private Folder _fetchByA_F(
+		long accountId, String fullName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		fullName = Objects.toString(fullName, "");
 
@@ -734,9 +760,11 @@ public class FolderPersistenceImpl
 
 					Folder folder = list.get(0);
 
-					result = folder;
+					if (!readOnlyCache) {
+						result = folder;
 
-					cacheResult(folder);
+						cacheResult(folder);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -766,7 +794,7 @@ public class FolderPersistenceImpl
 	public Folder removeByA_F(long accountId, String fullName)
 		throws NoSuchFolderException {
 
-		Folder folder = findByA_F(accountId, fullName);
+		Folder folder = _findByA_F(accountId, fullName, true);
 
 		return remove(folder);
 	}
@@ -1232,6 +1260,13 @@ public class FolderPersistenceImpl
 		int start, int end, OrderByComparator<Folder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Folder> _findAll(
+		int start, int end, OrderByComparator<Folder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1285,10 +1320,12 @@ public class FolderPersistenceImpl
 				list = (List<Folder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1308,7 +1345,10 @@ public class FolderPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Folder folder : findAll()) {
+		for (Folder folder :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(folder);
 		}
 	}

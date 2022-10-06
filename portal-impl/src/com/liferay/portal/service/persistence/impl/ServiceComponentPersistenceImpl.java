@@ -160,6 +160,16 @@ public class ServiceComponentPersistenceImpl
 		OrderByComparator<ServiceComponent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByBuildNamespace(
+			buildNamespace, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ServiceComponent> _findByBuildNamespace(
+		String buildNamespace, int start, int end,
+		OrderByComparator<ServiceComponent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		buildNamespace = Objects.toString(buildNamespace, "");
 
 		FinderPath finderPath = null;
@@ -249,10 +259,12 @@ public class ServiceComponentPersistenceImpl
 				list = (List<ServiceComponent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -559,9 +571,9 @@ public class ServiceComponentPersistenceImpl
 	@Override
 	public void removeByBuildNamespace(String buildNamespace) {
 		for (ServiceComponent serviceComponent :
-				findByBuildNamespace(
-					buildNamespace, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByBuildNamespace(
+					buildNamespace, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(serviceComponent);
 		}
@@ -651,8 +663,15 @@ public class ServiceComponentPersistenceImpl
 			String buildNamespace, long buildNumber)
 		throws NoSuchServiceComponentException {
 
-		ServiceComponent serviceComponent = fetchByBNS_BNU(
-			buildNamespace, buildNumber);
+		return _findByBNS_BNU(buildNamespace, buildNumber, false);
+	}
+
+	private ServiceComponent _findByBNS_BNU(
+			String buildNamespace, long buildNumber, boolean readOnlyCache)
+		throws NoSuchServiceComponentException {
+
+		ServiceComponent serviceComponent = _fetchByBNS_BNU(
+			buildNamespace, buildNumber, true, readOnlyCache);
 
 		if (serviceComponent == null) {
 			StringBundler sb = new StringBundler(6);
@@ -702,6 +721,14 @@ public class ServiceComponentPersistenceImpl
 	@Override
 	public ServiceComponent fetchByBNS_BNU(
 		String buildNamespace, long buildNumber, boolean useFinderCache) {
+
+		return _fetchByBNS_BNU(
+			buildNamespace, buildNumber, useFinderCache, false);
+	}
+
+	private ServiceComponent _fetchByBNS_BNU(
+		String buildNamespace, long buildNumber, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		buildNamespace = Objects.toString(buildNamespace, "");
 
@@ -775,9 +802,11 @@ public class ServiceComponentPersistenceImpl
 				else {
 					ServiceComponent serviceComponent = list.get(0);
 
-					result = serviceComponent;
+					if (!readOnlyCache) {
+						result = serviceComponent;
 
-					cacheResult(serviceComponent);
+						cacheResult(serviceComponent);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -808,8 +837,8 @@ public class ServiceComponentPersistenceImpl
 			String buildNamespace, long buildNumber)
 		throws NoSuchServiceComponentException {
 
-		ServiceComponent serviceComponent = findByBNS_BNU(
-			buildNamespace, buildNumber);
+		ServiceComponent serviceComponent = _findByBNS_BNU(
+			buildNamespace, buildNumber, true);
 
 		return remove(serviceComponent);
 	}
@@ -1286,6 +1315,14 @@ public class ServiceComponentPersistenceImpl
 		OrderByComparator<ServiceComponent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ServiceComponent> _findAll(
+		int start, int end,
+		OrderByComparator<ServiceComponent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1340,10 +1377,12 @@ public class ServiceComponentPersistenceImpl
 				list = (List<ServiceComponent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1363,7 +1402,10 @@ public class ServiceComponentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ServiceComponent serviceComponent : findAll()) {
+		for (ServiceComponent serviceComponent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(serviceComponent);
 		}
 	}

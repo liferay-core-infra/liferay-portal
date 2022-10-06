@@ -177,6 +177,16 @@ public class NotificationTemplateAttachmentPersistenceImpl
 		OrderByComparator<NotificationTemplateAttachment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotificationTemplateId(
+			notificationTemplateId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<NotificationTemplateAttachment> _findByNotificationTemplateId(
+		long notificationTemplateId, int start, int end,
+		OrderByComparator<NotificationTemplateAttachment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -259,10 +269,12 @@ public class NotificationTemplateAttachmentPersistenceImpl
 				list = (List<NotificationTemplateAttachment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,9 +579,9 @@ public class NotificationTemplateAttachmentPersistenceImpl
 	@Override
 	public void removeByNotificationTemplateId(long notificationTemplateId) {
 		for (NotificationTemplateAttachment notificationTemplateAttachment :
-				findByNotificationTemplateId(
+				_findByNotificationTemplateId(
 					notificationTemplateId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(notificationTemplateAttachment);
 		}
@@ -645,8 +657,17 @@ public class NotificationTemplateAttachmentPersistenceImpl
 			long notificationTemplateId, long objectFieldId)
 		throws NoSuchNotificationTemplateAttachmentException {
 
+		return _findByNTI_OFI(notificationTemplateId, objectFieldId, false);
+	}
+
+	private NotificationTemplateAttachment _findByNTI_OFI(
+			long notificationTemplateId, long objectFieldId,
+			boolean readOnlyCache)
+		throws NoSuchNotificationTemplateAttachmentException {
+
 		NotificationTemplateAttachment notificationTemplateAttachment =
-			fetchByNTI_OFI(notificationTemplateId, objectFieldId);
+			_fetchByNTI_OFI(
+				notificationTemplateId, objectFieldId, true, readOnlyCache);
 
 		if (notificationTemplateAttachment == null) {
 			StringBundler sb = new StringBundler(6);
@@ -698,6 +719,14 @@ public class NotificationTemplateAttachmentPersistenceImpl
 	public NotificationTemplateAttachment fetchByNTI_OFI(
 		long notificationTemplateId, long objectFieldId,
 		boolean useFinderCache) {
+
+		return _fetchByNTI_OFI(
+			notificationTemplateId, objectFieldId, useFinderCache, false);
+	}
+
+	private NotificationTemplateAttachment _fetchByNTI_OFI(
+		long notificationTemplateId, long objectFieldId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -762,9 +791,11 @@ public class NotificationTemplateAttachmentPersistenceImpl
 					NotificationTemplateAttachment
 						notificationTemplateAttachment = list.get(0);
 
-					result = notificationTemplateAttachment;
+					if (!readOnlyCache) {
+						result = notificationTemplateAttachment;
 
-					cacheResult(notificationTemplateAttachment);
+						cacheResult(notificationTemplateAttachment);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -796,7 +827,7 @@ public class NotificationTemplateAttachmentPersistenceImpl
 		throws NoSuchNotificationTemplateAttachmentException {
 
 		NotificationTemplateAttachment notificationTemplateAttachment =
-			findByNTI_OFI(notificationTemplateId, objectFieldId);
+			_findByNTI_OFI(notificationTemplateId, objectFieldId, true);
 
 		return remove(notificationTemplateAttachment);
 	}
@@ -1307,6 +1338,14 @@ public class NotificationTemplateAttachmentPersistenceImpl
 		OrderByComparator<NotificationTemplateAttachment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationTemplateAttachment> _findAll(
+		int start, int end,
+		OrderByComparator<NotificationTemplateAttachment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1362,10 +1401,12 @@ public class NotificationTemplateAttachmentPersistenceImpl
 				list = (List<NotificationTemplateAttachment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1386,7 +1427,8 @@ public class NotificationTemplateAttachmentPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (NotificationTemplateAttachment notificationTemplateAttachment :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(notificationTemplateAttachment);
 		}

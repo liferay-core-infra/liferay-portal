@@ -179,6 +179,15 @@ public class MBDiscussionPersistenceImpl
 		OrderByComparator<MBDiscussion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBDiscussion> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBDiscussion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class MBDiscussionPersistenceImpl
 				list = (List<MBDiscussion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,7 +575,9 @@ public class MBDiscussionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBDiscussion mbDiscussion :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbDiscussion);
 		}
@@ -665,7 +678,15 @@ public class MBDiscussionPersistenceImpl
 	public MBDiscussion findByUUID_G(String uuid, long groupId)
 		throws NoSuchDiscussionException {
 
-		MBDiscussion mbDiscussion = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBDiscussion _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchDiscussionException {
+
+		MBDiscussion mbDiscussion = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (mbDiscussion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -713,6 +734,13 @@ public class MBDiscussionPersistenceImpl
 	@Override
 	public MBDiscussion fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBDiscussion _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -788,9 +816,11 @@ public class MBDiscussionPersistenceImpl
 				else {
 					MBDiscussion mbDiscussion = list.get(0);
 
-					result = mbDiscussion;
+					if (!readOnlyCache) {
+						result = mbDiscussion;
 
-					cacheResult(mbDiscussion);
+						cacheResult(mbDiscussion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -820,7 +850,7 @@ public class MBDiscussionPersistenceImpl
 	public MBDiscussion removeByUUID_G(String uuid, long groupId)
 		throws NoSuchDiscussionException {
 
-		MBDiscussion mbDiscussion = findByUUID_G(uuid, groupId);
+		MBDiscussion mbDiscussion = _findByUUID_G(uuid, groupId, true);
 
 		return remove(mbDiscussion);
 	}
@@ -994,6 +1024,16 @@ public class MBDiscussionPersistenceImpl
 		OrderByComparator<MBDiscussion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBDiscussion> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBDiscussion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1090,10 +1130,12 @@ public class MBDiscussionPersistenceImpl
 				list = (List<MBDiscussion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1412,9 +1454,9 @@ public class MBDiscussionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBDiscussion mbDiscussion :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbDiscussion);
 		}
@@ -1522,7 +1564,14 @@ public class MBDiscussionPersistenceImpl
 	public MBDiscussion findByThreadId(long threadId)
 		throws NoSuchDiscussionException {
 
-		MBDiscussion mbDiscussion = fetchByThreadId(threadId);
+		return _findByThreadId(threadId, false);
+	}
+
+	private MBDiscussion _findByThreadId(long threadId, boolean readOnlyCache)
+		throws NoSuchDiscussionException {
+
+		MBDiscussion mbDiscussion = _fetchByThreadId(
+			threadId, true, readOnlyCache);
 
 		if (mbDiscussion == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1564,6 +1613,12 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public MBDiscussion fetchByThreadId(long threadId, boolean useFinderCache) {
+		return _fetchByThreadId(threadId, useFinderCache, false);
+	}
+
+	private MBDiscussion _fetchByThreadId(
+		long threadId, boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBDiscussion.class);
 
@@ -1619,9 +1674,11 @@ public class MBDiscussionPersistenceImpl
 				else {
 					MBDiscussion mbDiscussion = list.get(0);
 
-					result = mbDiscussion;
+					if (!readOnlyCache) {
+						result = mbDiscussion;
 
-					cacheResult(mbDiscussion);
+						cacheResult(mbDiscussion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1650,7 +1707,7 @@ public class MBDiscussionPersistenceImpl
 	public MBDiscussion removeByThreadId(long threadId)
 		throws NoSuchDiscussionException {
 
-		MBDiscussion mbDiscussion = findByThreadId(threadId);
+		MBDiscussion mbDiscussion = _findByThreadId(threadId, true);
 
 		return remove(mbDiscussion);
 	}
@@ -1734,7 +1791,15 @@ public class MBDiscussionPersistenceImpl
 	public MBDiscussion findByC_C(long classNameId, long classPK)
 		throws NoSuchDiscussionException {
 
-		MBDiscussion mbDiscussion = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private MBDiscussion _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchDiscussionException {
+
+		MBDiscussion mbDiscussion = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (mbDiscussion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1782,6 +1847,13 @@ public class MBDiscussionPersistenceImpl
 	@Override
 	public MBDiscussion fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private MBDiscussion _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBDiscussion.class);
@@ -1843,9 +1915,11 @@ public class MBDiscussionPersistenceImpl
 				else {
 					MBDiscussion mbDiscussion = list.get(0);
 
-					result = mbDiscussion;
+					if (!readOnlyCache) {
+						result = mbDiscussion;
 
-					cacheResult(mbDiscussion);
+						cacheResult(mbDiscussion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1875,7 +1949,7 @@ public class MBDiscussionPersistenceImpl
 	public MBDiscussion removeByC_C(long classNameId, long classPK)
 		throws NoSuchDiscussionException {
 
-		MBDiscussion mbDiscussion = findByC_C(classNameId, classPK);
+		MBDiscussion mbDiscussion = _findByC_C(classNameId, classPK, true);
 
 		return remove(mbDiscussion);
 	}
@@ -2552,6 +2626,13 @@ public class MBDiscussionPersistenceImpl
 		int start, int end, OrderByComparator<MBDiscussion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBDiscussion> _findAll(
+		int start, int end, OrderByComparator<MBDiscussion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBDiscussion.class);
 
@@ -2609,10 +2690,12 @@ public class MBDiscussionPersistenceImpl
 				list = (List<MBDiscussion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2632,7 +2715,10 @@ public class MBDiscussionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBDiscussion mbDiscussion : findAll()) {
+		for (MBDiscussion mbDiscussion :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbDiscussion);
 		}
 	}

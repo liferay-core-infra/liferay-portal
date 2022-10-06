@@ -154,6 +154,15 @@ public class ResourceActionPersistenceImpl
 		OrderByComparator<ResourceAction> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByName(
+			name, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourceAction> _findByName(
+		String name, int start, int end,
+		OrderByComparator<ResourceAction> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -239,10 +248,12 @@ public class ResourceActionPersistenceImpl
 				list = (List<ResourceAction>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -539,7 +550,9 @@ public class ResourceActionPersistenceImpl
 	@Override
 	public void removeByName(String name) {
 		for (ResourceAction resourceAction :
-				findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByName(
+					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(resourceAction);
 		}
@@ -628,7 +641,15 @@ public class ResourceActionPersistenceImpl
 	public ResourceAction findByN_A(String name, String actionId)
 		throws NoSuchResourceActionException {
 
-		ResourceAction resourceAction = fetchByN_A(name, actionId);
+		return _findByN_A(name, actionId, false);
+	}
+
+	private ResourceAction _findByN_A(
+			String name, String actionId, boolean readOnlyCache)
+		throws NoSuchResourceActionException {
+
+		ResourceAction resourceAction = _fetchByN_A(
+			name, actionId, true, readOnlyCache);
 
 		if (resourceAction == null) {
 			StringBundler sb = new StringBundler(6);
@@ -676,6 +697,13 @@ public class ResourceActionPersistenceImpl
 	@Override
 	public ResourceAction fetchByN_A(
 		String name, String actionId, boolean useFinderCache) {
+
+		return _fetchByN_A(name, actionId, useFinderCache, false);
+	}
+
+	private ResourceAction _fetchByN_A(
+		String name, String actionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 		actionId = Objects.toString(actionId, "");
@@ -760,9 +788,11 @@ public class ResourceActionPersistenceImpl
 				else {
 					ResourceAction resourceAction = list.get(0);
 
-					result = resourceAction;
+					if (!readOnlyCache) {
+						result = resourceAction;
 
-					cacheResult(resourceAction);
+						cacheResult(resourceAction);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -792,7 +822,7 @@ public class ResourceActionPersistenceImpl
 	public ResourceAction removeByN_A(String name, String actionId)
 		throws NoSuchResourceActionException {
 
-		ResourceAction resourceAction = findByN_A(name, actionId);
+		ResourceAction resourceAction = _findByN_A(name, actionId, true);
 
 		return remove(resourceAction);
 	}
@@ -1271,6 +1301,13 @@ public class ResourceActionPersistenceImpl
 		int start, int end, OrderByComparator<ResourceAction> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourceAction> _findAll(
+		int start, int end, OrderByComparator<ResourceAction> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1325,10 +1362,12 @@ public class ResourceActionPersistenceImpl
 				list = (List<ResourceAction>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1348,7 +1387,10 @@ public class ResourceActionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ResourceAction resourceAction : findAll()) {
+		for (ResourceAction resourceAction :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(resourceAction);
 		}
 	}

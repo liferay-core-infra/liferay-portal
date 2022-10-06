@@ -182,6 +182,16 @@ public class JSONStorageEntryPersistenceImpl
 		OrderByComparator<JSONStorageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCN_CPK(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JSONStorageEntry> _findByCN_CPK(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<JSONStorageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JSONStorageEntry.class);
 
@@ -265,10 +275,12 @@ public class JSONStorageEntryPersistenceImpl
 				list = (List<JSONStorageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -577,9 +589,9 @@ public class JSONStorageEntryPersistenceImpl
 	@Override
 	public void removeByCN_CPK(long classNameId, long classPK) {
 		for (JSONStorageEntry jsonStorageEntry :
-				findByCN_CPK(
+				_findByCN_CPK(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(jsonStorageEntry);
 		}
@@ -758,6 +770,17 @@ public class JSONStorageEntryPersistenceImpl
 		OrderByComparator<JSONStorageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_CN_I_T_VL(
+			companyId, classNameId, index, type, valueLong, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<JSONStorageEntry> _findByC_CN_I_T_VL(
+		long companyId, long classNameId, int index, int type, long valueLong,
+		int start, int end,
+		OrderByComparator<JSONStorageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JSONStorageEntry.class);
 
@@ -859,10 +882,12 @@ public class JSONStorageEntryPersistenceImpl
 				list = (List<JSONStorageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1228,9 +1253,9 @@ public class JSONStorageEntryPersistenceImpl
 		long companyId, long classNameId, int index, int type, long valueLong) {
 
 		for (JSONStorageEntry jsonStorageEntry :
-				findByC_CN_I_T_VL(
+				_findByC_CN_I_T_VL(
 					companyId, classNameId, index, type, valueLong,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(jsonStorageEntry);
 		}
@@ -1438,6 +1463,17 @@ public class JSONStorageEntryPersistenceImpl
 		OrderByComparator<JSONStorageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_CN_K_T_VL(
+			companyId, classNameId, key, type, valueLong, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<JSONStorageEntry> _findByC_CN_K_T_VL(
+		long companyId, long classNameId, String key, int type, long valueLong,
+		int start, int end,
+		OrderByComparator<JSONStorageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1552,10 +1588,12 @@ public class JSONStorageEntryPersistenceImpl
 				list = (List<JSONStorageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1935,9 +1973,9 @@ public class JSONStorageEntryPersistenceImpl
 		long valueLong) {
 
 		for (JSONStorageEntry jsonStorageEntry :
-				findByC_CN_K_T_VL(
+				_findByC_CN_K_T_VL(
 					companyId, classNameId, key, type, valueLong,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(jsonStorageEntry);
 		}
@@ -2080,8 +2118,18 @@ public class JSONStorageEntryPersistenceImpl
 			int index, String key)
 		throws NoSuchJSONStorageEntryException {
 
-		JSONStorageEntry jsonStorageEntry = fetchByCN_CPK_P_I_K(
-			classNameId, classPK, parentJSONStorageEntryId, index, key);
+		return _findByCN_CPK_P_I_K(
+			classNameId, classPK, parentJSONStorageEntryId, index, key, false);
+	}
+
+	private JSONStorageEntry _findByCN_CPK_P_I_K(
+			long classNameId, long classPK, long parentJSONStorageEntryId,
+			int index, String key, boolean readOnlyCache)
+		throws NoSuchJSONStorageEntryException {
+
+		JSONStorageEntry jsonStorageEntry = _fetchByCN_CPK_P_I_K(
+			classNameId, classPK, parentJSONStorageEntryId, index, key, true,
+			readOnlyCache);
 
 		if (jsonStorageEntry == null) {
 			StringBundler sb = new StringBundler(12);
@@ -2149,6 +2197,15 @@ public class JSONStorageEntryPersistenceImpl
 	public JSONStorageEntry fetchByCN_CPK_P_I_K(
 		long classNameId, long classPK, long parentJSONStorageEntryId,
 		int index, String key, boolean useFinderCache) {
+
+		return _fetchByCN_CPK_P_I_K(
+			classNameId, classPK, parentJSONStorageEntryId, index, key,
+			useFinderCache, false);
+	}
+
+	private JSONStorageEntry _fetchByCN_CPK_P_I_K(
+		long classNameId, long classPK, long parentJSONStorageEntryId,
+		int index, String key, boolean useFinderCache, boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 
@@ -2242,9 +2299,11 @@ public class JSONStorageEntryPersistenceImpl
 				else {
 					JSONStorageEntry jsonStorageEntry = list.get(0);
 
-					result = jsonStorageEntry;
+					if (!readOnlyCache) {
+						result = jsonStorageEntry;
 
-					cacheResult(jsonStorageEntry);
+						cacheResult(jsonStorageEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2279,8 +2338,8 @@ public class JSONStorageEntryPersistenceImpl
 			int index, String key)
 		throws NoSuchJSONStorageEntryException {
 
-		JSONStorageEntry jsonStorageEntry = findByCN_CPK_P_I_K(
-			classNameId, classPK, parentJSONStorageEntryId, index, key);
+		JSONStorageEntry jsonStorageEntry = _findByCN_CPK_P_I_K(
+			classNameId, classPK, parentJSONStorageEntryId, index, key, true);
 
 		return remove(jsonStorageEntry);
 	}
@@ -2963,6 +3022,14 @@ public class JSONStorageEntryPersistenceImpl
 		OrderByComparator<JSONStorageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JSONStorageEntry> _findAll(
+		int start, int end,
+		OrderByComparator<JSONStorageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JSONStorageEntry.class);
 
@@ -3020,10 +3087,12 @@ public class JSONStorageEntryPersistenceImpl
 				list = (List<JSONStorageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3043,7 +3112,10 @@ public class JSONStorageEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (JSONStorageEntry jsonStorageEntry : findAll()) {
+		for (JSONStorageEntry jsonStorageEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(jsonStorageEntry);
 		}
 	}

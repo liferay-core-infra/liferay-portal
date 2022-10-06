@@ -112,7 +112,15 @@ public class WeDeployAuthAppPersistenceImpl
 	public WeDeployAuthApp findByRU_CI(String redirectURI, String clientId)
 		throws NoSuchAppException {
 
-		WeDeployAuthApp weDeployAuthApp = fetchByRU_CI(redirectURI, clientId);
+		return _findByRU_CI(redirectURI, clientId, false);
+	}
+
+	private WeDeployAuthApp _findByRU_CI(
+			String redirectURI, String clientId, boolean readOnlyCache)
+		throws NoSuchAppException {
+
+		WeDeployAuthApp weDeployAuthApp = _fetchByRU_CI(
+			redirectURI, clientId, true, readOnlyCache);
 
 		if (weDeployAuthApp == null) {
 			StringBundler sb = new StringBundler(6);
@@ -160,6 +168,13 @@ public class WeDeployAuthAppPersistenceImpl
 	@Override
 	public WeDeployAuthApp fetchByRU_CI(
 		String redirectURI, String clientId, boolean useFinderCache) {
+
+		return _fetchByRU_CI(redirectURI, clientId, useFinderCache, false);
+	}
+
+	private WeDeployAuthApp _fetchByRU_CI(
+		String redirectURI, String clientId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		redirectURI = Objects.toString(redirectURI, "");
 		clientId = Objects.toString(clientId, "");
@@ -261,9 +276,11 @@ public class WeDeployAuthAppPersistenceImpl
 
 					WeDeployAuthApp weDeployAuthApp = list.get(0);
 
-					result = weDeployAuthApp;
+					if (!readOnlyCache) {
+						result = weDeployAuthApp;
 
-					cacheResult(weDeployAuthApp);
+						cacheResult(weDeployAuthApp);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -293,7 +310,8 @@ public class WeDeployAuthAppPersistenceImpl
 	public WeDeployAuthApp removeByRU_CI(String redirectURI, String clientId)
 		throws NoSuchAppException {
 
-		WeDeployAuthApp weDeployAuthApp = findByRU_CI(redirectURI, clientId);
+		WeDeployAuthApp weDeployAuthApp = _findByRU_CI(
+			redirectURI, clientId, true);
 
 		return remove(weDeployAuthApp);
 	}
@@ -404,7 +422,15 @@ public class WeDeployAuthAppPersistenceImpl
 	public WeDeployAuthApp findByCI_CS(String clientId, String clientSecret)
 		throws NoSuchAppException {
 
-		WeDeployAuthApp weDeployAuthApp = fetchByCI_CS(clientId, clientSecret);
+		return _findByCI_CS(clientId, clientSecret, false);
+	}
+
+	private WeDeployAuthApp _findByCI_CS(
+			String clientId, String clientSecret, boolean readOnlyCache)
+		throws NoSuchAppException {
+
+		WeDeployAuthApp weDeployAuthApp = _fetchByCI_CS(
+			clientId, clientSecret, true, readOnlyCache);
 
 		if (weDeployAuthApp == null) {
 			StringBundler sb = new StringBundler(6);
@@ -452,6 +478,13 @@ public class WeDeployAuthAppPersistenceImpl
 	@Override
 	public WeDeployAuthApp fetchByCI_CS(
 		String clientId, String clientSecret, boolean useFinderCache) {
+
+		return _fetchByCI_CS(clientId, clientSecret, useFinderCache, false);
+	}
+
+	private WeDeployAuthApp _fetchByCI_CS(
+		String clientId, String clientSecret, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		clientId = Objects.toString(clientId, "");
 		clientSecret = Objects.toString(clientSecret, "");
@@ -553,9 +586,11 @@ public class WeDeployAuthAppPersistenceImpl
 
 					WeDeployAuthApp weDeployAuthApp = list.get(0);
 
-					result = weDeployAuthApp;
+					if (!readOnlyCache) {
+						result = weDeployAuthApp;
 
-					cacheResult(weDeployAuthApp);
+						cacheResult(weDeployAuthApp);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -585,7 +620,8 @@ public class WeDeployAuthAppPersistenceImpl
 	public WeDeployAuthApp removeByCI_CS(String clientId, String clientSecret)
 		throws NoSuchAppException {
 
-		WeDeployAuthApp weDeployAuthApp = findByCI_CS(clientId, clientSecret);
+		WeDeployAuthApp weDeployAuthApp = _findByCI_CS(
+			clientId, clientSecret, true);
 
 		return remove(weDeployAuthApp);
 	}
@@ -1110,6 +1146,14 @@ public class WeDeployAuthAppPersistenceImpl
 		OrderByComparator<WeDeployAuthApp> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WeDeployAuthApp> _findAll(
+		int start, int end,
+		OrderByComparator<WeDeployAuthApp> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1164,10 +1208,12 @@ public class WeDeployAuthAppPersistenceImpl
 				list = (List<WeDeployAuthApp>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1187,7 +1233,10 @@ public class WeDeployAuthAppPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WeDeployAuthApp weDeployAuthApp : findAll()) {
+		for (WeDeployAuthApp weDeployAuthApp :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(weDeployAuthApp);
 		}
 	}

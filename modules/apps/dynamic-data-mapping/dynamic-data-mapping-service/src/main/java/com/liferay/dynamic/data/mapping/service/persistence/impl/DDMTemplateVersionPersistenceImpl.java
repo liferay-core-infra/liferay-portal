@@ -182,6 +182,15 @@ public class DDMTemplateVersionPersistenceImpl
 		OrderByComparator<DDMTemplateVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTemplateId(
+			templateId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplateVersion> _findByTemplateId(
+		long templateId, int start, int end,
+		OrderByComparator<DDMTemplateVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplateVersion.class);
 
@@ -259,10 +268,12 @@ public class DDMTemplateVersionPersistenceImpl
 				list = (List<DDMTemplateVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,8 +566,9 @@ public class DDMTemplateVersionPersistenceImpl
 	@Override
 	public void removeByTemplateId(long templateId) {
 		for (DDMTemplateVersion ddmTemplateVersion :
-				findByTemplateId(
-					templateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByTemplateId(
+					templateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmTemplateVersion);
 		}
@@ -641,7 +653,15 @@ public class DDMTemplateVersionPersistenceImpl
 	public DDMTemplateVersion findByT_V(long templateId, String version)
 		throws NoSuchTemplateVersionException {
 
-		DDMTemplateVersion ddmTemplateVersion = fetchByT_V(templateId, version);
+		return _findByT_V(templateId, version, false);
+	}
+
+	private DDMTemplateVersion _findByT_V(
+			long templateId, String version, boolean readOnlyCache)
+		throws NoSuchTemplateVersionException {
+
+		DDMTemplateVersion ddmTemplateVersion = _fetchByT_V(
+			templateId, version, true, readOnlyCache);
 
 		if (ddmTemplateVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -689,6 +709,13 @@ public class DDMTemplateVersionPersistenceImpl
 	@Override
 	public DDMTemplateVersion fetchByT_V(
 		long templateId, String version, boolean useFinderCache) {
+
+		return _fetchByT_V(templateId, version, useFinderCache, false);
+	}
+
+	private DDMTemplateVersion _fetchByT_V(
+		long templateId, String version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		version = Objects.toString(version, "");
 
@@ -763,9 +790,11 @@ public class DDMTemplateVersionPersistenceImpl
 				else {
 					DDMTemplateVersion ddmTemplateVersion = list.get(0);
 
-					result = ddmTemplateVersion;
+					if (!readOnlyCache) {
+						result = ddmTemplateVersion;
 
-					cacheResult(ddmTemplateVersion);
+						cacheResult(ddmTemplateVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -795,7 +824,8 @@ public class DDMTemplateVersionPersistenceImpl
 	public DDMTemplateVersion removeByT_V(long templateId, String version)
 		throws NoSuchTemplateVersionException {
 
-		DDMTemplateVersion ddmTemplateVersion = findByT_V(templateId, version);
+		DDMTemplateVersion ddmTemplateVersion = _findByT_V(
+			templateId, version, true);
 
 		return remove(ddmTemplateVersion);
 	}
@@ -969,6 +999,16 @@ public class DDMTemplateVersionPersistenceImpl
 		OrderByComparator<DDMTemplateVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_S(
+			templateId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMTemplateVersion> _findByT_S(
+		long templateId, int status, int start, int end,
+		OrderByComparator<DDMTemplateVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplateVersion.class);
 
@@ -1052,10 +1092,12 @@ public class DDMTemplateVersionPersistenceImpl
 				list = (List<DDMTemplateVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1364,9 +1406,9 @@ public class DDMTemplateVersionPersistenceImpl
 	@Override
 	public void removeByT_S(long templateId, int status) {
 		for (DDMTemplateVersion ddmTemplateVersion :
-				findByT_S(
+				_findByT_S(
 					templateId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmTemplateVersion);
 		}
@@ -2014,6 +2056,14 @@ public class DDMTemplateVersionPersistenceImpl
 		OrderByComparator<DDMTemplateVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplateVersion> _findAll(
+		int start, int end,
+		OrderByComparator<DDMTemplateVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplateVersion.class);
 
@@ -2071,10 +2121,12 @@ public class DDMTemplateVersionPersistenceImpl
 				list = (List<DDMTemplateVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2094,7 +2146,10 @@ public class DDMTemplateVersionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMTemplateVersion ddmTemplateVersion : findAll()) {
+		for (DDMTemplateVersion ddmTemplateVersion :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmTemplateVersion);
 		}
 	}

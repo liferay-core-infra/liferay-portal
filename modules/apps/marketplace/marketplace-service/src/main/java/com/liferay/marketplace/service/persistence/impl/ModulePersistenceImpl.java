@@ -169,6 +169,15 @@ public class ModulePersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Module> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Module> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Module> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -253,10 +262,12 @@ public class ModulePersistenceImpl
 				list = (List<Module>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,7 +561,9 @@ public class ModulePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Module module :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(module);
 		}
@@ -703,6 +716,16 @@ public class ModulePersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Module> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Module> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Module> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -795,10 +818,12 @@ public class ModulePersistenceImpl
 				list = (List<Module>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1113,9 +1138,9 @@ public class ModulePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Module module :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(module);
 		}
@@ -1269,6 +1294,15 @@ public class ModulePersistenceImpl
 		long appId, int start, int end,
 		OrderByComparator<Module> orderByComparator, boolean useFinderCache) {
 
+		return _findByAppId(
+			appId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Module> _findByAppId(
+		long appId, int start, int end,
+		OrderByComparator<Module> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1340,10 +1374,12 @@ public class ModulePersistenceImpl
 				list = (List<Module>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1624,8 +1660,9 @@ public class ModulePersistenceImpl
 	@Override
 	public void removeByAppId(long appId) {
 		for (Module module :
-				findByAppId(
-					appId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByAppId(
+					appId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(module);
 		}
@@ -1759,6 +1796,16 @@ public class ModulePersistenceImpl
 		String bundleSymbolicName, int start, int end,
 		OrderByComparator<Module> orderByComparator, boolean useFinderCache) {
 
+		return _findByBundleSymbolicName(
+			bundleSymbolicName, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Module> _findByBundleSymbolicName(
+		String bundleSymbolicName, int start, int end,
+		OrderByComparator<Module> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		bundleSymbolicName = Objects.toString(bundleSymbolicName, "");
 
 		FinderPath finderPath = null;
@@ -1850,10 +1897,12 @@ public class ModulePersistenceImpl
 				list = (List<Module>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2154,9 +2203,9 @@ public class ModulePersistenceImpl
 	@Override
 	public void removeByBundleSymbolicName(String bundleSymbolicName) {
 		for (Module module :
-				findByBundleSymbolicName(
+				_findByBundleSymbolicName(
 					bundleSymbolicName, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(module);
 		}
@@ -2310,6 +2359,15 @@ public class ModulePersistenceImpl
 		String contextName, int start, int end,
 		OrderByComparator<Module> orderByComparator, boolean useFinderCache) {
 
+		return _findByContextName(
+			contextName, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Module> _findByContextName(
+		String contextName, int start, int end,
+		OrderByComparator<Module> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		contextName = Objects.toString(contextName, "");
 
 		FinderPath finderPath = null;
@@ -2396,10 +2454,12 @@ public class ModulePersistenceImpl
 				list = (List<Module>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2695,8 +2755,9 @@ public class ModulePersistenceImpl
 	@Override
 	public void removeByContextName(String contextName) {
 		for (Module module :
-				findByContextName(
-					contextName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByContextName(
+					contextName, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(module);
 		}
@@ -2785,7 +2846,14 @@ public class ModulePersistenceImpl
 	public Module findByA_CN(long appId, String contextName)
 		throws NoSuchModuleException {
 
-		Module module = fetchByA_CN(appId, contextName);
+		return _findByA_CN(appId, contextName, false);
+	}
+
+	private Module _findByA_CN(
+			long appId, String contextName, boolean readOnlyCache)
+		throws NoSuchModuleException {
+
+		Module module = _fetchByA_CN(appId, contextName, true, readOnlyCache);
 
 		if (module == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2833,6 +2901,13 @@ public class ModulePersistenceImpl
 	@Override
 	public Module fetchByA_CN(
 		long appId, String contextName, boolean useFinderCache) {
+
+		return _fetchByA_CN(appId, contextName, useFinderCache, false);
+	}
+
+	private Module _fetchByA_CN(
+		long appId, String contextName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		contextName = Objects.toString(contextName, "");
 
@@ -2919,9 +2994,11 @@ public class ModulePersistenceImpl
 
 					Module module = list.get(0);
 
-					result = module;
+					if (!readOnlyCache) {
+						result = module;
 
-					cacheResult(module);
+						cacheResult(module);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2951,7 +3028,7 @@ public class ModulePersistenceImpl
 	public Module removeByA_CN(long appId, String contextName)
 		throws NoSuchModuleException {
 
-		Module module = findByA_CN(appId, contextName);
+		Module module = _findByA_CN(appId, contextName, true);
 
 		return remove(module);
 	}
@@ -3049,8 +3126,16 @@ public class ModulePersistenceImpl
 			long appId, String bundleSymbolicName, String bundleVersion)
 		throws NoSuchModuleException {
 
-		Module module = fetchByA_BSN_BV(
-			appId, bundleSymbolicName, bundleVersion);
+		return _findByA_BSN_BV(appId, bundleSymbolicName, bundleVersion, false);
+	}
+
+	private Module _findByA_BSN_BV(
+			long appId, String bundleSymbolicName, String bundleVersion,
+			boolean readOnlyCache)
+		throws NoSuchModuleException {
+
+		Module module = _fetchByA_BSN_BV(
+			appId, bundleSymbolicName, bundleVersion, true, readOnlyCache);
 
 		if (module == null) {
 			StringBundler sb = new StringBundler(8);
@@ -3106,6 +3191,14 @@ public class ModulePersistenceImpl
 	public Module fetchByA_BSN_BV(
 		long appId, String bundleSymbolicName, String bundleVersion,
 		boolean useFinderCache) {
+
+		return _fetchByA_BSN_BV(
+			appId, bundleSymbolicName, bundleVersion, useFinderCache, false);
+	}
+
+	private Module _fetchByA_BSN_BV(
+		long appId, String bundleSymbolicName, String bundleVersion,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		bundleSymbolicName = Objects.toString(bundleSymbolicName, "");
 		bundleVersion = Objects.toString(bundleVersion, "");
@@ -3215,9 +3308,11 @@ public class ModulePersistenceImpl
 
 					Module module = list.get(0);
 
-					result = module;
+					if (!readOnlyCache) {
+						result = module;
 
-					cacheResult(module);
+						cacheResult(module);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3249,8 +3344,8 @@ public class ModulePersistenceImpl
 			long appId, String bundleSymbolicName, String bundleVersion)
 		throws NoSuchModuleException {
 
-		Module module = findByA_BSN_BV(
-			appId, bundleSymbolicName, bundleVersion);
+		Module module = _findByA_BSN_BV(
+			appId, bundleSymbolicName, bundleVersion, true);
 
 		return remove(module);
 	}
@@ -3754,6 +3849,13 @@ public class ModulePersistenceImpl
 		int start, int end, OrderByComparator<Module> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Module> _findAll(
+		int start, int end, OrderByComparator<Module> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3807,10 +3909,12 @@ public class ModulePersistenceImpl
 				list = (List<Module>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3830,7 +3934,10 @@ public class ModulePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Module module : findAll()) {
+		for (Module module :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(module);
 		}
 	}

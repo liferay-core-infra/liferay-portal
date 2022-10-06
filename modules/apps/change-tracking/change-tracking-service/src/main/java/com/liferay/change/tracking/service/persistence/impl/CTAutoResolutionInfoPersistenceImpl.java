@@ -177,6 +177,16 @@ public class CTAutoResolutionInfoPersistenceImpl
 		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCtCollectionId(
+			ctCollectionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTAutoResolutionInfo> _findByCtCollectionId(
+		long ctCollectionId, int start, int end,
+		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -253,10 +263,12 @@ public class CTAutoResolutionInfoPersistenceImpl
 				list = (List<CTAutoResolutionInfo>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,9 +562,9 @@ public class CTAutoResolutionInfoPersistenceImpl
 	@Override
 	public void removeByCtCollectionId(long ctCollectionId) {
 		for (CTAutoResolutionInfo ctAutoResolutionInfo :
-				findByCtCollectionId(
-					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCtCollectionId(
+					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ctAutoResolutionInfo);
 		}
@@ -705,6 +717,17 @@ public class CTAutoResolutionInfoPersistenceImpl
 		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_MCNI_SMCPK(
+			ctCollectionId, modelClassNameId, sourceModelClassPK, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTAutoResolutionInfo> _findByC_MCNI_SMCPK(
+		long ctCollectionId, long modelClassNameId, long sourceModelClassPK,
+		int start, int end,
+		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -796,10 +819,12 @@ public class CTAutoResolutionInfoPersistenceImpl
 				list = (List<CTAutoResolutionInfo>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1216,6 +1241,17 @@ public class CTAutoResolutionInfoPersistenceImpl
 		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_MCNI_SMCPK(
+			ctCollectionId, modelClassNameId, sourceModelClassPKs, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTAutoResolutionInfo> _findByC_MCNI_SMCPK(
+		long ctCollectionId, long modelClassNameId, long[] sourceModelClassPKs,
+		int start, int end,
+		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (sourceModelClassPKs == null) {
 			sourceModelClassPKs = new long[0];
 		}
@@ -1323,12 +1359,14 @@ public class CTAutoResolutionInfoPersistenceImpl
 				list = (List<CTAutoResolutionInfo>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_MCNI_SMCPK, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_MCNI_SMCPK,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1354,9 +1392,9 @@ public class CTAutoResolutionInfoPersistenceImpl
 		long ctCollectionId, long modelClassNameId, long sourceModelClassPK) {
 
 		for (CTAutoResolutionInfo ctAutoResolutionInfo :
-				findByC_MCNI_SMCPK(
+				_findByC_MCNI_SMCPK(
 					ctCollectionId, modelClassNameId, sourceModelClassPK,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctAutoResolutionInfo);
 		}
@@ -1918,6 +1956,14 @@ public class CTAutoResolutionInfoPersistenceImpl
 		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTAutoResolutionInfo> _findAll(
+		int start, int end,
+		OrderByComparator<CTAutoResolutionInfo> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1972,10 +2018,12 @@ public class CTAutoResolutionInfoPersistenceImpl
 				list = (List<CTAutoResolutionInfo>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1995,7 +2043,10 @@ public class CTAutoResolutionInfoPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTAutoResolutionInfo ctAutoResolutionInfo : findAll()) {
+		for (CTAutoResolutionInfo ctAutoResolutionInfo :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctAutoResolutionInfo);
 		}
 	}

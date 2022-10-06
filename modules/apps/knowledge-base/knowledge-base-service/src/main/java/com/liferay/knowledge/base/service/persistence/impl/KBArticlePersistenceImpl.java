@@ -185,6 +185,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByResourcePrimKey(
+			resourcePrimKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByResourcePrimKey(
+		long resourcePrimKey, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -259,10 +269,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -548,9 +560,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByResourcePrimKey(long resourcePrimKey) {
 		for (KBArticle kbArticle :
-				findByResourcePrimKey(
-					resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByResourcePrimKey(
+					resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbArticle);
 		}
@@ -682,6 +694,15 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -767,10 +788,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1064,7 +1087,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (KBArticle kbArticle :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbArticle);
 		}
@@ -1153,7 +1178,15 @@ public class KBArticlePersistenceImpl
 	public KBArticle findByUUID_G(String uuid, long groupId)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private KBArticle _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		KBArticle kbArticle = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (kbArticle == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1201,6 +1234,13 @@ public class KBArticlePersistenceImpl
 	@Override
 	public KBArticle fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private KBArticle _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -1273,9 +1313,11 @@ public class KBArticlePersistenceImpl
 				else {
 					KBArticle kbArticle = list.get(0);
 
-					result = kbArticle;
+					if (!readOnlyCache) {
+						result = kbArticle;
 
-					cacheResult(kbArticle);
+						cacheResult(kbArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1305,7 +1347,7 @@ public class KBArticlePersistenceImpl
 	public KBArticle removeByUUID_G(String uuid, long groupId)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = findByUUID_G(uuid, groupId);
+		KBArticle kbArticle = _findByUUID_G(uuid, groupId, true);
 
 		return remove(kbArticle);
 	}
@@ -1467,6 +1509,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1560,10 +1612,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1880,9 +1934,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (KBArticle kbArticle :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbArticle);
 		}
@@ -2046,6 +2100,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G(
+			resourcePrimKey, groupId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G(
+		long resourcePrimKey, long groupId, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2126,10 +2190,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2777,9 +2843,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByR_G(long resourcePrimKey, long groupId) {
 		for (KBArticle kbArticle :
-				findByR_G(
+				_findByR_G(
 					resourcePrimKey, groupId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -2913,7 +2979,15 @@ public class KBArticlePersistenceImpl
 	public KBArticle findByR_V(long resourcePrimKey, int version)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = fetchByR_V(resourcePrimKey, version);
+		return _findByR_V(resourcePrimKey, version, false);
+	}
+
+	private KBArticle _findByR_V(
+			long resourcePrimKey, int version, boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		KBArticle kbArticle = _fetchByR_V(
+			resourcePrimKey, version, true, readOnlyCache);
 
 		if (kbArticle == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2961,6 +3035,13 @@ public class KBArticlePersistenceImpl
 	@Override
 	public KBArticle fetchByR_V(
 		long resourcePrimKey, int version, boolean useFinderCache) {
+
+		return _fetchByR_V(resourcePrimKey, version, useFinderCache, false);
+	}
+
+	private KBArticle _fetchByR_V(
+		long resourcePrimKey, int version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -3019,9 +3100,11 @@ public class KBArticlePersistenceImpl
 				else {
 					KBArticle kbArticle = list.get(0);
 
-					result = kbArticle;
+					if (!readOnlyCache) {
+						result = kbArticle;
 
-					cacheResult(kbArticle);
+						cacheResult(kbArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3051,7 +3134,7 @@ public class KBArticlePersistenceImpl
 	public KBArticle removeByR_V(long resourcePrimKey, int version)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = findByR_V(resourcePrimKey, version);
+		KBArticle kbArticle = _findByR_V(resourcePrimKey, version, true);
 
 		return remove(kbArticle);
 	}
@@ -3199,6 +3282,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_L(
+			resourcePrimKey, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_L(
+		long resourcePrimKey, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3279,10 +3372,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3662,6 +3757,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_L(
+			resourcePrimKeys, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_L(
+		long[] resourcePrimKeys, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (resourcePrimKeys == null) {
 			resourcePrimKeys = new long[0];
 		}
@@ -3760,11 +3865,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_L, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_L, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3787,9 +3895,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByR_L(long resourcePrimKey, boolean latest) {
 		for (KBArticle kbArticle :
-				findByR_L(
+				_findByR_L(
 					resourcePrimKey, latest, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -4016,6 +4124,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_M(
+			resourcePrimKey, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_M(
+		long resourcePrimKey, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4096,10 +4214,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4478,6 +4598,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_M(
+			resourcePrimKeys, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_M(
+		long[] resourcePrimKeys, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (resourcePrimKeys == null) {
 			resourcePrimKeys = new long[0];
 		}
@@ -4576,11 +4706,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_M, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_M, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4603,9 +4736,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByR_M(long resourcePrimKey, boolean main) {
 		for (KBArticle kbArticle :
-				findByR_M(
+				_findByR_M(
 					resourcePrimKey, main, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -4833,6 +4966,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_S(
+			resourcePrimKey, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_S(
+		long resourcePrimKey, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4913,10 +5056,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5295,6 +5440,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_S(
+			resourcePrimKeys, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_S(
+		long[] resourcePrimKeys, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (resourcePrimKeys == null) {
 			resourcePrimKeys = new long[0];
 		}
@@ -5393,11 +5548,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5420,9 +5578,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByR_S(long resourcePrimKey, int status) {
 		for (KBArticle kbArticle :
-				findByR_S(
+				_findByR_S(
 					resourcePrimKey, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -5652,6 +5810,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_ERC(
+			groupId, externalReferenceCode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_ERC(
+		long groupId, String externalReferenceCode, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
 		FinderPath finderPath = null;
@@ -5746,10 +5914,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6440,9 +6610,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_ERC(long groupId, String externalReferenceCode) {
 		for (KBArticle kbArticle :
-				findByG_ERC(
+				_findByG_ERC(
 					groupId, externalReferenceCode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -6670,6 +6840,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_L(
+			groupId, latest, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByG_L(
+		long groupId, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6750,10 +6930,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7393,9 +7575,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_L(long groupId, boolean latest) {
 		for (KBArticle kbArticle :
-				findByG_L(
-					groupId, latest, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_L(
+					groupId, latest, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbArticle);
 		}
@@ -7594,6 +7776,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_M(
+			groupId, main, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByG_M(
+		long groupId, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7674,10 +7866,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8316,9 +8510,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_M(long groupId, boolean main) {
 		for (KBArticle kbArticle :
-				findByG_M(
-					groupId, main, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_M(
+					groupId, main, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbArticle);
 		}
@@ -8517,6 +8711,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8597,10 +8801,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9240,9 +9446,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (KBArticle kbArticle :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbArticle);
 		}
@@ -9442,6 +9648,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_L(
+			companyId, latest, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByC_L(
+		long companyId, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -9522,10 +9738,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9830,9 +10048,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByC_L(long companyId, boolean latest) {
 		for (KBArticle kbArticle :
-				findByC_L(
+				_findByC_L(
 					companyId, latest, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -9978,6 +10196,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_M(
+			companyId, main, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByC_M(
+		long companyId, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -10058,10 +10286,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10365,9 +10595,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByC_M(long companyId, boolean main) {
 		for (KBArticle kbArticle :
-				findByC_M(
-					companyId, main, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_M(
+					companyId, main, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbArticle);
 		}
@@ -10514,6 +10744,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBArticle> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -10594,10 +10834,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10902,9 +11144,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (KBArticle kbArticle :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -11055,6 +11297,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_L(
+			parentResourcePrimKey, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByP_L(
+		long parentResourcePrimKey, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -11136,10 +11388,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11522,6 +11776,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_L(
+			parentResourcePrimKeys, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByP_L(
+		long[] parentResourcePrimKeys, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -11623,11 +11887,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByP_L, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByP_L, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11650,9 +11917,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByP_L(long parentResourcePrimKey, boolean latest) {
 		for (KBArticle kbArticle :
-				findByP_L(
+				_findByP_L(
 					parentResourcePrimKey, latest, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -11881,6 +12148,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_M(
+			parentResourcePrimKey, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByP_M(
+		long parentResourcePrimKey, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -11962,10 +12239,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12347,6 +12626,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_M(
+			parentResourcePrimKeys, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByP_M(
+		long[] parentResourcePrimKeys, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -12447,11 +12736,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByP_M, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByP_M, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12474,9 +12766,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByP_M(long parentResourcePrimKey, boolean main) {
 		for (KBArticle kbArticle :
-				findByP_M(
+				_findByP_M(
 					parentResourcePrimKey, main, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -12705,6 +12997,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_S(
+			parentResourcePrimKey, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByP_S(
+		long parentResourcePrimKey, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -12786,10 +13088,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13172,6 +13476,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_S(
+			parentResourcePrimKeys, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByP_S(
+		long[] parentResourcePrimKeys, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -13273,11 +13587,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByP_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByP_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13300,9 +13617,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByP_S(long parentResourcePrimKey, int status) {
 		for (KBArticle kbArticle :
-				findByP_S(
+				_findByP_S(
 					parentResourcePrimKey, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -13465,7 +13782,16 @@ public class KBArticlePersistenceImpl
 			long resourcePrimKey, long groupId, int version)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = fetchByR_G_V(resourcePrimKey, groupId, version);
+		return _findByR_G_V(resourcePrimKey, groupId, version, false);
+	}
+
+	private KBArticle _findByR_G_V(
+			long resourcePrimKey, long groupId, int version,
+			boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		KBArticle kbArticle = _fetchByR_G_V(
+			resourcePrimKey, groupId, version, true, readOnlyCache);
 
 		if (kbArticle == null) {
 			StringBundler sb = new StringBundler(8);
@@ -13521,6 +13847,14 @@ public class KBArticlePersistenceImpl
 	public KBArticle fetchByR_G_V(
 		long resourcePrimKey, long groupId, int version,
 		boolean useFinderCache) {
+
+		return _fetchByR_G_V(
+			resourcePrimKey, groupId, version, useFinderCache, false);
+	}
+
+	private KBArticle _fetchByR_G_V(
+		long resourcePrimKey, long groupId, int version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -13584,9 +13918,11 @@ public class KBArticlePersistenceImpl
 				else {
 					KBArticle kbArticle = list.get(0);
 
-					result = kbArticle;
+					if (!readOnlyCache) {
+						result = kbArticle;
 
-					cacheResult(kbArticle);
+						cacheResult(kbArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13618,7 +13954,8 @@ public class KBArticlePersistenceImpl
 			long resourcePrimKey, long groupId, int version)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = findByR_G_V(resourcePrimKey, groupId, version);
+		KBArticle kbArticle = _findByR_G_V(
+			resourcePrimKey, groupId, version, true);
 
 		return remove(kbArticle);
 	}
@@ -13782,6 +14119,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G_L(
+			resourcePrimKey, groupId, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G_L(
+		long resourcePrimKey, long groupId, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -13867,10 +14214,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14794,6 +15143,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G_L(
+			resourcePrimKeys, groupId, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G_L(
+		long[] resourcePrimKeys, long groupId, boolean latest, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (resourcePrimKeys == null) {
 			resourcePrimKeys = new long[0];
 		}
@@ -14898,11 +15257,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_G_L, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_G_L, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14928,9 +15290,9 @@ public class KBArticlePersistenceImpl
 		long resourcePrimKey, long groupId, boolean latest) {
 
 		for (KBArticle kbArticle :
-				findByR_G_L(
+				_findByR_G_L(
 					resourcePrimKey, groupId, latest, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -15322,6 +15684,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G_M(
+			resourcePrimKey, groupId, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G_M(
+		long resourcePrimKey, long groupId, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -15407,10 +15779,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16330,6 +16704,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G_M(
+			resourcePrimKeys, groupId, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G_M(
+		long[] resourcePrimKeys, long groupId, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (resourcePrimKeys == null) {
 			resourcePrimKeys = new long[0];
 		}
@@ -16434,11 +16818,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_G_M, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_G_M, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16464,9 +16851,9 @@ public class KBArticlePersistenceImpl
 		long resourcePrimKey, long groupId, boolean main) {
 
 		for (KBArticle kbArticle :
-				findByR_G_M(
+				_findByR_G_M(
 					resourcePrimKey, groupId, main, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -16856,6 +17243,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G_S(
+			resourcePrimKey, groupId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G_S(
+		long resourcePrimKey, long groupId, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -16941,10 +17338,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17865,6 +18264,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_G_S(
+			resourcePrimKeys, groupId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByR_G_S(
+		long[] resourcePrimKeys, long groupId, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (resourcePrimKeys == null) {
 			resourcePrimKeys = new long[0];
 		}
@@ -17969,11 +18378,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByR_G_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByR_G_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17997,9 +18409,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByR_G_S(long resourcePrimKey, long groupId, int status) {
 		for (KBArticle kbArticle :
-				findByR_G_S(
+				_findByR_G_S(
 					resourcePrimKey, groupId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -18314,8 +18726,16 @@ public class KBArticlePersistenceImpl
 			long groupId, String externalReferenceCode, int version)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = fetchByG_ERC_V(
-			groupId, externalReferenceCode, version);
+		return _findByG_ERC_V(groupId, externalReferenceCode, version, false);
+	}
+
+	private KBArticle _findByG_ERC_V(
+			long groupId, String externalReferenceCode, int version,
+			boolean readOnlyCache)
+		throws NoSuchArticleException {
+
+		KBArticle kbArticle = _fetchByG_ERC_V(
+			groupId, externalReferenceCode, version, true, readOnlyCache);
 
 		if (kbArticle == null) {
 			StringBundler sb = new StringBundler(8);
@@ -18371,6 +18791,14 @@ public class KBArticlePersistenceImpl
 	public KBArticle fetchByG_ERC_V(
 		long groupId, String externalReferenceCode, int version,
 		boolean useFinderCache) {
+
+		return _fetchByG_ERC_V(
+			groupId, externalReferenceCode, version, useFinderCache, false);
+	}
+
+	private KBArticle _fetchByG_ERC_V(
+		long groupId, String externalReferenceCode, int version,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -18450,9 +18878,11 @@ public class KBArticlePersistenceImpl
 				else {
 					KBArticle kbArticle = list.get(0);
 
-					result = kbArticle;
+					if (!readOnlyCache) {
+						result = kbArticle;
 
-					cacheResult(kbArticle);
+						cacheResult(kbArticle);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -18484,8 +18914,8 @@ public class KBArticlePersistenceImpl
 			long groupId, String externalReferenceCode, int version)
 		throws NoSuchArticleException {
 
-		KBArticle kbArticle = findByG_ERC_V(
-			groupId, externalReferenceCode, version);
+		KBArticle kbArticle = _findByG_ERC_V(
+			groupId, externalReferenceCode, version, true);
 
 		return remove(kbArticle);
 	}
@@ -18670,6 +19100,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_L(
+			groupId, parentResourcePrimKey, latest, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_L(
+		long groupId, long parentResourcePrimKey, boolean latest, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -18759,10 +19199,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19688,6 +20130,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_L(
+			groupId, parentResourcePrimKeys, latest, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_L(
+		long groupId, long[] parentResourcePrimKeys, boolean latest, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -19794,11 +20246,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P_L, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P_L, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19824,9 +20279,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long parentResourcePrimKey, boolean latest) {
 
 		for (KBArticle kbArticle :
-				findByG_P_L(
+				_findByG_P_L(
 					groupId, parentResourcePrimKey, latest, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -20224,6 +20679,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_M(
+			groupId, parentResourcePrimKey, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_M(
+		long groupId, long parentResourcePrimKey, boolean main, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -20313,10 +20778,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21242,6 +21709,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_M(
+			groupId, parentResourcePrimKeys, main, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_M(
+		long groupId, long[] parentResourcePrimKeys, boolean main, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -21348,11 +21825,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P_M, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P_M, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21378,9 +21858,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long parentResourcePrimKey, boolean main) {
 
 		for (KBArticle kbArticle :
-				findByG_P_M(
+				_findByG_P_M(
 					groupId, parentResourcePrimKey, main, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -21778,6 +22258,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_S(
+			groupId, parentResourcePrimKey, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_S(
+		long groupId, long parentResourcePrimKey, int status, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -21867,10 +22357,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22796,6 +23288,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_S(
+			groupId, parentResourcePrimKeys, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_S(
+		long groupId, long[] parentResourcePrimKeys, int status, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -22902,11 +23404,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22932,9 +23437,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long parentResourcePrimKey, int status) {
 
 		for (KBArticle kbArticle :
-				findByG_P_S(
+				_findByG_P_S(
 					groupId, parentResourcePrimKey, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -23328,6 +23833,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_KBFI_UT(
+			groupId, kbFolderId, urlTitle, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_KBFI_UT(
+		long groupId, long kbFolderId, String urlTitle, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		urlTitle = Objects.toString(urlTitle, "");
 
 		FinderPath finderPath = null;
@@ -23426,10 +23941,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -24149,9 +24666,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long kbFolderId, String urlTitle) {
 
 		for (KBArticle kbArticle :
-				findByG_KBFI_UT(
+				_findByG_KBFI_UT(
 					groupId, kbFolderId, urlTitle, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -24404,6 +24921,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_KBFI_L(
+			groupId, kbFolderId, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_KBFI_L(
+		long groupId, long kbFolderId, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -24489,10 +25016,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -25173,9 +25702,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long kbFolderId, boolean latest) {
 
 		for (KBArticle kbArticle :
-				findByG_KBFI_L(
+				_findByG_KBFI_L(
 					groupId, kbFolderId, latest, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -25397,6 +25926,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_KBFI_S(
+			groupId, kbFolderId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_KBFI_S(
+		long groupId, long kbFolderId, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -25482,10 +26021,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -26164,9 +26705,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_KBFI_S(long groupId, long kbFolderId, int status) {
 		for (KBArticle kbArticle :
-				findByG_KBFI_S(
+				_findByG_KBFI_S(
 					groupId, kbFolderId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -26387,6 +26928,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeS_L(
+			groupId, sections, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_LikeS_L(
+		long groupId, String sections, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		sections = Objects.toString(sections, "");
 
 		FinderPath finderPath = null;
@@ -26477,10 +27028,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -27454,6 +28007,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeS_L(
+			groupId, sectionses, latest, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_LikeS_L(
+		long groupId, String[] sectionses, boolean latest, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (sectionses == null) {
 			sectionses = new String[0];
 		}
@@ -27576,12 +28139,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_LikeS_L, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_LikeS_L,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -27607,9 +28172,9 @@ public class KBArticlePersistenceImpl
 		long groupId, String sections, boolean latest) {
 
 		for (KBArticle kbArticle :
-				findByG_LikeS_L(
+				_findByG_LikeS_L(
 					groupId, sections, latest, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -28067,6 +28632,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeS_M(
+			groupId, sections, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_LikeS_M(
+		long groupId, String sections, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		sections = Objects.toString(sections, "");
 
 		FinderPath finderPath = null;
@@ -28157,10 +28732,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -29133,6 +29710,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeS_M(
+			groupId, sectionses, main, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_LikeS_M(
+		long groupId, String[] sectionses, boolean main, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (sectionses == null) {
 			sectionses = new String[0];
 		}
@@ -29255,12 +29842,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_LikeS_M, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_LikeS_M,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -29284,9 +29873,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_LikeS_M(long groupId, String sections, boolean main) {
 		for (KBArticle kbArticle :
-				findByG_LikeS_M(
+				_findByG_LikeS_M(
 					groupId, sections, main, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -29744,6 +30333,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeS_S(
+			groupId, sections, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_LikeS_S(
+		long groupId, String sections, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		sections = Objects.toString(sections, "");
 
 		FinderPath finderPath = null;
@@ -29834,10 +30433,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -30811,6 +31412,16 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeS_S(
+			groupId, sectionses, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_LikeS_S(
+		long groupId, String[] sectionses, int status, int start, int end,
+		OrderByComparator<KBArticle> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (sectionses == null) {
 			sectionses = new String[0];
 		}
@@ -30933,12 +31544,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_LikeS_S, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_LikeS_S,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -30962,9 +31575,9 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void removeByG_LikeS_S(long groupId, String sections, int status) {
 		for (KBArticle kbArticle :
-				findByG_LikeS_S(
+				_findByG_LikeS_S(
 					groupId, sections, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -31429,6 +32042,16 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_L_S(
+			groupId, parentResourcePrimKey, latest, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_L_S(
+		long groupId, long parentResourcePrimKey, boolean latest, int status,
+		int start, int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -31523,10 +32146,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -32496,6 +33121,16 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_L_S(
+			groupId, parentResourcePrimKeys, latest, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_P_L_S(
+		long groupId, long[] parentResourcePrimKeys, boolean latest, int status,
+		int start, int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (parentResourcePrimKeys == null) {
 			parentResourcePrimKeys = new long[0];
 		}
@@ -32608,12 +33243,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_P_L_S, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_P_L_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -32640,9 +33277,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long parentResourcePrimKey, boolean latest, int status) {
 
 		for (KBArticle kbArticle :
-				findByG_P_L_S(
+				_findByG_P_L_S(
 					groupId, parentResourcePrimKey, latest, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -33071,6 +33708,16 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_KBFI_UT_ST(
+			groupId, kbFolderId, urlTitle, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_KBFI_UT_ST(
+		long groupId, long kbFolderId, String urlTitle, int status, int start,
+		int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		urlTitle = Objects.toString(urlTitle, "");
 
 		FinderPath finderPath = null;
@@ -33177,10 +33824,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -34193,6 +34842,16 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_KBFI_UT_ST(
+			groupId, kbFolderId, urlTitle, statuses, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findByG_KBFI_UT_ST(
+		long groupId, long kbFolderId, String urlTitle, int[] statuses,
+		int start, int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		urlTitle = Objects.toString(urlTitle, "");
 
 		if (statuses == null) {
@@ -34312,12 +34971,14 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_KBFI_UT_ST, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_KBFI_UT_ST,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -34344,9 +35005,9 @@ public class KBArticlePersistenceImpl
 		long groupId, long kbFolderId, String urlTitle, int status) {
 
 		for (KBArticle kbArticle :
-				findByG_KBFI_UT_ST(
+				_findByG_KBFI_UT_ST(
 					groupId, kbFolderId, urlTitle, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbArticle);
 		}
@@ -35216,6 +35877,13 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBArticle> _findAll(
+		int start, int end, OrderByComparator<KBArticle> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -35270,10 +35938,12 @@ public class KBArticlePersistenceImpl
 				list = (List<KBArticle>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -35293,7 +35963,10 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KBArticle kbArticle : findAll()) {
+		for (KBArticle kbArticle :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kbArticle);
 		}
 	}

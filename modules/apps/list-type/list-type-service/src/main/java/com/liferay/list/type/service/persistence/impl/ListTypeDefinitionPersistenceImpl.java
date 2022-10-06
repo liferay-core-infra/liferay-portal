@@ -178,6 +178,15 @@ public class ListTypeDefinitionPersistenceImpl
 		OrderByComparator<ListTypeDefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ListTypeDefinition> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ListTypeDefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -263,10 +272,12 @@ public class ListTypeDefinitionPersistenceImpl
 				list = (List<ListTypeDefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -929,7 +940,9 @@ public class ListTypeDefinitionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ListTypeDefinition listTypeDefinition :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(listTypeDefinition);
 		}
@@ -1151,6 +1164,16 @@ public class ListTypeDefinitionPersistenceImpl
 		OrderByComparator<ListTypeDefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ListTypeDefinition> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ListTypeDefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1244,10 +1267,12 @@ public class ListTypeDefinitionPersistenceImpl
 				list = (List<ListTypeDefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1946,9 +1971,9 @@ public class ListTypeDefinitionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ListTypeDefinition listTypeDefinition :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(listTypeDefinition);
 		}
@@ -2516,6 +2541,14 @@ public class ListTypeDefinitionPersistenceImpl
 		OrderByComparator<ListTypeDefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ListTypeDefinition> _findAll(
+		int start, int end,
+		OrderByComparator<ListTypeDefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2570,10 +2603,12 @@ public class ListTypeDefinitionPersistenceImpl
 				list = (List<ListTypeDefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2593,7 +2628,10 @@ public class ListTypeDefinitionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ListTypeDefinition listTypeDefinition : findAll()) {
+		for (ListTypeDefinition listTypeDefinition :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(listTypeDefinition);
 		}
 	}

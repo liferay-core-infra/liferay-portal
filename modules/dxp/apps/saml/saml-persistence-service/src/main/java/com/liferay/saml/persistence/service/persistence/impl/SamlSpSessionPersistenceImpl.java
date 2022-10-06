@@ -176,6 +176,16 @@ public class SamlSpSessionPersistenceImpl
 		OrderByComparator<SamlSpSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySamlPeerBindingId(
+			samlPeerBindingId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SamlSpSession> _findBySamlPeerBindingId(
+		long samlPeerBindingId, int start, int end,
+		OrderByComparator<SamlSpSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -253,10 +263,12 @@ public class SamlSpSessionPersistenceImpl
 				list = (List<SamlSpSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -547,9 +559,9 @@ public class SamlSpSessionPersistenceImpl
 	@Override
 	public void removeBySamlPeerBindingId(long samlPeerBindingId) {
 		for (SamlSpSession samlSpSession :
-				findBySamlPeerBindingId(
+				_findBySamlPeerBindingId(
 					samlPeerBindingId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(samlSpSession);
 		}
@@ -622,7 +634,15 @@ public class SamlSpSessionPersistenceImpl
 	public SamlSpSession findByJSessionId(String jSessionId)
 		throws NoSuchSpSessionException {
 
-		SamlSpSession samlSpSession = fetchByJSessionId(jSessionId);
+		return _findByJSessionId(jSessionId, false);
+	}
+
+	private SamlSpSession _findByJSessionId(
+			String jSessionId, boolean readOnlyCache)
+		throws NoSuchSpSessionException {
+
+		SamlSpSession samlSpSession = _fetchByJSessionId(
+			jSessionId, true, readOnlyCache);
 
 		if (samlSpSession == null) {
 			StringBundler sb = new StringBundler(4);
@@ -665,6 +685,12 @@ public class SamlSpSessionPersistenceImpl
 	@Override
 	public SamlSpSession fetchByJSessionId(
 		String jSessionId, boolean useFinderCache) {
+
+		return _fetchByJSessionId(jSessionId, useFinderCache, false);
+	}
+
+	private SamlSpSession _fetchByJSessionId(
+		String jSessionId, boolean useFinderCache, boolean readOnlyCache) {
 
 		jSessionId = Objects.toString(jSessionId, "");
 
@@ -746,9 +772,11 @@ public class SamlSpSessionPersistenceImpl
 
 					SamlSpSession samlSpSession = list.get(0);
 
-					result = samlSpSession;
+					if (!readOnlyCache) {
+						result = samlSpSession;
 
-					cacheResult(samlSpSession);
+						cacheResult(samlSpSession);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -777,7 +805,7 @@ public class SamlSpSessionPersistenceImpl
 	public SamlSpSession removeByJSessionId(String jSessionId)
 		throws NoSuchSpSessionException {
 
-		SamlSpSession samlSpSession = findByJSessionId(jSessionId);
+		SamlSpSession samlSpSession = _findByJSessionId(jSessionId, true);
 
 		return remove(samlSpSession);
 	}
@@ -864,7 +892,15 @@ public class SamlSpSessionPersistenceImpl
 	public SamlSpSession findBySamlSpSessionKey(String samlSpSessionKey)
 		throws NoSuchSpSessionException {
 
-		SamlSpSession samlSpSession = fetchBySamlSpSessionKey(samlSpSessionKey);
+		return _findBySamlSpSessionKey(samlSpSessionKey, false);
+	}
+
+	private SamlSpSession _findBySamlSpSessionKey(
+			String samlSpSessionKey, boolean readOnlyCache)
+		throws NoSuchSpSessionException {
+
+		SamlSpSession samlSpSession = _fetchBySamlSpSessionKey(
+			samlSpSessionKey, true, readOnlyCache);
 
 		if (samlSpSession == null) {
 			StringBundler sb = new StringBundler(4);
@@ -907,6 +943,14 @@ public class SamlSpSessionPersistenceImpl
 	@Override
 	public SamlSpSession fetchBySamlSpSessionKey(
 		String samlSpSessionKey, boolean useFinderCache) {
+
+		return _fetchBySamlSpSessionKey(
+			samlSpSessionKey, useFinderCache, false);
+	}
+
+	private SamlSpSession _fetchBySamlSpSessionKey(
+		String samlSpSessionKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		samlSpSessionKey = Objects.toString(samlSpSessionKey, "");
 
@@ -976,9 +1020,11 @@ public class SamlSpSessionPersistenceImpl
 				else {
 					SamlSpSession samlSpSession = list.get(0);
 
-					result = samlSpSession;
+					if (!readOnlyCache) {
+						result = samlSpSession;
 
-					cacheResult(samlSpSession);
+						cacheResult(samlSpSession);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1007,7 +1053,8 @@ public class SamlSpSessionPersistenceImpl
 	public SamlSpSession removeBySamlSpSessionKey(String samlSpSessionKey)
 		throws NoSuchSpSessionException {
 
-		SamlSpSession samlSpSession = findBySamlSpSessionKey(samlSpSessionKey);
+		SamlSpSession samlSpSession = _findBySamlSpSessionKey(
+			samlSpSessionKey, true);
 
 		return remove(samlSpSession);
 	}
@@ -1097,7 +1144,15 @@ public class SamlSpSessionPersistenceImpl
 	public SamlSpSession findByC_SI(long companyId, String sessionIndex)
 		throws NoSuchSpSessionException {
 
-		SamlSpSession samlSpSession = fetchByC_SI(companyId, sessionIndex);
+		return _findByC_SI(companyId, sessionIndex, false);
+	}
+
+	private SamlSpSession _findByC_SI(
+			long companyId, String sessionIndex, boolean readOnlyCache)
+		throws NoSuchSpSessionException {
+
+		SamlSpSession samlSpSession = _fetchByC_SI(
+			companyId, sessionIndex, true, readOnlyCache);
 
 		if (samlSpSession == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1145,6 +1200,13 @@ public class SamlSpSessionPersistenceImpl
 	@Override
 	public SamlSpSession fetchByC_SI(
 		long companyId, String sessionIndex, boolean useFinderCache) {
+
+		return _fetchByC_SI(companyId, sessionIndex, useFinderCache, false);
+	}
+
+	private SamlSpSession _fetchByC_SI(
+		long companyId, String sessionIndex, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		sessionIndex = Objects.toString(sessionIndex, "");
 
@@ -1234,9 +1296,11 @@ public class SamlSpSessionPersistenceImpl
 
 					SamlSpSession samlSpSession = list.get(0);
 
-					result = samlSpSession;
+					if (!readOnlyCache) {
+						result = samlSpSession;
 
-					cacheResult(samlSpSession);
+						cacheResult(samlSpSession);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1266,7 +1330,8 @@ public class SamlSpSessionPersistenceImpl
 	public SamlSpSession removeByC_SI(long companyId, String sessionIndex)
 		throws NoSuchSpSessionException {
 
-		SamlSpSession samlSpSession = findByC_SI(companyId, sessionIndex);
+		SamlSpSession samlSpSession = _findByC_SI(
+			companyId, sessionIndex, true);
 
 		return remove(samlSpSession);
 	}
@@ -1782,6 +1847,13 @@ public class SamlSpSessionPersistenceImpl
 		int start, int end, OrderByComparator<SamlSpSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlSpSession> _findAll(
+		int start, int end, OrderByComparator<SamlSpSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1836,10 +1908,12 @@ public class SamlSpSessionPersistenceImpl
 				list = (List<SamlSpSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1859,7 +1933,10 @@ public class SamlSpSessionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SamlSpSession samlSpSession : findAll()) {
+		for (SamlSpSession samlSpSession :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(samlSpSession);
 		}
 	}

@@ -172,6 +172,15 @@ public class SourcePersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Source> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Source> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Source> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -256,10 +265,12 @@ public class SourcePersistenceImpl
 				list = (List<Source>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,7 +564,9 @@ public class SourcePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Source source :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(source);
 		}
@@ -641,7 +654,14 @@ public class SourcePersistenceImpl
 	public Source findByUUID_G(String uuid, long groupId)
 		throws NoSuchSourceException {
 
-		Source source = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private Source _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchSourceException {
+
+		Source source = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (source == null) {
 			StringBundler sb = new StringBundler(6);
@@ -689,6 +709,13 @@ public class SourcePersistenceImpl
 	@Override
 	public Source fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private Source _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -761,9 +788,11 @@ public class SourcePersistenceImpl
 				else {
 					Source source = list.get(0);
 
-					result = source;
+					if (!readOnlyCache) {
+						result = source;
 
-					cacheResult(source);
+						cacheResult(source);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -793,7 +822,7 @@ public class SourcePersistenceImpl
 	public Source removeByUUID_G(String uuid, long groupId)
 		throws NoSuchSourceException {
 
-		Source source = findByUUID_G(uuid, groupId);
+		Source source = _findByUUID_G(uuid, groupId, true);
 
 		return remove(source);
 	}
@@ -954,6 +983,16 @@ public class SourcePersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Source> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Source> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Source> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1046,10 +1085,12 @@ public class SourcePersistenceImpl
 				list = (List<Source>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1364,9 +1405,9 @@ public class SourcePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Source source :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(source);
 		}
@@ -1521,6 +1562,15 @@ public class SourcePersistenceImpl
 		long groupId, int start, int end,
 		OrderByComparator<Source> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Source> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<Source> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1592,10 +1642,12 @@ public class SourcePersistenceImpl
 				list = (List<Source>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2198,8 +2250,9 @@ public class SourcePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (Source source :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(source);
 		}
@@ -2378,6 +2431,15 @@ public class SourcePersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Source> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Source> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Source> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2451,10 +2513,12 @@ public class SourcePersistenceImpl
 				list = (List<Source>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2735,8 +2799,9 @@ public class SourcePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Source source :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(source);
 		}
@@ -3195,6 +3260,13 @@ public class SourcePersistenceImpl
 		int start, int end, OrderByComparator<Source> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Source> _findAll(
+		int start, int end, OrderByComparator<Source> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3248,10 +3320,12 @@ public class SourcePersistenceImpl
 				list = (List<Source>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3271,7 +3345,10 @@ public class SourcePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Source source : findAll()) {
+		for (Source source :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(source);
 		}
 	}

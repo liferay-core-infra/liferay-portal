@@ -183,6 +183,16 @@ public class DLContentPersistenceImpl
 		OrderByComparator<DLContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R(
+			companyId, repositoryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLContent> _findByC_R(
+		long companyId, long repositoryId, int start, int end,
+		OrderByComparator<DLContent> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLContent.class);
 
@@ -266,10 +276,12 @@ public class DLContentPersistenceImpl
 				list = (List<DLContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -575,9 +587,9 @@ public class DLContentPersistenceImpl
 	@Override
 	public void removeByC_R(long companyId, long repositoryId) {
 		for (DLContent dlContent :
-				findByC_R(
+				_findByC_R(
 					companyId, repositoryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlContent);
 		}
@@ -743,6 +755,16 @@ public class DLContentPersistenceImpl
 		OrderByComparator<DLContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R_P(
+			companyId, repositoryId, path, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLContent> _findByC_R_P(
+		long companyId, long repositoryId, String path, int start, int end,
+		OrderByComparator<DLContent> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		path = Objects.toString(path, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -844,10 +866,12 @@ public class DLContentPersistenceImpl
 				list = (List<DLContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1183,9 +1207,9 @@ public class DLContentPersistenceImpl
 	@Override
 	public void removeByC_R_P(long companyId, long repositoryId, String path) {
 		for (DLContent dlContent :
-				findByC_R_P(
+				_findByC_R_P(
 					companyId, repositoryId, path, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlContent);
 		}
@@ -1374,6 +1398,16 @@ public class DLContentPersistenceImpl
 		OrderByComparator<DLContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_R_LikeP(
+			companyId, repositoryId, path, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLContent> _findByC_R_LikeP(
+		long companyId, long repositoryId, String path, int start, int end,
+		OrderByComparator<DLContent> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		path = Objects.toString(path, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1466,10 +1500,12 @@ public class DLContentPersistenceImpl
 				list = (List<DLContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1807,9 +1843,9 @@ public class DLContentPersistenceImpl
 		long companyId, long repositoryId, String path) {
 
 		for (DLContent dlContent :
-				findByC_R_LikeP(
+				_findByC_R_LikeP(
 					companyId, repositoryId, path, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlContent);
 		}
@@ -1931,8 +1967,16 @@ public class DLContentPersistenceImpl
 			long companyId, long repositoryId, String path, String version)
 		throws NoSuchContentException {
 
-		DLContent dlContent = fetchByC_R_P_V(
-			companyId, repositoryId, path, version);
+		return _findByC_R_P_V(companyId, repositoryId, path, version, false);
+	}
+
+	private DLContent _findByC_R_P_V(
+			long companyId, long repositoryId, String path, String version,
+			boolean readOnlyCache)
+		throws NoSuchContentException {
+
+		DLContent dlContent = _fetchByC_R_P_V(
+			companyId, repositoryId, path, version, true, readOnlyCache);
 
 		if (dlContent == null) {
 			StringBundler sb = new StringBundler(10);
@@ -1993,6 +2037,14 @@ public class DLContentPersistenceImpl
 	public DLContent fetchByC_R_P_V(
 		long companyId, long repositoryId, String path, String version,
 		boolean useFinderCache) {
+
+		return _fetchByC_R_P_V(
+			companyId, repositoryId, path, version, useFinderCache, false);
+	}
+
+	private DLContent _fetchByC_R_P_V(
+		long companyId, long repositoryId, String path, String version,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		path = Objects.toString(path, "");
 		version = Objects.toString(version, "");
@@ -2090,9 +2142,11 @@ public class DLContentPersistenceImpl
 				else {
 					DLContent dlContent = list.get(0);
 
-					result = dlContent;
+					if (!readOnlyCache) {
+						result = dlContent;
 
-					cacheResult(dlContent);
+						cacheResult(dlContent);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2125,8 +2179,8 @@ public class DLContentPersistenceImpl
 			long companyId, long repositoryId, String path, String version)
 		throws NoSuchContentException {
 
-		DLContent dlContent = findByC_R_P_V(
-			companyId, repositoryId, path, version);
+		DLContent dlContent = _findByC_R_P_V(
+			companyId, repositoryId, path, version, true);
 
 		return remove(dlContent);
 	}
@@ -2795,6 +2849,13 @@ public class DLContentPersistenceImpl
 		int start, int end, OrderByComparator<DLContent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLContent> _findAll(
+		int start, int end, OrderByComparator<DLContent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLContent.class);
 
@@ -2852,10 +2913,12 @@ public class DLContentPersistenceImpl
 				list = (List<DLContent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2875,7 +2938,10 @@ public class DLContentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLContent dlContent : findAll()) {
+		for (DLContent dlContent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlContent);
 		}
 	}

@@ -165,6 +165,15 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTableId(
+			tableId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExpandoValue> _findByTableId(
+		long tableId, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -240,10 +249,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -527,8 +538,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByTableId(long tableId) {
 		for (ExpandoValue expandoValue :
-				findByTableId(
-					tableId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByTableId(
+					tableId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(expandoValue);
 		}
@@ -674,6 +686,15 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByColumnId(
+			columnId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExpandoValue> _findByColumnId(
+		long columnId, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -749,10 +770,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1036,8 +1059,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByColumnId(long columnId) {
 		for (ExpandoValue expandoValue :
-				findByColumnId(
-					columnId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByColumnId(
+					columnId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(expandoValue);
 		}
@@ -1180,6 +1204,15 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRowId(
+			rowId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExpandoValue> _findByRowId(
+		long rowId, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -1255,10 +1288,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1540,8 +1575,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByRowId(long rowId) {
 		for (ExpandoValue expandoValue :
-				findByRowId(
-					rowId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRowId(
+					rowId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(expandoValue);
 		}
@@ -1692,6 +1728,16 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_C(
+			tableId, columnId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ExpandoValue> _findByT_C(
+		long tableId, long columnId, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -1775,10 +1821,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2084,9 +2132,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByT_C(long tableId, long columnId) {
 		for (ExpandoValue expandoValue :
-				findByT_C(
+				_findByT_C(
 					tableId, columnId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(expandoValue);
 		}
@@ -2244,6 +2292,16 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_R(
+			tableId, rowId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ExpandoValue> _findByT_R(
+		long tableId, long rowId, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -2327,10 +2385,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2635,9 +2695,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByT_R(long tableId, long rowId) {
 		for (ExpandoValue expandoValue :
-				findByT_R(
-					tableId, rowId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByT_R(
+					tableId, rowId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(expandoValue);
 		}
@@ -2796,6 +2856,16 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_CPK(
+			tableId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ExpandoValue> _findByT_CPK(
+		long tableId, long classPK, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -2879,10 +2949,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3188,9 +3260,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByT_CPK(long tableId, long classPK) {
 		for (ExpandoValue expandoValue :
-				findByT_CPK(
+				_findByT_CPK(
 					tableId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(expandoValue);
 		}
@@ -3283,7 +3355,15 @@ public class ExpandoValuePersistenceImpl
 	public ExpandoValue findByC_R(long columnId, long rowId)
 		throws NoSuchValueException {
 
-		ExpandoValue expandoValue = fetchByC_R(columnId, rowId);
+		return _findByC_R(columnId, rowId, false);
+	}
+
+	private ExpandoValue _findByC_R(
+			long columnId, long rowId, boolean readOnlyCache)
+		throws NoSuchValueException {
+
+		ExpandoValue expandoValue = _fetchByC_R(
+			columnId, rowId, true, readOnlyCache);
 
 		if (expandoValue == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3331,6 +3411,13 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public ExpandoValue fetchByC_R(
 		long columnId, long rowId, boolean useFinderCache) {
+
+		return _fetchByC_R(columnId, rowId, useFinderCache, false);
+	}
+
+	private ExpandoValue _fetchByC_R(
+		long columnId, long rowId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
@@ -3393,9 +3480,11 @@ public class ExpandoValuePersistenceImpl
 				else {
 					ExpandoValue expandoValue = list.get(0);
 
-					result = expandoValue;
+					if (!readOnlyCache) {
+						result = expandoValue;
 
-					cacheResult(expandoValue);
+						cacheResult(expandoValue);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3425,7 +3514,7 @@ public class ExpandoValuePersistenceImpl
 	public ExpandoValue removeByC_R(long columnId, long rowId)
 		throws NoSuchValueException {
 
-		ExpandoValue expandoValue = findByC_R(columnId, rowId);
+		ExpandoValue expandoValue = _findByC_R(columnId, rowId, true);
 
 		return remove(expandoValue);
 	}
@@ -3583,6 +3672,16 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ExpandoValue> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -3666,10 +3765,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3976,9 +4077,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (ExpandoValue expandoValue :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(expandoValue);
 		}
@@ -4072,7 +4173,15 @@ public class ExpandoValuePersistenceImpl
 	public ExpandoValue findByT_C_C(long tableId, long columnId, long classPK)
 		throws NoSuchValueException {
 
-		ExpandoValue expandoValue = fetchByT_C_C(tableId, columnId, classPK);
+		return _findByT_C_C(tableId, columnId, classPK, false);
+	}
+
+	private ExpandoValue _findByT_C_C(
+			long tableId, long columnId, long classPK, boolean readOnlyCache)
+		throws NoSuchValueException {
+
+		ExpandoValue expandoValue = _fetchByT_C_C(
+			tableId, columnId, classPK, true, readOnlyCache);
 
 		if (expandoValue == null) {
 			StringBundler sb = new StringBundler(8);
@@ -4127,6 +4236,13 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public ExpandoValue fetchByT_C_C(
 		long tableId, long columnId, long classPK, boolean useFinderCache) {
+
+		return _fetchByT_C_C(tableId, columnId, classPK, useFinderCache, false);
+	}
+
+	private ExpandoValue _fetchByT_C_C(
+		long tableId, long columnId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
@@ -4194,9 +4310,11 @@ public class ExpandoValuePersistenceImpl
 				else {
 					ExpandoValue expandoValue = list.get(0);
 
-					result = expandoValue;
+					if (!readOnlyCache) {
+						result = expandoValue;
 
-					cacheResult(expandoValue);
+						cacheResult(expandoValue);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4227,7 +4345,8 @@ public class ExpandoValuePersistenceImpl
 	public ExpandoValue removeByT_C_C(long tableId, long columnId, long classPK)
 		throws NoSuchValueException {
 
-		ExpandoValue expandoValue = findByT_C_C(tableId, columnId, classPK);
+		ExpandoValue expandoValue = _findByT_C_C(
+			tableId, columnId, classPK, true);
 
 		return remove(expandoValue);
 	}
@@ -4400,6 +4519,16 @@ public class ExpandoValuePersistenceImpl
 		OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_C_D(
+			tableId, columnId, data, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ExpandoValue> _findByT_C_D(
+		long tableId, long columnId, String data, int start, int end,
+		OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		data = Objects.toString(data, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -4501,10 +4630,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4840,9 +4971,9 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void removeByT_C_D(long tableId, long columnId, String data) {
 		for (ExpandoValue expandoValue :
-				findByT_C_D(
+				_findByT_C_D(
 					tableId, columnId, data, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(expandoValue);
 		}
@@ -5502,6 +5633,13 @@ public class ExpandoValuePersistenceImpl
 		int start, int end, OrderByComparator<ExpandoValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExpandoValue> _findAll(
+		int start, int end, OrderByComparator<ExpandoValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoValue.class);
 
@@ -5559,10 +5697,12 @@ public class ExpandoValuePersistenceImpl
 				list = (List<ExpandoValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5582,7 +5722,10 @@ public class ExpandoValuePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ExpandoValue expandoValue : findAll()) {
+		for (ExpandoValue expandoValue :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(expandoValue);
 		}
 	}

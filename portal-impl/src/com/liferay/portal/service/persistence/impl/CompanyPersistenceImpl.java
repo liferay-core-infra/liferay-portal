@@ -99,7 +99,13 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company findByWebId(String webId) throws NoSuchCompanyException {
-		Company company = fetchByWebId(webId);
+		return _findByWebId(webId, false);
+	}
+
+	private Company _findByWebId(String webId, boolean readOnlyCache)
+		throws NoSuchCompanyException {
+
+		Company company = _fetchByWebId(webId, true, readOnlyCache);
 
 		if (company == null) {
 			StringBundler sb = new StringBundler(4);
@@ -141,6 +147,12 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company fetchByWebId(String webId, boolean useFinderCache) {
+		return _fetchByWebId(webId, useFinderCache, false);
+	}
+
+	private Company _fetchByWebId(
+		String webId, boolean useFinderCache, boolean readOnlyCache) {
+
 		webId = Objects.toString(webId, "");
 
 		Object[] finderArgs = null;
@@ -206,9 +218,11 @@ public class CompanyPersistenceImpl
 				else {
 					Company company = list.get(0);
 
-					result = company;
+					if (!readOnlyCache) {
+						result = company;
 
-					cacheResult(company);
+						cacheResult(company);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -235,7 +249,7 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company removeByWebId(String webId) throws NoSuchCompanyException {
-		Company company = findByWebId(webId);
+		Company company = _findByWebId(webId, true);
 
 		return remove(company);
 	}
@@ -320,7 +334,13 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company findByMx(String mx) throws NoSuchCompanyException {
-		Company company = fetchByMx(mx);
+		return _findByMx(mx, false);
+	}
+
+	private Company _findByMx(String mx, boolean readOnlyCache)
+		throws NoSuchCompanyException {
+
+		Company company = _fetchByMx(mx, true, readOnlyCache);
 
 		if (company == null) {
 			StringBundler sb = new StringBundler(4);
@@ -362,6 +382,12 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company fetchByMx(String mx, boolean useFinderCache) {
+		return _fetchByMx(mx, useFinderCache, false);
+	}
+
+	private Company _fetchByMx(
+		String mx, boolean useFinderCache, boolean readOnlyCache) {
+
 		mx = Objects.toString(mx, "");
 
 		Object[] finderArgs = null;
@@ -442,9 +468,11 @@ public class CompanyPersistenceImpl
 
 					Company company = list.get(0);
 
-					result = company;
+					if (!readOnlyCache) {
+						result = company;
 
-					cacheResult(company);
+						cacheResult(company);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -471,7 +499,7 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company removeByMx(String mx) throws NoSuchCompanyException {
-		Company company = findByMx(mx);
+		Company company = _findByMx(mx, true);
 
 		return remove(company);
 	}
@@ -555,7 +583,13 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company findByLogoId(long logoId) throws NoSuchCompanyException {
-		Company company = fetchByLogoId(logoId);
+		return _findByLogoId(logoId, false);
+	}
+
+	private Company _findByLogoId(long logoId, boolean readOnlyCache)
+		throws NoSuchCompanyException {
+
+		Company company = _fetchByLogoId(logoId, true, readOnlyCache);
 
 		if (company == null) {
 			StringBundler sb = new StringBundler(4);
@@ -597,6 +631,12 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company fetchByLogoId(long logoId, boolean useFinderCache) {
+		return _fetchByLogoId(logoId, useFinderCache, false);
+	}
+
+	private Company _fetchByLogoId(
+		long logoId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -664,9 +704,11 @@ public class CompanyPersistenceImpl
 
 					Company company = list.get(0);
 
-					result = company;
+					if (!readOnlyCache) {
+						result = company;
 
-					cacheResult(company);
+						cacheResult(company);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -693,7 +735,7 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public Company removeByLogoId(long logoId) throws NoSuchCompanyException {
-		Company company = findByLogoId(logoId);
+		Company company = _findByLogoId(logoId, true);
 
 		return remove(company);
 	}
@@ -1179,6 +1221,13 @@ public class CompanyPersistenceImpl
 		int start, int end, OrderByComparator<Company> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Company> _findAll(
+		int start, int end, OrderByComparator<Company> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1233,10 +1282,12 @@ public class CompanyPersistenceImpl
 				list = (List<Company>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1256,7 +1307,10 @@ public class CompanyPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Company company : findAll()) {
+		for (Company company :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(company);
 		}
 	}

@@ -187,6 +187,15 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -280,10 +289,12 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -592,7 +603,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetListEntrySegmentsEntryRel);
 		}
@@ -694,8 +707,15 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			String uuid, long groupId)
 		throws NoSuchEntrySegmentsEntryRelException {
 
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private AssetListEntrySegmentsEntryRel _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntrySegmentsEntryRelException {
+
 		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel =
-			fetchByUUID_G(uuid, groupId);
+			_fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (assetListEntrySegmentsEntryRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -745,6 +765,13 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public AssetListEntrySegmentsEntryRel fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private AssetListEntrySegmentsEntryRel _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -823,9 +850,11 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 					AssetListEntrySegmentsEntryRel
 						assetListEntrySegmentsEntryRel = list.get(0);
 
-					result = assetListEntrySegmentsEntryRel;
+					if (!readOnlyCache) {
+						result = assetListEntrySegmentsEntryRel;
 
-					cacheResult(assetListEntrySegmentsEntryRel);
+						cacheResult(assetListEntrySegmentsEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -857,7 +886,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		throws NoSuchEntrySegmentsEntryRelException {
 
 		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel =
-			findByUUID_G(uuid, groupId);
+			_findByUUID_G(uuid, groupId, true);
 
 		return remove(assetListEntrySegmentsEntryRel);
 	}
@@ -1033,6 +1062,16 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1134,10 +1173,12 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1462,9 +1503,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetListEntrySegmentsEntryRel);
 		}
@@ -1637,6 +1678,16 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAssetListEntryId(
+			assetListEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findByAssetListEntryId(
+		long assetListEntryId, int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetListEntrySegmentsEntryRel.class);
 
@@ -1720,10 +1771,12 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2019,9 +2072,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeByAssetListEntryId(long assetListEntryId) {
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
-				findByAssetListEntryId(
+				_findByAssetListEntryId(
 					assetListEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(assetListEntrySegmentsEntryRel);
 		}
@@ -2171,6 +2224,16 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySegmentsEntryId(
+			segmentsEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findBySegmentsEntryId(
+		long segmentsEntryId, int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetListEntrySegmentsEntryRel.class);
 
@@ -2254,10 +2317,12 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2553,9 +2618,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeBySegmentsEntryId(long segmentsEntryId) {
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
-				findBySegmentsEntryId(
-					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findBySegmentsEntryId(
+					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetListEntrySegmentsEntryRel);
 		}
@@ -2642,8 +2707,15 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 			long assetListEntryId, long segmentsEntryId)
 		throws NoSuchEntrySegmentsEntryRelException {
 
+		return _findByA_S(assetListEntryId, segmentsEntryId, false);
+	}
+
+	private AssetListEntrySegmentsEntryRel _findByA_S(
+			long assetListEntryId, long segmentsEntryId, boolean readOnlyCache)
+		throws NoSuchEntrySegmentsEntryRelException {
+
 		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel =
-			fetchByA_S(assetListEntryId, segmentsEntryId);
+			_fetchByA_S(assetListEntryId, segmentsEntryId, true, readOnlyCache);
 
 		if (assetListEntrySegmentsEntryRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2693,6 +2765,14 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public AssetListEntrySegmentsEntryRel fetchByA_S(
 		long assetListEntryId, long segmentsEntryId, boolean useFinderCache) {
+
+		return _fetchByA_S(
+			assetListEntryId, segmentsEntryId, useFinderCache, false);
+	}
+
+	private AssetListEntrySegmentsEntryRel _fetchByA_S(
+		long assetListEntryId, long segmentsEntryId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetListEntrySegmentsEntryRel.class);
@@ -2758,9 +2838,11 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 					AssetListEntrySegmentsEntryRel
 						assetListEntrySegmentsEntryRel = list.get(0);
 
-					result = assetListEntrySegmentsEntryRel;
+					if (!readOnlyCache) {
+						result = assetListEntrySegmentsEntryRel;
 
-					cacheResult(assetListEntrySegmentsEntryRel);
+						cacheResult(assetListEntrySegmentsEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2792,7 +2874,7 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		throws NoSuchEntrySegmentsEntryRelException {
 
 		AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel =
-			findByA_S(assetListEntryId, segmentsEntryId);
+			_findByA_S(assetListEntryId, segmentsEntryId, true);
 
 		return remove(assetListEntrySegmentsEntryRel);
 	}
@@ -2955,6 +3037,16 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_S_C(
+			assetListEntryId, segmentsEntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findByA_S_C(
+		long assetListEntryId, long segmentsEntryId, int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetListEntrySegmentsEntryRel.class);
 
@@ -3045,10 +3137,12 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3441,6 +3535,16 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_S_C(
+			assetListEntryId, segmentsEntryIds, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findByA_S_C(
+		long assetListEntryId, long[] segmentsEntryIds, int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (segmentsEntryIds == null) {
 			segmentsEntryIds = new long[0];
 		}
@@ -3548,11 +3652,14 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByA_S_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByA_S_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3575,9 +3682,9 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeByA_S_C(long assetListEntryId, long segmentsEntryId) {
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
-				findByA_S_C(
+				_findByA_S_C(
 					assetListEntryId, segmentsEntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(assetListEntrySegmentsEntryRel);
 		}
@@ -4404,6 +4511,14 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetListEntrySegmentsEntryRel> _findAll(
+		int start, int end,
+		OrderByComparator<AssetListEntrySegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetListEntrySegmentsEntryRel.class);
 
@@ -4462,10 +4577,12 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 				list = (List<AssetListEntrySegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4486,7 +4603,8 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(assetListEntrySegmentsEntryRel);
 		}

@@ -171,6 +171,15 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 		OrderByComparator<MFAFIDO2CredentialEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MFAFIDO2CredentialEntry> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<MFAFIDO2CredentialEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -243,10 +252,12 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 				list = (List<MFAFIDO2CredentialEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -541,8 +552,9 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mfaFIDO2CredentialEntry);
 		}
@@ -679,6 +691,16 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 		OrderByComparator<MFAFIDO2CredentialEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCredentialKeyHash(
+			credentialKeyHash, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MFAFIDO2CredentialEntry> _findByCredentialKeyHash(
+		long credentialKeyHash, int start, int end,
+		OrderByComparator<MFAFIDO2CredentialEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -756,10 +778,12 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 				list = (List<MFAFIDO2CredentialEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1055,9 +1079,9 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 	@Override
 	public void removeByCredentialKeyHash(long credentialKeyHash) {
 		for (MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry :
-				findByCredentialKeyHash(
+				_findByCredentialKeyHash(
 					credentialKeyHash, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mfaFIDO2CredentialEntry);
 		}
@@ -1132,8 +1156,15 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 			long userId, long credentialKeyHash)
 		throws NoSuchMFAFIDO2CredentialEntryException {
 
-		MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry = fetchByU_C(
-			userId, credentialKeyHash);
+		return _findByU_C(userId, credentialKeyHash, false);
+	}
+
+	private MFAFIDO2CredentialEntry _findByU_C(
+			long userId, long credentialKeyHash, boolean readOnlyCache)
+		throws NoSuchMFAFIDO2CredentialEntryException {
+
+		MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry = _fetchByU_C(
+			userId, credentialKeyHash, true, readOnlyCache);
 
 		if (mfaFIDO2CredentialEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1183,6 +1214,13 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 	@Override
 	public MFAFIDO2CredentialEntry fetchByU_C(
 		long userId, long credentialKeyHash, boolean useFinderCache) {
+
+		return _fetchByU_C(userId, credentialKeyHash, useFinderCache, false);
+	}
+
+	private MFAFIDO2CredentialEntry _fetchByU_C(
+		long userId, long credentialKeyHash, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1244,9 +1282,11 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 					MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry = list.get(
 						0);
 
-					result = mfaFIDO2CredentialEntry;
+					if (!readOnlyCache) {
+						result = mfaFIDO2CredentialEntry;
 
-					cacheResult(mfaFIDO2CredentialEntry);
+						cacheResult(mfaFIDO2CredentialEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1277,8 +1317,8 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 			long userId, long credentialKeyHash)
 		throws NoSuchMFAFIDO2CredentialEntryException {
 
-		MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry = findByU_C(
-			userId, credentialKeyHash);
+		MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry = _findByU_C(
+			userId, credentialKeyHash, true);
 
 		return remove(mfaFIDO2CredentialEntry);
 	}
@@ -1781,6 +1821,14 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 		OrderByComparator<MFAFIDO2CredentialEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MFAFIDO2CredentialEntry> _findAll(
+		int start, int end,
+		OrderByComparator<MFAFIDO2CredentialEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1836,10 +1884,12 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 				list = (List<MFAFIDO2CredentialEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1859,7 +1909,10 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry : findAll()) {
+		for (MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mfaFIDO2CredentialEntry);
 		}
 	}

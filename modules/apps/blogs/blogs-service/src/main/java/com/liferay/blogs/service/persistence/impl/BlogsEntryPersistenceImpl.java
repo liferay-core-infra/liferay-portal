@@ -190,6 +190,15 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -278,10 +287,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -575,7 +586,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (BlogsEntry blogsEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(blogsEntry);
 		}
@@ -676,7 +689,15 @@ public class BlogsEntryPersistenceImpl
 	public BlogsEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		BlogsEntry blogsEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private BlogsEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		BlogsEntry blogsEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (blogsEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -724,6 +745,13 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public BlogsEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private BlogsEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -799,9 +827,11 @@ public class BlogsEntryPersistenceImpl
 				else {
 					BlogsEntry blogsEntry = list.get(0);
 
-					result = blogsEntry;
+					if (!readOnlyCache) {
+						result = blogsEntry;
 
-					cacheResult(blogsEntry);
+						cacheResult(blogsEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -831,7 +861,7 @@ public class BlogsEntryPersistenceImpl
 	public BlogsEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		BlogsEntry blogsEntry = findByUUID_G(uuid, groupId);
+		BlogsEntry blogsEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(blogsEntry);
 	}
@@ -1005,6 +1035,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1101,10 +1141,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1421,9 +1463,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (BlogsEntry blogsEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -1591,6 +1633,15 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -1666,10 +1717,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2275,8 +2328,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (BlogsEntry blogsEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(blogsEntry);
 		}
@@ -2470,6 +2524,15 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -2547,10 +2610,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2834,8 +2899,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (BlogsEntry blogsEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(blogsEntry);
 		}
@@ -2920,7 +2986,15 @@ public class BlogsEntryPersistenceImpl
 	public BlogsEntry findByG_UT(long groupId, String urlTitle)
 		throws NoSuchEntryException {
 
-		BlogsEntry blogsEntry = fetchByG_UT(groupId, urlTitle);
+		return _findByG_UT(groupId, urlTitle, false);
+	}
+
+	private BlogsEntry _findByG_UT(
+			long groupId, String urlTitle, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		BlogsEntry blogsEntry = _fetchByG_UT(
+			groupId, urlTitle, true, readOnlyCache);
 
 		if (blogsEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2968,6 +3042,13 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public BlogsEntry fetchByG_UT(
 		long groupId, String urlTitle, boolean useFinderCache) {
+
+		return _fetchByG_UT(groupId, urlTitle, useFinderCache, false);
+	}
+
+	private BlogsEntry _fetchByG_UT(
+		long groupId, String urlTitle, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		urlTitle = Objects.toString(urlTitle, "");
 
@@ -3042,9 +3123,11 @@ public class BlogsEntryPersistenceImpl
 				else {
 					BlogsEntry blogsEntry = list.get(0);
 
-					result = blogsEntry;
+					if (!readOnlyCache) {
+						result = blogsEntry;
 
-					cacheResult(blogsEntry);
+						cacheResult(blogsEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3074,7 +3157,7 @@ public class BlogsEntryPersistenceImpl
 	public BlogsEntry removeByG_UT(long groupId, String urlTitle)
 		throws NoSuchEntryException {
 
-		BlogsEntry blogsEntry = findByG_UT(groupId, urlTitle);
+		BlogsEntry blogsEntry = _findByG_UT(groupId, urlTitle, true);
 
 		return remove(blogsEntry);
 	}
@@ -3247,6 +3330,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LtD(
+			groupId, displayDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByG_LtD(
+		long groupId, Date displayDate, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -3332,10 +3425,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4013,9 +4108,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_LtD(long groupId, Date displayDate) {
 		for (BlogsEntry blogsEntry :
-				findByG_LtD(
+				_findByG_LtD(
 					groupId, displayDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -4251,6 +4346,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -4334,10 +4439,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4977,9 +5084,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -5190,6 +5297,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_NotS(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByG_NotS(
+		long groupId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -5263,10 +5380,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5906,9 +6025,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_NotS(long groupId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_NotS(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_NotS(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -6120,6 +6239,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U(
+			companyId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByC_U(
+		long companyId, long userId, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -6203,10 +6332,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6512,9 +6643,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_U(long companyId, long userId) {
 		for (BlogsEntry blogsEntry :
-				findByC_U(
+				_findByC_U(
 					companyId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -6672,6 +6803,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LtD(
+			companyId, displayDate, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByC_LtD(
+		long companyId, Date displayDate, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -6757,10 +6898,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7078,9 +7221,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_LtD(long companyId, Date displayDate) {
 		for (BlogsEntry blogsEntry :
-				findByC_LtD(
+				_findByC_LtD(
 					companyId, displayDate, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -7253,6 +7396,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -7336,10 +7489,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7645,9 +7800,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -7805,6 +7960,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_NotS(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByC_NotS(
+		long companyId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -7878,10 +8043,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8187,9 +8354,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_NotS(long companyId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByC_NotS(
+				_findByC_NotS(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -8347,6 +8514,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtD_S(
+			displayDate, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BlogsEntry> _findByLtD_S(
+		Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -8431,10 +8608,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8751,9 +8930,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByLtD_S(Date displayDate, int status) {
 		for (BlogsEntry blogsEntry :
-				findByLtD_S(
+				_findByLtD_S(
 					displayDate, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -8932,6 +9111,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_LtD(
+			groupId, userId, displayDate, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_U_LtD(
+		long groupId, long userId, Date displayDate, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -9023,10 +9212,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9738,9 +9929,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_U_LtD(long groupId, long userId, Date displayDate) {
 		for (BlogsEntry blogsEntry :
-				findByG_U_LtD(
+				_findByG_U_LtD(
 					groupId, userId, displayDate, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -9998,6 +10189,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_S(
+			groupId, userId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_U_S(
+		long groupId, long userId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -10086,10 +10287,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11001,6 +11204,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_S(
+			groupId, userId, statuses, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_U_S(
+		long groupId, long userId, int[] statuses, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -11104,11 +11317,14 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_U_S, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_U_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11132,9 +11348,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_U_S(long groupId, long userId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_U_S(
+				_findByG_U_S(
 					groupId, userId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -11535,6 +11751,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_NotS(
+			groupId, userId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_U_NotS(
+		long groupId, long userId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -11613,10 +11839,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12294,9 +12522,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_U_NotS(long groupId, long userId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_U_NotS(
+				_findByG_U_NotS(
 					groupId, userId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -12528,6 +12756,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_D_S(
+			groupId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_D_S(
+		long groupId, Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -12631,10 +12869,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13346,9 +13586,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_D_S(long groupId, Date displayDate, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_D_S(
+				_findByG_D_S(
 					groupId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -13604,6 +13844,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_GtD_S(
+			groupId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_GtD_S(
+		long groupId, Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -13694,10 +13944,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14409,9 +14661,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_GtD_S(long groupId, Date displayDate, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_GtD_S(
+				_findByG_GtD_S(
 					groupId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -14669,6 +14921,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LtD_S(
+			groupId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_LtD_S(
+		long groupId, Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -14759,10 +15021,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15474,9 +15738,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_LtD_S(long groupId, Date displayDate, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_LtD_S(
+				_findByG_LtD_S(
 					groupId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -15734,6 +15998,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LtD_NotS(
+			groupId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_LtD_NotS(
+		long groupId, Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -15824,10 +16098,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16539,9 +16815,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByG_LtD_NotS(long groupId, Date displayDate, int status) {
 		for (BlogsEntry blogsEntry :
-				findByG_LtD_NotS(
+				_findByG_LtD_NotS(
 					groupId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -16800,6 +17076,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U_S(
+			companyId, userId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByC_U_S(
+		long companyId, long userId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -16888,10 +17174,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17214,9 +17502,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_U_S(long companyId, long userId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByC_U_S(
+				_findByC_U_S(
 					companyId, userId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -17389,6 +17677,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U_NotS(
+			companyId, userId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByC_U_NotS(
+		long companyId, long userId, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -17467,10 +17765,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17793,9 +18093,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_U_NotS(long companyId, long userId, int status) {
 		for (BlogsEntry blogsEntry :
-				findByC_U_NotS(
+				_findByC_U_NotS(
 					companyId, userId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -17969,6 +18269,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LtD_S(
+			companyId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByC_LtD_S(
+		long companyId, Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -18059,10 +18369,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -18397,9 +18709,9 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void removeByC_LtD_S(long companyId, Date displayDate, int status) {
 		for (BlogsEntry blogsEntry :
-				findByC_LtD_S(
+				_findByC_LtD_S(
 					companyId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -18590,6 +18902,16 @@ public class BlogsEntryPersistenceImpl
 		OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LtD_NotS(
+			companyId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByC_LtD_NotS(
+		long companyId, Date displayDate, int status, int start, int end,
+		OrderByComparator<BlogsEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -18680,10 +19002,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19020,9 +19344,9 @@ public class BlogsEntryPersistenceImpl
 		long companyId, Date displayDate, int status) {
 
 		for (BlogsEntry blogsEntry :
-				findByC_LtD_NotS(
+				_findByC_LtD_NotS(
 					companyId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -19218,6 +19542,16 @@ public class BlogsEntryPersistenceImpl
 		int end, OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_LtD_S(
+			groupId, userId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_U_LtD_S(
+		long groupId, long userId, Date displayDate, int status, int start,
+		int end, OrderByComparator<BlogsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -19313,10 +19647,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -20062,9 +20398,9 @@ public class BlogsEntryPersistenceImpl
 		long groupId, long userId, Date displayDate, int status) {
 
 		for (BlogsEntry blogsEntry :
-				findByG_U_LtD_S(
+				_findByG_U_LtD_S(
 					groupId, userId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -20346,6 +20682,16 @@ public class BlogsEntryPersistenceImpl
 		int end, OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_LtD_NotS(
+			groupId, userId, displayDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findByG_U_LtD_NotS(
+		long groupId, long userId, Date displayDate, int status, int start,
+		int end, OrderByComparator<BlogsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -20441,10 +20787,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21190,9 +21538,9 @@ public class BlogsEntryPersistenceImpl
 		long groupId, long userId, Date displayDate, int status) {
 
 		for (BlogsEntry blogsEntry :
-				findByG_U_LtD_NotS(
+				_findByG_U_LtD_NotS(
 					groupId, userId, displayDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(blogsEntry);
 		}
@@ -21395,7 +21743,15 @@ public class BlogsEntryPersistenceImpl
 	public BlogsEntry findByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchEntryException {
 
-		BlogsEntry blogsEntry = fetchByG_ERC(groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private BlogsEntry _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		BlogsEntry blogsEntry = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (blogsEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -21443,6 +21799,14 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public BlogsEntry fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private BlogsEntry _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -21519,9 +21883,11 @@ public class BlogsEntryPersistenceImpl
 				else {
 					BlogsEntry blogsEntry = list.get(0);
 
-					result = blogsEntry;
+					if (!readOnlyCache) {
+						result = blogsEntry;
 
-					cacheResult(blogsEntry);
+						cacheResult(blogsEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21551,7 +21917,8 @@ public class BlogsEntryPersistenceImpl
 	public BlogsEntry removeByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchEntryException {
 
-		BlogsEntry blogsEntry = findByG_ERC(groupId, externalReferenceCode);
+		BlogsEntry blogsEntry = _findByG_ERC(
+			groupId, externalReferenceCode, true);
 
 		return remove(blogsEntry);
 	}
@@ -22282,6 +22649,13 @@ public class BlogsEntryPersistenceImpl
 		int start, int end, OrderByComparator<BlogsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BlogsEntry> _findAll(
+		int start, int end, OrderByComparator<BlogsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			BlogsEntry.class);
 
@@ -22339,10 +22713,12 @@ public class BlogsEntryPersistenceImpl
 				list = (List<BlogsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22362,7 +22738,10 @@ public class BlogsEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BlogsEntry blogsEntry : findAll()) {
+		for (BlogsEntry blogsEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(blogsEntry);
 		}
 	}

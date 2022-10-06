@@ -167,6 +167,15 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLvEntryId(
+			lvEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LVEntryVersion> _findByLvEntryId(
+		long lvEntryId, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -241,10 +250,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -529,8 +540,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByLvEntryId(long lvEntryId) {
 		for (LVEntryVersion lvEntryVersion :
-				findByLvEntryId(
-					lvEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLvEntryId(
+					lvEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -603,8 +615,15 @@ public class LVEntryVersionPersistenceImpl
 	public LVEntryVersion findByLvEntryId_Version(long lvEntryId, int version)
 		throws NoSuchLVEntryVersionException {
 
-		LVEntryVersion lvEntryVersion = fetchByLvEntryId_Version(
-			lvEntryId, version);
+		return _findByLvEntryId_Version(lvEntryId, version, false);
+	}
+
+	private LVEntryVersion _findByLvEntryId_Version(
+			long lvEntryId, int version, boolean readOnlyCache)
+		throws NoSuchLVEntryVersionException {
+
+		LVEntryVersion lvEntryVersion = _fetchByLvEntryId_Version(
+			lvEntryId, version, true, readOnlyCache);
 
 		if (lvEntryVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -654,6 +673,14 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public LVEntryVersion fetchByLvEntryId_Version(
 		long lvEntryId, int version, boolean useFinderCache) {
+
+		return _fetchByLvEntryId_Version(
+			lvEntryId, version, useFinderCache, false);
+	}
+
+	private LVEntryVersion _fetchByLvEntryId_Version(
+		long lvEntryId, int version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -714,9 +741,11 @@ public class LVEntryVersionPersistenceImpl
 				else {
 					LVEntryVersion lvEntryVersion = list.get(0);
 
-					result = lvEntryVersion;
+					if (!readOnlyCache) {
+						result = lvEntryVersion;
 
-					cacheResult(lvEntryVersion);
+						cacheResult(lvEntryVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -746,8 +775,8 @@ public class LVEntryVersionPersistenceImpl
 	public LVEntryVersion removeByLvEntryId_Version(long lvEntryId, int version)
 		throws NoSuchLVEntryVersionException {
 
-		LVEntryVersion lvEntryVersion = findByLvEntryId_Version(
-			lvEntryId, version);
+		LVEntryVersion lvEntryVersion = _findByLvEntryId_Version(
+			lvEntryId, version, true);
 
 		return remove(lvEntryVersion);
 	}
@@ -885,6 +914,15 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LVEntryVersion> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -970,10 +1008,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1270,7 +1310,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LVEntryVersion lvEntryVersion :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -1425,6 +1467,16 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_Version(
+			uuid, version, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LVEntryVersion> _findByUuid_Version(
+		String uuid, int version, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1518,10 +1570,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1842,9 +1896,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByUuid_Version(String uuid, int version) {
 		for (LVEntryVersion lvEntryVersion :
-				findByUuid_Version(
-					uuid, version, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_Version(
+					uuid, version, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -2006,6 +2060,16 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUUID_G(
+			uuid, groupId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LVEntryVersion> _findByUUID_G(
+		String uuid, long groupId, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -2099,10 +2163,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2423,9 +2489,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByUUID_G(String uuid, long groupId) {
 		for (LVEntryVersion lvEntryVersion :
-				findByUUID_G(
-					uuid, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUUID_G(
+					uuid, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -2524,8 +2590,15 @@ public class LVEntryVersionPersistenceImpl
 			String uuid, long groupId, int version)
 		throws NoSuchLVEntryVersionException {
 
-		LVEntryVersion lvEntryVersion = fetchByUUID_G_Version(
-			uuid, groupId, version);
+		return _findByUUID_G_Version(uuid, groupId, version, false);
+	}
+
+	private LVEntryVersion _findByUUID_G_Version(
+			String uuid, long groupId, int version, boolean readOnlyCache)
+		throws NoSuchLVEntryVersionException {
+
+		LVEntryVersion lvEntryVersion = _fetchByUUID_G_Version(
+			uuid, groupId, version, true, readOnlyCache);
 
 		if (lvEntryVersion == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2580,6 +2653,14 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public LVEntryVersion fetchByUUID_G_Version(
 		String uuid, long groupId, int version, boolean useFinderCache) {
+
+		return _fetchByUUID_G_Version(
+			uuid, groupId, version, useFinderCache, false);
+	}
+
+	private LVEntryVersion _fetchByUUID_G_Version(
+		String uuid, long groupId, int version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -2657,9 +2738,11 @@ public class LVEntryVersionPersistenceImpl
 				else {
 					LVEntryVersion lvEntryVersion = list.get(0);
 
-					result = lvEntryVersion;
+					if (!readOnlyCache) {
+						result = lvEntryVersion;
 
-					cacheResult(lvEntryVersion);
+						cacheResult(lvEntryVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2691,8 +2774,8 @@ public class LVEntryVersionPersistenceImpl
 			String uuid, long groupId, int version)
 		throws NoSuchLVEntryVersionException {
 
-		LVEntryVersion lvEntryVersion = findByUUID_G_Version(
-			uuid, groupId, version);
+		LVEntryVersion lvEntryVersion = _findByUUID_G_Version(
+			uuid, groupId, version, true);
 
 		return remove(lvEntryVersion);
 	}
@@ -2862,6 +2945,16 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LVEntryVersion> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -2955,10 +3048,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3279,9 +3374,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (LVEntryVersion lvEntryVersion :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -3451,6 +3546,16 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C_Version(
+			uuid, companyId, version, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LVEntryVersion> _findByUuid_C_Version(
+		String uuid, long companyId, int version, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -3549,10 +3654,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3891,9 +3998,9 @@ public class LVEntryVersionPersistenceImpl
 		String uuid, long companyId, int version) {
 
 		for (LVEntryVersion lvEntryVersion :
-				findByUuid_C_Version(
+				_findByUuid_C_Version(
 					uuid, companyId, version, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -4059,6 +4166,15 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LVEntryVersion> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4131,10 +4247,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4419,8 +4537,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (LVEntryVersion lvEntryVersion :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -4561,6 +4680,16 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId_Version(
+			groupId, version, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LVEntryVersion> _findByGroupId_Version(
+		long groupId, int version, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4641,10 +4770,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4952,9 +5083,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByGroupId_Version(long groupId, int version) {
 		for (LVEntryVersion lvEntryVersion :
-				findByGroupId_Version(
+				_findByGroupId_Version(
 					groupId, version, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -5104,6 +5235,16 @@ public class LVEntryVersionPersistenceImpl
 		OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_UGK(
+			groupId, uniqueGroupKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LVEntryVersion> _findByG_UGK(
+		long groupId, String uniqueGroupKey, int start, int end,
+		OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uniqueGroupKey = Objects.toString(uniqueGroupKey, "");
 
 		FinderPath finderPath = null;
@@ -5198,10 +5339,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5522,9 +5665,9 @@ public class LVEntryVersionPersistenceImpl
 	@Override
 	public void removeByG_UGK(long groupId, String uniqueGroupKey) {
 		for (LVEntryVersion lvEntryVersion :
-				findByG_UGK(
+				_findByG_UGK(
 					groupId, uniqueGroupKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(lvEntryVersion);
 		}
@@ -5623,8 +5766,16 @@ public class LVEntryVersionPersistenceImpl
 			long groupId, String uniqueGroupKey, int version)
 		throws NoSuchLVEntryVersionException {
 
-		LVEntryVersion lvEntryVersion = fetchByG_UGK_Version(
-			groupId, uniqueGroupKey, version);
+		return _findByG_UGK_Version(groupId, uniqueGroupKey, version, false);
+	}
+
+	private LVEntryVersion _findByG_UGK_Version(
+			long groupId, String uniqueGroupKey, int version,
+			boolean readOnlyCache)
+		throws NoSuchLVEntryVersionException {
+
+		LVEntryVersion lvEntryVersion = _fetchByG_UGK_Version(
+			groupId, uniqueGroupKey, version, true, readOnlyCache);
 
 		if (lvEntryVersion == null) {
 			StringBundler sb = new StringBundler(8);
@@ -5680,6 +5831,14 @@ public class LVEntryVersionPersistenceImpl
 	public LVEntryVersion fetchByG_UGK_Version(
 		long groupId, String uniqueGroupKey, int version,
 		boolean useFinderCache) {
+
+		return _fetchByG_UGK_Version(
+			groupId, uniqueGroupKey, version, useFinderCache, false);
+	}
+
+	private LVEntryVersion _fetchByG_UGK_Version(
+		long groupId, String uniqueGroupKey, int version,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		uniqueGroupKey = Objects.toString(uniqueGroupKey, "");
 
@@ -5758,9 +5917,11 @@ public class LVEntryVersionPersistenceImpl
 				else {
 					LVEntryVersion lvEntryVersion = list.get(0);
 
-					result = lvEntryVersion;
+					if (!readOnlyCache) {
+						result = lvEntryVersion;
 
-					cacheResult(lvEntryVersion);
+						cacheResult(lvEntryVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5792,8 +5953,8 @@ public class LVEntryVersionPersistenceImpl
 			long groupId, String uniqueGroupKey, int version)
 		throws NoSuchLVEntryVersionException {
 
-		LVEntryVersion lvEntryVersion = findByG_UGK_Version(
-			groupId, uniqueGroupKey, version);
+		LVEntryVersion lvEntryVersion = _findByG_UGK_Version(
+			groupId, uniqueGroupKey, version, true);
 
 		return remove(lvEntryVersion);
 	}
@@ -6320,6 +6481,13 @@ public class LVEntryVersionPersistenceImpl
 		int start, int end, OrderByComparator<LVEntryVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LVEntryVersion> _findAll(
+		int start, int end, OrderByComparator<LVEntryVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6374,10 +6542,12 @@ public class LVEntryVersionPersistenceImpl
 				list = (List<LVEntryVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6397,7 +6567,10 @@ public class LVEntryVersionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LVEntryVersion lvEntryVersion : findAll()) {
+		for (LVEntryVersion lvEntryVersion :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(lvEntryVersion);
 		}
 	}

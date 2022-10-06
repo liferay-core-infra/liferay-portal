@@ -159,6 +159,15 @@ public class PasswordTrackerPersistenceImpl
 		OrderByComparator<PasswordTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PasswordTracker> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<PasswordTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -231,10 +240,12 @@ public class PasswordTrackerPersistenceImpl
 				list = (List<PasswordTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -520,8 +531,9 @@ public class PasswordTrackerPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (PasswordTracker passwordTracker :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(passwordTracker);
 		}
@@ -967,6 +979,14 @@ public class PasswordTrackerPersistenceImpl
 		OrderByComparator<PasswordTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PasswordTracker> _findAll(
+		int start, int end,
+		OrderByComparator<PasswordTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1021,10 +1041,12 @@ public class PasswordTrackerPersistenceImpl
 				list = (List<PasswordTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1044,7 +1066,10 @@ public class PasswordTrackerPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PasswordTracker passwordTracker : findAll()) {
+		for (PasswordTracker passwordTracker :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(passwordTracker);
 		}
 	}

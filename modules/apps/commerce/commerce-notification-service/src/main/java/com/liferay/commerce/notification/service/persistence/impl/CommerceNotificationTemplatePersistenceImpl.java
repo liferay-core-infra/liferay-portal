@@ -180,6 +180,15 @@ public class CommerceNotificationTemplatePersistenceImpl
 		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplate> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -267,10 +276,12 @@ public class CommerceNotificationTemplatePersistenceImpl
 				list = (List<CommerceNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -578,7 +589,9 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceNotificationTemplate);
 		}
@@ -667,8 +680,15 @@ public class CommerceNotificationTemplatePersistenceImpl
 	public CommerceNotificationTemplate findByUUID_G(String uuid, long groupId)
 		throws NoSuchNotificationTemplateException {
 
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CommerceNotificationTemplate _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchNotificationTemplateException {
+
 		CommerceNotificationTemplate commerceNotificationTemplate =
-			fetchByUUID_G(uuid, groupId);
+			_fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (commerceNotificationTemplate == null) {
 			StringBundler sb = new StringBundler(6);
@@ -718,6 +738,13 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public CommerceNotificationTemplate fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CommerceNotificationTemplate _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -792,9 +819,11 @@ public class CommerceNotificationTemplatePersistenceImpl
 					CommerceNotificationTemplate commerceNotificationTemplate =
 						list.get(0);
 
-					result = commerceNotificationTemplate;
+					if (!readOnlyCache) {
+						result = commerceNotificationTemplate;
 
-					cacheResult(commerceNotificationTemplate);
+						cacheResult(commerceNotificationTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -826,7 +855,7 @@ public class CommerceNotificationTemplatePersistenceImpl
 		throws NoSuchNotificationTemplateException {
 
 		CommerceNotificationTemplate commerceNotificationTemplate =
-			findByUUID_G(uuid, groupId);
+			_findByUUID_G(uuid, groupId, true);
 
 		return remove(commerceNotificationTemplate);
 	}
@@ -990,6 +1019,16 @@ public class CommerceNotificationTemplatePersistenceImpl
 		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceNotificationTemplate> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1086,10 +1125,12 @@ public class CommerceNotificationTemplatePersistenceImpl
 				list = (List<CommerceNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1414,9 +1455,9 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceNotificationTemplate);
 		}
@@ -1574,6 +1615,15 @@ public class CommerceNotificationTemplatePersistenceImpl
 		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplate> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1648,10 +1698,12 @@ public class CommerceNotificationTemplatePersistenceImpl
 				list = (List<CommerceNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2289,8 +2341,9 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceNotificationTemplate);
 		}
@@ -2478,6 +2531,16 @@ public class CommerceNotificationTemplatePersistenceImpl
 		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_E(
+			groupId, enabled, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceNotificationTemplate> _findByG_E(
+		long groupId, boolean enabled, int start, int end,
+		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2561,10 +2624,12 @@ public class CommerceNotificationTemplatePersistenceImpl
 				list = (List<CommerceNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3233,9 +3298,9 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByG_E(long groupId, boolean enabled) {
 		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				findByG_E(
+				_findByG_E(
 					groupId, enabled, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceNotificationTemplate);
 		}
@@ -3441,6 +3506,16 @@ public class CommerceNotificationTemplatePersistenceImpl
 		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T_E(
+			groupId, type, enabled, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplate> _findByG_T_E(
+		long groupId, String type, boolean enabled, int start, int end,
+		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -3542,10 +3617,12 @@ public class CommerceNotificationTemplatePersistenceImpl
 				list = (List<CommerceNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4284,9 +4361,9 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByG_T_E(long groupId, String type, boolean enabled) {
 		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				findByG_T_E(
+				_findByG_T_E(
 					groupId, type, enabled, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceNotificationTemplate);
 		}
@@ -4930,6 +5007,14 @@ public class CommerceNotificationTemplatePersistenceImpl
 		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplate> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4985,10 +5070,12 @@ public class CommerceNotificationTemplatePersistenceImpl
 				list = (List<CommerceNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5009,7 +5096,8 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceNotificationTemplate);
 		}

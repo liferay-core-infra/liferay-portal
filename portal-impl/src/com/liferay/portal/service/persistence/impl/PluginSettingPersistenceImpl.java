@@ -160,6 +160,15 @@ public class PluginSettingPersistenceImpl
 		OrderByComparator<PluginSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PluginSetting> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<PluginSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -234,10 +243,12 @@ public class PluginSettingPersistenceImpl
 				list = (List<PluginSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -522,8 +533,9 @@ public class PluginSettingPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (PluginSetting pluginSetting :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(pluginSetting);
 		}
@@ -598,8 +610,16 @@ public class PluginSettingPersistenceImpl
 			long companyId, String pluginId, String pluginType)
 		throws NoSuchPluginSettingException {
 
-		PluginSetting pluginSetting = fetchByC_P_P(
-			companyId, pluginId, pluginType);
+		return _findByC_P_P(companyId, pluginId, pluginType, false);
+	}
+
+	private PluginSetting _findByC_P_P(
+			long companyId, String pluginId, String pluginType,
+			boolean readOnlyCache)
+		throws NoSuchPluginSettingException {
+
+		PluginSetting pluginSetting = _fetchByC_P_P(
+			companyId, pluginId, pluginType, true, readOnlyCache);
 
 		if (pluginSetting == null) {
 			StringBundler sb = new StringBundler(8);
@@ -655,6 +675,14 @@ public class PluginSettingPersistenceImpl
 	public PluginSetting fetchByC_P_P(
 		long companyId, String pluginId, String pluginType,
 		boolean useFinderCache) {
+
+		return _fetchByC_P_P(
+			companyId, pluginId, pluginType, useFinderCache, false);
+	}
+
+	private PluginSetting _fetchByC_P_P(
+		long companyId, String pluginId, String pluginType,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		pluginId = Objects.toString(pluginId, "");
 		pluginType = Objects.toString(pluginType, "");
@@ -744,9 +772,11 @@ public class PluginSettingPersistenceImpl
 				else {
 					PluginSetting pluginSetting = list.get(0);
 
-					result = pluginSetting;
+					if (!readOnlyCache) {
+						result = pluginSetting;
 
-					cacheResult(pluginSetting);
+						cacheResult(pluginSetting);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -778,8 +808,8 @@ public class PluginSettingPersistenceImpl
 			long companyId, String pluginId, String pluginType)
 		throws NoSuchPluginSettingException {
 
-		PluginSetting pluginSetting = findByC_P_P(
-			companyId, pluginId, pluginType);
+		PluginSetting pluginSetting = _findByC_P_P(
+			companyId, pluginId, pluginType, true);
 
 		return remove(pluginSetting);
 	}
@@ -1278,6 +1308,13 @@ public class PluginSettingPersistenceImpl
 		int start, int end, OrderByComparator<PluginSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PluginSetting> _findAll(
+		int start, int end, OrderByComparator<PluginSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1332,10 +1369,12 @@ public class PluginSettingPersistenceImpl
 				list = (List<PluginSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1355,7 +1394,10 @@ public class PluginSettingPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PluginSetting pluginSetting : findAll()) {
+		for (PluginSetting pluginSetting :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(pluginSetting);
 		}
 	}

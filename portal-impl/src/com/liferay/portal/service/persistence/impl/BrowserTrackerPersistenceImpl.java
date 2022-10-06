@@ -95,7 +95,14 @@ public class BrowserTrackerPersistenceImpl
 	public BrowserTracker findByUserId(long userId)
 		throws NoSuchBrowserTrackerException {
 
-		BrowserTracker browserTracker = fetchByUserId(userId);
+		return _findByUserId(userId, false);
+	}
+
+	private BrowserTracker _findByUserId(long userId, boolean readOnlyCache)
+		throws NoSuchBrowserTrackerException {
+
+		BrowserTracker browserTracker = _fetchByUserId(
+			userId, true, readOnlyCache);
 
 		if (browserTracker == null) {
 			StringBundler sb = new StringBundler(4);
@@ -137,6 +144,12 @@ public class BrowserTrackerPersistenceImpl
 	 */
 	@Override
 	public BrowserTracker fetchByUserId(long userId, boolean useFinderCache) {
+		return _fetchByUserId(userId, useFinderCache, false);
+	}
+
+	private BrowserTracker _fetchByUserId(
+		long userId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -189,9 +202,11 @@ public class BrowserTrackerPersistenceImpl
 				else {
 					BrowserTracker browserTracker = list.get(0);
 
-					result = browserTracker;
+					if (!readOnlyCache) {
+						result = browserTracker;
 
-					cacheResult(browserTracker);
+						cacheResult(browserTracker);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -220,7 +235,7 @@ public class BrowserTrackerPersistenceImpl
 	public BrowserTracker removeByUserId(long userId)
 		throws NoSuchBrowserTrackerException {
 
-		BrowserTracker browserTracker = findByUserId(userId);
+		BrowserTracker browserTracker = _findByUserId(userId, true);
 
 		return remove(browserTracker);
 	}
@@ -657,6 +672,13 @@ public class BrowserTrackerPersistenceImpl
 		int start, int end, OrderByComparator<BrowserTracker> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BrowserTracker> _findAll(
+		int start, int end, OrderByComparator<BrowserTracker> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -711,10 +733,12 @@ public class BrowserTrackerPersistenceImpl
 				list = (List<BrowserTracker>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -734,7 +758,10 @@ public class BrowserTrackerPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BrowserTracker browserTracker : findAll()) {
+		for (BrowserTracker browserTracker :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(browserTracker);
 		}
 	}

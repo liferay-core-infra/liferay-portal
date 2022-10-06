@@ -174,6 +174,15 @@ public class SAPEntryPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SAPEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -259,10 +268,12 @@ public class SAPEntryPersistenceImpl
 				list = (List<SAPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -903,7 +914,9 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SAPEntry sapEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sapEntry);
 		}
@@ -1124,6 +1137,16 @@ public class SAPEntryPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SAPEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1217,10 +1240,12 @@ public class SAPEntryPersistenceImpl
 				list = (List<SAPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1899,9 +1924,9 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SAPEntry sapEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(sapEntry);
 		}
@@ -2128,6 +2153,15 @@ public class SAPEntryPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SAPEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2202,10 +2236,12 @@ public class SAPEntryPersistenceImpl
 				list = (List<SAPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2812,8 +2848,9 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (SAPEntry sapEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sapEntry);
 		}
@@ -3000,6 +3037,16 @@ public class SAPEntryPersistenceImpl
 		long companyId, boolean defaultSAPEntry, int start, int end,
 		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_D(
+			companyId, defaultSAPEntry, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SAPEntry> _findByC_D(
+		long companyId, boolean defaultSAPEntry, int start, int end,
+		OrderByComparator<SAPEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3080,10 +3127,12 @@ public class SAPEntryPersistenceImpl
 				list = (List<SAPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3733,9 +3782,9 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public void removeByC_D(long companyId, boolean defaultSAPEntry) {
 		for (SAPEntry sapEntry :
-				findByC_D(
+				_findByC_D(
 					companyId, defaultSAPEntry, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(sapEntry);
 		}
@@ -3869,7 +3918,14 @@ public class SAPEntryPersistenceImpl
 	public SAPEntry findByC_N(long companyId, String name)
 		throws NoSuchEntryException {
 
-		SAPEntry sapEntry = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private SAPEntry _findByC_N(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		SAPEntry sapEntry = _fetchByC_N(companyId, name, true, readOnlyCache);
 
 		if (sapEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3917,6 +3973,13 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public SAPEntry fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private SAPEntry _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -4003,9 +4066,11 @@ public class SAPEntryPersistenceImpl
 
 					SAPEntry sapEntry = list.get(0);
 
-					result = sapEntry;
+					if (!readOnlyCache) {
+						result = sapEntry;
 
-					cacheResult(sapEntry);
+						cacheResult(sapEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4035,7 +4100,7 @@ public class SAPEntryPersistenceImpl
 	public SAPEntry removeByC_N(long companyId, String name)
 		throws NoSuchEntryException {
 
-		SAPEntry sapEntry = findByC_N(companyId, name);
+		SAPEntry sapEntry = _findByC_N(companyId, name, true);
 
 		return remove(sapEntry);
 	}
@@ -4527,6 +4592,13 @@ public class SAPEntryPersistenceImpl
 		int start, int end, OrderByComparator<SAPEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SAPEntry> _findAll(
+		int start, int end, OrderByComparator<SAPEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4581,10 +4653,12 @@ public class SAPEntryPersistenceImpl
 				list = (List<SAPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4604,7 +4678,10 @@ public class SAPEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SAPEntry sapEntry : findAll()) {
+		for (SAPEntry sapEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(sapEntry);
 		}
 	}

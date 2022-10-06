@@ -179,6 +179,16 @@ public class SegmentsEntryRelPersistenceImpl
 		OrderByComparator<SegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySegmentsEntryId(
+			segmentsEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsEntryRel> _findBySegmentsEntryId(
+		long segmentsEntryId, int start, int end,
+		OrderByComparator<SegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRel.class);
 
@@ -258,10 +268,12 @@ public class SegmentsEntryRelPersistenceImpl
 				list = (List<SegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,9 +567,9 @@ public class SegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeBySegmentsEntryId(long segmentsEntryId) {
 		for (SegmentsEntryRel segmentsEntryRel :
-				findBySegmentsEntryId(
-					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findBySegmentsEntryId(
+					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsEntryRel);
 		}
@@ -709,6 +721,16 @@ public class SegmentsEntryRelPersistenceImpl
 		OrderByComparator<SegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCN_CPK(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsEntryRel> _findByCN_CPK(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<SegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRel.class);
 
@@ -792,10 +814,12 @@ public class SegmentsEntryRelPersistenceImpl
 				list = (List<SegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1104,9 +1128,9 @@ public class SegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeByCN_CPK(long classNameId, long classPK) {
 		for (SegmentsEntryRel segmentsEntryRel :
-				findByCN_CPK(
+				_findByCN_CPK(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(segmentsEntryRel);
 		}
@@ -1272,6 +1296,16 @@ public class SegmentsEntryRelPersistenceImpl
 		OrderByComparator<SegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_CN_CPK(
+			groupId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SegmentsEntryRel> _findByG_CN_CPK(
+		long groupId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<SegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRel.class);
 
@@ -1360,10 +1394,12 @@ public class SegmentsEntryRelPersistenceImpl
 				list = (List<SegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1689,9 +1725,9 @@ public class SegmentsEntryRelPersistenceImpl
 	@Override
 	public void removeByG_CN_CPK(long groupId, long classNameId, long classPK) {
 		for (SegmentsEntryRel segmentsEntryRel :
-				findByG_CN_CPK(
+				_findByG_CN_CPK(
 					groupId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsEntryRel);
 		}
@@ -1794,8 +1830,16 @@ public class SegmentsEntryRelPersistenceImpl
 			long segmentsEntryId, long classNameId, long classPK)
 		throws NoSuchEntryRelException {
 
-		SegmentsEntryRel segmentsEntryRel = fetchByS_CN_CPK(
-			segmentsEntryId, classNameId, classPK);
+		return _findByS_CN_CPK(segmentsEntryId, classNameId, classPK, false);
+	}
+
+	private SegmentsEntryRel _findByS_CN_CPK(
+			long segmentsEntryId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchEntryRelException {
+
+		SegmentsEntryRel segmentsEntryRel = _fetchByS_CN_CPK(
+			segmentsEntryId, classNameId, classPK, true, readOnlyCache);
 
 		if (segmentsEntryRel == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1851,6 +1895,14 @@ public class SegmentsEntryRelPersistenceImpl
 	public SegmentsEntryRel fetchByS_CN_CPK(
 		long segmentsEntryId, long classNameId, long classPK,
 		boolean useFinderCache) {
+
+		return _fetchByS_CN_CPK(
+			segmentsEntryId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private SegmentsEntryRel _fetchByS_CN_CPK(
+		long segmentsEntryId, long classNameId, long classPK,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRel.class);
@@ -1918,9 +1970,11 @@ public class SegmentsEntryRelPersistenceImpl
 				else {
 					SegmentsEntryRel segmentsEntryRel = list.get(0);
 
-					result = segmentsEntryRel;
+					if (!readOnlyCache) {
+						result = segmentsEntryRel;
 
-					cacheResult(segmentsEntryRel);
+						cacheResult(segmentsEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1952,8 +2006,8 @@ public class SegmentsEntryRelPersistenceImpl
 			long segmentsEntryId, long classNameId, long classPK)
 		throws NoSuchEntryRelException {
 
-		SegmentsEntryRel segmentsEntryRel = findByS_CN_CPK(
-			segmentsEntryId, classNameId, classPK);
+		SegmentsEntryRel segmentsEntryRel = _findByS_CN_CPK(
+			segmentsEntryId, classNameId, classPK, true);
 
 		return remove(segmentsEntryRel);
 	}
@@ -2613,6 +2667,14 @@ public class SegmentsEntryRelPersistenceImpl
 		OrderByComparator<SegmentsEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntryRel> _findAll(
+		int start, int end,
+		OrderByComparator<SegmentsEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRel.class);
 
@@ -2670,10 +2732,12 @@ public class SegmentsEntryRelPersistenceImpl
 				list = (List<SegmentsEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2693,7 +2757,10 @@ public class SegmentsEntryRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SegmentsEntryRel segmentsEntryRel : findAll()) {
+		for (SegmentsEntryRel segmentsEntryRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(segmentsEntryRel);
 		}
 	}

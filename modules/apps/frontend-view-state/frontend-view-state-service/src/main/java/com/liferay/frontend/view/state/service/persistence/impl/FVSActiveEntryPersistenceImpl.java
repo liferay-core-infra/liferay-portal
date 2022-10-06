@@ -172,6 +172,15 @@ public class FVSActiveEntryPersistenceImpl
 		OrderByComparator<FVSActiveEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FVSActiveEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<FVSActiveEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -257,10 +266,12 @@ public class FVSActiveEntryPersistenceImpl
 				list = (List<FVSActiveEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,7 +568,9 @@ public class FVSActiveEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (FVSActiveEntry fvsActiveEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(fvsActiveEntry);
 		}
@@ -712,6 +725,16 @@ public class FVSActiveEntryPersistenceImpl
 		OrderByComparator<FVSActiveEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<FVSActiveEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<FVSActiveEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -805,10 +828,12 @@ public class FVSActiveEntryPersistenceImpl
 				list = (List<FVSActiveEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1129,9 +1154,9 @@ public class FVSActiveEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (FVSActiveEntry fvsActiveEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fvsActiveEntry);
 		}
@@ -1232,8 +1257,17 @@ public class FVSActiveEntryPersistenceImpl
 			String portletId)
 		throws NoSuchActiveEntryException {
 
-		FVSActiveEntry fvsActiveEntry = fetchByU_CDSDI_P_P(
-			userId, clayDataSetDisplayId, plid, portletId);
+		return _findByU_CDSDI_P_P(
+			userId, clayDataSetDisplayId, plid, portletId, false);
+	}
+
+	private FVSActiveEntry _findByU_CDSDI_P_P(
+			long userId, String clayDataSetDisplayId, long plid,
+			String portletId, boolean readOnlyCache)
+		throws NoSuchActiveEntryException {
+
+		FVSActiveEntry fvsActiveEntry = _fetchByU_CDSDI_P_P(
+			userId, clayDataSetDisplayId, plid, portletId, true, readOnlyCache);
 
 		if (fvsActiveEntry == null) {
 			StringBundler sb = new StringBundler(10);
@@ -1295,6 +1329,15 @@ public class FVSActiveEntryPersistenceImpl
 	public FVSActiveEntry fetchByU_CDSDI_P_P(
 		long userId, String clayDataSetDisplayId, long plid, String portletId,
 		boolean useFinderCache) {
+
+		return _fetchByU_CDSDI_P_P(
+			userId, clayDataSetDisplayId, plid, portletId, useFinderCache,
+			false);
+	}
+
+	private FVSActiveEntry _fetchByU_CDSDI_P_P(
+		long userId, String clayDataSetDisplayId, long plid, String portletId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		clayDataSetDisplayId = Objects.toString(clayDataSetDisplayId, "");
 		portletId = Objects.toString(portletId, "");
@@ -1393,9 +1436,11 @@ public class FVSActiveEntryPersistenceImpl
 				else {
 					FVSActiveEntry fvsActiveEntry = list.get(0);
 
-					result = fvsActiveEntry;
+					if (!readOnlyCache) {
+						result = fvsActiveEntry;
 
-					cacheResult(fvsActiveEntry);
+						cacheResult(fvsActiveEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1429,8 +1474,8 @@ public class FVSActiveEntryPersistenceImpl
 			String portletId)
 		throws NoSuchActiveEntryException {
 
-		FVSActiveEntry fvsActiveEntry = findByU_CDSDI_P_P(
-			userId, clayDataSetDisplayId, plid, portletId);
+		FVSActiveEntry fvsActiveEntry = _findByU_CDSDI_P_P(
+			userId, clayDataSetDisplayId, plid, portletId, true);
 
 		return remove(fvsActiveEntry);
 	}
@@ -1979,6 +2024,13 @@ public class FVSActiveEntryPersistenceImpl
 		int start, int end, OrderByComparator<FVSActiveEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FVSActiveEntry> _findAll(
+		int start, int end, OrderByComparator<FVSActiveEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2033,10 +2085,12 @@ public class FVSActiveEntryPersistenceImpl
 				list = (List<FVSActiveEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2056,7 +2110,10 @@ public class FVSActiveEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (FVSActiveEntry fvsActiveEntry : findAll()) {
+		for (FVSActiveEntry fvsActiveEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(fvsActiveEntry);
 		}
 	}

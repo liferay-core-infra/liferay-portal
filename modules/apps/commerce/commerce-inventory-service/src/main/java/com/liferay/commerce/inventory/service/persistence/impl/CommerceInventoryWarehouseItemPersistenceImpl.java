@@ -178,6 +178,15 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouseItem> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -268,10 +277,12 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 				list = (List<CommerceInventoryWarehouseItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -580,7 +591,9 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceInventoryWarehouseItem);
 		}
@@ -737,6 +750,16 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryWarehouseItem> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -835,10 +858,12 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 				list = (List<CommerceInventoryWarehouseItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1163,9 +1188,9 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryWarehouseItem);
 		}
@@ -1325,6 +1350,15 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouseItem> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1404,10 +1438,12 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 				list = (List<CommerceInventoryWarehouseItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1703,8 +1739,9 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceInventoryWarehouseItem);
 		}
@@ -1849,6 +1886,17 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 			OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceInventoryWarehouseId(
+			commerceInventoryWarehouseId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouseItem>
+		_findByCommerceInventoryWarehouseId(
+			long commerceInventoryWarehouseId, int start, int end,
+			OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1932,10 +1980,12 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 				list = (List<CommerceInventoryWarehouseItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2252,9 +2302,9 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		long commerceInventoryWarehouseId) {
 
 		for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
-				findByCommerceInventoryWarehouseId(
+				_findByCommerceInventoryWarehouseId(
 					commerceInventoryWarehouseId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryWarehouseItem);
 		}
@@ -2399,6 +2449,16 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId_Sku(
+			companyId, sku, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryWarehouseItem> _findByCompanyId_Sku(
+		long companyId, String sku, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -2496,10 +2556,12 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 				list = (List<CommerceInventoryWarehouseItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2824,9 +2886,9 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public void removeByCompanyId_Sku(long companyId, String sku) {
 		for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
-				findByCompanyId_Sku(
-					companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCompanyId_Sku(
+					companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryWarehouseItem);
 		}
@@ -2924,8 +2986,16 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 			long commerceInventoryWarehouseId, String sku)
 		throws NoSuchInventoryWarehouseItemException {
 
+		return _findByC_S(commerceInventoryWarehouseId, sku, false);
+	}
+
+	private CommerceInventoryWarehouseItem _findByC_S(
+			long commerceInventoryWarehouseId, String sku,
+			boolean readOnlyCache)
+		throws NoSuchInventoryWarehouseItemException {
+
 		CommerceInventoryWarehouseItem commerceInventoryWarehouseItem =
-			fetchByC_S(commerceInventoryWarehouseId, sku);
+			_fetchByC_S(commerceInventoryWarehouseId, sku, true, readOnlyCache);
 
 		if (commerceInventoryWarehouseItem == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2975,6 +3045,14 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public CommerceInventoryWarehouseItem fetchByC_S(
 		long commerceInventoryWarehouseId, String sku, boolean useFinderCache) {
+
+		return _fetchByC_S(
+			commerceInventoryWarehouseId, sku, useFinderCache, false);
+	}
+
+	private CommerceInventoryWarehouseItem _fetchByC_S(
+		long commerceInventoryWarehouseId, String sku, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		sku = Objects.toString(sku, "");
 
@@ -3050,9 +3128,11 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 					CommerceInventoryWarehouseItem
 						commerceInventoryWarehouseItem = list.get(0);
 
-					result = commerceInventoryWarehouseItem;
+					if (!readOnlyCache) {
+						result = commerceInventoryWarehouseItem;
 
-					cacheResult(commerceInventoryWarehouseItem);
+						cacheResult(commerceInventoryWarehouseItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3084,7 +3164,7 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		throws NoSuchInventoryWarehouseItemException {
 
 		CommerceInventoryWarehouseItem commerceInventoryWarehouseItem =
-			findByC_S(commerceInventoryWarehouseId, sku);
+			_findByC_S(commerceInventoryWarehouseId, sku, true);
 
 		return remove(commerceInventoryWarehouseItem);
 	}
@@ -3182,8 +3262,16 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchInventoryWarehouseItemException {
 
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceInventoryWarehouseItem _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchInventoryWarehouseItemException {
+
 		CommerceInventoryWarehouseItem commerceInventoryWarehouseItem =
-			fetchByC_ERC(companyId, externalReferenceCode);
+			_fetchByC_ERC(
+				companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceInventoryWarehouseItem == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3233,6 +3321,14 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public CommerceInventoryWarehouseItem fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceInventoryWarehouseItem _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3309,9 +3405,11 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 					CommerceInventoryWarehouseItem
 						commerceInventoryWarehouseItem = list.get(0);
 
-					result = commerceInventoryWarehouseItem;
+					if (!readOnlyCache) {
+						result = commerceInventoryWarehouseItem;
 
-					cacheResult(commerceInventoryWarehouseItem);
+						cacheResult(commerceInventoryWarehouseItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3343,7 +3441,7 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		throws NoSuchInventoryWarehouseItemException {
 
 		CommerceInventoryWarehouseItem commerceInventoryWarehouseItem =
-			findByC_ERC(companyId, externalReferenceCode);
+			_findByC_ERC(companyId, externalReferenceCode, true);
 
 		return remove(commerceInventoryWarehouseItem);
 	}
@@ -3928,6 +4026,14 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouseItem> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceInventoryWarehouseItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3983,10 +4089,12 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 				list = (List<CommerceInventoryWarehouseItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4007,7 +4115,8 @@ public class CommerceInventoryWarehouseItemPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceInventoryWarehouseItem commerceInventoryWarehouseItem :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryWarehouseItem);
 		}

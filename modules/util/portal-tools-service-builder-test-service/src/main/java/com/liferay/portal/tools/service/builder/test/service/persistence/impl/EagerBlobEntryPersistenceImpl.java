@@ -157,6 +157,15 @@ public class EagerBlobEntryPersistenceImpl
 		OrderByComparator<EagerBlobEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<EagerBlobEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<EagerBlobEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -242,10 +251,13 @@ public class EagerBlobEntryPersistenceImpl
 				list = (List<EagerBlobEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					dummyFinderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						dummyFinderCache.putResult(
+							finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,7 +554,9 @@ public class EagerBlobEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (EagerBlobEntry eagerBlobEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(eagerBlobEntry);
 		}
@@ -631,7 +645,15 @@ public class EagerBlobEntryPersistenceImpl
 	public EagerBlobEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEagerBlobEntryException {
 
-		EagerBlobEntry eagerBlobEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private EagerBlobEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEagerBlobEntryException {
+
+		EagerBlobEntry eagerBlobEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (eagerBlobEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -679,6 +701,13 @@ public class EagerBlobEntryPersistenceImpl
 	@Override
 	public EagerBlobEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private EagerBlobEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -751,9 +780,11 @@ public class EagerBlobEntryPersistenceImpl
 				else {
 					EagerBlobEntry eagerBlobEntry = list.get(0);
 
-					result = eagerBlobEntry;
+					if (!readOnlyCache) {
+						result = eagerBlobEntry;
 
-					cacheResult(eagerBlobEntry);
+						cacheResult(eagerBlobEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -783,7 +814,7 @@ public class EagerBlobEntryPersistenceImpl
 	public EagerBlobEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEagerBlobEntryException {
 
-		EagerBlobEntry eagerBlobEntry = findByUUID_G(uuid, groupId);
+		EagerBlobEntry eagerBlobEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(eagerBlobEntry);
 	}
@@ -1266,6 +1297,13 @@ public class EagerBlobEntryPersistenceImpl
 		int start, int end, OrderByComparator<EagerBlobEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<EagerBlobEntry> _findAll(
+		int start, int end, OrderByComparator<EagerBlobEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1320,10 +1358,13 @@ public class EagerBlobEntryPersistenceImpl
 				list = (List<EagerBlobEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					dummyFinderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						dummyFinderCache.putResult(
+							finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1343,7 +1384,10 @@ public class EagerBlobEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (EagerBlobEntry eagerBlobEntry : findAll()) {
+		for (EagerBlobEntry eagerBlobEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(eagerBlobEntry);
 		}
 	}

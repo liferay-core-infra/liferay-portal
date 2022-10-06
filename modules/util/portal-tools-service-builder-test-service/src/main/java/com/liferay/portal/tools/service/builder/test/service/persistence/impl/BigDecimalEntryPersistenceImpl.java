@@ -170,6 +170,16 @@ public class BigDecimalEntryPersistenceImpl
 		OrderByComparator<BigDecimalEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByBigDecimalValue(
+			bigDecimalValue, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BigDecimalEntry> _findByBigDecimalValue(
+		BigDecimal bigDecimalValue, int start, int end,
+		OrderByComparator<BigDecimalEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -258,10 +268,12 @@ public class BigDecimalEntryPersistenceImpl
 				list = (List<BigDecimalEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -565,9 +577,9 @@ public class BigDecimalEntryPersistenceImpl
 	@Override
 	public void removeByBigDecimalValue(BigDecimal bigDecimalValue) {
 		for (BigDecimalEntry bigDecimalEntry :
-				findByBigDecimalValue(
-					bigDecimalValue, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByBigDecimalValue(
+					bigDecimalValue, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(bigDecimalEntry);
 		}
@@ -719,6 +731,16 @@ public class BigDecimalEntryPersistenceImpl
 		OrderByComparator<BigDecimalEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtBigDecimalValue(
+			bigDecimalValue, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BigDecimalEntry> _findByGtBigDecimalValue(
+		BigDecimal bigDecimalValue, int start, int end,
+		OrderByComparator<BigDecimalEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -796,10 +818,12 @@ public class BigDecimalEntryPersistenceImpl
 				list = (List<BigDecimalEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1103,9 +1127,9 @@ public class BigDecimalEntryPersistenceImpl
 	@Override
 	public void removeByGtBigDecimalValue(BigDecimal bigDecimalValue) {
 		for (BigDecimalEntry bigDecimalEntry :
-				findByGtBigDecimalValue(
-					bigDecimalValue, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByGtBigDecimalValue(
+					bigDecimalValue, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(bigDecimalEntry);
 		}
@@ -1258,6 +1282,16 @@ public class BigDecimalEntryPersistenceImpl
 		OrderByComparator<BigDecimalEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtBigDecimalValue(
+			bigDecimalValue, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BigDecimalEntry> _findByLtBigDecimalValue(
+		BigDecimal bigDecimalValue, int start, int end,
+		OrderByComparator<BigDecimalEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1335,10 +1369,12 @@ public class BigDecimalEntryPersistenceImpl
 				list = (List<BigDecimalEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1642,9 +1678,9 @@ public class BigDecimalEntryPersistenceImpl
 	@Override
 	public void removeByLtBigDecimalValue(BigDecimal bigDecimalValue) {
 		for (BigDecimalEntry bigDecimalEntry :
-				findByLtBigDecimalValue(
-					bigDecimalValue, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByLtBigDecimalValue(
+					bigDecimalValue, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(bigDecimalEntry);
 		}
@@ -2088,6 +2124,14 @@ public class BigDecimalEntryPersistenceImpl
 		OrderByComparator<BigDecimalEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BigDecimalEntry> _findAll(
+		int start, int end,
+		OrderByComparator<BigDecimalEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2142,10 +2186,12 @@ public class BigDecimalEntryPersistenceImpl
 				list = (List<BigDecimalEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2165,7 +2211,10 @@ public class BigDecimalEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BigDecimalEntry bigDecimalEntry : findAll()) {
+		for (BigDecimalEntry bigDecimalEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(bigDecimalEntry);
 		}
 	}

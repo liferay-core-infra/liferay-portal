@@ -186,6 +186,16 @@ public class CommercePriceModifierRelPersistenceImpl
 		OrderByComparator<CommercePriceModifierRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommercePriceModifierId(
+			commercePriceModifierId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommercePriceModifierRel> _findByCommercePriceModifierId(
+		long commercePriceModifierId, int start, int end,
+		OrderByComparator<CommercePriceModifierRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceModifierRel.class);
 
@@ -268,10 +278,12 @@ public class CommercePriceModifierRelPersistenceImpl
 				list = (List<CommercePriceModifierRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -569,9 +581,9 @@ public class CommercePriceModifierRelPersistenceImpl
 	@Override
 	public void removeByCommercePriceModifierId(long commercePriceModifierId) {
 		for (CommercePriceModifierRel commercePriceModifierRel :
-				findByCommercePriceModifierId(
+				_findByCommercePriceModifierId(
 					commercePriceModifierId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePriceModifierRel);
 		}
@@ -729,6 +741,16 @@ public class CommercePriceModifierRelPersistenceImpl
 		OrderByComparator<CommercePriceModifierRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPM_CN(
+			commercePriceModifierId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommercePriceModifierRel> _findByCPM_CN(
+		long commercePriceModifierId, long classNameId, int start, int end,
+		OrderByComparator<CommercePriceModifierRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceModifierRel.class);
 
@@ -818,10 +840,12 @@ public class CommercePriceModifierRelPersistenceImpl
 				list = (List<CommercePriceModifierRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1134,9 +1158,9 @@ public class CommercePriceModifierRelPersistenceImpl
 	@Override
 	public void removeByCPM_CN(long commercePriceModifierId, long classNameId) {
 		for (CommercePriceModifierRel commercePriceModifierRel :
-				findByCPM_CN(
+				_findByCPM_CN(
 					commercePriceModifierId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePriceModifierRel);
 		}
@@ -1298,6 +1322,16 @@ public class CommercePriceModifierRelPersistenceImpl
 		OrderByComparator<CommercePriceModifierRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCN_CPK(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePriceModifierRel> _findByCN_CPK(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<CommercePriceModifierRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceModifierRel.class);
 
@@ -1382,10 +1416,12 @@ public class CommercePriceModifierRelPersistenceImpl
 				list = (List<CommercePriceModifierRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1696,9 +1732,9 @@ public class CommercePriceModifierRelPersistenceImpl
 	@Override
 	public void removeByCN_CPK(long classNameId, long classPK) {
 		for (CommercePriceModifierRel commercePriceModifierRel :
-				findByCN_CPK(
+				_findByCN_CPK(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commercePriceModifierRel);
 		}
@@ -1793,8 +1829,17 @@ public class CommercePriceModifierRelPersistenceImpl
 			long commercePriceModifierId, long classNameId, long classPK)
 		throws NoSuchPriceModifierRelException {
 
-		CommercePriceModifierRel commercePriceModifierRel = fetchByCPM_CN_CPK(
-			commercePriceModifierId, classNameId, classPK);
+		return _findByCPM_CN_CPK(
+			commercePriceModifierId, classNameId, classPK, false);
+	}
+
+	private CommercePriceModifierRel _findByCPM_CN_CPK(
+			long commercePriceModifierId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchPriceModifierRelException {
+
+		CommercePriceModifierRel commercePriceModifierRel = _fetchByCPM_CN_CPK(
+			commercePriceModifierId, classNameId, classPK, true, readOnlyCache);
 
 		if (commercePriceModifierRel == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1851,6 +1896,15 @@ public class CommercePriceModifierRelPersistenceImpl
 	public CommercePriceModifierRel fetchByCPM_CN_CPK(
 		long commercePriceModifierId, long classNameId, long classPK,
 		boolean useFinderCache) {
+
+		return _fetchByCPM_CN_CPK(
+			commercePriceModifierId, classNameId, classPK, useFinderCache,
+			false);
+	}
+
+	private CommercePriceModifierRel _fetchByCPM_CN_CPK(
+		long commercePriceModifierId, long classNameId, long classPK,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceModifierRel.class);
@@ -1923,9 +1977,11 @@ public class CommercePriceModifierRelPersistenceImpl
 					CommercePriceModifierRel commercePriceModifierRel =
 						list.get(0);
 
-					result = commercePriceModifierRel;
+					if (!readOnlyCache) {
+						result = commercePriceModifierRel;
 
-					cacheResult(commercePriceModifierRel);
+						cacheResult(commercePriceModifierRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1957,8 +2013,8 @@ public class CommercePriceModifierRelPersistenceImpl
 			long commercePriceModifierId, long classNameId, long classPK)
 		throws NoSuchPriceModifierRelException {
 
-		CommercePriceModifierRel commercePriceModifierRel = findByCPM_CN_CPK(
-			commercePriceModifierId, classNameId, classPK);
+		CommercePriceModifierRel commercePriceModifierRel = _findByCPM_CN_CPK(
+			commercePriceModifierId, classNameId, classPK, true);
 
 		return remove(commercePriceModifierRel);
 	}
@@ -2654,6 +2710,14 @@ public class CommercePriceModifierRelPersistenceImpl
 		OrderByComparator<CommercePriceModifierRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePriceModifierRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommercePriceModifierRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceModifierRel.class);
 
@@ -2712,10 +2776,12 @@ public class CommercePriceModifierRelPersistenceImpl
 				list = (List<CommercePriceModifierRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2735,7 +2801,10 @@ public class CommercePriceModifierRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommercePriceModifierRel commercePriceModifierRel : findAll()) {
+		for (CommercePriceModifierRel commercePriceModifierRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commercePriceModifierRel);
 		}
 	}

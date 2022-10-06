@@ -170,6 +170,15 @@ public class CPDefinitionInventoryPersistenceImpl
 		OrderByComparator<CPDefinitionInventory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionInventory> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPDefinitionInventory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -258,10 +267,12 @@ public class CPDefinitionInventoryPersistenceImpl
 				list = (List<CPDefinitionInventory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -565,7 +576,9 @@ public class CPDefinitionInventoryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPDefinitionInventory cpDefinitionInventory :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDefinitionInventory);
 		}
@@ -666,8 +679,15 @@ public class CPDefinitionInventoryPersistenceImpl
 	public CPDefinitionInventory findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionInventoryException {
 
-		CPDefinitionInventory cpDefinitionInventory = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPDefinitionInventory _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionInventoryException {
+
+		CPDefinitionInventory cpDefinitionInventory = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpDefinitionInventory == null) {
 			StringBundler sb = new StringBundler(6);
@@ -715,6 +735,13 @@ public class CPDefinitionInventoryPersistenceImpl
 	@Override
 	public CPDefinitionInventory fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPDefinitionInventory _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +818,11 @@ public class CPDefinitionInventoryPersistenceImpl
 				else {
 					CPDefinitionInventory cpDefinitionInventory = list.get(0);
 
-					result = cpDefinitionInventory;
+					if (!readOnlyCache) {
+						result = cpDefinitionInventory;
 
-					cacheResult(cpDefinitionInventory);
+						cacheResult(cpDefinitionInventory);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,8 +852,8 @@ public class CPDefinitionInventoryPersistenceImpl
 	public CPDefinitionInventory removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionInventoryException {
 
-		CPDefinitionInventory cpDefinitionInventory = findByUUID_G(
-			uuid, groupId);
+		CPDefinitionInventory cpDefinitionInventory = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(cpDefinitionInventory);
 	}
@@ -1000,6 +1029,16 @@ public class CPDefinitionInventoryPersistenceImpl
 		OrderByComparator<CPDefinitionInventory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionInventory> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPDefinitionInventory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1096,10 +1135,12 @@ public class CPDefinitionInventoryPersistenceImpl
 				list = (List<CPDefinitionInventory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1422,9 +1463,9 @@ public class CPDefinitionInventoryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPDefinitionInventory cpDefinitionInventory :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionInventory);
 		}
@@ -1532,8 +1573,15 @@ public class CPDefinitionInventoryPersistenceImpl
 	public CPDefinitionInventory findByCPDefinitionId(long CPDefinitionId)
 		throws NoSuchCPDefinitionInventoryException {
 
-		CPDefinitionInventory cpDefinitionInventory = fetchByCPDefinitionId(
-			CPDefinitionId);
+		return _findByCPDefinitionId(CPDefinitionId, false);
+	}
+
+	private CPDefinitionInventory _findByCPDefinitionId(
+			long CPDefinitionId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionInventoryException {
+
+		CPDefinitionInventory cpDefinitionInventory = _fetchByCPDefinitionId(
+			CPDefinitionId, true, readOnlyCache);
 
 		if (cpDefinitionInventory == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1576,6 +1624,12 @@ public class CPDefinitionInventoryPersistenceImpl
 	@Override
 	public CPDefinitionInventory fetchByCPDefinitionId(
 		long CPDefinitionId, boolean useFinderCache) {
+
+		return _fetchByCPDefinitionId(CPDefinitionId, useFinderCache, false);
+	}
+
+	private CPDefinitionInventory _fetchByCPDefinitionId(
+		long CPDefinitionId, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionInventory.class);
@@ -1633,9 +1687,11 @@ public class CPDefinitionInventoryPersistenceImpl
 				else {
 					CPDefinitionInventory cpDefinitionInventory = list.get(0);
 
-					result = cpDefinitionInventory;
+					if (!readOnlyCache) {
+						result = cpDefinitionInventory;
 
-					cacheResult(cpDefinitionInventory);
+						cacheResult(cpDefinitionInventory);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1664,8 +1720,8 @@ public class CPDefinitionInventoryPersistenceImpl
 	public CPDefinitionInventory removeByCPDefinitionId(long CPDefinitionId)
 		throws NoSuchCPDefinitionInventoryException {
 
-		CPDefinitionInventory cpDefinitionInventory = findByCPDefinitionId(
-			CPDefinitionId);
+		CPDefinitionInventory cpDefinitionInventory = _findByCPDefinitionId(
+			CPDefinitionId, true);
 
 		return remove(cpDefinitionInventory);
 	}
@@ -2361,6 +2417,14 @@ public class CPDefinitionInventoryPersistenceImpl
 		OrderByComparator<CPDefinitionInventory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionInventory> _findAll(
+		int start, int end,
+		OrderByComparator<CPDefinitionInventory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionInventory.class);
 
@@ -2418,10 +2482,12 @@ public class CPDefinitionInventoryPersistenceImpl
 				list = (List<CPDefinitionInventory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2441,7 +2507,10 @@ public class CPDefinitionInventoryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPDefinitionInventory cpDefinitionInventory : findAll()) {
+		for (CPDefinitionInventory cpDefinitionInventory :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpDefinitionInventory);
 		}
 	}

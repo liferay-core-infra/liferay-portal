@@ -168,6 +168,15 @@ public class AttachmentPersistenceImpl
 		OrderByComparator<Attachment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByMessageId(
+			messageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Attachment> _findByMessageId(
+		long messageId, int start, int end,
+		OrderByComparator<Attachment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +251,12 @@ public class AttachmentPersistenceImpl
 				list = (List<Attachment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -529,8 +540,9 @@ public class AttachmentPersistenceImpl
 	@Override
 	public void removeByMessageId(long messageId) {
 		for (Attachment attachment :
-				findByMessageId(
-					messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByMessageId(
+					messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(attachment);
 		}
@@ -951,6 +963,13 @@ public class AttachmentPersistenceImpl
 		int start, int end, OrderByComparator<Attachment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Attachment> _findAll(
+		int start, int end, OrderByComparator<Attachment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1005,10 +1024,12 @@ public class AttachmentPersistenceImpl
 				list = (List<Attachment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1028,7 +1049,10 @@ public class AttachmentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Attachment attachment : findAll()) {
+		for (Attachment attachment :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(attachment);
 		}
 	}

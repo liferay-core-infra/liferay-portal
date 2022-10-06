@@ -184,6 +184,15 @@ public class MBSuspiciousActivityPersistenceImpl
 		OrderByComparator<MBSuspiciousActivity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBSuspiciousActivity> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBSuspiciousActivity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -272,10 +281,12 @@ public class MBSuspiciousActivityPersistenceImpl
 				list = (List<MBSuspiciousActivity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -579,7 +590,9 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBSuspiciousActivity mbSuspiciousActivity :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbSuspiciousActivity);
 		}
@@ -680,8 +693,15 @@ public class MBSuspiciousActivityPersistenceImpl
 	public MBSuspiciousActivity findByUUID_G(String uuid, long groupId)
 		throws NoSuchSuspiciousActivityException {
 
-		MBSuspiciousActivity mbSuspiciousActivity = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBSuspiciousActivity _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchSuspiciousActivityException {
+
+		MBSuspiciousActivity mbSuspiciousActivity = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (mbSuspiciousActivity == null) {
 			StringBundler sb = new StringBundler(6);
@@ -729,6 +749,13 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public MBSuspiciousActivity fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBSuspiciousActivity _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -805,9 +832,11 @@ public class MBSuspiciousActivityPersistenceImpl
 				else {
 					MBSuspiciousActivity mbSuspiciousActivity = list.get(0);
 
-					result = mbSuspiciousActivity;
+					if (!readOnlyCache) {
+						result = mbSuspiciousActivity;
 
-					cacheResult(mbSuspiciousActivity);
+						cacheResult(mbSuspiciousActivity);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -837,7 +866,8 @@ public class MBSuspiciousActivityPersistenceImpl
 	public MBSuspiciousActivity removeByUUID_G(String uuid, long groupId)
 		throws NoSuchSuspiciousActivityException {
 
-		MBSuspiciousActivity mbSuspiciousActivity = findByUUID_G(uuid, groupId);
+		MBSuspiciousActivity mbSuspiciousActivity = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(mbSuspiciousActivity);
 	}
@@ -1013,6 +1043,16 @@ public class MBSuspiciousActivityPersistenceImpl
 		OrderByComparator<MBSuspiciousActivity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBSuspiciousActivity> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBSuspiciousActivity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1109,10 +1149,12 @@ public class MBSuspiciousActivityPersistenceImpl
 				list = (List<MBSuspiciousActivity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1435,9 +1477,9 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBSuspiciousActivity mbSuspiciousActivity :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbSuspiciousActivity);
 		}
@@ -1607,6 +1649,15 @@ public class MBSuspiciousActivityPersistenceImpl
 		OrderByComparator<MBSuspiciousActivity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByMessageId(
+			messageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBSuspiciousActivity> _findByMessageId(
+		long messageId, int start, int end,
+		OrderByComparator<MBSuspiciousActivity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBSuspiciousActivity.class);
 
@@ -1684,10 +1735,12 @@ public class MBSuspiciousActivityPersistenceImpl
 				list = (List<MBSuspiciousActivity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1981,8 +2034,9 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public void removeByMessageId(long messageId) {
 		for (MBSuspiciousActivity mbSuspiciousActivity :
-				findByMessageId(
-					messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByMessageId(
+					messageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbSuspiciousActivity);
 		}
@@ -2128,6 +2182,15 @@ public class MBSuspiciousActivityPersistenceImpl
 		OrderByComparator<MBSuspiciousActivity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByThreadId(
+			threadId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBSuspiciousActivity> _findByThreadId(
+		long threadId, int start, int end,
+		OrderByComparator<MBSuspiciousActivity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBSuspiciousActivity.class);
 
@@ -2203,10 +2266,12 @@ public class MBSuspiciousActivityPersistenceImpl
 				list = (List<MBSuspiciousActivity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2500,8 +2565,9 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public void removeByThreadId(long threadId) {
 		for (MBSuspiciousActivity mbSuspiciousActivity :
-				findByThreadId(
-					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByThreadId(
+					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbSuspiciousActivity);
 		}
@@ -2586,8 +2652,15 @@ public class MBSuspiciousActivityPersistenceImpl
 	public MBSuspiciousActivity findByU_M(long userId, long messageId)
 		throws NoSuchSuspiciousActivityException {
 
-		MBSuspiciousActivity mbSuspiciousActivity = fetchByU_M(
-			userId, messageId);
+		return _findByU_M(userId, messageId, false);
+	}
+
+	private MBSuspiciousActivity _findByU_M(
+			long userId, long messageId, boolean readOnlyCache)
+		throws NoSuchSuspiciousActivityException {
+
+		MBSuspiciousActivity mbSuspiciousActivity = _fetchByU_M(
+			userId, messageId, true, readOnlyCache);
 
 		if (mbSuspiciousActivity == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2635,6 +2708,13 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public MBSuspiciousActivity fetchByU_M(
 		long userId, long messageId, boolean useFinderCache) {
+
+		return _fetchByU_M(userId, messageId, useFinderCache, false);
+	}
+
+	private MBSuspiciousActivity _fetchByU_M(
+		long userId, long messageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBSuspiciousActivity.class);
@@ -2712,9 +2792,11 @@ public class MBSuspiciousActivityPersistenceImpl
 
 					MBSuspiciousActivity mbSuspiciousActivity = list.get(0);
 
-					result = mbSuspiciousActivity;
+					if (!readOnlyCache) {
+						result = mbSuspiciousActivity;
 
-					cacheResult(mbSuspiciousActivity);
+						cacheResult(mbSuspiciousActivity);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2744,8 +2826,8 @@ public class MBSuspiciousActivityPersistenceImpl
 	public MBSuspiciousActivity removeByU_M(long userId, long messageId)
 		throws NoSuchSuspiciousActivityException {
 
-		MBSuspiciousActivity mbSuspiciousActivity = findByU_M(
-			userId, messageId);
+		MBSuspiciousActivity mbSuspiciousActivity = _findByU_M(
+			userId, messageId, true);
 
 		return remove(mbSuspiciousActivity);
 	}
@@ -2837,8 +2919,15 @@ public class MBSuspiciousActivityPersistenceImpl
 	public MBSuspiciousActivity findByU_T(long userId, long threadId)
 		throws NoSuchSuspiciousActivityException {
 
-		MBSuspiciousActivity mbSuspiciousActivity = fetchByU_T(
-			userId, threadId);
+		return _findByU_T(userId, threadId, false);
+	}
+
+	private MBSuspiciousActivity _findByU_T(
+			long userId, long threadId, boolean readOnlyCache)
+		throws NoSuchSuspiciousActivityException {
+
+		MBSuspiciousActivity mbSuspiciousActivity = _fetchByU_T(
+			userId, threadId, true, readOnlyCache);
 
 		if (mbSuspiciousActivity == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2886,6 +2975,13 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public MBSuspiciousActivity fetchByU_T(
 		long userId, long threadId, boolean useFinderCache) {
+
+		return _fetchByU_T(userId, threadId, useFinderCache, false);
+	}
+
+	private MBSuspiciousActivity _fetchByU_T(
+		long userId, long threadId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBSuspiciousActivity.class);
@@ -2963,9 +3059,11 @@ public class MBSuspiciousActivityPersistenceImpl
 
 					MBSuspiciousActivity mbSuspiciousActivity = list.get(0);
 
-					result = mbSuspiciousActivity;
+					if (!readOnlyCache) {
+						result = mbSuspiciousActivity;
 
-					cacheResult(mbSuspiciousActivity);
+						cacheResult(mbSuspiciousActivity);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2995,7 +3093,8 @@ public class MBSuspiciousActivityPersistenceImpl
 	public MBSuspiciousActivity removeByU_T(long userId, long threadId)
 		throws NoSuchSuspiciousActivityException {
 
-		MBSuspiciousActivity mbSuspiciousActivity = findByU_T(userId, threadId);
+		MBSuspiciousActivity mbSuspiciousActivity = _findByU_T(
+			userId, threadId, true);
 
 		return remove(mbSuspiciousActivity);
 	}
@@ -3710,6 +3809,14 @@ public class MBSuspiciousActivityPersistenceImpl
 		OrderByComparator<MBSuspiciousActivity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBSuspiciousActivity> _findAll(
+		int start, int end,
+		OrderByComparator<MBSuspiciousActivity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBSuspiciousActivity.class);
 
@@ -3767,10 +3874,12 @@ public class MBSuspiciousActivityPersistenceImpl
 				list = (List<MBSuspiciousActivity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3790,7 +3899,10 @@ public class MBSuspiciousActivityPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBSuspiciousActivity mbSuspiciousActivity : findAll()) {
+		for (MBSuspiciousActivity mbSuspiciousActivity :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbSuspiciousActivity);
 		}
 	}

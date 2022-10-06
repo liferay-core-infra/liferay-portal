@@ -171,6 +171,16 @@ public class CTEntryPersistenceImpl
 		long ctCollectionId, int start, int end,
 		OrderByComparator<CTEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByCtCollectionId(
+			ctCollectionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTEntry> _findByCtCollectionId(
+		long ctCollectionId, int start, int end,
+		OrderByComparator<CTEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -244,10 +254,12 @@ public class CTEntryPersistenceImpl
 				list = (List<CTEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -531,9 +543,9 @@ public class CTEntryPersistenceImpl
 	@Override
 	public void removeByCtCollectionId(long ctCollectionId) {
 		for (CTEntry ctEntry :
-				findByCtCollectionId(
-					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCtCollectionId(
+					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ctEntry);
 		}
@@ -675,6 +687,16 @@ public class CTEntryPersistenceImpl
 		long ctCollectionId, long modelClassNameId, int start, int end,
 		OrderByComparator<CTEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_MCNI(
+			ctCollectionId, modelClassNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CTEntry> _findByC_MCNI(
+		long ctCollectionId, long modelClassNameId, int start, int end,
+		OrderByComparator<CTEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -754,10 +776,12 @@ public class CTEntryPersistenceImpl
 				list = (List<CTEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1065,9 +1089,9 @@ public class CTEntryPersistenceImpl
 	@Override
 	public void removeByC_MCNI(long ctCollectionId, long modelClassNameId) {
 		for (CTEntry ctEntry :
-				findByC_MCNI(
+				_findByC_MCNI(
 					ctCollectionId, modelClassNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctEntry);
 		}
@@ -1150,8 +1174,18 @@ public class CTEntryPersistenceImpl
 			long ctCollectionId, long modelClassNameId, long modelClassPK)
 		throws NoSuchEntryException {
 
-		CTEntry ctEntry = fetchByC_MCNI_MCPK(
-			ctCollectionId, modelClassNameId, modelClassPK);
+		return _findByC_MCNI_MCPK(
+			ctCollectionId, modelClassNameId, modelClassPK, false);
+	}
+
+	private CTEntry _findByC_MCNI_MCPK(
+			long ctCollectionId, long modelClassNameId, long modelClassPK,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		CTEntry ctEntry = _fetchByC_MCNI_MCPK(
+			ctCollectionId, modelClassNameId, modelClassPK, true,
+			readOnlyCache);
 
 		if (ctEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1208,6 +1242,15 @@ public class CTEntryPersistenceImpl
 	public CTEntry fetchByC_MCNI_MCPK(
 		long ctCollectionId, long modelClassNameId, long modelClassPK,
 		boolean useFinderCache) {
+
+		return _fetchByC_MCNI_MCPK(
+			ctCollectionId, modelClassNameId, modelClassPK, useFinderCache,
+			false);
+	}
+
+	private CTEntry _fetchByC_MCNI_MCPK(
+		long ctCollectionId, long modelClassNameId, long modelClassPK,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1274,9 +1317,11 @@ public class CTEntryPersistenceImpl
 				else {
 					CTEntry ctEntry = list.get(0);
 
-					result = ctEntry;
+					if (!readOnlyCache) {
+						result = ctEntry;
 
-					cacheResult(ctEntry);
+						cacheResult(ctEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1308,8 +1353,8 @@ public class CTEntryPersistenceImpl
 			long ctCollectionId, long modelClassNameId, long modelClassPK)
 		throws NoSuchEntryException {
 
-		CTEntry ctEntry = findByC_MCNI_MCPK(
-			ctCollectionId, modelClassNameId, modelClassPK);
+		CTEntry ctEntry = _findByC_MCNI_MCPK(
+			ctCollectionId, modelClassNameId, modelClassPK, true);
 
 		return remove(ctEntry);
 	}
@@ -1476,6 +1521,16 @@ public class CTEntryPersistenceImpl
 		int start, int end, OrderByComparator<CTEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotC_MCNI_MCPK(
+			ctCollectionId, modelClassNameId, modelClassPK, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTEntry> _findByNotC_MCNI_MCPK(
+		long ctCollectionId, long modelClassNameId, long modelClassPK,
+		int start, int end, OrderByComparator<CTEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1551,10 +1606,12 @@ public class CTEntryPersistenceImpl
 				list = (List<CTEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1961,6 +2018,16 @@ public class CTEntryPersistenceImpl
 		int start, int end, OrderByComparator<CTEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotC_MCNI_MCPK(
+			ctCollectionId, modelClassNameId, modelClassPKs, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTEntry> _findByNotC_MCNI_MCPK(
+		long ctCollectionId, long modelClassNameId, long[] modelClassPKs,
+		int start, int end, OrderByComparator<CTEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (modelClassPKs == null) {
 			modelClassPKs = new long[0];
 		}
@@ -2064,12 +2131,14 @@ public class CTEntryPersistenceImpl
 				list = (List<CTEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByNotC_MCNI_MCPK,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByNotC_MCNI_MCPK,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2095,9 +2164,9 @@ public class CTEntryPersistenceImpl
 		long ctCollectionId, long modelClassNameId, long modelClassPK) {
 
 		for (CTEntry ctEntry :
-				findByNotC_MCNI_MCPK(
+				_findByNotC_MCNI_MCPK(
 					ctCollectionId, modelClassNameId, modelClassPK,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctEntry);
 		}
@@ -2658,6 +2727,13 @@ public class CTEntryPersistenceImpl
 		int start, int end, OrderByComparator<CTEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTEntry> _findAll(
+		int start, int end, OrderByComparator<CTEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2711,10 +2787,12 @@ public class CTEntryPersistenceImpl
 				list = (List<CTEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2734,7 +2812,10 @@ public class CTEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTEntry ctEntry : findAll()) {
+		for (CTEntry ctEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctEntry);
 		}
 	}

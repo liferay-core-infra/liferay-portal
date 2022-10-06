@@ -180,6 +180,15 @@ public class OAuth2AuthorizationPersistenceImpl
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2Authorization> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<OAuth2Authorization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -252,10 +261,12 @@ public class OAuth2AuthorizationPersistenceImpl
 				list = (List<OAuth2Authorization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,8 +555,9 @@ public class OAuth2AuthorizationPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (OAuth2Authorization oAuth2Authorization :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuth2Authorization);
 		}
@@ -682,6 +694,16 @@ public class OAuth2AuthorizationPersistenceImpl
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOAuth2ApplicationId(
+			oAuth2ApplicationId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<OAuth2Authorization> _findByOAuth2ApplicationId(
+		long oAuth2ApplicationId, int start, int end,
+		OrderByComparator<OAuth2Authorization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -759,10 +781,12 @@ public class OAuth2AuthorizationPersistenceImpl
 				list = (List<OAuth2Authorization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1058,9 +1082,9 @@ public class OAuth2AuthorizationPersistenceImpl
 	@Override
 	public void removeByOAuth2ApplicationId(long oAuth2ApplicationId) {
 		for (OAuth2Authorization oAuth2Authorization :
-				findByOAuth2ApplicationId(
+				_findByOAuth2ApplicationId(
 					oAuth2ApplicationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(oAuth2Authorization);
 		}
@@ -1205,6 +1229,16 @@ public class OAuth2AuthorizationPersistenceImpl
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_ATCH(
+			companyId, accessTokenContentHash, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<OAuth2Authorization> _findByC_ATCH(
+		long companyId, long accessTokenContentHash, int start, int end,
+		OrderByComparator<OAuth2Authorization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1286,10 +1320,12 @@ public class OAuth2AuthorizationPersistenceImpl
 				list = (List<OAuth2Authorization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1601,9 +1637,9 @@ public class OAuth2AuthorizationPersistenceImpl
 	@Override
 	public void removeByC_ATCH(long companyId, long accessTokenContentHash) {
 		for (OAuth2Authorization oAuth2Authorization :
-				findByC_ATCH(
+				_findByC_ATCH(
 					companyId, accessTokenContentHash, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuth2Authorization);
 		}
@@ -1755,6 +1791,16 @@ public class OAuth2AuthorizationPersistenceImpl
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_RTCH(
+			companyId, refreshTokenContentHash, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<OAuth2Authorization> _findByC_RTCH(
+		long companyId, long refreshTokenContentHash, int start, int end,
+		OrderByComparator<OAuth2Authorization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1837,10 +1883,12 @@ public class OAuth2AuthorizationPersistenceImpl
 				list = (List<OAuth2Authorization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2152,9 +2200,9 @@ public class OAuth2AuthorizationPersistenceImpl
 	@Override
 	public void removeByC_RTCH(long companyId, long refreshTokenContentHash) {
 		for (OAuth2Authorization oAuth2Authorization :
-				findByC_RTCH(
+				_findByC_RTCH(
 					companyId, refreshTokenContentHash, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuth2Authorization);
 		}
@@ -2315,6 +2363,17 @@ public class OAuth2AuthorizationPersistenceImpl
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_O_R(
+			userId, oAuth2ApplicationId, rememberDeviceContent, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2Authorization> _findByU_O_R(
+		long userId, long oAuth2ApplicationId, String rememberDeviceContent,
+		int start, int end,
+		OrderByComparator<OAuth2Authorization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		rememberDeviceContent = Objects.toString(rememberDeviceContent, "");
 
 		FinderPath finderPath = null;
@@ -2418,10 +2477,12 @@ public class OAuth2AuthorizationPersistenceImpl
 				list = (List<OAuth2Authorization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2768,9 +2829,9 @@ public class OAuth2AuthorizationPersistenceImpl
 		long userId, long oAuth2ApplicationId, String rememberDeviceContent) {
 
 		for (OAuth2Authorization oAuth2Authorization :
-				findByU_O_R(
+				_findByU_O_R(
 					userId, oAuth2ApplicationId, rememberDeviceContent,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuth2Authorization);
 		}
@@ -3263,6 +3324,14 @@ public class OAuth2AuthorizationPersistenceImpl
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2Authorization> _findAll(
+		int start, int end,
+		OrderByComparator<OAuth2Authorization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3317,10 +3386,12 @@ public class OAuth2AuthorizationPersistenceImpl
 				list = (List<OAuth2Authorization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3340,7 +3411,10 @@ public class OAuth2AuthorizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OAuth2Authorization oAuth2Authorization : findAll()) {
+		for (OAuth2Authorization oAuth2Authorization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(oAuth2Authorization);
 		}
 	}

@@ -175,6 +175,15 @@ public class SamlSpIdpConnectionPersistenceImpl
 		OrderByComparator<SamlSpIdpConnection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlSpIdpConnection> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SamlSpIdpConnection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +258,12 @@ public class SamlSpIdpConnectionPersistenceImpl
 				list = (List<SamlSpIdpConnection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -546,8 +557,9 @@ public class SamlSpIdpConnectionPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (SamlSpIdpConnection samlSpIdpConnection :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(samlSpIdpConnection);
 		}
@@ -621,8 +633,15 @@ public class SamlSpIdpConnectionPersistenceImpl
 			long companyId, String samlIdpEntityId)
 		throws NoSuchSpIdpConnectionException {
 
-		SamlSpIdpConnection samlSpIdpConnection = fetchByC_SIEI(
-			companyId, samlIdpEntityId);
+		return _findByC_SIEI(companyId, samlIdpEntityId, false);
+	}
+
+	private SamlSpIdpConnection _findByC_SIEI(
+			long companyId, String samlIdpEntityId, boolean readOnlyCache)
+		throws NoSuchSpIdpConnectionException {
+
+		SamlSpIdpConnection samlSpIdpConnection = _fetchByC_SIEI(
+			companyId, samlIdpEntityId, true, readOnlyCache);
 
 		if (samlSpIdpConnection == null) {
 			StringBundler sb = new StringBundler(6);
@@ -672,6 +691,14 @@ public class SamlSpIdpConnectionPersistenceImpl
 	@Override
 	public SamlSpIdpConnection fetchByC_SIEI(
 		long companyId, String samlIdpEntityId, boolean useFinderCache) {
+
+		return _fetchByC_SIEI(
+			companyId, samlIdpEntityId, useFinderCache, false);
+	}
+
+	private SamlSpIdpConnection _fetchByC_SIEI(
+		long companyId, String samlIdpEntityId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		samlIdpEntityId = Objects.toString(samlIdpEntityId, "");
 
@@ -764,9 +791,11 @@ public class SamlSpIdpConnectionPersistenceImpl
 
 					SamlSpIdpConnection samlSpIdpConnection = list.get(0);
 
-					result = samlSpIdpConnection;
+					if (!readOnlyCache) {
+						result = samlSpIdpConnection;
 
-					cacheResult(samlSpIdpConnection);
+						cacheResult(samlSpIdpConnection);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -797,8 +826,8 @@ public class SamlSpIdpConnectionPersistenceImpl
 			long companyId, String samlIdpEntityId)
 		throws NoSuchSpIdpConnectionException {
 
-		SamlSpIdpConnection samlSpIdpConnection = findByC_SIEI(
-			companyId, samlIdpEntityId);
+		SamlSpIdpConnection samlSpIdpConnection = _findByC_SIEI(
+			companyId, samlIdpEntityId, true);
 
 		return remove(samlSpIdpConnection);
 	}
@@ -1300,6 +1329,14 @@ public class SamlSpIdpConnectionPersistenceImpl
 		OrderByComparator<SamlSpIdpConnection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlSpIdpConnection> _findAll(
+		int start, int end,
+		OrderByComparator<SamlSpIdpConnection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1354,10 +1391,12 @@ public class SamlSpIdpConnectionPersistenceImpl
 				list = (List<SamlSpIdpConnection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1377,7 +1416,10 @@ public class SamlSpIdpConnectionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SamlSpIdpConnection samlSpIdpConnection : findAll()) {
+		for (SamlSpIdpConnection samlSpIdpConnection :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(samlSpIdpConnection);
 		}
 	}

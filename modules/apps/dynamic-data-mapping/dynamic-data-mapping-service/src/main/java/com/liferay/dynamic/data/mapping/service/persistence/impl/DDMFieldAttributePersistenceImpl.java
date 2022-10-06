@@ -178,6 +178,15 @@ public class DDMFieldAttributePersistenceImpl
 		OrderByComparator<DDMFieldAttribute> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStorageId(
+			storageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFieldAttribute> _findByStorageId(
+		long storageId, int start, int end,
+		OrderByComparator<DDMFieldAttribute> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFieldAttribute.class);
 
@@ -255,10 +264,12 @@ public class DDMFieldAttributePersistenceImpl
 				list = (List<DDMFieldAttribute>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -550,8 +561,9 @@ public class DDMFieldAttributePersistenceImpl
 	@Override
 	public void removeByStorageId(long storageId) {
 		for (DDMFieldAttribute ddmFieldAttribute :
-				findByStorageId(
-					storageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStorageId(
+					storageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmFieldAttribute);
 		}
@@ -704,6 +716,16 @@ public class DDMFieldAttributePersistenceImpl
 		OrderByComparator<DDMFieldAttribute> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_L(
+			storageId, languageId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMFieldAttribute> _findByS_L(
+		long storageId, String languageId, int start, int end,
+		OrderByComparator<DDMFieldAttribute> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		languageId = Objects.toString(languageId, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -800,10 +822,12 @@ public class DDMFieldAttributePersistenceImpl
 				list = (List<DDMFieldAttribute>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1126,9 +1150,9 @@ public class DDMFieldAttributePersistenceImpl
 	@Override
 	public void removeByS_L(long storageId, String languageId) {
 		for (DDMFieldAttribute ddmFieldAttribute :
-				findByS_L(
+				_findByS_L(
 					storageId, languageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmFieldAttribute);
 		}
@@ -1308,6 +1332,16 @@ public class DDMFieldAttributePersistenceImpl
 		OrderByComparator<DDMFieldAttribute> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAN_SAV(
+			attributeName, smallAttributeValue, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMFieldAttribute> _findByAN_SAV(
+		String attributeName, String smallAttributeValue, int start, int end,
+		OrderByComparator<DDMFieldAttribute> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		attributeName = Objects.toString(attributeName, "");
 		smallAttributeValue = Objects.toString(smallAttributeValue, "");
 
@@ -1419,10 +1453,12 @@ public class DDMFieldAttributePersistenceImpl
 				list = (List<DDMFieldAttribute>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1761,9 +1797,9 @@ public class DDMFieldAttributePersistenceImpl
 		String attributeName, String smallAttributeValue) {
 
 		for (DDMFieldAttribute ddmFieldAttribute :
-				findByAN_SAV(
+				_findByAN_SAV(
 					attributeName, smallAttributeValue, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmFieldAttribute);
 		}
@@ -1889,8 +1925,16 @@ public class DDMFieldAttributePersistenceImpl
 			long fieldId, String attributeName, String languageId)
 		throws NoSuchFieldAttributeException {
 
-		DDMFieldAttribute ddmFieldAttribute = fetchByF_AN_L(
-			fieldId, attributeName, languageId);
+		return _findByF_AN_L(fieldId, attributeName, languageId, false);
+	}
+
+	private DDMFieldAttribute _findByF_AN_L(
+			long fieldId, String attributeName, String languageId,
+			boolean readOnlyCache)
+		throws NoSuchFieldAttributeException {
+
+		DDMFieldAttribute ddmFieldAttribute = _fetchByF_AN_L(
+			fieldId, attributeName, languageId, true, readOnlyCache);
 
 		if (ddmFieldAttribute == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1946,6 +1990,14 @@ public class DDMFieldAttributePersistenceImpl
 	public DDMFieldAttribute fetchByF_AN_L(
 		long fieldId, String attributeName, String languageId,
 		boolean useFinderCache) {
+
+		return _fetchByF_AN_L(
+			fieldId, attributeName, languageId, useFinderCache, false);
+	}
+
+	private DDMFieldAttribute _fetchByF_AN_L(
+		long fieldId, String attributeName, String languageId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		attributeName = Objects.toString(attributeName, "");
 		languageId = Objects.toString(languageId, "");
@@ -2040,9 +2092,11 @@ public class DDMFieldAttributePersistenceImpl
 				else {
 					DDMFieldAttribute ddmFieldAttribute = list.get(0);
 
-					result = ddmFieldAttribute;
+					if (!readOnlyCache) {
+						result = ddmFieldAttribute;
 
-					cacheResult(ddmFieldAttribute);
+						cacheResult(ddmFieldAttribute);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2074,8 +2128,8 @@ public class DDMFieldAttributePersistenceImpl
 			long fieldId, String attributeName, String languageId)
 		throws NoSuchFieldAttributeException {
 
-		DDMFieldAttribute ddmFieldAttribute = findByF_AN_L(
-			fieldId, attributeName, languageId);
+		DDMFieldAttribute ddmFieldAttribute = _findByF_AN_L(
+			fieldId, attributeName, languageId, true);
 
 		return remove(ddmFieldAttribute);
 	}
@@ -2747,6 +2801,14 @@ public class DDMFieldAttributePersistenceImpl
 		OrderByComparator<DDMFieldAttribute> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFieldAttribute> _findAll(
+		int start, int end,
+		OrderByComparator<DDMFieldAttribute> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFieldAttribute.class);
 
@@ -2804,10 +2866,12 @@ public class DDMFieldAttributePersistenceImpl
 				list = (List<DDMFieldAttribute>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2827,7 +2891,10 @@ public class DDMFieldAttributePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMFieldAttribute ddmFieldAttribute : findAll()) {
+		for (DDMFieldAttribute ddmFieldAttribute :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmFieldAttribute);
 		}
 	}

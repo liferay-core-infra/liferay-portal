@@ -176,6 +176,15 @@ public class BatchEngineImportTaskPersistenceImpl
 		OrderByComparator<BatchEngineImportTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchEngineImportTask> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<BatchEngineImportTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class BatchEngineImportTaskPersistenceImpl
 				list = (List<BatchEngineImportTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -568,7 +579,9 @@ public class BatchEngineImportTaskPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (BatchEngineImportTask batchEngineImportTask :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(batchEngineImportTask);
 		}
@@ -725,6 +738,16 @@ public class BatchEngineImportTaskPersistenceImpl
 		OrderByComparator<BatchEngineImportTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchEngineImportTask> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<BatchEngineImportTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -818,10 +841,12 @@ public class BatchEngineImportTaskPersistenceImpl
 				list = (List<BatchEngineImportTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1144,9 +1169,9 @@ public class BatchEngineImportTaskPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (BatchEngineImportTask batchEngineImportTask :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(batchEngineImportTask);
 		}
@@ -1304,6 +1329,15 @@ public class BatchEngineImportTaskPersistenceImpl
 		OrderByComparator<BatchEngineImportTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchEngineImportTask> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<BatchEngineImportTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1378,10 +1412,12 @@ public class BatchEngineImportTaskPersistenceImpl
 				list = (List<BatchEngineImportTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1675,8 +1711,9 @@ public class BatchEngineImportTaskPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (BatchEngineImportTask batchEngineImportTask :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(batchEngineImportTask);
 		}
@@ -1813,6 +1850,16 @@ public class BatchEngineImportTaskPersistenceImpl
 		OrderByComparator<BatchEngineImportTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByExecuteStatus(
+			executeStatus, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchEngineImportTask> _findByExecuteStatus(
+		String executeStatus, int start, int end,
+		OrderByComparator<BatchEngineImportTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		executeStatus = Objects.toString(executeStatus, "");
 
 		FinderPath finderPath = null;
@@ -1902,10 +1949,12 @@ public class BatchEngineImportTaskPersistenceImpl
 				list = (List<BatchEngineImportTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2212,9 +2261,9 @@ public class BatchEngineImportTaskPersistenceImpl
 	@Override
 	public void removeByExecuteStatus(String executeStatus) {
 		for (BatchEngineImportTask batchEngineImportTask :
-				findByExecuteStatus(
-					executeStatus, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByExecuteStatus(
+					executeStatus, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(batchEngineImportTask);
 		}
@@ -2304,8 +2353,15 @@ public class BatchEngineImportTaskPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchImportTaskException {
 
-		BatchEngineImportTask batchEngineImportTask = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private BatchEngineImportTask _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchImportTaskException {
+
+		BatchEngineImportTask batchEngineImportTask = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (batchEngineImportTask == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2355,6 +2411,14 @@ public class BatchEngineImportTaskPersistenceImpl
 	@Override
 	public BatchEngineImportTask fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private BatchEngineImportTask _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -2429,9 +2493,11 @@ public class BatchEngineImportTaskPersistenceImpl
 				else {
 					BatchEngineImportTask batchEngineImportTask = list.get(0);
 
-					result = batchEngineImportTask;
+					if (!readOnlyCache) {
+						result = batchEngineImportTask;
 
-					cacheResult(batchEngineImportTask);
+						cacheResult(batchEngineImportTask);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2462,8 +2528,8 @@ public class BatchEngineImportTaskPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchImportTaskException {
 
-		BatchEngineImportTask batchEngineImportTask = findByC_ERC(
-			companyId, externalReferenceCode);
+		BatchEngineImportTask batchEngineImportTask = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(batchEngineImportTask);
 	}
@@ -3007,6 +3073,14 @@ public class BatchEngineImportTaskPersistenceImpl
 		OrderByComparator<BatchEngineImportTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchEngineImportTask> _findAll(
+		int start, int end,
+		OrderByComparator<BatchEngineImportTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3061,10 +3135,12 @@ public class BatchEngineImportTaskPersistenceImpl
 				list = (List<BatchEngineImportTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3084,7 +3160,10 @@ public class BatchEngineImportTaskPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BatchEngineImportTask batchEngineImportTask : findAll()) {
+		for (BatchEngineImportTask batchEngineImportTask :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(batchEngineImportTask);
 		}
 	}

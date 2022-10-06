@@ -179,6 +179,15 @@ public class ReadingTimeEntryPersistenceImpl
 		OrderByComparator<ReadingTimeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ReadingTimeEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ReadingTimeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class ReadingTimeEntryPersistenceImpl
 				list = (List<ReadingTimeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -569,7 +580,9 @@ public class ReadingTimeEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ReadingTimeEntry readingTimeEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(readingTimeEntry);
 		}
@@ -670,7 +683,15 @@ public class ReadingTimeEntryPersistenceImpl
 	public ReadingTimeEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		ReadingTimeEntry readingTimeEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private ReadingTimeEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		ReadingTimeEntry readingTimeEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (readingTimeEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -718,6 +739,13 @@ public class ReadingTimeEntryPersistenceImpl
 	@Override
 	public ReadingTimeEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private ReadingTimeEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -793,9 +821,11 @@ public class ReadingTimeEntryPersistenceImpl
 				else {
 					ReadingTimeEntry readingTimeEntry = list.get(0);
 
-					result = readingTimeEntry;
+					if (!readOnlyCache) {
+						result = readingTimeEntry;
 
-					cacheResult(readingTimeEntry);
+						cacheResult(readingTimeEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -825,7 +855,7 @@ public class ReadingTimeEntryPersistenceImpl
 	public ReadingTimeEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		ReadingTimeEntry readingTimeEntry = findByUUID_G(uuid, groupId);
+		ReadingTimeEntry readingTimeEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(readingTimeEntry);
 	}
@@ -999,6 +1029,16 @@ public class ReadingTimeEntryPersistenceImpl
 		OrderByComparator<ReadingTimeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ReadingTimeEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ReadingTimeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1095,10 +1135,12 @@ public class ReadingTimeEntryPersistenceImpl
 				list = (List<ReadingTimeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1420,9 +1462,9 @@ public class ReadingTimeEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ReadingTimeEntry readingTimeEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(readingTimeEntry);
 		}
@@ -1533,8 +1575,15 @@ public class ReadingTimeEntryPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		ReadingTimeEntry readingTimeEntry = fetchByG_C_C(
-			groupId, classNameId, classPK);
+		return _findByG_C_C(groupId, classNameId, classPK, false);
+	}
+
+	private ReadingTimeEntry _findByG_C_C(
+			long groupId, long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		ReadingTimeEntry readingTimeEntry = _fetchByG_C_C(
+			groupId, classNameId, classPK, true, readOnlyCache);
 
 		if (readingTimeEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1589,6 +1638,14 @@ public class ReadingTimeEntryPersistenceImpl
 	@Override
 	public ReadingTimeEntry fetchByG_C_C(
 		long groupId, long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByG_C_C(
+			groupId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private ReadingTimeEntry _fetchByG_C_C(
+		long groupId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			ReadingTimeEntry.class);
@@ -1655,9 +1712,11 @@ public class ReadingTimeEntryPersistenceImpl
 				else {
 					ReadingTimeEntry readingTimeEntry = list.get(0);
 
-					result = readingTimeEntry;
+					if (!readOnlyCache) {
+						result = readingTimeEntry;
 
-					cacheResult(readingTimeEntry);
+						cacheResult(readingTimeEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1689,8 +1748,8 @@ public class ReadingTimeEntryPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		ReadingTimeEntry readingTimeEntry = findByG_C_C(
-			groupId, classNameId, classPK);
+		ReadingTimeEntry readingTimeEntry = _findByG_C_C(
+			groupId, classNameId, classPK, true);
 
 		return remove(readingTimeEntry);
 	}
@@ -2379,6 +2438,14 @@ public class ReadingTimeEntryPersistenceImpl
 		OrderByComparator<ReadingTimeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ReadingTimeEntry> _findAll(
+		int start, int end,
+		OrderByComparator<ReadingTimeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			ReadingTimeEntry.class);
 
@@ -2436,10 +2503,12 @@ public class ReadingTimeEntryPersistenceImpl
 				list = (List<ReadingTimeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2459,7 +2528,10 @@ public class ReadingTimeEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ReadingTimeEntry readingTimeEntry : findAll()) {
+		for (ReadingTimeEntry readingTimeEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(readingTimeEntry);
 		}
 	}

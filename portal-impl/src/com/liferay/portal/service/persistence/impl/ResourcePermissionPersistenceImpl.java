@@ -167,6 +167,15 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByName(
+			name, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByName(
+		String name, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -255,10 +264,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -560,7 +571,9 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public void removeByName(String name) {
 		for (ResourcePermission resourcePermission :
-				findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByName(
+					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(resourcePermission);
 		}
@@ -720,6 +733,15 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByScope(
+			scope, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByScope(
+		int scope, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ResourcePermission.class);
 
@@ -795,10 +817,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1152,6 +1176,15 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByScope(
+			scopes, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByScope(
+		int[] scopes, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (scopes == null) {
 			scopes = new int[0];
 		}
@@ -1240,11 +1273,14 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByScope, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByScope, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1266,8 +1302,9 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public void removeByScope(int scope) {
 		for (ResourcePermission resourcePermission :
-				findByScope(
-					scope, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByScope(
+					scope, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(resourcePermission);
 		}
@@ -1492,6 +1529,15 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRoleId(
+			roleId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByRoleId(
+		long roleId, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ResourcePermission.class);
 
@@ -1567,10 +1613,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1859,8 +1907,9 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public void removeByRoleId(long roleId) {
 		for (ResourcePermission resourcePermission :
-				findByRoleId(
-					roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRoleId(
+					roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(resourcePermission);
 		}
@@ -2012,6 +2061,16 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeP(
+			companyId, primKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ResourcePermission> _findByC_LikeP(
+		long companyId, String primKey, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		primKey = Objects.toString(primKey, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -2100,10 +2159,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2425,9 +2486,9 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public void removeByC_LikeP(long companyId, String primKey) {
 		for (ResourcePermission resourcePermission :
-				findByC_LikeP(
+				_findByC_LikeP(
 					companyId, primKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(resourcePermission);
 		}
@@ -2609,6 +2670,16 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S_P(
+			companyId, scope, primKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByC_S_P(
+		long companyId, int scope, String primKey, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		primKey = Objects.toString(primKey, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -2710,10 +2781,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3053,9 +3126,9 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public void removeByC_S_P(long companyId, int scope, String primKey) {
 		for (ResourcePermission resourcePermission :
-				findByC_S_P(
+				_findByC_S_P(
 					companyId, scope, primKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(resourcePermission);
 		}
@@ -3251,6 +3324,16 @@ public class ResourcePermissionPersistenceImpl
 		int end, OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_N_S_P(
+			companyId, name, scope, primKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByC_N_S_P(
+		long companyId, String name, int scope, String primKey, int start,
+		int end, OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		primKey = Objects.toString(primKey, "");
 
@@ -3369,10 +3452,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3743,9 +3828,9 @@ public class ResourcePermissionPersistenceImpl
 		long companyId, String name, int scope, String primKey) {
 
 		for (ResourcePermission resourcePermission :
-				findByC_N_S_P(
+				_findByC_N_S_P(
 					companyId, name, scope, primKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(resourcePermission);
 		}
@@ -3966,6 +4051,16 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_N_S_R(
+			companyId, name, scope, roleId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByC_N_S_R(
+		long companyId, String name, int scope, long roleId, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -4072,10 +4167,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4434,9 +4531,9 @@ public class ResourcePermissionPersistenceImpl
 		long companyId, String name, int scope, long roleId) {
 
 		for (ResourcePermission resourcePermission :
-				findByC_N_S_R(
+				_findByC_N_S_R(
 					companyId, name, scope, roleId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(resourcePermission);
 		}
@@ -4656,6 +4753,17 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_N_S_P_R(
+			companyId, name, scope, primKey, roleIds, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByC_N_S_P_R(
+		long companyId, String name, int scope, String primKey, long[] roleIds,
+		int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		primKey = Objects.toString(primKey, "");
 
@@ -4751,12 +4859,14 @@ public class ResourcePermissionPersistenceImpl
 						orderByComparator);
 				}
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_N_S_P_R, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_N_S_P_R,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4879,8 +4989,16 @@ public class ResourcePermissionPersistenceImpl
 			long companyId, String name, int scope, String primKey, long roleId)
 		throws NoSuchResourcePermissionException {
 
-		ResourcePermission resourcePermission = fetchByC_N_S_P_R(
-			companyId, name, scope, primKey, roleId);
+		return _findByC_N_S_P_R(companyId, name, scope, primKey, roleId, false);
+	}
+
+	private ResourcePermission _findByC_N_S_P_R(
+			long companyId, String name, int scope, String primKey, long roleId,
+			boolean readOnlyCache)
+		throws NoSuchResourcePermissionException {
+
+		ResourcePermission resourcePermission = _fetchByC_N_S_P_R(
+			companyId, name, scope, primKey, roleId, true, readOnlyCache);
 
 		if (resourcePermission == null) {
 			StringBundler sb = new StringBundler(12);
@@ -4946,6 +5064,14 @@ public class ResourcePermissionPersistenceImpl
 	public ResourcePermission fetchByC_N_S_P_R(
 		long companyId, String name, int scope, String primKey, long roleId,
 		boolean useFinderCache) {
+
+		return _fetchByC_N_S_P_R(
+			companyId, name, scope, primKey, roleId, useFinderCache, false);
+	}
+
+	private ResourcePermission _fetchByC_N_S_P_R(
+		long companyId, String name, int scope, String primKey, long roleId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 		primKey = Objects.toString(primKey, "");
@@ -5048,9 +5174,11 @@ public class ResourcePermissionPersistenceImpl
 				else {
 					ResourcePermission resourcePermission = list.get(0);
 
-					result = resourcePermission;
+					if (!readOnlyCache) {
+						result = resourcePermission;
 
-					cacheResult(resourcePermission);
+						cacheResult(resourcePermission);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5084,8 +5212,8 @@ public class ResourcePermissionPersistenceImpl
 			long companyId, String name, int scope, String primKey, long roleId)
 		throws NoSuchResourcePermissionException {
 
-		ResourcePermission resourcePermission = findByC_N_S_P_R(
-			companyId, name, scope, primKey, roleId);
+		ResourcePermission resourcePermission = _findByC_N_S_P_R(
+			companyId, name, scope, primKey, roleId, true);
 
 		return remove(resourcePermission);
 	}
@@ -5493,6 +5621,17 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_N_S_P_R_V(
+			companyId, name, scope, primKeyId, roleId, viewActionId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByC_N_S_P_R_V(
+		long companyId, String name, int scope, long primKeyId, long roleId,
+		boolean viewActionId, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -5612,10 +5751,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6107,6 +6248,17 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_N_S_P_R_V(
+			companyId, name, scope, primKeyId, roleIds, viewActionId, start,
+			end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findByC_N_S_P_R_V(
+		long companyId, String name, int scope, long primKeyId, long[] roleIds,
+		boolean viewActionId, int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		if (roleIds == null) {
@@ -6197,12 +6349,14 @@ public class ResourcePermissionPersistenceImpl
 						viewActionId, start, end, orderByComparator);
 				}
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_N_S_P_R_V, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_N_S_P_R_V,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6320,9 +6474,9 @@ public class ResourcePermissionPersistenceImpl
 		boolean viewActionId) {
 
 		for (ResourcePermission resourcePermission :
-				findByC_N_S_P_R_V(
+				_findByC_N_S_P_R_V(
 					companyId, name, scope, primKeyId, roleId, viewActionId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(resourcePermission);
 		}
@@ -7180,6 +7334,14 @@ public class ResourcePermissionPersistenceImpl
 		OrderByComparator<ResourcePermission> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ResourcePermission> _findAll(
+		int start, int end,
+		OrderByComparator<ResourcePermission> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ResourcePermission.class);
 
@@ -7237,10 +7399,12 @@ public class ResourcePermissionPersistenceImpl
 				list = (List<ResourcePermission>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7260,7 +7424,10 @@ public class ResourcePermissionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ResourcePermission resourcePermission : findAll()) {
+		for (ResourcePermission resourcePermission :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(resourcePermission);
 		}
 	}

@@ -173,6 +173,15 @@ public class DepotAppCustomizationPersistenceImpl
 		OrderByComparator<DepotAppCustomization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDepotEntryId(
+			depotEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotAppCustomization> _findByDepotEntryId(
+		long depotEntryId, int start, int end,
+		OrderByComparator<DepotAppCustomization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +258,12 @@ public class DepotAppCustomizationPersistenceImpl
 				list = (List<DepotAppCustomization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -546,8 +557,9 @@ public class DepotAppCustomizationPersistenceImpl
 	@Override
 	public void removeByDepotEntryId(long depotEntryId) {
 		for (DepotAppCustomization depotAppCustomization :
-				findByDepotEntryId(
-					depotEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByDepotEntryId(
+					depotEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(depotAppCustomization);
 		}
@@ -620,8 +632,15 @@ public class DepotAppCustomizationPersistenceImpl
 	public DepotAppCustomization findByD_E(long depotEntryId, boolean enabled)
 		throws NoSuchAppCustomizationException {
 
-		DepotAppCustomization depotAppCustomization = fetchByD_E(
-			depotEntryId, enabled);
+		return _findByD_E(depotEntryId, enabled, false);
+	}
+
+	private DepotAppCustomization _findByD_E(
+			long depotEntryId, boolean enabled, boolean readOnlyCache)
+		throws NoSuchAppCustomizationException {
+
+		DepotAppCustomization depotAppCustomization = _fetchByD_E(
+			depotEntryId, enabled, true, readOnlyCache);
 
 		if (depotAppCustomization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -671,6 +690,13 @@ public class DepotAppCustomizationPersistenceImpl
 	@Override
 	public DepotAppCustomization fetchByD_E(
 		long depotEntryId, boolean enabled, boolean useFinderCache) {
+
+		return _fetchByD_E(depotEntryId, enabled, useFinderCache, false);
+	}
+
+	private DepotAppCustomization _fetchByD_E(
+		long depotEntryId, boolean enabled, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -747,9 +773,11 @@ public class DepotAppCustomizationPersistenceImpl
 
 					DepotAppCustomization depotAppCustomization = list.get(0);
 
-					result = depotAppCustomization;
+					if (!readOnlyCache) {
+						result = depotAppCustomization;
 
-					cacheResult(depotAppCustomization);
+						cacheResult(depotAppCustomization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -779,8 +807,8 @@ public class DepotAppCustomizationPersistenceImpl
 	public DepotAppCustomization removeByD_E(long depotEntryId, boolean enabled)
 		throws NoSuchAppCustomizationException {
 
-		DepotAppCustomization depotAppCustomization = findByD_E(
-			depotEntryId, enabled);
+		DepotAppCustomization depotAppCustomization = _findByD_E(
+			depotEntryId, enabled, true);
 
 		return remove(depotAppCustomization);
 	}
@@ -860,8 +888,15 @@ public class DepotAppCustomizationPersistenceImpl
 	public DepotAppCustomization findByD_P(long depotEntryId, String portletId)
 		throws NoSuchAppCustomizationException {
 
-		DepotAppCustomization depotAppCustomization = fetchByD_P(
-			depotEntryId, portletId);
+		return _findByD_P(depotEntryId, portletId, false);
+	}
+
+	private DepotAppCustomization _findByD_P(
+			long depotEntryId, String portletId, boolean readOnlyCache)
+		throws NoSuchAppCustomizationException {
+
+		DepotAppCustomization depotAppCustomization = _fetchByD_P(
+			depotEntryId, portletId, true, readOnlyCache);
 
 		if (depotAppCustomization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -911,6 +946,13 @@ public class DepotAppCustomizationPersistenceImpl
 	@Override
 	public DepotAppCustomization fetchByD_P(
 		long depotEntryId, String portletId, boolean useFinderCache) {
+
+		return _fetchByD_P(depotEntryId, portletId, useFinderCache, false);
+	}
+
+	private DepotAppCustomization _fetchByD_P(
+		long depotEntryId, String portletId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		portletId = Objects.toString(portletId, "");
 
@@ -984,9 +1026,11 @@ public class DepotAppCustomizationPersistenceImpl
 				else {
 					DepotAppCustomization depotAppCustomization = list.get(0);
 
-					result = depotAppCustomization;
+					if (!readOnlyCache) {
+						result = depotAppCustomization;
 
-					cacheResult(depotAppCustomization);
+						cacheResult(depotAppCustomization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1017,8 +1061,8 @@ public class DepotAppCustomizationPersistenceImpl
 			long depotEntryId, String portletId)
 		throws NoSuchAppCustomizationException {
 
-		DepotAppCustomization depotAppCustomization = findByD_P(
-			depotEntryId, portletId);
+		DepotAppCustomization depotAppCustomization = _findByD_P(
+			depotEntryId, portletId, true);
 
 		return remove(depotAppCustomization);
 	}
@@ -1525,6 +1569,14 @@ public class DepotAppCustomizationPersistenceImpl
 		OrderByComparator<DepotAppCustomization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotAppCustomization> _findAll(
+		int start, int end,
+		OrderByComparator<DepotAppCustomization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1579,10 +1631,12 @@ public class DepotAppCustomizationPersistenceImpl
 				list = (List<DepotAppCustomization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1602,7 +1656,10 @@ public class DepotAppCustomizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DepotAppCustomization depotAppCustomization : findAll()) {
+		for (DepotAppCustomization depotAppCustomization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(depotAppCustomization);
 		}
 	}

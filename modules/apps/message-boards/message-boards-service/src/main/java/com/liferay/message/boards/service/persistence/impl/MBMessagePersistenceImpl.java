@@ -188,6 +188,15 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -276,10 +285,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -573,7 +584,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBMessage mbMessage :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMessage);
 		}
@@ -674,7 +687,15 @@ public class MBMessagePersistenceImpl
 	public MBMessage findByUUID_G(String uuid, long groupId)
 		throws NoSuchMessageException {
 
-		MBMessage mbMessage = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBMessage _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchMessageException {
+
+		MBMessage mbMessage = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (mbMessage == null) {
 			StringBundler sb = new StringBundler(6);
@@ -722,6 +743,13 @@ public class MBMessagePersistenceImpl
 	@Override
 	public MBMessage fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBMessage _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -797,9 +825,11 @@ public class MBMessagePersistenceImpl
 				else {
 					MBMessage mbMessage = list.get(0);
 
-					result = mbMessage;
+					if (!readOnlyCache) {
+						result = mbMessage;
 
-					cacheResult(mbMessage);
+						cacheResult(mbMessage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -829,7 +859,7 @@ public class MBMessagePersistenceImpl
 	public MBMessage removeByUUID_G(String uuid, long groupId)
 		throws NoSuchMessageException {
 
-		MBMessage mbMessage = findByUUID_G(uuid, groupId);
+		MBMessage mbMessage = _findByUUID_G(uuid, groupId, true);
 
 		return remove(mbMessage);
 	}
@@ -1003,6 +1033,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1099,10 +1139,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1419,9 +1461,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBMessage mbMessage :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbMessage);
 		}
@@ -1589,6 +1631,15 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -1664,10 +1715,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2272,8 +2325,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (MBMessage mbMessage :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMessage);
 		}
@@ -2465,6 +2519,15 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -2542,10 +2605,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2829,8 +2894,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (MBMessage mbMessage :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMessage);
 		}
@@ -2973,6 +3039,15 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -3048,10 +3123,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3332,8 +3409,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (MBMessage mbMessage :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMessage);
 		}
@@ -3477,6 +3555,15 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByThreadId(
+			threadId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByThreadId(
+		long threadId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -3552,10 +3639,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3838,8 +3927,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByThreadId(long threadId) {
 		for (MBMessage mbMessage :
-				findByThreadId(
-					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByThreadId(
+					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMessage);
 		}
@@ -3986,6 +4076,15 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByThreadIdReplies(
+			threadId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByThreadIdReplies(
+		long threadId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -4061,10 +4160,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4348,8 +4449,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByThreadIdReplies(long threadId) {
 		for (MBMessage mbMessage :
-				findByThreadIdReplies(
-					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByThreadIdReplies(
+					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMessage);
 		}
@@ -4496,6 +4598,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByParentMessageId(
+			parentMessageId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByParentMessageId(
+		long parentMessageId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -4573,10 +4685,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4862,9 +4976,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByParentMessageId(long parentMessageId) {
 		for (MBMessage mbMessage :
-				findByParentMessageId(
-					parentMessageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByParentMessageId(
+					parentMessageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbMessage);
 		}
@@ -5015,6 +5129,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U(
+			groupId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -5098,10 +5222,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5741,9 +5867,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByG_U(long groupId, long userId) {
 		for (MBMessage mbMessage :
-				findByG_U(
-					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_U(
+					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbMessage);
 		}
@@ -5955,6 +6081,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, categoryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByG_C(
+		long groupId, long categoryId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -6038,10 +6174,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6686,9 +6824,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long categoryId) {
 		for (MBMessage mbMessage :
-				findByG_C(
+				_findByG_C(
 					groupId, categoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -6834,7 +6972,15 @@ public class MBMessagePersistenceImpl
 	public MBMessage findByG_US(long groupId, String urlSubject)
 		throws NoSuchMessageException {
 
-		MBMessage mbMessage = fetchByG_US(groupId, urlSubject);
+		return _findByG_US(groupId, urlSubject, false);
+	}
+
+	private MBMessage _findByG_US(
+			long groupId, String urlSubject, boolean readOnlyCache)
+		throws NoSuchMessageException {
+
+		MBMessage mbMessage = _fetchByG_US(
+			groupId, urlSubject, true, readOnlyCache);
 
 		if (mbMessage == null) {
 			StringBundler sb = new StringBundler(6);
@@ -6882,6 +7028,13 @@ public class MBMessagePersistenceImpl
 	@Override
 	public MBMessage fetchByG_US(
 		long groupId, String urlSubject, boolean useFinderCache) {
+
+		return _fetchByG_US(groupId, urlSubject, useFinderCache, false);
+	}
+
+	private MBMessage _fetchByG_US(
+		long groupId, String urlSubject, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		urlSubject = Objects.toString(urlSubject, "");
 
@@ -6956,9 +7109,11 @@ public class MBMessagePersistenceImpl
 				else {
 					MBMessage mbMessage = list.get(0);
 
-					result = mbMessage;
+					if (!readOnlyCache) {
+						result = mbMessage;
 
-					cacheResult(mbMessage);
+						cacheResult(mbMessage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6988,7 +7143,7 @@ public class MBMessagePersistenceImpl
 	public MBMessage removeByG_US(long groupId, String urlSubject)
 		throws NoSuchMessageException {
 
-		MBMessage mbMessage = findByG_US(groupId, urlSubject);
+		MBMessage mbMessage = _findByG_US(groupId, urlSubject, true);
 
 		return remove(mbMessage);
 	}
@@ -7161,6 +7316,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -7244,10 +7409,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7887,9 +8054,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (MBMessage mbMessage :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbMessage);
 		}
@@ -8101,6 +8268,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -8184,10 +8361,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8492,9 +8671,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (MBMessage mbMessage :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -8654,6 +8833,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C(
+			userId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByU_C(
+		long userId, long classNameId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -8737,10 +8926,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9118,6 +9309,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C(
+			userId, classNameIds, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByU_C(
+		long userId, long[] classNameIds, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (classNameIds == null) {
 			classNameIds = new long[0];
 		}
@@ -9217,11 +9418,14 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByU_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByU_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9244,9 +9448,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByU_C(long userId, long classNameId) {
 		for (MBMessage mbMessage :
-				findByU_C(
+				_findByU_C(
 					userId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -9491,6 +9695,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -9574,10 +9788,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9883,9 +10099,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (MBMessage mbMessage :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -10045,6 +10261,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_P(
+			threadId, parentMessageId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByT_P(
+		long threadId, long parentMessageId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -10128,10 +10354,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10438,9 +10666,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByT_P(long threadId, long parentMessageId) {
 		for (MBMessage mbMessage :
-				findByT_P(
+				_findByT_P(
 					threadId, parentMessageId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -10598,6 +10826,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_A(
+			threadId, answer, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByT_A(
+		long threadId, boolean answer, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -10681,10 +10919,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10988,9 +11228,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByT_A(long threadId, boolean answer) {
 		for (MBMessage mbMessage :
-				findByT_A(
+				_findByT_A(
 					threadId, answer, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -11148,6 +11388,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_S(
+			threadId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByT_S(
+		long threadId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -11231,10 +11481,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11538,9 +11790,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByT_S(long threadId, int status) {
 		for (MBMessage mbMessage :
-				findByT_S(
+				_findByT_S(
 					threadId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -11698,6 +11950,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_NotS(
+			threadId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByT_NotS(
+		long threadId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -11771,10 +12033,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12078,9 +12342,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByT_NotS(long threadId, int status) {
 		for (MBMessage mbMessage :
-				findByT_NotS(
+				_findByT_NotS(
 					threadId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -12239,6 +12503,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTR_S(
+			threadId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMessage> _findByTR_S(
+		long threadId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -12322,10 +12596,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12629,9 +12905,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByTR_S(long threadId, int status) {
 		for (MBMessage mbMessage :
-				findByTR_S(
+				_findByTR_S(
 					threadId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -12791,6 +13067,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_S(
+			parentMessageId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByP_S(
+		long parentMessageId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -12874,10 +13160,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13183,9 +13471,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByP_S(long parentMessageId, int status) {
 		for (MBMessage mbMessage :
-				findByP_S(
+				_findByP_S(
 					parentMessageId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -13349,6 +13637,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_S(
+			groupId, userId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByG_U_S(
+		long groupId, long userId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -13437,10 +13735,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14118,9 +14418,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByG_U_S(long groupId, long userId, int status) {
 		for (MBMessage mbMessage :
-				findByG_U_S(
+				_findByG_U_S(
 					groupId, userId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -14352,6 +14652,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_T(
+			groupId, categoryId, threadId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByG_C_T(
+		long groupId, long categoryId, long threadId, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -14440,10 +14750,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15122,9 +15434,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByG_C_T(long groupId, long categoryId, long threadId) {
 		for (MBMessage mbMessage :
-				findByG_C_T(
+				_findByG_C_T(
 					groupId, categoryId, threadId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -15358,6 +15670,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_S(
+			groupId, categoryId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByG_C_S(
+		long groupId, long categoryId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -15446,10 +15768,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16127,9 +16451,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByG_C_S(long groupId, long categoryId, int status) {
 		for (MBMessage mbMessage :
-				findByG_C_S(
+				_findByG_C_S(
 					groupId, categoryId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -16361,6 +16685,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_C(
+			userId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByU_C_C(
+		long userId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -16449,10 +16783,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16775,9 +17111,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByU_C_C(long userId, long classNameId, long classPK) {
 		for (MBMessage mbMessage :
-				findByU_C_C(
+				_findByU_C_C(
 					userId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -16952,6 +17288,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_S(
+			userId, classNameId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByU_C_S(
+		long userId, long classNameId, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -17040,10 +17386,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17444,6 +17792,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_S(
+			userId, classNameIds, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByU_C_S(
+		long userId, long[] classNameIds, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (classNameIds == null) {
 			classNameIds = new long[0];
 		}
@@ -17550,11 +17908,14 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByU_C_S, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByU_C_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17578,9 +17939,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByU_C_S(long userId, long classNameId, int status) {
 		for (MBMessage mbMessage :
-				findByU_C_S(
+				_findByU_C_S(
 					userId, classNameId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -17850,6 +18211,16 @@ public class MBMessagePersistenceImpl
 		OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_S(
+			classNameId, classPK, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByC_C_S(
+		long classNameId, long classPK, int status, int start, int end,
+		OrderByComparator<MBMessage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -17938,10 +18309,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -18264,9 +18637,9 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void removeByC_C_S(long classNameId, long classPK, int status) {
 		for (MBMessage mbMessage :
-				findByC_C_S(
+				_findByC_C_S(
 					classNameId, classPK, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -18447,6 +18820,16 @@ public class MBMessagePersistenceImpl
 		int end, OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_T_A(
+			groupId, categoryId, threadId, answer, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByG_C_T_A(
+		long groupId, long categoryId, long threadId, boolean answer, int start,
+		int end, OrderByComparator<MBMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -18543,10 +18926,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19259,9 +19644,9 @@ public class MBMessagePersistenceImpl
 		long groupId, long categoryId, long threadId, boolean answer) {
 
 		for (MBMessage mbMessage :
-				findByG_C_T_A(
+				_findByG_C_T_A(
 					groupId, categoryId, threadId, answer, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -19517,6 +19902,16 @@ public class MBMessagePersistenceImpl
 		int end, OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_T_S(
+			groupId, categoryId, threadId, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByG_C_T_S(
+		long groupId, long categoryId, long threadId, int status, int start,
+		int end, OrderByComparator<MBMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -19613,10 +20008,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -20329,9 +20726,9 @@ public class MBMessagePersistenceImpl
 		long groupId, long categoryId, long threadId, int status) {
 
 		for (MBMessage mbMessage :
-				findByG_C_T_S(
+				_findByG_C_T_S(
 					groupId, categoryId, threadId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -20587,6 +20984,16 @@ public class MBMessagePersistenceImpl
 		int end, OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_C_S(
+			userId, classNameId, classPK, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MBMessage> _findByU_C_C_S(
+		long userId, long classNameId, long classPK, int status, int start,
+		int end, OrderByComparator<MBMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -20683,10 +21090,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21028,9 +21437,9 @@ public class MBMessagePersistenceImpl
 		long userId, long classNameId, long classPK, int status) {
 
 		for (MBMessage mbMessage :
-				findByU_C_C_S(
+				_findByU_C_C_S(
 					userId, classNameId, classPK, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(mbMessage);
 		}
@@ -21141,7 +21550,15 @@ public class MBMessagePersistenceImpl
 	public MBMessage findByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchMessageException {
 
-		MBMessage mbMessage = fetchByG_ERC(groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private MBMessage _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchMessageException {
+
+		MBMessage mbMessage = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (mbMessage == null) {
 			StringBundler sb = new StringBundler(6);
@@ -21189,6 +21606,14 @@ public class MBMessagePersistenceImpl
 	@Override
 	public MBMessage fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private MBMessage _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -21265,9 +21690,11 @@ public class MBMessagePersistenceImpl
 				else {
 					MBMessage mbMessage = list.get(0);
 
-					result = mbMessage;
+					if (!readOnlyCache) {
+						result = mbMessage;
 
-					cacheResult(mbMessage);
+						cacheResult(mbMessage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21297,7 +21724,8 @@ public class MBMessagePersistenceImpl
 	public MBMessage removeByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchMessageException {
 
-		MBMessage mbMessage = findByG_ERC(groupId, externalReferenceCode);
+		MBMessage mbMessage = _findByG_ERC(
+			groupId, externalReferenceCode, true);
 
 		return remove(mbMessage);
 	}
@@ -22010,6 +22438,13 @@ public class MBMessagePersistenceImpl
 		int start, int end, OrderByComparator<MBMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMessage> _findAll(
+		int start, int end, OrderByComparator<MBMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMessage.class);
 
@@ -22067,10 +22502,12 @@ public class MBMessagePersistenceImpl
 				list = (List<MBMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22090,7 +22527,10 @@ public class MBMessagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBMessage mbMessage : findAll()) {
+		for (MBMessage mbMessage :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbMessage);
 		}
 	}

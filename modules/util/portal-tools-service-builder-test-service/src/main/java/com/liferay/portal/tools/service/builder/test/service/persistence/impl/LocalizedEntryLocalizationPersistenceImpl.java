@@ -159,6 +159,16 @@ public class LocalizedEntryLocalizationPersistenceImpl
 		OrderByComparator<LocalizedEntryLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLocalizedEntryId(
+			localizedEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LocalizedEntryLocalization> _findByLocalizedEntryId(
+		long localizedEntryId, int start, int end,
+		OrderByComparator<LocalizedEntryLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -237,10 +247,12 @@ public class LocalizedEntryLocalizationPersistenceImpl
 				list = (List<LocalizedEntryLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -535,9 +547,9 @@ public class LocalizedEntryLocalizationPersistenceImpl
 	@Override
 	public void removeByLocalizedEntryId(long localizedEntryId) {
 		for (LocalizedEntryLocalization localizedEntryLocalization :
-				findByLocalizedEntryId(
+				_findByLocalizedEntryId(
 					localizedEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(localizedEntryLocalization);
 		}
@@ -612,8 +624,17 @@ public class LocalizedEntryLocalizationPersistenceImpl
 			long localizedEntryId, String languageId)
 		throws NoSuchLocalizedEntryLocalizationException {
 
+		return _findByLocalizedEntryId_LanguageId(
+			localizedEntryId, languageId, false);
+	}
+
+	private LocalizedEntryLocalization _findByLocalizedEntryId_LanguageId(
+			long localizedEntryId, String languageId, boolean readOnlyCache)
+		throws NoSuchLocalizedEntryLocalizationException {
+
 		LocalizedEntryLocalization localizedEntryLocalization =
-			fetchByLocalizedEntryId_LanguageId(localizedEntryId, languageId);
+			_fetchByLocalizedEntryId_LanguageId(
+				localizedEntryId, languageId, true, readOnlyCache);
 
 		if (localizedEntryLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -664,6 +685,14 @@ public class LocalizedEntryLocalizationPersistenceImpl
 	@Override
 	public LocalizedEntryLocalization fetchByLocalizedEntryId_LanguageId(
 		long localizedEntryId, String languageId, boolean useFinderCache) {
+
+		return _fetchByLocalizedEntryId_LanguageId(
+			localizedEntryId, languageId, useFinderCache, false);
+	}
+
+	private LocalizedEntryLocalization _fetchByLocalizedEntryId_LanguageId(
+		long localizedEntryId, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -744,9 +773,11 @@ public class LocalizedEntryLocalizationPersistenceImpl
 					LocalizedEntryLocalization localizedEntryLocalization =
 						list.get(0);
 
-					result = localizedEntryLocalization;
+					if (!readOnlyCache) {
+						result = localizedEntryLocalization;
 
-					cacheResult(localizedEntryLocalization);
+						cacheResult(localizedEntryLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -778,7 +809,8 @@ public class LocalizedEntryLocalizationPersistenceImpl
 		throws NoSuchLocalizedEntryLocalizationException {
 
 		LocalizedEntryLocalization localizedEntryLocalization =
-			findByLocalizedEntryId_LanguageId(localizedEntryId, languageId);
+			_findByLocalizedEntryId_LanguageId(
+				localizedEntryId, languageId, true);
 
 		return remove(localizedEntryLocalization);
 	}
@@ -1294,6 +1326,14 @@ public class LocalizedEntryLocalizationPersistenceImpl
 		OrderByComparator<LocalizedEntryLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LocalizedEntryLocalization> _findAll(
+		int start, int end,
+		OrderByComparator<LocalizedEntryLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1349,10 +1389,12 @@ public class LocalizedEntryLocalizationPersistenceImpl
 				list = (List<LocalizedEntryLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1373,7 +1415,8 @@ public class LocalizedEntryLocalizationPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (LocalizedEntryLocalization localizedEntryLocalization :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(localizedEntryLocalization);
 		}

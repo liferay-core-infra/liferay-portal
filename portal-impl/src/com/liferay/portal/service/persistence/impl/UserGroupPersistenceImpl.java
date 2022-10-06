@@ -179,6 +179,15 @@ public class UserGroupPersistenceImpl
 		OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroup> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<UserGroup> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -267,10 +276,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -911,7 +922,9 @@ public class UserGroupPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (UserGroup userGroup :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userGroup);
 		}
@@ -1145,6 +1158,16 @@ public class UserGroupPersistenceImpl
 		OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserGroup> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<UserGroup> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1241,10 +1264,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1923,9 +1948,9 @@ public class UserGroupPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (UserGroup userGroup :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(userGroup);
 		}
@@ -2165,6 +2190,15 @@ public class UserGroupPersistenceImpl
 		OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroup> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<UserGroup> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroup.class);
 
@@ -2242,10 +2276,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2853,8 +2889,9 @@ public class UserGroupPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (UserGroup userGroup :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userGroup);
 		}
@@ -3054,6 +3091,16 @@ public class UserGroupPersistenceImpl
 		OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_P(
+			companyId, parentUserGroupId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<UserGroup> _findByC_P(
+		long companyId, long parentUserGroupId, int start, int end,
+		OrderByComparator<UserGroup> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroup.class);
 
@@ -3138,10 +3185,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3791,9 +3840,9 @@ public class UserGroupPersistenceImpl
 	@Override
 	public void removeByC_P(long companyId, long parentUserGroupId) {
 		for (UserGroup userGroup :
-				findByC_P(
+				_findByC_P(
 					companyId, parentUserGroupId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userGroup);
 		}
@@ -3939,7 +3988,14 @@ public class UserGroupPersistenceImpl
 	public UserGroup findByC_N(long companyId, String name)
 		throws NoSuchUserGroupException {
 
-		UserGroup userGroup = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private UserGroup _findByC_N(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchUserGroupException {
+
+		UserGroup userGroup = _fetchByC_N(companyId, name, true, readOnlyCache);
 
 		if (userGroup == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3987,6 +4043,13 @@ public class UserGroupPersistenceImpl
 	@Override
 	public UserGroup fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private UserGroup _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -4062,9 +4125,11 @@ public class UserGroupPersistenceImpl
 				else {
 					UserGroup userGroup = list.get(0);
 
-					result = userGroup;
+					if (!readOnlyCache) {
+						result = userGroup;
 
-					cacheResult(userGroup);
+						cacheResult(userGroup);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4094,7 +4159,7 @@ public class UserGroupPersistenceImpl
 	public UserGroup removeByC_N(long companyId, String name)
 		throws NoSuchUserGroupException {
 
-		UserGroup userGroup = findByC_N(companyId, name);
+		UserGroup userGroup = _findByC_N(companyId, name, true);
 
 		return remove(userGroup);
 	}
@@ -4267,6 +4332,16 @@ public class UserGroupPersistenceImpl
 		OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeN(
+			companyId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserGroup> _findByC_LikeN(
+		long companyId, String name, int start, int end,
+		OrderByComparator<UserGroup> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -4354,10 +4429,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5037,9 +5114,9 @@ public class UserGroupPersistenceImpl
 	@Override
 	public void removeByC_LikeN(long companyId, String name) {
 		for (UserGroup userGroup :
-				findByC_LikeN(
-					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_LikeN(
+					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(userGroup);
 		}
@@ -5289,6 +5366,16 @@ public class UserGroupPersistenceImpl
 		int end, OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtU_C_P(
+			userGroupId, companyId, parentUserGroupId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroup> _findByGtU_C_P(
+		long userGroupId, long companyId, long parentUserGroupId, int start,
+		int end, OrderByComparator<UserGroup> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroup.class);
 
@@ -5369,10 +5456,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5684,9 +5773,9 @@ public class UserGroupPersistenceImpl
 		long userGroupId, long companyId, long parentUserGroupId) {
 
 		for (UserGroup userGroup :
-				findByGtU_C_P(
+				_findByGtU_C_P(
 					userGroupId, companyId, parentUserGroupId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userGroup);
 		}
@@ -5851,7 +5940,15 @@ public class UserGroupPersistenceImpl
 	public UserGroup findByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchUserGroupException {
 
-		UserGroup userGroup = fetchByC_ERC(companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private UserGroup _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchUserGroupException {
+
+		UserGroup userGroup = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (userGroup == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5901,6 +5998,14 @@ public class UserGroupPersistenceImpl
 	@Override
 	public UserGroup fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private UserGroup _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -5978,9 +6083,11 @@ public class UserGroupPersistenceImpl
 				else {
 					UserGroup userGroup = list.get(0);
 
-					result = userGroup;
+					if (!readOnlyCache) {
+						result = userGroup;
 
-					cacheResult(userGroup);
+						cacheResult(userGroup);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6010,7 +6117,8 @@ public class UserGroupPersistenceImpl
 	public UserGroup removeByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchUserGroupException {
 
-		UserGroup userGroup = findByC_ERC(companyId, externalReferenceCode);
+		UserGroup userGroup = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(userGroup);
 	}
@@ -6699,6 +6807,13 @@ public class UserGroupPersistenceImpl
 		int start, int end, OrderByComparator<UserGroup> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroup> _findAll(
+		int start, int end, OrderByComparator<UserGroup> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroup.class);
 
@@ -6756,10 +6871,12 @@ public class UserGroupPersistenceImpl
 				list = (List<UserGroup>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6779,7 +6896,10 @@ public class UserGroupPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserGroup userGroup : findAll()) {
+		for (UserGroup userGroup :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userGroup);
 		}
 	}

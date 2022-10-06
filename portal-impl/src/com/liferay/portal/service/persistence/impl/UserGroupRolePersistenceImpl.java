@@ -162,6 +162,15 @@ public class UserGroupRolePersistenceImpl
 		OrderByComparator<UserGroupRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroupRole> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<UserGroupRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
 
@@ -237,10 +246,12 @@ public class UserGroupRolePersistenceImpl
 				list = (List<UserGroupRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -525,8 +536,9 @@ public class UserGroupRolePersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (UserGroupRole userGroupRole :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userGroupRole);
 		}
@@ -670,6 +682,15 @@ public class UserGroupRolePersistenceImpl
 		OrderByComparator<UserGroupRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroupRole> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<UserGroupRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
 
@@ -745,10 +766,12 @@ public class UserGroupRolePersistenceImpl
 				list = (List<UserGroupRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1033,8 +1056,9 @@ public class UserGroupRolePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (UserGroupRole userGroupRole :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userGroupRole);
 		}
@@ -1177,6 +1201,15 @@ public class UserGroupRolePersistenceImpl
 		OrderByComparator<UserGroupRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRoleId(
+			roleId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroupRole> _findByRoleId(
+		long roleId, int start, int end,
+		OrderByComparator<UserGroupRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
 
@@ -1252,10 +1285,12 @@ public class UserGroupRolePersistenceImpl
 				list = (List<UserGroupRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1540,8 +1575,9 @@ public class UserGroupRolePersistenceImpl
 	@Override
 	public void removeByRoleId(long roleId) {
 		for (UserGroupRole userGroupRole :
-				findByRoleId(
-					roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRoleId(
+					roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userGroupRole);
 		}
@@ -1691,6 +1727,16 @@ public class UserGroupRolePersistenceImpl
 		OrderByComparator<UserGroupRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_G(
+			userId, groupId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserGroupRole> _findByU_G(
+		long userId, long groupId, int start, int end,
+		OrderByComparator<UserGroupRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
 
@@ -1774,10 +1820,12 @@ public class UserGroupRolePersistenceImpl
 				list = (List<UserGroupRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2084,9 +2132,9 @@ public class UserGroupRolePersistenceImpl
 	@Override
 	public void removeByU_G(long userId, long groupId) {
 		for (UserGroupRole userGroupRole :
-				findByU_G(
-					userId, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByU_G(
+					userId, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(userGroupRole);
 		}
@@ -2244,6 +2292,16 @@ public class UserGroupRolePersistenceImpl
 		OrderByComparator<UserGroupRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_R(
+			groupId, roleId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserGroupRole> _findByG_R(
+		long groupId, long roleId, int start, int end,
+		OrderByComparator<UserGroupRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
 
@@ -2327,10 +2385,12 @@ public class UserGroupRolePersistenceImpl
 				list = (List<UserGroupRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2637,9 +2697,9 @@ public class UserGroupRolePersistenceImpl
 	@Override
 	public void removeByG_R(long groupId, long roleId) {
 		for (UserGroupRole userGroupRole :
-				findByG_R(
-					groupId, roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_R(
+					groupId, roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(userGroupRole);
 		}
@@ -2733,7 +2793,15 @@ public class UserGroupRolePersistenceImpl
 	public UserGroupRole findByU_G_R(long userId, long groupId, long roleId)
 		throws NoSuchUserGroupRoleException {
 
-		UserGroupRole userGroupRole = fetchByU_G_R(userId, groupId, roleId);
+		return _findByU_G_R(userId, groupId, roleId, false);
+	}
+
+	private UserGroupRole _findByU_G_R(
+			long userId, long groupId, long roleId, boolean readOnlyCache)
+		throws NoSuchUserGroupRoleException {
+
+		UserGroupRole userGroupRole = _fetchByU_G_R(
+			userId, groupId, roleId, true, readOnlyCache);
 
 		if (userGroupRole == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2786,6 +2854,13 @@ public class UserGroupRolePersistenceImpl
 	@Override
 	public UserGroupRole fetchByU_G_R(
 		long userId, long groupId, long roleId, boolean useFinderCache) {
+
+		return _fetchByU_G_R(userId, groupId, roleId, useFinderCache, false);
+	}
+
+	private UserGroupRole _fetchByU_G_R(
+		long userId, long groupId, long roleId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
@@ -2853,9 +2928,11 @@ public class UserGroupRolePersistenceImpl
 				else {
 					UserGroupRole userGroupRole = list.get(0);
 
-					result = userGroupRole;
+					if (!readOnlyCache) {
+						result = userGroupRole;
 
-					cacheResult(userGroupRole);
+						cacheResult(userGroupRole);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2886,7 +2963,8 @@ public class UserGroupRolePersistenceImpl
 	public UserGroupRole removeByU_G_R(long userId, long groupId, long roleId)
 		throws NoSuchUserGroupRoleException {
 
-		UserGroupRole userGroupRole = findByU_G_R(userId, groupId, roleId);
+		UserGroupRole userGroupRole = _findByU_G_R(
+			userId, groupId, roleId, true);
 
 		return remove(userGroupRole);
 	}
@@ -3515,6 +3593,13 @@ public class UserGroupRolePersistenceImpl
 		int start, int end, OrderByComparator<UserGroupRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserGroupRole> _findAll(
+		int start, int end, OrderByComparator<UserGroupRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			UserGroupRole.class);
 
@@ -3572,10 +3657,12 @@ public class UserGroupRolePersistenceImpl
 				list = (List<UserGroupRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3595,7 +3682,10 @@ public class UserGroupRolePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserGroupRole userGroupRole : findAll()) {
+		for (UserGroupRole userGroupRole :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userGroupRole);
 		}
 	}

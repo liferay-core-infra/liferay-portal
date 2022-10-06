@@ -178,6 +178,15 @@ public class DLFileVersionPreviewPersistenceImpl
 		OrderByComparator<DLFileVersionPreview> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileEntryId(
+			fileEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileVersionPreview> _findByFileEntryId(
+		long fileEntryId, int start, int end,
+		OrderByComparator<DLFileVersionPreview> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLFileVersionPreview.class);
 
@@ -255,10 +264,12 @@ public class DLFileVersionPreviewPersistenceImpl
 				list = (List<DLFileVersionPreview>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -552,8 +563,9 @@ public class DLFileVersionPreviewPersistenceImpl
 	@Override
 	public void removeByFileEntryId(long fileEntryId) {
 		for (DLFileVersionPreview dlFileVersionPreview :
-				findByFileEntryId(
-					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByFileEntryId(
+					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileVersionPreview);
 		}
@@ -700,6 +712,16 @@ public class DLFileVersionPreviewPersistenceImpl
 		OrderByComparator<DLFileVersionPreview> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileVersionId(
+			fileVersionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileVersionPreview> _findByFileVersionId(
+		long fileVersionId, int start, int end,
+		OrderByComparator<DLFileVersionPreview> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLFileVersionPreview.class);
 
@@ -779,10 +801,12 @@ public class DLFileVersionPreviewPersistenceImpl
 				list = (List<DLFileVersionPreview>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1076,9 +1100,9 @@ public class DLFileVersionPreviewPersistenceImpl
 	@Override
 	public void removeByFileVersionId(long fileVersionId) {
 		for (DLFileVersionPreview dlFileVersionPreview :
-				findByFileVersionId(
-					fileVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByFileVersionId(
+					fileVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileVersionPreview);
 		}
@@ -1163,8 +1187,15 @@ public class DLFileVersionPreviewPersistenceImpl
 	public DLFileVersionPreview findByF_F(long fileEntryId, long fileVersionId)
 		throws NoSuchFileVersionPreviewException {
 
-		DLFileVersionPreview dlFileVersionPreview = fetchByF_F(
-			fileEntryId, fileVersionId);
+		return _findByF_F(fileEntryId, fileVersionId, false);
+	}
+
+	private DLFileVersionPreview _findByF_F(
+			long fileEntryId, long fileVersionId, boolean readOnlyCache)
+		throws NoSuchFileVersionPreviewException {
+
+		DLFileVersionPreview dlFileVersionPreview = _fetchByF_F(
+			fileEntryId, fileVersionId, true, readOnlyCache);
 
 		if (dlFileVersionPreview == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1214,6 +1245,13 @@ public class DLFileVersionPreviewPersistenceImpl
 	@Override
 	public DLFileVersionPreview fetchByF_F(
 		long fileEntryId, long fileVersionId, boolean useFinderCache) {
+
+		return _fetchByF_F(fileEntryId, fileVersionId, useFinderCache, false);
+	}
+
+	private DLFileVersionPreview _fetchByF_F(
+		long fileEntryId, long fileVersionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLFileVersionPreview.class);
@@ -1276,9 +1314,11 @@ public class DLFileVersionPreviewPersistenceImpl
 				else {
 					DLFileVersionPreview dlFileVersionPreview = list.get(0);
 
-					result = dlFileVersionPreview;
+					if (!readOnlyCache) {
+						result = dlFileVersionPreview;
 
-					cacheResult(dlFileVersionPreview);
+						cacheResult(dlFileVersionPreview);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1309,8 +1349,8 @@ public class DLFileVersionPreviewPersistenceImpl
 			long fileEntryId, long fileVersionId)
 		throws NoSuchFileVersionPreviewException {
 
-		DLFileVersionPreview dlFileVersionPreview = findByF_F(
-			fileEntryId, fileVersionId);
+		DLFileVersionPreview dlFileVersionPreview = _findByF_F(
+			fileEntryId, fileVersionId, true);
 
 		return remove(dlFileVersionPreview);
 	}
@@ -1404,8 +1444,16 @@ public class DLFileVersionPreviewPersistenceImpl
 			long fileEntryId, long fileVersionId, int previewStatus)
 		throws NoSuchFileVersionPreviewException {
 
-		DLFileVersionPreview dlFileVersionPreview = fetchByF_F_P(
-			fileEntryId, fileVersionId, previewStatus);
+		return _findByF_F_P(fileEntryId, fileVersionId, previewStatus, false);
+	}
+
+	private DLFileVersionPreview _findByF_F_P(
+			long fileEntryId, long fileVersionId, int previewStatus,
+			boolean readOnlyCache)
+		throws NoSuchFileVersionPreviewException {
+
+		DLFileVersionPreview dlFileVersionPreview = _fetchByF_F_P(
+			fileEntryId, fileVersionId, previewStatus, true, readOnlyCache);
 
 		if (dlFileVersionPreview == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1461,6 +1509,14 @@ public class DLFileVersionPreviewPersistenceImpl
 	public DLFileVersionPreview fetchByF_F_P(
 		long fileEntryId, long fileVersionId, int previewStatus,
 		boolean useFinderCache) {
+
+		return _fetchByF_F_P(
+			fileEntryId, fileVersionId, previewStatus, useFinderCache, false);
+	}
+
+	private DLFileVersionPreview _fetchByF_F_P(
+		long fileEntryId, long fileVersionId, int previewStatus,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLFileVersionPreview.class);
@@ -1530,9 +1586,11 @@ public class DLFileVersionPreviewPersistenceImpl
 				else {
 					DLFileVersionPreview dlFileVersionPreview = list.get(0);
 
-					result = dlFileVersionPreview;
+					if (!readOnlyCache) {
+						result = dlFileVersionPreview;
 
-					cacheResult(dlFileVersionPreview);
+						cacheResult(dlFileVersionPreview);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1564,8 +1622,8 @@ public class DLFileVersionPreviewPersistenceImpl
 			long fileEntryId, long fileVersionId, int previewStatus)
 		throws NoSuchFileVersionPreviewException {
 
-		DLFileVersionPreview dlFileVersionPreview = findByF_F_P(
-			fileEntryId, fileVersionId, previewStatus);
+		DLFileVersionPreview dlFileVersionPreview = _findByF_F_P(
+			fileEntryId, fileVersionId, previewStatus, true);
 
 		return remove(dlFileVersionPreview);
 	}
@@ -2236,6 +2294,14 @@ public class DLFileVersionPreviewPersistenceImpl
 		OrderByComparator<DLFileVersionPreview> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileVersionPreview> _findAll(
+		int start, int end,
+		OrderByComparator<DLFileVersionPreview> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DLFileVersionPreview.class);
 
@@ -2293,10 +2359,12 @@ public class DLFileVersionPreviewPersistenceImpl
 				list = (List<DLFileVersionPreview>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2316,7 +2384,10 @@ public class DLFileVersionPreviewPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLFileVersionPreview dlFileVersionPreview : findAll()) {
+		for (DLFileVersionPreview dlFileVersionPreview :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlFileVersionPreview);
 		}
 	}

@@ -170,6 +170,15 @@ public class AccountPersistenceImpl
 		long userId, int start, int end,
 		OrderByComparator<Account> orderByComparator, boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Account> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<Account> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -241,10 +250,12 @@ public class AccountPersistenceImpl
 				list = (List<Account>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -525,8 +536,9 @@ public class AccountPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (Account account :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(account);
 		}
@@ -599,7 +611,14 @@ public class AccountPersistenceImpl
 	public Account findByU_A(long userId, String address)
 		throws NoSuchAccountException {
 
-		Account account = fetchByU_A(userId, address);
+		return _findByU_A(userId, address, false);
+	}
+
+	private Account _findByU_A(
+			long userId, String address, boolean readOnlyCache)
+		throws NoSuchAccountException {
+
+		Account account = _fetchByU_A(userId, address, true, readOnlyCache);
 
 		if (account == null) {
 			StringBundler sb = new StringBundler(6);
@@ -647,6 +666,13 @@ public class AccountPersistenceImpl
 	@Override
 	public Account fetchByU_A(
 		long userId, String address, boolean useFinderCache) {
+
+		return _fetchByU_A(userId, address, useFinderCache, false);
+	}
+
+	private Account _fetchByU_A(
+		long userId, String address, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		address = Objects.toString(address, "");
 
@@ -733,9 +759,11 @@ public class AccountPersistenceImpl
 
 					Account account = list.get(0);
 
-					result = account;
+					if (!readOnlyCache) {
+						result = account;
 
-					cacheResult(account);
+						cacheResult(account);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -765,7 +793,7 @@ public class AccountPersistenceImpl
 	public Account removeByU_A(long userId, String address)
 		throws NoSuchAccountException {
 
-		Account account = findByU_A(userId, address);
+		Account account = _findByU_A(userId, address, true);
 
 		return remove(account);
 	}
@@ -1243,6 +1271,13 @@ public class AccountPersistenceImpl
 		int start, int end, OrderByComparator<Account> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Account> _findAll(
+		int start, int end, OrderByComparator<Account> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1296,10 +1331,12 @@ public class AccountPersistenceImpl
 				list = (List<Account>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1319,7 +1356,10 @@ public class AccountPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Account account : findAll()) {
+		for (Account account :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(account);
 		}
 	}

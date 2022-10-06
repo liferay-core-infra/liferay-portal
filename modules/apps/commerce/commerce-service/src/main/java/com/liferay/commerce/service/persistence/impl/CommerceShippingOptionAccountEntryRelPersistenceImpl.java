@@ -167,6 +167,17 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountEntryId(
+			accountEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceShippingOptionAccountEntryRel> _findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<CommerceShippingOptionAccountEntryRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -250,10 +261,12 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 					(List<CommerceShippingOptionAccountEntryRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,9 +577,9 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 	public void removeByAccountEntryId(long accountEntryId) {
 		for (CommerceShippingOptionAccountEntryRel
 				commerceShippingOptionAccountEntryRel :
-					findByAccountEntryId(
+					_findByAccountEntryId(
 						accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commerceShippingOptionAccountEntryRel);
 		}
@@ -705,6 +718,18 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceChannelId(
+			commerceChannelId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceShippingOptionAccountEntryRel>
+		_findByCommerceChannelId(
+			long commerceChannelId, int start, int end,
+			OrderByComparator<CommerceShippingOptionAccountEntryRel>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -789,10 +814,12 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 					(List<CommerceShippingOptionAccountEntryRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1106,9 +1133,9 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 	public void removeByCommerceChannelId(long commerceChannelId) {
 		for (CommerceShippingOptionAccountEntryRel
 				commerceShippingOptionAccountEntryRel :
-					findByCommerceChannelId(
+					_findByCommerceChannelId(
 						commerceChannelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commerceShippingOptionAccountEntryRel);
 		}
@@ -1254,6 +1281,18 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceShippingOptionKey(
+			commerceShippingOptionKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceShippingOptionAccountEntryRel>
+		_findByCommerceShippingOptionKey(
+			String commerceShippingOptionKey, int start, int end,
+			OrderByComparator<CommerceShippingOptionAccountEntryRel>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		commerceShippingOptionKey = Objects.toString(
 			commerceShippingOptionKey, "");
 
@@ -1355,10 +1394,12 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 					(List<CommerceShippingOptionAccountEntryRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1695,9 +1736,9 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 
 		for (CommerceShippingOptionAccountEntryRel
 				commerceShippingOptionAccountEntryRel :
-					findByCommerceShippingOptionKey(
+					_findByCommerceShippingOptionKey(
 						commerceShippingOptionKey, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceShippingOptionAccountEntryRel);
 		}
@@ -1794,9 +1835,16 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			long accountEntryId, long commerceChannelId)
 		throws NoSuchShippingOptionAccountEntryRelException {
 
+		return _findByA_C(accountEntryId, commerceChannelId, false);
+	}
+
+	private CommerceShippingOptionAccountEntryRel _findByA_C(
+			long accountEntryId, long commerceChannelId, boolean readOnlyCache)
+		throws NoSuchShippingOptionAccountEntryRelException {
+
 		CommerceShippingOptionAccountEntryRel
-			commerceShippingOptionAccountEntryRel = fetchByA_C(
-				accountEntryId, commerceChannelId);
+			commerceShippingOptionAccountEntryRel = _fetchByA_C(
+				accountEntryId, commerceChannelId, true, readOnlyCache);
 
 		if (commerceShippingOptionAccountEntryRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1847,6 +1895,14 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 	@Override
 	public CommerceShippingOptionAccountEntryRel fetchByA_C(
 		long accountEntryId, long commerceChannelId, boolean useFinderCache) {
+
+		return _fetchByA_C(
+			accountEntryId, commerceChannelId, useFinderCache, false);
+	}
+
+	private CommerceShippingOptionAccountEntryRel _fetchByA_C(
+		long accountEntryId, long commerceChannelId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1912,9 +1968,11 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 					CommerceShippingOptionAccountEntryRel
 						commerceShippingOptionAccountEntryRel = list.get(0);
 
-					result = commerceShippingOptionAccountEntryRel;
+					if (!readOnlyCache) {
+						result = commerceShippingOptionAccountEntryRel;
 
-					cacheResult(commerceShippingOptionAccountEntryRel);
+						cacheResult(commerceShippingOptionAccountEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1946,8 +2004,8 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 		throws NoSuchShippingOptionAccountEntryRelException {
 
 		CommerceShippingOptionAccountEntryRel
-			commerceShippingOptionAccountEntryRel = findByA_C(
-				accountEntryId, commerceChannelId);
+			commerceShippingOptionAccountEntryRel = _findByA_C(
+				accountEntryId, commerceChannelId, true);
 
 		return remove(commerceShippingOptionAccountEntryRel);
 	}
@@ -2505,6 +2563,15 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShippingOptionAccountEntryRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceShippingOptionAccountEntryRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2563,10 +2630,12 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 					(List<CommerceShippingOptionAccountEntryRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2587,7 +2656,10 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceShippingOptionAccountEntryRel
-				commerceShippingOptionAccountEntryRel : findAll()) {
+				commerceShippingOptionAccountEntryRel :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceShippingOptionAccountEntryRel);
 		}

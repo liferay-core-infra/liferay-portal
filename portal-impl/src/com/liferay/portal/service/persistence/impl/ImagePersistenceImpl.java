@@ -163,6 +163,15 @@ public class ImagePersistenceImpl
 		int size, int start, int end,
 		OrderByComparator<Image> orderByComparator, boolean useFinderCache) {
 
+		return _findByLtSize(
+			size, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Image> _findByLtSize(
+		int size, int start, int end,
+		OrderByComparator<Image> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Image.class);
 
@@ -228,10 +237,12 @@ public class ImagePersistenceImpl
 				list = (List<Image>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -511,8 +522,9 @@ public class ImagePersistenceImpl
 	@Override
 	public void removeByLtSize(int size) {
 		for (Image image :
-				findByLtSize(
-					size, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLtSize(
+					size, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(image);
 		}
@@ -1097,6 +1109,13 @@ public class ImagePersistenceImpl
 		int start, int end, OrderByComparator<Image> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Image> _findAll(
+		int start, int end, OrderByComparator<Image> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Image.class);
 
@@ -1154,10 +1173,12 @@ public class ImagePersistenceImpl
 				list = (List<Image>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1177,7 +1198,10 @@ public class ImagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Image image : findAll()) {
+		for (Image image :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(image);
 		}
 	}

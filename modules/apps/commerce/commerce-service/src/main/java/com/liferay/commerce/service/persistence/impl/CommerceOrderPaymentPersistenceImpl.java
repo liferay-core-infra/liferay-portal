@@ -162,6 +162,16 @@ public class CommerceOrderPaymentPersistenceImpl
 		OrderByComparator<CommerceOrderPayment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceOrderId(
+			commerceOrderId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceOrderPayment> _findByCommerceOrderId(
+		long commerceOrderId, int start, int end,
+		OrderByComparator<CommerceOrderPayment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -238,10 +248,12 @@ public class CommerceOrderPaymentPersistenceImpl
 				list = (List<CommerceOrderPayment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -535,9 +547,9 @@ public class CommerceOrderPaymentPersistenceImpl
 	@Override
 	public void removeByCommerceOrderId(long commerceOrderId) {
 		for (CommerceOrderPayment commerceOrderPayment :
-				findByCommerceOrderId(
-					commerceOrderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCommerceOrderId(
+					commerceOrderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceOrderPayment);
 		}
@@ -1001,6 +1013,14 @@ public class CommerceOrderPaymentPersistenceImpl
 		OrderByComparator<CommerceOrderPayment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceOrderPayment> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceOrderPayment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1055,10 +1075,12 @@ public class CommerceOrderPaymentPersistenceImpl
 				list = (List<CommerceOrderPayment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1078,7 +1100,10 @@ public class CommerceOrderPaymentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceOrderPayment commerceOrderPayment : findAll()) {
+		for (CommerceOrderPayment commerceOrderPayment :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceOrderPayment);
 		}
 	}

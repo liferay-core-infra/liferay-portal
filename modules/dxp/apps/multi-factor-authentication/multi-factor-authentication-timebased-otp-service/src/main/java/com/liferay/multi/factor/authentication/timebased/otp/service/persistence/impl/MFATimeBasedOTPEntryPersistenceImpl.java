@@ -110,7 +110,15 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	public MFATimeBasedOTPEntry findByUserId(long userId)
 		throws NoSuchEntryException {
 
-		MFATimeBasedOTPEntry mfaTimeBasedOTPEntry = fetchByUserId(userId);
+		return _findByUserId(userId, false);
+	}
+
+	private MFATimeBasedOTPEntry _findByUserId(
+			long userId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		MFATimeBasedOTPEntry mfaTimeBasedOTPEntry = _fetchByUserId(
+			userId, true, readOnlyCache);
 
 		if (mfaTimeBasedOTPEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -153,6 +161,12 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	@Override
 	public MFATimeBasedOTPEntry fetchByUserId(
 		long userId, boolean useFinderCache) {
+
+		return _fetchByUserId(userId, useFinderCache, false);
+	}
+
+	private MFATimeBasedOTPEntry _fetchByUserId(
+		long userId, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -207,9 +221,11 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 				else {
 					MFATimeBasedOTPEntry mfaTimeBasedOTPEntry = list.get(0);
 
-					result = mfaTimeBasedOTPEntry;
+					if (!readOnlyCache) {
+						result = mfaTimeBasedOTPEntry;
 
-					cacheResult(mfaTimeBasedOTPEntry);
+						cacheResult(mfaTimeBasedOTPEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -238,7 +254,7 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	public MFATimeBasedOTPEntry removeByUserId(long userId)
 		throws NoSuchEntryException {
 
-		MFATimeBasedOTPEntry mfaTimeBasedOTPEntry = findByUserId(userId);
+		MFATimeBasedOTPEntry mfaTimeBasedOTPEntry = _findByUserId(userId, true);
 
 		return remove(mfaTimeBasedOTPEntry);
 	}
@@ -719,6 +735,14 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 		OrderByComparator<MFATimeBasedOTPEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MFATimeBasedOTPEntry> _findAll(
+		int start, int end,
+		OrderByComparator<MFATimeBasedOTPEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -773,10 +797,12 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 				list = (List<MFATimeBasedOTPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -796,7 +822,10 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MFATimeBasedOTPEntry mfaTimeBasedOTPEntry : findAll()) {
+		for (MFATimeBasedOTPEntry mfaTimeBasedOTPEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mfaTimeBasedOTPEntry);
 		}
 	}

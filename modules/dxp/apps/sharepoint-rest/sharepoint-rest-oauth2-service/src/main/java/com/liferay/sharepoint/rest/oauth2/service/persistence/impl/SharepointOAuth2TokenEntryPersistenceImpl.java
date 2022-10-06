@@ -174,6 +174,15 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 		OrderByComparator<SharepointOAuth2TokenEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharepointOAuth2TokenEntry> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<SharepointOAuth2TokenEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -248,10 +257,12 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 				list = (List<SharepointOAuth2TokenEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -546,8 +557,9 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(sharepointOAuth2TokenEntry);
 		}
@@ -621,8 +633,15 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 			long userId, String configurationPid)
 		throws NoSuch2TokenEntryException {
 
-		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry = fetchByU_C(
-			userId, configurationPid);
+		return _findByU_C(userId, configurationPid, false);
+	}
+
+	private SharepointOAuth2TokenEntry _findByU_C(
+			long userId, String configurationPid, boolean readOnlyCache)
+		throws NoSuch2TokenEntryException {
+
+		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry = _fetchByU_C(
+			userId, configurationPid, true, readOnlyCache);
 
 		if (sharepointOAuth2TokenEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -672,6 +691,13 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 	@Override
 	public SharepointOAuth2TokenEntry fetchByU_C(
 		long userId, String configurationPid, boolean useFinderCache) {
+
+		return _fetchByU_C(userId, configurationPid, useFinderCache, false);
+	}
+
+	private SharepointOAuth2TokenEntry _fetchByU_C(
+		long userId, String configurationPid, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		configurationPid = Objects.toString(configurationPid, "");
 
@@ -747,9 +773,11 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 					SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry =
 						list.get(0);
 
-					result = sharepointOAuth2TokenEntry;
+					if (!readOnlyCache) {
+						result = sharepointOAuth2TokenEntry;
 
-					cacheResult(sharepointOAuth2TokenEntry);
+						cacheResult(sharepointOAuth2TokenEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -780,8 +808,8 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 			long userId, String configurationPid)
 		throws NoSuch2TokenEntryException {
 
-		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry = findByU_C(
-			userId, configurationPid);
+		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry = _findByU_C(
+			userId, configurationPid, true);
 
 		return remove(sharepointOAuth2TokenEntry);
 	}
@@ -1302,6 +1330,14 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 		OrderByComparator<SharepointOAuth2TokenEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SharepointOAuth2TokenEntry> _findAll(
+		int start, int end,
+		OrderByComparator<SharepointOAuth2TokenEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1357,10 +1393,12 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 				list = (List<SharepointOAuth2TokenEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1381,7 +1419,8 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(sharepointOAuth2TokenEntry);
 		}

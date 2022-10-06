@@ -178,6 +178,15 @@ public class NotificationTemplatePersistenceImpl
 		OrderByComparator<NotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationTemplate> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<NotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -263,10 +272,12 @@ public class NotificationTemplatePersistenceImpl
 				list = (List<NotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -931,7 +942,9 @@ public class NotificationTemplatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (NotificationTemplate notificationTemplate :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(notificationTemplate);
 		}
@@ -1155,6 +1168,16 @@ public class NotificationTemplatePersistenceImpl
 		OrderByComparator<NotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<NotificationTemplate> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<NotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1248,10 +1271,12 @@ public class NotificationTemplatePersistenceImpl
 				list = (List<NotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1952,9 +1977,9 @@ public class NotificationTemplatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (NotificationTemplate notificationTemplate :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(notificationTemplate);
 		}
@@ -2532,6 +2557,14 @@ public class NotificationTemplatePersistenceImpl
 		OrderByComparator<NotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NotificationTemplate> _findAll(
+		int start, int end,
+		OrderByComparator<NotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2586,10 +2619,12 @@ public class NotificationTemplatePersistenceImpl
 				list = (List<NotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2609,7 +2644,10 @@ public class NotificationTemplatePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (NotificationTemplate notificationTemplate : findAll()) {
+		for (NotificationTemplate notificationTemplate :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(notificationTemplate);
 		}
 	}

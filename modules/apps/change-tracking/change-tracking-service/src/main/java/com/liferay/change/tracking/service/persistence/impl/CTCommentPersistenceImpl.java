@@ -170,6 +170,16 @@ public class CTCommentPersistenceImpl
 		OrderByComparator<CTComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCtCollectionId(
+			ctCollectionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTComment> _findByCtCollectionId(
+		long ctCollectionId, int start, int end,
+		OrderByComparator<CTComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -244,10 +254,12 @@ public class CTCommentPersistenceImpl
 				list = (List<CTComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -531,9 +543,9 @@ public class CTCommentPersistenceImpl
 	@Override
 	public void removeByCtCollectionId(long ctCollectionId) {
 		for (CTComment ctComment :
-				findByCtCollectionId(
-					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCtCollectionId(
+					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ctComment);
 		}
@@ -665,6 +677,15 @@ public class CTCommentPersistenceImpl
 		OrderByComparator<CTComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCtEntryId(
+			ctEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTComment> _findByCtEntryId(
+		long ctEntryId, int start, int end,
+		OrderByComparator<CTComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -739,10 +760,12 @@ public class CTCommentPersistenceImpl
 				list = (List<CTComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1026,8 +1049,9 @@ public class CTCommentPersistenceImpl
 	@Override
 	public void removeByCtEntryId(long ctEntryId) {
 		for (CTComment ctComment :
-				findByCtEntryId(
-					ctEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCtEntryId(
+					ctEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ctComment);
 		}
@@ -1462,6 +1486,13 @@ public class CTCommentPersistenceImpl
 		int start, int end, OrderByComparator<CTComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTComment> _findAll(
+		int start, int end, OrderByComparator<CTComment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1516,10 +1547,12 @@ public class CTCommentPersistenceImpl
 				list = (List<CTComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1539,7 +1572,10 @@ public class CTCommentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTComment ctComment : findAll()) {
+		for (CTComment ctComment :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctComment);
 		}
 	}

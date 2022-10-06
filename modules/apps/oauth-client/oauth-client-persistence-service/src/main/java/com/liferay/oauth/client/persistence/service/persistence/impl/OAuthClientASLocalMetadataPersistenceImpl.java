@@ -177,6 +177,15 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		OrderByComparator<OAuthClientASLocalMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthClientASLocalMetadata> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<OAuthClientASLocalMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -255,10 +264,12 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 				list = (List<OAuthClientASLocalMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -894,8 +905,9 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (OAuthClientASLocalMetadata oAuthClientASLocalMetadata :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthClientASLocalMetadata);
 		}
@@ -1076,6 +1088,15 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		OrderByComparator<OAuthClientASLocalMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthClientASLocalMetadata> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<OAuthClientASLocalMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1150,10 +1171,12 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 				list = (List<OAuthClientASLocalMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1787,8 +1810,9 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (OAuthClientASLocalMetadata oAuthClientASLocalMetadata :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthClientASLocalMetadata);
 		}
@@ -1909,8 +1933,15 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 			String localWellKnownURI)
 		throws NoSuchOAuthClientASLocalMetadataException {
 
+		return _findByLocalWellKnownURI(localWellKnownURI, false);
+	}
+
+	private OAuthClientASLocalMetadata _findByLocalWellKnownURI(
+			String localWellKnownURI, boolean readOnlyCache)
+		throws NoSuchOAuthClientASLocalMetadataException {
+
 		OAuthClientASLocalMetadata oAuthClientASLocalMetadata =
-			fetchByLocalWellKnownURI(localWellKnownURI);
+			_fetchByLocalWellKnownURI(localWellKnownURI, true, readOnlyCache);
 
 		if (oAuthClientASLocalMetadata == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1955,6 +1986,14 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 	@Override
 	public OAuthClientASLocalMetadata fetchByLocalWellKnownURI(
 		String localWellKnownURI, boolean useFinderCache) {
+
+		return _fetchByLocalWellKnownURI(
+			localWellKnownURI, useFinderCache, false);
+	}
+
+	private OAuthClientASLocalMetadata _fetchByLocalWellKnownURI(
+		String localWellKnownURI, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		localWellKnownURI = Objects.toString(localWellKnownURI, "");
 
@@ -2027,9 +2066,11 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 					OAuthClientASLocalMetadata oAuthClientASLocalMetadata =
 						list.get(0);
 
-					result = oAuthClientASLocalMetadata;
+					if (!readOnlyCache) {
+						result = oAuthClientASLocalMetadata;
 
-					cacheResult(oAuthClientASLocalMetadata);
+						cacheResult(oAuthClientASLocalMetadata);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2060,7 +2101,7 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		throws NoSuchOAuthClientASLocalMetadataException {
 
 		OAuthClientASLocalMetadata oAuthClientASLocalMetadata =
-			findByLocalWellKnownURI(localWellKnownURI);
+			_findByLocalWellKnownURI(localWellKnownURI, true);
 
 		return remove(oAuthClientASLocalMetadata);
 	}
@@ -2585,6 +2626,14 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		OrderByComparator<OAuthClientASLocalMetadata> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthClientASLocalMetadata> _findAll(
+		int start, int end,
+		OrderByComparator<OAuthClientASLocalMetadata> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2640,10 +2689,12 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 				list = (List<OAuthClientASLocalMetadata>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2664,7 +2715,8 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (OAuthClientASLocalMetadata oAuthClientASLocalMetadata :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuthClientASLocalMetadata);
 		}

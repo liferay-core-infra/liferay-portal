@@ -184,6 +184,15 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureLayout> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -272,10 +281,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -577,7 +588,9 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDMStructureLayout ddmStructureLayout :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmStructureLayout);
 		}
@@ -678,7 +691,15 @@ public class DDMStructureLayoutPersistenceImpl
 	public DDMStructureLayout findByUUID_G(String uuid, long groupId)
 		throws NoSuchStructureLayoutException {
 
-		DDMStructureLayout ddmStructureLayout = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DDMStructureLayout _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchStructureLayoutException {
+
+		DDMStructureLayout ddmStructureLayout = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ddmStructureLayout == null) {
 			StringBundler sb = new StringBundler(6);
@@ -726,6 +747,13 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public DDMStructureLayout fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DDMStructureLayout _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -801,9 +829,11 @@ public class DDMStructureLayoutPersistenceImpl
 				else {
 					DDMStructureLayout ddmStructureLayout = list.get(0);
 
-					result = ddmStructureLayout;
+					if (!readOnlyCache) {
+						result = ddmStructureLayout;
 
-					cacheResult(ddmStructureLayout);
+						cacheResult(ddmStructureLayout);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -833,7 +863,8 @@ public class DDMStructureLayoutPersistenceImpl
 	public DDMStructureLayout removeByUUID_G(String uuid, long groupId)
 		throws NoSuchStructureLayoutException {
 
-		DDMStructureLayout ddmStructureLayout = findByUUID_G(uuid, groupId);
+		DDMStructureLayout ddmStructureLayout = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(ddmStructureLayout);
 	}
@@ -1007,6 +1038,16 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructureLayout> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1103,10 +1144,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1428,9 +1471,9 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDMStructureLayout ddmStructureLayout :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStructureLayout);
 		}
@@ -1600,6 +1643,15 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureLayout> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLayout.class);
 
@@ -1675,10 +1727,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1967,8 +2021,9 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DDMStructureLayout ddmStructureLayout :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmStructureLayout);
 		}
@@ -2117,6 +2172,16 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureLayoutKey(
+			structureLayoutKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructureLayout> _findByStructureLayoutKey(
+		String structureLayoutKey, int start, int end,
+		OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		structureLayoutKey = Objects.toString(structureLayoutKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2212,10 +2277,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2522,9 +2589,9 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void removeByStructureLayoutKey(String structureLayoutKey) {
 		for (DDMStructureLayout ddmStructureLayout :
-				findByStructureLayoutKey(
+				_findByStructureLayoutKey(
 					structureLayoutKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStructureLayout);
 		}
@@ -2628,8 +2695,15 @@ public class DDMStructureLayoutPersistenceImpl
 	public DDMStructureLayout findByStructureVersionId(long structureVersionId)
 		throws NoSuchStructureLayoutException {
 
-		DDMStructureLayout ddmStructureLayout = fetchByStructureVersionId(
-			structureVersionId);
+		return _findByStructureVersionId(structureVersionId, false);
+	}
+
+	private DDMStructureLayout _findByStructureVersionId(
+			long structureVersionId, boolean readOnlyCache)
+		throws NoSuchStructureLayoutException {
+
+		DDMStructureLayout ddmStructureLayout = _fetchByStructureVersionId(
+			structureVersionId, true, readOnlyCache);
 
 		if (ddmStructureLayout == null) {
 			StringBundler sb = new StringBundler(4);
@@ -2674,6 +2748,14 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public DDMStructureLayout fetchByStructureVersionId(
 		long structureVersionId, boolean useFinderCache) {
+
+		return _fetchByStructureVersionId(
+			structureVersionId, useFinderCache, false);
+	}
+
+	private DDMStructureLayout _fetchByStructureVersionId(
+		long structureVersionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLayout.class);
@@ -2748,9 +2830,11 @@ public class DDMStructureLayoutPersistenceImpl
 
 					DDMStructureLayout ddmStructureLayout = list.get(0);
 
-					result = ddmStructureLayout;
+					if (!readOnlyCache) {
+						result = ddmStructureLayout;
 
-					cacheResult(ddmStructureLayout);
+						cacheResult(ddmStructureLayout);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2780,8 +2864,8 @@ public class DDMStructureLayoutPersistenceImpl
 			long structureVersionId)
 		throws NoSuchStructureLayoutException {
 
-		DDMStructureLayout ddmStructureLayout = findByStructureVersionId(
-			structureVersionId);
+		DDMStructureLayout ddmStructureLayout = _findByStructureVersionId(
+			structureVersionId, true);
 
 		return remove(ddmStructureLayout);
 	}
@@ -2932,6 +3016,16 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructureLayout> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLayout.class);
 
@@ -3015,10 +3109,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3328,9 +3424,9 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (DDMStructureLayout ddmStructureLayout :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStructureLayout);
 		}
@@ -3425,8 +3521,16 @@ public class DDMStructureLayoutPersistenceImpl
 			long groupId, long classNameId, String structureLayoutKey)
 		throws NoSuchStructureLayoutException {
 
-		DDMStructureLayout ddmStructureLayout = fetchByG_C_S(
-			groupId, classNameId, structureLayoutKey);
+		return _findByG_C_S(groupId, classNameId, structureLayoutKey, false);
+	}
+
+	private DDMStructureLayout _findByG_C_S(
+			long groupId, long classNameId, String structureLayoutKey,
+			boolean readOnlyCache)
+		throws NoSuchStructureLayoutException {
+
+		DDMStructureLayout ddmStructureLayout = _fetchByG_C_S(
+			groupId, classNameId, structureLayoutKey, true, readOnlyCache);
 
 		if (ddmStructureLayout == null) {
 			StringBundler sb = new StringBundler(8);
@@ -3482,6 +3586,14 @@ public class DDMStructureLayoutPersistenceImpl
 	public DDMStructureLayout fetchByG_C_S(
 		long groupId, long classNameId, String structureLayoutKey,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_S(
+			groupId, classNameId, structureLayoutKey, useFinderCache, false);
+	}
+
+	private DDMStructureLayout _fetchByG_C_S(
+		long groupId, long classNameId, String structureLayoutKey,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		structureLayoutKey = Objects.toString(structureLayoutKey, "");
 
@@ -3565,9 +3677,11 @@ public class DDMStructureLayoutPersistenceImpl
 				else {
 					DDMStructureLayout ddmStructureLayout = list.get(0);
 
-					result = ddmStructureLayout;
+					if (!readOnlyCache) {
+						result = ddmStructureLayout;
 
-					cacheResult(ddmStructureLayout);
+						cacheResult(ddmStructureLayout);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3599,8 +3713,8 @@ public class DDMStructureLayoutPersistenceImpl
 			long groupId, long classNameId, String structureLayoutKey)
 		throws NoSuchStructureLayoutException {
 
-		DDMStructureLayout ddmStructureLayout = findByG_C_S(
-			groupId, classNameId, structureLayoutKey);
+		DDMStructureLayout ddmStructureLayout = _findByG_C_S(
+			groupId, classNameId, structureLayoutKey, true);
 
 		return remove(ddmStructureLayout);
 	}
@@ -3796,6 +3910,16 @@ public class DDMStructureLayoutPersistenceImpl
 		int end, OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_SV(
+			groupId, classNameId, structureVersionId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureLayout> _findByG_C_SV(
+		long groupId, long classNameId, long structureVersionId, int start,
+		int end, OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLayout.class);
 
@@ -3888,10 +4012,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4221,9 +4347,9 @@ public class DDMStructureLayoutPersistenceImpl
 		long groupId, long classNameId, long structureVersionId) {
 
 		for (DDMStructureLayout ddmStructureLayout :
-				findByG_C_SV(
+				_findByG_C_SV(
 					groupId, classNameId, structureVersionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmStructureLayout);
 		}
@@ -4953,6 +5079,14 @@ public class DDMStructureLayoutPersistenceImpl
 		OrderByComparator<DDMStructureLayout> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureLayout> _findAll(
+		int start, int end,
+		OrderByComparator<DDMStructureLayout> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLayout.class);
 
@@ -5010,10 +5144,12 @@ public class DDMStructureLayoutPersistenceImpl
 				list = (List<DDMStructureLayout>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5033,7 +5169,10 @@ public class DDMStructureLayoutPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMStructureLayout ddmStructureLayout : findAll()) {
+		for (DDMStructureLayout ddmStructureLayout :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmStructureLayout);
 		}
 	}

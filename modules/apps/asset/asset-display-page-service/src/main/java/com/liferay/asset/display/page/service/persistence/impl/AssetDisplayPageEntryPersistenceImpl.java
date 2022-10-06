@@ -183,6 +183,15 @@ public class AssetDisplayPageEntryPersistenceImpl
 		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetDisplayPageEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class AssetDisplayPageEntryPersistenceImpl
 				list = (List<AssetDisplayPageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -578,7 +589,9 @@ public class AssetDisplayPageEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (AssetDisplayPageEntry assetDisplayPageEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetDisplayPageEntry);
 		}
@@ -679,8 +692,15 @@ public class AssetDisplayPageEntryPersistenceImpl
 	public AssetDisplayPageEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchDisplayPageEntryException {
 
-		AssetDisplayPageEntry assetDisplayPageEntry = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private AssetDisplayPageEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchDisplayPageEntryException {
+
+		AssetDisplayPageEntry assetDisplayPageEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (assetDisplayPageEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -728,6 +748,13 @@ public class AssetDisplayPageEntryPersistenceImpl
 	@Override
 	public AssetDisplayPageEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private AssetDisplayPageEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -804,9 +831,11 @@ public class AssetDisplayPageEntryPersistenceImpl
 				else {
 					AssetDisplayPageEntry assetDisplayPageEntry = list.get(0);
 
-					result = assetDisplayPageEntry;
+					if (!readOnlyCache) {
+						result = assetDisplayPageEntry;
 
-					cacheResult(assetDisplayPageEntry);
+						cacheResult(assetDisplayPageEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -836,8 +865,8 @@ public class AssetDisplayPageEntryPersistenceImpl
 	public AssetDisplayPageEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchDisplayPageEntryException {
 
-		AssetDisplayPageEntry assetDisplayPageEntry = findByUUID_G(
-			uuid, groupId);
+		AssetDisplayPageEntry assetDisplayPageEntry = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(assetDisplayPageEntry);
 	}
@@ -1013,6 +1042,16 @@ public class AssetDisplayPageEntryPersistenceImpl
 		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetDisplayPageEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1109,10 +1148,12 @@ public class AssetDisplayPageEntryPersistenceImpl
 				list = (List<AssetDisplayPageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1435,9 +1476,9 @@ public class AssetDisplayPageEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (AssetDisplayPageEntry assetDisplayPageEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetDisplayPageEntry);
 		}
@@ -1607,6 +1648,15 @@ public class AssetDisplayPageEntryPersistenceImpl
 		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetDisplayPageEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetDisplayPageEntry.class);
 
@@ -1682,10 +1732,12 @@ public class AssetDisplayPageEntryPersistenceImpl
 				list = (List<AssetDisplayPageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1979,8 +2031,9 @@ public class AssetDisplayPageEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (AssetDisplayPageEntry assetDisplayPageEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetDisplayPageEntry);
 		}
@@ -2132,6 +2185,16 @@ public class AssetDisplayPageEntryPersistenceImpl
 		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLayoutPageTemplateEntryId(
+			layoutPageTemplateEntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AssetDisplayPageEntry> _findByLayoutPageTemplateEntryId(
+		long layoutPageTemplateEntryId, int start, int end,
+		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetDisplayPageEntry.class);
 
@@ -2215,10 +2278,12 @@ public class AssetDisplayPageEntryPersistenceImpl
 				list = (List<AssetDisplayPageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2517,9 +2582,9 @@ public class AssetDisplayPageEntryPersistenceImpl
 		long layoutPageTemplateEntryId) {
 
 		for (AssetDisplayPageEntry assetDisplayPageEntry :
-				findByLayoutPageTemplateEntryId(
+				_findByLayoutPageTemplateEntryId(
 					layoutPageTemplateEntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(assetDisplayPageEntry);
 		}
@@ -2610,8 +2675,15 @@ public class AssetDisplayPageEntryPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchDisplayPageEntryException {
 
-		AssetDisplayPageEntry assetDisplayPageEntry = fetchByG_C_C(
-			groupId, classNameId, classPK);
+		return _findByG_C_C(groupId, classNameId, classPK, false);
+	}
+
+	private AssetDisplayPageEntry _findByG_C_C(
+			long groupId, long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchDisplayPageEntryException {
+
+		AssetDisplayPageEntry assetDisplayPageEntry = _fetchByG_C_C(
+			groupId, classNameId, classPK, true, readOnlyCache);
 
 		if (assetDisplayPageEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2666,6 +2738,14 @@ public class AssetDisplayPageEntryPersistenceImpl
 	@Override
 	public AssetDisplayPageEntry fetchByG_C_C(
 		long groupId, long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByG_C_C(
+			groupId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private AssetDisplayPageEntry _fetchByG_C_C(
+		long groupId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetDisplayPageEntry.class);
@@ -2733,9 +2813,11 @@ public class AssetDisplayPageEntryPersistenceImpl
 				else {
 					AssetDisplayPageEntry assetDisplayPageEntry = list.get(0);
 
-					result = assetDisplayPageEntry;
+					if (!readOnlyCache) {
+						result = assetDisplayPageEntry;
 
-					cacheResult(assetDisplayPageEntry);
+						cacheResult(assetDisplayPageEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2767,8 +2849,8 @@ public class AssetDisplayPageEntryPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchDisplayPageEntryException {
 
-		AssetDisplayPageEntry assetDisplayPageEntry = findByG_C_C(
-			groupId, classNameId, classPK);
+		AssetDisplayPageEntry assetDisplayPageEntry = _findByG_C_C(
+			groupId, classNameId, classPK, true);
 
 		return remove(assetDisplayPageEntry);
 	}
@@ -3485,6 +3567,14 @@ public class AssetDisplayPageEntryPersistenceImpl
 		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetDisplayPageEntry> _findAll(
+		int start, int end,
+		OrderByComparator<AssetDisplayPageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetDisplayPageEntry.class);
 
@@ -3542,10 +3632,12 @@ public class AssetDisplayPageEntryPersistenceImpl
 				list = (List<AssetDisplayPageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3565,7 +3657,10 @@ public class AssetDisplayPageEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AssetDisplayPageEntry assetDisplayPageEntry : findAll()) {
+		for (AssetDisplayPageEntry assetDisplayPageEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(assetDisplayPageEntry);
 		}
 	}

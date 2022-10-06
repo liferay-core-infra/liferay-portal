@@ -176,6 +176,15 @@ public class DDMStructureLinkPersistenceImpl
 		OrderByComparator<DDMStructureLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureId(
+			structureId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureLink> _findByStructureId(
+		long structureId, int start, int end,
+		OrderByComparator<DDMStructureLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLink.class);
 
@@ -253,10 +262,12 @@ public class DDMStructureLinkPersistenceImpl
 				list = (List<DDMStructureLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -548,8 +559,9 @@ public class DDMStructureLinkPersistenceImpl
 	@Override
 	public void removeByStructureId(long structureId) {
 		for (DDMStructureLink ddmStructureLink :
-				findByStructureId(
-					structureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStructureId(
+					structureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStructureLink);
 		}
@@ -700,6 +712,16 @@ public class DDMStructureLinkPersistenceImpl
 		OrderByComparator<DDMStructureLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructureLink> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<DDMStructureLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLink.class);
 
@@ -783,10 +805,12 @@ public class DDMStructureLinkPersistenceImpl
 				list = (List<DDMStructureLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1094,9 +1118,9 @@ public class DDMStructureLinkPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (DDMStructureLink ddmStructureLink :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStructureLink);
 		}
@@ -1191,8 +1215,16 @@ public class DDMStructureLinkPersistenceImpl
 			long classNameId, long classPK, long structureId)
 		throws NoSuchStructureLinkException {
 
-		DDMStructureLink ddmStructureLink = fetchByC_C_S(
-			classNameId, classPK, structureId);
+		return _findByC_C_S(classNameId, classPK, structureId, false);
+	}
+
+	private DDMStructureLink _findByC_C_S(
+			long classNameId, long classPK, long structureId,
+			boolean readOnlyCache)
+		throws NoSuchStructureLinkException {
+
+		DDMStructureLink ddmStructureLink = _fetchByC_C_S(
+			classNameId, classPK, structureId, true, readOnlyCache);
 
 		if (ddmStructureLink == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1248,6 +1280,14 @@ public class DDMStructureLinkPersistenceImpl
 	public DDMStructureLink fetchByC_C_S(
 		long classNameId, long classPK, long structureId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_S(
+			classNameId, classPK, structureId, useFinderCache, false);
+	}
+
+	private DDMStructureLink _fetchByC_C_S(
+		long classNameId, long classPK, long structureId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLink.class);
@@ -1314,9 +1354,11 @@ public class DDMStructureLinkPersistenceImpl
 				else {
 					DDMStructureLink ddmStructureLink = list.get(0);
 
-					result = ddmStructureLink;
+					if (!readOnlyCache) {
+						result = ddmStructureLink;
 
-					cacheResult(ddmStructureLink);
+						cacheResult(ddmStructureLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1348,8 +1390,8 @@ public class DDMStructureLinkPersistenceImpl
 			long classNameId, long classPK, long structureId)
 		throws NoSuchStructureLinkException {
 
-		DDMStructureLink ddmStructureLink = findByC_C_S(
-			classNameId, classPK, structureId);
+		DDMStructureLink ddmStructureLink = _findByC_C_S(
+			classNameId, classPK, structureId, true);
 
 		return remove(ddmStructureLink);
 	}
@@ -1981,6 +2023,14 @@ public class DDMStructureLinkPersistenceImpl
 		OrderByComparator<DDMStructureLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureLink> _findAll(
+		int start, int end,
+		OrderByComparator<DDMStructureLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureLink.class);
 
@@ -2038,10 +2088,12 @@ public class DDMStructureLinkPersistenceImpl
 				list = (List<DDMStructureLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2061,7 +2113,10 @@ public class DDMStructureLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMStructureLink ddmStructureLink : findAll()) {
+		for (DDMStructureLink ddmStructureLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmStructureLink);
 		}
 	}

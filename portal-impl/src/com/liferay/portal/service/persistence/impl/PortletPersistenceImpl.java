@@ -156,6 +156,15 @@ public class PortletPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Portlet> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Portlet> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Portlet> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -230,10 +239,12 @@ public class PortletPersistenceImpl
 				list = (List<Portlet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -515,8 +526,9 @@ public class PortletPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Portlet portlet :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(portlet);
 		}
@@ -589,7 +601,15 @@ public class PortletPersistenceImpl
 	public Portlet findByC_P(long companyId, String portletId)
 		throws NoSuchPortletException {
 
-		Portlet portlet = fetchByC_P(companyId, portletId);
+		return _findByC_P(companyId, portletId, false);
+	}
+
+	private Portlet _findByC_P(
+			long companyId, String portletId, boolean readOnlyCache)
+		throws NoSuchPortletException {
+
+		Portlet portlet = _fetchByC_P(
+			companyId, portletId, true, readOnlyCache);
 
 		if (portlet == null) {
 			StringBundler sb = new StringBundler(6);
@@ -637,6 +657,13 @@ public class PortletPersistenceImpl
 	@Override
 	public Portlet fetchByC_P(
 		long companyId, String portletId, boolean useFinderCache) {
+
+		return _fetchByC_P(companyId, portletId, useFinderCache, false);
+	}
+
+	private Portlet _fetchByC_P(
+		long companyId, String portletId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		portletId = Objects.toString(portletId, "");
 
@@ -709,9 +736,11 @@ public class PortletPersistenceImpl
 				else {
 					Portlet portlet = list.get(0);
 
-					result = portlet;
+					if (!readOnlyCache) {
+						result = portlet;
 
-					cacheResult(portlet);
+						cacheResult(portlet);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -741,7 +770,7 @@ public class PortletPersistenceImpl
 	public Portlet removeByC_P(long companyId, String portletId)
 		throws NoSuchPortletException {
 
-		Portlet portlet = findByC_P(companyId, portletId);
+		Portlet portlet = _findByC_P(companyId, portletId, true);
 
 		return remove(portlet);
 	}
@@ -1198,6 +1227,13 @@ public class PortletPersistenceImpl
 		int start, int end, OrderByComparator<Portlet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Portlet> _findAll(
+		int start, int end, OrderByComparator<Portlet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1252,10 +1288,12 @@ public class PortletPersistenceImpl
 				list = (List<Portlet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1275,7 +1313,10 @@ public class PortletPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Portlet portlet : findAll()) {
+		for (Portlet portlet :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(portlet);
 		}
 	}

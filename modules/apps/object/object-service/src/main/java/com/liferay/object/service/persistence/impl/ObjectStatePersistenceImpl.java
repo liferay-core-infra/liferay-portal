@@ -173,6 +173,15 @@ public class ObjectStatePersistenceImpl
 		OrderByComparator<ObjectState> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectState> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectState> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -258,10 +267,12 @@ public class ObjectStatePersistenceImpl
 				list = (List<ObjectState>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,7 +566,9 @@ public class ObjectStatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectState objectState :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectState);
 		}
@@ -710,6 +723,16 @@ public class ObjectStatePersistenceImpl
 		OrderByComparator<ObjectState> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectState> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectState> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -803,10 +826,12 @@ public class ObjectStatePersistenceImpl
 				list = (List<ObjectState>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1124,9 +1149,9 @@ public class ObjectStatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectState objectState :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectState);
 		}
@@ -1285,6 +1310,16 @@ public class ObjectStatePersistenceImpl
 		OrderByComparator<ObjectState> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByListTypeEntryId(
+			listTypeEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectState> _findByListTypeEntryId(
+		long listTypeEntryId, int start, int end,
+		OrderByComparator<ObjectState> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1359,10 +1394,12 @@ public class ObjectStatePersistenceImpl
 				list = (List<ObjectState>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1651,9 +1688,9 @@ public class ObjectStatePersistenceImpl
 	@Override
 	public void removeByListTypeEntryId(long listTypeEntryId) {
 		for (ObjectState objectState :
-				findByListTypeEntryId(
-					listTypeEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByListTypeEntryId(
+					listTypeEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectState);
 		}
@@ -1789,6 +1826,16 @@ public class ObjectStatePersistenceImpl
 		OrderByComparator<ObjectState> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectStateFlowId(
+			objectStateFlowId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectState> _findByObjectStateFlowId(
+		long objectStateFlowId, int start, int end,
+		OrderByComparator<ObjectState> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1866,10 +1913,12 @@ public class ObjectStatePersistenceImpl
 				list = (List<ObjectState>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2159,9 +2208,9 @@ public class ObjectStatePersistenceImpl
 	@Override
 	public void removeByObjectStateFlowId(long objectStateFlowId) {
 		for (ObjectState objectState :
-				findByObjectStateFlowId(
+				_findByObjectStateFlowId(
 					objectStateFlowId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectState);
 		}
@@ -2236,8 +2285,15 @@ public class ObjectStatePersistenceImpl
 			long listTypeEntryId, long objectStateFlowId)
 		throws NoSuchObjectStateException {
 
-		ObjectState objectState = fetchByLTEI_OSFI(
-			listTypeEntryId, objectStateFlowId);
+		return _findByLTEI_OSFI(listTypeEntryId, objectStateFlowId, false);
+	}
+
+	private ObjectState _findByLTEI_OSFI(
+			long listTypeEntryId, long objectStateFlowId, boolean readOnlyCache)
+		throws NoSuchObjectStateException {
+
+		ObjectState objectState = _fetchByLTEI_OSFI(
+			listTypeEntryId, objectStateFlowId, true, readOnlyCache);
 
 		if (objectState == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2287,6 +2343,14 @@ public class ObjectStatePersistenceImpl
 	@Override
 	public ObjectState fetchByLTEI_OSFI(
 		long listTypeEntryId, long objectStateFlowId, boolean useFinderCache) {
+
+		return _fetchByLTEI_OSFI(
+			listTypeEntryId, objectStateFlowId, useFinderCache, false);
+	}
+
+	private ObjectState _fetchByLTEI_OSFI(
+		long listTypeEntryId, long objectStateFlowId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2363,9 +2427,11 @@ public class ObjectStatePersistenceImpl
 
 					ObjectState objectState = list.get(0);
 
-					result = objectState;
+					if (!readOnlyCache) {
+						result = objectState;
 
-					cacheResult(objectState);
+						cacheResult(objectState);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2396,8 +2462,8 @@ public class ObjectStatePersistenceImpl
 			long listTypeEntryId, long objectStateFlowId)
 		throws NoSuchObjectStateException {
 
-		ObjectState objectState = findByLTEI_OSFI(
-			listTypeEntryId, objectStateFlowId);
+		ObjectState objectState = _findByLTEI_OSFI(
+			listTypeEntryId, objectStateFlowId, true);
 
 		return remove(objectState);
 	}
@@ -2884,6 +2950,13 @@ public class ObjectStatePersistenceImpl
 		int start, int end, OrderByComparator<ObjectState> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectState> _findAll(
+		int start, int end, OrderByComparator<ObjectState> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2938,10 +3011,12 @@ public class ObjectStatePersistenceImpl
 				list = (List<ObjectState>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2961,7 +3036,10 @@ public class ObjectStatePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectState objectState : findAll()) {
+		for (ObjectState objectState :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectState);
 		}
 	}

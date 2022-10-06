@@ -156,6 +156,15 @@ public class ContactPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Contact> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Contact> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Contact> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -230,10 +239,12 @@ public class ContactPersistenceImpl
 				list = (List<Contact>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -515,8 +526,9 @@ public class ContactPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Contact contact :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(contact);
 		}
@@ -654,6 +666,16 @@ public class ContactPersistenceImpl
 		long classNameId, long classPK, int start, int end,
 		OrderByComparator<Contact> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Contact> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<Contact> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -734,10 +756,12 @@ public class ContactPersistenceImpl
 				list = (List<Contact>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1043,9 +1067,9 @@ public class ContactPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (Contact contact :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(contact);
 		}
@@ -1488,6 +1512,13 @@ public class ContactPersistenceImpl
 		int start, int end, OrderByComparator<Contact> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Contact> _findAll(
+		int start, int end, OrderByComparator<Contact> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1542,10 +1573,12 @@ public class ContactPersistenceImpl
 				list = (List<Contact>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1565,7 +1598,10 @@ public class ContactPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Contact contact : findAll()) {
+		for (Contact contact :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(contact);
 		}
 	}

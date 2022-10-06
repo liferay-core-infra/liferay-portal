@@ -175,6 +175,15 @@ public class AkismetEntryPersistenceImpl
 		OrderByComparator<AkismetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtModifiedDate(
+			modifiedDate, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AkismetEntry> _findByLtModifiedDate(
+		Date modifiedDate, int start, int end,
+		OrderByComparator<AkismetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -252,10 +261,12 @@ public class AkismetEntryPersistenceImpl
 				list = (List<AkismetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -552,8 +563,9 @@ public class AkismetEntryPersistenceImpl
 	@Override
 	public void removeByLtModifiedDate(Date modifiedDate) {
 		for (AkismetEntry akismetEntry :
-				findByLtModifiedDate(
-					modifiedDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLtModifiedDate(
+					modifiedDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(akismetEntry);
 		}
@@ -640,7 +652,15 @@ public class AkismetEntryPersistenceImpl
 	public AkismetEntry findByC_C(long classNameId, long classPK)
 		throws NoSuchAkismetEntryException {
 
-		AkismetEntry akismetEntry = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private AkismetEntry _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchAkismetEntryException {
+
+		AkismetEntry akismetEntry = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (akismetEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -688,6 +708,13 @@ public class AkismetEntryPersistenceImpl
 	@Override
 	public AkismetEntry fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private AkismetEntry _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -763,9 +790,11 @@ public class AkismetEntryPersistenceImpl
 
 					AkismetEntry akismetEntry = list.get(0);
 
-					result = akismetEntry;
+					if (!readOnlyCache) {
+						result = akismetEntry;
 
-					cacheResult(akismetEntry);
+						cacheResult(akismetEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -795,7 +824,7 @@ public class AkismetEntryPersistenceImpl
 	public AkismetEntry removeByC_C(long classNameId, long classPK)
 		throws NoSuchAkismetEntryException {
 
-		AkismetEntry akismetEntry = findByC_C(classNameId, classPK);
+		AkismetEntry akismetEntry = _findByC_C(classNameId, classPK, true);
 
 		return remove(akismetEntry);
 	}
@@ -1260,6 +1289,13 @@ public class AkismetEntryPersistenceImpl
 		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AkismetEntry> _findAll(
+		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1314,10 +1350,12 @@ public class AkismetEntryPersistenceImpl
 				list = (List<AkismetEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1337,7 +1375,10 @@ public class AkismetEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AkismetEntry akismetEntry : findAll()) {
+		for (AkismetEntry akismetEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(akismetEntry);
 		}
 	}

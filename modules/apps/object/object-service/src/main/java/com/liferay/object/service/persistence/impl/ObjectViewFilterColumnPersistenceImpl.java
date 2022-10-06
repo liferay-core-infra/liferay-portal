@@ -176,6 +176,15 @@ public class ObjectViewFilterColumnPersistenceImpl
 		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectViewFilterColumn> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class ObjectViewFilterColumnPersistenceImpl
 				list = (List<ObjectViewFilterColumn>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -570,7 +581,9 @@ public class ObjectViewFilterColumnPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectViewFilterColumn objectViewFilterColumn :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectViewFilterColumn);
 		}
@@ -727,6 +740,16 @@ public class ObjectViewFilterColumnPersistenceImpl
 		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectViewFilterColumn> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -820,10 +843,12 @@ public class ObjectViewFilterColumnPersistenceImpl
 				list = (List<ObjectViewFilterColumn>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1146,9 +1171,9 @@ public class ObjectViewFilterColumnPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectViewFilterColumn objectViewFilterColumn :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectViewFilterColumn);
 		}
@@ -1307,6 +1332,15 @@ public class ObjectViewFilterColumnPersistenceImpl
 		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectViewId(
+			objectViewId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectViewFilterColumn> _findByObjectViewId(
+		long objectViewId, int start, int end,
+		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1383,10 +1417,12 @@ public class ObjectViewFilterColumnPersistenceImpl
 				list = (List<ObjectViewFilterColumn>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1680,8 +1716,9 @@ public class ObjectViewFilterColumnPersistenceImpl
 	@Override
 	public void removeByObjectViewId(long objectViewId) {
 		for (ObjectViewFilterColumn objectViewFilterColumn :
-				findByObjectViewId(
-					objectViewId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByObjectViewId(
+					objectViewId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectViewFilterColumn);
 		}
@@ -1823,6 +1860,16 @@ public class ObjectViewFilterColumnPersistenceImpl
 		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOVI_OFN(
+			objectViewId, objectFieldName, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectViewFilterColumn> _findByOVI_OFN(
+		long objectViewId, String objectFieldName, int start, int end,
+		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		objectFieldName = Objects.toString(objectFieldName, "");
 
 		FinderPath finderPath = null;
@@ -1918,10 +1965,12 @@ public class ObjectViewFilterColumnPersistenceImpl
 				list = (List<ObjectViewFilterColumn>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2245,9 +2294,9 @@ public class ObjectViewFilterColumnPersistenceImpl
 	@Override
 	public void removeByOVI_OFN(long objectViewId, String objectFieldName) {
 		for (ObjectViewFilterColumn objectViewFilterColumn :
-				findByOVI_OFN(
+				_findByOVI_OFN(
 					objectViewId, objectFieldName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectViewFilterColumn);
 		}
@@ -2759,6 +2808,14 @@ public class ObjectViewFilterColumnPersistenceImpl
 		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectViewFilterColumn> _findAll(
+		int start, int end,
+		OrderByComparator<ObjectViewFilterColumn> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2813,10 +2870,12 @@ public class ObjectViewFilterColumnPersistenceImpl
 				list = (List<ObjectViewFilterColumn>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2836,7 +2895,10 @@ public class ObjectViewFilterColumnPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectViewFilterColumn objectViewFilterColumn : findAll()) {
+		for (ObjectViewFilterColumn objectViewFilterColumn :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectViewFilterColumn);
 		}
 	}

@@ -170,6 +170,15 @@ public class COREntryRelPersistenceImpl
 		OrderByComparator<COREntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCOREntryId(
+			COREntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<COREntryRel> _findByCOREntryId(
+		long COREntryId, int start, int end,
+		OrderByComparator<COREntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -244,10 +253,12 @@ public class COREntryRelPersistenceImpl
 				list = (List<COREntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -531,8 +542,9 @@ public class COREntryRelPersistenceImpl
 	@Override
 	public void removeByCOREntryId(long COREntryId) {
 		for (COREntryRel corEntryRel :
-				findByCOREntryId(
-					COREntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCOREntryId(
+					COREntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(corEntryRel);
 		}
@@ -672,6 +684,16 @@ public class COREntryRelPersistenceImpl
 		OrderByComparator<COREntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, COREntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<COREntryRel> _findByC_C(
+		long classNameId, long COREntryId, int start, int end,
+		OrderByComparator<COREntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -752,10 +774,12 @@ public class COREntryRelPersistenceImpl
 				list = (List<COREntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1062,9 +1086,9 @@ public class COREntryRelPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long COREntryId) {
 		for (COREntryRel corEntryRel :
-				findByC_C(
+				_findByC_C(
 					classNameId, COREntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(corEntryRel);
 		}
@@ -1147,8 +1171,16 @@ public class COREntryRelPersistenceImpl
 			long classNameId, long classPK, long COREntryId)
 		throws NoSuchCOREntryRelException {
 
-		COREntryRel corEntryRel = fetchByC_C_C(
-			classNameId, classPK, COREntryId);
+		return _findByC_C_C(classNameId, classPK, COREntryId, false);
+	}
+
+	private COREntryRel _findByC_C_C(
+			long classNameId, long classPK, long COREntryId,
+			boolean readOnlyCache)
+		throws NoSuchCOREntryRelException {
+
+		COREntryRel corEntryRel = _fetchByC_C_C(
+			classNameId, classPK, COREntryId, true, readOnlyCache);
 
 		if (corEntryRel == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1204,6 +1236,14 @@ public class COREntryRelPersistenceImpl
 	public COREntryRel fetchByC_C_C(
 		long classNameId, long classPK, long COREntryId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			classNameId, classPK, COREntryId, useFinderCache, false);
+	}
+
+	private COREntryRel _fetchByC_C_C(
+		long classNameId, long classPK, long COREntryId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1267,9 +1307,11 @@ public class COREntryRelPersistenceImpl
 				else {
 					COREntryRel corEntryRel = list.get(0);
 
-					result = corEntryRel;
+					if (!readOnlyCache) {
+						result = corEntryRel;
 
-					cacheResult(corEntryRel);
+						cacheResult(corEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1301,7 +1343,8 @@ public class COREntryRelPersistenceImpl
 			long classNameId, long classPK, long COREntryId)
 		throws NoSuchCOREntryRelException {
 
-		COREntryRel corEntryRel = findByC_C_C(classNameId, classPK, COREntryId);
+		COREntryRel corEntryRel = _findByC_C_C(
+			classNameId, classPK, COREntryId, true);
 
 		return remove(corEntryRel);
 	}
@@ -1780,6 +1823,13 @@ public class COREntryRelPersistenceImpl
 		int start, int end, OrderByComparator<COREntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<COREntryRel> _findAll(
+		int start, int end, OrderByComparator<COREntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1834,10 +1884,12 @@ public class COREntryRelPersistenceImpl
 				list = (List<COREntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1857,7 +1909,10 @@ public class COREntryRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (COREntryRel corEntryRel : findAll()) {
+		for (COREntryRel corEntryRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(corEntryRel);
 		}
 	}

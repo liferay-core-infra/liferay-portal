@@ -190,6 +190,18 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceShippingFixedOptionId(
+			commerceShippingFixedOptionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceShippingFixedOptionQualifier>
+		_findByCommerceShippingFixedOptionId(
+			long commerceShippingFixedOptionId, int start, int end,
+			OrderByComparator<CommerceShippingFixedOptionQualifier>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -276,10 +288,12 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 					(List<CommerceShippingFixedOptionQualifier>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -603,9 +617,9 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 
 		for (CommerceShippingFixedOptionQualifier
 				commerceShippingFixedOptionQualifier :
-					findByCommerceShippingFixedOptionId(
+					_findByCommerceShippingFixedOptionId(
 						commerceShippingFixedOptionId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceShippingFixedOptionQualifier);
 		}
@@ -758,6 +772,18 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, commerceShippingFixedOptionId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShippingFixedOptionQualifier> _findByC_C(
+		long classNameId, long commerceShippingFixedOptionId, int start,
+		int end,
+		OrderByComparator<CommerceShippingFixedOptionQualifier>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -851,10 +877,12 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 					(List<CommerceShippingFixedOptionQualifier>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1183,9 +1211,10 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 
 		for (CommerceShippingFixedOptionQualifier
 				commerceShippingFixedOptionQualifier :
-					findByC_C(
+					_findByC_C(
 						classNameId, commerceShippingFixedOptionId,
-						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceShippingFixedOptionQualifier);
 		}
@@ -1273,9 +1302,19 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 			long classNameId, long classPK, long commerceShippingFixedOptionId)
 		throws NoSuchShippingFixedOptionQualifierException {
 
+		return _findByC_C_C(
+			classNameId, classPK, commerceShippingFixedOptionId, false);
+	}
+
+	private CommerceShippingFixedOptionQualifier _findByC_C_C(
+			long classNameId, long classPK, long commerceShippingFixedOptionId,
+			boolean readOnlyCache)
+		throws NoSuchShippingFixedOptionQualifierException {
+
 		CommerceShippingFixedOptionQualifier
-			commerceShippingFixedOptionQualifier = fetchByC_C_C(
-				classNameId, classPK, commerceShippingFixedOptionId);
+			commerceShippingFixedOptionQualifier = _fetchByC_C_C(
+				classNameId, classPK, commerceShippingFixedOptionId, true,
+				readOnlyCache);
 
 		if (commerceShippingFixedOptionQualifier == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1333,6 +1372,15 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 	public CommerceShippingFixedOptionQualifier fetchByC_C_C(
 		long classNameId, long classPK, long commerceShippingFixedOptionId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			classNameId, classPK, commerceShippingFixedOptionId, useFinderCache,
+			false);
+	}
+
+	private CommerceShippingFixedOptionQualifier _fetchByC_C_C(
+		long classNameId, long classPK, long commerceShippingFixedOptionId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1405,9 +1453,11 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 					CommerceShippingFixedOptionQualifier
 						commerceShippingFixedOptionQualifier = list.get(0);
 
-					result = commerceShippingFixedOptionQualifier;
+					if (!readOnlyCache) {
+						result = commerceShippingFixedOptionQualifier;
 
-					cacheResult(commerceShippingFixedOptionQualifier);
+						cacheResult(commerceShippingFixedOptionQualifier);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1440,8 +1490,8 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 		throws NoSuchShippingFixedOptionQualifierException {
 
 		CommerceShippingFixedOptionQualifier
-			commerceShippingFixedOptionQualifier = findByC_C_C(
-				classNameId, classPK, commerceShippingFixedOptionId);
+			commerceShippingFixedOptionQualifier = _findByC_C_C(
+				classNameId, classPK, commerceShippingFixedOptionId, true);
 
 		return remove(commerceShippingFixedOptionQualifier);
 	}
@@ -2015,6 +2065,15 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShippingFixedOptionQualifier> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceShippingFixedOptionQualifier>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2073,10 +2132,12 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 					(List<CommerceShippingFixedOptionQualifier>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2097,7 +2158,10 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceShippingFixedOptionQualifier
-				commerceShippingFixedOptionQualifier : findAll()) {
+				commerceShippingFixedOptionQualifier :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceShippingFixedOptionQualifier);
 		}

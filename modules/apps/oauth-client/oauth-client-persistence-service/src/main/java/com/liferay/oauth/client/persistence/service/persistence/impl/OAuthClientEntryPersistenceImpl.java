@@ -173,6 +173,15 @@ public class OAuthClientEntryPersistenceImpl
 		OrderByComparator<OAuthClientEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthClientEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<OAuthClientEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -247,10 +256,12 @@ public class OAuthClientEntryPersistenceImpl
 				list = (List<OAuthClientEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -874,8 +885,9 @@ public class OAuthClientEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (OAuthClientEntry oAuthClientEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthClientEntry);
 		}
@@ -1056,6 +1068,15 @@ public class OAuthClientEntryPersistenceImpl
 		OrderByComparator<OAuthClientEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthClientEntry> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<OAuthClientEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1128,10 +1149,12 @@ public class OAuthClientEntryPersistenceImpl
 				list = (List<OAuthClientEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1753,8 +1776,9 @@ public class OAuthClientEntryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (OAuthClientEntry oAuthClientEntry :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthClientEntry);
 		}
@@ -1945,6 +1969,16 @@ public class OAuthClientEntryPersistenceImpl
 		OrderByComparator<OAuthClientEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, authServerWellKnownURI, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<OAuthClientEntry> _findByC_A(
+		long companyId, String authServerWellKnownURI, int start, int end,
+		OrderByComparator<OAuthClientEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		authServerWellKnownURI = Objects.toString(authServerWellKnownURI, "");
 
 		FinderPath finderPath = null;
@@ -2039,10 +2073,12 @@ public class OAuthClientEntryPersistenceImpl
 				list = (List<OAuthClientEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2751,9 +2787,9 @@ public class OAuthClientEntryPersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, String authServerWellKnownURI) {
 		for (OAuthClientEntry oAuthClientEntry :
-				findByC_A(
+				_findByC_A(
 					companyId, authServerWellKnownURI, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuthClientEntry);
 		}
@@ -2918,8 +2954,16 @@ public class OAuthClientEntryPersistenceImpl
 			long companyId, String authServerWellKnownURI, String clientId)
 		throws NoSuchOAuthClientEntryException {
 
-		OAuthClientEntry oAuthClientEntry = fetchByC_A_C(
-			companyId, authServerWellKnownURI, clientId);
+		return _findByC_A_C(companyId, authServerWellKnownURI, clientId, false);
+	}
+
+	private OAuthClientEntry _findByC_A_C(
+			long companyId, String authServerWellKnownURI, String clientId,
+			boolean readOnlyCache)
+		throws NoSuchOAuthClientEntryException {
+
+		OAuthClientEntry oAuthClientEntry = _fetchByC_A_C(
+			companyId, authServerWellKnownURI, clientId, true, readOnlyCache);
 
 		if (oAuthClientEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2975,6 +3019,14 @@ public class OAuthClientEntryPersistenceImpl
 	public OAuthClientEntry fetchByC_A_C(
 		long companyId, String authServerWellKnownURI, String clientId,
 		boolean useFinderCache) {
+
+		return _fetchByC_A_C(
+			companyId, authServerWellKnownURI, clientId, useFinderCache, false);
+	}
+
+	private OAuthClientEntry _fetchByC_A_C(
+		long companyId, String authServerWellKnownURI, String clientId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		authServerWellKnownURI = Objects.toString(authServerWellKnownURI, "");
 		clientId = Objects.toString(clientId, "");
@@ -3067,9 +3119,11 @@ public class OAuthClientEntryPersistenceImpl
 				else {
 					OAuthClientEntry oAuthClientEntry = list.get(0);
 
-					result = oAuthClientEntry;
+					if (!readOnlyCache) {
+						result = oAuthClientEntry;
 
-					cacheResult(oAuthClientEntry);
+						cacheResult(oAuthClientEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3101,8 +3155,8 @@ public class OAuthClientEntryPersistenceImpl
 			long companyId, String authServerWellKnownURI, String clientId)
 		throws NoSuchOAuthClientEntryException {
 
-		OAuthClientEntry oAuthClientEntry = findByC_A_C(
-			companyId, authServerWellKnownURI, clientId);
+		OAuthClientEntry oAuthClientEntry = _findByC_A_C(
+			companyId, authServerWellKnownURI, clientId, true);
 
 		return remove(oAuthClientEntry);
 	}
@@ -3626,6 +3680,14 @@ public class OAuthClientEntryPersistenceImpl
 		OrderByComparator<OAuthClientEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthClientEntry> _findAll(
+		int start, int end,
+		OrderByComparator<OAuthClientEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3680,10 +3742,12 @@ public class OAuthClientEntryPersistenceImpl
 				list = (List<OAuthClientEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3703,7 +3767,10 @@ public class OAuthClientEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OAuthClientEntry oAuthClientEntry : findAll()) {
+		for (OAuthClientEntry oAuthClientEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(oAuthClientEntry);
 		}
 	}

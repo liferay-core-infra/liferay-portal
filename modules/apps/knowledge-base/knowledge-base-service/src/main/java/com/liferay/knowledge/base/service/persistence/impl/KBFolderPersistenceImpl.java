@@ -174,6 +174,15 @@ public class KBFolderPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBFolder> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -259,10 +268,12 @@ public class KBFolderPersistenceImpl
 				list = (List<KBFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -556,7 +567,9 @@ public class KBFolderPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (KBFolder kbFolder :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbFolder);
 		}
@@ -645,7 +658,14 @@ public class KBFolderPersistenceImpl
 	public KBFolder findByUUID_G(String uuid, long groupId)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private KBFolder _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFolderException {
+
+		KBFolder kbFolder = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (kbFolder == null) {
 			StringBundler sb = new StringBundler(6);
@@ -693,6 +713,13 @@ public class KBFolderPersistenceImpl
 	@Override
 	public KBFolder fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private KBFolder _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -765,9 +792,11 @@ public class KBFolderPersistenceImpl
 				else {
 					KBFolder kbFolder = list.get(0);
 
-					result = kbFolder;
+					if (!readOnlyCache) {
+						result = kbFolder;
 
-					cacheResult(kbFolder);
+						cacheResult(kbFolder);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -797,7 +826,7 @@ public class KBFolderPersistenceImpl
 	public KBFolder removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = findByUUID_G(uuid, groupId);
+		KBFolder kbFolder = _findByUUID_G(uuid, groupId, true);
 
 		return remove(kbFolder);
 	}
@@ -958,6 +987,16 @@ public class KBFolderPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBFolder> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1051,10 +1090,12 @@ public class KBFolderPersistenceImpl
 				list = (List<KBFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1371,9 +1412,9 @@ public class KBFolderPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (KBFolder kbFolder :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbFolder);
 		}
@@ -1528,6 +1569,15 @@ public class KBFolderPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBFolder> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1602,10 +1652,12 @@ public class KBFolderPersistenceImpl
 				list = (List<KBFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1888,8 +1940,9 @@ public class KBFolderPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (KBFolder kbFolder :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbFolder);
 		}
@@ -2028,6 +2081,16 @@ public class KBFolderPersistenceImpl
 		long groupId, long parentKBFolderId, int start, int end,
 		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_P(
+			groupId, parentKBFolderId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBFolder> _findByG_P(
+		long groupId, long parentKBFolderId, int start, int end,
+		OrderByComparator<KBFolder> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2108,10 +2171,12 @@ public class KBFolderPersistenceImpl
 				list = (List<KBFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2757,9 +2822,9 @@ public class KBFolderPersistenceImpl
 	@Override
 	public void removeByG_P(long groupId, long parentKBFolderId) {
 		for (KBFolder kbFolder :
-				findByG_P(
+				_findByG_P(
 					groupId, parentKBFolderId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbFolder);
 		}
@@ -2895,7 +2960,16 @@ public class KBFolderPersistenceImpl
 			long groupId, long parentKBFolderId, String name)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = fetchByG_P_N(groupId, parentKBFolderId, name);
+		return _findByG_P_N(groupId, parentKBFolderId, name, false);
+	}
+
+	private KBFolder _findByG_P_N(
+			long groupId, long parentKBFolderId, String name,
+			boolean readOnlyCache)
+		throws NoSuchFolderException {
+
+		KBFolder kbFolder = _fetchByG_P_N(
+			groupId, parentKBFolderId, name, true, readOnlyCache);
 
 		if (kbFolder == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2951,6 +3025,14 @@ public class KBFolderPersistenceImpl
 	public KBFolder fetchByG_P_N(
 		long groupId, long parentKBFolderId, String name,
 		boolean useFinderCache) {
+
+		return _fetchByG_P_N(
+			groupId, parentKBFolderId, name, useFinderCache, false);
+	}
+
+	private KBFolder _fetchByG_P_N(
+		long groupId, long parentKBFolderId, String name,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -3044,9 +3126,11 @@ public class KBFolderPersistenceImpl
 
 					KBFolder kbFolder = list.get(0);
 
-					result = kbFolder;
+					if (!readOnlyCache) {
+						result = kbFolder;
 
-					cacheResult(kbFolder);
+						cacheResult(kbFolder);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3078,7 +3162,7 @@ public class KBFolderPersistenceImpl
 			long groupId, long parentKBFolderId, String name)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = findByG_P_N(groupId, parentKBFolderId, name);
+		KBFolder kbFolder = _findByG_P_N(groupId, parentKBFolderId, name, true);
 
 		return remove(kbFolder);
 	}
@@ -3184,7 +3268,16 @@ public class KBFolderPersistenceImpl
 			long groupId, long parentKBFolderId, String urlTitle)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = fetchByG_P_UT(groupId, parentKBFolderId, urlTitle);
+		return _findByG_P_UT(groupId, parentKBFolderId, urlTitle, false);
+	}
+
+	private KBFolder _findByG_P_UT(
+			long groupId, long parentKBFolderId, String urlTitle,
+			boolean readOnlyCache)
+		throws NoSuchFolderException {
+
+		KBFolder kbFolder = _fetchByG_P_UT(
+			groupId, parentKBFolderId, urlTitle, true, readOnlyCache);
 
 		if (kbFolder == null) {
 			StringBundler sb = new StringBundler(8);
@@ -3240,6 +3333,14 @@ public class KBFolderPersistenceImpl
 	public KBFolder fetchByG_P_UT(
 		long groupId, long parentKBFolderId, String urlTitle,
 		boolean useFinderCache) {
+
+		return _fetchByG_P_UT(
+			groupId, parentKBFolderId, urlTitle, useFinderCache, false);
+	}
+
+	private KBFolder _fetchByG_P_UT(
+		long groupId, long parentKBFolderId, String urlTitle,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		urlTitle = Objects.toString(urlTitle, "");
 
@@ -3334,9 +3435,11 @@ public class KBFolderPersistenceImpl
 
 					KBFolder kbFolder = list.get(0);
 
-					result = kbFolder;
+					if (!readOnlyCache) {
+						result = kbFolder;
 
-					cacheResult(kbFolder);
+						cacheResult(kbFolder);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3368,7 +3471,8 @@ public class KBFolderPersistenceImpl
 			long groupId, long parentKBFolderId, String urlTitle)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = findByG_P_UT(groupId, parentKBFolderId, urlTitle);
+		KBFolder kbFolder = _findByG_P_UT(
+			groupId, parentKBFolderId, urlTitle, true);
 
 		return remove(kbFolder);
 	}
@@ -3476,7 +3580,15 @@ public class KBFolderPersistenceImpl
 	public KBFolder findByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = fetchByG_ERC(groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private KBFolder _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchFolderException {
+
+		KBFolder kbFolder = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (kbFolder == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3524,6 +3636,14 @@ public class KBFolderPersistenceImpl
 	@Override
 	public KBFolder fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private KBFolder _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3597,9 +3717,11 @@ public class KBFolderPersistenceImpl
 				else {
 					KBFolder kbFolder = list.get(0);
 
-					result = kbFolder;
+					if (!readOnlyCache) {
+						result = kbFolder;
 
-					cacheResult(kbFolder);
+						cacheResult(kbFolder);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3629,7 +3751,7 @@ public class KBFolderPersistenceImpl
 	public KBFolder removeByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchFolderException {
 
-		KBFolder kbFolder = findByG_ERC(groupId, externalReferenceCode);
+		KBFolder kbFolder = _findByG_ERC(groupId, externalReferenceCode, true);
 
 		return remove(kbFolder);
 	}
@@ -4174,6 +4296,13 @@ public class KBFolderPersistenceImpl
 		int start, int end, OrderByComparator<KBFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBFolder> _findAll(
+		int start, int end, OrderByComparator<KBFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4228,10 +4357,12 @@ public class KBFolderPersistenceImpl
 				list = (List<KBFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4251,7 +4382,10 @@ public class KBFolderPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KBFolder kbFolder : findAll()) {
+		for (KBFolder kbFolder :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kbFolder);
 		}
 	}

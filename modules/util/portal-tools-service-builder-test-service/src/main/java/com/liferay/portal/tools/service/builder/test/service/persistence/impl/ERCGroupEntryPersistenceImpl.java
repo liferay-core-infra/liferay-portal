@@ -158,6 +158,15 @@ public class ERCGroupEntryPersistenceImpl
 		OrderByComparator<ERCGroupEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ERCGroupEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ERCGroupEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -243,10 +252,12 @@ public class ERCGroupEntryPersistenceImpl
 				list = (List<ERCGroupEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,7 +553,9 @@ public class ERCGroupEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ERCGroupEntry ercGroupEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ercGroupEntry);
 		}
@@ -631,7 +644,15 @@ public class ERCGroupEntryPersistenceImpl
 	public ERCGroupEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchERCGroupEntryException {
 
-		ERCGroupEntry ercGroupEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private ERCGroupEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchERCGroupEntryException {
+
+		ERCGroupEntry ercGroupEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ercGroupEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -679,6 +700,13 @@ public class ERCGroupEntryPersistenceImpl
 	@Override
 	public ERCGroupEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private ERCGroupEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -751,9 +779,11 @@ public class ERCGroupEntryPersistenceImpl
 				else {
 					ERCGroupEntry ercGroupEntry = list.get(0);
 
-					result = ercGroupEntry;
+					if (!readOnlyCache) {
+						result = ercGroupEntry;
 
-					cacheResult(ercGroupEntry);
+						cacheResult(ercGroupEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -783,7 +813,7 @@ public class ERCGroupEntryPersistenceImpl
 	public ERCGroupEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchERCGroupEntryException {
 
-		ERCGroupEntry ercGroupEntry = findByUUID_G(uuid, groupId);
+		ERCGroupEntry ercGroupEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(ercGroupEntry);
 	}
@@ -945,6 +975,16 @@ public class ERCGroupEntryPersistenceImpl
 		OrderByComparator<ERCGroupEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ERCGroupEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ERCGroupEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1038,10 +1078,12 @@ public class ERCGroupEntryPersistenceImpl
 				list = (List<ERCGroupEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1362,9 +1404,9 @@ public class ERCGroupEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ERCGroupEntry ercGroupEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ercGroupEntry);
 		}
@@ -1461,8 +1503,15 @@ public class ERCGroupEntryPersistenceImpl
 	public ERCGroupEntry findByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchERCGroupEntryException {
 
-		ERCGroupEntry ercGroupEntry = fetchByG_ERC(
-			groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private ERCGroupEntry _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchERCGroupEntryException {
+
+		ERCGroupEntry ercGroupEntry = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (ercGroupEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1512,6 +1561,14 @@ public class ERCGroupEntryPersistenceImpl
 	@Override
 	public ERCGroupEntry fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private ERCGroupEntry _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -1585,9 +1642,11 @@ public class ERCGroupEntryPersistenceImpl
 				else {
 					ERCGroupEntry ercGroupEntry = list.get(0);
 
-					result = ercGroupEntry;
+					if (!readOnlyCache) {
+						result = ercGroupEntry;
 
-					cacheResult(ercGroupEntry);
+						cacheResult(ercGroupEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1618,8 +1677,8 @@ public class ERCGroupEntryPersistenceImpl
 			long groupId, String externalReferenceCode)
 		throws NoSuchERCGroupEntryException {
 
-		ERCGroupEntry ercGroupEntry = findByG_ERC(
-			groupId, externalReferenceCode);
+		ERCGroupEntry ercGroupEntry = _findByG_ERC(
+			groupId, externalReferenceCode, true);
 
 		return remove(ercGroupEntry);
 	}
@@ -2118,6 +2177,13 @@ public class ERCGroupEntryPersistenceImpl
 		int start, int end, OrderByComparator<ERCGroupEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ERCGroupEntry> _findAll(
+		int start, int end, OrderByComparator<ERCGroupEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2172,10 +2238,12 @@ public class ERCGroupEntryPersistenceImpl
 				list = (List<ERCGroupEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2195,7 +2263,10 @@ public class ERCGroupEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ERCGroupEntry ercGroupEntry : findAll()) {
+		for (ERCGroupEntry ercGroupEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ercGroupEntry);
 		}
 	}

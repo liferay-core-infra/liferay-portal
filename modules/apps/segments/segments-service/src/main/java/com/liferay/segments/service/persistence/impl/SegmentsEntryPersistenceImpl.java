@@ -183,6 +183,15 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -570,7 +581,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SegmentsEntry segmentsEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsEntry);
 		}
@@ -671,7 +684,15 @@ public class SegmentsEntryPersistenceImpl
 	public SegmentsEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		SegmentsEntry segmentsEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private SegmentsEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		SegmentsEntry segmentsEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (segmentsEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -719,6 +740,13 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public SegmentsEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private SegmentsEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -794,9 +822,11 @@ public class SegmentsEntryPersistenceImpl
 				else {
 					SegmentsEntry segmentsEntry = list.get(0);
 
-					result = segmentsEntry;
+					if (!readOnlyCache) {
+						result = segmentsEntry;
 
-					cacheResult(segmentsEntry);
+						cacheResult(segmentsEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -826,7 +856,7 @@ public class SegmentsEntryPersistenceImpl
 	public SegmentsEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		SegmentsEntry segmentsEntry = findByUUID_G(uuid, groupId);
+		SegmentsEntry segmentsEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(segmentsEntry);
 	}
@@ -1000,6 +1030,16 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1096,10 +1136,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1420,9 +1462,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SegmentsEntry segmentsEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsEntry);
 		}
@@ -1591,6 +1633,15 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntry.class);
 
@@ -1666,10 +1717,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2493,6 +2546,15 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2581,12 +2643,14 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2608,8 +2672,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SegmentsEntry segmentsEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsEntry);
 		}
@@ -2944,6 +3009,15 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySource(
+			source, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findBySource(
+		String source, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		source = Objects.toString(source, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3032,10 +3106,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3333,8 +3409,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeBySource(String source) {
 		for (SegmentsEntry segmentsEntry :
-				findBySource(
-					source, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findBySource(
+					source, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsEntry);
 		}
@@ -3493,6 +3570,15 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByType(
+		String type, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3581,10 +3667,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3880,7 +3968,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByType(String type) {
 		for (SegmentsEntry segmentsEntry :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsEntry);
 		}
@@ -3981,7 +4071,15 @@ public class SegmentsEntryPersistenceImpl
 	public SegmentsEntry findByG_S(long groupId, String segmentsEntryKey)
 		throws NoSuchEntryException {
 
-		SegmentsEntry segmentsEntry = fetchByG_S(groupId, segmentsEntryKey);
+		return _findByG_S(groupId, segmentsEntryKey, false);
+	}
+
+	private SegmentsEntry _findByG_S(
+			long groupId, String segmentsEntryKey, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		SegmentsEntry segmentsEntry = _fetchByG_S(
+			groupId, segmentsEntryKey, true, readOnlyCache);
 
 		if (segmentsEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4029,6 +4127,13 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public SegmentsEntry fetchByG_S(
 		long groupId, String segmentsEntryKey, boolean useFinderCache) {
+
+		return _fetchByG_S(groupId, segmentsEntryKey, useFinderCache, false);
+	}
+
+	private SegmentsEntry _fetchByG_S(
+		long groupId, String segmentsEntryKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		segmentsEntryKey = Objects.toString(segmentsEntryKey, "");
 
@@ -4104,9 +4209,11 @@ public class SegmentsEntryPersistenceImpl
 				else {
 					SegmentsEntry segmentsEntry = list.get(0);
 
-					result = segmentsEntry;
+					if (!readOnlyCache) {
+						result = segmentsEntry;
 
-					cacheResult(segmentsEntry);
+						cacheResult(segmentsEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4136,7 +4243,8 @@ public class SegmentsEntryPersistenceImpl
 	public SegmentsEntry removeByG_S(long groupId, String segmentsEntryKey)
 		throws NoSuchEntryException {
 
-		SegmentsEntry segmentsEntry = findByG_S(groupId, segmentsEntryKey);
+		SegmentsEntry segmentsEntry = _findByG_S(
+			groupId, segmentsEntryKey, true);
 
 		return remove(segmentsEntry);
 	}
@@ -4310,6 +4418,16 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsEntry> _findByG_A(
+		long groupId, boolean active, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntry.class);
 
@@ -4393,10 +4511,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5274,6 +5394,16 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupIds, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsEntry> _findByG_A(
+		long[] groupIds, boolean active, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -5373,11 +5503,14 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_A, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_A, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5400,9 +5533,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByG_A(long groupId, boolean active) {
 		for (SegmentsEntry segmentsEntry :
-				findByG_A(
-					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_A(
+					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsEntry);
 		}
@@ -5777,6 +5910,15 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_T(
+			active, type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByA_T(
+		boolean active, String type, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -5873,10 +6015,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6195,8 +6339,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByA_T(boolean active, String type) {
 		for (SegmentsEntry segmentsEntry :
-				findByA_T(
-					active, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByA_T(
+					active, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsEntry);
 		}
@@ -6378,6 +6523,16 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_T(
+			groupId, active, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByG_A_T(
+		long groupId, boolean active, String type, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -6479,10 +6634,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7457,6 +7614,16 @@ public class SegmentsEntryPersistenceImpl
 		OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_T(
+			groupIds, active, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByG_A_T(
+		long[] groupIds, boolean active, String type, int start, int end,
+		OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -7576,11 +7743,14 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_A_T, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_A_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7604,9 +7774,9 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void removeByG_A_T(long groupId, boolean active, String type) {
 		for (SegmentsEntry segmentsEntry :
-				findByG_A_T(
+				_findByG_A_T(
 					groupId, active, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(segmentsEntry);
 		}
@@ -8084,6 +8254,16 @@ public class SegmentsEntryPersistenceImpl
 		int end, OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_S_T(
+			groupId, active, source, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByG_A_S_T(
+		long groupId, boolean active, String source, String type, int start,
+		int end, OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		source = Objects.toString(source, "");
 		type = Objects.toString(type, "");
 
@@ -8202,10 +8382,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9276,6 +9458,16 @@ public class SegmentsEntryPersistenceImpl
 		int end, OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A_S_T(
+			groupIds, active, source, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findByG_A_S_T(
+		long[] groupIds, boolean active, String source, String type, int start,
+		int end, OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -9413,12 +9605,14 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_A_S_T, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_A_S_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9445,9 +9639,9 @@ public class SegmentsEntryPersistenceImpl
 		long groupId, boolean active, String source, String type) {
 
 		for (SegmentsEntry segmentsEntry :
-				findByG_A_S_T(
+				_findByG_A_S_T(
 					groupId, active, source, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsEntry);
 		}
@@ -10507,6 +10701,13 @@ public class SegmentsEntryPersistenceImpl
 		int start, int end, OrderByComparator<SegmentsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntry> _findAll(
+		int start, int end, OrderByComparator<SegmentsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntry.class);
 
@@ -10564,10 +10765,12 @@ public class SegmentsEntryPersistenceImpl
 				list = (List<SegmentsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10587,7 +10790,10 @@ public class SegmentsEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SegmentsEntry segmentsEntry : findAll()) {
+		for (SegmentsEntry segmentsEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(segmentsEntry);
 		}
 	}

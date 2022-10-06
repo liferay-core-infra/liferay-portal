@@ -421,6 +421,14 @@ public class UADPartialEntryPersistenceImpl
 		OrderByComparator<UADPartialEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UADPartialEntry> _findAll(
+		int start, int end,
+		OrderByComparator<UADPartialEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -475,10 +483,12 @@ public class UADPartialEntryPersistenceImpl
 				list = (List<UADPartialEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -498,7 +508,10 @@ public class UADPartialEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UADPartialEntry uadPartialEntry : findAll()) {
+		for (UADPartialEntry uadPartialEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(uadPartialEntry);
 		}
 	}

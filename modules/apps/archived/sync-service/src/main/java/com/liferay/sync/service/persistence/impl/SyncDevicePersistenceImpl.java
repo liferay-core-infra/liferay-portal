@@ -172,6 +172,15 @@ public class SyncDevicePersistenceImpl
 		OrderByComparator<SyncDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDevice> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SyncDevice> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -257,10 +266,12 @@ public class SyncDevicePersistenceImpl
 				list = (List<SyncDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -554,7 +565,9 @@ public class SyncDevicePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SyncDevice syncDevice :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(syncDevice);
 		}
@@ -709,6 +722,16 @@ public class SyncDevicePersistenceImpl
 		OrderByComparator<SyncDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDevice> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SyncDevice> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -802,10 +825,12 @@ public class SyncDevicePersistenceImpl
 				list = (List<SyncDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1122,9 +1147,9 @@ public class SyncDevicePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SyncDevice syncDevice :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(syncDevice);
 		}
@@ -1279,6 +1304,15 @@ public class SyncDevicePersistenceImpl
 		OrderByComparator<SyncDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDevice> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<SyncDevice> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1351,10 +1385,12 @@ public class SyncDevicePersistenceImpl
 				list = (List<SyncDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1635,8 +1671,9 @@ public class SyncDevicePersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (SyncDevice syncDevice :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(syncDevice);
 		}
@@ -1774,6 +1811,16 @@ public class SyncDevicePersistenceImpl
 		OrderByComparator<SyncDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeU(
+			companyId, userName, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDevice> _findByC_LikeU(
+		long companyId, String userName, int start, int end,
+		OrderByComparator<SyncDevice> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		userName = Objects.toString(userName, "");
 
 		FinderPath finderPath = null;
@@ -1859,10 +1906,12 @@ public class SyncDevicePersistenceImpl
 				list = (List<SyncDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2181,9 +2230,9 @@ public class SyncDevicePersistenceImpl
 	@Override
 	public void removeByC_LikeU(long companyId, String userName) {
 		for (SyncDevice syncDevice :
-				findByC_LikeU(
+				_findByC_LikeU(
 					companyId, userName, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(syncDevice);
 		}
@@ -2661,6 +2710,13 @@ public class SyncDevicePersistenceImpl
 		int start, int end, OrderByComparator<SyncDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDevice> _findAll(
+		int start, int end, OrderByComparator<SyncDevice> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2715,10 +2771,12 @@ public class SyncDevicePersistenceImpl
 				list = (List<SyncDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2738,7 +2796,10 @@ public class SyncDevicePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SyncDevice syncDevice : findAll()) {
+		for (SyncDevice syncDevice :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(syncDevice);
 		}
 	}

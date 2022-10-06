@@ -193,6 +193,18 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommercePricingClassId(
+			commercePricingClassId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommercePricingClassCPDefinitionRel>
+		_findByCommercePricingClassId(
+			long commercePricingClassId, int start, int end,
+			OrderByComparator<CommercePricingClassCPDefinitionRel>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePricingClassCPDefinitionRel.class);
 
@@ -280,10 +292,12 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 					(List<CommercePricingClassCPDefinitionRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -603,9 +617,9 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 	public void removeByCommercePricingClassId(long commercePricingClassId) {
 		for (CommercePricingClassCPDefinitionRel
 				commercePricingClassCPDefinitionRel :
-					findByCommercePricingClassId(
+					_findByCommercePricingClassId(
 						commercePricingClassId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePricingClassCPDefinitionRel);
 		}
@@ -758,6 +772,17 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDefinitionId(
+			CPDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePricingClassCPDefinitionRel> _findByCPDefinitionId(
+		long CPDefinitionId, int start, int end,
+		OrderByComparator<CommercePricingClassCPDefinitionRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePricingClassCPDefinitionRel.class);
 
@@ -843,10 +868,12 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 					(List<CommercePricingClassCPDefinitionRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1156,9 +1183,9 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 	public void removeByCPDefinitionId(long CPDefinitionId) {
 		for (CommercePricingClassCPDefinitionRel
 				commercePricingClassCPDefinitionRel :
-					findByCPDefinitionId(
+					_findByCPDefinitionId(
 						CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commercePricingClassCPDefinitionRel);
 		}
@@ -1244,9 +1271,17 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 			long commercePricingClassId, long CPDefinitionId)
 		throws NoSuchPricingClassCPDefinitionRelException {
 
+		return _findByC_C(commercePricingClassId, CPDefinitionId, false);
+	}
+
+	private CommercePricingClassCPDefinitionRel _findByC_C(
+			long commercePricingClassId, long CPDefinitionId,
+			boolean readOnlyCache)
+		throws NoSuchPricingClassCPDefinitionRelException {
+
 		CommercePricingClassCPDefinitionRel
-			commercePricingClassCPDefinitionRel = fetchByC_C(
-				commercePricingClassId, CPDefinitionId);
+			commercePricingClassCPDefinitionRel = _fetchByC_C(
+				commercePricingClassId, CPDefinitionId, true, readOnlyCache);
 
 		if (commercePricingClassCPDefinitionRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1297,6 +1332,14 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 	public CommercePricingClassCPDefinitionRel fetchByC_C(
 		long commercePricingClassId, long CPDefinitionId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C(
+			commercePricingClassId, CPDefinitionId, useFinderCache, false);
+	}
+
+	private CommercePricingClassCPDefinitionRel _fetchByC_C(
+		long commercePricingClassId, long CPDefinitionId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePricingClassCPDefinitionRel.class);
@@ -1364,9 +1407,11 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 					CommercePricingClassCPDefinitionRel
 						commercePricingClassCPDefinitionRel = list.get(0);
 
-					result = commercePricingClassCPDefinitionRel;
+					if (!readOnlyCache) {
+						result = commercePricingClassCPDefinitionRel;
 
-					cacheResult(commercePricingClassCPDefinitionRel);
+						cacheResult(commercePricingClassCPDefinitionRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1398,8 +1443,8 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 		throws NoSuchPricingClassCPDefinitionRelException {
 
 		CommercePricingClassCPDefinitionRel
-			commercePricingClassCPDefinitionRel = findByC_C(
-				commercePricingClassId, CPDefinitionId);
+			commercePricingClassCPDefinitionRel = _findByC_C(
+				commercePricingClassId, CPDefinitionId, true);
 
 		return remove(commercePricingClassCPDefinitionRel);
 	}
@@ -2139,6 +2184,15 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePricingClassCPDefinitionRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommercePricingClassCPDefinitionRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePricingClassCPDefinitionRel.class);
 
@@ -2199,10 +2253,12 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 					(List<CommercePricingClassCPDefinitionRel>)QueryUtil.list(
 						query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2223,7 +2279,10 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommercePricingClassCPDefinitionRel
-				commercePricingClassCPDefinitionRel : findAll()) {
+				commercePricingClassCPDefinitionRel :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commercePricingClassCPDefinitionRel);
 		}

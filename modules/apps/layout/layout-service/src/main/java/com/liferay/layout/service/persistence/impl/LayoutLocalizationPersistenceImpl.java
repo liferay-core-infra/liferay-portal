@@ -183,6 +183,15 @@ public class LayoutLocalizationPersistenceImpl
 		OrderByComparator<LayoutLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutLocalization> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LayoutLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class LayoutLocalizationPersistenceImpl
 				list = (List<LayoutLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -576,7 +587,9 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LayoutLocalization layoutLocalization :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutLocalization);
 		}
@@ -677,7 +690,15 @@ public class LayoutLocalizationPersistenceImpl
 	public LayoutLocalization findByUUID_G(String uuid, long groupId)
 		throws NoSuchLayoutLocalizationException {
 
-		LayoutLocalization layoutLocalization = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private LayoutLocalization _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchLayoutLocalizationException {
+
+		LayoutLocalization layoutLocalization = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (layoutLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -725,6 +746,13 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public LayoutLocalization fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private LayoutLocalization _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -800,9 +828,11 @@ public class LayoutLocalizationPersistenceImpl
 				else {
 					LayoutLocalization layoutLocalization = list.get(0);
 
-					result = layoutLocalization;
+					if (!readOnlyCache) {
+						result = layoutLocalization;
 
-					cacheResult(layoutLocalization);
+						cacheResult(layoutLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -832,7 +862,8 @@ public class LayoutLocalizationPersistenceImpl
 	public LayoutLocalization removeByUUID_G(String uuid, long groupId)
 		throws NoSuchLayoutLocalizationException {
 
-		LayoutLocalization layoutLocalization = findByUUID_G(uuid, groupId);
+		LayoutLocalization layoutLocalization = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(layoutLocalization);
 	}
@@ -1006,6 +1037,16 @@ public class LayoutLocalizationPersistenceImpl
 		OrderByComparator<LayoutLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutLocalization> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<LayoutLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1102,10 +1143,12 @@ public class LayoutLocalizationPersistenceImpl
 				list = (List<LayoutLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1427,9 +1470,9 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (LayoutLocalization layoutLocalization :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutLocalization);
 		}
@@ -1596,6 +1639,15 @@ public class LayoutLocalizationPersistenceImpl
 		OrderByComparator<LayoutLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPlid(
+			plid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutLocalization> _findByPlid(
+		long plid, int start, int end,
+		OrderByComparator<LayoutLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutLocalization.class);
 
@@ -1671,10 +1723,12 @@ public class LayoutLocalizationPersistenceImpl
 				list = (List<LayoutLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1961,7 +2015,9 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public void removeByPlid(long plid) {
 		for (LayoutLocalization layoutLocalization :
-				findByPlid(plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByPlid(
+					plid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutLocalization);
 		}
@@ -2046,7 +2102,15 @@ public class LayoutLocalizationPersistenceImpl
 	public LayoutLocalization findByL_P(String languageId, long plid)
 		throws NoSuchLayoutLocalizationException {
 
-		LayoutLocalization layoutLocalization = fetchByL_P(languageId, plid);
+		return _findByL_P(languageId, plid, false);
+	}
+
+	private LayoutLocalization _findByL_P(
+			String languageId, long plid, boolean readOnlyCache)
+		throws NoSuchLayoutLocalizationException {
+
+		LayoutLocalization layoutLocalization = _fetchByL_P(
+			languageId, plid, true, readOnlyCache);
 
 		if (layoutLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2094,6 +2158,13 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public LayoutLocalization fetchByL_P(
 		String languageId, long plid, boolean useFinderCache) {
+
+		return _fetchByL_P(languageId, plid, useFinderCache, false);
+	}
+
+	private LayoutLocalization _fetchByL_P(
+		String languageId, long plid, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -2169,9 +2240,11 @@ public class LayoutLocalizationPersistenceImpl
 				else {
 					LayoutLocalization layoutLocalization = list.get(0);
 
-					result = layoutLocalization;
+					if (!readOnlyCache) {
+						result = layoutLocalization;
 
-					cacheResult(layoutLocalization);
+						cacheResult(layoutLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2201,7 +2274,8 @@ public class LayoutLocalizationPersistenceImpl
 	public LayoutLocalization removeByL_P(String languageId, long plid)
 		throws NoSuchLayoutLocalizationException {
 
-		LayoutLocalization layoutLocalization = findByL_P(languageId, plid);
+		LayoutLocalization layoutLocalization = _findByL_P(
+			languageId, plid, true);
 
 		return remove(layoutLocalization);
 	}
@@ -2311,8 +2385,15 @@ public class LayoutLocalizationPersistenceImpl
 			long groupId, String languageId, long plid)
 		throws NoSuchLayoutLocalizationException {
 
-		LayoutLocalization layoutLocalization = fetchByG_L_P(
-			groupId, languageId, plid);
+		return _findByG_L_P(groupId, languageId, plid, false);
+	}
+
+	private LayoutLocalization _findByG_L_P(
+			long groupId, String languageId, long plid, boolean readOnlyCache)
+		throws NoSuchLayoutLocalizationException {
+
+		LayoutLocalization layoutLocalization = _fetchByG_L_P(
+			groupId, languageId, plid, true, readOnlyCache);
 
 		if (layoutLocalization == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2367,6 +2448,13 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public LayoutLocalization fetchByG_L_P(
 		long groupId, String languageId, long plid, boolean useFinderCache) {
+
+		return _fetchByG_L_P(groupId, languageId, plid, useFinderCache, false);
+	}
+
+	private LayoutLocalization _fetchByG_L_P(
+		long groupId, String languageId, long plid, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -2447,9 +2535,11 @@ public class LayoutLocalizationPersistenceImpl
 				else {
 					LayoutLocalization layoutLocalization = list.get(0);
 
-					result = layoutLocalization;
+					if (!readOnlyCache) {
+						result = layoutLocalization;
 
-					cacheResult(layoutLocalization);
+						cacheResult(layoutLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2481,8 +2571,8 @@ public class LayoutLocalizationPersistenceImpl
 			long groupId, String languageId, long plid)
 		throws NoSuchLayoutLocalizationException {
 
-		LayoutLocalization layoutLocalization = findByG_L_P(
-			groupId, languageId, plid);
+		LayoutLocalization layoutLocalization = _findByG_L_P(
+			groupId, languageId, plid, true);
 
 		return remove(layoutLocalization);
 	}
@@ -3212,6 +3302,14 @@ public class LayoutLocalizationPersistenceImpl
 		OrderByComparator<LayoutLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutLocalization> _findAll(
+		int start, int end,
+		OrderByComparator<LayoutLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutLocalization.class);
 
@@ -3269,10 +3367,12 @@ public class LayoutLocalizationPersistenceImpl
 				list = (List<LayoutLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3292,7 +3392,10 @@ public class LayoutLocalizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutLocalization layoutLocalization : findAll()) {
+		for (LayoutLocalization layoutLocalization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutLocalization);
 		}
 	}

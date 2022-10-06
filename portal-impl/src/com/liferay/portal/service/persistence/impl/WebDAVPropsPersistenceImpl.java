@@ -98,7 +98,15 @@ public class WebDAVPropsPersistenceImpl
 	public WebDAVProps findByC_C(long classNameId, long classPK)
 		throws NoSuchWebDAVPropsException {
 
-		WebDAVProps webDAVProps = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private WebDAVProps _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchWebDAVPropsException {
+
+		WebDAVProps webDAVProps = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (webDAVProps == null) {
 			StringBundler sb = new StringBundler(6);
@@ -146,6 +154,13 @@ public class WebDAVPropsPersistenceImpl
 	@Override
 	public WebDAVProps fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private WebDAVProps _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -205,9 +220,11 @@ public class WebDAVPropsPersistenceImpl
 				else {
 					WebDAVProps webDAVProps = list.get(0);
 
-					result = webDAVProps;
+					if (!readOnlyCache) {
+						result = webDAVProps;
 
-					cacheResult(webDAVProps);
+						cacheResult(webDAVProps);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -237,7 +254,7 @@ public class WebDAVPropsPersistenceImpl
 	public WebDAVProps removeByC_C(long classNameId, long classPK)
 		throws NoSuchWebDAVPropsException {
 
-		WebDAVProps webDAVProps = findByC_C(classNameId, classPK);
+		WebDAVProps webDAVProps = _findByC_C(classNameId, classPK, true);
 
 		return remove(webDAVProps);
 	}
@@ -706,6 +723,13 @@ public class WebDAVPropsPersistenceImpl
 		int start, int end, OrderByComparator<WebDAVProps> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WebDAVProps> _findAll(
+		int start, int end, OrderByComparator<WebDAVProps> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -760,10 +784,12 @@ public class WebDAVPropsPersistenceImpl
 				list = (List<WebDAVProps>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -783,7 +809,10 @@ public class WebDAVPropsPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WebDAVProps webDAVProps : findAll()) {
+		for (WebDAVProps webDAVProps :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(webDAVProps);
 		}
 	}

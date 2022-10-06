@@ -179,6 +179,15 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		OrderByComparator<CommercePaymentMethodGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePaymentMethodGroupRel> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CommercePaymentMethodGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -253,10 +262,12 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				list = (List<CommercePaymentMethodGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -896,8 +907,9 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CommercePaymentMethodGroupRel commercePaymentMethodGroupRel :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commercePaymentMethodGroupRel);
 		}
@@ -1019,8 +1031,15 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			long groupId, String engineKey)
 		throws NoSuchPaymentMethodGroupRelException {
 
+		return _findByG_E(groupId, engineKey, false);
+	}
+
+	private CommercePaymentMethodGroupRel _findByG_E(
+			long groupId, String engineKey, boolean readOnlyCache)
+		throws NoSuchPaymentMethodGroupRelException {
+
 		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel =
-			fetchByG_E(groupId, engineKey);
+			_fetchByG_E(groupId, engineKey, true, readOnlyCache);
 
 		if (commercePaymentMethodGroupRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1070,6 +1089,13 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 	@Override
 	public CommercePaymentMethodGroupRel fetchByG_E(
 		long groupId, String engineKey, boolean useFinderCache) {
+
+		return _fetchByG_E(groupId, engineKey, useFinderCache, false);
+	}
+
+	private CommercePaymentMethodGroupRel _fetchByG_E(
+		long groupId, String engineKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		engineKey = Objects.toString(engineKey, "");
 
@@ -1144,9 +1170,11 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 					CommercePaymentMethodGroupRel
 						commercePaymentMethodGroupRel = list.get(0);
 
-					result = commercePaymentMethodGroupRel;
+					if (!readOnlyCache) {
+						result = commercePaymentMethodGroupRel;
 
-					cacheResult(commercePaymentMethodGroupRel);
+						cacheResult(commercePaymentMethodGroupRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1177,8 +1205,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 			long groupId, String engineKey)
 		throws NoSuchPaymentMethodGroupRelException {
 
-		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel = findByG_E(
-			groupId, engineKey);
+		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel =
+			_findByG_E(groupId, engineKey, true);
 
 		return remove(commercePaymentMethodGroupRel);
 	}
@@ -1341,6 +1369,16 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		OrderByComparator<CommercePaymentMethodGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePaymentMethodGroupRel> _findByG_A(
+		long groupId, boolean active, int start, int end,
+		OrderByComparator<CommercePaymentMethodGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1424,10 +1462,12 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				list = (List<CommercePaymentMethodGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2096,9 +2136,9 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 	@Override
 	public void removeByG_A(long groupId, boolean active) {
 		for (CommercePaymentMethodGroupRel commercePaymentMethodGroupRel :
-				findByG_A(
-					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_A(
+					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commercePaymentMethodGroupRel);
 		}
@@ -2686,6 +2726,14 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		OrderByComparator<CommercePaymentMethodGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePaymentMethodGroupRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommercePaymentMethodGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2741,10 +2789,12 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 				list = (List<CommercePaymentMethodGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2765,7 +2815,8 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommercePaymentMethodGroupRel commercePaymentMethodGroupRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePaymentMethodGroupRel);
 		}

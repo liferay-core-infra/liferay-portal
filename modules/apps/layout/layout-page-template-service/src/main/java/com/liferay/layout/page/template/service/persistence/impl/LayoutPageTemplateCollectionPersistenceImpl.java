@@ -188,6 +188,15 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutPageTemplateCollection> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -278,10 +287,12 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 				list = (List<LayoutPageTemplateCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -589,7 +600,9 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LayoutPageTemplateCollection layoutPageTemplateCollection :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutPageTemplateCollection);
 		}
@@ -690,8 +703,15 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	public LayoutPageTemplateCollection findByUUID_G(String uuid, long groupId)
 		throws NoSuchPageTemplateCollectionException {
 
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private LayoutPageTemplateCollection _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchPageTemplateCollectionException {
+
 		LayoutPageTemplateCollection layoutPageTemplateCollection =
-			fetchByUUID_G(uuid, groupId);
+			_fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (layoutPageTemplateCollection == null) {
 			StringBundler sb = new StringBundler(6);
@@ -741,6 +761,13 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public LayoutPageTemplateCollection fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private LayoutPageTemplateCollection _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -818,9 +845,11 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 					LayoutPageTemplateCollection layoutPageTemplateCollection =
 						list.get(0);
 
-					result = layoutPageTemplateCollection;
+					if (!readOnlyCache) {
+						result = layoutPageTemplateCollection;
 
-					cacheResult(layoutPageTemplateCollection);
+						cacheResult(layoutPageTemplateCollection);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -852,7 +881,7 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		throws NoSuchPageTemplateCollectionException {
 
 		LayoutPageTemplateCollection layoutPageTemplateCollection =
-			findByUUID_G(uuid, groupId);
+			_findByUUID_G(uuid, groupId, true);
 
 		return remove(layoutPageTemplateCollection);
 	}
@@ -1028,6 +1057,16 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutPageTemplateCollection> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1127,10 +1166,12 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 				list = (List<LayoutPageTemplateCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1455,9 +1496,9 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (LayoutPageTemplateCollection layoutPageTemplateCollection :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutPageTemplateCollection);
 		}
@@ -1627,6 +1668,15 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutPageTemplateCollection> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutPageTemplateCollection.class);
 
@@ -1704,10 +1754,12 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 				list = (List<LayoutPageTemplateCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2345,8 +2397,9 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (LayoutPageTemplateCollection layoutPageTemplateCollection :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutPageTemplateCollection);
 		}
@@ -2480,8 +2533,17 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 			long groupId, String layoutPageTemplateCollectionKey)
 		throws NoSuchPageTemplateCollectionException {
 
+		return _findByG_LPTCK(groupId, layoutPageTemplateCollectionKey, false);
+	}
+
+	private LayoutPageTemplateCollection _findByG_LPTCK(
+			long groupId, String layoutPageTemplateCollectionKey,
+			boolean readOnlyCache)
+		throws NoSuchPageTemplateCollectionException {
+
 		LayoutPageTemplateCollection layoutPageTemplateCollection =
-			fetchByG_LPTCK(groupId, layoutPageTemplateCollectionKey);
+			_fetchByG_LPTCK(
+				groupId, layoutPageTemplateCollectionKey, true, readOnlyCache);
 
 		if (layoutPageTemplateCollection == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2532,6 +2594,14 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	public LayoutPageTemplateCollection fetchByG_LPTCK(
 		long groupId, String layoutPageTemplateCollectionKey,
 		boolean useFinderCache) {
+
+		return _fetchByG_LPTCK(
+			groupId, layoutPageTemplateCollectionKey, useFinderCache, false);
+	}
+
+	private LayoutPageTemplateCollection _fetchByG_LPTCK(
+		long groupId, String layoutPageTemplateCollectionKey,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		layoutPageTemplateCollectionKey = Objects.toString(
 			layoutPageTemplateCollectionKey, "");
@@ -2617,9 +2687,11 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 					LayoutPageTemplateCollection layoutPageTemplateCollection =
 						list.get(0);
 
-					result = layoutPageTemplateCollection;
+					if (!readOnlyCache) {
+						result = layoutPageTemplateCollection;
 
-					cacheResult(layoutPageTemplateCollection);
+						cacheResult(layoutPageTemplateCollection);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2651,7 +2723,7 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		throws NoSuchPageTemplateCollectionException {
 
 		LayoutPageTemplateCollection layoutPageTemplateCollection =
-			findByG_LPTCK(groupId, layoutPageTemplateCollectionKey);
+			_findByG_LPTCK(groupId, layoutPageTemplateCollectionKey, true);
 
 		return remove(layoutPageTemplateCollection);
 	}
@@ -2768,8 +2840,15 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	public LayoutPageTemplateCollection findByG_N(long groupId, String name)
 		throws NoSuchPageTemplateCollectionException {
 
-		LayoutPageTemplateCollection layoutPageTemplateCollection = fetchByG_N(
-			groupId, name);
+		return _findByG_N(groupId, name, false);
+	}
+
+	private LayoutPageTemplateCollection _findByG_N(
+			long groupId, String name, boolean readOnlyCache)
+		throws NoSuchPageTemplateCollectionException {
+
+		LayoutPageTemplateCollection layoutPageTemplateCollection = _fetchByG_N(
+			groupId, name, true, readOnlyCache);
 
 		if (layoutPageTemplateCollection == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2817,6 +2896,13 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public LayoutPageTemplateCollection fetchByG_N(
 		long groupId, String name, boolean useFinderCache) {
+
+		return _fetchByG_N(groupId, name, useFinderCache, false);
+	}
+
+	private LayoutPageTemplateCollection _fetchByG_N(
+		long groupId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -2893,9 +2979,11 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 					LayoutPageTemplateCollection layoutPageTemplateCollection =
 						list.get(0);
 
-					result = layoutPageTemplateCollection;
+					if (!readOnlyCache) {
+						result = layoutPageTemplateCollection;
 
-					cacheResult(layoutPageTemplateCollection);
+						cacheResult(layoutPageTemplateCollection);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2925,8 +3013,8 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	public LayoutPageTemplateCollection removeByG_N(long groupId, String name)
 		throws NoSuchPageTemplateCollectionException {
 
-		LayoutPageTemplateCollection layoutPageTemplateCollection = findByG_N(
-			groupId, name);
+		LayoutPageTemplateCollection layoutPageTemplateCollection = _findByG_N(
+			groupId, name, true);
 
 		return remove(layoutPageTemplateCollection);
 	}
@@ -3101,6 +3189,16 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeN(
+			groupId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutPageTemplateCollection> _findByG_LikeN(
+		long groupId, String name, int start, int end,
+		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3192,10 +3290,12 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 				list = (List<LayoutPageTemplateCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3903,9 +4003,9 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public void removeByG_LikeN(long groupId, String name) {
 		for (LayoutPageTemplateCollection layoutPageTemplateCollection :
-				findByG_LikeN(
-					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_LikeN(
+					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutPageTemplateCollection);
 		}
@@ -4743,6 +4843,14 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutPageTemplateCollection> _findAll(
+		int start, int end,
+		OrderByComparator<LayoutPageTemplateCollection> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutPageTemplateCollection.class);
 
@@ -4801,10 +4909,12 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 				list = (List<LayoutPageTemplateCollection>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4825,7 +4935,8 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (LayoutPageTemplateCollection layoutPageTemplateCollection :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutPageTemplateCollection);
 		}

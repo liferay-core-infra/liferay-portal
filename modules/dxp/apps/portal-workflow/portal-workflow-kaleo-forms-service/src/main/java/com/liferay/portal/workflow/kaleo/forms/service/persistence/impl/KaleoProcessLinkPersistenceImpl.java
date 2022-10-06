@@ -169,6 +169,16 @@ public class KaleoProcessLinkPersistenceImpl
 		OrderByComparator<KaleoProcessLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoProcessId(
+			kaleoProcessId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KaleoProcessLink> _findByKaleoProcessId(
+		long kaleoProcessId, int start, int end,
+		OrderByComparator<KaleoProcessLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -245,10 +255,12 @@ public class KaleoProcessLinkPersistenceImpl
 				list = (List<KaleoProcessLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -541,9 +553,9 @@ public class KaleoProcessLinkPersistenceImpl
 	@Override
 	public void removeByKaleoProcessId(long kaleoProcessId) {
 		for (KaleoProcessLink kaleoProcessLink :
-				findByKaleoProcessId(
-					kaleoProcessId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByKaleoProcessId(
+					kaleoProcessId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kaleoProcessLink);
 		}
@@ -617,8 +629,15 @@ public class KaleoProcessLinkPersistenceImpl
 			long kaleoProcessId, String workflowTaskName)
 		throws NoSuchKaleoProcessLinkException {
 
-		KaleoProcessLink kaleoProcessLink = fetchByKPI_WTN(
-			kaleoProcessId, workflowTaskName);
+		return _findByKPI_WTN(kaleoProcessId, workflowTaskName, false);
+	}
+
+	private KaleoProcessLink _findByKPI_WTN(
+			long kaleoProcessId, String workflowTaskName, boolean readOnlyCache)
+		throws NoSuchKaleoProcessLinkException {
+
+		KaleoProcessLink kaleoProcessLink = _fetchByKPI_WTN(
+			kaleoProcessId, workflowTaskName, true, readOnlyCache);
 
 		if (kaleoProcessLink == null) {
 			StringBundler sb = new StringBundler(6);
@@ -668,6 +687,14 @@ public class KaleoProcessLinkPersistenceImpl
 	@Override
 	public KaleoProcessLink fetchByKPI_WTN(
 		long kaleoProcessId, String workflowTaskName, boolean useFinderCache) {
+
+		return _fetchByKPI_WTN(
+			kaleoProcessId, workflowTaskName, useFinderCache, false);
+	}
+
+	private KaleoProcessLink _fetchByKPI_WTN(
+		long kaleoProcessId, String workflowTaskName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		workflowTaskName = Objects.toString(workflowTaskName, "");
 
@@ -741,9 +768,11 @@ public class KaleoProcessLinkPersistenceImpl
 				else {
 					KaleoProcessLink kaleoProcessLink = list.get(0);
 
-					result = kaleoProcessLink;
+					if (!readOnlyCache) {
+						result = kaleoProcessLink;
 
-					cacheResult(kaleoProcessLink);
+						cacheResult(kaleoProcessLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -774,8 +803,8 @@ public class KaleoProcessLinkPersistenceImpl
 			long kaleoProcessId, String workflowTaskName)
 		throws NoSuchKaleoProcessLinkException {
 
-		KaleoProcessLink kaleoProcessLink = findByKPI_WTN(
-			kaleoProcessId, workflowTaskName);
+		KaleoProcessLink kaleoProcessLink = _findByKPI_WTN(
+			kaleoProcessId, workflowTaskName, true);
 
 		return remove(kaleoProcessLink);
 	}
@@ -1245,6 +1274,14 @@ public class KaleoProcessLinkPersistenceImpl
 		OrderByComparator<KaleoProcessLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoProcessLink> _findAll(
+		int start, int end,
+		OrderByComparator<KaleoProcessLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1299,10 +1336,12 @@ public class KaleoProcessLinkPersistenceImpl
 				list = (List<KaleoProcessLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1322,7 +1361,10 @@ public class KaleoProcessLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KaleoProcessLink kaleoProcessLink : findAll()) {
+		for (KaleoProcessLink kaleoProcessLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kaleoProcessLink);
 		}
 	}

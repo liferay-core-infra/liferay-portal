@@ -170,6 +170,15 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -258,10 +267,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -565,7 +576,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -666,8 +679,15 @@ public class CPDefinitionOptionRelPersistenceImpl
 	public CPDefinitionOptionRel findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionOptionRelException {
 
-		CPDefinitionOptionRel cpDefinitionOptionRel = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPDefinitionOptionRel _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionOptionRelException {
+
+		CPDefinitionOptionRel cpDefinitionOptionRel = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpDefinitionOptionRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -715,6 +735,13 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public CPDefinitionOptionRel fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPDefinitionOptionRel _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +818,11 @@ public class CPDefinitionOptionRelPersistenceImpl
 				else {
 					CPDefinitionOptionRel cpDefinitionOptionRel = list.get(0);
 
-					result = cpDefinitionOptionRel;
+					if (!readOnlyCache) {
+						result = cpDefinitionOptionRel;
 
-					cacheResult(cpDefinitionOptionRel);
+						cacheResult(cpDefinitionOptionRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,8 +852,8 @@ public class CPDefinitionOptionRelPersistenceImpl
 	public CPDefinitionOptionRel removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionOptionRelException {
 
-		CPDefinitionOptionRel cpDefinitionOptionRel = findByUUID_G(
-			uuid, groupId);
+		CPDefinitionOptionRel cpDefinitionOptionRel = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(cpDefinitionOptionRel);
 	}
@@ -1000,6 +1029,16 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1096,10 +1135,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1422,9 +1463,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -1594,6 +1635,15 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
 
@@ -1669,10 +1719,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1966,8 +2018,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -2113,6 +2166,15 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
 
@@ -2190,10 +2252,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2487,8 +2551,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -2637,6 +2702,16 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDefinitionId(
+			CPDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByCPDefinitionId(
+		long CPDefinitionId, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
 
@@ -2716,10 +2791,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3013,9 +3090,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByCPDefinitionId(long CPDefinitionId) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByCPDefinitionId(
-					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPDefinitionId(
+					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -3100,8 +3177,15 @@ public class CPDefinitionOptionRelPersistenceImpl
 	public CPDefinitionOptionRel findByC_C(long CPDefinitionId, long CPOptionId)
 		throws NoSuchCPDefinitionOptionRelException {
 
-		CPDefinitionOptionRel cpDefinitionOptionRel = fetchByC_C(
-			CPDefinitionId, CPOptionId);
+		return _findByC_C(CPDefinitionId, CPOptionId, false);
+	}
+
+	private CPDefinitionOptionRel _findByC_C(
+			long CPDefinitionId, long CPOptionId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionOptionRelException {
+
+		CPDefinitionOptionRel cpDefinitionOptionRel = _fetchByC_C(
+			CPDefinitionId, CPOptionId, true, readOnlyCache);
 
 		if (cpDefinitionOptionRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3151,6 +3235,13 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public CPDefinitionOptionRel fetchByC_C(
 		long CPDefinitionId, long CPOptionId, boolean useFinderCache) {
+
+		return _fetchByC_C(CPDefinitionId, CPOptionId, useFinderCache, false);
+	}
+
+	private CPDefinitionOptionRel _fetchByC_C(
+		long CPDefinitionId, long CPOptionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
@@ -3213,9 +3304,11 @@ public class CPDefinitionOptionRelPersistenceImpl
 				else {
 					CPDefinitionOptionRel cpDefinitionOptionRel = list.get(0);
 
-					result = cpDefinitionOptionRel;
+					if (!readOnlyCache) {
+						result = cpDefinitionOptionRel;
 
-					cacheResult(cpDefinitionOptionRel);
+						cacheResult(cpDefinitionOptionRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3246,8 +3339,8 @@ public class CPDefinitionOptionRelPersistenceImpl
 			long CPDefinitionId, long CPOptionId)
 		throws NoSuchCPDefinitionOptionRelException {
 
-		CPDefinitionOptionRel cpDefinitionOptionRel = findByC_C(
-			CPDefinitionId, CPOptionId);
+		CPDefinitionOptionRel cpDefinitionOptionRel = _findByC_C(
+			CPDefinitionId, CPOptionId, true);
 
 		return remove(cpDefinitionOptionRel);
 	}
@@ -3408,6 +3501,16 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDI_R(
+			CPDefinitionId, required, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByCPDI_R(
+		long CPDefinitionId, boolean required, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
 
@@ -3492,10 +3595,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3805,9 +3910,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByCPDI_R(long CPDefinitionId, boolean required) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByCPDI_R(
+				_findByCPDI_R(
 					CPDefinitionId, required, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -3970,6 +4075,16 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_SC(
+			CPDefinitionId, skuContributor, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPDefinitionOptionRel> _findByC_SC(
+		long CPDefinitionId, boolean skuContributor, int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
 
@@ -4055,10 +4170,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4370,9 +4487,9 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void removeByC_SC(long CPDefinitionId, boolean skuContributor) {
 		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				findByC_SC(
+				_findByC_SC(
 					CPDefinitionId, skuContributor, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpDefinitionOptionRel);
 		}
@@ -4465,8 +4582,15 @@ public class CPDefinitionOptionRelPersistenceImpl
 	public CPDefinitionOptionRel findByC_K(long CPDefinitionId, String key)
 		throws NoSuchCPDefinitionOptionRelException {
 
-		CPDefinitionOptionRel cpDefinitionOptionRel = fetchByC_K(
-			CPDefinitionId, key);
+		return _findByC_K(CPDefinitionId, key, false);
+	}
+
+	private CPDefinitionOptionRel _findByC_K(
+			long CPDefinitionId, String key, boolean readOnlyCache)
+		throws NoSuchCPDefinitionOptionRelException {
+
+		CPDefinitionOptionRel cpDefinitionOptionRel = _fetchByC_K(
+			CPDefinitionId, key, true, readOnlyCache);
 
 		if (cpDefinitionOptionRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4514,6 +4638,13 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public CPDefinitionOptionRel fetchByC_K(
 		long CPDefinitionId, String key, boolean useFinderCache) {
+
+		return _fetchByC_K(CPDefinitionId, key, useFinderCache, false);
+	}
+
+	private CPDefinitionOptionRel _fetchByC_K(
+		long CPDefinitionId, String key, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 
@@ -4589,9 +4720,11 @@ public class CPDefinitionOptionRelPersistenceImpl
 				else {
 					CPDefinitionOptionRel cpDefinitionOptionRel = list.get(0);
 
-					result = cpDefinitionOptionRel;
+					if (!readOnlyCache) {
+						result = cpDefinitionOptionRel;
 
-					cacheResult(cpDefinitionOptionRel);
+						cacheResult(cpDefinitionOptionRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4621,8 +4754,8 @@ public class CPDefinitionOptionRelPersistenceImpl
 	public CPDefinitionOptionRel removeByC_K(long CPDefinitionId, String key)
 		throws NoSuchCPDefinitionOptionRelException {
 
-		CPDefinitionOptionRel cpDefinitionOptionRel = findByC_K(
-			CPDefinitionId, key);
+		CPDefinitionOptionRel cpDefinitionOptionRel = _findByC_K(
+			CPDefinitionId, key, true);
 
 		return remove(cpDefinitionOptionRel);
 	}
@@ -5360,6 +5493,14 @@ public class CPDefinitionOptionRelPersistenceImpl
 		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionOptionRel> _findAll(
+		int start, int end,
+		OrderByComparator<CPDefinitionOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionOptionRel.class);
 
@@ -5417,10 +5558,12 @@ public class CPDefinitionOptionRelPersistenceImpl
 				list = (List<CPDefinitionOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5440,7 +5583,10 @@ public class CPDefinitionOptionRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPDefinitionOptionRel cpDefinitionOptionRel : findAll()) {
+		for (CPDefinitionOptionRel cpDefinitionOptionRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpDefinitionOptionRel);
 		}
 	}

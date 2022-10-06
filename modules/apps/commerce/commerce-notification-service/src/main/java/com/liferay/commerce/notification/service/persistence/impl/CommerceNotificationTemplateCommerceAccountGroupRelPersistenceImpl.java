@@ -194,6 +194,19 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 					orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceNotificationTemplateId(
+			commerceNotificationTemplateId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplateCommerceAccountGroupRel>
+		_findByCommerceNotificationTemplateId(
+			long commerceNotificationTemplateId, int start, int end,
+			OrderByComparator
+				<CommerceNotificationTemplateCommerceAccountGroupRel>
+					orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -281,10 +294,12 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 					(List<CommerceNotificationTemplateCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -620,9 +635,9 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 
 		for (CommerceNotificationTemplateCommerceAccountGroupRel
 				commerceNotificationTemplateCommerceAccountGroupRel :
-					findByCommerceNotificationTemplateId(
+					_findByCommerceNotificationTemplateId(
 						commerceNotificationTemplateId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceNotificationTemplateCommerceAccountGroupRel);
 		}
@@ -773,6 +788,19 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 					orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceAccountGroupId(
+			commerceAccountGroupId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplateCommerceAccountGroupRel>
+		_findByCommerceAccountGroupId(
+			long commerceAccountGroupId, int start, int end,
+			OrderByComparator
+				<CommerceNotificationTemplateCommerceAccountGroupRel>
+					orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -859,10 +887,12 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 					(List<CommerceNotificationTemplateCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1194,9 +1224,9 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 	public void removeByCommerceAccountGroupId(long commerceAccountGroupId) {
 		for (CommerceNotificationTemplateCommerceAccountGroupRel
 				commerceNotificationTemplateCommerceAccountGroupRel :
-					findByCommerceAccountGroupId(
+					_findByCommerceAccountGroupId(
 						commerceAccountGroupId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceNotificationTemplateCommerceAccountGroupRel);
 		}
@@ -1273,9 +1303,19 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			long commerceNotificationTemplateId, long commerceAccountGroupId)
 		throws NoSuchNotificationTemplateCommerceAccountGroupRelException {
 
+		return _findByC_C(
+			commerceNotificationTemplateId, commerceAccountGroupId, false);
+	}
+
+	private CommerceNotificationTemplateCommerceAccountGroupRel _findByC_C(
+			long commerceNotificationTemplateId, long commerceAccountGroupId,
+			boolean readOnlyCache)
+		throws NoSuchNotificationTemplateCommerceAccountGroupRelException {
+
 		CommerceNotificationTemplateCommerceAccountGroupRel
-			commerceNotificationTemplateCommerceAccountGroupRel = fetchByC_C(
-				commerceNotificationTemplateId, commerceAccountGroupId);
+			commerceNotificationTemplateCommerceAccountGroupRel = _fetchByC_C(
+				commerceNotificationTemplateId, commerceAccountGroupId, true,
+				readOnlyCache);
 
 		if (commerceNotificationTemplateCommerceAccountGroupRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1328,6 +1368,15 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 	public CommerceNotificationTemplateCommerceAccountGroupRel fetchByC_C(
 		long commerceNotificationTemplateId, long commerceAccountGroupId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C(
+			commerceNotificationTemplateId, commerceAccountGroupId,
+			useFinderCache, false);
+	}
+
+	private CommerceNotificationTemplateCommerceAccountGroupRel _fetchByC_C(
+		long commerceNotificationTemplateId, long commerceAccountGroupId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1400,11 +1449,13 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 						commerceNotificationTemplateCommerceAccountGroupRel =
 							list.get(0);
 
-					result =
-						commerceNotificationTemplateCommerceAccountGroupRel;
+					if (!readOnlyCache) {
+						result =
+							commerceNotificationTemplateCommerceAccountGroupRel;
 
-					cacheResult(
-						commerceNotificationTemplateCommerceAccountGroupRel);
+						cacheResult(
+							commerceNotificationTemplateCommerceAccountGroupRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1436,8 +1487,8 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 		throws NoSuchNotificationTemplateCommerceAccountGroupRelException {
 
 		CommerceNotificationTemplateCommerceAccountGroupRel
-			commerceNotificationTemplateCommerceAccountGroupRel = findByC_C(
-				commerceNotificationTemplateId, commerceAccountGroupId);
+			commerceNotificationTemplateCommerceAccountGroupRel = _findByC_C(
+				commerceNotificationTemplateId, commerceAccountGroupId, true);
 
 		return remove(commerceNotificationTemplateCommerceAccountGroupRel);
 	}
@@ -2035,6 +2086,15 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceNotificationTemplateCommerceAccountGroupRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceNotificationTemplateCommerceAccountGroupRel>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2094,10 +2154,12 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 					(List<CommerceNotificationTemplateCommerceAccountGroupRel>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2119,7 +2181,9 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 	public void removeAll() {
 		for (CommerceNotificationTemplateCommerceAccountGroupRel
 				commerceNotificationTemplateCommerceAccountGroupRel :
-					findAll()) {
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceNotificationTemplateCommerceAccountGroupRel);
 		}

@@ -169,6 +169,15 @@ public class RepositoryEntryPersistenceImpl
 		OrderByComparator<RepositoryEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RepositoryEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<RepositoryEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -257,10 +266,12 @@ public class RepositoryEntryPersistenceImpl
 				list = (List<RepositoryEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -558,7 +569,9 @@ public class RepositoryEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (RepositoryEntry repositoryEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(repositoryEntry);
 		}
@@ -659,7 +672,15 @@ public class RepositoryEntryPersistenceImpl
 	public RepositoryEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchRepositoryEntryException {
 
-		RepositoryEntry repositoryEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private RepositoryEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchRepositoryEntryException {
+
+		RepositoryEntry repositoryEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (repositoryEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -707,6 +728,13 @@ public class RepositoryEntryPersistenceImpl
 	@Override
 	public RepositoryEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private RepositoryEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -782,9 +810,11 @@ public class RepositoryEntryPersistenceImpl
 				else {
 					RepositoryEntry repositoryEntry = list.get(0);
 
-					result = repositoryEntry;
+					if (!readOnlyCache) {
+						result = repositoryEntry;
 
-					cacheResult(repositoryEntry);
+						cacheResult(repositoryEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -814,7 +844,7 @@ public class RepositoryEntryPersistenceImpl
 	public RepositoryEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchRepositoryEntryException {
 
-		RepositoryEntry repositoryEntry = findByUUID_G(uuid, groupId);
+		RepositoryEntry repositoryEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(repositoryEntry);
 	}
@@ -988,6 +1018,16 @@ public class RepositoryEntryPersistenceImpl
 		OrderByComparator<RepositoryEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<RepositoryEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<RepositoryEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1084,10 +1124,12 @@ public class RepositoryEntryPersistenceImpl
 				list = (List<RepositoryEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1408,9 +1450,9 @@ public class RepositoryEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (RepositoryEntry repositoryEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(repositoryEntry);
 		}
@@ -1581,6 +1623,15 @@ public class RepositoryEntryPersistenceImpl
 		OrderByComparator<RepositoryEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRepositoryId(
+			repositoryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RepositoryEntry> _findByRepositoryId(
+		long repositoryId, int start, int end,
+		OrderByComparator<RepositoryEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RepositoryEntry.class);
 
@@ -1658,10 +1709,12 @@ public class RepositoryEntryPersistenceImpl
 				list = (List<RepositoryEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1953,8 +2006,9 @@ public class RepositoryEntryPersistenceImpl
 	@Override
 	public void removeByRepositoryId(long repositoryId) {
 		for (RepositoryEntry repositoryEntry :
-				findByRepositoryId(
-					repositoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRepositoryId(
+					repositoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(repositoryEntry);
 		}
@@ -2039,7 +2093,15 @@ public class RepositoryEntryPersistenceImpl
 	public RepositoryEntry findByR_M(long repositoryId, String mappedId)
 		throws NoSuchRepositoryEntryException {
 
-		RepositoryEntry repositoryEntry = fetchByR_M(repositoryId, mappedId);
+		return _findByR_M(repositoryId, mappedId, false);
+	}
+
+	private RepositoryEntry _findByR_M(
+			long repositoryId, String mappedId, boolean readOnlyCache)
+		throws NoSuchRepositoryEntryException {
+
+		RepositoryEntry repositoryEntry = _fetchByR_M(
+			repositoryId, mappedId, true, readOnlyCache);
 
 		if (repositoryEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2087,6 +2149,13 @@ public class RepositoryEntryPersistenceImpl
 	@Override
 	public RepositoryEntry fetchByR_M(
 		long repositoryId, String mappedId, boolean useFinderCache) {
+
+		return _fetchByR_M(repositoryId, mappedId, useFinderCache, false);
+	}
+
+	private RepositoryEntry _fetchByR_M(
+		long repositoryId, String mappedId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		mappedId = Objects.toString(mappedId, "");
 
@@ -2162,9 +2231,11 @@ public class RepositoryEntryPersistenceImpl
 				else {
 					RepositoryEntry repositoryEntry = list.get(0);
 
-					result = repositoryEntry;
+					if (!readOnlyCache) {
+						result = repositoryEntry;
 
-					cacheResult(repositoryEntry);
+						cacheResult(repositoryEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2194,7 +2265,8 @@ public class RepositoryEntryPersistenceImpl
 	public RepositoryEntry removeByR_M(long repositoryId, String mappedId)
 		throws NoSuchRepositoryEntryException {
 
-		RepositoryEntry repositoryEntry = findByR_M(repositoryId, mappedId);
+		RepositoryEntry repositoryEntry = _findByR_M(
+			repositoryId, mappedId, true);
 
 		return remove(repositoryEntry);
 	}
@@ -2891,6 +2963,14 @@ public class RepositoryEntryPersistenceImpl
 		OrderByComparator<RepositoryEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RepositoryEntry> _findAll(
+		int start, int end,
+		OrderByComparator<RepositoryEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RepositoryEntry.class);
 
@@ -2948,10 +3028,12 @@ public class RepositoryEntryPersistenceImpl
 				list = (List<RepositoryEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2971,7 +3053,10 @@ public class RepositoryEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RepositoryEntry repositoryEntry : findAll()) {
+		for (RepositoryEntry repositoryEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(repositoryEntry);
 		}
 	}

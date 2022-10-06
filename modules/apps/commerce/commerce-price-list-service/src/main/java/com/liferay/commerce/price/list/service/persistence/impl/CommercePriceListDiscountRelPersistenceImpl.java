@@ -185,6 +185,15 @@ public class CommercePriceListDiscountRelPersistenceImpl
 		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePriceListDiscountRel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -275,10 +284,12 @@ public class CommercePriceListDiscountRelPersistenceImpl
 				list = (List<CommercePriceListDiscountRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -586,7 +597,9 @@ public class CommercePriceListDiscountRelPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommercePriceListDiscountRel commercePriceListDiscountRel :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commercePriceListDiscountRel);
 		}
@@ -755,6 +768,16 @@ public class CommercePriceListDiscountRelPersistenceImpl
 		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePriceListDiscountRel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -854,10 +877,12 @@ public class CommercePriceListDiscountRelPersistenceImpl
 				list = (List<CommercePriceListDiscountRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1182,9 +1207,9 @@ public class CommercePriceListDiscountRelPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommercePriceListDiscountRel commercePriceListDiscountRel :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commercePriceListDiscountRel);
 		}
@@ -1357,6 +1382,16 @@ public class CommercePriceListDiscountRelPersistenceImpl
 		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommercePriceListId(
+			commercePriceListId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommercePriceListDiscountRel> _findByCommercePriceListId(
+		long commercePriceListId, int start, int end,
+		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceListDiscountRel.class);
 
@@ -1440,10 +1475,12 @@ public class CommercePriceListDiscountRelPersistenceImpl
 				list = (List<CommercePriceListDiscountRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1741,9 +1778,9 @@ public class CommercePriceListDiscountRelPersistenceImpl
 	@Override
 	public void removeByCommercePriceListId(long commercePriceListId) {
 		for (CommercePriceListDiscountRel commercePriceListDiscountRel :
-				findByCommercePriceListId(
+				_findByCommercePriceListId(
 					commercePriceListId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commercePriceListDiscountRel);
 		}
@@ -1830,8 +1867,17 @@ public class CommercePriceListDiscountRelPersistenceImpl
 			long commerceDiscountId, long commercePriceListId)
 		throws NoSuchPriceListDiscountRelException {
 
+		return _findByCDI_CPI(commerceDiscountId, commercePriceListId, false);
+	}
+
+	private CommercePriceListDiscountRel _findByCDI_CPI(
+			long commerceDiscountId, long commercePriceListId,
+			boolean readOnlyCache)
+		throws NoSuchPriceListDiscountRelException {
+
 		CommercePriceListDiscountRel commercePriceListDiscountRel =
-			fetchByCDI_CPI(commerceDiscountId, commercePriceListId);
+			_fetchByCDI_CPI(
+				commerceDiscountId, commercePriceListId, true, readOnlyCache);
 
 		if (commercePriceListDiscountRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1882,6 +1928,14 @@ public class CommercePriceListDiscountRelPersistenceImpl
 	public CommercePriceListDiscountRel fetchByCDI_CPI(
 		long commerceDiscountId, long commercePriceListId,
 		boolean useFinderCache) {
+
+		return _fetchByCDI_CPI(
+			commerceDiscountId, commercePriceListId, useFinderCache, false);
+	}
+
+	private CommercePriceListDiscountRel _fetchByCDI_CPI(
+		long commerceDiscountId, long commercePriceListId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceListDiscountRel.class);
@@ -1948,9 +2002,11 @@ public class CommercePriceListDiscountRelPersistenceImpl
 					CommercePriceListDiscountRel commercePriceListDiscountRel =
 						list.get(0);
 
-					result = commercePriceListDiscountRel;
+					if (!readOnlyCache) {
+						result = commercePriceListDiscountRel;
 
-					cacheResult(commercePriceListDiscountRel);
+						cacheResult(commercePriceListDiscountRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1982,7 +2038,7 @@ public class CommercePriceListDiscountRelPersistenceImpl
 		throws NoSuchPriceListDiscountRelException {
 
 		CommercePriceListDiscountRel commercePriceListDiscountRel =
-			findByCDI_CPI(commerceDiscountId, commercePriceListId);
+			_findByCDI_CPI(commerceDiscountId, commercePriceListId, true);
 
 		return remove(commercePriceListDiscountRel);
 	}
@@ -2701,6 +2757,14 @@ public class CommercePriceListDiscountRelPersistenceImpl
 		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePriceListDiscountRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommercePriceListDiscountRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommercePriceListDiscountRel.class);
 
@@ -2759,10 +2823,12 @@ public class CommercePriceListDiscountRelPersistenceImpl
 				list = (List<CommercePriceListDiscountRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2783,7 +2849,8 @@ public class CommercePriceListDiscountRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommercePriceListDiscountRel commercePriceListDiscountRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePriceListDiscountRel);
 		}

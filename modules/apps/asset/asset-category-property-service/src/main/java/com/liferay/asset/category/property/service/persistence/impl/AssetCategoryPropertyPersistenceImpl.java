@@ -182,6 +182,15 @@ public class AssetCategoryPropertyPersistenceImpl
 		OrderByComparator<AssetCategoryProperty> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetCategoryProperty> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AssetCategoryProperty> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetCategoryProperty.class);
 
@@ -259,10 +268,12 @@ public class AssetCategoryPropertyPersistenceImpl
 				list = (List<AssetCategoryProperty>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -556,8 +567,9 @@ public class AssetCategoryPropertyPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AssetCategoryProperty assetCategoryProperty :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetCategoryProperty);
 		}
@@ -704,6 +716,15 @@ public class AssetCategoryPropertyPersistenceImpl
 		OrderByComparator<AssetCategoryProperty> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCategoryId(
+			categoryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetCategoryProperty> _findByCategoryId(
+		long categoryId, int start, int end,
+		OrderByComparator<AssetCategoryProperty> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetCategoryProperty.class);
 
@@ -781,10 +802,12 @@ public class AssetCategoryPropertyPersistenceImpl
 				list = (List<AssetCategoryProperty>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1078,8 +1101,9 @@ public class AssetCategoryPropertyPersistenceImpl
 	@Override
 	public void removeByCategoryId(long categoryId) {
 		for (AssetCategoryProperty assetCategoryProperty :
-				findByCategoryId(
-					categoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCategoryId(
+					categoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetCategoryProperty);
 		}
@@ -1229,6 +1253,16 @@ public class AssetCategoryPropertyPersistenceImpl
 		OrderByComparator<AssetCategoryProperty> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_K(
+			companyId, key, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetCategoryProperty> _findByC_K(
+		long companyId, String key, int start, int end,
+		OrderByComparator<AssetCategoryProperty> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1325,10 +1359,12 @@ public class AssetCategoryPropertyPersistenceImpl
 				list = (List<AssetCategoryProperty>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1651,9 +1687,9 @@ public class AssetCategoryPropertyPersistenceImpl
 	@Override
 	public void removeByC_K(long companyId, String key) {
 		for (AssetCategoryProperty assetCategoryProperty :
-				findByC_K(
-					companyId, key, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_K(
+					companyId, key, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetCategoryProperty);
 		}
@@ -1762,8 +1798,15 @@ public class AssetCategoryPropertyPersistenceImpl
 	public AssetCategoryProperty findByCA_K(long categoryId, String key)
 		throws NoSuchCategoryPropertyException {
 
-		AssetCategoryProperty assetCategoryProperty = fetchByCA_K(
-			categoryId, key);
+		return _findByCA_K(categoryId, key, false);
+	}
+
+	private AssetCategoryProperty _findByCA_K(
+			long categoryId, String key, boolean readOnlyCache)
+		throws NoSuchCategoryPropertyException {
+
+		AssetCategoryProperty assetCategoryProperty = _fetchByCA_K(
+			categoryId, key, true, readOnlyCache);
 
 		if (assetCategoryProperty == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1811,6 +1854,13 @@ public class AssetCategoryPropertyPersistenceImpl
 	@Override
 	public AssetCategoryProperty fetchByCA_K(
 		long categoryId, String key, boolean useFinderCache) {
+
+		return _fetchByCA_K(categoryId, key, useFinderCache, false);
+	}
+
+	private AssetCategoryProperty _fetchByCA_K(
+		long categoryId, String key, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 
@@ -1886,9 +1936,11 @@ public class AssetCategoryPropertyPersistenceImpl
 				else {
 					AssetCategoryProperty assetCategoryProperty = list.get(0);
 
-					result = assetCategoryProperty;
+					if (!readOnlyCache) {
+						result = assetCategoryProperty;
 
-					cacheResult(assetCategoryProperty);
+						cacheResult(assetCategoryProperty);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1918,8 +1970,8 @@ public class AssetCategoryPropertyPersistenceImpl
 	public AssetCategoryProperty removeByCA_K(long categoryId, String key)
 		throws NoSuchCategoryPropertyException {
 
-		AssetCategoryProperty assetCategoryProperty = findByCA_K(
-			categoryId, key);
+		AssetCategoryProperty assetCategoryProperty = _findByCA_K(
+			categoryId, key, true);
 
 		return remove(assetCategoryProperty);
 	}
@@ -2612,6 +2664,14 @@ public class AssetCategoryPropertyPersistenceImpl
 		OrderByComparator<AssetCategoryProperty> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetCategoryProperty> _findAll(
+		int start, int end,
+		OrderByComparator<AssetCategoryProperty> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetCategoryProperty.class);
 
@@ -2669,10 +2729,12 @@ public class AssetCategoryPropertyPersistenceImpl
 				list = (List<AssetCategoryProperty>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2692,7 +2754,10 @@ public class AssetCategoryPropertyPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AssetCategoryProperty assetCategoryProperty : findAll()) {
+		for (AssetCategoryProperty assetCategoryProperty :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(assetCategoryProperty);
 		}
 	}

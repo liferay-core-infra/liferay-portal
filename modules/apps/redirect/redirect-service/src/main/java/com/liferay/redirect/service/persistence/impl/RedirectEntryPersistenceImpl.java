@@ -180,6 +180,15 @@ public class RedirectEntryPersistenceImpl
 		OrderByComparator<RedirectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RedirectEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<RedirectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -265,10 +274,12 @@ public class RedirectEntryPersistenceImpl
 				list = (List<RedirectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,7 +575,9 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (RedirectEntry redirectEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(redirectEntry);
 		}
@@ -653,7 +666,15 @@ public class RedirectEntryPersistenceImpl
 	public RedirectEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		RedirectEntry redirectEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private RedirectEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		RedirectEntry redirectEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (redirectEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -701,6 +722,13 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public RedirectEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private RedirectEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -773,9 +801,11 @@ public class RedirectEntryPersistenceImpl
 				else {
 					RedirectEntry redirectEntry = list.get(0);
 
-					result = redirectEntry;
+					if (!readOnlyCache) {
+						result = redirectEntry;
 
-					cacheResult(redirectEntry);
+						cacheResult(redirectEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -805,7 +835,7 @@ public class RedirectEntryPersistenceImpl
 	public RedirectEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		RedirectEntry redirectEntry = findByUUID_G(uuid, groupId);
+		RedirectEntry redirectEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(redirectEntry);
 	}
@@ -967,6 +997,16 @@ public class RedirectEntryPersistenceImpl
 		OrderByComparator<RedirectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<RedirectEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<RedirectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1060,10 +1100,12 @@ public class RedirectEntryPersistenceImpl
 				list = (List<RedirectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1384,9 +1426,9 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (RedirectEntry redirectEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(redirectEntry);
 		}
@@ -1542,6 +1584,15 @@ public class RedirectEntryPersistenceImpl
 		OrderByComparator<RedirectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RedirectEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<RedirectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1614,10 +1665,12 @@ public class RedirectEntryPersistenceImpl
 				list = (List<RedirectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2233,8 +2286,9 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (RedirectEntry redirectEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(redirectEntry);
 		}
@@ -2422,6 +2476,16 @@ public class RedirectEntryPersistenceImpl
 		OrderByComparator<RedirectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_D(
+			groupId, destinationURL, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<RedirectEntry> _findByG_D(
+		long groupId, String destinationURL, int start, int end,
+		OrderByComparator<RedirectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		destinationURL = Objects.toString(destinationURL, "");
 
 		FinderPath finderPath = null;
@@ -2516,10 +2580,12 @@ public class RedirectEntryPersistenceImpl
 				list = (List<RedirectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3216,9 +3282,9 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public void removeByG_D(long groupId, String destinationURL) {
 		for (RedirectEntry redirectEntry :
-				findByG_D(
+				_findByG_D(
 					groupId, destinationURL, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(redirectEntry);
 		}
@@ -3381,7 +3447,15 @@ public class RedirectEntryPersistenceImpl
 	public RedirectEntry findByG_S(long groupId, String sourceURL)
 		throws NoSuchEntryException {
 
-		RedirectEntry redirectEntry = fetchByG_S(groupId, sourceURL);
+		return _findByG_S(groupId, sourceURL, false);
+	}
+
+	private RedirectEntry _findByG_S(
+			long groupId, String sourceURL, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		RedirectEntry redirectEntry = _fetchByG_S(
+			groupId, sourceURL, true, readOnlyCache);
 
 		if (redirectEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3429,6 +3503,13 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public RedirectEntry fetchByG_S(
 		long groupId, String sourceURL, boolean useFinderCache) {
+
+		return _fetchByG_S(groupId, sourceURL, useFinderCache, false);
+	}
+
+	private RedirectEntry _fetchByG_S(
+		long groupId, String sourceURL, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		sourceURL = Objects.toString(sourceURL, "");
 
@@ -3500,9 +3581,11 @@ public class RedirectEntryPersistenceImpl
 				else {
 					RedirectEntry redirectEntry = list.get(0);
 
-					result = redirectEntry;
+					if (!readOnlyCache) {
+						result = redirectEntry;
 
-					cacheResult(redirectEntry);
+						cacheResult(redirectEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3532,7 +3615,7 @@ public class RedirectEntryPersistenceImpl
 	public RedirectEntry removeByG_S(long groupId, String sourceURL)
 		throws NoSuchEntryException {
 
-		RedirectEntry redirectEntry = findByG_S(groupId, sourceURL);
+		RedirectEntry redirectEntry = _findByG_S(groupId, sourceURL, true);
 
 		return remove(redirectEntry);
 	}
@@ -4084,6 +4167,13 @@ public class RedirectEntryPersistenceImpl
 		int start, int end, OrderByComparator<RedirectEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RedirectEntry> _findAll(
+		int start, int end, OrderByComparator<RedirectEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4138,10 +4228,12 @@ public class RedirectEntryPersistenceImpl
 				list = (List<RedirectEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4161,7 +4253,10 @@ public class RedirectEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RedirectEntry redirectEntry : findAll()) {
+		for (RedirectEntry redirectEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(redirectEntry);
 		}
 	}

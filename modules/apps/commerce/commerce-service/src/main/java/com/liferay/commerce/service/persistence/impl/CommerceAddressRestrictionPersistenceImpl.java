@@ -159,6 +159,15 @@ public class CommerceAddressRestrictionPersistenceImpl
 		OrderByComparator<CommerceAddressRestriction> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCountryId(
+			countryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceAddressRestriction> _findByCountryId(
+		long countryId, int start, int end,
+		OrderByComparator<CommerceAddressRestriction> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -237,10 +246,12 @@ public class CommerceAddressRestrictionPersistenceImpl
 				list = (List<CommerceAddressRestriction>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -535,8 +546,9 @@ public class CommerceAddressRestrictionPersistenceImpl
 	@Override
 	public void removeByCountryId(long countryId) {
 		for (CommerceAddressRestriction commerceAddressRestriction :
-				findByCountryId(
-					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCountryId(
+					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceAddressRestriction);
 		}
@@ -677,6 +689,16 @@ public class CommerceAddressRestrictionPersistenceImpl
 		OrderByComparator<CommerceAddressRestriction> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceAddressRestriction> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<CommerceAddressRestriction> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -760,10 +782,12 @@ public class CommerceAddressRestrictionPersistenceImpl
 				list = (List<CommerceAddressRestriction>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1074,9 +1098,9 @@ public class CommerceAddressRestrictionPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (CommerceAddressRestriction commerceAddressRestriction :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceAddressRestriction);
 		}
@@ -1159,8 +1183,16 @@ public class CommerceAddressRestrictionPersistenceImpl
 			long classNameId, long classPK, long countryId)
 		throws NoSuchAddressRestrictionException {
 
-		CommerceAddressRestriction commerceAddressRestriction = fetchByC_C_C(
-			classNameId, classPK, countryId);
+		return _findByC_C_C(classNameId, classPK, countryId, false);
+	}
+
+	private CommerceAddressRestriction _findByC_C_C(
+			long classNameId, long classPK, long countryId,
+			boolean readOnlyCache)
+		throws NoSuchAddressRestrictionException {
+
+		CommerceAddressRestriction commerceAddressRestriction = _fetchByC_C_C(
+			classNameId, classPK, countryId, true, readOnlyCache);
 
 		if (commerceAddressRestriction == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1216,6 +1248,14 @@ public class CommerceAddressRestrictionPersistenceImpl
 	public CommerceAddressRestriction fetchByC_C_C(
 		long classNameId, long classPK, long countryId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			classNameId, classPK, countryId, useFinderCache, false);
+	}
+
+	private CommerceAddressRestriction _fetchByC_C_C(
+		long classNameId, long classPK, long countryId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1281,9 +1321,11 @@ public class CommerceAddressRestrictionPersistenceImpl
 					CommerceAddressRestriction commerceAddressRestriction =
 						list.get(0);
 
-					result = commerceAddressRestriction;
+					if (!readOnlyCache) {
+						result = commerceAddressRestriction;
 
-					cacheResult(commerceAddressRestriction);
+						cacheResult(commerceAddressRestriction);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1315,8 +1357,8 @@ public class CommerceAddressRestrictionPersistenceImpl
 			long classNameId, long classPK, long countryId)
 		throws NoSuchAddressRestrictionException {
 
-		CommerceAddressRestriction commerceAddressRestriction = findByC_C_C(
-			classNameId, classPK, countryId);
+		CommerceAddressRestriction commerceAddressRestriction = _findByC_C_C(
+			classNameId, classPK, countryId, true);
 
 		return remove(commerceAddressRestriction);
 	}
@@ -1841,6 +1883,14 @@ public class CommerceAddressRestrictionPersistenceImpl
 		OrderByComparator<CommerceAddressRestriction> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceAddressRestriction> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceAddressRestriction> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1896,10 +1946,12 @@ public class CommerceAddressRestrictionPersistenceImpl
 				list = (List<CommerceAddressRestriction>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1920,7 +1972,8 @@ public class CommerceAddressRestrictionPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceAddressRestriction commerceAddressRestriction :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceAddressRestriction);
 		}

@@ -161,6 +161,16 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLvEntryLocalizationId(
+			lvEntryLocalizationId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LVEntryLocalizationVersion> _findByLvEntryLocalizationId(
+		long lvEntryLocalizationId, int start, int end,
+		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +252,12 @@ public class LVEntryLocalizationVersionPersistenceImpl
 				list = (List<LVEntryLocalizationVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,9 +554,9 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	@Override
 	public void removeByLvEntryLocalizationId(long lvEntryLocalizationId) {
 		for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
-				findByLvEntryLocalizationId(
+				_findByLvEntryLocalizationId(
 					lvEntryLocalizationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(lvEntryLocalizationVersion);
 		}
@@ -620,9 +632,17 @@ public class LVEntryLocalizationVersionPersistenceImpl
 			long lvEntryLocalizationId, int version)
 		throws NoSuchLVEntryLocalizationVersionException {
 
+		return _findByLvEntryLocalizationId_Version(
+			lvEntryLocalizationId, version, false);
+	}
+
+	private LVEntryLocalizationVersion _findByLvEntryLocalizationId_Version(
+			long lvEntryLocalizationId, int version, boolean readOnlyCache)
+		throws NoSuchLVEntryLocalizationVersionException {
+
 		LVEntryLocalizationVersion lvEntryLocalizationVersion =
-			fetchByLvEntryLocalizationId_Version(
-				lvEntryLocalizationId, version);
+			_fetchByLvEntryLocalizationId_Version(
+				lvEntryLocalizationId, version, true, readOnlyCache);
 
 		if (lvEntryLocalizationVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -673,6 +693,14 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	@Override
 	public LVEntryLocalizationVersion fetchByLvEntryLocalizationId_Version(
 		long lvEntryLocalizationId, int version, boolean useFinderCache) {
+
+		return _fetchByLvEntryLocalizationId_Version(
+			lvEntryLocalizationId, version, useFinderCache, false);
+	}
+
+	private LVEntryLocalizationVersion _fetchByLvEntryLocalizationId_Version(
+		long lvEntryLocalizationId, int version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -737,9 +765,11 @@ public class LVEntryLocalizationVersionPersistenceImpl
 					LVEntryLocalizationVersion lvEntryLocalizationVersion =
 						list.get(0);
 
-					result = lvEntryLocalizationVersion;
+					if (!readOnlyCache) {
+						result = lvEntryLocalizationVersion;
 
-					cacheResult(lvEntryLocalizationVersion);
+						cacheResult(lvEntryLocalizationVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -771,7 +801,8 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		throws NoSuchLVEntryLocalizationVersionException {
 
 		LVEntryLocalizationVersion lvEntryLocalizationVersion =
-			findByLvEntryLocalizationId_Version(lvEntryLocalizationId, version);
+			_findByLvEntryLocalizationId_Version(
+				lvEntryLocalizationId, version, true);
 
 		return remove(lvEntryLocalizationVersion);
 	}
@@ -917,6 +948,15 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLvEntryId(
+			lvEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LVEntryLocalizationVersion> _findByLvEntryId(
+		long lvEntryId, int start, int end,
+		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -995,10 +1035,12 @@ public class LVEntryLocalizationVersionPersistenceImpl
 				list = (List<LVEntryLocalizationVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1293,8 +1335,9 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	@Override
 	public void removeByLvEntryId(long lvEntryId) {
 		for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
-				findByLvEntryId(
-					lvEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLvEntryId(
+					lvEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lvEntryLocalizationVersion);
 		}
@@ -1435,6 +1478,16 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLvEntryId_Version(
+			lvEntryId, version, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LVEntryLocalizationVersion> _findByLvEntryId_Version(
+		long lvEntryId, int version, int start, int end,
+		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1519,10 +1572,12 @@ public class LVEntryLocalizationVersionPersistenceImpl
 				list = (List<LVEntryLocalizationVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1835,9 +1890,9 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	@Override
 	public void removeByLvEntryId_Version(long lvEntryId, int version) {
 		for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
-				findByLvEntryId_Version(
+				_findByLvEntryId_Version(
 					lvEntryId, version, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(lvEntryLocalizationVersion);
 		}
@@ -1987,6 +2042,16 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLvEntryId_LanguageId(
+			lvEntryId, languageId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LVEntryLocalizationVersion> _findByLvEntryId_LanguageId(
+		long lvEntryId, String languageId, int start, int end,
+		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		languageId = Objects.toString(languageId, "");
 
 		FinderPath finderPath = null;
@@ -2085,10 +2150,12 @@ public class LVEntryLocalizationVersionPersistenceImpl
 				list = (List<LVEntryLocalizationVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2417,9 +2484,9 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		long lvEntryId, String languageId) {
 
 		for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
-				findByLvEntryId_LanguageId(
+				_findByLvEntryId_LanguageId(
 					lvEntryId, languageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(lvEntryLocalizationVersion);
 		}
@@ -2521,8 +2588,18 @@ public class LVEntryLocalizationVersionPersistenceImpl
 			long lvEntryId, String languageId, int version)
 		throws NoSuchLVEntryLocalizationVersionException {
 
+		return _findByLvEntryId_LanguageId_Version(
+			lvEntryId, languageId, version, false);
+	}
+
+	private LVEntryLocalizationVersion _findByLvEntryId_LanguageId_Version(
+			long lvEntryId, String languageId, int version,
+			boolean readOnlyCache)
+		throws NoSuchLVEntryLocalizationVersionException {
+
 		LVEntryLocalizationVersion lvEntryLocalizationVersion =
-			fetchByLvEntryId_LanguageId_Version(lvEntryId, languageId, version);
+			_fetchByLvEntryId_LanguageId_Version(
+				lvEntryId, languageId, version, true, readOnlyCache);
 
 		if (lvEntryLocalizationVersion == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2579,6 +2656,14 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	public LVEntryLocalizationVersion fetchByLvEntryId_LanguageId_Version(
 		long lvEntryId, String languageId, int version,
 		boolean useFinderCache) {
+
+		return _fetchByLvEntryId_LanguageId_Version(
+			lvEntryId, languageId, version, useFinderCache, false);
+	}
+
+	private LVEntryLocalizationVersion _fetchByLvEntryId_LanguageId_Version(
+		long lvEntryId, String languageId, int version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -2662,9 +2747,11 @@ public class LVEntryLocalizationVersionPersistenceImpl
 					LVEntryLocalizationVersion lvEntryLocalizationVersion =
 						list.get(0);
 
-					result = lvEntryLocalizationVersion;
+					if (!readOnlyCache) {
+						result = lvEntryLocalizationVersion;
 
-					cacheResult(lvEntryLocalizationVersion);
+						cacheResult(lvEntryLocalizationVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2697,7 +2784,8 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		throws NoSuchLVEntryLocalizationVersionException {
 
 		LVEntryLocalizationVersion lvEntryLocalizationVersion =
-			findByLvEntryId_LanguageId_Version(lvEntryId, languageId, version);
+			_findByLvEntryId_LanguageId_Version(
+				lvEntryId, languageId, version, true);
 
 		return remove(lvEntryLocalizationVersion);
 	}
@@ -3245,6 +3333,14 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LVEntryLocalizationVersion> _findAll(
+		int start, int end,
+		OrderByComparator<LVEntryLocalizationVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3300,10 +3396,12 @@ public class LVEntryLocalizationVersionPersistenceImpl
 				list = (List<LVEntryLocalizationVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3324,7 +3422,8 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(lvEntryLocalizationVersion);
 		}

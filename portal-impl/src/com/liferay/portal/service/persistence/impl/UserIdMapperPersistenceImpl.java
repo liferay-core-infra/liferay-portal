@@ -157,6 +157,15 @@ public class UserIdMapperPersistenceImpl
 		OrderByComparator<UserIdMapper> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserIdMapper> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<UserIdMapper> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -229,10 +238,12 @@ public class UserIdMapperPersistenceImpl
 				list = (List<UserIdMapper>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -515,8 +526,9 @@ public class UserIdMapperPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (UserIdMapper userIdMapper :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userIdMapper);
 		}
@@ -589,7 +601,15 @@ public class UserIdMapperPersistenceImpl
 	public UserIdMapper findByU_T(long userId, String type)
 		throws NoSuchUserIdMapperException {
 
-		UserIdMapper userIdMapper = fetchByU_T(userId, type);
+		return _findByU_T(userId, type, false);
+	}
+
+	private UserIdMapper _findByU_T(
+			long userId, String type, boolean readOnlyCache)
+		throws NoSuchUserIdMapperException {
+
+		UserIdMapper userIdMapper = _fetchByU_T(
+			userId, type, true, readOnlyCache);
 
 		if (userIdMapper == null) {
 			StringBundler sb = new StringBundler(6);
@@ -637,6 +657,13 @@ public class UserIdMapperPersistenceImpl
 	@Override
 	public UserIdMapper fetchByU_T(
 		long userId, String type, boolean useFinderCache) {
+
+		return _fetchByU_T(userId, type, useFinderCache, false);
+	}
+
+	private UserIdMapper _fetchByU_T(
+		long userId, String type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		type = Objects.toString(type, "");
 
@@ -709,9 +736,11 @@ public class UserIdMapperPersistenceImpl
 				else {
 					UserIdMapper userIdMapper = list.get(0);
 
-					result = userIdMapper;
+					if (!readOnlyCache) {
+						result = userIdMapper;
 
-					cacheResult(userIdMapper);
+						cacheResult(userIdMapper);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -741,7 +770,7 @@ public class UserIdMapperPersistenceImpl
 	public UserIdMapper removeByU_T(long userId, String type)
 		throws NoSuchUserIdMapperException {
 
-		UserIdMapper userIdMapper = findByU_T(userId, type);
+		UserIdMapper userIdMapper = _findByU_T(userId, type, true);
 
 		return remove(userIdMapper);
 	}
@@ -837,7 +866,15 @@ public class UserIdMapperPersistenceImpl
 	public UserIdMapper findByT_E(String type, String externalUserId)
 		throws NoSuchUserIdMapperException {
 
-		UserIdMapper userIdMapper = fetchByT_E(type, externalUserId);
+		return _findByT_E(type, externalUserId, false);
+	}
+
+	private UserIdMapper _findByT_E(
+			String type, String externalUserId, boolean readOnlyCache)
+		throws NoSuchUserIdMapperException {
+
+		UserIdMapper userIdMapper = _fetchByT_E(
+			type, externalUserId, true, readOnlyCache);
 
 		if (userIdMapper == null) {
 			StringBundler sb = new StringBundler(6);
@@ -885,6 +922,13 @@ public class UserIdMapperPersistenceImpl
 	@Override
 	public UserIdMapper fetchByT_E(
 		String type, String externalUserId, boolean useFinderCache) {
+
+		return _fetchByT_E(type, externalUserId, useFinderCache, false);
+	}
+
+	private UserIdMapper _fetchByT_E(
+		String type, String externalUserId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		type = Objects.toString(type, "");
 		externalUserId = Objects.toString(externalUserId, "");
@@ -970,9 +1014,11 @@ public class UserIdMapperPersistenceImpl
 				else {
 					UserIdMapper userIdMapper = list.get(0);
 
-					result = userIdMapper;
+					if (!readOnlyCache) {
+						result = userIdMapper;
 
-					cacheResult(userIdMapper);
+						cacheResult(userIdMapper);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1002,7 +1048,7 @@ public class UserIdMapperPersistenceImpl
 	public UserIdMapper removeByT_E(String type, String externalUserId)
 		throws NoSuchUserIdMapperException {
 
-		UserIdMapper userIdMapper = findByT_E(type, externalUserId);
+		UserIdMapper userIdMapper = _findByT_E(type, externalUserId, true);
 
 		return remove(userIdMapper);
 	}
@@ -1498,6 +1544,13 @@ public class UserIdMapperPersistenceImpl
 		int start, int end, OrderByComparator<UserIdMapper> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserIdMapper> _findAll(
+		int start, int end, OrderByComparator<UserIdMapper> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1552,10 +1605,12 @@ public class UserIdMapperPersistenceImpl
 				list = (List<UserIdMapper>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1575,7 +1630,10 @@ public class UserIdMapperPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserIdMapper userIdMapper : findAll()) {
+		for (UserIdMapper userIdMapper :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userIdMapper);
 		}
 	}

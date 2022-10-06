@@ -175,6 +175,15 @@ public class CommerceTaxMethodPersistenceImpl
 		OrderByComparator<CommerceTaxMethod> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTaxMethod> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CommerceTaxMethod> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -247,10 +256,12 @@ public class CommerceTaxMethodPersistenceImpl
 				list = (List<CommerceTaxMethod>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -539,8 +550,9 @@ public class CommerceTaxMethodPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CommerceTaxMethod commerceTaxMethod :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceTaxMethod);
 		}
@@ -613,7 +625,15 @@ public class CommerceTaxMethodPersistenceImpl
 	public CommerceTaxMethod findByG_E(long groupId, String engineKey)
 		throws NoSuchTaxMethodException {
 
-		CommerceTaxMethod commerceTaxMethod = fetchByG_E(groupId, engineKey);
+		return _findByG_E(groupId, engineKey, false);
+	}
+
+	private CommerceTaxMethod _findByG_E(
+			long groupId, String engineKey, boolean readOnlyCache)
+		throws NoSuchTaxMethodException {
+
+		CommerceTaxMethod commerceTaxMethod = _fetchByG_E(
+			groupId, engineKey, true, readOnlyCache);
 
 		if (commerceTaxMethod == null) {
 			StringBundler sb = new StringBundler(6);
@@ -661,6 +681,13 @@ public class CommerceTaxMethodPersistenceImpl
 	@Override
 	public CommerceTaxMethod fetchByG_E(
 		long groupId, String engineKey, boolean useFinderCache) {
+
+		return _fetchByG_E(groupId, engineKey, useFinderCache, false);
+	}
+
+	private CommerceTaxMethod _fetchByG_E(
+		long groupId, String engineKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		engineKey = Objects.toString(engineKey, "");
 
@@ -732,9 +759,11 @@ public class CommerceTaxMethodPersistenceImpl
 				else {
 					CommerceTaxMethod commerceTaxMethod = list.get(0);
 
-					result = commerceTaxMethod;
+					if (!readOnlyCache) {
+						result = commerceTaxMethod;
 
-					cacheResult(commerceTaxMethod);
+						cacheResult(commerceTaxMethod);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -764,7 +793,8 @@ public class CommerceTaxMethodPersistenceImpl
 	public CommerceTaxMethod removeByG_E(long groupId, String engineKey)
 		throws NoSuchTaxMethodException {
 
-		CommerceTaxMethod commerceTaxMethod = findByG_E(groupId, engineKey);
+		CommerceTaxMethod commerceTaxMethod = _findByG_E(
+			groupId, engineKey, true);
 
 		return remove(commerceTaxMethod);
 	}
@@ -925,6 +955,16 @@ public class CommerceTaxMethodPersistenceImpl
 		OrderByComparator<CommerceTaxMethod> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTaxMethod> _findByG_A(
+		long groupId, boolean active, int start, int end,
+		OrderByComparator<CommerceTaxMethod> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1005,10 +1045,12 @@ public class CommerceTaxMethodPersistenceImpl
 				list = (List<CommerceTaxMethod>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1317,9 +1359,9 @@ public class CommerceTaxMethodPersistenceImpl
 	@Override
 	public void removeByG_A(long groupId, boolean active) {
 		for (CommerceTaxMethod commerceTaxMethod :
-				findByG_A(
-					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_A(
+					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceTaxMethod);
 		}
@@ -1809,6 +1851,14 @@ public class CommerceTaxMethodPersistenceImpl
 		OrderByComparator<CommerceTaxMethod> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTaxMethod> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceTaxMethod> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1863,10 +1913,12 @@ public class CommerceTaxMethodPersistenceImpl
 				list = (List<CommerceTaxMethod>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1886,7 +1938,10 @@ public class CommerceTaxMethodPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceTaxMethod commerceTaxMethod : findAll()) {
+		for (CommerceTaxMethod commerceTaxMethod :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceTaxMethod);
 		}
 	}

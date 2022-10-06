@@ -184,6 +184,15 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SiteNavigationMenuItem> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -272,10 +281,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -581,7 +592,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -682,8 +695,15 @@ public class SiteNavigationMenuItemPersistenceImpl
 	public SiteNavigationMenuItem findByUUID_G(String uuid, long groupId)
 		throws NoSuchMenuItemException {
 
-		SiteNavigationMenuItem siteNavigationMenuItem = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private SiteNavigationMenuItem _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchMenuItemException {
+
+		SiteNavigationMenuItem siteNavigationMenuItem = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (siteNavigationMenuItem == null) {
 			StringBundler sb = new StringBundler(6);
@@ -731,6 +751,13 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public SiteNavigationMenuItem fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private SiteNavigationMenuItem _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -807,9 +834,11 @@ public class SiteNavigationMenuItemPersistenceImpl
 				else {
 					SiteNavigationMenuItem siteNavigationMenuItem = list.get(0);
 
-					result = siteNavigationMenuItem;
+					if (!readOnlyCache) {
+						result = siteNavigationMenuItem;
 
-					cacheResult(siteNavigationMenuItem);
+						cacheResult(siteNavigationMenuItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -839,8 +868,8 @@ public class SiteNavigationMenuItemPersistenceImpl
 	public SiteNavigationMenuItem removeByUUID_G(String uuid, long groupId)
 		throws NoSuchMenuItemException {
 
-		SiteNavigationMenuItem siteNavigationMenuItem = findByUUID_G(
-			uuid, groupId);
+		SiteNavigationMenuItem siteNavigationMenuItem = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(siteNavigationMenuItem);
 	}
@@ -1016,6 +1045,16 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SiteNavigationMenuItem> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1112,10 +1151,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1438,9 +1479,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -1610,6 +1651,15 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SiteNavigationMenuItem> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SiteNavigationMenuItem.class);
 
@@ -1687,10 +1737,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1984,8 +2036,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -2135,6 +2188,16 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySiteNavigationMenuId(
+			siteNavigationMenuId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SiteNavigationMenuItem> _findBySiteNavigationMenuId(
+		long siteNavigationMenuId, int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SiteNavigationMenuItem.class);
 
@@ -2216,10 +2279,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2515,9 +2580,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public void removeBySiteNavigationMenuId(long siteNavigationMenuId) {
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findBySiteNavigationMenuId(
+				_findBySiteNavigationMenuId(
 					siteNavigationMenuId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -2673,6 +2738,16 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByParentSiteNavigationMenuItemId(
+			parentSiteNavigationMenuItemId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SiteNavigationMenuItem> _findByParentSiteNavigationMenuItemId(
+		long parentSiteNavigationMenuItemId, int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SiteNavigationMenuItem.class);
 
@@ -2756,10 +2831,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3065,9 +3142,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 		long parentSiteNavigationMenuItemId) {
 
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findByParentSiteNavigationMenuItemId(
+				_findByParentSiteNavigationMenuItemId(
 					parentSiteNavigationMenuItemId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -3231,6 +3308,17 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_P(
+			siteNavigationMenuId, parentSiteNavigationMenuItemId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SiteNavigationMenuItem> _findByS_P(
+		long siteNavigationMenuId, long parentSiteNavigationMenuItemId,
+		int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SiteNavigationMenuItem.class);
 
@@ -3320,10 +3408,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3641,9 +3731,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 		long siteNavigationMenuId, long parentSiteNavigationMenuItemId) {
 
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findByS_P(
+				_findByS_P(
 					siteNavigationMenuId, parentSiteNavigationMenuItemId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -3809,6 +3899,16 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_LikeN(
+			siteNavigationMenuId, name, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SiteNavigationMenuItem> _findByS_LikeN(
+		long siteNavigationMenuId, String name, int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3898,10 +3998,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4225,9 +4327,9 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public void removeByS_LikeN(long siteNavigationMenuId, String name) {
 		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				findByS_LikeN(
+				_findByS_LikeN(
 					siteNavigationMenuId, name, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(siteNavigationMenuItem);
 		}
@@ -4938,6 +5040,14 @@ public class SiteNavigationMenuItemPersistenceImpl
 		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SiteNavigationMenuItem> _findAll(
+		int start, int end,
+		OrderByComparator<SiteNavigationMenuItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SiteNavigationMenuItem.class);
 
@@ -4995,10 +5105,12 @@ public class SiteNavigationMenuItemPersistenceImpl
 				list = (List<SiteNavigationMenuItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5018,7 +5130,10 @@ public class SiteNavigationMenuItemPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SiteNavigationMenuItem siteNavigationMenuItem : findAll()) {
+		for (SiteNavigationMenuItem siteNavigationMenuItem :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(siteNavigationMenuItem);
 		}
 	}

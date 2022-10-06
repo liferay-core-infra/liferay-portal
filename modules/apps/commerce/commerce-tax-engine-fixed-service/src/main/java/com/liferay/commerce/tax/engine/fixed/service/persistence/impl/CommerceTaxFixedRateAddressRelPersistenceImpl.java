@@ -179,6 +179,16 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceTaxMethodId(
+			commerceTaxMethodId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTaxFixedRateAddressRel> _findByCommerceTaxMethodId(
+		long commerceTaxMethodId, int start, int end,
+		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -260,10 +270,12 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				list = (List<CommerceTaxFixedRateAddressRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,9 +576,9 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 	@Override
 	public void removeByCommerceTaxMethodId(long commerceTaxMethodId) {
 		for (CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel :
-				findByCommerceTaxMethodId(
+				_findByCommerceTaxMethodId(
 					commerceTaxMethodId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceTaxFixedRateAddressRel);
 		}
@@ -704,6 +716,16 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPTaxCategoryId(
+			CPTaxCategoryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTaxFixedRateAddressRel> _findByCPTaxCategoryId(
+		long CPTaxCategoryId, int start, int end,
+		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -784,10 +806,12 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				list = (List<CommerceTaxFixedRateAddressRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1083,9 +1107,9 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 	@Override
 	public void removeByCPTaxCategoryId(long CPTaxCategoryId) {
 		for (CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel :
-				findByCPTaxCategoryId(
-					CPTaxCategoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPTaxCategoryId(
+					CPTaxCategoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceTaxFixedRateAddressRel);
 		}
@@ -1222,6 +1246,15 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCountryId(
+			countryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTaxFixedRateAddressRel> _findByCountryId(
+		long countryId, int start, int end,
+		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1301,10 +1334,12 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				list = (List<CommerceTaxFixedRateAddressRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1600,8 +1635,9 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 	@Override
 	public void removeByCountryId(long countryId) {
 		for (CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel :
-				findByCountryId(
-					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCountryId(
+					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceTaxFixedRateAddressRel);
 		}
@@ -2100,6 +2136,14 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTaxFixedRateAddressRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceTaxFixedRateAddressRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2155,10 +2199,12 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 				list = (List<CommerceTaxFixedRateAddressRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2179,7 +2225,8 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceTaxFixedRateAddressRel);
 		}

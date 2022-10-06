@@ -168,6 +168,15 @@ public class CPTaxCategoryPersistenceImpl
 		OrderByComparator<CPTaxCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPTaxCategory> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPTaxCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -256,10 +265,12 @@ public class CPTaxCategoryPersistenceImpl
 				list = (List<CPTaxCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,7 +566,9 @@ public class CPTaxCategoryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPTaxCategory cpTaxCategory :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpTaxCategory);
 		}
@@ -722,6 +735,16 @@ public class CPTaxCategoryPersistenceImpl
 		OrderByComparator<CPTaxCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPTaxCategory> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPTaxCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -818,10 +841,12 @@ public class CPTaxCategoryPersistenceImpl
 				list = (List<CPTaxCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1142,9 +1167,9 @@ public class CPTaxCategoryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPTaxCategory cpTaxCategory :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpTaxCategory);
 		}
@@ -1314,6 +1339,15 @@ public class CPTaxCategoryPersistenceImpl
 		OrderByComparator<CPTaxCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPTaxCategory> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CPTaxCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPTaxCategory.class);
 
@@ -1391,10 +1425,12 @@ public class CPTaxCategoryPersistenceImpl
 				list = (List<CPTaxCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1679,8 +1715,9 @@ public class CPTaxCategoryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CPTaxCategory cpTaxCategory :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpTaxCategory);
 		}
@@ -1766,8 +1803,15 @@ public class CPTaxCategoryPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPTaxCategoryException {
 
-		CPTaxCategory cpTaxCategory = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CPTaxCategory _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchCPTaxCategoryException {
+
+		CPTaxCategory cpTaxCategory = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (cpTaxCategory == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1817,6 +1861,14 @@ public class CPTaxCategoryPersistenceImpl
 	@Override
 	public CPTaxCategory fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CPTaxCategory _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -1893,9 +1945,11 @@ public class CPTaxCategoryPersistenceImpl
 				else {
 					CPTaxCategory cpTaxCategory = list.get(0);
 
-					result = cpTaxCategory;
+					if (!readOnlyCache) {
+						result = cpTaxCategory;
 
-					cacheResult(cpTaxCategory);
+						cacheResult(cpTaxCategory);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1926,8 +1980,8 @@ public class CPTaxCategoryPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPTaxCategoryException {
 
-		CPTaxCategory cpTaxCategory = findByC_ERC(
-			companyId, externalReferenceCode);
+		CPTaxCategory cpTaxCategory = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(cpTaxCategory);
 	}
@@ -2605,6 +2659,13 @@ public class CPTaxCategoryPersistenceImpl
 		int start, int end, OrderByComparator<CPTaxCategory> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPTaxCategory> _findAll(
+		int start, int end, OrderByComparator<CPTaxCategory> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPTaxCategory.class);
 
@@ -2662,10 +2723,12 @@ public class CPTaxCategoryPersistenceImpl
 				list = (List<CPTaxCategory>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2685,7 +2748,10 @@ public class CPTaxCategoryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPTaxCategory cpTaxCategory : findAll()) {
+		for (CPTaxCategory cpTaxCategory :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpTaxCategory);
 		}
 	}

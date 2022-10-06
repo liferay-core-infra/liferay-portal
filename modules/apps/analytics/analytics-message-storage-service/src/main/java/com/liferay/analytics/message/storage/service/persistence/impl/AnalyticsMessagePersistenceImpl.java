@@ -170,6 +170,15 @@ public class AnalyticsMessagePersistenceImpl
 		OrderByComparator<AnalyticsMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsMessage> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AnalyticsMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -244,10 +253,12 @@ public class AnalyticsMessagePersistenceImpl
 				list = (List<AnalyticsMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -536,8 +547,9 @@ public class AnalyticsMessagePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AnalyticsMessage analyticsMessage :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(analyticsMessage);
 		}
@@ -982,6 +994,14 @@ public class AnalyticsMessagePersistenceImpl
 		OrderByComparator<AnalyticsMessage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsMessage> _findAll(
+		int start, int end,
+		OrderByComparator<AnalyticsMessage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1036,10 +1056,12 @@ public class AnalyticsMessagePersistenceImpl
 				list = (List<AnalyticsMessage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1059,7 +1081,10 @@ public class AnalyticsMessagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AnalyticsMessage analyticsMessage : findAll()) {
+		for (AnalyticsMessage analyticsMessage :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(analyticsMessage);
 		}
 	}

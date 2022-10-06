@@ -171,6 +171,16 @@ public class ExpandoTablePersistenceImpl
 		OrderByComparator<ExpandoTable> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ExpandoTable> _findByC_C(
+		long companyId, long classNameId, int start, int end,
+		OrderByComparator<ExpandoTable> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoTable.class);
 
@@ -254,10 +264,12 @@ public class ExpandoTablePersistenceImpl
 				list = (List<ExpandoTable>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,9 +576,9 @@ public class ExpandoTablePersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, long classNameId) {
 		for (ExpandoTable expandoTable :
-				findByC_C(
+				_findByC_C(
 					companyId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(expandoTable);
 		}
@@ -661,7 +673,16 @@ public class ExpandoTablePersistenceImpl
 			long companyId, long classNameId, String name)
 		throws NoSuchTableException {
 
-		ExpandoTable expandoTable = fetchByC_C_N(companyId, classNameId, name);
+		return _findByC_C_N(companyId, classNameId, name, false);
+	}
+
+	private ExpandoTable _findByC_C_N(
+			long companyId, long classNameId, String name,
+			boolean readOnlyCache)
+		throws NoSuchTableException {
+
+		ExpandoTable expandoTable = _fetchByC_C_N(
+			companyId, classNameId, name, true, readOnlyCache);
 
 		if (expandoTable == null) {
 			StringBundler sb = new StringBundler(8);
@@ -716,6 +737,14 @@ public class ExpandoTablePersistenceImpl
 	@Override
 	public ExpandoTable fetchByC_C_N(
 		long companyId, long classNameId, String name, boolean useFinderCache) {
+
+		return _fetchByC_C_N(
+			companyId, classNameId, name, useFinderCache, false);
+	}
+
+	private ExpandoTable _fetchByC_C_N(
+		long companyId, long classNameId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -796,9 +825,11 @@ public class ExpandoTablePersistenceImpl
 				else {
 					ExpandoTable expandoTable = list.get(0);
 
-					result = expandoTable;
+					if (!readOnlyCache) {
+						result = expandoTable;
 
-					cacheResult(expandoTable);
+						cacheResult(expandoTable);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -830,7 +861,8 @@ public class ExpandoTablePersistenceImpl
 			long companyId, long classNameId, String name)
 		throws NoSuchTableException {
 
-		ExpandoTable expandoTable = findByC_C_N(companyId, classNameId, name);
+		ExpandoTable expandoTable = _findByC_C_N(
+			companyId, classNameId, name, true);
 
 		return remove(expandoTable);
 	}
@@ -1468,6 +1500,13 @@ public class ExpandoTablePersistenceImpl
 		int start, int end, OrderByComparator<ExpandoTable> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExpandoTable> _findAll(
+		int start, int end, OrderByComparator<ExpandoTable> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			ExpandoTable.class);
 
@@ -1525,10 +1564,12 @@ public class ExpandoTablePersistenceImpl
 				list = (List<ExpandoTable>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1548,7 +1589,10 @@ public class ExpandoTablePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ExpandoTable expandoTable : findAll()) {
+		for (ExpandoTable expandoTable :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(expandoTable);
 		}
 	}

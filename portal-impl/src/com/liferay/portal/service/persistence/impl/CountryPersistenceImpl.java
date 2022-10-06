@@ -162,6 +162,15 @@ public class CountryPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Country> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Country> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Country> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -247,10 +256,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,7 +555,9 @@ public class CountryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Country country :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(country);
 		}
@@ -697,6 +710,16 @@ public class CountryPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Country> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Country> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Country> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -790,10 +813,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1110,9 +1135,9 @@ public class CountryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Country country :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(country);
 		}
@@ -1267,6 +1292,15 @@ public class CountryPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Country> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Country> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Country> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1341,10 +1375,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1626,8 +1662,9 @@ public class CountryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Country country :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(country);
 		}
@@ -1757,6 +1794,15 @@ public class CountryPersistenceImpl
 		boolean active, int start, int end,
 		OrderByComparator<Country> orderByComparator, boolean useFinderCache) {
 
+		return _findByActive(
+			active, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Country> _findByActive(
+		boolean active, int start, int end,
+		OrderByComparator<Country> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1829,10 +1875,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2113,8 +2161,9 @@ public class CountryPersistenceImpl
 	@Override
 	public void removeByActive(boolean active) {
 		for (Country country :
-				findByActive(
-					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByActive(
+					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(country);
 		}
@@ -2187,7 +2236,14 @@ public class CountryPersistenceImpl
 	public Country findByC_A2(long companyId, String a2)
 		throws NoSuchCountryException {
 
-		Country country = fetchByC_A2(companyId, a2);
+		return _findByC_A2(companyId, a2, false);
+	}
+
+	private Country _findByC_A2(
+			long companyId, String a2, boolean readOnlyCache)
+		throws NoSuchCountryException {
+
+		Country country = _fetchByC_A2(companyId, a2, true, readOnlyCache);
 
 		if (country == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2235,6 +2291,13 @@ public class CountryPersistenceImpl
 	@Override
 	public Country fetchByC_A2(
 		long companyId, String a2, boolean useFinderCache) {
+
+		return _fetchByC_A2(companyId, a2, useFinderCache, false);
+	}
+
+	private Country _fetchByC_A2(
+		long companyId, String a2, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		a2 = Objects.toString(a2, "");
 
@@ -2307,9 +2370,11 @@ public class CountryPersistenceImpl
 				else {
 					Country country = list.get(0);
 
-					result = country;
+					if (!readOnlyCache) {
+						result = country;
 
-					cacheResult(country);
+						cacheResult(country);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2339,7 +2404,7 @@ public class CountryPersistenceImpl
 	public Country removeByC_A2(long companyId, String a2)
 		throws NoSuchCountryException {
 
-		Country country = findByC_A2(companyId, a2);
+		Country country = _findByC_A2(companyId, a2, true);
 
 		return remove(country);
 	}
@@ -2434,7 +2499,14 @@ public class CountryPersistenceImpl
 	public Country findByC_A3(long companyId, String a3)
 		throws NoSuchCountryException {
 
-		Country country = fetchByC_A3(companyId, a3);
+		return _findByC_A3(companyId, a3, false);
+	}
+
+	private Country _findByC_A3(
+			long companyId, String a3, boolean readOnlyCache)
+		throws NoSuchCountryException {
+
+		Country country = _fetchByC_A3(companyId, a3, true, readOnlyCache);
 
 		if (country == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2482,6 +2554,13 @@ public class CountryPersistenceImpl
 	@Override
 	public Country fetchByC_A3(
 		long companyId, String a3, boolean useFinderCache) {
+
+		return _fetchByC_A3(companyId, a3, useFinderCache, false);
+	}
+
+	private Country _fetchByC_A3(
+		long companyId, String a3, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		a3 = Objects.toString(a3, "");
 
@@ -2554,9 +2633,11 @@ public class CountryPersistenceImpl
 				else {
 					Country country = list.get(0);
 
-					result = country;
+					if (!readOnlyCache) {
+						result = country;
 
-					cacheResult(country);
+						cacheResult(country);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2586,7 +2667,7 @@ public class CountryPersistenceImpl
 	public Country removeByC_A3(long companyId, String a3)
 		throws NoSuchCountryException {
 
-		Country country = findByC_A3(companyId, a3);
+		Country country = _findByC_A3(companyId, a3, true);
 
 		return remove(country);
 	}
@@ -2746,6 +2827,16 @@ public class CountryPersistenceImpl
 		long companyId, boolean active, int start, int end,
 		OrderByComparator<Country> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_Active(
+			companyId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Country> _findByC_Active(
+		long companyId, boolean active, int start, int end,
+		OrderByComparator<Country> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2826,10 +2917,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3133,9 +3226,9 @@ public class CountryPersistenceImpl
 	@Override
 	public void removeByC_Active(long companyId, boolean active) {
 		for (Country country :
-				findByC_Active(
+				_findByC_Active(
 					companyId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(country);
 		}
@@ -3216,7 +3309,14 @@ public class CountryPersistenceImpl
 	public Country findByC_Name(long companyId, String name)
 		throws NoSuchCountryException {
 
-		Country country = fetchByC_Name(companyId, name);
+		return _findByC_Name(companyId, name, false);
+	}
+
+	private Country _findByC_Name(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchCountryException {
+
+		Country country = _fetchByC_Name(companyId, name, true, readOnlyCache);
 
 		if (country == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3264,6 +3364,13 @@ public class CountryPersistenceImpl
 	@Override
 	public Country fetchByC_Name(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_Name(companyId, name, useFinderCache, false);
+	}
+
+	private Country _fetchByC_Name(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -3336,9 +3443,11 @@ public class CountryPersistenceImpl
 				else {
 					Country country = list.get(0);
 
-					result = country;
+					if (!readOnlyCache) {
+						result = country;
 
-					cacheResult(country);
+						cacheResult(country);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3368,7 +3477,7 @@ public class CountryPersistenceImpl
 	public Country removeByC_Name(long companyId, String name)
 		throws NoSuchCountryException {
 
-		Country country = findByC_Name(companyId, name);
+		Country country = _findByC_Name(companyId, name, true);
 
 		return remove(country);
 	}
@@ -3464,7 +3573,15 @@ public class CountryPersistenceImpl
 	public Country findByC_Number(long companyId, String number)
 		throws NoSuchCountryException {
 
-		Country country = fetchByC_Number(companyId, number);
+		return _findByC_Number(companyId, number, false);
+	}
+
+	private Country _findByC_Number(
+			long companyId, String number, boolean readOnlyCache)
+		throws NoSuchCountryException {
+
+		Country country = _fetchByC_Number(
+			companyId, number, true, readOnlyCache);
 
 		if (country == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3512,6 +3629,13 @@ public class CountryPersistenceImpl
 	@Override
 	public Country fetchByC_Number(
 		long companyId, String number, boolean useFinderCache) {
+
+		return _fetchByC_Number(companyId, number, useFinderCache, false);
+	}
+
+	private Country _fetchByC_Number(
+		long companyId, String number, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		number = Objects.toString(number, "");
 
@@ -3584,9 +3708,11 @@ public class CountryPersistenceImpl
 				else {
 					Country country = list.get(0);
 
-					result = country;
+					if (!readOnlyCache) {
+						result = country;
 
-					cacheResult(country);
+						cacheResult(country);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3616,7 +3742,7 @@ public class CountryPersistenceImpl
 	public Country removeByC_Number(long companyId, String number)
 		throws NoSuchCountryException {
 
-		Country country = findByC_Number(companyId, number);
+		Country country = _findByC_Number(companyId, number, true);
 
 		return remove(country);
 	}
@@ -3787,6 +3913,16 @@ public class CountryPersistenceImpl
 		int end, OrderByComparator<Country> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_B(
+			companyId, active, billingAllowed, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Country> _findByC_A_B(
+		long companyId, boolean active, boolean billingAllowed, int start,
+		int end, OrderByComparator<Country> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3872,10 +4008,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4202,9 +4340,9 @@ public class CountryPersistenceImpl
 		long companyId, boolean active, boolean billingAllowed) {
 
 		for (Country country :
-				findByC_A_B(
+				_findByC_A_B(
 					companyId, active, billingAllowed, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(country);
 		}
@@ -4371,6 +4509,16 @@ public class CountryPersistenceImpl
 		int end, OrderByComparator<Country> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_S(
+			companyId, active, shippingAllowed, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Country> _findByC_A_S(
+		long companyId, boolean active, boolean shippingAllowed, int start,
+		int end, OrderByComparator<Country> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4457,10 +4605,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4787,9 +4937,9 @@ public class CountryPersistenceImpl
 		long companyId, boolean active, boolean shippingAllowed) {
 
 		for (Country country :
-				findByC_A_S(
+				_findByC_A_S(
 					companyId, active, shippingAllowed, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(country);
 		}
@@ -5321,6 +5471,13 @@ public class CountryPersistenceImpl
 		int start, int end, OrderByComparator<Country> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Country> _findAll(
+		int start, int end, OrderByComparator<Country> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5375,10 +5532,12 @@ public class CountryPersistenceImpl
 				list = (List<Country>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5398,7 +5557,10 @@ public class CountryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Country country : findAll()) {
+		for (Country country :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(country);
 		}
 	}

@@ -179,6 +179,15 @@ public class CSDiagramSettingPersistenceImpl
 		OrderByComparator<CSDiagramSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CSDiagramSetting> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CSDiagramSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class CSDiagramSettingPersistenceImpl
 				list = (List<CSDiagramSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -569,7 +580,9 @@ public class CSDiagramSettingPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CSDiagramSetting csDiagramSetting :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(csDiagramSetting);
 		}
@@ -736,6 +749,16 @@ public class CSDiagramSettingPersistenceImpl
 		OrderByComparator<CSDiagramSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CSDiagramSetting> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CSDiagramSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -832,10 +855,12 @@ public class CSDiagramSettingPersistenceImpl
 				list = (List<CSDiagramSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1157,9 +1182,9 @@ public class CSDiagramSettingPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CSDiagramSetting csDiagramSetting :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(csDiagramSetting);
 		}
@@ -1267,8 +1292,15 @@ public class CSDiagramSettingPersistenceImpl
 	public CSDiagramSetting findByCPDefinitionId(long CPDefinitionId)
 		throws NoSuchCSDiagramSettingException {
 
-		CSDiagramSetting csDiagramSetting = fetchByCPDefinitionId(
-			CPDefinitionId);
+		return _findByCPDefinitionId(CPDefinitionId, false);
+	}
+
+	private CSDiagramSetting _findByCPDefinitionId(
+			long CPDefinitionId, boolean readOnlyCache)
+		throws NoSuchCSDiagramSettingException {
+
+		CSDiagramSetting csDiagramSetting = _fetchByCPDefinitionId(
+			CPDefinitionId, true, readOnlyCache);
 
 		if (csDiagramSetting == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1311,6 +1343,12 @@ public class CSDiagramSettingPersistenceImpl
 	@Override
 	public CSDiagramSetting fetchByCPDefinitionId(
 		long CPDefinitionId, boolean useFinderCache) {
+
+		return _fetchByCPDefinitionId(CPDefinitionId, useFinderCache, false);
+	}
+
+	private CSDiagramSetting _fetchByCPDefinitionId(
+		long CPDefinitionId, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramSetting.class);
@@ -1367,9 +1405,11 @@ public class CSDiagramSettingPersistenceImpl
 				else {
 					CSDiagramSetting csDiagramSetting = list.get(0);
 
-					result = csDiagramSetting;
+					if (!readOnlyCache) {
+						result = csDiagramSetting;
 
-					cacheResult(csDiagramSetting);
+						cacheResult(csDiagramSetting);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1398,8 +1438,8 @@ public class CSDiagramSettingPersistenceImpl
 	public CSDiagramSetting removeByCPDefinitionId(long CPDefinitionId)
 		throws NoSuchCSDiagramSettingException {
 
-		CSDiagramSetting csDiagramSetting = findByCPDefinitionId(
-			CPDefinitionId);
+		CSDiagramSetting csDiagramSetting = _findByCPDefinitionId(
+			CPDefinitionId, true);
 
 		return remove(csDiagramSetting);
 	}
@@ -2053,6 +2093,14 @@ public class CSDiagramSettingPersistenceImpl
 		OrderByComparator<CSDiagramSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CSDiagramSetting> _findAll(
+		int start, int end,
+		OrderByComparator<CSDiagramSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramSetting.class);
 
@@ -2110,10 +2158,12 @@ public class CSDiagramSettingPersistenceImpl
 				list = (List<CSDiagramSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2133,7 +2183,10 @@ public class CSDiagramSettingPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CSDiagramSetting csDiagramSetting : findAll()) {
+		for (CSDiagramSetting csDiagramSetting :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(csDiagramSetting);
 		}
 	}

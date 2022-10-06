@@ -182,6 +182,17 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 		OrderByComparator<CommerceShippingFixedOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceShippingMethodId(
+			commerceShippingMethodId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceShippingFixedOptionRel>
+		_findByCommerceShippingMethodId(
+			long commerceShippingMethodId, int start, int end,
+			OrderByComparator<CommerceShippingFixedOptionRel> orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -265,10 +276,12 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 				list = (List<CommerceShippingFixedOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -575,9 +588,9 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 		long commerceShippingMethodId) {
 
 		for (CommerceShippingFixedOptionRel commerceShippingFixedOptionRel :
-				findByCommerceShippingMethodId(
+				_findByCommerceShippingMethodId(
 					commerceShippingMethodId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceShippingFixedOptionRel);
 		}
@@ -725,6 +738,17 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 			OrderByComparator<CommerceShippingFixedOptionRel> orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceShippingFixedOptionId(
+			commerceShippingFixedOptionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceShippingFixedOptionRel>
+		_findByCommerceShippingFixedOptionId(
+			long commerceShippingFixedOptionId, int start, int end,
+			OrderByComparator<CommerceShippingFixedOptionRel> orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -808,10 +832,12 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 				list = (List<CommerceShippingFixedOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1128,9 +1154,9 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 		long commerceShippingFixedOptionId) {
 
 		for (CommerceShippingFixedOptionRel commerceShippingFixedOptionRel :
-				findByCommerceShippingFixedOptionId(
+				_findByCommerceShippingFixedOptionId(
 					commerceShippingFixedOptionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceShippingFixedOptionRel);
 		}
@@ -1633,6 +1659,14 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 		OrderByComparator<CommerceShippingFixedOptionRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceShippingFixedOptionRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceShippingFixedOptionRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1688,10 +1722,12 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 				list = (List<CommerceShippingFixedOptionRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1712,7 +1748,8 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceShippingFixedOptionRel commerceShippingFixedOptionRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceShippingFixedOptionRel);
 		}

@@ -180,6 +180,15 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -267,10 +276,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -578,7 +589,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -667,8 +680,15 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	public WorkflowMetricsSLADefinition findByUUID_G(String uuid, long groupId)
 		throws NoSuchSLADefinitionException {
 
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private WorkflowMetricsSLADefinition _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchSLADefinitionException {
+
 		WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
-			fetchByUUID_G(uuid, groupId);
+			_fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (workflowMetricsSLADefinition == null) {
 			StringBundler sb = new StringBundler(6);
@@ -718,6 +738,13 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	@Override
 	public WorkflowMetricsSLADefinition fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private WorkflowMetricsSLADefinition _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -792,9 +819,11 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 					WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
 						list.get(0);
 
-					result = workflowMetricsSLADefinition;
+					if (!readOnlyCache) {
+						result = workflowMetricsSLADefinition;
 
-					cacheResult(workflowMetricsSLADefinition);
+						cacheResult(workflowMetricsSLADefinition);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -826,7 +855,7 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		throws NoSuchSLADefinitionException {
 
 		WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
-			findByUUID_G(uuid, groupId);
+			_findByUUID_G(uuid, groupId, true);
 
 		return remove(workflowMetricsSLADefinition);
 	}
@@ -990,6 +1019,16 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1086,10 +1125,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1414,9 +1455,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -1514,8 +1555,17 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 			long workflowMetricsSLADefinitionId, boolean active)
 		throws NoSuchSLADefinitionException {
 
+		return _findByWMSLAD_A(workflowMetricsSLADefinitionId, active, false);
+	}
+
+	private WorkflowMetricsSLADefinition _findByWMSLAD_A(
+			long workflowMetricsSLADefinitionId, boolean active,
+			boolean readOnlyCache)
+		throws NoSuchSLADefinitionException {
+
 		WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
-			fetchByWMSLAD_A(workflowMetricsSLADefinitionId, active);
+			_fetchByWMSLAD_A(
+				workflowMetricsSLADefinitionId, active, true, readOnlyCache);
 
 		if (workflowMetricsSLADefinition == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1566,6 +1616,14 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	public WorkflowMetricsSLADefinition fetchByWMSLAD_A(
 		long workflowMetricsSLADefinitionId, boolean active,
 		boolean useFinderCache) {
+
+		return _fetchByWMSLAD_A(
+			workflowMetricsSLADefinitionId, active, useFinderCache, false);
+	}
+
+	private WorkflowMetricsSLADefinition _fetchByWMSLAD_A(
+		long workflowMetricsSLADefinitionId, boolean active,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1646,9 +1704,11 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 					WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
 						list.get(0);
 
-					result = workflowMetricsSLADefinition;
+					if (!readOnlyCache) {
+						result = workflowMetricsSLADefinition;
 
-					cacheResult(workflowMetricsSLADefinition);
+						cacheResult(workflowMetricsSLADefinition);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1680,7 +1740,7 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		throws NoSuchSLADefinitionException {
 
 		WorkflowMetricsSLADefinition workflowMetricsSLADefinition =
-			findByWMSLAD_A(workflowMetricsSLADefinitionId, active);
+			_findByWMSLAD_A(workflowMetricsSLADefinitionId, active, true);
 
 		return remove(workflowMetricsSLADefinition);
 	}
@@ -1833,6 +1893,16 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1916,10 +1986,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2231,9 +2303,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -2387,6 +2459,16 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_P(
+			companyId, active, processId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByC_A_P(
+		long companyId, boolean active, long processId, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2476,10 +2558,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2808,9 +2892,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	@Override
 	public void removeByC_A_P(long companyId, boolean active, long processId) {
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByC_A_P(
+				_findByC_A_P(
 					companyId, active, processId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -2981,6 +3065,17 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_N_P(
+			companyId, active, name, processId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByC_A_N_P(
+		long companyId, boolean active, String name, long processId, int start,
+		int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -3089,10 +3184,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3455,9 +3552,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		long companyId, boolean active, String name, long processId) {
 
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByC_A_N_P(
+				_findByC_A_N_P(
 					companyId, active, name, processId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -3654,6 +3751,17 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_P_S(
+			companyId, active, processId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByC_A_P_S(
+		long companyId, boolean active, long processId, int status, int start,
+		int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3751,10 +3859,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4104,9 +4214,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		long companyId, boolean active, long processId, int status) {
 
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByC_A_P_S(
+				_findByC_A_P_S(
 					companyId, active, processId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -4294,6 +4404,17 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_P_NotPV_S(
+			companyId, active, processId, processVersion, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findByC_A_P_NotPV_S(
+		long companyId, boolean active, long processId, String processVersion,
+		int status, int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		processVersion = Objects.toString(processVersion, "");
 
 		FinderPath finderPath = null;
@@ -4398,10 +4519,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4790,9 +4913,9 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		int status) {
 
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findByC_A_P_NotPV_S(
+				_findByC_A_P_NotPV_S(
 					companyId, active, processId, processVersion, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}
@@ -5401,6 +5524,14 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowMetricsSLADefinition> _findAll(
+		int start, int end,
+		OrderByComparator<WorkflowMetricsSLADefinition> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5456,10 +5587,12 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 				list = (List<WorkflowMetricsSLADefinition>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5480,7 +5613,8 @@ public class WorkflowMetricsSLADefinitionPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (WorkflowMetricsSLADefinition workflowMetricsSLADefinition :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowMetricsSLADefinition);
 		}

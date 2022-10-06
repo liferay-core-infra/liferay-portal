@@ -116,8 +116,15 @@ public class FriendlyURLEntryMappingPersistenceImpl
 	public FriendlyURLEntryMapping findByC_C(long classNameId, long classPK)
 		throws NoSuchFriendlyURLEntryMappingException {
 
-		FriendlyURLEntryMapping friendlyURLEntryMapping = fetchByC_C(
-			classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private FriendlyURLEntryMapping _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchFriendlyURLEntryMappingException {
+
+		FriendlyURLEntryMapping friendlyURLEntryMapping = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (friendlyURLEntryMapping == null) {
 			StringBundler sb = new StringBundler(6);
@@ -165,6 +172,13 @@ public class FriendlyURLEntryMappingPersistenceImpl
 	@Override
 	public FriendlyURLEntryMapping fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private FriendlyURLEntryMapping _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FriendlyURLEntryMapping.class);
@@ -228,9 +242,11 @@ public class FriendlyURLEntryMappingPersistenceImpl
 					FriendlyURLEntryMapping friendlyURLEntryMapping = list.get(
 						0);
 
-					result = friendlyURLEntryMapping;
+					if (!readOnlyCache) {
+						result = friendlyURLEntryMapping;
 
-					cacheResult(friendlyURLEntryMapping);
+						cacheResult(friendlyURLEntryMapping);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -260,8 +276,8 @@ public class FriendlyURLEntryMappingPersistenceImpl
 	public FriendlyURLEntryMapping removeByC_C(long classNameId, long classPK)
 		throws NoSuchFriendlyURLEntryMappingException {
 
-		FriendlyURLEntryMapping friendlyURLEntryMapping = findByC_C(
-			classNameId, classPK);
+		FriendlyURLEntryMapping friendlyURLEntryMapping = _findByC_C(
+			classNameId, classPK, true);
 
 		return remove(friendlyURLEntryMapping);
 	}
@@ -913,6 +929,14 @@ public class FriendlyURLEntryMappingPersistenceImpl
 		OrderByComparator<FriendlyURLEntryMapping> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FriendlyURLEntryMapping> _findAll(
+		int start, int end,
+		OrderByComparator<FriendlyURLEntryMapping> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FriendlyURLEntryMapping.class);
 
@@ -971,10 +995,12 @@ public class FriendlyURLEntryMappingPersistenceImpl
 				list = (List<FriendlyURLEntryMapping>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -994,7 +1020,10 @@ public class FriendlyURLEntryMappingPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (FriendlyURLEntryMapping friendlyURLEntryMapping : findAll()) {
+		for (FriendlyURLEntryMapping friendlyURLEntryMapping :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(friendlyURLEntryMapping);
 		}
 	}

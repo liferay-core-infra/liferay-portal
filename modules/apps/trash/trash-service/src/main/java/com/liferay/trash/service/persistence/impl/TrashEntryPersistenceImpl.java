@@ -177,6 +177,15 @@ public class TrashEntryPersistenceImpl
 		OrderByComparator<TrashEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TrashEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<TrashEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashEntry.class);
 
@@ -252,10 +261,12 @@ public class TrashEntryPersistenceImpl
 				list = (List<TrashEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -537,8 +548,9 @@ public class TrashEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (TrashEntry trashEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(trashEntry);
 		}
@@ -684,6 +696,15 @@ public class TrashEntryPersistenceImpl
 		OrderByComparator<TrashEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TrashEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<TrashEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashEntry.class);
 
@@ -761,10 +782,12 @@ public class TrashEntryPersistenceImpl
 				list = (List<TrashEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1048,8 +1071,9 @@ public class TrashEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (TrashEntry trashEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(trashEntry);
 		}
@@ -1199,6 +1223,16 @@ public class TrashEntryPersistenceImpl
 		OrderByComparator<TrashEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LtCD(
+			groupId, createDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<TrashEntry> _findByG_LtCD(
+		long groupId, Date createDate, int start, int end,
+		OrderByComparator<TrashEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashEntry.class);
 
@@ -1284,10 +1318,12 @@ public class TrashEntryPersistenceImpl
 				list = (List<TrashEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1604,9 +1640,9 @@ public class TrashEntryPersistenceImpl
 	@Override
 	public void removeByG_LtCD(long groupId, Date createDate) {
 		for (TrashEntry trashEntry :
-				findByG_LtCD(
+				_findByG_LtCD(
 					groupId, createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(trashEntry);
 		}
@@ -1779,6 +1815,16 @@ public class TrashEntryPersistenceImpl
 		OrderByComparator<TrashEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<TrashEntry> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<TrashEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashEntry.class);
 
@@ -1862,10 +1908,12 @@ public class TrashEntryPersistenceImpl
 				list = (List<TrashEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2171,9 +2219,9 @@ public class TrashEntryPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (TrashEntry trashEntry :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(trashEntry);
 		}
@@ -2266,7 +2314,15 @@ public class TrashEntryPersistenceImpl
 	public TrashEntry findByC_C(long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		TrashEntry trashEntry = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private TrashEntry _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		TrashEntry trashEntry = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (trashEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2314,6 +2370,13 @@ public class TrashEntryPersistenceImpl
 	@Override
 	public TrashEntry fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private TrashEntry _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashEntry.class);
@@ -2375,9 +2438,11 @@ public class TrashEntryPersistenceImpl
 				else {
 					TrashEntry trashEntry = list.get(0);
 
-					result = trashEntry;
+					if (!readOnlyCache) {
+						result = trashEntry;
 
-					cacheResult(trashEntry);
+						cacheResult(trashEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2407,7 +2472,7 @@ public class TrashEntryPersistenceImpl
 	public TrashEntry removeByC_C(long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		TrashEntry trashEntry = findByC_C(classNameId, classPK);
+		TrashEntry trashEntry = _findByC_C(classNameId, classPK, true);
 
 		return remove(trashEntry);
 	}
@@ -3026,6 +3091,13 @@ public class TrashEntryPersistenceImpl
 		int start, int end, OrderByComparator<TrashEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TrashEntry> _findAll(
+		int start, int end, OrderByComparator<TrashEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashEntry.class);
 
@@ -3083,10 +3155,12 @@ public class TrashEntryPersistenceImpl
 				list = (List<TrashEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3106,7 +3180,10 @@ public class TrashEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (TrashEntry trashEntry : findAll()) {
+		for (TrashEntry trashEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(trashEntry);
 		}
 	}

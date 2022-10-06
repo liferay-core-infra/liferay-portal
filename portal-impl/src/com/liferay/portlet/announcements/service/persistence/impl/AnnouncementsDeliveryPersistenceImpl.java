@@ -160,6 +160,15 @@ public class AnnouncementsDeliveryPersistenceImpl
 		OrderByComparator<AnnouncementsDelivery> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnnouncementsDelivery> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AnnouncementsDelivery> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -234,10 +243,12 @@ public class AnnouncementsDeliveryPersistenceImpl
 				list = (List<AnnouncementsDelivery>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -531,8 +542,9 @@ public class AnnouncementsDeliveryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AnnouncementsDelivery announcementsDelivery :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(announcementsDelivery);
 		}
@@ -665,6 +677,15 @@ public class AnnouncementsDeliveryPersistenceImpl
 		OrderByComparator<AnnouncementsDelivery> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnnouncementsDelivery> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<AnnouncementsDelivery> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -737,10 +758,12 @@ public class AnnouncementsDeliveryPersistenceImpl
 				list = (List<AnnouncementsDelivery>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1033,8 +1056,9 @@ public class AnnouncementsDeliveryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (AnnouncementsDelivery announcementsDelivery :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(announcementsDelivery);
 		}
@@ -1107,7 +1131,15 @@ public class AnnouncementsDeliveryPersistenceImpl
 	public AnnouncementsDelivery findByU_T(long userId, String type)
 		throws NoSuchDeliveryException {
 
-		AnnouncementsDelivery announcementsDelivery = fetchByU_T(userId, type);
+		return _findByU_T(userId, type, false);
+	}
+
+	private AnnouncementsDelivery _findByU_T(
+			long userId, String type, boolean readOnlyCache)
+		throws NoSuchDeliveryException {
+
+		AnnouncementsDelivery announcementsDelivery = _fetchByU_T(
+			userId, type, true, readOnlyCache);
 
 		if (announcementsDelivery == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1155,6 +1187,13 @@ public class AnnouncementsDeliveryPersistenceImpl
 	@Override
 	public AnnouncementsDelivery fetchByU_T(
 		long userId, String type, boolean useFinderCache) {
+
+		return _fetchByU_T(userId, type, useFinderCache, false);
+	}
+
+	private AnnouncementsDelivery _fetchByU_T(
+		long userId, String type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		type = Objects.toString(type, "");
 
@@ -1228,9 +1267,11 @@ public class AnnouncementsDeliveryPersistenceImpl
 				else {
 					AnnouncementsDelivery announcementsDelivery = list.get(0);
 
-					result = announcementsDelivery;
+					if (!readOnlyCache) {
+						result = announcementsDelivery;
 
-					cacheResult(announcementsDelivery);
+						cacheResult(announcementsDelivery);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1260,7 +1301,8 @@ public class AnnouncementsDeliveryPersistenceImpl
 	public AnnouncementsDelivery removeByU_T(long userId, String type)
 		throws NoSuchDeliveryException {
 
-		AnnouncementsDelivery announcementsDelivery = findByU_T(userId, type);
+		AnnouncementsDelivery announcementsDelivery = _findByU_T(
+			userId, type, true);
 
 		return remove(announcementsDelivery);
 	}
@@ -1756,6 +1798,14 @@ public class AnnouncementsDeliveryPersistenceImpl
 		OrderByComparator<AnnouncementsDelivery> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnnouncementsDelivery> _findAll(
+		int start, int end,
+		OrderByComparator<AnnouncementsDelivery> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1810,10 +1860,12 @@ public class AnnouncementsDeliveryPersistenceImpl
 				list = (List<AnnouncementsDelivery>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1833,7 +1885,10 @@ public class AnnouncementsDeliveryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AnnouncementsDelivery announcementsDelivery : findAll()) {
+		for (AnnouncementsDelivery announcementsDelivery :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(announcementsDelivery);
 		}
 	}

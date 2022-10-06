@@ -177,6 +177,15 @@ public class RolePersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -265,10 +274,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -906,7 +917,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Role role :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(role);
 		}
@@ -1138,6 +1151,16 @@ public class RolePersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Role> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1234,10 +1257,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1914,9 +1939,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Role role :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(role);
 		}
@@ -2155,6 +2180,15 @@ public class RolePersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Role.class);
 
@@ -2232,10 +2266,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2840,8 +2876,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Role role :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(role);
 		}
@@ -3031,6 +3068,15 @@ public class RolePersistenceImpl
 		String name, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByName(
+			name, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findByName(
+		String name, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -3119,10 +3165,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3760,7 +3808,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByName(String name) {
 		for (Role role :
-				findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByName(
+					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(role);
 		}
@@ -3978,6 +4028,14 @@ public class RolePersistenceImpl
 		int type, int start, int end, OrderByComparator<Role> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findByType(
+		int type, int start, int end, OrderByComparator<Role> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Role.class);
 
@@ -4053,10 +4111,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4655,7 +4715,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByType(int type) {
 		for (Role role :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(role);
 		}
@@ -4848,6 +4910,15 @@ public class RolePersistenceImpl
 		String subtype, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findBySubtype(
+			subtype, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findBySubtype(
+		String subtype, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		subtype = Objects.toString(subtype, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -4936,10 +5007,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5581,8 +5654,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeBySubtype(String subtype) {
 		for (Role role :
-				findBySubtype(
-					subtype, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findBySubtype(
+					subtype, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(role);
 		}
@@ -5744,7 +5818,13 @@ public class RolePersistenceImpl
 	public Role findByC_N(long companyId, String name)
 		throws NoSuchRoleException {
 
-		Role role = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private Role _findByC_N(long companyId, String name, boolean readOnlyCache)
+		throws NoSuchRoleException {
+
+		Role role = _fetchByC_N(companyId, name, true, readOnlyCache);
 
 		if (role == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5792,6 +5872,13 @@ public class RolePersistenceImpl
 	@Override
 	public Role fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private Role _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -5867,9 +5954,11 @@ public class RolePersistenceImpl
 				else {
 					Role role = list.get(0);
 
-					result = role;
+					if (!readOnlyCache) {
+						result = role;
 
-					cacheResult(role);
+						cacheResult(role);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5899,7 +5988,7 @@ public class RolePersistenceImpl
 	public Role removeByC_N(long companyId, String name)
 		throws NoSuchRoleException {
 
-		Role role = findByC_N(companyId, name);
+		Role role = _findByC_N(companyId, name, true);
 
 		return remove(role);
 	}
@@ -6070,6 +6159,16 @@ public class RolePersistenceImpl
 		long companyId, int type, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_T(
+			companyId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Role> _findByC_T(
+		long companyId, int type, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Role.class);
 
@@ -6153,10 +6252,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7004,6 +7105,16 @@ public class RolePersistenceImpl
 		long companyId, int[] types, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_T(
+			companyId, types, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Role> _findByC_T(
+		long companyId, int[] types, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (types == null) {
 			types = new int[0];
 		}
@@ -7100,11 +7211,14 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_T, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7127,9 +7241,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByC_T(long companyId, int type) {
 		for (Role role :
-				findByC_T(
-					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_T(
+					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(role);
 		}
@@ -7498,6 +7612,16 @@ public class RolePersistenceImpl
 		int type, String subtype, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByT_S(
+			type, subtype, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Role> _findByT_S(
+		int type, String subtype, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		subtype = Objects.toString(subtype, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -7594,10 +7718,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8269,9 +8395,9 @@ public class RolePersistenceImpl
 	@Override
 	public void removeByT_S(int type, String subtype) {
 		for (Role role :
-				findByT_S(
-					type, subtype, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByT_S(
+					type, subtype, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(role);
 		}
@@ -8528,6 +8654,16 @@ public class RolePersistenceImpl
 		long companyId, long classNameId, long[] classPKs, int start, int end,
 		OrderByComparator<Role> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C_C(
+			companyId, classNameId, classPKs, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Role> _findByC_C_C(
+		long companyId, long classNameId, long[] classPKs, int start, int end,
+		OrderByComparator<Role> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (classPKs == null) {
 			classPKs = new long[0];
 		}
@@ -8641,11 +8777,14 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_C_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_C_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8672,7 +8811,16 @@ public class RolePersistenceImpl
 	public Role findByC_C_C(long companyId, long classNameId, long classPK)
 		throws NoSuchRoleException {
 
-		Role role = fetchByC_C_C(companyId, classNameId, classPK);
+		return _findByC_C_C(companyId, classNameId, classPK, false);
+	}
+
+	private Role _findByC_C_C(
+			long companyId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchRoleException {
+
+		Role role = _fetchByC_C_C(
+			companyId, classNameId, classPK, true, readOnlyCache);
 
 		if (role == null) {
 			StringBundler sb = new StringBundler(8);
@@ -8726,6 +8874,14 @@ public class RolePersistenceImpl
 	public Role fetchByC_C_C(
 		long companyId, long classNameId, long classPK,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			companyId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private Role _fetchByC_C_C(
+		long companyId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Role.class);
@@ -8793,9 +8949,11 @@ public class RolePersistenceImpl
 				else {
 					Role role = list.get(0);
 
-					result = role;
+					if (!readOnlyCache) {
+						result = role;
 
-					cacheResult(role);
+						cacheResult(role);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8826,7 +8984,7 @@ public class RolePersistenceImpl
 	public Role removeByC_C_C(long companyId, long classNameId, long classPK)
 		throws NoSuchRoleException {
 
-		Role role = findByC_C_C(companyId, classNameId, classPK);
+		Role role = _findByC_C_C(companyId, classNameId, classPK, true);
 
 		return remove(role);
 	}
@@ -9244,6 +9402,16 @@ public class RolePersistenceImpl
 		int end, OrderByComparator<Role> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_T(
+			companyId, classNameId, classPKs, type, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findByC_C_C_T(
+		long companyId, long classNameId, long[] classPKs, int type, int start,
+		int end, OrderByComparator<Role> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (classPKs == null) {
 			classPKs = new long[0];
 		}
@@ -9365,12 +9533,14 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_C_C_T, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_C_C_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9399,7 +9569,16 @@ public class RolePersistenceImpl
 			long companyId, long classNameId, long classPK, int type)
 		throws NoSuchRoleException {
 
-		Role role = fetchByC_C_C_T(companyId, classNameId, classPK, type);
+		return _findByC_C_C_T(companyId, classNameId, classPK, type, false);
+	}
+
+	private Role _findByC_C_C_T(
+			long companyId, long classNameId, long classPK, int type,
+			boolean readOnlyCache)
+		throws NoSuchRoleException {
+
+		Role role = _fetchByC_C_C_T(
+			companyId, classNameId, classPK, type, true, readOnlyCache);
 
 		if (role == null) {
 			StringBundler sb = new StringBundler(10);
@@ -9460,6 +9639,14 @@ public class RolePersistenceImpl
 	public Role fetchByC_C_C_T(
 		long companyId, long classNameId, long classPK, int type,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C_T(
+			companyId, classNameId, classPK, type, useFinderCache, false);
+	}
+
+	private Role _fetchByC_C_C_T(
+		long companyId, long classNameId, long classPK, int type,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Role.class);
@@ -9531,9 +9718,11 @@ public class RolePersistenceImpl
 				else {
 					Role role = list.get(0);
 
-					result = role;
+					if (!readOnlyCache) {
+						result = role;
 
-					cacheResult(role);
+						cacheResult(role);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9566,7 +9755,7 @@ public class RolePersistenceImpl
 			long companyId, long classNameId, long classPK, int type)
 		throws NoSuchRoleException {
 
-		Role role = findByC_C_C_T(companyId, classNameId, classPK, type);
+		Role role = _findByC_C_C_T(companyId, classNameId, classPK, type, true);
 
 		return remove(role);
 	}
@@ -10507,6 +10696,13 @@ public class RolePersistenceImpl
 		int start, int end, OrderByComparator<Role> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Role> _findAll(
+		int start, int end, OrderByComparator<Role> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Role.class);
 
@@ -10564,10 +10760,12 @@ public class RolePersistenceImpl
 				list = (List<Role>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10587,7 +10785,10 @@ public class RolePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Role role : findAll()) {
+		for (Role role :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(role);
 		}
 	}

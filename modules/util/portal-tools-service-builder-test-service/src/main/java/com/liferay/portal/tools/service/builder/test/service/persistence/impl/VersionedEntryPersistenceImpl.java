@@ -155,6 +155,15 @@ public class VersionedEntryPersistenceImpl
 		OrderByComparator<VersionedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<VersionedEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<VersionedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -227,10 +236,12 @@ public class VersionedEntryPersistenceImpl
 				list = (List<VersionedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -515,8 +526,9 @@ public class VersionedEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (VersionedEntry versionedEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(versionedEntry);
 		}
@@ -655,6 +667,16 @@ public class VersionedEntryPersistenceImpl
 		OrderByComparator<VersionedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId_Head(
+			groupId, head, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<VersionedEntry> _findByGroupId_Head(
+		long groupId, boolean head, int start, int end,
+		OrderByComparator<VersionedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -735,10 +757,12 @@ public class VersionedEntryPersistenceImpl
 				list = (List<VersionedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1046,9 +1070,9 @@ public class VersionedEntryPersistenceImpl
 	@Override
 	public void removeByGroupId_Head(long groupId, boolean head) {
 		for (VersionedEntry versionedEntry :
-				findByGroupId_Head(
-					groupId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByGroupId_Head(
+					groupId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(versionedEntry);
 		}
@@ -1128,7 +1152,14 @@ public class VersionedEntryPersistenceImpl
 	public VersionedEntry findByHeadId(long headId)
 		throws NoSuchVersionedEntryException {
 
-		VersionedEntry versionedEntry = fetchByHeadId(headId);
+		return _findByHeadId(headId, false);
+	}
+
+	private VersionedEntry _findByHeadId(long headId, boolean readOnlyCache)
+		throws NoSuchVersionedEntryException {
+
+		VersionedEntry versionedEntry = _fetchByHeadId(
+			headId, true, readOnlyCache);
 
 		if (versionedEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1170,6 +1201,12 @@ public class VersionedEntryPersistenceImpl
 	 */
 	@Override
 	public VersionedEntry fetchByHeadId(long headId, boolean useFinderCache) {
+		return _fetchByHeadId(headId, useFinderCache, false);
+	}
+
+	private VersionedEntry _fetchByHeadId(
+		long headId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -1222,9 +1259,11 @@ public class VersionedEntryPersistenceImpl
 				else {
 					VersionedEntry versionedEntry = list.get(0);
 
-					result = versionedEntry;
+					if (!readOnlyCache) {
+						result = versionedEntry;
 
-					cacheResult(versionedEntry);
+						cacheResult(versionedEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1253,7 +1292,7 @@ public class VersionedEntryPersistenceImpl
 	public VersionedEntry removeByHeadId(long headId)
 		throws NoSuchVersionedEntryException {
 
-		VersionedEntry versionedEntry = findByHeadId(headId);
+		VersionedEntry versionedEntry = _findByHeadId(headId, true);
 
 		return remove(versionedEntry);
 	}
@@ -1687,6 +1726,13 @@ public class VersionedEntryPersistenceImpl
 		int start, int end, OrderByComparator<VersionedEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<VersionedEntry> _findAll(
+		int start, int end, OrderByComparator<VersionedEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1741,10 +1787,12 @@ public class VersionedEntryPersistenceImpl
 				list = (List<VersionedEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1764,7 +1812,10 @@ public class VersionedEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (VersionedEntry versionedEntry : findAll()) {
+		for (VersionedEntry versionedEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(versionedEntry);
 		}
 	}

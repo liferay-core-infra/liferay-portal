@@ -103,7 +103,13 @@ public class StatusPersistenceImpl
 	 */
 	@Override
 	public Status findByUserId(long userId) throws NoSuchStatusException {
-		Status status = fetchByUserId(userId);
+		return _findByUserId(userId, false);
+	}
+
+	private Status _findByUserId(long userId, boolean readOnlyCache)
+		throws NoSuchStatusException {
+
+		Status status = _fetchByUserId(userId, true, readOnlyCache);
 
 		if (status == null) {
 			StringBundler sb = new StringBundler(4);
@@ -145,6 +151,12 @@ public class StatusPersistenceImpl
 	 */
 	@Override
 	public Status fetchByUserId(long userId, boolean useFinderCache) {
+		return _fetchByUserId(userId, useFinderCache, false);
+	}
+
+	private Status _fetchByUserId(
+		long userId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -197,9 +209,11 @@ public class StatusPersistenceImpl
 				else {
 					Status status = list.get(0);
 
-					result = status;
+					if (!readOnlyCache) {
+						result = status;
 
-					cacheResult(status);
+						cacheResult(status);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -226,7 +240,7 @@ public class StatusPersistenceImpl
 	 */
 	@Override
 	public Status removeByUserId(long userId) throws NoSuchStatusException {
-		Status status = findByUserId(userId);
+		Status status = _findByUserId(userId, true);
 
 		return remove(status);
 	}
@@ -359,6 +373,15 @@ public class StatusPersistenceImpl
 		long modifiedDate, int start, int end,
 		OrderByComparator<Status> orderByComparator, boolean useFinderCache) {
 
+		return _findByModifiedDate(
+			modifiedDate, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Status> _findByModifiedDate(
+		long modifiedDate, int start, int end,
+		OrderByComparator<Status> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -432,10 +455,12 @@ public class StatusPersistenceImpl
 				list = (List<Status>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -719,8 +744,9 @@ public class StatusPersistenceImpl
 	@Override
 	public void removeByModifiedDate(long modifiedDate) {
 		for (Status status :
-				findByModifiedDate(
-					modifiedDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByModifiedDate(
+					modifiedDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(status);
 		}
@@ -850,6 +876,15 @@ public class StatusPersistenceImpl
 		boolean online, int start, int end,
 		OrderByComparator<Status> orderByComparator, boolean useFinderCache) {
 
+		return _findByOnline(
+			online, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Status> _findByOnline(
+		boolean online, int start, int end,
+		OrderByComparator<Status> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -921,10 +956,12 @@ public class StatusPersistenceImpl
 				list = (List<Status>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1205,8 +1242,9 @@ public class StatusPersistenceImpl
 	@Override
 	public void removeByOnline(boolean online) {
 		for (Status status :
-				findByOnline(
-					online, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByOnline(
+					online, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(status);
 		}
@@ -1344,6 +1382,16 @@ public class StatusPersistenceImpl
 		long modifiedDate, boolean online, int start, int end,
 		OrderByComparator<Status> orderByComparator, boolean useFinderCache) {
 
+		return _findByM_O(
+			modifiedDate, online, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Status> _findByM_O(
+		long modifiedDate, boolean online, int start, int end,
+		OrderByComparator<Status> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1423,10 +1471,12 @@ public class StatusPersistenceImpl
 				list = (List<Status>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1731,9 +1781,9 @@ public class StatusPersistenceImpl
 	@Override
 	public void removeByM_O(long modifiedDate, boolean online) {
 		for (Status status :
-				findByM_O(
+				_findByM_O(
 					modifiedDate, online, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(status);
 		}
@@ -2163,6 +2213,13 @@ public class StatusPersistenceImpl
 		int start, int end, OrderByComparator<Status> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Status> _findAll(
+		int start, int end, OrderByComparator<Status> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2216,10 +2273,12 @@ public class StatusPersistenceImpl
 				list = (List<Status>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2239,7 +2298,10 @@ public class StatusPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Status status : findAll()) {
+		for (Status status :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(status);
 		}
 	}

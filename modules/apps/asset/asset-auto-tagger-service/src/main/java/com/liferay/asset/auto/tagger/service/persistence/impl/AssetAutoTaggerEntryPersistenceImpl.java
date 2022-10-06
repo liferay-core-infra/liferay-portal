@@ -181,6 +181,15 @@ public class AssetAutoTaggerEntryPersistenceImpl
 		OrderByComparator<AssetAutoTaggerEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAssetEntryId(
+			assetEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetAutoTaggerEntry> _findByAssetEntryId(
+		long assetEntryId, int start, int end,
+		OrderByComparator<AssetAutoTaggerEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetAutoTaggerEntry.class);
 
@@ -260,10 +269,12 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				list = (List<AssetAutoTaggerEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,8 +568,9 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	@Override
 	public void removeByAssetEntryId(long assetEntryId) {
 		for (AssetAutoTaggerEntry assetAutoTaggerEntry :
-				findByAssetEntryId(
-					assetEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByAssetEntryId(
+					assetEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetAutoTaggerEntry);
 		}
@@ -705,6 +717,15 @@ public class AssetAutoTaggerEntryPersistenceImpl
 		OrderByComparator<AssetAutoTaggerEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAssetTagId(
+			assetTagId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetAutoTaggerEntry> _findByAssetTagId(
+		long assetTagId, int start, int end,
+		OrderByComparator<AssetAutoTaggerEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetAutoTaggerEntry.class);
 
@@ -782,10 +803,12 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				list = (List<AssetAutoTaggerEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1079,8 +1102,9 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	@Override
 	public void removeByAssetTagId(long assetTagId) {
 		for (AssetAutoTaggerEntry assetAutoTaggerEntry :
-				findByAssetTagId(
-					assetTagId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByAssetTagId(
+					assetTagId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetAutoTaggerEntry);
 		}
@@ -1165,8 +1189,15 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	public AssetAutoTaggerEntry findByA_A(long assetEntryId, long assetTagId)
 		throws NoSuchEntryException {
 
-		AssetAutoTaggerEntry assetAutoTaggerEntry = fetchByA_A(
-			assetEntryId, assetTagId);
+		return _findByA_A(assetEntryId, assetTagId, false);
+	}
+
+	private AssetAutoTaggerEntry _findByA_A(
+			long assetEntryId, long assetTagId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		AssetAutoTaggerEntry assetAutoTaggerEntry = _fetchByA_A(
+			assetEntryId, assetTagId, true, readOnlyCache);
 
 		if (assetAutoTaggerEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1214,6 +1245,13 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	@Override
 	public AssetAutoTaggerEntry fetchByA_A(
 		long assetEntryId, long assetTagId, boolean useFinderCache) {
+
+		return _fetchByA_A(assetEntryId, assetTagId, useFinderCache, false);
+	}
+
+	private AssetAutoTaggerEntry _fetchByA_A(
+		long assetEntryId, long assetTagId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetAutoTaggerEntry.class);
@@ -1276,9 +1314,11 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				else {
 					AssetAutoTaggerEntry assetAutoTaggerEntry = list.get(0);
 
-					result = assetAutoTaggerEntry;
+					if (!readOnlyCache) {
+						result = assetAutoTaggerEntry;
 
-					cacheResult(assetAutoTaggerEntry);
+						cacheResult(assetAutoTaggerEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1308,8 +1348,8 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	public AssetAutoTaggerEntry removeByA_A(long assetEntryId, long assetTagId)
 		throws NoSuchEntryException {
 
-		AssetAutoTaggerEntry assetAutoTaggerEntry = findByA_A(
-			assetEntryId, assetTagId);
+		AssetAutoTaggerEntry assetAutoTaggerEntry = _findByA_A(
+			assetEntryId, assetTagId, true);
 
 		return remove(assetAutoTaggerEntry);
 	}
@@ -1974,6 +2014,14 @@ public class AssetAutoTaggerEntryPersistenceImpl
 		OrderByComparator<AssetAutoTaggerEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetAutoTaggerEntry> _findAll(
+		int start, int end,
+		OrderByComparator<AssetAutoTaggerEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			AssetAutoTaggerEntry.class);
 
@@ -2031,10 +2079,12 @@ public class AssetAutoTaggerEntryPersistenceImpl
 				list = (List<AssetAutoTaggerEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2054,7 +2104,10 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AssetAutoTaggerEntry assetAutoTaggerEntry : findAll()) {
+		for (AssetAutoTaggerEntry assetAutoTaggerEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(assetAutoTaggerEntry);
 		}
 	}

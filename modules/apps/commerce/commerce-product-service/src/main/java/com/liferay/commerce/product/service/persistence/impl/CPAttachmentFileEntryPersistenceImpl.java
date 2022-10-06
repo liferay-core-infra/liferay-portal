@@ -172,6 +172,15 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -260,10 +269,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -668,8 +681,15 @@ public class CPAttachmentFileEntryPersistenceImpl
 	public CPAttachmentFileEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPAttachmentFileEntryException {
 
-		CPAttachmentFileEntry cpAttachmentFileEntry = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPAttachmentFileEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPAttachmentFileEntryException {
+
+		CPAttachmentFileEntry cpAttachmentFileEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpAttachmentFileEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -717,6 +737,13 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public CPAttachmentFileEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPAttachmentFileEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -793,9 +820,11 @@ public class CPAttachmentFileEntryPersistenceImpl
 				else {
 					CPAttachmentFileEntry cpAttachmentFileEntry = list.get(0);
 
-					result = cpAttachmentFileEntry;
+					if (!readOnlyCache) {
+						result = cpAttachmentFileEntry;
 
-					cacheResult(cpAttachmentFileEntry);
+						cacheResult(cpAttachmentFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -825,8 +854,8 @@ public class CPAttachmentFileEntryPersistenceImpl
 	public CPAttachmentFileEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPAttachmentFileEntryException {
 
-		CPAttachmentFileEntry cpAttachmentFileEntry = findByUUID_G(
-			uuid, groupId);
+		CPAttachmentFileEntry cpAttachmentFileEntry = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(cpAttachmentFileEntry);
 	}
@@ -1002,6 +1031,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1098,10 +1137,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1424,9 +1465,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -1603,6 +1644,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -1687,10 +1738,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2000,9 +2053,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -2162,6 +2215,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtD_S(
+			displayDate, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByLtD_S(
+		Date displayDate, int status, int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -2248,10 +2311,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2572,9 +2637,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public void removeByLtD_S(Date displayDate, int status) {
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByLtD_S(
+				_findByLtD_S(
 					displayDate, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -2755,6 +2820,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_F(
+			classNameId, classPK, fileEntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByC_C_F(
+		long classNameId, long classPK, long fileEntryId, int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -2845,10 +2920,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3178,9 +3255,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 		long classNameId, long classPK, long fileEntryId) {
 
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByC_C_F(
+				_findByC_C_F(
 					classNameId, classPK, fileEntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -3354,6 +3431,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C(
+			classNameId, classPK, cdnURL, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByC_C_C(
+		long classNameId, long classPK, String cdnURL, int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		cdnURL = Objects.toString(cdnURL, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3456,10 +3543,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3799,9 +3888,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public void removeByC_C_C(long classNameId, long classPK, String cdnURL) {
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByC_C_C(
+				_findByC_C_C(
 					classNameId, classPK, cdnURL, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -3997,6 +4086,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		int end, OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_LtD_S(
+			classNameId, classPK, displayDate, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByC_C_LtD_S(
+		long classNameId, long classPK, Date displayDate, int status, int start,
+		int end, OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -4095,10 +4194,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4455,9 +4556,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 		long classNameId, long classPK, Date displayDate, int status) {
 
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByC_C_LtD_S(
+				_findByC_C_LtD_S(
 					classNameId, classPK, displayDate, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -4664,6 +4765,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		int end, OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_T_ST(
+			classNameId, classPK, type, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByC_C_T_ST(
+		long classNameId, long classPK, int type, int status, int start,
+		int end, OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -4759,10 +4870,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5108,9 +5221,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 		long classNameId, long classPK, int type, int status) {
 
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByC_C_T_ST(
+				_findByC_C_T_ST(
 					classNameId, classPK, type, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -5300,6 +5413,16 @@ public class CPAttachmentFileEntryPersistenceImpl
 		int end, OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_T_NotST(
+			classNameId, classPK, type, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findByC_C_T_NotST(
+		long classNameId, long classPK, int type, int status, int start,
+		int end, OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -5384,10 +5507,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5733,9 +5858,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 		long classNameId, long classPK, int type, int status) {
 
 		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				findByC_C_T_NotST(
+				_findByC_C_T_NotST(
 					classNameId, classPK, type, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpAttachmentFileEntry);
 		}
@@ -5847,8 +5972,15 @@ public class CPAttachmentFileEntryPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPAttachmentFileEntryException {
 
-		CPAttachmentFileEntry cpAttachmentFileEntry = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CPAttachmentFileEntry _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchCPAttachmentFileEntryException {
+
+		CPAttachmentFileEntry cpAttachmentFileEntry = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (cpAttachmentFileEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5898,6 +6030,14 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public CPAttachmentFileEntry fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CPAttachmentFileEntry _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -5975,9 +6115,11 @@ public class CPAttachmentFileEntryPersistenceImpl
 				else {
 					CPAttachmentFileEntry cpAttachmentFileEntry = list.get(0);
 
-					result = cpAttachmentFileEntry;
+					if (!readOnlyCache) {
+						result = cpAttachmentFileEntry;
 
-					cacheResult(cpAttachmentFileEntry);
+						cacheResult(cpAttachmentFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6008,8 +6150,8 @@ public class CPAttachmentFileEntryPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPAttachmentFileEntryException {
 
-		CPAttachmentFileEntry cpAttachmentFileEntry = findByC_ERC(
-			companyId, externalReferenceCode);
+		CPAttachmentFileEntry cpAttachmentFileEntry = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(cpAttachmentFileEntry);
 	}
@@ -6739,6 +6881,14 @@ public class CPAttachmentFileEntryPersistenceImpl
 		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPAttachmentFileEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CPAttachmentFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPAttachmentFileEntry.class);
 
@@ -6796,10 +6946,12 @@ public class CPAttachmentFileEntryPersistenceImpl
 				list = (List<CPAttachmentFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6819,7 +6971,10 @@ public class CPAttachmentFileEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPAttachmentFileEntry cpAttachmentFileEntry : findAll()) {
+		for (CPAttachmentFileEntry cpAttachmentFileEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpAttachmentFileEntry);
 		}
 	}

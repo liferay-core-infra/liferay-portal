@@ -174,6 +174,15 @@ public class OAuthApplicationPersistenceImpl
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthApplication> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<OAuthApplication> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -248,10 +257,12 @@ public class OAuthApplicationPersistenceImpl
 				list = (List<OAuthApplication>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -875,8 +886,9 @@ public class OAuthApplicationPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (OAuthApplication oAuthApplication :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthApplication);
 		}
@@ -1057,6 +1069,15 @@ public class OAuthApplicationPersistenceImpl
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthApplication> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<OAuthApplication> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1129,10 +1150,12 @@ public class OAuthApplicationPersistenceImpl
 				list = (List<OAuthApplication>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1754,8 +1777,9 @@ public class OAuthApplicationPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (OAuthApplication oAuthApplication :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuthApplication);
 		}
@@ -1875,7 +1899,15 @@ public class OAuthApplicationPersistenceImpl
 	public OAuthApplication findByConsumerKey(String consumerKey)
 		throws NoSuchApplicationException {
 
-		OAuthApplication oAuthApplication = fetchByConsumerKey(consumerKey);
+		return _findByConsumerKey(consumerKey, false);
+	}
+
+	private OAuthApplication _findByConsumerKey(
+			String consumerKey, boolean readOnlyCache)
+		throws NoSuchApplicationException {
+
+		OAuthApplication oAuthApplication = _fetchByConsumerKey(
+			consumerKey, true, readOnlyCache);
 
 		if (oAuthApplication == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1918,6 +1950,12 @@ public class OAuthApplicationPersistenceImpl
 	@Override
 	public OAuthApplication fetchByConsumerKey(
 		String consumerKey, boolean useFinderCache) {
+
+		return _fetchByConsumerKey(consumerKey, useFinderCache, false);
+	}
+
+	private OAuthApplication _fetchByConsumerKey(
+		String consumerKey, boolean useFinderCache, boolean readOnlyCache) {
 
 		consumerKey = Objects.toString(consumerKey, "");
 
@@ -1986,9 +2024,11 @@ public class OAuthApplicationPersistenceImpl
 				else {
 					OAuthApplication oAuthApplication = list.get(0);
 
-					result = oAuthApplication;
+					if (!readOnlyCache) {
+						result = oAuthApplication;
 
-					cacheResult(oAuthApplication);
+						cacheResult(oAuthApplication);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2017,7 +2057,8 @@ public class OAuthApplicationPersistenceImpl
 	public OAuthApplication removeByConsumerKey(String consumerKey)
 		throws NoSuchApplicationException {
 
-		OAuthApplication oAuthApplication = findByConsumerKey(consumerKey);
+		OAuthApplication oAuthApplication = _findByConsumerKey(
+			consumerKey, true);
 
 		return remove(oAuthApplication);
 	}
@@ -2170,6 +2211,16 @@ public class OAuthApplicationPersistenceImpl
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeN(
+			companyId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<OAuthApplication> _findByC_LikeN(
+		long companyId, String name, int start, int end,
+		OrderByComparator<OAuthApplication> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -2255,10 +2306,12 @@ public class OAuthApplicationPersistenceImpl
 				list = (List<OAuthApplication>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2958,9 +3011,9 @@ public class OAuthApplicationPersistenceImpl
 	@Override
 	public void removeByC_LikeN(long companyId, String name) {
 		for (OAuthApplication oAuthApplication :
-				findByC_LikeN(
-					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_LikeN(
+					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(oAuthApplication);
 		}
@@ -3187,6 +3240,15 @@ public class OAuthApplicationPersistenceImpl
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_LikeN(
+			userId, name, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthApplication> _findByU_LikeN(
+		long userId, String name, int start, int end,
+		OrderByComparator<OAuthApplication> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -3270,10 +3332,12 @@ public class OAuthApplicationPersistenceImpl
 				list = (List<OAuthApplication>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3972,8 +4036,9 @@ public class OAuthApplicationPersistenceImpl
 	@Override
 	public void removeByU_LikeN(long userId, String name) {
 		for (OAuthApplication oAuthApplication :
-				findByU_LikeN(
-					userId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByU_LikeN(
+					userId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(oAuthApplication);
 		}
@@ -4531,6 +4596,14 @@ public class OAuthApplicationPersistenceImpl
 		OrderByComparator<OAuthApplication> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuthApplication> _findAll(
+		int start, int end,
+		OrderByComparator<OAuthApplication> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4585,10 +4658,12 @@ public class OAuthApplicationPersistenceImpl
 				list = (List<OAuthApplication>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4608,7 +4683,10 @@ public class OAuthApplicationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OAuthApplication oAuthApplication : findAll()) {
+		for (OAuthApplication oAuthApplication :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(oAuthApplication);
 		}
 	}

@@ -184,6 +184,16 @@ public class SegmentsExperimentRelPersistenceImpl
 		OrderByComparator<SegmentsExperimentRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySegmentsExperimentId(
+			segmentsExperimentId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsExperimentRel> _findBySegmentsExperimentId(
+		long segmentsExperimentId, int start, int end,
+		OrderByComparator<SegmentsExperimentRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperimentRel.class);
 
@@ -265,10 +275,12 @@ public class SegmentsExperimentRelPersistenceImpl
 				list = (List<SegmentsExperimentRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,9 +576,9 @@ public class SegmentsExperimentRelPersistenceImpl
 	@Override
 	public void removeBySegmentsExperimentId(long segmentsExperimentId) {
 		for (SegmentsExperimentRel segmentsExperimentRel :
-				findBySegmentsExperimentId(
+				_findBySegmentsExperimentId(
 					segmentsExperimentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(segmentsExperimentRel);
 		}
@@ -718,6 +730,16 @@ public class SegmentsExperimentRelPersistenceImpl
 		OrderByComparator<SegmentsExperimentRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySegmentsExperienceId(
+			segmentsExperienceId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsExperimentRel> _findBySegmentsExperienceId(
+		long segmentsExperienceId, int start, int end,
+		OrderByComparator<SegmentsExperimentRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperimentRel.class);
 
@@ -799,10 +821,12 @@ public class SegmentsExperimentRelPersistenceImpl
 				list = (List<SegmentsExperimentRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1098,9 +1122,9 @@ public class SegmentsExperimentRelPersistenceImpl
 	@Override
 	public void removeBySegmentsExperienceId(long segmentsExperienceId) {
 		for (SegmentsExperimentRel segmentsExperimentRel :
-				findBySegmentsExperienceId(
+				_findBySegmentsExperienceId(
 					segmentsExperienceId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(segmentsExperimentRel);
 		}
@@ -1188,8 +1212,16 @@ public class SegmentsExperimentRelPersistenceImpl
 			long segmentsExperimentId, long segmentsExperienceId)
 		throws NoSuchExperimentRelException {
 
-		SegmentsExperimentRel segmentsExperimentRel = fetchByS_S(
-			segmentsExperimentId, segmentsExperienceId);
+		return _findByS_S(segmentsExperimentId, segmentsExperienceId, false);
+	}
+
+	private SegmentsExperimentRel _findByS_S(
+			long segmentsExperimentId, long segmentsExperienceId,
+			boolean readOnlyCache)
+		throws NoSuchExperimentRelException {
+
+		SegmentsExperimentRel segmentsExperimentRel = _fetchByS_S(
+			segmentsExperimentId, segmentsExperienceId, true, readOnlyCache);
 
 		if (segmentsExperimentRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1240,6 +1272,14 @@ public class SegmentsExperimentRelPersistenceImpl
 	public SegmentsExperimentRel fetchByS_S(
 		long segmentsExperimentId, long segmentsExperienceId,
 		boolean useFinderCache) {
+
+		return _fetchByS_S(
+			segmentsExperimentId, segmentsExperienceId, useFinderCache, false);
+	}
+
+	private SegmentsExperimentRel _fetchByS_S(
+		long segmentsExperimentId, long segmentsExperienceId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperimentRel.class);
@@ -1306,9 +1346,11 @@ public class SegmentsExperimentRelPersistenceImpl
 				else {
 					SegmentsExperimentRel segmentsExperimentRel = list.get(0);
 
-					result = segmentsExperimentRel;
+					if (!readOnlyCache) {
+						result = segmentsExperimentRel;
 
-					cacheResult(segmentsExperimentRel);
+						cacheResult(segmentsExperimentRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1339,8 +1381,8 @@ public class SegmentsExperimentRelPersistenceImpl
 			long segmentsExperimentId, long segmentsExperienceId)
 		throws NoSuchExperimentRelException {
 
-		SegmentsExperimentRel segmentsExperimentRel = findByS_S(
-			segmentsExperimentId, segmentsExperienceId);
+		SegmentsExperimentRel segmentsExperimentRel = _findByS_S(
+			segmentsExperimentId, segmentsExperienceId, true);
 
 		return remove(segmentsExperimentRel);
 	}
@@ -2015,6 +2057,14 @@ public class SegmentsExperimentRelPersistenceImpl
 		OrderByComparator<SegmentsExperimentRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperimentRel> _findAll(
+		int start, int end,
+		OrderByComparator<SegmentsExperimentRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperimentRel.class);
 
@@ -2072,10 +2122,12 @@ public class SegmentsExperimentRelPersistenceImpl
 				list = (List<SegmentsExperimentRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2095,7 +2147,10 @@ public class SegmentsExperimentRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SegmentsExperimentRel segmentsExperimentRel : findAll()) {
+		for (SegmentsExperimentRel segmentsExperimentRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(segmentsExperimentRel);
 		}
 	}

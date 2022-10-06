@@ -160,6 +160,15 @@ public class SpringEntryPersistenceImpl
 		OrderByComparator<SpringEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SpringEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SpringEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -245,10 +254,12 @@ public class SpringEntryPersistenceImpl
 				list = (List<SpringEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,7 +553,9 @@ public class SpringEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SpringEntry springEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(springEntry);
 		}
@@ -697,6 +710,16 @@ public class SpringEntryPersistenceImpl
 		OrderByComparator<SpringEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SpringEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SpringEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -790,10 +813,12 @@ public class SpringEntryPersistenceImpl
 				list = (List<SpringEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1111,9 +1136,9 @@ public class SpringEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SpringEntry springEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(springEntry);
 		}
@@ -1271,6 +1296,15 @@ public class SpringEntryPersistenceImpl
 		OrderByComparator<SpringEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SpringEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<SpringEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1345,10 +1379,12 @@ public class SpringEntryPersistenceImpl
 				list = (List<SpringEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1632,8 +1668,9 @@ public class SpringEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (SpringEntry springEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(springEntry);
 		}
@@ -2079,6 +2116,13 @@ public class SpringEntryPersistenceImpl
 		int start, int end, OrderByComparator<SpringEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SpringEntry> _findAll(
+		int start, int end, OrderByComparator<SpringEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2133,10 +2177,12 @@ public class SpringEntryPersistenceImpl
 				list = (List<SpringEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2156,7 +2202,10 @@ public class SpringEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SpringEntry springEntry : findAll()) {
+		for (SpringEntry springEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(springEntry);
 		}
 	}

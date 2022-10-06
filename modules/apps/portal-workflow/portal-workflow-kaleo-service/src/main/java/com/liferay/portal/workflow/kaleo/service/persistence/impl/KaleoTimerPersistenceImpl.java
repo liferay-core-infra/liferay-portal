@@ -186,6 +186,16 @@ public class KaleoTimerPersistenceImpl
 		OrderByComparator<KaleoTimer> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKCN_KCPK(
+			kaleoClassName, kaleoClassPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KaleoTimer> _findByKCN_KCPK(
+		String kaleoClassName, long kaleoClassPK, int start, int end,
+		OrderByComparator<KaleoTimer> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		kaleoClassName = Objects.toString(kaleoClassName, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -283,10 +293,12 @@ public class KaleoTimerPersistenceImpl
 				list = (List<KaleoTimer>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -606,9 +618,9 @@ public class KaleoTimerPersistenceImpl
 	@Override
 	public void removeByKCN_KCPK(String kaleoClassName, long kaleoClassPK) {
 		for (KaleoTimer kaleoTimer :
-				findByKCN_KCPK(
+				_findByKCN_KCPK(
 					kaleoClassName, kaleoClassPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoTimer);
 		}
@@ -793,6 +805,16 @@ public class KaleoTimerPersistenceImpl
 		int end, OrderByComparator<KaleoTimer> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKCN_KCPK_Blocking(
+			kaleoClassName, kaleoClassPK, blocking, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTimer> _findByKCN_KCPK_Blocking(
+		String kaleoClassName, long kaleoClassPK, boolean blocking, int start,
+		int end, OrderByComparator<KaleoTimer> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		kaleoClassName = Objects.toString(kaleoClassName, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -899,10 +921,12 @@ public class KaleoTimerPersistenceImpl
 				list = (List<KaleoTimer>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1242,9 +1266,9 @@ public class KaleoTimerPersistenceImpl
 		String kaleoClassName, long kaleoClassPK, boolean blocking) {
 
 		for (KaleoTimer kaleoTimer :
-				findByKCN_KCPK_Blocking(
+				_findByKCN_KCPK_Blocking(
 					kaleoClassName, kaleoClassPK, blocking, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoTimer);
 		}
@@ -1884,6 +1908,13 @@ public class KaleoTimerPersistenceImpl
 		int start, int end, OrderByComparator<KaleoTimer> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTimer> _findAll(
+		int start, int end, OrderByComparator<KaleoTimer> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTimer.class);
 
@@ -1941,10 +1972,12 @@ public class KaleoTimerPersistenceImpl
 				list = (List<KaleoTimer>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1964,7 +1997,10 @@ public class KaleoTimerPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KaleoTimer kaleoTimer : findAll()) {
+		for (KaleoTimer kaleoTimer :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kaleoTimer);
 		}
 	}

@@ -163,6 +163,16 @@ public class PortalPreferenceValuePersistenceImpl
 		OrderByComparator<PortalPreferenceValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPortalPreferencesId(
+			portalPreferencesId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PortalPreferenceValue> _findByPortalPreferencesId(
+		long portalPreferencesId, int start, int end,
+		OrderByComparator<PortalPreferenceValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -240,10 +250,12 @@ public class PortalPreferenceValuePersistenceImpl
 				list = (List<PortalPreferenceValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -539,9 +551,9 @@ public class PortalPreferenceValuePersistenceImpl
 	@Override
 	public void removeByPortalPreferencesId(long portalPreferencesId) {
 		for (PortalPreferenceValue portalPreferenceValue :
-				findByPortalPreferencesId(
+				_findByPortalPreferencesId(
 					portalPreferencesId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(portalPreferenceValue);
 		}
@@ -685,6 +697,16 @@ public class PortalPreferenceValuePersistenceImpl
 		OrderByComparator<PortalPreferenceValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_N(
+			portalPreferencesId, namespace, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PortalPreferenceValue> _findByP_N(
+		long portalPreferencesId, String namespace, int start, int end,
+		OrderByComparator<PortalPreferenceValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		namespace = Objects.toString(namespace, "");
 
 		FinderPath finderPath = null;
@@ -780,10 +802,12 @@ public class PortalPreferenceValuePersistenceImpl
 				list = (List<PortalPreferenceValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1108,9 +1132,9 @@ public class PortalPreferenceValuePersistenceImpl
 	@Override
 	public void removeByP_N(long portalPreferencesId, String namespace) {
 		for (PortalPreferenceValue portalPreferenceValue :
-				findByP_N(
+				_findByP_N(
 					portalPreferencesId, namespace, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portalPreferenceValue);
 		}
@@ -1283,6 +1307,16 @@ public class PortalPreferenceValuePersistenceImpl
 		int end, OrderByComparator<PortalPreferenceValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_K_N(
+			portalPreferencesId, key, namespace, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PortalPreferenceValue> _findByP_K_N(
+		long portalPreferencesId, String key, String namespace, int start,
+		int end, OrderByComparator<PortalPreferenceValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 		namespace = Objects.toString(namespace, "");
 
@@ -1396,10 +1430,12 @@ public class PortalPreferenceValuePersistenceImpl
 				list = (List<PortalPreferenceValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1754,9 +1790,9 @@ public class PortalPreferenceValuePersistenceImpl
 		long portalPreferencesId, String key, String namespace) {
 
 		for (PortalPreferenceValue portalPreferenceValue :
-				findByP_K_N(
+				_findByP_K_N(
 					portalPreferencesId, key, namespace, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portalPreferenceValue);
 		}
@@ -1883,8 +1919,17 @@ public class PortalPreferenceValuePersistenceImpl
 			long portalPreferencesId, int index, String key, String namespace)
 		throws NoSuchPreferenceValueException {
 
-		PortalPreferenceValue portalPreferenceValue = fetchByP_I_K_N(
-			portalPreferencesId, index, key, namespace);
+		return _findByP_I_K_N(
+			portalPreferencesId, index, key, namespace, false);
+	}
+
+	private PortalPreferenceValue _findByP_I_K_N(
+			long portalPreferencesId, int index, String key, String namespace,
+			boolean readOnlyCache)
+		throws NoSuchPreferenceValueException {
+
+		PortalPreferenceValue portalPreferenceValue = _fetchByP_I_K_N(
+			portalPreferencesId, index, key, namespace, true, readOnlyCache);
 
 		if (portalPreferenceValue == null) {
 			StringBundler sb = new StringBundler(10);
@@ -1945,6 +1990,14 @@ public class PortalPreferenceValuePersistenceImpl
 	public PortalPreferenceValue fetchByP_I_K_N(
 		long portalPreferencesId, int index, String key, String namespace,
 		boolean useFinderCache) {
+
+		return _fetchByP_I_K_N(
+			portalPreferencesId, index, key, namespace, useFinderCache, false);
+	}
+
+	private PortalPreferenceValue _fetchByP_I_K_N(
+		long portalPreferencesId, int index, String key, String namespace,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 		namespace = Objects.toString(namespace, "");
@@ -2044,9 +2097,11 @@ public class PortalPreferenceValuePersistenceImpl
 				else {
 					PortalPreferenceValue portalPreferenceValue = list.get(0);
 
-					result = portalPreferenceValue;
+					if (!readOnlyCache) {
+						result = portalPreferenceValue;
 
-					cacheResult(portalPreferenceValue);
+						cacheResult(portalPreferenceValue);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2079,8 +2134,8 @@ public class PortalPreferenceValuePersistenceImpl
 			long portalPreferencesId, int index, String key, String namespace)
 		throws NoSuchPreferenceValueException {
 
-		PortalPreferenceValue portalPreferenceValue = findByP_I_K_N(
-			portalPreferencesId, index, key, namespace);
+		PortalPreferenceValue portalPreferenceValue = _findByP_I_K_N(
+			portalPreferencesId, index, key, namespace, true);
 
 		return remove(portalPreferenceValue);
 	}
@@ -2294,6 +2349,17 @@ public class PortalPreferenceValuePersistenceImpl
 		OrderByComparator<PortalPreferenceValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByP_K_N_SV(
+			portalPreferencesId, key, namespace, smallValue, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortalPreferenceValue> _findByP_K_N_SV(
+		long portalPreferencesId, String key, String namespace,
+		String smallValue, int start, int end,
+		OrderByComparator<PortalPreferenceValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 		namespace = Objects.toString(namespace, "");
 		smallValue = Objects.toString(smallValue, "");
@@ -2427,10 +2493,12 @@ public class PortalPreferenceValuePersistenceImpl
 				list = (List<PortalPreferenceValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2821,9 +2889,9 @@ public class PortalPreferenceValuePersistenceImpl
 		String smallValue) {
 
 		for (PortalPreferenceValue portalPreferenceValue :
-				findByP_K_N_SV(
+				_findByP_K_N_SV(
 					portalPreferencesId, key, namespace, smallValue,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portalPreferenceValue);
 		}
@@ -3377,6 +3445,14 @@ public class PortalPreferenceValuePersistenceImpl
 		OrderByComparator<PortalPreferenceValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortalPreferenceValue> _findAll(
+		int start, int end,
+		OrderByComparator<PortalPreferenceValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3431,10 +3507,12 @@ public class PortalPreferenceValuePersistenceImpl
 				list = (List<PortalPreferenceValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3454,7 +3532,10 @@ public class PortalPreferenceValuePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PortalPreferenceValue portalPreferenceValue : findAll()) {
+		for (PortalPreferenceValue portalPreferenceValue :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(portalPreferenceValue);
 		}
 	}

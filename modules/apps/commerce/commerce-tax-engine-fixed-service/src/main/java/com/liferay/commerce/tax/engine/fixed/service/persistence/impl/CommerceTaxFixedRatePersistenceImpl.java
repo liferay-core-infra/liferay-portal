@@ -175,6 +175,16 @@ public class CommerceTaxFixedRatePersistenceImpl
 		OrderByComparator<CommerceTaxFixedRate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPTaxCategoryId(
+			CPTaxCategoryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTaxFixedRate> _findByCPTaxCategoryId(
+		long CPTaxCategoryId, int start, int end,
+		OrderByComparator<CommerceTaxFixedRate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -251,10 +261,12 @@ public class CommerceTaxFixedRatePersistenceImpl
 				list = (List<CommerceTaxFixedRate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -548,9 +560,9 @@ public class CommerceTaxFixedRatePersistenceImpl
 	@Override
 	public void removeByCPTaxCategoryId(long CPTaxCategoryId) {
 		for (CommerceTaxFixedRate commerceTaxFixedRate :
-				findByCPTaxCategoryId(
-					CPTaxCategoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPTaxCategoryId(
+					CPTaxCategoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceTaxFixedRate);
 		}
@@ -688,6 +700,16 @@ public class CommerceTaxFixedRatePersistenceImpl
 		OrderByComparator<CommerceTaxFixedRate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceTaxMethodId(
+			commerceTaxMethodId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTaxFixedRate> _findByCommerceTaxMethodId(
+		long commerceTaxMethodId, int start, int end,
+		OrderByComparator<CommerceTaxFixedRate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -765,10 +787,12 @@ public class CommerceTaxFixedRatePersistenceImpl
 				list = (List<CommerceTaxFixedRate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1064,9 +1088,9 @@ public class CommerceTaxFixedRatePersistenceImpl
 	@Override
 	public void removeByCommerceTaxMethodId(long commerceTaxMethodId) {
 		for (CommerceTaxFixedRate commerceTaxFixedRate :
-				findByCommerceTaxMethodId(
+				_findByCommerceTaxMethodId(
 					commerceTaxMethodId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceTaxFixedRate);
 		}
@@ -1141,8 +1165,16 @@ public class CommerceTaxFixedRatePersistenceImpl
 			long CPTaxCategoryId, long commerceTaxMethodId)
 		throws NoSuchTaxFixedRateException {
 
-		CommerceTaxFixedRate commerceTaxFixedRate = fetchByC_C(
-			CPTaxCategoryId, commerceTaxMethodId);
+		return _findByC_C(CPTaxCategoryId, commerceTaxMethodId, false);
+	}
+
+	private CommerceTaxFixedRate _findByC_C(
+			long CPTaxCategoryId, long commerceTaxMethodId,
+			boolean readOnlyCache)
+		throws NoSuchTaxFixedRateException {
+
+		CommerceTaxFixedRate commerceTaxFixedRate = _fetchByC_C(
+			CPTaxCategoryId, commerceTaxMethodId, true, readOnlyCache);
 
 		if (commerceTaxFixedRate == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1193,6 +1225,14 @@ public class CommerceTaxFixedRatePersistenceImpl
 	public CommerceTaxFixedRate fetchByC_C(
 		long CPTaxCategoryId, long commerceTaxMethodId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C(
+			CPTaxCategoryId, commerceTaxMethodId, useFinderCache, false);
+	}
+
+	private CommerceTaxFixedRate _fetchByC_C(
+		long CPTaxCategoryId, long commerceTaxMethodId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1254,9 +1294,11 @@ public class CommerceTaxFixedRatePersistenceImpl
 				else {
 					CommerceTaxFixedRate commerceTaxFixedRate = list.get(0);
 
-					result = commerceTaxFixedRate;
+					if (!readOnlyCache) {
+						result = commerceTaxFixedRate;
 
-					cacheResult(commerceTaxFixedRate);
+						cacheResult(commerceTaxFixedRate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1287,8 +1329,8 @@ public class CommerceTaxFixedRatePersistenceImpl
 			long CPTaxCategoryId, long commerceTaxMethodId)
 		throws NoSuchTaxFixedRateException {
 
-		CommerceTaxFixedRate commerceTaxFixedRate = findByC_C(
-			CPTaxCategoryId, commerceTaxMethodId);
+		CommerceTaxFixedRate commerceTaxFixedRate = _findByC_C(
+			CPTaxCategoryId, commerceTaxMethodId, true);
 
 		return remove(commerceTaxFixedRate);
 	}
@@ -1783,6 +1825,14 @@ public class CommerceTaxFixedRatePersistenceImpl
 		OrderByComparator<CommerceTaxFixedRate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTaxFixedRate> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceTaxFixedRate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1837,10 +1887,12 @@ public class CommerceTaxFixedRatePersistenceImpl
 				list = (List<CommerceTaxFixedRate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1860,7 +1912,10 @@ public class CommerceTaxFixedRatePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceTaxFixedRate commerceTaxFixedRate : findAll()) {
+		for (CommerceTaxFixedRate commerceTaxFixedRate :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceTaxFixedRate);
 		}
 	}

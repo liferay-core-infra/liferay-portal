@@ -163,6 +163,15 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceAvailabilityEstimate> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -250,10 +259,12 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 				list = (List<CommerceAvailabilityEstimate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -561,7 +572,9 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceAvailabilityEstimate commerceAvailabilityEstimate :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceAvailabilityEstimate);
 		}
@@ -718,6 +731,16 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceAvailabilityEstimate> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -814,10 +837,12 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 				list = (List<CommerceAvailabilityEstimate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1142,9 +1167,9 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceAvailabilityEstimate commerceAvailabilityEstimate :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceAvailabilityEstimate);
 		}
@@ -1302,6 +1327,15 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceAvailabilityEstimate> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1380,10 +1414,12 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 				list = (List<CommerceAvailabilityEstimate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1679,8 +1715,9 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CommerceAvailabilityEstimate commerceAvailabilityEstimate :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceAvailabilityEstimate);
 		}
@@ -2187,6 +2224,14 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceAvailabilityEstimate> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceAvailabilityEstimate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2242,10 +2287,12 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 				list = (List<CommerceAvailabilityEstimate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2266,7 +2313,8 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceAvailabilityEstimate commerceAvailabilityEstimate :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceAvailabilityEstimate);
 		}

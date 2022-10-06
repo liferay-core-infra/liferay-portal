@@ -184,6 +184,16 @@ public class AnalyticsAssociationPersistenceImpl
 		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, associationClassName, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AnalyticsAssociation> _findByC_A(
+		long companyId, String associationClassName, int start, int end,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		associationClassName = Objects.toString(associationClassName, "");
 
 		FinderPath finderPath = null;
@@ -278,10 +288,12 @@ public class AnalyticsAssociationPersistenceImpl
 				list = (List<AnalyticsAssociation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -606,9 +618,9 @@ public class AnalyticsAssociationPersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, String associationClassName) {
 		for (AnalyticsAssociation analyticsAssociation :
-				findByC_A(
+				_findByC_A(
 					companyId, associationClassName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(analyticsAssociation);
 		}
@@ -782,6 +794,17 @@ public class AnalyticsAssociationPersistenceImpl
 		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_GtM_A(
+			companyId, modifiedDate, associationClassName, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsAssociation> _findByC_GtM_A(
+		long companyId, Date modifiedDate, String associationClassName,
+		int start, int end,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		associationClassName = Objects.toString(associationClassName, "");
 
 		FinderPath finderPath = null;
@@ -885,10 +908,12 @@ public class AnalyticsAssociationPersistenceImpl
 				list = (List<AnalyticsAssociation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1244,9 +1269,9 @@ public class AnalyticsAssociationPersistenceImpl
 		long companyId, Date modifiedDate, String associationClassName) {
 
 		for (AnalyticsAssociation analyticsAssociation :
-				findByC_GtM_A(
+				_findByC_GtM_A(
 					companyId, modifiedDate, associationClassName,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(analyticsAssociation);
 		}
@@ -1448,6 +1473,17 @@ public class AnalyticsAssociationPersistenceImpl
 		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_A(
+			companyId, associationClassName, associationClassPK, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsAssociation> _findByC_A_A(
+		long companyId, String associationClassName, long associationClassPK,
+		int start, int end,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		associationClassName = Objects.toString(associationClassName, "");
 
 		FinderPath finderPath = null;
@@ -1551,10 +1587,12 @@ public class AnalyticsAssociationPersistenceImpl
 				list = (List<AnalyticsAssociation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1903,9 +1941,9 @@ public class AnalyticsAssociationPersistenceImpl
 		long companyId, String associationClassName, long associationClassPK) {
 
 		for (AnalyticsAssociation analyticsAssociation :
-				findByC_A_A(
+				_findByC_A_A(
 					companyId, associationClassName, associationClassPK,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(analyticsAssociation);
 		}
@@ -2404,6 +2442,14 @@ public class AnalyticsAssociationPersistenceImpl
 		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnalyticsAssociation> _findAll(
+		int start, int end,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2458,10 +2504,12 @@ public class AnalyticsAssociationPersistenceImpl
 				list = (List<AnalyticsAssociation>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2481,7 +2529,10 @@ public class AnalyticsAssociationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AnalyticsAssociation analyticsAssociation : findAll()) {
+		for (AnalyticsAssociation analyticsAssociation :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(analyticsAssociation);
 		}
 	}

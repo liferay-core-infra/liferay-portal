@@ -176,6 +176,15 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DispatchTrigger> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -920,7 +931,9 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DispatchTrigger dispatchTrigger :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dispatchTrigger);
 		}
@@ -1142,6 +1155,16 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DispatchTrigger> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1235,10 +1258,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1933,9 +1958,9 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DispatchTrigger dispatchTrigger :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dispatchTrigger);
 		}
@@ -2165,6 +2190,15 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DispatchTrigger> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2239,10 +2273,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2862,8 +2898,9 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (DispatchTrigger dispatchTrigger :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dispatchTrigger);
 		}
@@ -3050,6 +3087,16 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U(
+			companyId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DispatchTrigger> _findByC_U(
+		long companyId, long userId, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3130,10 +3177,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3787,9 +3836,9 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public void removeByC_U(long companyId, long userId) {
 		for (DispatchTrigger dispatchTrigger :
-				findByC_U(
+				_findByC_U(
 					companyId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(dispatchTrigger);
 		}
@@ -3994,6 +4043,16 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_DTET(
+			companyId, dispatchTaskExecutorType, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DispatchTrigger> _findByC_DTET(
+		long companyId, String dispatchTaskExecutorType, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		dispatchTaskExecutorType = Objects.toString(
 			dispatchTaskExecutorType, "");
 
@@ -4090,10 +4149,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4803,9 +4864,9 @@ public class DispatchTriggerPersistenceImpl
 		long companyId, String dispatchTaskExecutorType) {
 
 		for (DispatchTrigger dispatchTrigger :
-				findByC_DTET(
+				_findByC_DTET(
 					companyId, dispatchTaskExecutorType, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dispatchTrigger);
 		}
@@ -4976,7 +5037,15 @@ public class DispatchTriggerPersistenceImpl
 	public DispatchTrigger findByC_N(long companyId, String name)
 		throws NoSuchTriggerException {
 
-		DispatchTrigger dispatchTrigger = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private DispatchTrigger _findByC_N(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchTriggerException {
+
+		DispatchTrigger dispatchTrigger = _fetchByC_N(
+			companyId, name, true, readOnlyCache);
 
 		if (dispatchTrigger == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5024,6 +5093,13 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public DispatchTrigger fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private DispatchTrigger _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -5095,9 +5171,11 @@ public class DispatchTriggerPersistenceImpl
 				else {
 					DispatchTrigger dispatchTrigger = list.get(0);
 
-					result = dispatchTrigger;
+					if (!readOnlyCache) {
+						result = dispatchTrigger;
 
-					cacheResult(dispatchTrigger);
+						cacheResult(dispatchTrigger);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5127,7 +5205,7 @@ public class DispatchTriggerPersistenceImpl
 	public DispatchTrigger removeByC_N(long companyId, String name)
 		throws NoSuchTriggerException {
 
-		DispatchTrigger dispatchTrigger = findByC_N(companyId, name);
+		DispatchTrigger dispatchTrigger = _findByC_N(companyId, name, true);
 
 		return remove(dispatchTrigger);
 	}
@@ -5294,6 +5372,16 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_DTCM(
+			active, dispatchTaskClusterMode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DispatchTrigger> _findByA_DTCM(
+		boolean active, int dispatchTaskClusterMode, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5375,10 +5463,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6273,6 +6363,16 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_DTCM(
+			active, dispatchTaskClusterModes, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DispatchTrigger> _findByA_DTCM(
+		boolean active, int[] dispatchTaskClusterModes, int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (dispatchTaskClusterModes == null) {
 			dispatchTaskClusterModes = new int[0];
 		}
@@ -6372,12 +6472,14 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByA_DTCM, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByA_DTCM, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6400,9 +6502,9 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public void removeByA_DTCM(boolean active, int dispatchTaskClusterMode) {
 		for (DispatchTrigger dispatchTrigger :
-				findByA_DTCM(
+				_findByA_DTCM(
 					active, dispatchTaskClusterMode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dispatchTrigger);
 		}
@@ -6696,8 +6798,15 @@ public class DispatchTriggerPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchTriggerException {
 
-		DispatchTrigger dispatchTrigger = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private DispatchTrigger _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchTriggerException {
+
+		DispatchTrigger dispatchTrigger = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (dispatchTrigger == null) {
 			StringBundler sb = new StringBundler(6);
@@ -6747,6 +6856,14 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public DispatchTrigger fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private DispatchTrigger _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -6820,9 +6937,11 @@ public class DispatchTriggerPersistenceImpl
 				else {
 					DispatchTrigger dispatchTrigger = list.get(0);
 
-					result = dispatchTrigger;
+					if (!readOnlyCache) {
+						result = dispatchTrigger;
 
-					cacheResult(dispatchTrigger);
+						cacheResult(dispatchTrigger);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6853,8 +6972,8 @@ public class DispatchTriggerPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchTriggerException {
 
-		DispatchTrigger dispatchTrigger = findByC_ERC(
-			companyId, externalReferenceCode);
+		DispatchTrigger dispatchTrigger = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(dispatchTrigger);
 	}
@@ -7387,6 +7506,14 @@ public class DispatchTriggerPersistenceImpl
 		OrderByComparator<DispatchTrigger> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DispatchTrigger> _findAll(
+		int start, int end,
+		OrderByComparator<DispatchTrigger> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7441,10 +7568,12 @@ public class DispatchTriggerPersistenceImpl
 				list = (List<DispatchTrigger>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7464,7 +7593,10 @@ public class DispatchTriggerPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DispatchTrigger dispatchTrigger : findAll()) {
+		for (DispatchTrigger dispatchTrigger :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dispatchTrigger);
 		}
 	}

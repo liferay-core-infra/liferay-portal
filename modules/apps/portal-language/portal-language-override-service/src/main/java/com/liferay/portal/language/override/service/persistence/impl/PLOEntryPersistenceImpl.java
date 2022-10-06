@@ -175,6 +175,15 @@ public class PLOEntryPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<PLOEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PLOEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<PLOEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +258,12 @@ public class PLOEntryPersistenceImpl
 				list = (List<PLOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -535,8 +546,9 @@ public class PLOEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (PLOEntry ploEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ploEntry);
 		}
@@ -673,6 +685,16 @@ public class PLOEntryPersistenceImpl
 		long companyId, String key, int start, int end,
 		OrderByComparator<PLOEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_K(
+			companyId, key, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PLOEntry> _findByC_K(
+		long companyId, String key, int start, int end,
+		OrderByComparator<PLOEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 
 		FinderPath finderPath = null;
@@ -766,10 +788,12 @@ public class PLOEntryPersistenceImpl
 				list = (List<PLOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1084,9 +1108,9 @@ public class PLOEntryPersistenceImpl
 	@Override
 	public void removeByC_K(long companyId, String key) {
 		for (PLOEntry ploEntry :
-				findByC_K(
-					companyId, key, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_K(
+					companyId, key, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ploEntry);
 		}
@@ -1247,6 +1271,16 @@ public class PLOEntryPersistenceImpl
 		long companyId, String languageId, int start, int end,
 		OrderByComparator<PLOEntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_L(
+			companyId, languageId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PLOEntry> _findByC_L(
+		long companyId, String languageId, int start, int end,
+		OrderByComparator<PLOEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		languageId = Objects.toString(languageId, "");
 
 		FinderPath finderPath = null;
@@ -1340,10 +1374,12 @@ public class PLOEntryPersistenceImpl
 				list = (List<PLOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1662,9 +1698,9 @@ public class PLOEntryPersistenceImpl
 	@Override
 	public void removeByC_L(long companyId, String languageId) {
 		for (PLOEntry ploEntry :
-				findByC_L(
+				_findByC_L(
 					companyId, languageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ploEntry);
 		}
@@ -1762,7 +1798,16 @@ public class PLOEntryPersistenceImpl
 	public PLOEntry findByC_K_L(long companyId, String key, String languageId)
 		throws NoSuchPLOEntryException {
 
-		PLOEntry ploEntry = fetchByC_K_L(companyId, key, languageId);
+		return _findByC_K_L(companyId, key, languageId, false);
+	}
+
+	private PLOEntry _findByC_K_L(
+			long companyId, String key, String languageId,
+			boolean readOnlyCache)
+		throws NoSuchPLOEntryException {
+
+		PLOEntry ploEntry = _fetchByC_K_L(
+			companyId, key, languageId, true, readOnlyCache);
 
 		if (ploEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1817,6 +1862,13 @@ public class PLOEntryPersistenceImpl
 	@Override
 	public PLOEntry fetchByC_K_L(
 		long companyId, String key, String languageId, boolean useFinderCache) {
+
+		return _fetchByC_K_L(companyId, key, languageId, useFinderCache, false);
+	}
+
+	private PLOEntry _fetchByC_K_L(
+		long companyId, String key, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 		languageId = Objects.toString(languageId, "");
@@ -1905,9 +1957,11 @@ public class PLOEntryPersistenceImpl
 				else {
 					PLOEntry ploEntry = list.get(0);
 
-					result = ploEntry;
+					if (!readOnlyCache) {
+						result = ploEntry;
 
-					cacheResult(ploEntry);
+						cacheResult(ploEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1938,7 +1992,7 @@ public class PLOEntryPersistenceImpl
 	public PLOEntry removeByC_K_L(long companyId, String key, String languageId)
 		throws NoSuchPLOEntryException {
 
-		PLOEntry ploEntry = findByC_K_L(companyId, key, languageId);
+		PLOEntry ploEntry = _findByC_K_L(companyId, key, languageId, true);
 
 		return remove(ploEntry);
 	}
@@ -2472,6 +2526,13 @@ public class PLOEntryPersistenceImpl
 		int start, int end, OrderByComparator<PLOEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PLOEntry> _findAll(
+		int start, int end, OrderByComparator<PLOEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2526,10 +2587,12 @@ public class PLOEntryPersistenceImpl
 				list = (List<PLOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2549,7 +2612,10 @@ public class PLOEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PLOEntry ploEntry : findAll()) {
+		for (PLOEntry ploEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ploEntry);
 		}
 	}

@@ -183,6 +183,15 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarResource> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -573,7 +584,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CalendarResource calendarResource :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(calendarResource);
 		}
@@ -674,7 +687,15 @@ public class CalendarResourcePersistenceImpl
 	public CalendarResource findByUUID_G(String uuid, long groupId)
 		throws NoSuchResourceException {
 
-		CalendarResource calendarResource = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CalendarResource _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchResourceException {
+
+		CalendarResource calendarResource = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (calendarResource == null) {
 			StringBundler sb = new StringBundler(6);
@@ -722,6 +743,13 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public CalendarResource fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CalendarResource _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -797,9 +825,11 @@ public class CalendarResourcePersistenceImpl
 				else {
 					CalendarResource calendarResource = list.get(0);
 
-					result = calendarResource;
+					if (!readOnlyCache) {
+						result = calendarResource;
 
-					cacheResult(calendarResource);
+						cacheResult(calendarResource);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -829,7 +859,7 @@ public class CalendarResourcePersistenceImpl
 	public CalendarResource removeByUUID_G(String uuid, long groupId)
 		throws NoSuchResourceException {
 
-		CalendarResource calendarResource = findByUUID_G(uuid, groupId);
+		CalendarResource calendarResource = _findByUUID_G(uuid, groupId, true);
 
 		return remove(calendarResource);
 	}
@@ -1003,6 +1033,16 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CalendarResource> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1099,10 +1139,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1424,9 +1466,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CalendarResource calendarResource :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(calendarResource);
 		}
@@ -1596,6 +1638,15 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarResource> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarResource.class);
 
@@ -1671,10 +1722,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2296,8 +2349,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CalendarResource calendarResource :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(calendarResource);
 		}
@@ -2490,6 +2544,15 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByActive(
+			active, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarResource> _findByActive(
+		boolean active, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarResource.class);
 
@@ -2565,10 +2628,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2857,8 +2922,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByActive(boolean active) {
 		for (CalendarResource calendarResource :
-				findByActive(
-					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByActive(
+					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(calendarResource);
 		}
@@ -3009,6 +3075,16 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, code, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CalendarResource> _findByG_C(
+		long groupId, String code, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		code = Objects.toString(code, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3105,10 +3181,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4042,6 +4120,16 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupIds, code, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CalendarResource> _findByG_C(
+		long[] groupIds, String code, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -4152,11 +4240,14 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4179,9 +4270,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, String code) {
 		for (CalendarResource calendarResource :
-				findByG_C(
-					groupId, code, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_C(
+					groupId, code, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(calendarResource);
 		}
@@ -4614,6 +4705,16 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_A(
+			groupId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CalendarResource> _findByG_A(
+		long groupId, boolean active, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarResource.class);
 
@@ -4697,10 +4798,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5360,9 +5463,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByG_A(long groupId, boolean active) {
 		for (CalendarResource calendarResource :
-				findByG_A(
-					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_A(
+					groupId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(calendarResource);
 		}
@@ -5511,7 +5614,15 @@ public class CalendarResourcePersistenceImpl
 	public CalendarResource findByC_C(long classNameId, long classPK)
 		throws NoSuchResourceException {
 
-		CalendarResource calendarResource = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private CalendarResource _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchResourceException {
+
+		CalendarResource calendarResource = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (calendarResource == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5559,6 +5670,13 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public CalendarResource fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private CalendarResource _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarResource.class);
@@ -5620,9 +5738,11 @@ public class CalendarResourcePersistenceImpl
 				else {
 					CalendarResource calendarResource = list.get(0);
 
-					result = calendarResource;
+					if (!readOnlyCache) {
+						result = calendarResource;
 
-					cacheResult(calendarResource);
+						cacheResult(calendarResource);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5652,7 +5772,8 @@ public class CalendarResourcePersistenceImpl
 	public CalendarResource removeByC_C(long classNameId, long classPK)
 		throws NoSuchResourceException {
 
-		CalendarResource calendarResource = findByC_C(classNameId, classPK);
+		CalendarResource calendarResource = _findByC_C(
+			classNameId, classPK, true);
 
 		return remove(calendarResource);
 	}
@@ -5816,6 +5937,16 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeC_A(
+			companyId, code, active, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CalendarResource> _findByC_LikeC_A(
+		long companyId, String code, boolean active, int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		code = Objects.toString(code, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -5909,10 +6040,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6252,9 +6385,9 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void removeByC_LikeC_A(long companyId, String code, boolean active) {
 		for (CalendarResource calendarResource :
-				findByC_LikeC_A(
+				_findByC_LikeC_A(
 					companyId, code, active, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(calendarResource);
 		}
@@ -6960,6 +7093,14 @@ public class CalendarResourcePersistenceImpl
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarResource> _findAll(
+		int start, int end,
+		OrderByComparator<CalendarResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarResource.class);
 
@@ -7017,10 +7158,12 @@ public class CalendarResourcePersistenceImpl
 				list = (List<CalendarResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7040,7 +7183,10 @@ public class CalendarResourcePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CalendarResource calendarResource : findAll()) {
+		for (CalendarResource calendarResource :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(calendarResource);
 		}
 	}

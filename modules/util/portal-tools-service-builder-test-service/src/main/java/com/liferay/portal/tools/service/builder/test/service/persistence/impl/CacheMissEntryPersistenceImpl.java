@@ -584,6 +584,13 @@ public class CacheMissEntryPersistenceImpl
 		int start, int end, OrderByComparator<CacheMissEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CacheMissEntry> _findAll(
+		int start, int end, OrderByComparator<CacheMissEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CacheMissEntry.class);
 
@@ -641,10 +648,13 @@ public class CacheMissEntryPersistenceImpl
 				list = (List<CacheMissEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					dummyFinderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						dummyFinderCache.putResult(
+							finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -664,7 +674,10 @@ public class CacheMissEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CacheMissEntry cacheMissEntry : findAll()) {
+		for (CacheMissEntry cacheMissEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cacheMissEntry);
 		}
 	}

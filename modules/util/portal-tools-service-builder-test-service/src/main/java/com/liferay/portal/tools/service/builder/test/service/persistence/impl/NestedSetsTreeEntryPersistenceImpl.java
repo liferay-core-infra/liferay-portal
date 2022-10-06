@@ -507,6 +507,14 @@ public class NestedSetsTreeEntryPersistenceImpl
 		OrderByComparator<NestedSetsTreeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NestedSetsTreeEntry> _findAll(
+		int start, int end,
+		OrderByComparator<NestedSetsTreeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -561,10 +569,12 @@ public class NestedSetsTreeEntryPersistenceImpl
 				list = (List<NestedSetsTreeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -584,7 +594,10 @@ public class NestedSetsTreeEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (NestedSetsTreeEntry nestedSetsTreeEntry : findAll()) {
+		for (NestedSetsTreeEntry nestedSetsTreeEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(nestedSetsTreeEntry);
 		}
 	}

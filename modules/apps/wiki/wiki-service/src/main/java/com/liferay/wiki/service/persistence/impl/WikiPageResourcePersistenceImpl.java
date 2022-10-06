@@ -169,6 +169,15 @@ public class WikiPageResourcePersistenceImpl
 		OrderByComparator<WikiPageResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPageResource> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<WikiPageResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -254,10 +263,12 @@ public class WikiPageResourcePersistenceImpl
 				list = (List<WikiPageResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,7 +566,9 @@ public class WikiPageResourcePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (WikiPageResource wikiPageResource :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiPageResource);
 		}
@@ -644,7 +657,15 @@ public class WikiPageResourcePersistenceImpl
 	public WikiPageResource findByUUID_G(String uuid, long groupId)
 		throws NoSuchPageResourceException {
 
-		WikiPageResource wikiPageResource = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private WikiPageResource _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchPageResourceException {
+
+		WikiPageResource wikiPageResource = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (wikiPageResource == null) {
 			StringBundler sb = new StringBundler(6);
@@ -692,6 +713,13 @@ public class WikiPageResourcePersistenceImpl
 	@Override
 	public WikiPageResource fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private WikiPageResource _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -764,9 +792,11 @@ public class WikiPageResourcePersistenceImpl
 				else {
 					WikiPageResource wikiPageResource = list.get(0);
 
-					result = wikiPageResource;
+					if (!readOnlyCache) {
+						result = wikiPageResource;
 
-					cacheResult(wikiPageResource);
+						cacheResult(wikiPageResource);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -796,7 +826,7 @@ public class WikiPageResourcePersistenceImpl
 	public WikiPageResource removeByUUID_G(String uuid, long groupId)
 		throws NoSuchPageResourceException {
 
-		WikiPageResource wikiPageResource = findByUUID_G(uuid, groupId);
+		WikiPageResource wikiPageResource = _findByUUID_G(uuid, groupId, true);
 
 		return remove(wikiPageResource);
 	}
@@ -958,6 +988,16 @@ public class WikiPageResourcePersistenceImpl
 		OrderByComparator<WikiPageResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPageResource> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<WikiPageResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1051,10 +1091,12 @@ public class WikiPageResourcePersistenceImpl
 				list = (List<WikiPageResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1375,9 +1417,9 @@ public class WikiPageResourcePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (WikiPageResource wikiPageResource :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiPageResource);
 		}
@@ -1474,7 +1516,15 @@ public class WikiPageResourcePersistenceImpl
 	public WikiPageResource findByN_T(long nodeId, String title)
 		throws NoSuchPageResourceException {
 
-		WikiPageResource wikiPageResource = fetchByN_T(nodeId, title);
+		return _findByN_T(nodeId, title, false);
+	}
+
+	private WikiPageResource _findByN_T(
+			long nodeId, String title, boolean readOnlyCache)
+		throws NoSuchPageResourceException {
+
+		WikiPageResource wikiPageResource = _fetchByN_T(
+			nodeId, title, true, readOnlyCache);
 
 		if (wikiPageResource == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1522,6 +1572,13 @@ public class WikiPageResourcePersistenceImpl
 	@Override
 	public WikiPageResource fetchByN_T(
 		long nodeId, String title, boolean useFinderCache) {
+
+		return _fetchByN_T(nodeId, title, useFinderCache, false);
+	}
+
+	private WikiPageResource _fetchByN_T(
+		long nodeId, String title, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		title = Objects.toString(title, "");
 
@@ -1593,9 +1650,11 @@ public class WikiPageResourcePersistenceImpl
 				else {
 					WikiPageResource wikiPageResource = list.get(0);
 
-					result = wikiPageResource;
+					if (!readOnlyCache) {
+						result = wikiPageResource;
 
-					cacheResult(wikiPageResource);
+						cacheResult(wikiPageResource);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1625,7 +1684,7 @@ public class WikiPageResourcePersistenceImpl
 	public WikiPageResource removeByN_T(long nodeId, String title)
 		throws NoSuchPageResourceException {
 
-		WikiPageResource wikiPageResource = findByN_T(nodeId, title);
+		WikiPageResource wikiPageResource = _findByN_T(nodeId, title, true);
 
 		return remove(wikiPageResource);
 	}
@@ -2126,6 +2185,14 @@ public class WikiPageResourcePersistenceImpl
 		OrderByComparator<WikiPageResource> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPageResource> _findAll(
+		int start, int end,
+		OrderByComparator<WikiPageResource> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2180,10 +2247,12 @@ public class WikiPageResourcePersistenceImpl
 				list = (List<WikiPageResource>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2203,7 +2272,10 @@ public class WikiPageResourcePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WikiPageResource wikiPageResource : findAll()) {
+		for (WikiPageResource wikiPageResource :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(wikiPageResource);
 		}
 	}

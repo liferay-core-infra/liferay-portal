@@ -164,6 +164,15 @@ public class LayoutPrototypePersistenceImpl
 		OrderByComparator<LayoutPrototype> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutPrototype> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LayoutPrototype> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -249,10 +258,12 @@ public class LayoutPrototypePersistenceImpl
 				list = (List<LayoutPrototype>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -908,7 +919,9 @@ public class LayoutPrototypePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LayoutPrototype layoutPrototype :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutPrototype);
 		}
@@ -1130,6 +1143,16 @@ public class LayoutPrototypePersistenceImpl
 		OrderByComparator<LayoutPrototype> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutPrototype> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<LayoutPrototype> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1223,10 +1246,12 @@ public class LayoutPrototypePersistenceImpl
 				list = (List<LayoutPrototype>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1921,9 +1946,9 @@ public class LayoutPrototypePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (LayoutPrototype layoutPrototype :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutPrototype);
 		}
@@ -2153,6 +2178,15 @@ public class LayoutPrototypePersistenceImpl
 		OrderByComparator<LayoutPrototype> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutPrototype> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<LayoutPrototype> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2227,10 +2261,12 @@ public class LayoutPrototypePersistenceImpl
 				list = (List<LayoutPrototype>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2850,8 +2886,9 @@ public class LayoutPrototypePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (LayoutPrototype layoutPrototype :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutPrototype);
 		}
@@ -3038,6 +3075,16 @@ public class LayoutPrototypePersistenceImpl
 		OrderByComparator<LayoutPrototype> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutPrototype> _findByC_A(
+		long companyId, boolean active, int start, int end,
+		OrderByComparator<LayoutPrototype> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3118,10 +3165,12 @@ public class LayoutPrototypePersistenceImpl
 				list = (List<LayoutPrototype>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3777,9 +3826,9 @@ public class LayoutPrototypePersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, boolean active) {
 		for (LayoutPrototype layoutPrototype :
-				findByC_A(
+				_findByC_A(
 					companyId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(layoutPrototype);
 		}
@@ -4311,6 +4360,14 @@ public class LayoutPrototypePersistenceImpl
 		OrderByComparator<LayoutPrototype> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutPrototype> _findAll(
+		int start, int end,
+		OrderByComparator<LayoutPrototype> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4365,10 +4422,12 @@ public class LayoutPrototypePersistenceImpl
 				list = (List<LayoutPrototype>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4388,7 +4447,10 @@ public class LayoutPrototypePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutPrototype layoutPrototype : findAll()) {
+		for (LayoutPrototype layoutPrototype :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutPrototype);
 		}
 	}

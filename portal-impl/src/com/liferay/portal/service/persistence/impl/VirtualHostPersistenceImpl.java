@@ -166,6 +166,15 @@ public class VirtualHostPersistenceImpl
 		OrderByComparator<VirtualHost> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<VirtualHost> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<VirtualHost> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			VirtualHost.class);
 
@@ -243,10 +252,12 @@ public class VirtualHostPersistenceImpl
 				list = (List<VirtualHost>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -530,8 +541,9 @@ public class VirtualHostPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (VirtualHost virtualHost :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(virtualHost);
 		}
@@ -615,7 +627,14 @@ public class VirtualHostPersistenceImpl
 	public VirtualHost findByHostname(String hostname)
 		throws NoSuchVirtualHostException {
 
-		VirtualHost virtualHost = fetchByHostname(hostname);
+		return _findByHostname(hostname, false);
+	}
+
+	private VirtualHost _findByHostname(String hostname, boolean readOnlyCache)
+		throws NoSuchVirtualHostException {
+
+		VirtualHost virtualHost = _fetchByHostname(
+			hostname, true, readOnlyCache);
 
 		if (virtualHost == null) {
 			StringBundler sb = new StringBundler(4);
@@ -658,6 +677,12 @@ public class VirtualHostPersistenceImpl
 	@Override
 	public VirtualHost fetchByHostname(
 		String hostname, boolean useFinderCache) {
+
+		return _fetchByHostname(hostname, useFinderCache, false);
+	}
+
+	private VirtualHost _fetchByHostname(
+		String hostname, boolean useFinderCache, boolean readOnlyCache) {
 
 		hostname = Objects.toString(hostname, "");
 
@@ -727,9 +752,11 @@ public class VirtualHostPersistenceImpl
 				else {
 					VirtualHost virtualHost = list.get(0);
 
-					result = virtualHost;
+					if (!readOnlyCache) {
+						result = virtualHost;
 
-					cacheResult(virtualHost);
+						cacheResult(virtualHost);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -758,7 +785,7 @@ public class VirtualHostPersistenceImpl
 	public VirtualHost removeByHostname(String hostname)
 		throws NoSuchVirtualHostException {
 
-		VirtualHost virtualHost = findByHostname(hostname);
+		VirtualHost virtualHost = _findByHostname(hostname, true);
 
 		return remove(virtualHost);
 	}
@@ -924,6 +951,16 @@ public class VirtualHostPersistenceImpl
 		OrderByComparator<VirtualHost> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_L(
+			companyId, layoutSetId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<VirtualHost> _findByC_L(
+		long companyId, long layoutSetId, int start, int end,
+		OrderByComparator<VirtualHost> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			VirtualHost.class);
 
@@ -1007,10 +1044,12 @@ public class VirtualHostPersistenceImpl
 				list = (List<VirtualHost>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1317,9 +1356,9 @@ public class VirtualHostPersistenceImpl
 	@Override
 	public void removeByC_L(long companyId, long layoutSetId) {
 		for (VirtualHost virtualHost :
-				findByC_L(
+				_findByC_L(
 					companyId, layoutSetId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(virtualHost);
 		}
@@ -1477,6 +1516,16 @@ public class VirtualHostPersistenceImpl
 		OrderByComparator<VirtualHost> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotL_H(
+			layoutSetId, hostname, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<VirtualHost> _findByNotL_H(
+		long layoutSetId, String hostname, int start, int end,
+		OrderByComparator<VirtualHost> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		hostname = Objects.toString(hostname, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1563,10 +1612,12 @@ public class VirtualHostPersistenceImpl
 				list = (List<VirtualHost>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1960,6 +2011,16 @@ public class VirtualHostPersistenceImpl
 		OrderByComparator<VirtualHost> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByNotL_H(
+			layoutSetId, hostnames, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<VirtualHost> _findByNotL_H(
+		long layoutSetId, String[] hostnames, int start, int end,
+		OrderByComparator<VirtualHost> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (hostnames == null) {
 			hostnames = new String[0];
 		}
@@ -2078,12 +2139,14 @@ public class VirtualHostPersistenceImpl
 				list = (List<VirtualHost>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByNotL_H, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByNotL_H, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2106,9 +2169,9 @@ public class VirtualHostPersistenceImpl
 	@Override
 	public void removeByNotL_H(long layoutSetId, String hostname) {
 		for (VirtualHost virtualHost :
-				findByNotL_H(
+				_findByNotL_H(
 					layoutSetId, hostname, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(virtualHost);
 		}
@@ -2324,8 +2387,16 @@ public class VirtualHostPersistenceImpl
 			long companyId, long layoutSetId, boolean defaultVirtualHost)
 		throws NoSuchVirtualHostException {
 
-		VirtualHost virtualHost = fetchByC_L_D(
-			companyId, layoutSetId, defaultVirtualHost);
+		return _findByC_L_D(companyId, layoutSetId, defaultVirtualHost, false);
+	}
+
+	private VirtualHost _findByC_L_D(
+			long companyId, long layoutSetId, boolean defaultVirtualHost,
+			boolean readOnlyCache)
+		throws NoSuchVirtualHostException {
+
+		VirtualHost virtualHost = _fetchByC_L_D(
+			companyId, layoutSetId, defaultVirtualHost, true, readOnlyCache);
 
 		if (virtualHost == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2381,6 +2452,14 @@ public class VirtualHostPersistenceImpl
 	public VirtualHost fetchByC_L_D(
 		long companyId, long layoutSetId, boolean defaultVirtualHost,
 		boolean useFinderCache) {
+
+		return _fetchByC_L_D(
+			companyId, layoutSetId, defaultVirtualHost, useFinderCache, false);
+	}
+
+	private VirtualHost _fetchByC_L_D(
+		long companyId, long layoutSetId, boolean defaultVirtualHost,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			VirtualHost.class);
@@ -2467,9 +2546,11 @@ public class VirtualHostPersistenceImpl
 
 					VirtualHost virtualHost = list.get(0);
 
-					result = virtualHost;
+					if (!readOnlyCache) {
+						result = virtualHost;
 
-					cacheResult(virtualHost);
+						cacheResult(virtualHost);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2501,8 +2582,8 @@ public class VirtualHostPersistenceImpl
 			long companyId, long layoutSetId, boolean defaultVirtualHost)
 		throws NoSuchVirtualHostException {
 
-		VirtualHost virtualHost = findByC_L_D(
-			companyId, layoutSetId, defaultVirtualHost);
+		VirtualHost virtualHost = _findByC_L_D(
+			companyId, layoutSetId, defaultVirtualHost, true);
 
 		return remove(virtualHost);
 	}
@@ -3137,6 +3218,13 @@ public class VirtualHostPersistenceImpl
 		int start, int end, OrderByComparator<VirtualHost> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<VirtualHost> _findAll(
+		int start, int end, OrderByComparator<VirtualHost> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			VirtualHost.class);
 
@@ -3194,10 +3282,12 @@ public class VirtualHostPersistenceImpl
 				list = (List<VirtualHost>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3217,7 +3307,10 @@ public class VirtualHostPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (VirtualHost virtualHost : findAll()) {
+		for (VirtualHost virtualHost :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(virtualHost);
 		}
 	}

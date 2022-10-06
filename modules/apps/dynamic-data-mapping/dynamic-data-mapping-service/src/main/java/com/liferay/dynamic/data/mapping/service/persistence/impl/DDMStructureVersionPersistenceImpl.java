@@ -183,6 +183,15 @@ public class DDMStructureVersionPersistenceImpl
 		OrderByComparator<DDMStructureVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureId(
+			structureId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureVersion> _findByStructureId(
+		long structureId, int start, int end,
+		OrderByComparator<DDMStructureVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureVersion.class);
 
@@ -260,10 +269,12 @@ public class DDMStructureVersionPersistenceImpl
 				list = (List<DDMStructureVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,8 +568,9 @@ public class DDMStructureVersionPersistenceImpl
 	@Override
 	public void removeByStructureId(long structureId) {
 		for (DDMStructureVersion ddmStructureVersion :
-				findByStructureId(
-					structureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStructureId(
+					structureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStructureVersion);
 		}
@@ -643,8 +655,15 @@ public class DDMStructureVersionPersistenceImpl
 	public DDMStructureVersion findByS_V(long structureId, String version)
 		throws NoSuchStructureVersionException {
 
-		DDMStructureVersion ddmStructureVersion = fetchByS_V(
-			structureId, version);
+		return _findByS_V(structureId, version, false);
+	}
+
+	private DDMStructureVersion _findByS_V(
+			long structureId, String version, boolean readOnlyCache)
+		throws NoSuchStructureVersionException {
+
+		DDMStructureVersion ddmStructureVersion = _fetchByS_V(
+			structureId, version, true, readOnlyCache);
 
 		if (ddmStructureVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -692,6 +711,13 @@ public class DDMStructureVersionPersistenceImpl
 	@Override
 	public DDMStructureVersion fetchByS_V(
 		long structureId, String version, boolean useFinderCache) {
+
+		return _fetchByS_V(structureId, version, useFinderCache, false);
+	}
+
+	private DDMStructureVersion _fetchByS_V(
+		long structureId, String version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		version = Objects.toString(version, "");
 
@@ -767,9 +793,11 @@ public class DDMStructureVersionPersistenceImpl
 				else {
 					DDMStructureVersion ddmStructureVersion = list.get(0);
 
-					result = ddmStructureVersion;
+					if (!readOnlyCache) {
+						result = ddmStructureVersion;
 
-					cacheResult(ddmStructureVersion);
+						cacheResult(ddmStructureVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -799,8 +827,8 @@ public class DDMStructureVersionPersistenceImpl
 	public DDMStructureVersion removeByS_V(long structureId, String version)
 		throws NoSuchStructureVersionException {
 
-		DDMStructureVersion ddmStructureVersion = findByS_V(
-			structureId, version);
+		DDMStructureVersion ddmStructureVersion = _findByS_V(
+			structureId, version, true);
 
 		return remove(ddmStructureVersion);
 	}
@@ -974,6 +1002,16 @@ public class DDMStructureVersionPersistenceImpl
 		OrderByComparator<DDMStructureVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_S(
+			structureId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructureVersion> _findByS_S(
+		long structureId, int status, int start, int end,
+		OrderByComparator<DDMStructureVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureVersion.class);
 
@@ -1057,10 +1095,12 @@ public class DDMStructureVersionPersistenceImpl
 				list = (List<DDMStructureVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1370,9 +1410,9 @@ public class DDMStructureVersionPersistenceImpl
 	@Override
 	public void removeByS_S(long structureId, int status) {
 		for (DDMStructureVersion ddmStructureVersion :
-				findByS_S(
+				_findByS_S(
 					structureId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStructureVersion);
 		}
@@ -2039,6 +2079,14 @@ public class DDMStructureVersionPersistenceImpl
 		OrderByComparator<DDMStructureVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructureVersion> _findAll(
+		int start, int end,
+		OrderByComparator<DDMStructureVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructureVersion.class);
 
@@ -2096,10 +2144,12 @@ public class DDMStructureVersionPersistenceImpl
 				list = (List<DDMStructureVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2119,7 +2169,10 @@ public class DDMStructureVersionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMStructureVersion ddmStructureVersion : findAll()) {
+		for (DDMStructureVersion ddmStructureVersion :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmStructureVersion);
 		}
 	}

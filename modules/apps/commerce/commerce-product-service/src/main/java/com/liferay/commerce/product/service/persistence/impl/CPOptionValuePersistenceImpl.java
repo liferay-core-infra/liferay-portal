@@ -168,6 +168,15 @@ public class CPOptionValuePersistenceImpl
 		OrderByComparator<CPOptionValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPOptionValue> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPOptionValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -256,10 +265,12 @@ public class CPOptionValuePersistenceImpl
 				list = (List<CPOptionValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,7 +566,9 @@ public class CPOptionValuePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPOptionValue cpOptionValue :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpOptionValue);
 		}
@@ -722,6 +735,16 @@ public class CPOptionValuePersistenceImpl
 		OrderByComparator<CPOptionValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPOptionValue> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPOptionValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -818,10 +841,12 @@ public class CPOptionValuePersistenceImpl
 				list = (List<CPOptionValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1142,9 +1167,9 @@ public class CPOptionValuePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPOptionValue cpOptionValue :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpOptionValue);
 		}
@@ -1314,6 +1339,15 @@ public class CPOptionValuePersistenceImpl
 		OrderByComparator<CPOptionValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPOptionValue> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CPOptionValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPOptionValue.class);
 
@@ -1391,10 +1425,12 @@ public class CPOptionValuePersistenceImpl
 				list = (List<CPOptionValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1679,8 +1715,9 @@ public class CPOptionValuePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CPOptionValue cpOptionValue :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpOptionValue);
 		}
@@ -1827,6 +1864,15 @@ public class CPOptionValuePersistenceImpl
 		OrderByComparator<CPOptionValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPOptionId(
+			CPOptionId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPOptionValue> _findByCPOptionId(
+		long CPOptionId, int start, int end,
+		OrderByComparator<CPOptionValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPOptionValue.class);
 
@@ -1904,10 +1950,12 @@ public class CPOptionValuePersistenceImpl
 				list = (List<CPOptionValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2192,8 +2240,9 @@ public class CPOptionValuePersistenceImpl
 	@Override
 	public void removeByCPOptionId(long CPOptionId) {
 		for (CPOptionValue cpOptionValue :
-				findByCPOptionId(
-					CPOptionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCPOptionId(
+					CPOptionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpOptionValue);
 		}
@@ -2278,7 +2327,15 @@ public class CPOptionValuePersistenceImpl
 	public CPOptionValue findByC_K(long CPOptionId, String key)
 		throws NoSuchCPOptionValueException {
 
-		CPOptionValue cpOptionValue = fetchByC_K(CPOptionId, key);
+		return _findByC_K(CPOptionId, key, false);
+	}
+
+	private CPOptionValue _findByC_K(
+			long CPOptionId, String key, boolean readOnlyCache)
+		throws NoSuchCPOptionValueException {
+
+		CPOptionValue cpOptionValue = _fetchByC_K(
+			CPOptionId, key, true, readOnlyCache);
 
 		if (cpOptionValue == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2326,6 +2383,13 @@ public class CPOptionValuePersistenceImpl
 	@Override
 	public CPOptionValue fetchByC_K(
 		long CPOptionId, String key, boolean useFinderCache) {
+
+		return _fetchByC_K(CPOptionId, key, useFinderCache, false);
+	}
+
+	private CPOptionValue _fetchByC_K(
+		long CPOptionId, String key, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 
@@ -2400,9 +2464,11 @@ public class CPOptionValuePersistenceImpl
 				else {
 					CPOptionValue cpOptionValue = list.get(0);
 
-					result = cpOptionValue;
+					if (!readOnlyCache) {
+						result = cpOptionValue;
 
-					cacheResult(cpOptionValue);
+						cacheResult(cpOptionValue);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2432,7 +2498,7 @@ public class CPOptionValuePersistenceImpl
 	public CPOptionValue removeByC_K(long CPOptionId, String key)
 		throws NoSuchCPOptionValueException {
 
-		CPOptionValue cpOptionValue = findByC_K(CPOptionId, key);
+		CPOptionValue cpOptionValue = _findByC_K(CPOptionId, key, true);
 
 		return remove(cpOptionValue);
 	}
@@ -2541,8 +2607,15 @@ public class CPOptionValuePersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPOptionValueException {
 
-		CPOptionValue cpOptionValue = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CPOptionValue _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchCPOptionValueException {
+
+		CPOptionValue cpOptionValue = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (cpOptionValue == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2592,6 +2665,14 @@ public class CPOptionValuePersistenceImpl
 	@Override
 	public CPOptionValue fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CPOptionValue _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -2668,9 +2749,11 @@ public class CPOptionValuePersistenceImpl
 				else {
 					CPOptionValue cpOptionValue = list.get(0);
 
-					result = cpOptionValue;
+					if (!readOnlyCache) {
+						result = cpOptionValue;
 
-					cacheResult(cpOptionValue);
+						cacheResult(cpOptionValue);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2701,8 +2784,8 @@ public class CPOptionValuePersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPOptionValueException {
 
-		CPOptionValue cpOptionValue = findByC_ERC(
-			companyId, externalReferenceCode);
+		CPOptionValue cpOptionValue = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(cpOptionValue);
 	}
@@ -3397,6 +3480,13 @@ public class CPOptionValuePersistenceImpl
 		int start, int end, OrderByComparator<CPOptionValue> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPOptionValue> _findAll(
+		int start, int end, OrderByComparator<CPOptionValue> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPOptionValue.class);
 
@@ -3454,10 +3544,12 @@ public class CPOptionValuePersistenceImpl
 				list = (List<CPOptionValue>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3477,7 +3569,10 @@ public class CPOptionValuePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPOptionValue cpOptionValue : findAll()) {
+		for (CPOptionValue cpOptionValue :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpOptionValue);
 		}
 	}

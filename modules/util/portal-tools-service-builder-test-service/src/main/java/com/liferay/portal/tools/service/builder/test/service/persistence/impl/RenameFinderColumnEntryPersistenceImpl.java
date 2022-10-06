@@ -96,8 +96,15 @@ public class RenameFinderColumnEntryPersistenceImpl
 	public RenameFinderColumnEntry findByColumnToRename(String columnToRename)
 		throws NoSuchRenameFinderColumnEntryException {
 
-		RenameFinderColumnEntry renameFinderColumnEntry = fetchByColumnToRename(
-			columnToRename);
+		return _findByColumnToRename(columnToRename, false);
+	}
+
+	private RenameFinderColumnEntry _findByColumnToRename(
+			String columnToRename, boolean readOnlyCache)
+		throws NoSuchRenameFinderColumnEntryException {
+
+		RenameFinderColumnEntry renameFinderColumnEntry =
+			_fetchByColumnToRename(columnToRename, true, readOnlyCache);
 
 		if (renameFinderColumnEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -142,6 +149,12 @@ public class RenameFinderColumnEntryPersistenceImpl
 	@Override
 	public RenameFinderColumnEntry fetchByColumnToRename(
 		String columnToRename, boolean useFinderCache) {
+
+		return _fetchByColumnToRename(columnToRename, useFinderCache, false);
+	}
+
+	private RenameFinderColumnEntry _fetchByColumnToRename(
+		String columnToRename, boolean useFinderCache, boolean readOnlyCache) {
 
 		columnToRename = Objects.toString(columnToRename, "");
 
@@ -228,9 +241,11 @@ public class RenameFinderColumnEntryPersistenceImpl
 					RenameFinderColumnEntry renameFinderColumnEntry = list.get(
 						0);
 
-					result = renameFinderColumnEntry;
+					if (!readOnlyCache) {
+						result = renameFinderColumnEntry;
 
-					cacheResult(renameFinderColumnEntry);
+						cacheResult(renameFinderColumnEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -259,8 +274,8 @@ public class RenameFinderColumnEntryPersistenceImpl
 	public RenameFinderColumnEntry removeByColumnToRename(String columnToRename)
 		throws NoSuchRenameFinderColumnEntryException {
 
-		RenameFinderColumnEntry renameFinderColumnEntry = findByColumnToRename(
-			columnToRename);
+		RenameFinderColumnEntry renameFinderColumnEntry = _findByColumnToRename(
+			columnToRename, true);
 
 		return remove(renameFinderColumnEntry);
 	}
@@ -742,6 +757,14 @@ public class RenameFinderColumnEntryPersistenceImpl
 		OrderByComparator<RenameFinderColumnEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RenameFinderColumnEntry> _findAll(
+		int start, int end,
+		OrderByComparator<RenameFinderColumnEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -797,10 +820,12 @@ public class RenameFinderColumnEntryPersistenceImpl
 				list = (List<RenameFinderColumnEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -820,7 +845,10 @@ public class RenameFinderColumnEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RenameFinderColumnEntry renameFinderColumnEntry : findAll()) {
+		for (RenameFinderColumnEntry renameFinderColumnEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(renameFinderColumnEntry);
 		}
 	}

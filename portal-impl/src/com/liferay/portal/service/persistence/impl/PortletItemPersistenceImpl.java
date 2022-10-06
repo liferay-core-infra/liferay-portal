@@ -167,6 +167,16 @@ public class PortletItemPersistenceImpl
 		OrderByComparator<PortletItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PortletItem> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<PortletItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -247,10 +257,12 @@ public class PortletItemPersistenceImpl
 				list = (List<PortletItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,9 +569,9 @@ public class PortletItemPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (PortletItem portletItem :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(portletItem);
 		}
@@ -714,6 +726,16 @@ public class PortletItemPersistenceImpl
 		OrderByComparator<PortletItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_C(
+			groupId, portletId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<PortletItem> _findByG_P_C(
+		long groupId, String portletId, long classNameId, int start, int end,
+		OrderByComparator<PortletItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		portletId = Objects.toString(portletId, "");
 
 		FinderPath finderPath = null;
@@ -812,10 +834,12 @@ public class PortletItemPersistenceImpl
 				list = (List<PortletItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1154,9 +1178,9 @@ public class PortletItemPersistenceImpl
 		long groupId, String portletId, long classNameId) {
 
 		for (PortletItem portletItem :
-				findByG_P_C(
+				_findByG_P_C(
 					groupId, portletId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(portletItem);
 		}
@@ -1264,8 +1288,16 @@ public class PortletItemPersistenceImpl
 			long groupId, String name, String portletId, long classNameId)
 		throws NoSuchPortletItemException {
 
-		PortletItem portletItem = fetchByG_N_P_C(
-			groupId, name, portletId, classNameId);
+		return _findByG_N_P_C(groupId, name, portletId, classNameId, false);
+	}
+
+	private PortletItem _findByG_N_P_C(
+			long groupId, String name, String portletId, long classNameId,
+			boolean readOnlyCache)
+		throws NoSuchPortletItemException {
+
+		PortletItem portletItem = _fetchByG_N_P_C(
+			groupId, name, portletId, classNameId, true, readOnlyCache);
 
 		if (portletItem == null) {
 			StringBundler sb = new StringBundler(10);
@@ -1326,6 +1358,14 @@ public class PortletItemPersistenceImpl
 	public PortletItem fetchByG_N_P_C(
 		long groupId, String name, String portletId, long classNameId,
 		boolean useFinderCache) {
+
+		return _fetchByG_N_P_C(
+			groupId, name, portletId, classNameId, useFinderCache, false);
+	}
+
+	private PortletItem _fetchByG_N_P_C(
+		long groupId, String name, String portletId, long classNameId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 		portletId = Objects.toString(portletId, "");
@@ -1437,9 +1477,11 @@ public class PortletItemPersistenceImpl
 
 					PortletItem portletItem = list.get(0);
 
-					result = portletItem;
+					if (!readOnlyCache) {
+						result = portletItem;
 
-					cacheResult(portletItem);
+						cacheResult(portletItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1472,8 +1514,8 @@ public class PortletItemPersistenceImpl
 			long groupId, String name, String portletId, long classNameId)
 		throws NoSuchPortletItemException {
 
-		PortletItem portletItem = findByG_N_P_C(
-			groupId, name, portletId, classNameId);
+		PortletItem portletItem = _findByG_N_P_C(
+			groupId, name, portletId, classNameId, true);
 
 		return remove(portletItem);
 	}
@@ -1996,6 +2038,13 @@ public class PortletItemPersistenceImpl
 		int start, int end, OrderByComparator<PortletItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortletItem> _findAll(
+		int start, int end, OrderByComparator<PortletItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2050,10 +2099,12 @@ public class PortletItemPersistenceImpl
 				list = (List<PortletItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2073,7 +2124,10 @@ public class PortletItemPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PortletItem portletItem : findAll()) {
+		for (PortletItem portletItem :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(portletItem);
 		}
 	}

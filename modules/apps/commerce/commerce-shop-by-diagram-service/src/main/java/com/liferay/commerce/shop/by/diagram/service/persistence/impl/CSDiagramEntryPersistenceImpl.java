@@ -180,6 +180,16 @@ public class CSDiagramEntryPersistenceImpl
 		OrderByComparator<CSDiagramEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDefinitionId(
+			CPDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CSDiagramEntry> _findByCPDefinitionId(
+		long CPDefinitionId, int start, int end,
+		OrderByComparator<CSDiagramEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramEntry.class);
 
@@ -257,10 +267,12 @@ public class CSDiagramEntryPersistenceImpl
 				list = (List<CSDiagramEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -551,9 +563,9 @@ public class CSDiagramEntryPersistenceImpl
 	@Override
 	public void removeByCPDefinitionId(long CPDefinitionId) {
 		for (CSDiagramEntry csDiagramEntry :
-				findByCPDefinitionId(
-					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPDefinitionId(
+					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(csDiagramEntry);
 		}
@@ -700,6 +712,15 @@ public class CSDiagramEntryPersistenceImpl
 		OrderByComparator<CSDiagramEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPInstanceId(
+			CPInstanceId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CSDiagramEntry> _findByCPInstanceId(
+		long CPInstanceId, int start, int end,
+		OrderByComparator<CSDiagramEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramEntry.class);
 
@@ -777,10 +798,12 @@ public class CSDiagramEntryPersistenceImpl
 				list = (List<CSDiagramEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1070,8 +1093,9 @@ public class CSDiagramEntryPersistenceImpl
 	@Override
 	public void removeByCPInstanceId(long CPInstanceId) {
 		for (CSDiagramEntry csDiagramEntry :
-				findByCPInstanceId(
-					CPInstanceId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCPInstanceId(
+					CPInstanceId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(csDiagramEntry);
 		}
@@ -1156,7 +1180,15 @@ public class CSDiagramEntryPersistenceImpl
 	public CSDiagramEntry findByCPDI_S(long CPDefinitionId, String sequence)
 		throws NoSuchCSDiagramEntryException {
 
-		CSDiagramEntry csDiagramEntry = fetchByCPDI_S(CPDefinitionId, sequence);
+		return _findByCPDI_S(CPDefinitionId, sequence, false);
+	}
+
+	private CSDiagramEntry _findByCPDI_S(
+			long CPDefinitionId, String sequence, boolean readOnlyCache)
+		throws NoSuchCSDiagramEntryException {
+
+		CSDiagramEntry csDiagramEntry = _fetchByCPDI_S(
+			CPDefinitionId, sequence, true, readOnlyCache);
 
 		if (csDiagramEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1204,6 +1236,13 @@ public class CSDiagramEntryPersistenceImpl
 	@Override
 	public CSDiagramEntry fetchByCPDI_S(
 		long CPDefinitionId, String sequence, boolean useFinderCache) {
+
+		return _fetchByCPDI_S(CPDefinitionId, sequence, useFinderCache, false);
+	}
+
+	private CSDiagramEntry _fetchByCPDI_S(
+		long CPDefinitionId, String sequence, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		sequence = Objects.toString(sequence, "");
 
@@ -1279,9 +1318,11 @@ public class CSDiagramEntryPersistenceImpl
 				else {
 					CSDiagramEntry csDiagramEntry = list.get(0);
 
-					result = csDiagramEntry;
+					if (!readOnlyCache) {
+						result = csDiagramEntry;
 
-					cacheResult(csDiagramEntry);
+						cacheResult(csDiagramEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1311,7 +1352,8 @@ public class CSDiagramEntryPersistenceImpl
 	public CSDiagramEntry removeByCPDI_S(long CPDefinitionId, String sequence)
 		throws NoSuchCSDiagramEntryException {
 
-		CSDiagramEntry csDiagramEntry = findByCPDI_S(CPDefinitionId, sequence);
+		CSDiagramEntry csDiagramEntry = _findByCPDI_S(
+			CPDefinitionId, sequence, true);
 
 		return remove(csDiagramEntry);
 	}
@@ -1971,6 +2013,13 @@ public class CSDiagramEntryPersistenceImpl
 		int start, int end, OrderByComparator<CSDiagramEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CSDiagramEntry> _findAll(
+		int start, int end, OrderByComparator<CSDiagramEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramEntry.class);
 
@@ -2028,10 +2077,12 @@ public class CSDiagramEntryPersistenceImpl
 				list = (List<CSDiagramEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2051,7 +2102,10 @@ public class CSDiagramEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CSDiagramEntry csDiagramEntry : findAll()) {
+		for (CSDiagramEntry csDiagramEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(csDiagramEntry);
 		}
 	}

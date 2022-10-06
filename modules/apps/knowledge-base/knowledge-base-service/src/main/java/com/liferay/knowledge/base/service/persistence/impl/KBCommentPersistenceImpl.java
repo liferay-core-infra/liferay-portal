@@ -173,6 +173,15 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBComment> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -258,10 +267,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,7 +566,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (KBComment kbComment :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbComment);
 		}
@@ -644,7 +657,15 @@ public class KBCommentPersistenceImpl
 	public KBComment findByUUID_G(String uuid, long groupId)
 		throws NoSuchCommentException {
 
-		KBComment kbComment = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private KBComment _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCommentException {
+
+		KBComment kbComment = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (kbComment == null) {
 			StringBundler sb = new StringBundler(6);
@@ -692,6 +713,13 @@ public class KBCommentPersistenceImpl
 	@Override
 	public KBComment fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private KBComment _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -764,9 +792,11 @@ public class KBCommentPersistenceImpl
 				else {
 					KBComment kbComment = list.get(0);
 
-					result = kbComment;
+					if (!readOnlyCache) {
+						result = kbComment;
 
-					cacheResult(kbComment);
+						cacheResult(kbComment);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -796,7 +826,7 @@ public class KBCommentPersistenceImpl
 	public KBComment removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCommentException {
 
-		KBComment kbComment = findByUUID_G(uuid, groupId);
+		KBComment kbComment = _findByUUID_G(uuid, groupId, true);
 
 		return remove(kbComment);
 	}
@@ -958,6 +988,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBComment> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1051,10 +1091,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1371,9 +1413,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (KBComment kbComment :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbComment);
 		}
@@ -1529,6 +1571,15 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBComment> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1601,10 +1652,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1885,8 +1938,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (KBComment kbComment :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kbComment);
 		}
@@ -2025,6 +2079,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBComment> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2105,10 +2169,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2414,9 +2480,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (KBComment kbComment :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(kbComment);
 		}
@@ -2562,6 +2628,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBComment> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2642,10 +2718,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2949,9 +3027,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (KBComment kbComment :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kbComment);
 		}
@@ -3098,6 +3176,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KBComment> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3178,10 +3266,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3487,9 +3577,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (KBComment kbComment :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(kbComment);
 		}
@@ -3643,6 +3733,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_C(
+			userId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBComment> _findByU_C_C(
+		long userId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3728,10 +3828,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4054,9 +4156,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByU_C_C(long userId, long classNameId, long classPK) {
 		for (KBComment kbComment :
-				findByU_C_C(
+				_findByU_C_C(
 					userId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbComment);
 		}
@@ -4219,6 +4321,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_S(
+			classNameId, classPK, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBComment> _findByC_C_S(
+		long classNameId, long classPK, int status, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4304,10 +4416,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4709,6 +4823,16 @@ public class KBCommentPersistenceImpl
 		OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_S(
+			classNameId, classPK, statuses, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KBComment> _findByC_C_S(
+		long classNameId, long classPK, int[] statuses, int start, int end,
+		OrderByComparator<KBComment> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (statuses == null) {
 			statuses = new int[0];
 		}
@@ -4810,11 +4934,14 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_C_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_C_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4838,9 +4965,9 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void removeByC_C_S(long classNameId, long classPK, int status) {
 		for (KBComment kbComment :
-				findByC_C_S(
+				_findByC_C_S(
 					classNameId, classPK, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kbComment);
 		}
@@ -5408,6 +5535,13 @@ public class KBCommentPersistenceImpl
 		int start, int end, OrderByComparator<KBComment> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KBComment> _findAll(
+		int start, int end, OrderByComparator<KBComment> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5462,10 +5596,12 @@ public class KBCommentPersistenceImpl
 				list = (List<KBComment>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5485,7 +5621,10 @@ public class KBCommentPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KBComment kbComment : findAll()) {
+		for (KBComment kbComment :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kbComment);
 		}
 	}

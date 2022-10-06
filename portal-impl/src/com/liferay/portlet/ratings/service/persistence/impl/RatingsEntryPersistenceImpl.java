@@ -171,6 +171,15 @@ public class RatingsEntryPersistenceImpl
 		OrderByComparator<RatingsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RatingsEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<RatingsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -259,10 +268,12 @@ public class RatingsEntryPersistenceImpl
 				list = (List<RatingsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -556,7 +567,9 @@ public class RatingsEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (RatingsEntry ratingsEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ratingsEntry);
 		}
@@ -723,6 +736,16 @@ public class RatingsEntryPersistenceImpl
 		OrderByComparator<RatingsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<RatingsEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<RatingsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -819,10 +842,12 @@ public class RatingsEntryPersistenceImpl
 				list = (List<RatingsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1141,9 +1166,9 @@ public class RatingsEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (RatingsEntry ratingsEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ratingsEntry);
 		}
@@ -1318,6 +1343,16 @@ public class RatingsEntryPersistenceImpl
 		OrderByComparator<RatingsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<RatingsEntry> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<RatingsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RatingsEntry.class);
 
@@ -1401,10 +1436,12 @@ public class RatingsEntryPersistenceImpl
 				list = (List<RatingsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1711,9 +1748,9 @@ public class RatingsEntryPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (RatingsEntry ratingsEntry :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ratingsEntry);
 		}
@@ -1885,6 +1922,16 @@ public class RatingsEntryPersistenceImpl
 		OrderByComparator<RatingsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_C(
+			userId, classNameId, classPKs, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<RatingsEntry> _findByU_C_C(
+		long userId, long classNameId, long[] classPKs, int start, int end,
+		OrderByComparator<RatingsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (classPKs == null) {
 			classPKs = new long[0];
 		}
@@ -1975,11 +2022,14 @@ public class RatingsEntryPersistenceImpl
 						orderByComparator);
 				}
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByU_C_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByU_C_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2068,7 +2118,15 @@ public class RatingsEntryPersistenceImpl
 	public RatingsEntry findByU_C_C(long userId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		RatingsEntry ratingsEntry = fetchByU_C_C(userId, classNameId, classPK);
+		return _findByU_C_C(userId, classNameId, classPK, false);
+	}
+
+	private RatingsEntry _findByU_C_C(
+			long userId, long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		RatingsEntry ratingsEntry = _fetchByU_C_C(
+			userId, classNameId, classPK, true, readOnlyCache);
 
 		if (ratingsEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2123,6 +2181,14 @@ public class RatingsEntryPersistenceImpl
 	@Override
 	public RatingsEntry fetchByU_C_C(
 		long userId, long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByU_C_C(
+			userId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private RatingsEntry _fetchByU_C_C(
+		long userId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RatingsEntry.class);
@@ -2190,9 +2256,11 @@ public class RatingsEntryPersistenceImpl
 				else {
 					RatingsEntry ratingsEntry = list.get(0);
 
-					result = ratingsEntry;
+					if (!readOnlyCache) {
+						result = ratingsEntry;
 
-					cacheResult(ratingsEntry);
+						cacheResult(ratingsEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2224,7 +2292,8 @@ public class RatingsEntryPersistenceImpl
 			long userId, long classNameId, long classPK)
 		throws NoSuchEntryException {
 
-		RatingsEntry ratingsEntry = findByU_C_C(userId, classNameId, classPK);
+		RatingsEntry ratingsEntry = _findByU_C_C(
+			userId, classNameId, classPK, true);
 
 		return remove(ratingsEntry);
 	}
@@ -2520,6 +2589,16 @@ public class RatingsEntryPersistenceImpl
 		OrderByComparator<RatingsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_S(
+			classNameId, classPK, score, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<RatingsEntry> _findByC_C_S(
+		long classNameId, long classPK, double score, int start, int end,
+		OrderByComparator<RatingsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RatingsEntry.class);
 
@@ -2608,10 +2687,12 @@ public class RatingsEntryPersistenceImpl
 				list = (List<RatingsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2934,9 +3015,9 @@ public class RatingsEntryPersistenceImpl
 	@Override
 	public void removeByC_C_S(long classNameId, long classPK, double score) {
 		for (RatingsEntry ratingsEntry :
-				findByC_C_S(
+				_findByC_C_S(
 					classNameId, classPK, score, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ratingsEntry);
 		}
@@ -3599,6 +3680,13 @@ public class RatingsEntryPersistenceImpl
 		int start, int end, OrderByComparator<RatingsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RatingsEntry> _findAll(
+		int start, int end, OrderByComparator<RatingsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			RatingsEntry.class);
 
@@ -3656,10 +3744,12 @@ public class RatingsEntryPersistenceImpl
 				list = (List<RatingsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3679,7 +3769,10 @@ public class RatingsEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RatingsEntry ratingsEntry : findAll()) {
+		for (RatingsEntry ratingsEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ratingsEntry);
 		}
 	}

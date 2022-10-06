@@ -170,6 +170,15 @@ public class DLFileRankPersistenceImpl
 		OrderByComparator<DLFileRank> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileRank> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<DLFileRank> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +251,12 @@ public class DLFileRankPersistenceImpl
 				list = (List<DLFileRank>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -526,8 +537,9 @@ public class DLFileRankPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (DLFileRank dlFileRank :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileRank);
 		}
@@ -662,6 +674,15 @@ public class DLFileRankPersistenceImpl
 		OrderByComparator<DLFileRank> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileEntryId(
+			fileEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileRank> _findByFileEntryId(
+		long fileEntryId, int start, int end,
+		OrderByComparator<DLFileRank> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -736,10 +757,12 @@ public class DLFileRankPersistenceImpl
 				list = (List<DLFileRank>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1023,8 +1046,9 @@ public class DLFileRankPersistenceImpl
 	@Override
 	public void removeByFileEntryId(long fileEntryId) {
 		for (DLFileRank dlFileRank :
-				findByFileEntryId(
-					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByFileEntryId(
+					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileRank);
 		}
@@ -1162,6 +1186,16 @@ public class DLFileRankPersistenceImpl
 		OrderByComparator<DLFileRank> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U(
+			groupId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileRank> _findByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<DLFileRank> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1242,10 +1276,12 @@ public class DLFileRankPersistenceImpl
 				list = (List<DLFileRank>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1549,9 +1585,9 @@ public class DLFileRankPersistenceImpl
 	@Override
 	public void removeByG_U(long groupId, long userId) {
 		for (DLFileRank dlFileRank :
-				findByG_U(
-					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_U(
+					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileRank);
 		}
@@ -1705,6 +1741,16 @@ public class DLFileRankPersistenceImpl
 		OrderByComparator<DLFileRank> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_A(
+			groupId, userId, active, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileRank> _findByG_U_A(
+		long groupId, long userId, boolean active, int start, int end,
+		OrderByComparator<DLFileRank> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1790,10 +1836,12 @@ public class DLFileRankPersistenceImpl
 				list = (List<DLFileRank>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2116,9 +2164,9 @@ public class DLFileRankPersistenceImpl
 	@Override
 	public void removeByG_U_A(long groupId, long userId, boolean active) {
 		for (DLFileRank dlFileRank :
-				findByG_U_A(
+				_findByG_U_A(
 					groupId, userId, active, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileRank);
 		}
@@ -2208,7 +2256,16 @@ public class DLFileRankPersistenceImpl
 	public DLFileRank findByC_U_F(long companyId, long userId, long fileEntryId)
 		throws NoSuchFileRankException {
 
-		DLFileRank dlFileRank = fetchByC_U_F(companyId, userId, fileEntryId);
+		return _findByC_U_F(companyId, userId, fileEntryId, false);
+	}
+
+	private DLFileRank _findByC_U_F(
+			long companyId, long userId, long fileEntryId,
+			boolean readOnlyCache)
+		throws NoSuchFileRankException {
+
+		DLFileRank dlFileRank = _fetchByC_U_F(
+			companyId, userId, fileEntryId, true, readOnlyCache);
 
 		if (dlFileRank == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2263,6 +2320,14 @@ public class DLFileRankPersistenceImpl
 	@Override
 	public DLFileRank fetchByC_U_F(
 		long companyId, long userId, long fileEntryId, boolean useFinderCache) {
+
+		return _fetchByC_U_F(
+			companyId, userId, fileEntryId, useFinderCache, false);
+	}
+
+	private DLFileRank _fetchByC_U_F(
+		long companyId, long userId, long fileEntryId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2343,9 +2408,11 @@ public class DLFileRankPersistenceImpl
 
 					DLFileRank dlFileRank = list.get(0);
 
-					result = dlFileRank;
+					if (!readOnlyCache) {
+						result = dlFileRank;
 
-					cacheResult(dlFileRank);
+						cacheResult(dlFileRank);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2377,7 +2444,8 @@ public class DLFileRankPersistenceImpl
 			long companyId, long userId, long fileEntryId)
 		throws NoSuchFileRankException {
 
-		DLFileRank dlFileRank = findByC_U_F(companyId, userId, fileEntryId);
+		DLFileRank dlFileRank = _findByC_U_F(
+			companyId, userId, fileEntryId, true);
 
 		return remove(dlFileRank);
 	}
@@ -2848,6 +2916,13 @@ public class DLFileRankPersistenceImpl
 		int start, int end, OrderByComparator<DLFileRank> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileRank> _findAll(
+		int start, int end, OrderByComparator<DLFileRank> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2902,10 +2977,12 @@ public class DLFileRankPersistenceImpl
 				list = (List<DLFileRank>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2925,7 +3002,10 @@ public class DLFileRankPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLFileRank dlFileRank : findAll()) {
+		for (DLFileRank dlFileRank :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlFileRank);
 		}
 	}

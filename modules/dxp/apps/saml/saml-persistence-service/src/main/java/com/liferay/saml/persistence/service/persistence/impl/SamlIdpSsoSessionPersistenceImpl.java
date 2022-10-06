@@ -177,6 +177,15 @@ public class SamlIdpSsoSessionPersistenceImpl
 		OrderByComparator<SamlIdpSsoSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtCreateDate(
+			createDate, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlIdpSsoSession> _findByLtCreateDate(
+		Date createDate, int start, int end,
+		OrderByComparator<SamlIdpSsoSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -254,10 +263,12 @@ public class SamlIdpSsoSessionPersistenceImpl
 				list = (List<SamlIdpSsoSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -561,8 +572,9 @@ public class SamlIdpSsoSessionPersistenceImpl
 	@Override
 	public void removeByLtCreateDate(Date createDate) {
 		for (SamlIdpSsoSession samlIdpSsoSession :
-				findByLtCreateDate(
-					createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLtCreateDate(
+					createDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(samlIdpSsoSession);
 		}
@@ -649,8 +661,15 @@ public class SamlIdpSsoSessionPersistenceImpl
 			String samlIdpSsoSessionKey)
 		throws NoSuchIdpSsoSessionException {
 
-		SamlIdpSsoSession samlIdpSsoSession = fetchBySamlIdpSsoSessionKey(
-			samlIdpSsoSessionKey);
+		return _findBySamlIdpSsoSessionKey(samlIdpSsoSessionKey, false);
+	}
+
+	private SamlIdpSsoSession _findBySamlIdpSsoSessionKey(
+			String samlIdpSsoSessionKey, boolean readOnlyCache)
+		throws NoSuchIdpSsoSessionException {
+
+		SamlIdpSsoSession samlIdpSsoSession = _fetchBySamlIdpSsoSessionKey(
+			samlIdpSsoSessionKey, true, readOnlyCache);
 
 		if (samlIdpSsoSession == null) {
 			StringBundler sb = new StringBundler(4);
@@ -695,6 +714,14 @@ public class SamlIdpSsoSessionPersistenceImpl
 	@Override
 	public SamlIdpSsoSession fetchBySamlIdpSsoSessionKey(
 		String samlIdpSsoSessionKey, boolean useFinderCache) {
+
+		return _fetchBySamlIdpSsoSessionKey(
+			samlIdpSsoSessionKey, useFinderCache, false);
+	}
+
+	private SamlIdpSsoSession _fetchBySamlIdpSsoSessionKey(
+		String samlIdpSsoSessionKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		samlIdpSsoSessionKey = Objects.toString(samlIdpSsoSessionKey, "");
 
@@ -784,9 +811,11 @@ public class SamlIdpSsoSessionPersistenceImpl
 
 					SamlIdpSsoSession samlIdpSsoSession = list.get(0);
 
-					result = samlIdpSsoSession;
+					if (!readOnlyCache) {
+						result = samlIdpSsoSession;
 
-					cacheResult(samlIdpSsoSession);
+						cacheResult(samlIdpSsoSession);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -816,8 +845,8 @@ public class SamlIdpSsoSessionPersistenceImpl
 			String samlIdpSsoSessionKey)
 		throws NoSuchIdpSsoSessionException {
 
-		SamlIdpSsoSession samlIdpSsoSession = findBySamlIdpSsoSessionKey(
-			samlIdpSsoSessionKey);
+		SamlIdpSsoSession samlIdpSsoSession = _findBySamlIdpSsoSessionKey(
+			samlIdpSsoSessionKey, true);
 
 		return remove(samlIdpSsoSession);
 	}
@@ -1311,6 +1340,14 @@ public class SamlIdpSsoSessionPersistenceImpl
 		OrderByComparator<SamlIdpSsoSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SamlIdpSsoSession> _findAll(
+		int start, int end,
+		OrderByComparator<SamlIdpSsoSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1365,10 +1402,12 @@ public class SamlIdpSsoSessionPersistenceImpl
 				list = (List<SamlIdpSsoSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1388,7 +1427,10 @@ public class SamlIdpSsoSessionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SamlIdpSsoSession samlIdpSsoSession : findAll()) {
+		for (SamlIdpSsoSession samlIdpSsoSession :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(samlIdpSsoSession);
 		}
 	}

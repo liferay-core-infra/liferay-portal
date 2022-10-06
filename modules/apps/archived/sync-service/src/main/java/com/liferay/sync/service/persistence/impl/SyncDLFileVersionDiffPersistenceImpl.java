@@ -175,6 +175,15 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		OrderByComparator<SyncDLFileVersionDiff> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileEntryId(
+			fileEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDLFileVersionDiff> _findByFileEntryId(
+		long fileEntryId, int start, int end,
+		OrderByComparator<SyncDLFileVersionDiff> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +258,12 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				list = (List<SyncDLFileVersionDiff>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -546,8 +557,9 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	@Override
 	public void removeByFileEntryId(long fileEntryId) {
 		for (SyncDLFileVersionDiff syncDLFileVersionDiff :
-				findByFileEntryId(
-					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByFileEntryId(
+					fileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(syncDLFileVersionDiff);
 		}
@@ -683,6 +695,16 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		OrderByComparator<SyncDLFileVersionDiff> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtExpirationDate(
+			expirationDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SyncDLFileVersionDiff> _findByLtExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<SyncDLFileVersionDiff> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -761,10 +783,12 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				list = (List<SyncDLFileVersionDiff>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1069,9 +1093,9 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	@Override
 	public void removeByLtExpirationDate(Date expirationDate) {
 		for (SyncDLFileVersionDiff syncDLFileVersionDiff :
-				findByLtExpirationDate(
-					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByLtExpirationDate(
+					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(syncDLFileVersionDiff);
 		}
@@ -1164,8 +1188,18 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			long targetFileVersionId)
 		throws NoSuchDLFileVersionDiffException {
 
-		SyncDLFileVersionDiff syncDLFileVersionDiff = fetchByF_S_T(
-			fileEntryId, sourceFileVersionId, targetFileVersionId);
+		return _findByF_S_T(
+			fileEntryId, sourceFileVersionId, targetFileVersionId, false);
+	}
+
+	private SyncDLFileVersionDiff _findByF_S_T(
+			long fileEntryId, long sourceFileVersionId,
+			long targetFileVersionId, boolean readOnlyCache)
+		throws NoSuchDLFileVersionDiffException {
+
+		SyncDLFileVersionDiff syncDLFileVersionDiff = _fetchByF_S_T(
+			fileEntryId, sourceFileVersionId, targetFileVersionId, true,
+			readOnlyCache);
 
 		if (syncDLFileVersionDiff == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1222,6 +1256,15 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	public SyncDLFileVersionDiff fetchByF_S_T(
 		long fileEntryId, long sourceFileVersionId, long targetFileVersionId,
 		boolean useFinderCache) {
+
+		return _fetchByF_S_T(
+			fileEntryId, sourceFileVersionId, targetFileVersionId,
+			useFinderCache, false);
+	}
+
+	private SyncDLFileVersionDiff _fetchByF_S_T(
+		long fileEntryId, long sourceFileVersionId, long targetFileVersionId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1290,9 +1333,11 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				else {
 					SyncDLFileVersionDiff syncDLFileVersionDiff = list.get(0);
 
-					result = syncDLFileVersionDiff;
+					if (!readOnlyCache) {
+						result = syncDLFileVersionDiff;
 
-					cacheResult(syncDLFileVersionDiff);
+						cacheResult(syncDLFileVersionDiff);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1325,8 +1370,8 @@ public class SyncDLFileVersionDiffPersistenceImpl
 			long targetFileVersionId)
 		throws NoSuchDLFileVersionDiffException {
 
-		SyncDLFileVersionDiff syncDLFileVersionDiff = findByF_S_T(
-			fileEntryId, sourceFileVersionId, targetFileVersionId);
+		SyncDLFileVersionDiff syncDLFileVersionDiff = _findByF_S_T(
+			fileEntryId, sourceFileVersionId, targetFileVersionId, true);
 
 		return remove(syncDLFileVersionDiff);
 	}
@@ -1820,6 +1865,14 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		OrderByComparator<SyncDLFileVersionDiff> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SyncDLFileVersionDiff> _findAll(
+		int start, int end,
+		OrderByComparator<SyncDLFileVersionDiff> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1874,10 +1927,12 @@ public class SyncDLFileVersionDiffPersistenceImpl
 				list = (List<SyncDLFileVersionDiff>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1897,7 +1952,10 @@ public class SyncDLFileVersionDiffPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SyncDLFileVersionDiff syncDLFileVersionDiff : findAll()) {
+		for (SyncDLFileVersionDiff syncDLFileVersionDiff :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(syncDLFileVersionDiff);
 		}
 	}

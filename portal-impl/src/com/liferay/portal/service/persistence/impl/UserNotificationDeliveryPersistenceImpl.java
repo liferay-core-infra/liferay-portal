@@ -157,6 +157,15 @@ public class UserNotificationDeliveryPersistenceImpl
 		OrderByComparator<UserNotificationDelivery> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationDelivery> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<UserNotificationDelivery> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -229,10 +238,12 @@ public class UserNotificationDeliveryPersistenceImpl
 				list = (List<UserNotificationDelivery>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -527,8 +538,9 @@ public class UserNotificationDeliveryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (UserNotificationDelivery userNotificationDelivery :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userNotificationDelivery);
 		}
@@ -606,8 +618,19 @@ public class UserNotificationDeliveryPersistenceImpl
 			int notificationType, int deliveryType)
 		throws NoSuchUserNotificationDeliveryException {
 
-		UserNotificationDelivery userNotificationDelivery = fetchByU_P_C_N_D(
-			userId, portletId, classNameId, notificationType, deliveryType);
+		return _findByU_P_C_N_D(
+			userId, portletId, classNameId, notificationType, deliveryType,
+			false);
+	}
+
+	private UserNotificationDelivery _findByU_P_C_N_D(
+			long userId, String portletId, long classNameId,
+			int notificationType, int deliveryType, boolean readOnlyCache)
+		throws NoSuchUserNotificationDeliveryException {
+
+		UserNotificationDelivery userNotificationDelivery = _fetchByU_P_C_N_D(
+			userId, portletId, classNameId, notificationType, deliveryType,
+			true, readOnlyCache);
 
 		if (userNotificationDelivery == null) {
 			StringBundler sb = new StringBundler(12);
@@ -676,6 +699,15 @@ public class UserNotificationDeliveryPersistenceImpl
 	public UserNotificationDelivery fetchByU_P_C_N_D(
 		long userId, String portletId, long classNameId, int notificationType,
 		int deliveryType, boolean useFinderCache) {
+
+		return _fetchByU_P_C_N_D(
+			userId, portletId, classNameId, notificationType, deliveryType,
+			useFinderCache, false);
+	}
+
+	private UserNotificationDelivery _fetchByU_P_C_N_D(
+		long userId, String portletId, long classNameId, int notificationType,
+		int deliveryType, boolean useFinderCache, boolean readOnlyCache) {
 
 		portletId = Objects.toString(portletId, "");
 
@@ -769,9 +801,11 @@ public class UserNotificationDeliveryPersistenceImpl
 					UserNotificationDelivery userNotificationDelivery =
 						list.get(0);
 
-					result = userNotificationDelivery;
+					if (!readOnlyCache) {
+						result = userNotificationDelivery;
 
-					cacheResult(userNotificationDelivery);
+						cacheResult(userNotificationDelivery);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -806,8 +840,9 @@ public class UserNotificationDeliveryPersistenceImpl
 			int notificationType, int deliveryType)
 		throws NoSuchUserNotificationDeliveryException {
 
-		UserNotificationDelivery userNotificationDelivery = findByU_P_C_N_D(
-			userId, portletId, classNameId, notificationType, deliveryType);
+		UserNotificationDelivery userNotificationDelivery = _findByU_P_C_N_D(
+			userId, portletId, classNameId, notificationType, deliveryType,
+			true);
 
 		return remove(userNotificationDelivery);
 	}
@@ -1340,6 +1375,14 @@ public class UserNotificationDeliveryPersistenceImpl
 		OrderByComparator<UserNotificationDelivery> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationDelivery> _findAll(
+		int start, int end,
+		OrderByComparator<UserNotificationDelivery> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1395,10 +1438,12 @@ public class UserNotificationDeliveryPersistenceImpl
 				list = (List<UserNotificationDelivery>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1418,7 +1463,10 @@ public class UserNotificationDeliveryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserNotificationDelivery userNotificationDelivery : findAll()) {
+		for (UserNotificationDelivery userNotificationDelivery :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userNotificationDelivery);
 		}
 	}

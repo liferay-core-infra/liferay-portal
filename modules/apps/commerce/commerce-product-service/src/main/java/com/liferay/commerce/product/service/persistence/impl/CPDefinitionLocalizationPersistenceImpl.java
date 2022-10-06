@@ -174,6 +174,16 @@ public class CPDefinitionLocalizationPersistenceImpl
 		OrderByComparator<CPDefinitionLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDefinitionId(
+			CPDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionLocalization> _findByCPDefinitionId(
+		long CPDefinitionId, int start, int end,
+		OrderByComparator<CPDefinitionLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionLocalization.class);
 
@@ -253,10 +263,12 @@ public class CPDefinitionLocalizationPersistenceImpl
 				list = (List<CPDefinitionLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -551,9 +563,9 @@ public class CPDefinitionLocalizationPersistenceImpl
 	@Override
 	public void removeByCPDefinitionId(long CPDefinitionId) {
 		for (CPDefinitionLocalization cpDefinitionLocalization :
-				findByCPDefinitionId(
-					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPDefinitionId(
+					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionLocalization);
 		}
@@ -639,8 +651,17 @@ public class CPDefinitionLocalizationPersistenceImpl
 			long CPDefinitionId, String languageId)
 		throws NoSuchCPDefinitionLocalizationException {
 
+		return _findByCPDefinitionId_LanguageId(
+			CPDefinitionId, languageId, false);
+	}
+
+	private CPDefinitionLocalization _findByCPDefinitionId_LanguageId(
+			long CPDefinitionId, String languageId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionLocalizationException {
+
 		CPDefinitionLocalization cpDefinitionLocalization =
-			fetchByCPDefinitionId_LanguageId(CPDefinitionId, languageId);
+			_fetchByCPDefinitionId_LanguageId(
+				CPDefinitionId, languageId, true, readOnlyCache);
 
 		if (cpDefinitionLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -691,6 +712,14 @@ public class CPDefinitionLocalizationPersistenceImpl
 	@Override
 	public CPDefinitionLocalization fetchByCPDefinitionId_LanguageId(
 		long CPDefinitionId, String languageId, boolean useFinderCache) {
+
+		return _fetchByCPDefinitionId_LanguageId(
+			CPDefinitionId, languageId, useFinderCache, false);
+	}
+
+	private CPDefinitionLocalization _fetchByCPDefinitionId_LanguageId(
+		long CPDefinitionId, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -774,9 +803,11 @@ public class CPDefinitionLocalizationPersistenceImpl
 					CPDefinitionLocalization cpDefinitionLocalization =
 						list.get(0);
 
-					result = cpDefinitionLocalization;
+					if (!readOnlyCache) {
+						result = cpDefinitionLocalization;
 
-					cacheResult(cpDefinitionLocalization);
+						cacheResult(cpDefinitionLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -808,7 +839,7 @@ public class CPDefinitionLocalizationPersistenceImpl
 		throws NoSuchCPDefinitionLocalizationException {
 
 		CPDefinitionLocalization cpDefinitionLocalization =
-			findByCPDefinitionId_LanguageId(CPDefinitionId, languageId);
+			_findByCPDefinitionId_LanguageId(CPDefinitionId, languageId, true);
 
 		return remove(cpDefinitionLocalization);
 	}
@@ -1516,6 +1547,14 @@ public class CPDefinitionLocalizationPersistenceImpl
 		OrderByComparator<CPDefinitionLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionLocalization> _findAll(
+		int start, int end,
+		OrderByComparator<CPDefinitionLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPDefinitionLocalization.class);
 
@@ -1574,10 +1613,12 @@ public class CPDefinitionLocalizationPersistenceImpl
 				list = (List<CPDefinitionLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1597,7 +1638,10 @@ public class CPDefinitionLocalizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPDefinitionLocalization cpDefinitionLocalization : findAll()) {
+		for (CPDefinitionLocalization cpDefinitionLocalization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpDefinitionLocalization);
 		}
 	}

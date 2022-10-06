@@ -176,6 +176,15 @@ public class DDMTemplateLinkPersistenceImpl
 		OrderByComparator<DDMTemplateLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTemplateId(
+			templateId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplateLink> _findByTemplateId(
+		long templateId, int start, int end,
+		OrderByComparator<DDMTemplateLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplateLink.class);
 
@@ -253,10 +262,12 @@ public class DDMTemplateLinkPersistenceImpl
 				list = (List<DDMTemplateLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,8 +555,9 @@ public class DDMTemplateLinkPersistenceImpl
 	@Override
 	public void removeByTemplateId(long templateId) {
 		for (DDMTemplateLink ddmTemplateLink :
-				findByTemplateId(
-					templateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByTemplateId(
+					templateId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmTemplateLink);
 		}
@@ -630,7 +642,15 @@ public class DDMTemplateLinkPersistenceImpl
 	public DDMTemplateLink findByC_C(long classNameId, long classPK)
 		throws NoSuchTemplateLinkException {
 
-		DDMTemplateLink ddmTemplateLink = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private DDMTemplateLink _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchTemplateLinkException {
+
+		DDMTemplateLink ddmTemplateLink = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (ddmTemplateLink == null) {
 			StringBundler sb = new StringBundler(6);
@@ -678,6 +698,13 @@ public class DDMTemplateLinkPersistenceImpl
 	@Override
 	public DDMTemplateLink fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private DDMTemplateLink _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplateLink.class);
@@ -739,9 +766,11 @@ public class DDMTemplateLinkPersistenceImpl
 				else {
 					DDMTemplateLink ddmTemplateLink = list.get(0);
 
-					result = ddmTemplateLink;
+					if (!readOnlyCache) {
+						result = ddmTemplateLink;
 
-					cacheResult(ddmTemplateLink);
+						cacheResult(ddmTemplateLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -771,7 +800,8 @@ public class DDMTemplateLinkPersistenceImpl
 	public DDMTemplateLink removeByC_C(long classNameId, long classPK)
 		throws NoSuchTemplateLinkException {
 
-		DDMTemplateLink ddmTemplateLink = findByC_C(classNameId, classPK);
+		DDMTemplateLink ddmTemplateLink = _findByC_C(
+			classNameId, classPK, true);
 
 		return remove(ddmTemplateLink);
 	}
@@ -1393,6 +1423,14 @@ public class DDMTemplateLinkPersistenceImpl
 		OrderByComparator<DDMTemplateLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplateLink> _findAll(
+		int start, int end,
+		OrderByComparator<DDMTemplateLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplateLink.class);
 
@@ -1450,10 +1488,12 @@ public class DDMTemplateLinkPersistenceImpl
 				list = (List<DDMTemplateLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1473,7 +1513,10 @@ public class DDMTemplateLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMTemplateLink ddmTemplateLink : findAll()) {
+		for (DDMTemplateLink ddmTemplateLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmTemplateLink);
 		}
 	}

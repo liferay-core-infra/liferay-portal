@@ -98,7 +98,15 @@ public class PortalPreferencesPersistenceImpl
 	public PortalPreferences findByO_O(long ownerId, int ownerType)
 		throws NoSuchPreferencesException {
 
-		PortalPreferences portalPreferences = fetchByO_O(ownerId, ownerType);
+		return _findByO_O(ownerId, ownerType, false);
+	}
+
+	private PortalPreferences _findByO_O(
+			long ownerId, int ownerType, boolean readOnlyCache)
+		throws NoSuchPreferencesException {
+
+		PortalPreferences portalPreferences = _fetchByO_O(
+			ownerId, ownerType, true, readOnlyCache);
 
 		if (portalPreferences == null) {
 			StringBundler sb = new StringBundler(6);
@@ -146,6 +154,13 @@ public class PortalPreferencesPersistenceImpl
 	@Override
 	public PortalPreferences fetchByO_O(
 		long ownerId, int ownerType, boolean useFinderCache) {
+
+		return _fetchByO_O(ownerId, ownerType, useFinderCache, false);
+	}
+
+	private PortalPreferences _fetchByO_O(
+		long ownerId, int ownerType, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -220,9 +235,11 @@ public class PortalPreferencesPersistenceImpl
 
 					PortalPreferences portalPreferences = list.get(0);
 
-					result = portalPreferences;
+					if (!readOnlyCache) {
+						result = portalPreferences;
 
-					cacheResult(portalPreferences);
+						cacheResult(portalPreferences);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -252,7 +269,8 @@ public class PortalPreferencesPersistenceImpl
 	public PortalPreferences removeByO_O(long ownerId, int ownerType)
 		throws NoSuchPreferencesException {
 
-		PortalPreferences portalPreferences = findByO_O(ownerId, ownerType);
+		PortalPreferences portalPreferences = _findByO_O(
+			ownerId, ownerType, true);
 
 		return remove(portalPreferences);
 	}
@@ -711,6 +729,14 @@ public class PortalPreferencesPersistenceImpl
 		OrderByComparator<PortalPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PortalPreferences> _findAll(
+		int start, int end,
+		OrderByComparator<PortalPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -765,10 +791,12 @@ public class PortalPreferencesPersistenceImpl
 				list = (List<PortalPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -788,7 +816,10 @@ public class PortalPreferencesPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PortalPreferences portalPreferences : findAll()) {
+		for (PortalPreferences portalPreferences :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(portalPreferences);
 		}
 	}

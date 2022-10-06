@@ -170,6 +170,15 @@ public class MessagePersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Message> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Message> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Message> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -243,10 +252,12 @@ public class MessagePersistenceImpl
 				list = (List<Message>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -528,8 +539,9 @@ public class MessagePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Message message :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(message);
 		}
@@ -660,6 +672,15 @@ public class MessagePersistenceImpl
 		long folderId, int start, int end,
 		OrderByComparator<Message> orderByComparator, boolean useFinderCache) {
 
+		return _findByFolderId(
+			folderId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Message> _findByFolderId(
+		long folderId, int start, int end,
+		OrderByComparator<Message> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -731,10 +752,12 @@ public class MessagePersistenceImpl
 				list = (List<Message>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1015,8 +1038,9 @@ public class MessagePersistenceImpl
 	@Override
 	public void removeByFolderId(long folderId) {
 		for (Message message :
-				findByFolderId(
-					folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByFolderId(
+					folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(message);
 		}
@@ -1089,7 +1113,15 @@ public class MessagePersistenceImpl
 	public Message findByF_R(long folderId, long remoteMessageId)
 		throws NoSuchMessageException {
 
-		Message message = fetchByF_R(folderId, remoteMessageId);
+		return _findByF_R(folderId, remoteMessageId, false);
+	}
+
+	private Message _findByF_R(
+			long folderId, long remoteMessageId, boolean readOnlyCache)
+		throws NoSuchMessageException {
+
+		Message message = _fetchByF_R(
+			folderId, remoteMessageId, true, readOnlyCache);
 
 		if (message == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1137,6 +1169,13 @@ public class MessagePersistenceImpl
 	@Override
 	public Message fetchByF_R(
 		long folderId, long remoteMessageId, boolean useFinderCache) {
+
+		return _fetchByF_R(folderId, remoteMessageId, useFinderCache, false);
+	}
+
+	private Message _fetchByF_R(
+		long folderId, long remoteMessageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1212,9 +1251,11 @@ public class MessagePersistenceImpl
 
 					Message message = list.get(0);
 
-					result = message;
+					if (!readOnlyCache) {
+						result = message;
 
-					cacheResult(message);
+						cacheResult(message);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1244,7 +1285,7 @@ public class MessagePersistenceImpl
 	public Message removeByF_R(long folderId, long remoteMessageId)
 		throws NoSuchMessageException {
 
-		Message message = findByF_R(folderId, remoteMessageId);
+		Message message = _findByF_R(folderId, remoteMessageId, true);
 
 		return remove(message);
 	}
@@ -1709,6 +1750,13 @@ public class MessagePersistenceImpl
 		int start, int end, OrderByComparator<Message> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Message> _findAll(
+		int start, int end, OrderByComparator<Message> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1762,10 +1810,12 @@ public class MessagePersistenceImpl
 				list = (List<Message>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1785,7 +1835,10 @@ public class MessagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Message message : findAll()) {
+		for (Message message :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(message);
 		}
 	}

@@ -179,6 +179,15 @@ public class RedirectNotFoundEntryPersistenceImpl
 		OrderByComparator<RedirectNotFoundEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RedirectNotFoundEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<RedirectNotFoundEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -251,10 +260,12 @@ public class RedirectNotFoundEntryPersistenceImpl
 				list = (List<RedirectNotFoundEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -548,8 +559,9 @@ public class RedirectNotFoundEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (RedirectNotFoundEntry redirectNotFoundEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(redirectNotFoundEntry);
 		}
@@ -622,7 +634,15 @@ public class RedirectNotFoundEntryPersistenceImpl
 	public RedirectNotFoundEntry findByG_U(long groupId, String url)
 		throws NoSuchNotFoundEntryException {
 
-		RedirectNotFoundEntry redirectNotFoundEntry = fetchByG_U(groupId, url);
+		return _findByG_U(groupId, url, false);
+	}
+
+	private RedirectNotFoundEntry _findByG_U(
+			long groupId, String url, boolean readOnlyCache)
+		throws NoSuchNotFoundEntryException {
+
+		RedirectNotFoundEntry redirectNotFoundEntry = _fetchByG_U(
+			groupId, url, true, readOnlyCache);
 
 		if (redirectNotFoundEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -670,6 +690,13 @@ public class RedirectNotFoundEntryPersistenceImpl
 	@Override
 	public RedirectNotFoundEntry fetchByG_U(
 		long groupId, String url, boolean useFinderCache) {
+
+		return _fetchByG_U(groupId, url, useFinderCache, false);
+	}
+
+	private RedirectNotFoundEntry _fetchByG_U(
+		long groupId, String url, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		url = Objects.toString(url, "");
 
@@ -742,9 +769,11 @@ public class RedirectNotFoundEntryPersistenceImpl
 				else {
 					RedirectNotFoundEntry redirectNotFoundEntry = list.get(0);
 
-					result = redirectNotFoundEntry;
+					if (!readOnlyCache) {
+						result = redirectNotFoundEntry;
 
-					cacheResult(redirectNotFoundEntry);
+						cacheResult(redirectNotFoundEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -774,7 +803,8 @@ public class RedirectNotFoundEntryPersistenceImpl
 	public RedirectNotFoundEntry removeByG_U(long groupId, String url)
 		throws NoSuchNotFoundEntryException {
 
-		RedirectNotFoundEntry redirectNotFoundEntry = findByG_U(groupId, url);
+		RedirectNotFoundEntry redirectNotFoundEntry = _findByG_U(
+			groupId, url, true);
 
 		return remove(redirectNotFoundEntry);
 	}
@@ -1318,6 +1348,14 @@ public class RedirectNotFoundEntryPersistenceImpl
 		OrderByComparator<RedirectNotFoundEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RedirectNotFoundEntry> _findAll(
+		int start, int end,
+		OrderByComparator<RedirectNotFoundEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1372,10 +1410,12 @@ public class RedirectNotFoundEntryPersistenceImpl
 				list = (List<RedirectNotFoundEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1395,7 +1435,10 @@ public class RedirectNotFoundEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RedirectNotFoundEntry redirectNotFoundEntry : findAll()) {
+		for (RedirectNotFoundEntry redirectNotFoundEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(redirectNotFoundEntry);
 		}
 	}

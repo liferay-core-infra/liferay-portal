@@ -159,6 +159,16 @@ public class LayoutBranchPersistenceImpl
 		OrderByComparator<LayoutBranch> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLayoutSetBranchId(
+			layoutSetBranchId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutBranch> _findByLayoutSetBranchId(
+		long layoutSetBranchId, int start, int end,
+		OrderByComparator<LayoutBranch> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -236,10 +246,12 @@ public class LayoutBranchPersistenceImpl
 				list = (List<LayoutBranch>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -529,9 +541,9 @@ public class LayoutBranchPersistenceImpl
 	@Override
 	public void removeByLayoutSetBranchId(long layoutSetBranchId) {
 		for (LayoutBranch layoutBranch :
-				findByLayoutSetBranchId(
+				_findByLayoutSetBranchId(
 					layoutSetBranchId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(layoutBranch);
 		}
@@ -672,6 +684,16 @@ public class LayoutBranchPersistenceImpl
 		OrderByComparator<LayoutBranch> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_P(
+			layoutSetBranchId, plid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutBranch> _findByL_P(
+		long layoutSetBranchId, long plid, int start, int end,
+		OrderByComparator<LayoutBranch> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -753,10 +775,12 @@ public class LayoutBranchPersistenceImpl
 				list = (List<LayoutBranch>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1063,9 +1087,9 @@ public class LayoutBranchPersistenceImpl
 	@Override
 	public void removeByL_P(long layoutSetBranchId, long plid) {
 		for (LayoutBranch layoutBranch :
-				findByL_P(
+				_findByL_P(
 					layoutSetBranchId, plid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutBranch);
 		}
@@ -1148,7 +1172,16 @@ public class LayoutBranchPersistenceImpl
 			long layoutSetBranchId, long plid, String name)
 		throws NoSuchLayoutBranchException {
 
-		LayoutBranch layoutBranch = fetchByL_P_N(layoutSetBranchId, plid, name);
+		return _findByL_P_N(layoutSetBranchId, plid, name, false);
+	}
+
+	private LayoutBranch _findByL_P_N(
+			long layoutSetBranchId, long plid, String name,
+			boolean readOnlyCache)
+		throws NoSuchLayoutBranchException {
+
+		LayoutBranch layoutBranch = _fetchByL_P_N(
+			layoutSetBranchId, plid, name, true, readOnlyCache);
 
 		if (layoutBranch == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1204,6 +1237,14 @@ public class LayoutBranchPersistenceImpl
 	public LayoutBranch fetchByL_P_N(
 		long layoutSetBranchId, long plid, String name,
 		boolean useFinderCache) {
+
+		return _fetchByL_P_N(
+			layoutSetBranchId, plid, name, useFinderCache, false);
+	}
+
+	private LayoutBranch _fetchByL_P_N(
+		long layoutSetBranchId, long plid, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -1281,9 +1322,11 @@ public class LayoutBranchPersistenceImpl
 				else {
 					LayoutBranch layoutBranch = list.get(0);
 
-					result = layoutBranch;
+					if (!readOnlyCache) {
+						result = layoutBranch;
 
-					cacheResult(layoutBranch);
+						cacheResult(layoutBranch);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1315,7 +1358,8 @@ public class LayoutBranchPersistenceImpl
 			long layoutSetBranchId, long plid, String name)
 		throws NoSuchLayoutBranchException {
 
-		LayoutBranch layoutBranch = findByL_P_N(layoutSetBranchId, plid, name);
+		LayoutBranch layoutBranch = _findByL_P_N(
+			layoutSetBranchId, plid, name, true);
 
 		return remove(layoutBranch);
 	}
@@ -1493,6 +1537,16 @@ public class LayoutBranchPersistenceImpl
 		OrderByComparator<LayoutBranch> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByL_P_M(
+			layoutSetBranchId, plid, master, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutBranch> _findByL_P_M(
+		long layoutSetBranchId, long plid, boolean master, int start, int end,
+		OrderByComparator<LayoutBranch> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1579,10 +1633,12 @@ public class LayoutBranchPersistenceImpl
 				list = (List<LayoutBranch>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1908,9 +1964,9 @@ public class LayoutBranchPersistenceImpl
 		long layoutSetBranchId, long plid, boolean master) {
 
 		for (LayoutBranch layoutBranch :
-				findByL_P_M(
+				_findByL_P_M(
 					layoutSetBranchId, plid, master, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutBranch);
 		}
@@ -2367,6 +2423,13 @@ public class LayoutBranchPersistenceImpl
 		int start, int end, OrderByComparator<LayoutBranch> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutBranch> _findAll(
+		int start, int end, OrderByComparator<LayoutBranch> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2421,10 +2484,12 @@ public class LayoutBranchPersistenceImpl
 				list = (List<LayoutBranch>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2444,7 +2509,10 @@ public class LayoutBranchPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutBranch layoutBranch : findAll()) {
+		for (LayoutBranch layoutBranch :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutBranch);
 		}
 	}

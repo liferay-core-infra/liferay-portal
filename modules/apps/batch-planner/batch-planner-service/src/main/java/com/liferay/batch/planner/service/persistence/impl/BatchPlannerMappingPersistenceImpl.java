@@ -176,6 +176,16 @@ public class BatchPlannerMappingPersistenceImpl
 		OrderByComparator<BatchPlannerMapping> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByBatchPlannerPlanId(
+			batchPlannerPlanId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchPlannerMapping> _findByBatchPlannerPlanId(
+		long batchPlannerPlanId, int start, int end,
+		OrderByComparator<BatchPlannerMapping> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -253,10 +263,12 @@ public class BatchPlannerMappingPersistenceImpl
 				list = (List<BatchPlannerMapping>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -552,9 +564,9 @@ public class BatchPlannerMappingPersistenceImpl
 	@Override
 	public void removeByBatchPlannerPlanId(long batchPlannerPlanId) {
 		for (BatchPlannerMapping batchPlannerMapping :
-				findByBatchPlannerPlanId(
+				_findByBatchPlannerPlanId(
 					batchPlannerPlanId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(batchPlannerMapping);
 		}
@@ -631,8 +643,18 @@ public class BatchPlannerMappingPersistenceImpl
 			String internalFieldName)
 		throws NoSuchMappingException {
 
-		BatchPlannerMapping batchPlannerMapping = fetchByBPPI_EFN_IFN(
-			batchPlannerPlanId, externalFieldName, internalFieldName);
+		return _findByBPPI_EFN_IFN(
+			batchPlannerPlanId, externalFieldName, internalFieldName, false);
+	}
+
+	private BatchPlannerMapping _findByBPPI_EFN_IFN(
+			long batchPlannerPlanId, String externalFieldName,
+			String internalFieldName, boolean readOnlyCache)
+		throws NoSuchMappingException {
+
+		BatchPlannerMapping batchPlannerMapping = _fetchByBPPI_EFN_IFN(
+			batchPlannerPlanId, externalFieldName, internalFieldName, true,
+			readOnlyCache);
 
 		if (batchPlannerMapping == null) {
 			StringBundler sb = new StringBundler(8);
@@ -690,6 +712,16 @@ public class BatchPlannerMappingPersistenceImpl
 	public BatchPlannerMapping fetchByBPPI_EFN_IFN(
 		long batchPlannerPlanId, String externalFieldName,
 		String internalFieldName, boolean useFinderCache) {
+
+		return _fetchByBPPI_EFN_IFN(
+			batchPlannerPlanId, externalFieldName, internalFieldName,
+			useFinderCache, false);
+	}
+
+	private BatchPlannerMapping _fetchByBPPI_EFN_IFN(
+		long batchPlannerPlanId, String externalFieldName,
+		String internalFieldName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalFieldName = Objects.toString(externalFieldName, "");
 		internalFieldName = Objects.toString(internalFieldName, "");
@@ -787,9 +819,11 @@ public class BatchPlannerMappingPersistenceImpl
 				else {
 					BatchPlannerMapping batchPlannerMapping = list.get(0);
 
-					result = batchPlannerMapping;
+					if (!readOnlyCache) {
+						result = batchPlannerMapping;
 
-					cacheResult(batchPlannerMapping);
+						cacheResult(batchPlannerMapping);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -822,8 +856,8 @@ public class BatchPlannerMappingPersistenceImpl
 			String internalFieldName)
 		throws NoSuchMappingException {
 
-		BatchPlannerMapping batchPlannerMapping = findByBPPI_EFN_IFN(
-			batchPlannerPlanId, externalFieldName, internalFieldName);
+		BatchPlannerMapping batchPlannerMapping = _findByBPPI_EFN_IFN(
+			batchPlannerPlanId, externalFieldName, internalFieldName, true);
 
 		return remove(batchPlannerMapping);
 	}
@@ -1361,6 +1395,14 @@ public class BatchPlannerMappingPersistenceImpl
 		OrderByComparator<BatchPlannerMapping> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchPlannerMapping> _findAll(
+		int start, int end,
+		OrderByComparator<BatchPlannerMapping> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1415,10 +1457,12 @@ public class BatchPlannerMappingPersistenceImpl
 				list = (List<BatchPlannerMapping>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1438,7 +1482,10 @@ public class BatchPlannerMappingPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BatchPlannerMapping batchPlannerMapping : findAll()) {
+		for (BatchPlannerMapping batchPlannerMapping :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(batchPlannerMapping);
 		}
 	}

@@ -162,6 +162,15 @@ public class RegionPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Region> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -247,10 +256,12 @@ public class RegionPersistenceImpl
 				list = (List<Region>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,7 +555,9 @@ public class RegionPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Region region :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(region);
 		}
@@ -697,6 +710,16 @@ public class RegionPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Region> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -790,10 +813,12 @@ public class RegionPersistenceImpl
 				list = (List<Region>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1108,9 +1133,9 @@ public class RegionPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Region region :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(region);
 		}
@@ -1265,6 +1290,15 @@ public class RegionPersistenceImpl
 		long countryId, int start, int end,
 		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
 
+		return _findByCountryId(
+			countryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Region> _findByCountryId(
+		long countryId, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1339,10 +1373,12 @@ public class RegionPersistenceImpl
 				list = (List<Region>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1623,8 +1659,9 @@ public class RegionPersistenceImpl
 	@Override
 	public void removeByCountryId(long countryId) {
 		for (Region region :
-				findByCountryId(
-					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCountryId(
+					countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(region);
 		}
@@ -1754,6 +1791,15 @@ public class RegionPersistenceImpl
 		boolean active, int start, int end,
 		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
 
+		return _findByActive(
+			active, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Region> _findByActive(
+		boolean active, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1826,10 +1872,12 @@ public class RegionPersistenceImpl
 				list = (List<Region>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2110,8 +2158,9 @@ public class RegionPersistenceImpl
 	@Override
 	public void removeByActive(boolean active) {
 		for (Region region :
-				findByActive(
-					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByActive(
+					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(region);
 		}
@@ -2249,6 +2298,16 @@ public class RegionPersistenceImpl
 		long countryId, boolean active, int start, int end,
 		OrderByComparator<Region> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_A(
+			countryId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Region> _findByC_A(
+		long countryId, boolean active, int start, int end,
+		OrderByComparator<Region> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2329,10 +2388,12 @@ public class RegionPersistenceImpl
 				list = (List<Region>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2634,9 +2695,9 @@ public class RegionPersistenceImpl
 	@Override
 	public void removeByC_A(long countryId, boolean active) {
 		for (Region region :
-				findByC_A(
+				_findByC_A(
 					countryId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(region);
 		}
@@ -2717,7 +2778,14 @@ public class RegionPersistenceImpl
 	public Region findByC_R(long countryId, String regionCode)
 		throws NoSuchRegionException {
 
-		Region region = fetchByC_R(countryId, regionCode);
+		return _findByC_R(countryId, regionCode, false);
+	}
+
+	private Region _findByC_R(
+			long countryId, String regionCode, boolean readOnlyCache)
+		throws NoSuchRegionException {
+
+		Region region = _fetchByC_R(countryId, regionCode, true, readOnlyCache);
 
 		if (region == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2765,6 +2833,13 @@ public class RegionPersistenceImpl
 	@Override
 	public Region fetchByC_R(
 		long countryId, String regionCode, boolean useFinderCache) {
+
+		return _fetchByC_R(countryId, regionCode, useFinderCache, false);
+	}
+
+	private Region _fetchByC_R(
+		long countryId, String regionCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		regionCode = Objects.toString(regionCode, "");
 
@@ -2837,9 +2912,11 @@ public class RegionPersistenceImpl
 				else {
 					Region region = list.get(0);
 
-					result = region;
+					if (!readOnlyCache) {
+						result = region;
 
-					cacheResult(region);
+						cacheResult(region);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2869,7 +2946,7 @@ public class RegionPersistenceImpl
 	public Region removeByC_R(long countryId, String regionCode)
 		throws NoSuchRegionException {
 
-		Region region = findByC_R(countryId, regionCode);
+		Region region = _findByC_R(countryId, regionCode, true);
 
 		return remove(region);
 	}
@@ -3357,6 +3434,13 @@ public class RegionPersistenceImpl
 		int start, int end, OrderByComparator<Region> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Region> _findAll(
+		int start, int end, OrderByComparator<Region> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3411,10 +3495,12 @@ public class RegionPersistenceImpl
 				list = (List<Region>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3434,7 +3520,10 @@ public class RegionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Region region : findAll()) {
+		for (Region region :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(region);
 		}
 	}

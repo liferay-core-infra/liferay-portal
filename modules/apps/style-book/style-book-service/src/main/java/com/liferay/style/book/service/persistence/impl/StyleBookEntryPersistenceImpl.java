@@ -180,6 +180,15 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -268,10 +277,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -568,7 +579,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (StyleBookEntry styleBookEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(styleBookEntry);
 		}
@@ -734,6 +747,15 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_Head(
+			uuid, head, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByUuid_Head(
+		String uuid, boolean head, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -830,10 +852,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1152,8 +1176,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByUuid_Head(String uuid, boolean head) {
 		for (StyleBookEntry styleBookEntry :
-				findByUuid_Head(
-					uuid, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid_Head(
+					uuid, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -1327,6 +1352,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUUID_G(
+			uuid, groupId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<StyleBookEntry> _findByUUID_G(
+		String uuid, long groupId, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1423,10 +1458,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1747,9 +1784,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByUUID_G(String uuid, long groupId) {
 		for (StyleBookEntry styleBookEntry :
-				findByUUID_G(
-					uuid, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUUID_G(
+					uuid, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -1860,7 +1897,15 @@ public class StyleBookEntryPersistenceImpl
 			String uuid, long groupId, boolean head)
 		throws NoSuchEntryException {
 
-		StyleBookEntry styleBookEntry = fetchByUUID_G_Head(uuid, groupId, head);
+		return _findByUUID_G_Head(uuid, groupId, head, false);
+	}
+
+	private StyleBookEntry _findByUUID_G_Head(
+			String uuid, long groupId, boolean head, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		StyleBookEntry styleBookEntry = _fetchByUUID_G_Head(
+			uuid, groupId, head, true, readOnlyCache);
 
 		if (styleBookEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1915,6 +1960,13 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public StyleBookEntry fetchByUUID_G_Head(
 		String uuid, long groupId, boolean head, boolean useFinderCache) {
+
+		return _fetchByUUID_G_Head(uuid, groupId, head, useFinderCache, false);
+	}
+
+	private StyleBookEntry _fetchByUUID_G_Head(
+		String uuid, long groupId, boolean head, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -1995,9 +2047,11 @@ public class StyleBookEntryPersistenceImpl
 				else {
 					StyleBookEntry styleBookEntry = list.get(0);
 
-					result = styleBookEntry;
+					if (!readOnlyCache) {
+						result = styleBookEntry;
 
-					cacheResult(styleBookEntry);
+						cacheResult(styleBookEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2029,7 +2083,8 @@ public class StyleBookEntryPersistenceImpl
 			String uuid, long groupId, boolean head)
 		throws NoSuchEntryException {
 
-		StyleBookEntry styleBookEntry = findByUUID_G_Head(uuid, groupId, head);
+		StyleBookEntry styleBookEntry = _findByUUID_G_Head(
+			uuid, groupId, head, true);
 
 		return remove(styleBookEntry);
 	}
@@ -2211,6 +2266,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<StyleBookEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2307,10 +2372,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2631,9 +2698,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (StyleBookEntry styleBookEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -2814,6 +2881,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C_Head(
+			uuid, companyId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByUuid_C_Head(
+		String uuid, long companyId, boolean head, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2915,10 +2992,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3255,9 +3334,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C_Head(String uuid, long companyId, boolean head) {
 		for (StyleBookEntry styleBookEntry :
-				findByUuid_C_Head(
+				_findByUuid_C_Head(
 					uuid, companyId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -3435,6 +3514,15 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			StyleBookEntry.class);
 
@@ -3510,10 +3598,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3798,8 +3888,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (StyleBookEntry styleBookEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(styleBookEntry);
 		}
@@ -3950,6 +4041,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId_Head(
+			groupId, head, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<StyleBookEntry> _findByGroupId_Head(
+		long groupId, boolean head, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			StyleBookEntry.class);
 
@@ -4033,10 +4134,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4344,9 +4447,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByGroupId_Head(long groupId, boolean head) {
 		for (StyleBookEntry styleBookEntry :
-				findByGroupId_Head(
-					groupId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByGroupId_Head(
+					groupId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -4509,6 +4612,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_D(
+			groupId, defaultStyleBookEntry, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByG_D(
+		long groupId, boolean defaultStyleBookEntry, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			StyleBookEntry.class);
 
@@ -4593,10 +4706,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4905,9 +5020,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByG_D(long groupId, boolean defaultStyleBookEntry) {
 		for (StyleBookEntry styleBookEntry :
-				findByG_D(
+				_findByG_D(
 					groupId, defaultStyleBookEntry, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -5076,6 +5191,16 @@ public class StyleBookEntryPersistenceImpl
 		int end, OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_D_Head(
+			groupId, defaultStyleBookEntry, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByG_D_Head(
+		long groupId, boolean defaultStyleBookEntry, boolean head, int start,
+		int end, OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			StyleBookEntry.class);
 
@@ -5168,10 +5293,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5498,9 +5625,9 @@ public class StyleBookEntryPersistenceImpl
 		long groupId, boolean defaultStyleBookEntry, boolean head) {
 
 		for (StyleBookEntry styleBookEntry :
-				findByG_D_Head(
+				_findByG_D_Head(
 					groupId, defaultStyleBookEntry, head, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -5669,6 +5796,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeN(
+			groupId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<StyleBookEntry> _findByG_LikeN(
+		long groupId, String name, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -5757,10 +5894,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6081,9 +6220,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByG_LikeN(long groupId, String name) {
 		for (StyleBookEntry styleBookEntry :
-				findByG_LikeN(
-					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_LikeN(
+					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -6263,6 +6402,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeN_Head(
+			groupId, name, head, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<StyleBookEntry> _findByG_LikeN_Head(
+		long groupId, String name, boolean head, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -6356,10 +6505,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6696,9 +6847,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByG_LikeN_Head(long groupId, String name, boolean head) {
 		for (StyleBookEntry styleBookEntry :
-				findByG_LikeN_Head(
+				_findByG_LikeN_Head(
 					groupId, name, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -6884,6 +7035,16 @@ public class StyleBookEntryPersistenceImpl
 		OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_SBEK(
+			groupId, styleBookEntryKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findByG_SBEK(
+		long groupId, String styleBookEntryKey, int start, int end,
+		OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		styleBookEntryKey = Objects.toString(styleBookEntryKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -6981,10 +7142,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7305,9 +7468,9 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void removeByG_SBEK(long groupId, String styleBookEntryKey) {
 		for (StyleBookEntry styleBookEntry :
-				findByG_SBEK(
+				_findByG_SBEK(
 					groupId, styleBookEntryKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(styleBookEntry);
 		}
@@ -7418,8 +7581,16 @@ public class StyleBookEntryPersistenceImpl
 			long groupId, String styleBookEntryKey, boolean head)
 		throws NoSuchEntryException {
 
-		StyleBookEntry styleBookEntry = fetchByG_SBEK_Head(
-			groupId, styleBookEntryKey, head);
+		return _findByG_SBEK_Head(groupId, styleBookEntryKey, head, false);
+	}
+
+	private StyleBookEntry _findByG_SBEK_Head(
+			long groupId, String styleBookEntryKey, boolean head,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		StyleBookEntry styleBookEntry = _fetchByG_SBEK_Head(
+			groupId, styleBookEntryKey, head, true, readOnlyCache);
 
 		if (styleBookEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -7475,6 +7646,14 @@ public class StyleBookEntryPersistenceImpl
 	public StyleBookEntry fetchByG_SBEK_Head(
 		long groupId, String styleBookEntryKey, boolean head,
 		boolean useFinderCache) {
+
+		return _fetchByG_SBEK_Head(
+			groupId, styleBookEntryKey, head, useFinderCache, false);
+	}
+
+	private StyleBookEntry _fetchByG_SBEK_Head(
+		long groupId, String styleBookEntryKey, boolean head,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		styleBookEntryKey = Objects.toString(styleBookEntryKey, "");
 
@@ -7556,9 +7735,11 @@ public class StyleBookEntryPersistenceImpl
 				else {
 					StyleBookEntry styleBookEntry = list.get(0);
 
-					result = styleBookEntry;
+					if (!readOnlyCache) {
+						result = styleBookEntry;
 
-					cacheResult(styleBookEntry);
+						cacheResult(styleBookEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7590,8 +7771,8 @@ public class StyleBookEntryPersistenceImpl
 			long groupId, String styleBookEntryKey, boolean head)
 		throws NoSuchEntryException {
 
-		StyleBookEntry styleBookEntry = findByG_SBEK_Head(
-			groupId, styleBookEntryKey, head);
+		StyleBookEntry styleBookEntry = _findByG_SBEK_Head(
+			groupId, styleBookEntryKey, head, true);
 
 		return remove(styleBookEntry);
 	}
@@ -7708,7 +7889,14 @@ public class StyleBookEntryPersistenceImpl
 	public StyleBookEntry findByHeadId(long headId)
 		throws NoSuchEntryException {
 
-		StyleBookEntry styleBookEntry = fetchByHeadId(headId);
+		return _findByHeadId(headId, false);
+	}
+
+	private StyleBookEntry _findByHeadId(long headId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		StyleBookEntry styleBookEntry = _fetchByHeadId(
+			headId, true, readOnlyCache);
 
 		if (styleBookEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -7750,6 +7938,12 @@ public class StyleBookEntryPersistenceImpl
 	 */
 	@Override
 	public StyleBookEntry fetchByHeadId(long headId, boolean useFinderCache) {
+		return _fetchByHeadId(headId, useFinderCache, false);
+	}
+
+	private StyleBookEntry _fetchByHeadId(
+		long headId, boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			StyleBookEntry.class);
 
@@ -7805,9 +7999,11 @@ public class StyleBookEntryPersistenceImpl
 				else {
 					StyleBookEntry styleBookEntry = list.get(0);
 
-					result = styleBookEntry;
+					if (!readOnlyCache) {
+						result = styleBookEntry;
 
-					cacheResult(styleBookEntry);
+						cacheResult(styleBookEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7836,7 +8032,7 @@ public class StyleBookEntryPersistenceImpl
 	public StyleBookEntry removeByHeadId(long headId)
 		throws NoSuchEntryException {
 
-		StyleBookEntry styleBookEntry = findByHeadId(headId);
+		StyleBookEntry styleBookEntry = _findByHeadId(headId, true);
 
 		return remove(styleBookEntry);
 	}
@@ -8520,6 +8716,13 @@ public class StyleBookEntryPersistenceImpl
 		int start, int end, OrderByComparator<StyleBookEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<StyleBookEntry> _findAll(
+		int start, int end, OrderByComparator<StyleBookEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			StyleBookEntry.class);
 
@@ -8577,10 +8780,12 @@ public class StyleBookEntryPersistenceImpl
 				list = (List<StyleBookEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8600,7 +8805,10 @@ public class StyleBookEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (StyleBookEntry styleBookEntry : findAll()) {
+		for (StyleBookEntry styleBookEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(styleBookEntry);
 		}
 	}

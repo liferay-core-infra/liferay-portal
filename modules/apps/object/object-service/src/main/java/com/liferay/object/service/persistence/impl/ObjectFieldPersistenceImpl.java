@@ -173,6 +173,15 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectField> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -258,10 +267,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -555,7 +566,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectField objectField :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectField);
 		}
@@ -710,6 +723,16 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectField> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -803,10 +826,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1124,9 +1149,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectField objectField :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectField);
 		}
@@ -1288,6 +1313,16 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByListTypeDefinitionId(
+			listTypeDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectField> _findByListTypeDefinitionId(
+		long listTypeDefinitionId, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1366,10 +1401,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1659,9 +1696,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByListTypeDefinitionId(long listTypeDefinitionId) {
 		for (ObjectField objectField :
-				findByListTypeDefinitionId(
+				_findByListTypeDefinitionId(
 					listTypeDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectField);
 		}
@@ -1798,6 +1835,16 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectDefinitionId(
+			objectDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectField> _findByObjectDefinitionId(
+		long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1875,10 +1922,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2168,9 +2217,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByObjectDefinitionId(long objectDefinitionId) {
 		for (ObjectField objectField :
-				findByObjectDefinitionId(
+				_findByObjectDefinitionId(
 					objectDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectField);
 		}
@@ -2313,6 +2362,16 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLTDI_S(
+			listTypeDefinitionId, state, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectField> _findByLTDI_S(
+		long listTypeDefinitionId, boolean state, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2394,10 +2453,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2704,9 +2765,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByLTDI_S(long listTypeDefinitionId, boolean state) {
 		for (ObjectField objectField :
-				findByLTDI_S(
+				_findByLTDI_S(
 					listTypeDefinitionId, state, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectField);
 		}
@@ -2857,6 +2918,16 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI_DTN(
+			objectDefinitionId, dbTableName, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectField> _findByODI_DTN(
+		long objectDefinitionId, String dbTableName, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		dbTableName = Objects.toString(dbTableName, "");
 
 		FinderPath finderPath = null;
@@ -2951,10 +3022,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3275,9 +3348,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByODI_DTN(long objectDefinitionId, String dbTableName) {
 		for (ObjectField objectField :
-				findByODI_DTN(
+				_findByODI_DTN(
 					objectDefinitionId, dbTableName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectField);
 		}
@@ -3374,7 +3447,15 @@ public class ObjectFieldPersistenceImpl
 	public ObjectField findByODI_N(long objectDefinitionId, String name)
 		throws NoSuchObjectFieldException {
 
-		ObjectField objectField = fetchByODI_N(objectDefinitionId, name);
+		return _findByODI_N(objectDefinitionId, name, false);
+	}
+
+	private ObjectField _findByODI_N(
+			long objectDefinitionId, String name, boolean readOnlyCache)
+		throws NoSuchObjectFieldException {
+
+		ObjectField objectField = _fetchByODI_N(
+			objectDefinitionId, name, true, readOnlyCache);
 
 		if (objectField == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3422,6 +3503,13 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public ObjectField fetchByODI_N(
 		long objectDefinitionId, String name, boolean useFinderCache) {
+
+		return _fetchByODI_N(objectDefinitionId, name, useFinderCache, false);
+	}
+
+	private ObjectField _fetchByODI_N(
+		long objectDefinitionId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -3510,9 +3598,11 @@ public class ObjectFieldPersistenceImpl
 
 					ObjectField objectField = list.get(0);
 
-					result = objectField;
+					if (!readOnlyCache) {
+						result = objectField;
 
-					cacheResult(objectField);
+						cacheResult(objectField);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3542,7 +3632,7 @@ public class ObjectFieldPersistenceImpl
 	public ObjectField removeByODI_N(long objectDefinitionId, String name)
 		throws NoSuchObjectFieldException {
 
-		ObjectField objectField = findByODI_N(objectDefinitionId, name);
+		ObjectField objectField = _findByODI_N(objectDefinitionId, name, true);
 
 		return remove(objectField);
 	}
@@ -3707,6 +3797,16 @@ public class ObjectFieldPersistenceImpl
 		OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI_S(
+			objectDefinitionId, system, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectField> _findByODI_S(
+		long objectDefinitionId, boolean system, int start, int end,
+		OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3788,10 +3888,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4098,9 +4200,9 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void removeByODI_S(long objectDefinitionId, boolean system) {
 		for (ObjectField objectField :
-				findByODI_S(
+				_findByODI_S(
 					objectDefinitionId, system, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectField);
 		}
@@ -4184,8 +4286,18 @@ public class ObjectFieldPersistenceImpl
 			long objectDefinitionId)
 		throws NoSuchObjectFieldException {
 
-		ObjectField objectField = fetchByC_ERC_ODI(
-			companyId, externalReferenceCode, objectDefinitionId);
+		return _findByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId, false);
+	}
+
+	private ObjectField _findByC_ERC_ODI(
+			long companyId, String externalReferenceCode,
+			long objectDefinitionId, boolean readOnlyCache)
+		throws NoSuchObjectFieldException {
+
+		ObjectField objectField = _fetchByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId, true,
+			readOnlyCache);
 
 		if (objectField == null) {
 			StringBundler sb = new StringBundler(8);
@@ -4242,6 +4354,15 @@ public class ObjectFieldPersistenceImpl
 	public ObjectField fetchByC_ERC_ODI(
 		long companyId, String externalReferenceCode, long objectDefinitionId,
 		boolean useFinderCache) {
+
+		return _fetchByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId,
+			useFinderCache, false);
+	}
+
+	private ObjectField _fetchByC_ERC_ODI(
+		long companyId, String externalReferenceCode, long objectDefinitionId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -4323,9 +4444,11 @@ public class ObjectFieldPersistenceImpl
 				else {
 					ObjectField objectField = list.get(0);
 
-					result = objectField;
+					if (!readOnlyCache) {
+						result = objectField;
 
-					cacheResult(objectField);
+						cacheResult(objectField);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4358,8 +4481,8 @@ public class ObjectFieldPersistenceImpl
 			long objectDefinitionId)
 		throws NoSuchObjectFieldException {
 
-		ObjectField objectField = findByC_ERC_ODI(
-			companyId, externalReferenceCode, objectDefinitionId);
+		ObjectField objectField = _findByC_ERC_ODI(
+			companyId, externalReferenceCode, objectDefinitionId, true);
 
 		return remove(objectField);
 	}
@@ -4545,6 +4668,16 @@ public class ObjectFieldPersistenceImpl
 		int end, OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI_DBT_I(
+			objectDefinitionId, dbType, indexed, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectField> _findByODI_DBT_I(
+		long objectDefinitionId, String dbType, boolean indexed, int start,
+		int end, OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		dbType = Objects.toString(dbType, "");
 
 		FinderPath finderPath = null;
@@ -4645,10 +4778,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4987,9 +5122,9 @@ public class ObjectFieldPersistenceImpl
 		long objectDefinitionId, String dbType, boolean indexed) {
 
 		for (ObjectField objectField :
-				findByODI_DBT_I(
+				_findByODI_DBT_I(
 					objectDefinitionId, dbType, indexed, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectField);
 		}
@@ -5529,6 +5664,13 @@ public class ObjectFieldPersistenceImpl
 		int start, int end, OrderByComparator<ObjectField> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectField> _findAll(
+		int start, int end, OrderByComparator<ObjectField> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5583,10 +5725,12 @@ public class ObjectFieldPersistenceImpl
 				list = (List<ObjectField>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5606,7 +5750,10 @@ public class ObjectFieldPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectField objectField : findAll()) {
+		for (ObjectField objectField :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectField);
 		}
 	}

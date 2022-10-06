@@ -160,6 +160,15 @@ public class AnnouncementsFlagPersistenceImpl
 		OrderByComparator<AnnouncementsFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnnouncementsFlag> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -234,10 +243,12 @@ public class AnnouncementsFlagPersistenceImpl
 				list = (List<AnnouncementsFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -528,8 +539,9 @@ public class AnnouncementsFlagPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AnnouncementsFlag announcementsFlag :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(announcementsFlag);
 		}
@@ -663,6 +675,15 @@ public class AnnouncementsFlagPersistenceImpl
 		OrderByComparator<AnnouncementsFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByEntryId(
+			entryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnnouncementsFlag> _findByEntryId(
+		long entryId, int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -735,10 +756,12 @@ public class AnnouncementsFlagPersistenceImpl
 				list = (List<AnnouncementsFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1026,8 +1049,9 @@ public class AnnouncementsFlagPersistenceImpl
 	@Override
 	public void removeByEntryId(long entryId) {
 		for (AnnouncementsFlag announcementsFlag :
-				findByEntryId(
-					entryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByEntryId(
+					entryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(announcementsFlag);
 		}
@@ -1101,8 +1125,15 @@ public class AnnouncementsFlagPersistenceImpl
 	public AnnouncementsFlag findByU_E_V(long userId, long entryId, int value)
 		throws NoSuchFlagException {
 
-		AnnouncementsFlag announcementsFlag = fetchByU_E_V(
-			userId, entryId, value);
+		return _findByU_E_V(userId, entryId, value, false);
+	}
+
+	private AnnouncementsFlag _findByU_E_V(
+			long userId, long entryId, int value, boolean readOnlyCache)
+		throws NoSuchFlagException {
+
+		AnnouncementsFlag announcementsFlag = _fetchByU_E_V(
+			userId, entryId, value, true, readOnlyCache);
 
 		if (announcementsFlag == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1157,6 +1188,13 @@ public class AnnouncementsFlagPersistenceImpl
 	@Override
 	public AnnouncementsFlag fetchByU_E_V(
 		long userId, long entryId, int value, boolean useFinderCache) {
+
+		return _fetchByU_E_V(userId, entryId, value, useFinderCache, false);
+	}
+
+	private AnnouncementsFlag _fetchByU_E_V(
+		long userId, long entryId, int value, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1221,9 +1259,11 @@ public class AnnouncementsFlagPersistenceImpl
 				else {
 					AnnouncementsFlag announcementsFlag = list.get(0);
 
-					result = announcementsFlag;
+					if (!readOnlyCache) {
+						result = announcementsFlag;
 
-					cacheResult(announcementsFlag);
+						cacheResult(announcementsFlag);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1254,8 +1294,8 @@ public class AnnouncementsFlagPersistenceImpl
 	public AnnouncementsFlag removeByU_E_V(long userId, long entryId, int value)
 		throws NoSuchFlagException {
 
-		AnnouncementsFlag announcementsFlag = findByU_E_V(
-			userId, entryId, value);
+		AnnouncementsFlag announcementsFlag = _findByU_E_V(
+			userId, entryId, value, true);
 
 		return remove(announcementsFlag);
 	}
@@ -1738,6 +1778,14 @@ public class AnnouncementsFlagPersistenceImpl
 		OrderByComparator<AnnouncementsFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AnnouncementsFlag> _findAll(
+		int start, int end,
+		OrderByComparator<AnnouncementsFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1792,10 +1840,12 @@ public class AnnouncementsFlagPersistenceImpl
 				list = (List<AnnouncementsFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1815,7 +1865,10 @@ public class AnnouncementsFlagPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AnnouncementsFlag announcementsFlag : findAll()) {
+		for (AnnouncementsFlag announcementsFlag :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(announcementsFlag);
 		}
 	}

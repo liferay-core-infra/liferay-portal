@@ -173,6 +173,15 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -261,10 +270,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -562,7 +573,9 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (AssetVocabulary assetVocabulary :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetVocabulary);
 		}
@@ -663,7 +676,15 @@ public class AssetVocabularyPersistenceImpl
 	public AssetVocabulary findByUUID_G(String uuid, long groupId)
 		throws NoSuchVocabularyException {
 
-		AssetVocabulary assetVocabulary = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private AssetVocabulary _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchVocabularyException {
+
+		AssetVocabulary assetVocabulary = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (assetVocabulary == null) {
 			StringBundler sb = new StringBundler(6);
@@ -711,6 +732,13 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public AssetVocabulary fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private AssetVocabulary _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -786,9 +814,11 @@ public class AssetVocabularyPersistenceImpl
 				else {
 					AssetVocabulary assetVocabulary = list.get(0);
 
-					result = assetVocabulary;
+					if (!readOnlyCache) {
+						result = assetVocabulary;
 
-					cacheResult(assetVocabulary);
+						cacheResult(assetVocabulary);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -818,7 +848,7 @@ public class AssetVocabularyPersistenceImpl
 	public AssetVocabulary removeByUUID_G(String uuid, long groupId)
 		throws NoSuchVocabularyException {
 
-		AssetVocabulary assetVocabulary = findByUUID_G(uuid, groupId);
+		AssetVocabulary assetVocabulary = _findByUUID_G(uuid, groupId, true);
 
 		return remove(assetVocabulary);
 	}
@@ -992,6 +1022,16 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetVocabulary> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1088,10 +1128,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1412,9 +1454,9 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (AssetVocabulary assetVocabulary :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetVocabulary);
 		}
@@ -1585,6 +1627,15 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetVocabulary.class);
 
@@ -1660,10 +1711,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2489,6 +2542,15 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2577,12 +2639,14 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2604,8 +2668,9 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (AssetVocabulary assetVocabulary :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetVocabulary);
 		}
@@ -2943,6 +3008,15 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetVocabulary.class);
 
@@ -3020,10 +3094,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3311,8 +3387,9 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AssetVocabulary assetVocabulary :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetVocabulary);
 		}
@@ -3397,7 +3474,15 @@ public class AssetVocabularyPersistenceImpl
 	public AssetVocabulary findByG_N(long groupId, String name)
 		throws NoSuchVocabularyException {
 
-		AssetVocabulary assetVocabulary = fetchByG_N(groupId, name);
+		return _findByG_N(groupId, name, false);
+	}
+
+	private AssetVocabulary _findByG_N(
+			long groupId, String name, boolean readOnlyCache)
+		throws NoSuchVocabularyException {
+
+		AssetVocabulary assetVocabulary = _fetchByG_N(
+			groupId, name, true, readOnlyCache);
 
 		if (assetVocabulary == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3445,6 +3530,13 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public AssetVocabulary fetchByG_N(
 		long groupId, String name, boolean useFinderCache) {
+
+		return _fetchByG_N(groupId, name, useFinderCache, false);
+	}
+
+	private AssetVocabulary _fetchByG_N(
+		long groupId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -3520,9 +3612,11 @@ public class AssetVocabularyPersistenceImpl
 				else {
 					AssetVocabulary assetVocabulary = list.get(0);
 
-					result = assetVocabulary;
+					if (!readOnlyCache) {
+						result = assetVocabulary;
 
-					cacheResult(assetVocabulary);
+						cacheResult(assetVocabulary);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3552,7 +3646,7 @@ public class AssetVocabularyPersistenceImpl
 	public AssetVocabulary removeByG_N(long groupId, String name)
 		throws NoSuchVocabularyException {
 
-		AssetVocabulary assetVocabulary = findByG_N(groupId, name);
+		AssetVocabulary assetVocabulary = _findByG_N(groupId, name, true);
 
 		return remove(assetVocabulary);
 	}
@@ -3725,6 +3819,16 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_LikeN(
+			groupId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetVocabulary> _findByG_LikeN(
+		long groupId, String name, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -3813,10 +3917,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4511,9 +4617,9 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void removeByG_LikeN(long groupId, String name) {
 		for (AssetVocabulary assetVocabulary :
-				findByG_LikeN(
-					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_LikeN(
+					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetVocabulary);
 		}
@@ -4756,6 +4862,16 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_V(
+			groupId, visibilityType, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findByG_V(
+		long groupId, int visibilityType, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetVocabulary.class);
 
@@ -4840,10 +4956,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5746,6 +5864,16 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_V(
+			groupIds, visibilityTypes, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findByG_V(
+		long[] groupIds, int[] visibilityTypes, int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -5863,11 +5991,14 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByG_V, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByG_V, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5890,9 +6021,9 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void removeByG_V(long groupId, int visibilityType) {
 		for (AssetVocabulary assetVocabulary :
-				findByG_V(
+				_findByG_V(
 					groupId, visibilityType, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(assetVocabulary);
 		}
@@ -6231,8 +6362,15 @@ public class AssetVocabularyPersistenceImpl
 			long groupId, String externalReferenceCode)
 		throws NoSuchVocabularyException {
 
-		AssetVocabulary assetVocabulary = fetchByG_ERC(
-			groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private AssetVocabulary _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchVocabularyException {
+
+		AssetVocabulary assetVocabulary = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (assetVocabulary == null) {
 			StringBundler sb = new StringBundler(6);
@@ -6282,6 +6420,14 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public AssetVocabulary fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private AssetVocabulary _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -6359,9 +6505,11 @@ public class AssetVocabularyPersistenceImpl
 				else {
 					AssetVocabulary assetVocabulary = list.get(0);
 
-					result = assetVocabulary;
+					if (!readOnlyCache) {
+						result = assetVocabulary;
 
-					cacheResult(assetVocabulary);
+						cacheResult(assetVocabulary);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6392,8 +6540,8 @@ public class AssetVocabularyPersistenceImpl
 			long groupId, String externalReferenceCode)
 		throws NoSuchVocabularyException {
 
-		AssetVocabulary assetVocabulary = findByG_ERC(
-			groupId, externalReferenceCode);
+		AssetVocabulary assetVocabulary = _findByG_ERC(
+			groupId, externalReferenceCode, true);
 
 		return remove(assetVocabulary);
 	}
@@ -7113,6 +7261,14 @@ public class AssetVocabularyPersistenceImpl
 		OrderByComparator<AssetVocabulary> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetVocabulary> _findAll(
+		int start, int end,
+		OrderByComparator<AssetVocabulary> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetVocabulary.class);
 
@@ -7170,10 +7326,12 @@ public class AssetVocabularyPersistenceImpl
 				list = (List<AssetVocabulary>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7193,7 +7351,10 @@ public class AssetVocabularyPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AssetVocabulary assetVocabulary : findAll()) {
+		for (AssetVocabulary assetVocabulary :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(assetVocabulary);
 		}
 	}

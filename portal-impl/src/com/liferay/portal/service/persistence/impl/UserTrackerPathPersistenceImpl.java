@@ -160,6 +160,16 @@ public class UserTrackerPathPersistenceImpl
 		OrderByComparator<UserTrackerPath> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserTrackerId(
+			userTrackerId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserTrackerPath> _findByUserTrackerId(
+		long userTrackerId, int start, int end,
+		OrderByComparator<UserTrackerPath> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -234,10 +244,12 @@ public class UserTrackerPathPersistenceImpl
 				list = (List<UserTrackerPath>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -529,9 +541,9 @@ public class UserTrackerPathPersistenceImpl
 	@Override
 	public void removeByUserTrackerId(long userTrackerId) {
 		for (UserTrackerPath userTrackerPath :
-				findByUserTrackerId(
-					userTrackerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUserTrackerId(
+					userTrackerId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(userTrackerPath);
 		}
@@ -962,6 +974,14 @@ public class UserTrackerPathPersistenceImpl
 		OrderByComparator<UserTrackerPath> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserTrackerPath> _findAll(
+		int start, int end,
+		OrderByComparator<UserTrackerPath> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1016,10 +1036,12 @@ public class UserTrackerPathPersistenceImpl
 				list = (List<UserTrackerPath>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1039,7 +1061,10 @@ public class UserTrackerPathPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserTrackerPath userTrackerPath : findAll()) {
+		for (UserTrackerPath userTrackerPath :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userTrackerPath);
 		}
 	}

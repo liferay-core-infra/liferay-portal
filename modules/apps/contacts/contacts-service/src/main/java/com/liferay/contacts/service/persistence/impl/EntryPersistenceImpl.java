@@ -168,6 +168,15 @@ public class EntryPersistenceImpl
 		long userId, int start, int end,
 		OrderByComparator<Entry> orderByComparator, boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Entry> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<Entry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -239,10 +248,12 @@ public class EntryPersistenceImpl
 				list = (List<Entry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -523,8 +534,9 @@ public class EntryPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (Entry entry :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(entry);
 		}
@@ -597,7 +609,14 @@ public class EntryPersistenceImpl
 	public Entry findByU_EA(long userId, String emailAddress)
 		throws NoSuchEntryException {
 
-		Entry entry = fetchByU_EA(userId, emailAddress);
+		return _findByU_EA(userId, emailAddress, false);
+	}
+
+	private Entry _findByU_EA(
+			long userId, String emailAddress, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		Entry entry = _fetchByU_EA(userId, emailAddress, true, readOnlyCache);
 
 		if (entry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -645,6 +664,13 @@ public class EntryPersistenceImpl
 	@Override
 	public Entry fetchByU_EA(
 		long userId, String emailAddress, boolean useFinderCache) {
+
+		return _fetchByU_EA(userId, emailAddress, useFinderCache, false);
+	}
+
+	private Entry _fetchByU_EA(
+		long userId, String emailAddress, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		emailAddress = Objects.toString(emailAddress, "");
 
@@ -733,9 +759,11 @@ public class EntryPersistenceImpl
 
 					Entry entry = list.get(0);
 
-					result = entry;
+					if (!readOnlyCache) {
+						result = entry;
 
-					cacheResult(entry);
+						cacheResult(entry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -765,7 +793,7 @@ public class EntryPersistenceImpl
 	public Entry removeByU_EA(long userId, String emailAddress)
 		throws NoSuchEntryException {
 
-		Entry entry = findByU_EA(userId, emailAddress);
+		Entry entry = _findByU_EA(userId, emailAddress, true);
 
 		return remove(entry);
 	}
@@ -1231,6 +1259,13 @@ public class EntryPersistenceImpl
 		int start, int end, OrderByComparator<Entry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Entry> _findAll(
+		int start, int end, OrderByComparator<Entry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1284,10 +1319,12 @@ public class EntryPersistenceImpl
 				list = (List<Entry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1307,7 +1344,10 @@ public class EntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Entry entry : findAll()) {
+		for (Entry entry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(entry);
 		}
 	}

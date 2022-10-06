@@ -177,6 +177,16 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceDiscountId(
+			commerceDiscountId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceDiscountUsageEntry> _findByCommerceDiscountId(
+		long commerceDiscountId, int start, int end,
+		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -257,10 +267,12 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 				list = (List<CommerceDiscountUsageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,9 +569,9 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 	@Override
 	public void removeByCommerceDiscountId(long commerceDiscountId) {
 		for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
-				findByCommerceDiscountId(
+				_findByCommerceDiscountId(
 					commerceDiscountId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceDiscountUsageEntry);
 		}
@@ -704,6 +716,16 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCAI_CDI(
+			commerceAccountId, commerceDiscountId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscountUsageEntry> _findByCAI_CDI(
+		long commerceAccountId, long commerceDiscountId, int start, int end,
+		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -793,10 +815,12 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 				list = (List<CommerceDiscountUsageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1113,9 +1137,9 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		long commerceAccountId, long commerceDiscountId) {
 
 		for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
-				findByCAI_CDI(
+				_findByCAI_CDI(
 					commerceAccountId, commerceDiscountId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceDiscountUsageEntry);
 		}
@@ -1269,6 +1293,16 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCOI_CDI(
+			commerceOrderId, commerceDiscountId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceDiscountUsageEntry> _findByCOI_CDI(
+		long commerceOrderId, long commerceDiscountId, int start, int end,
+		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1355,10 +1389,12 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 				list = (List<CommerceDiscountUsageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1673,9 +1709,9 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 	@Override
 	public void removeByCOI_CDI(long commerceOrderId, long commerceDiscountId) {
 		for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
-				findByCOI_CDI(
+				_findByCOI_CDI(
 					commerceOrderId, commerceDiscountId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceDiscountUsageEntry);
 		}
@@ -1837,6 +1873,17 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCAI_COI_CDI(
+			commerceAccountId, commerceOrderId, commerceDiscountId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscountUsageEntry> _findByCAI_COI_CDI(
+		long commerceAccountId, long commerceOrderId, long commerceDiscountId,
+		int start, int end,
+		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1932,10 +1979,12 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 				list = (List<CommerceDiscountUsageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2274,9 +2323,9 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		long commerceAccountId, long commerceOrderId, long commerceDiscountId) {
 
 		for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
-				findByCAI_COI_CDI(
+				_findByCAI_COI_CDI(
 					commerceAccountId, commerceOrderId, commerceDiscountId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceDiscountUsageEntry);
 		}
@@ -2781,6 +2830,14 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscountUsageEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceDiscountUsageEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2836,10 +2893,12 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 				list = (List<CommerceDiscountUsageEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2860,7 +2919,8 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceDiscountUsageEntry);
 		}

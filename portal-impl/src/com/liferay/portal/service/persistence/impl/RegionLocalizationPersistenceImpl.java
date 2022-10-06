@@ -158,6 +158,15 @@ public class RegionLocalizationPersistenceImpl
 		OrderByComparator<RegionLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRegionId(
+			regionId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RegionLocalization> _findByRegionId(
+		long regionId, int start, int end,
+		OrderByComparator<RegionLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -230,10 +239,12 @@ public class RegionLocalizationPersistenceImpl
 				list = (List<RegionLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -525,8 +536,9 @@ public class RegionLocalizationPersistenceImpl
 	@Override
 	public void removeByRegionId(long regionId) {
 		for (RegionLocalization regionLocalization :
-				findByRegionId(
-					regionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRegionId(
+					regionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(regionLocalization);
 		}
@@ -600,8 +612,15 @@ public class RegionLocalizationPersistenceImpl
 			long regionId, String languageId)
 		throws NoSuchRegionLocalizationException {
 
-		RegionLocalization regionLocalization = fetchByRegionId_LanguageId(
-			regionId, languageId);
+		return _findByRegionId_LanguageId(regionId, languageId, false);
+	}
+
+	private RegionLocalization _findByRegionId_LanguageId(
+			long regionId, String languageId, boolean readOnlyCache)
+		throws NoSuchRegionLocalizationException {
+
+		RegionLocalization regionLocalization = _fetchByRegionId_LanguageId(
+			regionId, languageId, true, readOnlyCache);
 
 		if (regionLocalization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -651,6 +670,14 @@ public class RegionLocalizationPersistenceImpl
 	@Override
 	public RegionLocalization fetchByRegionId_LanguageId(
 		long regionId, String languageId, boolean useFinderCache) {
+
+		return _fetchByRegionId_LanguageId(
+			regionId, languageId, useFinderCache, false);
+	}
+
+	private RegionLocalization _fetchByRegionId_LanguageId(
+		long regionId, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -725,9 +752,11 @@ public class RegionLocalizationPersistenceImpl
 				else {
 					RegionLocalization regionLocalization = list.get(0);
 
-					result = regionLocalization;
+					if (!readOnlyCache) {
+						result = regionLocalization;
 
-					cacheResult(regionLocalization);
+						cacheResult(regionLocalization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -758,8 +787,8 @@ public class RegionLocalizationPersistenceImpl
 			long regionId, String languageId)
 		throws NoSuchRegionLocalizationException {
 
-		RegionLocalization regionLocalization = findByRegionId_LanguageId(
-			regionId, languageId);
+		RegionLocalization regionLocalization = _findByRegionId_LanguageId(
+			regionId, languageId, true);
 
 		return remove(regionLocalization);
 	}
@@ -1241,6 +1270,14 @@ public class RegionLocalizationPersistenceImpl
 		OrderByComparator<RegionLocalization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RegionLocalization> _findAll(
+		int start, int end,
+		OrderByComparator<RegionLocalization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1295,10 +1332,12 @@ public class RegionLocalizationPersistenceImpl
 				list = (List<RegionLocalization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1318,7 +1357,10 @@ public class RegionLocalizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RegionLocalization regionLocalization : findAll()) {
+		for (RegionLocalization regionLocalization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(regionLocalization);
 		}
 	}

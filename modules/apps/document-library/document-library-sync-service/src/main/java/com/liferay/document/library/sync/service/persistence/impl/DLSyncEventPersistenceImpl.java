@@ -168,6 +168,15 @@ public class DLSyncEventPersistenceImpl
 		OrderByComparator<DLSyncEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtModifiedTime(
+			modifiedTime, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLSyncEvent> _findByGtModifiedTime(
+		long modifiedTime, int start, int end,
+		OrderByComparator<DLSyncEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -230,10 +239,12 @@ public class DLSyncEventPersistenceImpl
 				list = (List<DLSyncEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -517,8 +528,9 @@ public class DLSyncEventPersistenceImpl
 	@Override
 	public void removeByGtModifiedTime(long modifiedTime) {
 		for (DLSyncEvent dlSyncEvent :
-				findByGtModifiedTime(
-					modifiedTime, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGtModifiedTime(
+					modifiedTime, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlSyncEvent);
 		}
@@ -588,7 +600,13 @@ public class DLSyncEventPersistenceImpl
 	 */
 	@Override
 	public DLSyncEvent findByTypePK(long typePK) throws NoSuchEventException {
-		DLSyncEvent dlSyncEvent = fetchByTypePK(typePK);
+		return _findByTypePK(typePK, false);
+	}
+
+	private DLSyncEvent _findByTypePK(long typePK, boolean readOnlyCache)
+		throws NoSuchEventException {
+
+		DLSyncEvent dlSyncEvent = _fetchByTypePK(typePK, true, readOnlyCache);
 
 		if (dlSyncEvent == null) {
 			StringBundler sb = new StringBundler(4);
@@ -630,6 +648,12 @@ public class DLSyncEventPersistenceImpl
 	 */
 	@Override
 	public DLSyncEvent fetchByTypePK(long typePK, boolean useFinderCache) {
+		return _fetchByTypePK(typePK, useFinderCache, false);
+	}
+
+	private DLSyncEvent _fetchByTypePK(
+		long typePK, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -682,9 +706,11 @@ public class DLSyncEventPersistenceImpl
 				else {
 					DLSyncEvent dlSyncEvent = list.get(0);
 
-					result = dlSyncEvent;
+					if (!readOnlyCache) {
+						result = dlSyncEvent;
 
-					cacheResult(dlSyncEvent);
+						cacheResult(dlSyncEvent);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -711,7 +737,7 @@ public class DLSyncEventPersistenceImpl
 	 */
 	@Override
 	public DLSyncEvent removeByTypePK(long typePK) throws NoSuchEventException {
-		DLSyncEvent dlSyncEvent = findByTypePK(typePK);
+		DLSyncEvent dlSyncEvent = _findByTypePK(typePK, true);
 
 		return remove(dlSyncEvent);
 	}
@@ -1146,6 +1172,13 @@ public class DLSyncEventPersistenceImpl
 		int start, int end, OrderByComparator<DLSyncEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLSyncEvent> _findAll(
+		int start, int end, OrderByComparator<DLSyncEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1200,10 +1233,12 @@ public class DLSyncEventPersistenceImpl
 				list = (List<DLSyncEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1223,7 +1258,10 @@ public class DLSyncEventPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLSyncEvent dlSyncEvent : findAll()) {
+		for (DLSyncEvent dlSyncEvent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlSyncEvent);
 		}
 	}

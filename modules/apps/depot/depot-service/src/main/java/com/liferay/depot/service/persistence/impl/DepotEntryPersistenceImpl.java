@@ -171,6 +171,15 @@ public class DepotEntryPersistenceImpl
 		OrderByComparator<DepotEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DepotEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -256,10 +265,12 @@ public class DepotEntryPersistenceImpl
 				list = (List<DepotEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,7 +564,9 @@ public class DepotEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DepotEntry depotEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(depotEntry);
 		}
@@ -642,7 +655,15 @@ public class DepotEntryPersistenceImpl
 	public DepotEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		DepotEntry depotEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DepotEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		DepotEntry depotEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (depotEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -690,6 +711,13 @@ public class DepotEntryPersistenceImpl
 	@Override
 	public DepotEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DepotEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -762,9 +790,11 @@ public class DepotEntryPersistenceImpl
 				else {
 					DepotEntry depotEntry = list.get(0);
 
-					result = depotEntry;
+					if (!readOnlyCache) {
+						result = depotEntry;
 
-					cacheResult(depotEntry);
+						cacheResult(depotEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -794,7 +824,7 @@ public class DepotEntryPersistenceImpl
 	public DepotEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		DepotEntry depotEntry = findByUUID_G(uuid, groupId);
+		DepotEntry depotEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(depotEntry);
 	}
@@ -956,6 +986,16 @@ public class DepotEntryPersistenceImpl
 		OrderByComparator<DepotEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DepotEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DepotEntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1049,10 +1089,12 @@ public class DepotEntryPersistenceImpl
 				list = (List<DepotEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1369,9 +1411,9 @@ public class DepotEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DepotEntry depotEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(depotEntry);
 		}
@@ -1465,7 +1507,13 @@ public class DepotEntryPersistenceImpl
 	 */
 	@Override
 	public DepotEntry findByGroupId(long groupId) throws NoSuchEntryException {
-		DepotEntry depotEntry = fetchByGroupId(groupId);
+		return _findByGroupId(groupId, false);
+	}
+
+	private DepotEntry _findByGroupId(long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		DepotEntry depotEntry = _fetchByGroupId(groupId, true, readOnlyCache);
 
 		if (depotEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1507,6 +1555,12 @@ public class DepotEntryPersistenceImpl
 	 */
 	@Override
 	public DepotEntry fetchByGroupId(long groupId, boolean useFinderCache) {
+		return _fetchByGroupId(groupId, useFinderCache, false);
+	}
+
+	private DepotEntry _fetchByGroupId(
+		long groupId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -1559,9 +1613,11 @@ public class DepotEntryPersistenceImpl
 				else {
 					DepotEntry depotEntry = list.get(0);
 
-					result = depotEntry;
+					if (!readOnlyCache) {
+						result = depotEntry;
 
-					cacheResult(depotEntry);
+						cacheResult(depotEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1590,7 +1646,7 @@ public class DepotEntryPersistenceImpl
 	public DepotEntry removeByGroupId(long groupId)
 		throws NoSuchEntryException {
 
-		DepotEntry depotEntry = findByGroupId(groupId);
+		DepotEntry depotEntry = _findByGroupId(groupId, true);
 
 		return remove(depotEntry);
 	}
@@ -2071,6 +2127,13 @@ public class DepotEntryPersistenceImpl
 		int start, int end, OrderByComparator<DepotEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotEntry> _findAll(
+		int start, int end, OrderByComparator<DepotEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2125,10 +2188,12 @@ public class DepotEntryPersistenceImpl
 				list = (List<DepotEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2148,7 +2213,10 @@ public class DepotEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DepotEntry depotEntry : findAll()) {
+		for (DepotEntry depotEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(depotEntry);
 		}
 	}

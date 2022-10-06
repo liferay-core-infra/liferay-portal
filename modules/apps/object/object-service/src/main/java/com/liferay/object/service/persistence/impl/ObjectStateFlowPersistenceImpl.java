@@ -174,6 +174,15 @@ public class ObjectStateFlowPersistenceImpl
 		OrderByComparator<ObjectStateFlow> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectStateFlow> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectStateFlow> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -259,10 +268,12 @@ public class ObjectStateFlowPersistenceImpl
 				list = (List<ObjectStateFlow>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -560,7 +571,9 @@ public class ObjectStateFlowPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectStateFlow objectStateFlow :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectStateFlow);
 		}
@@ -715,6 +728,16 @@ public class ObjectStateFlowPersistenceImpl
 		OrderByComparator<ObjectStateFlow> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectStateFlow> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectStateFlow> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -808,10 +831,12 @@ public class ObjectStateFlowPersistenceImpl
 				list = (List<ObjectStateFlow>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1132,9 +1157,9 @@ public class ObjectStateFlowPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectStateFlow objectStateFlow :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectStateFlow);
 		}
@@ -1230,7 +1255,15 @@ public class ObjectStateFlowPersistenceImpl
 	public ObjectStateFlow findByObjectFieldId(long objectFieldId)
 		throws NoSuchObjectStateFlowException {
 
-		ObjectStateFlow objectStateFlow = fetchByObjectFieldId(objectFieldId);
+		return _findByObjectFieldId(objectFieldId, false);
+	}
+
+	private ObjectStateFlow _findByObjectFieldId(
+			long objectFieldId, boolean readOnlyCache)
+		throws NoSuchObjectStateFlowException {
+
+		ObjectStateFlow objectStateFlow = _fetchByObjectFieldId(
+			objectFieldId, true, readOnlyCache);
 
 		if (objectStateFlow == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1273,6 +1306,12 @@ public class ObjectStateFlowPersistenceImpl
 	@Override
 	public ObjectStateFlow fetchByObjectFieldId(
 		long objectFieldId, boolean useFinderCache) {
+
+		return _fetchByObjectFieldId(objectFieldId, useFinderCache, false);
+	}
+
+	private ObjectStateFlow _fetchByObjectFieldId(
+		long objectFieldId, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1341,9 +1380,11 @@ public class ObjectStateFlowPersistenceImpl
 
 					ObjectStateFlow objectStateFlow = list.get(0);
 
-					result = objectStateFlow;
+					if (!readOnlyCache) {
+						result = objectStateFlow;
 
-					cacheResult(objectStateFlow);
+						cacheResult(objectStateFlow);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1372,7 +1413,8 @@ public class ObjectStateFlowPersistenceImpl
 	public ObjectStateFlow removeByObjectFieldId(long objectFieldId)
 		throws NoSuchObjectStateFlowException {
 
-		ObjectStateFlow objectStateFlow = findByObjectFieldId(objectFieldId);
+		ObjectStateFlow objectStateFlow = _findByObjectFieldId(
+			objectFieldId, true);
 
 		return remove(objectStateFlow);
 	}
@@ -1855,6 +1897,14 @@ public class ObjectStateFlowPersistenceImpl
 		OrderByComparator<ObjectStateFlow> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectStateFlow> _findAll(
+		int start, int end,
+		OrderByComparator<ObjectStateFlow> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1909,10 +1959,12 @@ public class ObjectStateFlowPersistenceImpl
 				list = (List<ObjectStateFlow>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1932,7 +1984,10 @@ public class ObjectStateFlowPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectStateFlow objectStateFlow : findAll()) {
+		for (ObjectStateFlow objectStateFlow :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectStateFlow);
 		}
 	}

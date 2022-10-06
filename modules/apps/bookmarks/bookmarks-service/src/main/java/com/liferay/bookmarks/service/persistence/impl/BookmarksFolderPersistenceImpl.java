@@ -174,6 +174,15 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -259,10 +268,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -560,7 +571,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (BookmarksFolder bookmarksFolder :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -649,7 +662,15 @@ public class BookmarksFolderPersistenceImpl
 	public BookmarksFolder findByUUID_G(String uuid, long groupId)
 		throws NoSuchFolderException {
 
-		BookmarksFolder bookmarksFolder = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private BookmarksFolder _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFolderException {
+
+		BookmarksFolder bookmarksFolder = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (bookmarksFolder == null) {
 			StringBundler sb = new StringBundler(6);
@@ -697,6 +718,13 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public BookmarksFolder fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private BookmarksFolder _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -769,9 +797,11 @@ public class BookmarksFolderPersistenceImpl
 				else {
 					BookmarksFolder bookmarksFolder = list.get(0);
 
-					result = bookmarksFolder;
+					if (!readOnlyCache) {
+						result = bookmarksFolder;
 
-					cacheResult(bookmarksFolder);
+						cacheResult(bookmarksFolder);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -801,7 +831,7 @@ public class BookmarksFolderPersistenceImpl
 	public BookmarksFolder removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFolderException {
 
-		BookmarksFolder bookmarksFolder = findByUUID_G(uuid, groupId);
+		BookmarksFolder bookmarksFolder = _findByUUID_G(uuid, groupId, true);
 
 		return remove(bookmarksFolder);
 	}
@@ -963,6 +993,16 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BookmarksFolder> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1056,10 +1096,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1380,9 +1422,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (BookmarksFolder bookmarksFolder :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -1540,6 +1582,15 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1612,10 +1663,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2233,8 +2286,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (BookmarksFolder bookmarksFolder :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -2416,6 +2470,15 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2490,10 +2553,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2781,8 +2846,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (BookmarksFolder bookmarksFolder :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -2922,6 +2988,16 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P(
+			groupId, parentFolderId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByG_P(
+		long groupId, long parentFolderId, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3003,10 +3079,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3666,9 +3744,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByG_P(long groupId, long parentFolderId) {
 		for (BookmarksFolder bookmarksFolder :
-				findByG_P(
+				_findByG_P(
 					groupId, parentFolderId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -3867,6 +3945,16 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_NotS(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BookmarksFolder> _findByC_NotS(
+		long companyId, int status, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3937,10 +4025,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4248,9 +4338,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByC_NotS(long companyId, int status) {
 		for (BookmarksFolder bookmarksFolder :
-				findByC_NotS(
+				_findByC_NotS(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -4405,6 +4495,16 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_S(
+			groupId, parentFolderId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByG_P_S(
+		long groupId, long parentFolderId, int status, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4491,10 +4591,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5184,9 +5286,9 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void removeByG_P_S(long groupId, long parentFolderId, int status) {
 		for (BookmarksFolder bookmarksFolder :
-				findByG_P_S(
+				_findByG_P_S(
 					groupId, parentFolderId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -5409,6 +5511,16 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P_NotS(
+			groupId, parentFolderId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByG_P_NotS(
+		long groupId, long parentFolderId, int status, int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5485,10 +5597,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6180,9 +6294,9 @@ public class BookmarksFolderPersistenceImpl
 		long groupId, long parentFolderId, int status) {
 
 		for (BookmarksFolder bookmarksFolder :
-				findByG_P_NotS(
+				_findByG_P_NotS(
 					groupId, parentFolderId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -6412,6 +6526,17 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtF_C_P_NotS(
+			folderId, companyId, parentFolderId, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findByGtF_C_P_NotS(
+		long folderId, long companyId, long parentFolderId, int status,
+		int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6494,10 +6619,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6673,9 +6800,9 @@ public class BookmarksFolderPersistenceImpl
 		long folderId, long companyId, long parentFolderId, int status) {
 
 		for (BookmarksFolder bookmarksFolder :
-				findByGtF_C_P_NotS(
+				_findByGtF_C_P_NotS(
 					folderId, companyId, parentFolderId, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(bookmarksFolder);
 		}
@@ -7188,6 +7315,14 @@ public class BookmarksFolderPersistenceImpl
 		OrderByComparator<BookmarksFolder> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BookmarksFolder> _findAll(
+		int start, int end,
+		OrderByComparator<BookmarksFolder> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7242,10 +7377,12 @@ public class BookmarksFolderPersistenceImpl
 				list = (List<BookmarksFolder>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7265,7 +7402,10 @@ public class BookmarksFolderPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BookmarksFolder bookmarksFolder : findAll()) {
+		for (BookmarksFolder bookmarksFolder :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(bookmarksFolder);
 		}
 	}

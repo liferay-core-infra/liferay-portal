@@ -175,6 +175,16 @@ public class CommerceTermEntryRelPersistenceImpl
 		OrderByComparator<CommerceTermEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceTermEntryId(
+			commerceTermEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceTermEntryRel> _findByCommerceTermEntryId(
+		long commerceTermEntryId, int start, int end,
+		OrderByComparator<CommerceTermEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -252,10 +262,12 @@ public class CommerceTermEntryRelPersistenceImpl
 				list = (List<CommerceTermEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -551,9 +563,9 @@ public class CommerceTermEntryRelPersistenceImpl
 	@Override
 	public void removeByCommerceTermEntryId(long commerceTermEntryId) {
 		for (CommerceTermEntryRel commerceTermEntryRel :
-				findByCommerceTermEntryId(
+				_findByCommerceTermEntryId(
 					commerceTermEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceTermEntryRel);
 		}
@@ -697,6 +709,16 @@ public class CommerceTermEntryRelPersistenceImpl
 		OrderByComparator<CommerceTermEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, commerceTermEntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceTermEntryRel> _findByC_C(
+		long classNameId, long commerceTermEntryId, int start, int end,
+		OrderByComparator<CommerceTermEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -779,10 +801,12 @@ public class CommerceTermEntryRelPersistenceImpl
 				list = (List<CommerceTermEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1094,9 +1118,9 @@ public class CommerceTermEntryRelPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long commerceTermEntryId) {
 		for (CommerceTermEntryRel commerceTermEntryRel :
-				findByC_C(
+				_findByC_C(
 					classNameId, commerceTermEntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceTermEntryRel);
 		}
@@ -1179,8 +1203,16 @@ public class CommerceTermEntryRelPersistenceImpl
 			long classNameId, long classPK, long commerceTermEntryId)
 		throws NoSuchTermEntryRelException {
 
-		CommerceTermEntryRel commerceTermEntryRel = fetchByC_C_C(
-			classNameId, classPK, commerceTermEntryId);
+		return _findByC_C_C(classNameId, classPK, commerceTermEntryId, false);
+	}
+
+	private CommerceTermEntryRel _findByC_C_C(
+			long classNameId, long classPK, long commerceTermEntryId,
+			boolean readOnlyCache)
+		throws NoSuchTermEntryRelException {
+
+		CommerceTermEntryRel commerceTermEntryRel = _fetchByC_C_C(
+			classNameId, classPK, commerceTermEntryId, true, readOnlyCache);
 
 		if (commerceTermEntryRel == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1236,6 +1268,14 @@ public class CommerceTermEntryRelPersistenceImpl
 	public CommerceTermEntryRel fetchByC_C_C(
 		long classNameId, long classPK, long commerceTermEntryId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			classNameId, classPK, commerceTermEntryId, useFinderCache, false);
+	}
+
+	private CommerceTermEntryRel _fetchByC_C_C(
+		long classNameId, long classPK, long commerceTermEntryId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1303,9 +1343,11 @@ public class CommerceTermEntryRelPersistenceImpl
 				else {
 					CommerceTermEntryRel commerceTermEntryRel = list.get(0);
 
-					result = commerceTermEntryRel;
+					if (!readOnlyCache) {
+						result = commerceTermEntryRel;
 
-					cacheResult(commerceTermEntryRel);
+						cacheResult(commerceTermEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1337,8 +1379,8 @@ public class CommerceTermEntryRelPersistenceImpl
 			long classNameId, long classPK, long commerceTermEntryId)
 		throws NoSuchTermEntryRelException {
 
-		CommerceTermEntryRel commerceTermEntryRel = findByC_C_C(
-			classNameId, classPK, commerceTermEntryId);
+		CommerceTermEntryRel commerceTermEntryRel = _findByC_C_C(
+			classNameId, classPK, commerceTermEntryId, true);
 
 		return remove(commerceTermEntryRel);
 	}
@@ -1845,6 +1887,14 @@ public class CommerceTermEntryRelPersistenceImpl
 		OrderByComparator<CommerceTermEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceTermEntryRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceTermEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1899,10 +1949,12 @@ public class CommerceTermEntryRelPersistenceImpl
 				list = (List<CommerceTermEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1922,7 +1974,10 @@ public class CommerceTermEntryRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceTermEntryRel commerceTermEntryRel : findAll()) {
+		for (CommerceTermEntryRel commerceTermEntryRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceTermEntryRel);
 		}
 	}

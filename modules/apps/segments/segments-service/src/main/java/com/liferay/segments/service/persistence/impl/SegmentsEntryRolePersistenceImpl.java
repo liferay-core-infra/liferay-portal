@@ -181,6 +181,16 @@ public class SegmentsEntryRolePersistenceImpl
 		OrderByComparator<SegmentsEntryRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySegmentsEntryId(
+			segmentsEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsEntryRole> _findBySegmentsEntryId(
+		long segmentsEntryId, int start, int end,
+		OrderByComparator<SegmentsEntryRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRole.class);
 
@@ -260,10 +270,12 @@ public class SegmentsEntryRolePersistenceImpl
 				list = (List<SegmentsEntryRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,9 +569,9 @@ public class SegmentsEntryRolePersistenceImpl
 	@Override
 	public void removeBySegmentsEntryId(long segmentsEntryId) {
 		for (SegmentsEntryRole segmentsEntryRole :
-				findBySegmentsEntryId(
-					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findBySegmentsEntryId(
+					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsEntryRole);
 		}
@@ -705,6 +717,15 @@ public class SegmentsEntryRolePersistenceImpl
 		OrderByComparator<SegmentsEntryRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRoleId(
+			roleId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntryRole> _findByRoleId(
+		long roleId, int start, int end,
+		OrderByComparator<SegmentsEntryRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRole.class);
 
@@ -780,10 +801,12 @@ public class SegmentsEntryRolePersistenceImpl
 				list = (List<SegmentsEntryRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1070,8 +1093,9 @@ public class SegmentsEntryRolePersistenceImpl
 	@Override
 	public void removeByRoleId(long roleId) {
 		for (SegmentsEntryRole segmentsEntryRole :
-				findByRoleId(
-					roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRoleId(
+					roleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsEntryRole);
 		}
@@ -1156,8 +1180,15 @@ public class SegmentsEntryRolePersistenceImpl
 	public SegmentsEntryRole findByS_R(long segmentsEntryId, long roleId)
 		throws NoSuchEntryRoleException {
 
-		SegmentsEntryRole segmentsEntryRole = fetchByS_R(
-			segmentsEntryId, roleId);
+		return _findByS_R(segmentsEntryId, roleId, false);
+	}
+
+	private SegmentsEntryRole _findByS_R(
+			long segmentsEntryId, long roleId, boolean readOnlyCache)
+		throws NoSuchEntryRoleException {
+
+		SegmentsEntryRole segmentsEntryRole = _fetchByS_R(
+			segmentsEntryId, roleId, true, readOnlyCache);
 
 		if (segmentsEntryRole == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1205,6 +1236,13 @@ public class SegmentsEntryRolePersistenceImpl
 	@Override
 	public SegmentsEntryRole fetchByS_R(
 		long segmentsEntryId, long roleId, boolean useFinderCache) {
+
+		return _fetchByS_R(segmentsEntryId, roleId, useFinderCache, false);
+	}
+
+	private SegmentsEntryRole _fetchByS_R(
+		long segmentsEntryId, long roleId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRole.class);
@@ -1266,9 +1304,11 @@ public class SegmentsEntryRolePersistenceImpl
 				else {
 					SegmentsEntryRole segmentsEntryRole = list.get(0);
 
-					result = segmentsEntryRole;
+					if (!readOnlyCache) {
+						result = segmentsEntryRole;
 
-					cacheResult(segmentsEntryRole);
+						cacheResult(segmentsEntryRole);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1298,8 +1338,8 @@ public class SegmentsEntryRolePersistenceImpl
 	public SegmentsEntryRole removeByS_R(long segmentsEntryId, long roleId)
 		throws NoSuchEntryRoleException {
 
-		SegmentsEntryRole segmentsEntryRole = findByS_R(
-			segmentsEntryId, roleId);
+		SegmentsEntryRole segmentsEntryRole = _findByS_R(
+			segmentsEntryId, roleId, true);
 
 		return remove(segmentsEntryRole);
 	}
@@ -1953,6 +1993,14 @@ public class SegmentsEntryRolePersistenceImpl
 		OrderByComparator<SegmentsEntryRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsEntryRole> _findAll(
+		int start, int end,
+		OrderByComparator<SegmentsEntryRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsEntryRole.class);
 
@@ -2010,10 +2058,12 @@ public class SegmentsEntryRolePersistenceImpl
 				list = (List<SegmentsEntryRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2033,7 +2083,10 @@ public class SegmentsEntryRolePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SegmentsEntryRole segmentsEntryRole : findAll()) {
+		for (SegmentsEntryRole segmentsEntryRole :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(segmentsEntryRole);
 		}
 	}

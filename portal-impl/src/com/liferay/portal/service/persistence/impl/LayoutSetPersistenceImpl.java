@@ -168,6 +168,15 @@ public class LayoutSetPersistenceImpl
 		OrderByComparator<LayoutSet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutSet> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<LayoutSet> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			LayoutSet.class);
 
@@ -243,10 +252,12 @@ public class LayoutSetPersistenceImpl
 				list = (List<LayoutSet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -527,8 +538,9 @@ public class LayoutSetPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (LayoutSet layoutSet :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutSet);
 		}
@@ -678,6 +690,16 @@ public class LayoutSetPersistenceImpl
 		OrderByComparator<LayoutSet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLayoutSetPrototypeUuid(
+			layoutSetPrototypeUuid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutSet> _findByLayoutSetPrototypeUuid(
+		String layoutSetPrototypeUuid, int start, int end,
+		OrderByComparator<LayoutSet> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		layoutSetPrototypeUuid = Objects.toString(layoutSetPrototypeUuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -773,10 +795,12 @@ public class LayoutSetPersistenceImpl
 				list = (List<LayoutSet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1081,9 +1105,9 @@ public class LayoutSetPersistenceImpl
 	@Override
 	public void removeByLayoutSetPrototypeUuid(String layoutSetPrototypeUuid) {
 		for (LayoutSet layoutSet :
-				findByLayoutSetPrototypeUuid(
+				_findByLayoutSetPrototypeUuid(
 					layoutSetPrototypeUuid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutSet);
 		}
@@ -1188,7 +1212,15 @@ public class LayoutSetPersistenceImpl
 	public LayoutSet findByG_P(long groupId, boolean privateLayout)
 		throws NoSuchLayoutSetException {
 
-		LayoutSet layoutSet = fetchByG_P(groupId, privateLayout);
+		return _findByG_P(groupId, privateLayout, false);
+	}
+
+	private LayoutSet _findByG_P(
+			long groupId, boolean privateLayout, boolean readOnlyCache)
+		throws NoSuchLayoutSetException {
+
+		LayoutSet layoutSet = _fetchByG_P(
+			groupId, privateLayout, true, readOnlyCache);
 
 		if (layoutSet == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1236,6 +1268,13 @@ public class LayoutSetPersistenceImpl
 	@Override
 	public LayoutSet fetchByG_P(
 		long groupId, boolean privateLayout, boolean useFinderCache) {
+
+		return _fetchByG_P(groupId, privateLayout, useFinderCache, false);
+	}
+
+	private LayoutSet _fetchByG_P(
+		long groupId, boolean privateLayout, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			LayoutSet.class);
@@ -1298,9 +1337,11 @@ public class LayoutSetPersistenceImpl
 				else {
 					LayoutSet layoutSet = list.get(0);
 
-					result = layoutSet;
+					if (!readOnlyCache) {
+						result = layoutSet;
 
-					cacheResult(layoutSet);
+						cacheResult(layoutSet);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1330,7 +1371,7 @@ public class LayoutSetPersistenceImpl
 	public LayoutSet removeByG_P(long groupId, boolean privateLayout)
 		throws NoSuchLayoutSetException {
 
-		LayoutSet layoutSet = findByG_P(groupId, privateLayout);
+		LayoutSet layoutSet = _findByG_P(groupId, privateLayout, true);
 
 		return remove(layoutSet);
 	}
@@ -1492,6 +1533,16 @@ public class LayoutSetPersistenceImpl
 		OrderByComparator<LayoutSet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_L(
+			companyId, layoutSetPrototypeUuid, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<LayoutSet> _findByC_L(
+		long companyId, String layoutSetPrototypeUuid, int start, int end,
+		OrderByComparator<LayoutSet> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		layoutSetPrototypeUuid = Objects.toString(layoutSetPrototypeUuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1589,10 +1640,12 @@ public class LayoutSetPersistenceImpl
 				list = (List<LayoutSet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1913,9 +1966,9 @@ public class LayoutSetPersistenceImpl
 	@Override
 	public void removeByC_L(long companyId, String layoutSetPrototypeUuid) {
 		for (LayoutSet layoutSet :
-				findByC_L(
+				_findByC_L(
 					companyId, layoutSetPrototypeUuid, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(layoutSet);
 		}
@@ -2024,7 +2077,15 @@ public class LayoutSetPersistenceImpl
 	public LayoutSet findByP_L(boolean privateLayout, long logoId)
 		throws NoSuchLayoutSetException {
 
-		LayoutSet layoutSet = fetchByP_L(privateLayout, logoId);
+		return _findByP_L(privateLayout, logoId, false);
+	}
+
+	private LayoutSet _findByP_L(
+			boolean privateLayout, long logoId, boolean readOnlyCache)
+		throws NoSuchLayoutSetException {
+
+		LayoutSet layoutSet = _fetchByP_L(
+			privateLayout, logoId, true, readOnlyCache);
 
 		if (layoutSet == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2072,6 +2133,13 @@ public class LayoutSetPersistenceImpl
 	@Override
 	public LayoutSet fetchByP_L(
 		boolean privateLayout, long logoId, boolean useFinderCache) {
+
+		return _fetchByP_L(privateLayout, logoId, useFinderCache, false);
+	}
+
+	private LayoutSet _fetchByP_L(
+		boolean privateLayout, long logoId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			LayoutSet.class);
@@ -2151,9 +2219,11 @@ public class LayoutSetPersistenceImpl
 
 					LayoutSet layoutSet = list.get(0);
 
-					result = layoutSet;
+					if (!readOnlyCache) {
+						result = layoutSet;
 
-					cacheResult(layoutSet);
+						cacheResult(layoutSet);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2183,7 +2253,7 @@ public class LayoutSetPersistenceImpl
 	public LayoutSet removeByP_L(boolean privateLayout, long logoId)
 		throws NoSuchLayoutSetException {
 
-		LayoutSet layoutSet = findByP_L(privateLayout, logoId);
+		LayoutSet layoutSet = _findByP_L(privateLayout, logoId, true);
 
 		return remove(layoutSet);
 	}
@@ -2843,6 +2913,13 @@ public class LayoutSetPersistenceImpl
 		int start, int end, OrderByComparator<LayoutSet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutSet> _findAll(
+		int start, int end, OrderByComparator<LayoutSet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			LayoutSet.class);
 
@@ -2900,10 +2977,12 @@ public class LayoutSetPersistenceImpl
 				list = (List<LayoutSet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2923,7 +3002,10 @@ public class LayoutSetPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutSet layoutSet : findAll()) {
+		for (LayoutSet layoutSet :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutSet);
 		}
 	}

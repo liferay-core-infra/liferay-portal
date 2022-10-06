@@ -168,6 +168,16 @@ public class CTPreferencesPersistenceImpl
 		OrderByComparator<CTPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCtCollectionId(
+			ctCollectionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CTPreferences> _findByCtCollectionId(
+		long ctCollectionId, int start, int end,
+		OrderByComparator<CTPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -242,10 +252,12 @@ public class CTPreferencesPersistenceImpl
 				list = (List<CTPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -536,9 +548,9 @@ public class CTPreferencesPersistenceImpl
 	@Override
 	public void removeByCtCollectionId(long ctCollectionId) {
 		for (CTPreferences ctPreferences :
-				findByCtCollectionId(
-					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCtCollectionId(
+					ctCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ctPreferences);
 		}
@@ -676,6 +688,16 @@ public class CTPreferencesPersistenceImpl
 		OrderByComparator<CTPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByPreviousCtCollectionId(
+			previousCtCollectionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CTPreferences> _findByPreviousCtCollectionId(
+		long previousCtCollectionId, int start, int end,
+		OrderByComparator<CTPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -754,10 +776,12 @@ public class CTPreferencesPersistenceImpl
 				list = (List<CTPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1050,9 +1074,9 @@ public class CTPreferencesPersistenceImpl
 	@Override
 	public void removeByPreviousCtCollectionId(long previousCtCollectionId) {
 		for (CTPreferences ctPreferences :
-				findByPreviousCtCollectionId(
+				_findByPreviousCtCollectionId(
 					previousCtCollectionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ctPreferences);
 		}
@@ -1127,7 +1151,15 @@ public class CTPreferencesPersistenceImpl
 	public CTPreferences findByC_U(long companyId, long userId)
 		throws NoSuchPreferencesException {
 
-		CTPreferences ctPreferences = fetchByC_U(companyId, userId);
+		return _findByC_U(companyId, userId, false);
+	}
+
+	private CTPreferences _findByC_U(
+			long companyId, long userId, boolean readOnlyCache)
+		throws NoSuchPreferencesException {
+
+		CTPreferences ctPreferences = _fetchByC_U(
+			companyId, userId, true, readOnlyCache);
 
 		if (ctPreferences == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1175,6 +1207,13 @@ public class CTPreferencesPersistenceImpl
 	@Override
 	public CTPreferences fetchByC_U(
 		long companyId, long userId, boolean useFinderCache) {
+
+		return _fetchByC_U(companyId, userId, useFinderCache, false);
+	}
+
+	private CTPreferences _fetchByC_U(
+		long companyId, long userId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1233,9 +1272,11 @@ public class CTPreferencesPersistenceImpl
 				else {
 					CTPreferences ctPreferences = list.get(0);
 
-					result = ctPreferences;
+					if (!readOnlyCache) {
+						result = ctPreferences;
 
-					cacheResult(ctPreferences);
+						cacheResult(ctPreferences);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1265,7 +1306,7 @@ public class CTPreferencesPersistenceImpl
 	public CTPreferences removeByC_U(long companyId, long userId)
 		throws NoSuchPreferencesException {
 
-		CTPreferences ctPreferences = findByC_U(companyId, userId);
+		CTPreferences ctPreferences = _findByC_U(companyId, userId, true);
 
 		return remove(ctPreferences);
 	}
@@ -1713,6 +1754,13 @@ public class CTPreferencesPersistenceImpl
 		int start, int end, OrderByComparator<CTPreferences> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CTPreferences> _findAll(
+		int start, int end, OrderByComparator<CTPreferences> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1767,10 +1815,12 @@ public class CTPreferencesPersistenceImpl
 				list = (List<CTPreferences>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1790,7 +1840,10 @@ public class CTPreferencesPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CTPreferences ctPreferences : findAll()) {
+		for (CTPreferences ctPreferences :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ctPreferences);
 		}
 	}

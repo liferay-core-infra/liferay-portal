@@ -171,6 +171,16 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountEntryId(
+			accountEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -254,10 +264,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,9 +565,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	@Override
 	public void removeByAccountEntryId(long accountEntryId) {
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByAccountEntryId(
-					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByAccountEntryId(
+					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -704,6 +716,16 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCommerceChannelId(
+			commerceChannelId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByCommerceChannelId(
+		long commerceChannelId, int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -788,10 +810,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1088,9 +1112,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	@Override
 	public void removeByCommerceChannelId(long commerceChannelId) {
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByCommerceChannelId(
+				_findByCommerceChannelId(
 					commerceChannelId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -1244,6 +1268,16 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_T(
+			accountEntryId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByA_T(
+		long accountEntryId, int type, int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -1332,10 +1366,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1648,9 +1684,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	@Override
 	public void removeByA_T(long accountEntryId, int type) {
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByA_T(
+				_findByA_T(
 					accountEntryId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -1811,6 +1847,16 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -1899,10 +1945,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2215,9 +2263,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -2379,6 +2427,16 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_T(
+			commerceChannelId, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByC_T(
+		long commerceChannelId, int type, int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -2467,10 +2525,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2783,9 +2843,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	@Override
 	public void removeByC_T(long commerceChannelId, int type) {
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByC_T(
+				_findByC_T(
 					commerceChannelId, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -2956,6 +3016,17 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_C_T(
+			accountEntryId, commerceChannelId, type, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByA_C_T(
+		long accountEntryId, long commerceChannelId, int type, int start,
+		int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -3054,10 +3125,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3391,9 +3464,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		long accountEntryId, long commerceChannelId, int type) {
 
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByA_C_T(
+				_findByA_C_T(
 					accountEntryId, commerceChannelId, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -3578,6 +3651,17 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_T(
+			classNameId, classPK, commerceChannelId, type, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findByC_C_C_T(
+		long classNameId, long classPK, long commerceChannelId, int type,
+		int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -3681,10 +3765,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4038,9 +4124,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		long classNameId, long classPK, long commerceChannelId, int type) {
 
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findByC_C_C_T(
+				_findByC_C_C_T(
 					classNameId, classPK, commerceChannelId, type,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}
@@ -4158,9 +4244,20 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 			long commerceChannelId, int type)
 		throws NoSuchChannelAccountEntryRelException {
 
+		return _findByA_C_C_C_T(
+			accountEntryId, classNameId, classPK, commerceChannelId, type,
+			false);
+	}
+
+	private CommerceChannelAccountEntryRel _findByA_C_C_C_T(
+			long accountEntryId, long classNameId, long classPK,
+			long commerceChannelId, int type, boolean readOnlyCache)
+		throws NoSuchChannelAccountEntryRelException {
+
 		CommerceChannelAccountEntryRel commerceChannelAccountEntryRel =
-			fetchByA_C_C_C_T(
-				accountEntryId, classNameId, classPK, commerceChannelId, type);
+			_fetchByA_C_C_C_T(
+				accountEntryId, classNameId, classPK, commerceChannelId, type,
+				true, readOnlyCache);
 
 		if (commerceChannelAccountEntryRel == null) {
 			StringBundler sb = new StringBundler(12);
@@ -4229,6 +4326,16 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	public CommerceChannelAccountEntryRel fetchByA_C_C_C_T(
 		long accountEntryId, long classNameId, long classPK,
 		long commerceChannelId, int type, boolean useFinderCache) {
+
+		return _fetchByA_C_C_C_T(
+			accountEntryId, classNameId, classPK, commerceChannelId, type,
+			useFinderCache, false);
+	}
+
+	private CommerceChannelAccountEntryRel _fetchByA_C_C_C_T(
+		long accountEntryId, long classNameId, long classPK,
+		long commerceChannelId, int type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
@@ -4313,9 +4420,11 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 					CommerceChannelAccountEntryRel
 						commerceChannelAccountEntryRel = list.get(0);
 
-					result = commerceChannelAccountEntryRel;
+					if (!readOnlyCache) {
+						result = commerceChannelAccountEntryRel;
 
-					cacheResult(commerceChannelAccountEntryRel);
+						cacheResult(commerceChannelAccountEntryRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4351,8 +4460,9 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		throws NoSuchChannelAccountEntryRelException {
 
 		CommerceChannelAccountEntryRel commerceChannelAccountEntryRel =
-			findByA_C_C_C_T(
-				accountEntryId, classNameId, classPK, commerceChannelId, type);
+			_findByA_C_C_C_T(
+				accountEntryId, classNameId, classPK, commerceChannelId, type,
+				true);
 
 		return remove(commerceChannelAccountEntryRel);
 	}
@@ -5097,6 +5207,14 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceChannelAccountEntryRel> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceChannelAccountEntryRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CommerceChannelAccountEntryRel.class);
 
@@ -5155,10 +5273,12 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 				list = (List<CommerceChannelAccountEntryRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5179,7 +5299,8 @@ public class CommerceChannelAccountEntryRelPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceChannelAccountEntryRel commerceChannelAccountEntryRel :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceChannelAccountEntryRel);
 		}

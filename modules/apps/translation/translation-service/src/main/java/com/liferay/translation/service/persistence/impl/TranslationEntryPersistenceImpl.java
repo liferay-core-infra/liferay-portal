@@ -179,6 +179,15 @@ public class TranslationEntryPersistenceImpl
 		OrderByComparator<TranslationEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TranslationEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<TranslationEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class TranslationEntryPersistenceImpl
 				list = (List<TranslationEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -569,7 +580,9 @@ public class TranslationEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (TranslationEntry translationEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(translationEntry);
 		}
@@ -670,7 +683,15 @@ public class TranslationEntryPersistenceImpl
 	public TranslationEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		TranslationEntry translationEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private TranslationEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		TranslationEntry translationEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (translationEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -718,6 +739,13 @@ public class TranslationEntryPersistenceImpl
 	@Override
 	public TranslationEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private TranslationEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -793,9 +821,11 @@ public class TranslationEntryPersistenceImpl
 				else {
 					TranslationEntry translationEntry = list.get(0);
 
-					result = translationEntry;
+					if (!readOnlyCache) {
+						result = translationEntry;
 
-					cacheResult(translationEntry);
+						cacheResult(translationEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -825,7 +855,7 @@ public class TranslationEntryPersistenceImpl
 	public TranslationEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		TranslationEntry translationEntry = findByUUID_G(uuid, groupId);
+		TranslationEntry translationEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(translationEntry);
 	}
@@ -999,6 +1029,16 @@ public class TranslationEntryPersistenceImpl
 		OrderByComparator<TranslationEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<TranslationEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<TranslationEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1095,10 +1135,12 @@ public class TranslationEntryPersistenceImpl
 				list = (List<TranslationEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1420,9 +1462,9 @@ public class TranslationEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (TranslationEntry translationEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(translationEntry);
 		}
@@ -1597,6 +1639,16 @@ public class TranslationEntryPersistenceImpl
 		OrderByComparator<TranslationEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<TranslationEntry> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<TranslationEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TranslationEntry.class);
 
@@ -1680,10 +1732,12 @@ public class TranslationEntryPersistenceImpl
 				list = (List<TranslationEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1992,9 +2046,9 @@ public class TranslationEntryPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (TranslationEntry translationEntry :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(translationEntry);
 		}
@@ -2089,8 +2143,16 @@ public class TranslationEntryPersistenceImpl
 			long classNameId, long classPK, String languageId)
 		throws NoSuchEntryException {
 
-		TranslationEntry translationEntry = fetchByC_C_L(
-			classNameId, classPK, languageId);
+		return _findByC_C_L(classNameId, classPK, languageId, false);
+	}
+
+	private TranslationEntry _findByC_C_L(
+			long classNameId, long classPK, String languageId,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		TranslationEntry translationEntry = _fetchByC_C_L(
+			classNameId, classPK, languageId, true, readOnlyCache);
 
 		if (translationEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2146,6 +2208,14 @@ public class TranslationEntryPersistenceImpl
 	public TranslationEntry fetchByC_C_L(
 		long classNameId, long classPK, String languageId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_L(
+			classNameId, classPK, languageId, useFinderCache, false);
+	}
+
+	private TranslationEntry _fetchByC_C_L(
+		long classNameId, long classPK, String languageId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -2225,9 +2295,11 @@ public class TranslationEntryPersistenceImpl
 				else {
 					TranslationEntry translationEntry = list.get(0);
 
-					result = translationEntry;
+					if (!readOnlyCache) {
+						result = translationEntry;
 
-					cacheResult(translationEntry);
+						cacheResult(translationEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2259,8 +2331,8 @@ public class TranslationEntryPersistenceImpl
 			long classNameId, long classPK, String languageId)
 		throws NoSuchEntryException {
 
-		TranslationEntry translationEntry = findByC_C_L(
-			classNameId, classPK, languageId);
+		TranslationEntry translationEntry = _findByC_C_L(
+			classNameId, classPK, languageId, true);
 
 		return remove(translationEntry);
 	}
@@ -2965,6 +3037,14 @@ public class TranslationEntryPersistenceImpl
 		OrderByComparator<TranslationEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TranslationEntry> _findAll(
+		int start, int end,
+		OrderByComparator<TranslationEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TranslationEntry.class);
 
@@ -3022,10 +3102,12 @@ public class TranslationEntryPersistenceImpl
 				list = (List<TranslationEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3045,7 +3127,10 @@ public class TranslationEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (TranslationEntry translationEntry : findAll()) {
+		for (TranslationEntry translationEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(translationEntry);
 		}
 	}

@@ -173,6 +173,15 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -245,10 +254,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -533,8 +544,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (BackgroundTask backgroundTask :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(backgroundTask);
 		}
@@ -668,6 +680,15 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -742,10 +763,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1030,8 +1053,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (BackgroundTask backgroundTask :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(backgroundTask);
 		}
@@ -1165,6 +1189,15 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompleted(
+			completed, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByCompleted(
+		boolean completed, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1239,10 +1272,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1531,8 +1566,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByCompleted(boolean completed) {
 		for (BackgroundTask backgroundTask :
-				findByCompleted(
-					completed, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompleted(
+					completed, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(backgroundTask);
 		}
@@ -1663,6 +1699,15 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStatus(
+			status, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByStatus(
+		int status, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1735,10 +1780,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2023,8 +2070,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByStatus(int status) {
 		for (BackgroundTask backgroundTask :
-				findByStatus(
-					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStatus(
+					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(backgroundTask);
 		}
@@ -2168,6 +2216,16 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T(
+			groupId, taskExecutorClassName, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_T(
+		long groupId, String taskExecutorClassName, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		taskExecutorClassName = Objects.toString(taskExecutorClassName, "");
 
 		FinderPath finderPath = null;
@@ -2262,10 +2320,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2663,6 +2723,16 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T(
+			groupIds, taskExecutorClassNames, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_T(
+		long[] groupIds, String[] taskExecutorClassNames, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2804,11 +2874,14 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_T, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2831,9 +2904,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByG_T(long groupId, String taskExecutorClassName) {
 		for (BackgroundTask backgroundTask :
-				findByG_T(
+				_findByG_T(
 					groupId, taskExecutorClassName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -3112,6 +3185,16 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BackgroundTask> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3192,10 +3275,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3503,9 +3588,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (BackgroundTask backgroundTask :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -3656,6 +3741,16 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_S(
+			taskExecutorClassName, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByT_S(
+		String taskExecutorClassName, int status, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		taskExecutorClassName = Objects.toString(taskExecutorClassName, "");
 
 		FinderPath finderPath = null;
@@ -3750,10 +3845,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4150,6 +4247,16 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByT_S(
+			taskExecutorClassNames, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByT_S(
+		String[] taskExecutorClassNames, int status, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (taskExecutorClassNames == null) {
 			taskExecutorClassNames = new String[0];
 		}
@@ -4273,11 +4380,14 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByT_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByT_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4300,9 +4410,9 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void removeByT_S(String taskExecutorClassName, int status) {
 		for (BackgroundTask backgroundTask :
-				findByT_S(
+				_findByT_S(
 					taskExecutorClassName, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -4583,6 +4693,16 @@ public class BackgroundTaskPersistenceImpl
 		int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_T(
+			groupId, name, taskExecutorClassName, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_N_T(
+		long groupId, String name, String taskExecutorClassName, int start,
+		int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		taskExecutorClassName = Objects.toString(taskExecutorClassName, "");
 
@@ -4697,10 +4817,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5133,6 +5255,16 @@ public class BackgroundTaskPersistenceImpl
 		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_T(
+			groupIds, name, taskExecutorClassNames, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_N_T(
+		long[] groupIds, String name, String[] taskExecutorClassNames,
+		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -5292,11 +5424,14 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_N_T, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_N_T, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5322,9 +5457,9 @@ public class BackgroundTaskPersistenceImpl
 		long groupId, String name, String taskExecutorClassName) {
 
 		for (BackgroundTask backgroundTask :
-				findByG_N_T(
+				_findByG_N_T(
 					groupId, name, taskExecutorClassName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -5664,6 +5799,16 @@ public class BackgroundTaskPersistenceImpl
 		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T_C(
+			groupId, taskExecutorClassName, completed, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_T_C(
+		long groupId, String taskExecutorClassName, boolean completed,
+		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		taskExecutorClassName = Objects.toString(taskExecutorClassName, "");
 
 		FinderPath finderPath = null;
@@ -5766,10 +5911,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6190,6 +6337,16 @@ public class BackgroundTaskPersistenceImpl
 		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T_C(
+			groupIds, taskExecutorClassNames, completed, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_T_C(
+		long[] groupIds, String[] taskExecutorClassNames, boolean completed,
+		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -6338,11 +6495,14 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_T_C, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_T_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6368,9 +6528,9 @@ public class BackgroundTaskPersistenceImpl
 		long groupId, String taskExecutorClassName, boolean completed) {
 
 		for (BackgroundTask backgroundTask :
-				findByG_T_C(
+				_findByG_T_C(
 					groupId, taskExecutorClassName, completed,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -6691,6 +6851,16 @@ public class BackgroundTaskPersistenceImpl
 		int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T_S(
+			groupId, taskExecutorClassName, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_T_S(
+		long groupId, String taskExecutorClassName, int status, int start,
+		int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		taskExecutorClassName = Objects.toString(taskExecutorClassName, "");
 
 		FinderPath finderPath = null;
@@ -6793,10 +6963,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7215,6 +7387,16 @@ public class BackgroundTaskPersistenceImpl
 		int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T_S(
+			groupId, taskExecutorClassNames, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_T_S(
+		long groupId, String[] taskExecutorClassNames, int status, int start,
+		int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (taskExecutorClassNames == null) {
 			taskExecutorClassNames = new String[0];
 		}
@@ -7343,11 +7525,14 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_T_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_T_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7373,9 +7558,9 @@ public class BackgroundTaskPersistenceImpl
 		long groupId, String taskExecutorClassName, int status) {
 
 		for (BackgroundTask backgroundTask :
-				findByG_T_S(
+				_findByG_T_S(
 					groupId, taskExecutorClassName, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -7682,6 +7867,17 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_T_C(
+			groupId, name, taskExecutorClassName, completed, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_N_T_C(
+		long groupId, String name, String taskExecutorClassName,
+		boolean completed, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		taskExecutorClassName = Objects.toString(taskExecutorClassName, "");
 
@@ -7801,10 +7997,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8264,6 +8462,17 @@ public class BackgroundTaskPersistenceImpl
 		OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_T_C(
+			groupIds, name, taskExecutorClassName, completed, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findByG_N_T_C(
+		long[] groupIds, String name, String taskExecutorClassName,
+		boolean completed, int start, int end,
+		OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -8400,12 +8609,14 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_N_T_C, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_N_T_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8433,9 +8644,9 @@ public class BackgroundTaskPersistenceImpl
 		boolean completed) {
 
 		for (BackgroundTask backgroundTask :
-				findByG_N_T_C(
+				_findByG_N_T_C(
 					groupId, name, taskExecutorClassName, completed,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(backgroundTask);
 		}
@@ -9057,6 +9268,13 @@ public class BackgroundTaskPersistenceImpl
 		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BackgroundTask> _findAll(
+		int start, int end, OrderByComparator<BackgroundTask> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -9111,10 +9329,12 @@ public class BackgroundTaskPersistenceImpl
 				list = (List<BackgroundTask>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9134,7 +9354,10 @@ public class BackgroundTaskPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BackgroundTask backgroundTask : findAll()) {
+		for (BackgroundTask backgroundTask :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(backgroundTask);
 		}
 	}

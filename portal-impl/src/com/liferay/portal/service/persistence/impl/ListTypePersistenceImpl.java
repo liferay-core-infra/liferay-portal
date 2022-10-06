@@ -154,6 +154,15 @@ public class ListTypePersistenceImpl
 		String type, int start, int end,
 		OrderByComparator<ListType> orderByComparator, boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ListType> _findByType(
+		String type, int start, int end,
+		OrderByComparator<ListType> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -239,10 +248,12 @@ public class ListTypePersistenceImpl
 				list = (List<ListType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -536,7 +547,9 @@ public class ListTypePersistenceImpl
 	@Override
 	public void removeByType(String type) {
 		for (ListType listType :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(listType);
 		}
@@ -625,7 +638,13 @@ public class ListTypePersistenceImpl
 	public ListType findByN_T(String name, String type)
 		throws NoSuchListTypeException {
 
-		ListType listType = fetchByN_T(name, type);
+		return _findByN_T(name, type, false);
+	}
+
+	private ListType _findByN_T(String name, String type, boolean readOnlyCache)
+		throws NoSuchListTypeException {
+
+		ListType listType = _fetchByN_T(name, type, true, readOnlyCache);
 
 		if (listType == null) {
 			StringBundler sb = new StringBundler(6);
@@ -673,6 +692,13 @@ public class ListTypePersistenceImpl
 	@Override
 	public ListType fetchByN_T(
 		String name, String type, boolean useFinderCache) {
+
+		return _fetchByN_T(name, type, useFinderCache, false);
+	}
+
+	private ListType _fetchByN_T(
+		String name, String type, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 		type = Objects.toString(type, "");
@@ -757,9 +783,11 @@ public class ListTypePersistenceImpl
 				else {
 					ListType listType = list.get(0);
 
-					result = listType;
+					if (!readOnlyCache) {
+						result = listType;
 
-					cacheResult(listType);
+						cacheResult(listType);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -789,7 +817,7 @@ public class ListTypePersistenceImpl
 	public ListType removeByN_T(String name, String type)
 		throws NoSuchListTypeException {
 
-		ListType listType = findByN_T(name, type);
+		ListType listType = _findByN_T(name, type, true);
 
 		return remove(listType);
 	}
@@ -1260,6 +1288,13 @@ public class ListTypePersistenceImpl
 		int start, int end, OrderByComparator<ListType> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ListType> _findAll(
+		int start, int end, OrderByComparator<ListType> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1314,10 +1349,12 @@ public class ListTypePersistenceImpl
 				list = (List<ListType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1337,7 +1374,10 @@ public class ListTypePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ListType listType : findAll()) {
+		for (ListType listType :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(listType);
 		}
 	}

@@ -174,6 +174,15 @@ public class AssetTagPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetTag> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -262,10 +271,12 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -559,7 +570,9 @@ public class AssetTagPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (AssetTag assetTag :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetTag);
 		}
@@ -660,7 +673,14 @@ public class AssetTagPersistenceImpl
 	public AssetTag findByUUID_G(String uuid, long groupId)
 		throws NoSuchTagException {
 
-		AssetTag assetTag = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private AssetTag _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchTagException {
+
+		AssetTag assetTag = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (assetTag == null) {
 			StringBundler sb = new StringBundler(6);
@@ -708,6 +728,13 @@ public class AssetTagPersistenceImpl
 	@Override
 	public AssetTag fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private AssetTag _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -783,9 +810,11 @@ public class AssetTagPersistenceImpl
 				else {
 					AssetTag assetTag = list.get(0);
 
-					result = assetTag;
+					if (!readOnlyCache) {
+						result = assetTag;
 
-					cacheResult(assetTag);
+						cacheResult(assetTag);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -815,7 +844,7 @@ public class AssetTagPersistenceImpl
 	public AssetTag removeByUUID_G(String uuid, long groupId)
 		throws NoSuchTagException {
 
-		AssetTag assetTag = findByUUID_G(uuid, groupId);
+		AssetTag assetTag = _findByUUID_G(uuid, groupId, true);
 
 		return remove(assetTag);
 	}
@@ -988,6 +1017,16 @@ public class AssetTagPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetTag> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1084,10 +1123,12 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1404,9 +1445,9 @@ public class AssetTagPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (AssetTag assetTag :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetTag);
 		}
@@ -1574,6 +1615,15 @@ public class AssetTagPersistenceImpl
 		long groupId, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetTag> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetTag.class);
 
@@ -1649,10 +1699,12 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1998,6 +2050,15 @@ public class AssetTagPersistenceImpl
 		long[] groupIds, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetTag> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2084,12 +2145,14 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2111,8 +2174,9 @@ public class AssetTagPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (AssetTag assetTag :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetTag);
 		}
@@ -2335,6 +2399,15 @@ public class AssetTagPersistenceImpl
 		String name, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByName(
+			name, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetTag> _findByName(
+		String name, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -2423,10 +2496,12 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2784,6 +2859,15 @@ public class AssetTagPersistenceImpl
 		String[] names, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByName(
+			names, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetTag> _findByName(
+		String[] names, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (names == null) {
 			names = new String[0];
 		}
@@ -2891,11 +2975,14 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByName, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByName, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2917,7 +3004,9 @@ public class AssetTagPersistenceImpl
 	@Override
 	public void removeByName(String name) {
 		for (AssetTag assetTag :
-				findByName(name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByName(
+					name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(assetTag);
 		}
@@ -3116,7 +3205,14 @@ public class AssetTagPersistenceImpl
 	public AssetTag findByG_N(long groupId, String name)
 		throws NoSuchTagException {
 
-		AssetTag assetTag = fetchByG_N(groupId, name);
+		return _findByG_N(groupId, name, false);
+	}
+
+	private AssetTag _findByG_N(
+			long groupId, String name, boolean readOnlyCache)
+		throws NoSuchTagException {
+
+		AssetTag assetTag = _fetchByG_N(groupId, name, true, readOnlyCache);
 
 		if (assetTag == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3164,6 +3260,13 @@ public class AssetTagPersistenceImpl
 	@Override
 	public AssetTag fetchByG_N(
 		long groupId, String name, boolean useFinderCache) {
+
+		return _fetchByG_N(groupId, name, useFinderCache, false);
+	}
+
+	private AssetTag _fetchByG_N(
+		long groupId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -3239,9 +3342,11 @@ public class AssetTagPersistenceImpl
 				else {
 					AssetTag assetTag = list.get(0);
 
-					result = assetTag;
+					if (!readOnlyCache) {
+						result = assetTag;
 
-					cacheResult(assetTag);
+						cacheResult(assetTag);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3271,7 +3376,7 @@ public class AssetTagPersistenceImpl
 	public AssetTag removeByG_N(long groupId, String name)
 		throws NoSuchTagException {
 
-		AssetTag assetTag = findByG_N(groupId, name);
+		AssetTag assetTag = _findByG_N(groupId, name, true);
 
 		return remove(assetTag);
 	}
@@ -3443,6 +3548,16 @@ public class AssetTagPersistenceImpl
 		long groupId, String name, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_LikeN(
+			groupId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetTag> _findByG_LikeN(
+		long groupId, String name, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -3530,10 +3645,12 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3921,6 +4038,16 @@ public class AssetTagPersistenceImpl
 		long[] groupIds, String name, int start, int end,
 		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_LikeN(
+			groupIds, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AssetTag> _findByG_LikeN(
+		long[] groupIds, String name, int start, int end,
+		OrderByComparator<AssetTag> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -4032,12 +4159,14 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByG_LikeN, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByG_LikeN, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4060,9 +4189,9 @@ public class AssetTagPersistenceImpl
 	@Override
 	public void removeByG_LikeN(long groupId, String name) {
 		for (AssetTag assetTag :
-				findByG_LikeN(
-					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_LikeN(
+					groupId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(assetTag);
 		}
@@ -4833,6 +4962,13 @@ public class AssetTagPersistenceImpl
 		int start, int end, OrderByComparator<AssetTag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AssetTag> _findAll(
+		int start, int end, OrderByComparator<AssetTag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			AssetTag.class);
 
@@ -4890,10 +5026,12 @@ public class AssetTagPersistenceImpl
 				list = (List<AssetTag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4913,7 +5051,10 @@ public class AssetTagPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AssetTag assetTag : findAll()) {
+		for (AssetTag assetTag :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(assetTag);
 		}
 	}

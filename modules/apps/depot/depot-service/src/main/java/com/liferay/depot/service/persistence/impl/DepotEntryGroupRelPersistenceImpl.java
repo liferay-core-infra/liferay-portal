@@ -176,6 +176,15 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotEntryGroupRel> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -566,7 +577,9 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DepotEntryGroupRel depotEntryGroupRel :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(depotEntryGroupRel);
 		}
@@ -655,7 +668,15 @@ public class DepotEntryGroupRelPersistenceImpl
 	public DepotEntryGroupRel findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryGroupRelException {
 
-		DepotEntryGroupRel depotEntryGroupRel = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DepotEntryGroupRel _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryGroupRelException {
+
+		DepotEntryGroupRel depotEntryGroupRel = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (depotEntryGroupRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -703,6 +724,13 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public DepotEntryGroupRel fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DepotEntryGroupRel _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -775,9 +803,11 @@ public class DepotEntryGroupRelPersistenceImpl
 				else {
 					DepotEntryGroupRel depotEntryGroupRel = list.get(0);
 
-					result = depotEntryGroupRel;
+					if (!readOnlyCache) {
+						result = depotEntryGroupRel;
 
-					cacheResult(depotEntryGroupRel);
+						cacheResult(depotEntryGroupRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -807,7 +837,8 @@ public class DepotEntryGroupRelPersistenceImpl
 	public DepotEntryGroupRel removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryGroupRelException {
 
-		DepotEntryGroupRel depotEntryGroupRel = findByUUID_G(uuid, groupId);
+		DepotEntryGroupRel depotEntryGroupRel = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(depotEntryGroupRel);
 	}
@@ -969,6 +1000,16 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DepotEntryGroupRel> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1062,10 +1103,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1387,9 +1430,9 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DepotEntryGroupRel depotEntryGroupRel :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(depotEntryGroupRel);
 		}
@@ -1548,6 +1591,15 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDepotEntryId(
+			depotEntryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotEntryGroupRel> _findByDepotEntryId(
+		long depotEntryId, int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1622,10 +1674,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1919,8 +1973,9 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public void removeByDepotEntryId(long depotEntryId) {
 		for (DepotEntryGroupRel depotEntryGroupRel :
-				findByDepotEntryId(
-					depotEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByDepotEntryId(
+					depotEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(depotEntryGroupRel);
 		}
@@ -2054,6 +2109,15 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByToGroupId(
+			toGroupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotEntryGroupRel> _findByToGroupId(
+		long toGroupId, int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2128,10 +2192,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2424,8 +2490,9 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public void removeByToGroupId(long toGroupId) {
 		for (DepotEntryGroupRel depotEntryGroupRel :
-				findByToGroupId(
-					toGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByToGroupId(
+					toGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(depotEntryGroupRel);
 		}
@@ -2569,6 +2636,16 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMSA_TGI(
+			ddmStructuresAvailable, toGroupId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DepotEntryGroupRel> _findByDDMSA_TGI(
+		boolean ddmStructuresAvailable, long toGroupId, int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2650,10 +2727,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2967,9 +3046,9 @@ public class DepotEntryGroupRelPersistenceImpl
 		boolean ddmStructuresAvailable, long toGroupId) {
 
 		for (DepotEntryGroupRel depotEntryGroupRel :
-				findByDDMSA_TGI(
+				_findByDDMSA_TGI(
 					ddmStructuresAvailable, toGroupId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(depotEntryGroupRel);
 		}
@@ -3053,8 +3132,15 @@ public class DepotEntryGroupRelPersistenceImpl
 	public DepotEntryGroupRel findByD_TGI(long depotEntryId, long toGroupId)
 		throws NoSuchEntryGroupRelException {
 
-		DepotEntryGroupRel depotEntryGroupRel = fetchByD_TGI(
-			depotEntryId, toGroupId);
+		return _findByD_TGI(depotEntryId, toGroupId, false);
+	}
+
+	private DepotEntryGroupRel _findByD_TGI(
+			long depotEntryId, long toGroupId, boolean readOnlyCache)
+		throws NoSuchEntryGroupRelException {
+
+		DepotEntryGroupRel depotEntryGroupRel = _fetchByD_TGI(
+			depotEntryId, toGroupId, true, readOnlyCache);
 
 		if (depotEntryGroupRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3102,6 +3188,13 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public DepotEntryGroupRel fetchByD_TGI(
 		long depotEntryId, long toGroupId, boolean useFinderCache) {
+
+		return _fetchByD_TGI(depotEntryId, toGroupId, useFinderCache, false);
+	}
+
+	private DepotEntryGroupRel _fetchByD_TGI(
+		long depotEntryId, long toGroupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -3160,9 +3253,11 @@ public class DepotEntryGroupRelPersistenceImpl
 				else {
 					DepotEntryGroupRel depotEntryGroupRel = list.get(0);
 
-					result = depotEntryGroupRel;
+					if (!readOnlyCache) {
+						result = depotEntryGroupRel;
 
-					cacheResult(depotEntryGroupRel);
+						cacheResult(depotEntryGroupRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3192,8 +3287,8 @@ public class DepotEntryGroupRelPersistenceImpl
 	public DepotEntryGroupRel removeByD_TGI(long depotEntryId, long toGroupId)
 		throws NoSuchEntryGroupRelException {
 
-		DepotEntryGroupRel depotEntryGroupRel = findByD_TGI(
-			depotEntryId, toGroupId);
+		DepotEntryGroupRel depotEntryGroupRel = _findByD_TGI(
+			depotEntryId, toGroupId, true);
 
 		return remove(depotEntryGroupRel);
 	}
@@ -3341,6 +3436,16 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_TGI(
+			searchable, toGroupId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DepotEntryGroupRel> _findByS_TGI(
+		boolean searchable, long toGroupId, int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3421,10 +3526,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3734,9 +3841,9 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public void removeByS_TGI(boolean searchable, long toGroupId) {
 		for (DepotEntryGroupRel depotEntryGroupRel :
-				findByS_TGI(
+				_findByS_TGI(
 					searchable, toGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(depotEntryGroupRel);
 		}
@@ -4255,6 +4362,14 @@ public class DepotEntryGroupRelPersistenceImpl
 		OrderByComparator<DepotEntryGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DepotEntryGroupRel> _findAll(
+		int start, int end,
+		OrderByComparator<DepotEntryGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4309,10 +4424,12 @@ public class DepotEntryGroupRelPersistenceImpl
 				list = (List<DepotEntryGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4332,7 +4449,10 @@ public class DepotEntryGroupRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DepotEntryGroupRel depotEntryGroupRel : findAll()) {
+		for (DepotEntryGroupRel depotEntryGroupRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(depotEntryGroupRel);
 		}
 	}

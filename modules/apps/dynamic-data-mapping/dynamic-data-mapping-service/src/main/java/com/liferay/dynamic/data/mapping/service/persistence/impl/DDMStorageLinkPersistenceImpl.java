@@ -178,6 +178,15 @@ public class DDMStorageLinkPersistenceImpl
 		OrderByComparator<DDMStorageLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStorageLink> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -266,10 +275,12 @@ public class DDMStorageLinkPersistenceImpl
 				list = (List<DDMStorageLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -566,7 +577,9 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDMStorageLink ddmStorageLink :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmStorageLink);
 		}
@@ -733,6 +746,16 @@ public class DDMStorageLinkPersistenceImpl
 		OrderByComparator<DDMStorageLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStorageLink> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -829,10 +852,12 @@ public class DDMStorageLinkPersistenceImpl
 				list = (List<DDMStorageLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1153,9 +1178,9 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDMStorageLink ddmStorageLink :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStorageLink);
 		}
@@ -1263,7 +1288,14 @@ public class DDMStorageLinkPersistenceImpl
 	public DDMStorageLink findByClassPK(long classPK)
 		throws NoSuchStorageLinkException {
 
-		DDMStorageLink ddmStorageLink = fetchByClassPK(classPK);
+		return _findByClassPK(classPK, false);
+	}
+
+	private DDMStorageLink _findByClassPK(long classPK, boolean readOnlyCache)
+		throws NoSuchStorageLinkException {
+
+		DDMStorageLink ddmStorageLink = _fetchByClassPK(
+			classPK, true, readOnlyCache);
 
 		if (ddmStorageLink == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1305,6 +1337,12 @@ public class DDMStorageLinkPersistenceImpl
 	 */
 	@Override
 	public DDMStorageLink fetchByClassPK(long classPK, boolean useFinderCache) {
+		return _fetchByClassPK(classPK, useFinderCache, false);
+	}
+
+	private DDMStorageLink _fetchByClassPK(
+		long classPK, boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStorageLink.class);
 
@@ -1360,9 +1398,11 @@ public class DDMStorageLinkPersistenceImpl
 				else {
 					DDMStorageLink ddmStorageLink = list.get(0);
 
-					result = ddmStorageLink;
+					if (!readOnlyCache) {
+						result = ddmStorageLink;
 
-					cacheResult(ddmStorageLink);
+						cacheResult(ddmStorageLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1391,7 +1431,7 @@ public class DDMStorageLinkPersistenceImpl
 	public DDMStorageLink removeByClassPK(long classPK)
 		throws NoSuchStorageLinkException {
 
-		DDMStorageLink ddmStorageLink = findByClassPK(classPK);
+		DDMStorageLink ddmStorageLink = _findByClassPK(classPK, true);
 
 		return remove(ddmStorageLink);
 	}
@@ -1537,6 +1577,15 @@ public class DDMStorageLinkPersistenceImpl
 		OrderByComparator<DDMStorageLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureId(
+			structureId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStorageLink> _findByStructureId(
+		long structureId, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStorageLink.class);
 
@@ -1614,10 +1663,12 @@ public class DDMStorageLinkPersistenceImpl
 				list = (List<DDMStorageLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1904,8 +1955,9 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public void removeByStructureId(long structureId) {
 		for (DDMStorageLink ddmStorageLink :
-				findByStructureId(
-					structureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStructureId(
+					structureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStorageLink);
 		}
@@ -2055,6 +2107,16 @@ public class DDMStorageLinkPersistenceImpl
 		OrderByComparator<DDMStorageLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureVersionId(
+			structureVersionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStorageLink> _findByStructureVersionId(
+		long structureVersionId, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStorageLink.class);
 
@@ -2135,10 +2197,12 @@ public class DDMStorageLinkPersistenceImpl
 				list = (List<DDMStorageLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2500,6 +2564,16 @@ public class DDMStorageLinkPersistenceImpl
 		OrderByComparator<DDMStorageLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureVersionId(
+			structureVersionIds, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStorageLink> _findByStructureVersionId(
+		long[] structureVersionIds, int start, int end,
+		OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (structureVersionIds == null) {
 			structureVersionIds = new long[0];
 		}
@@ -2594,12 +2668,14 @@ public class DDMStorageLinkPersistenceImpl
 				list = (List<DDMStorageLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByStructureVersionId,
-						finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByStructureVersionId,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2621,9 +2697,9 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public void removeByStructureVersionId(long structureVersionId) {
 		for (DDMStorageLink ddmStorageLink :
-				findByStructureVersionId(
+				_findByStructureVersionId(
 					structureVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStorageLink);
 		}
@@ -3327,6 +3403,13 @@ public class DDMStorageLinkPersistenceImpl
 		int start, int end, OrderByComparator<DDMStorageLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStorageLink> _findAll(
+		int start, int end, OrderByComparator<DDMStorageLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStorageLink.class);
 
@@ -3384,10 +3467,12 @@ public class DDMStorageLinkPersistenceImpl
 				list = (List<DDMStorageLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3407,7 +3492,10 @@ public class DDMStorageLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMStorageLink ddmStorageLink : findAll()) {
+		for (DDMStorageLink ddmStorageLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmStorageLink);
 		}
 	}

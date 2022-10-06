@@ -170,6 +170,15 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowDefinitionLink> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowDefinitionLink.class);
 
@@ -247,10 +256,12 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				list = (List<WorkflowDefinitionLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,8 +555,9 @@ public class WorkflowDefinitionLinkPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (WorkflowDefinitionLink workflowDefinitionLink :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(workflowDefinitionLink);
 		}
@@ -704,6 +716,16 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupId, companyId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowDefinitionLink> _findByG_C_C(
+		long groupId, long companyId, long classNameId, int start, int end,
+		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowDefinitionLink.class);
 
@@ -793,10 +815,12 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				list = (List<WorkflowDefinitionLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1124,9 +1148,9 @@ public class WorkflowDefinitionLinkPersistenceImpl
 	@Override
 	public void removeByG_C_C(long groupId, long companyId, long classNameId) {
 		for (WorkflowDefinitionLink workflowDefinitionLink :
-				findByG_C_C(
+				_findByG_C_C(
 					groupId, companyId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowDefinitionLink);
 		}
@@ -1300,6 +1324,16 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_CPK(
+			groupId, companyId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WorkflowDefinitionLink> _findByG_C_CPK(
+		long groupId, long companyId, long classPK, int start, int end,
+		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowDefinitionLink.class);
 
@@ -1388,10 +1422,12 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				list = (List<WorkflowDefinitionLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1718,9 +1754,9 @@ public class WorkflowDefinitionLinkPersistenceImpl
 	@Override
 	public void removeByG_C_CPK(long groupId, long companyId, long classPK) {
 		for (WorkflowDefinitionLink workflowDefinitionLink :
-				findByG_C_CPK(
+				_findByG_C_CPK(
 					groupId, companyId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowDefinitionLink);
 		}
@@ -1901,6 +1937,17 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_W_W(
+			companyId, workflowDefinitionName, workflowDefinitionVersion, start,
+			end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowDefinitionLink> _findByC_W_W(
+		long companyId, String workflowDefinitionName,
+		int workflowDefinitionVersion, int start, int end,
+		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		workflowDefinitionName = Objects.toString(workflowDefinitionName, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -2009,10 +2056,12 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				list = (List<WorkflowDefinitionLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2367,10 +2416,10 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		int workflowDefinitionVersion) {
 
 		for (WorkflowDefinitionLink workflowDefinitionLink :
-				findByC_W_W(
+				_findByC_W_W(
 					companyId, workflowDefinitionName,
 					workflowDefinitionVersion, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowDefinitionLink);
 		}
@@ -2573,6 +2622,16 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		int end, OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_C(
+			groupId, companyId, classNameId, classPK, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowDefinitionLink> _findByG_C_C_C(
+		long groupId, long companyId, long classNameId, long classPK, int start,
+		int end, OrderByComparator<WorkflowDefinitionLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowDefinitionLink.class);
 
@@ -2670,10 +2729,12 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				list = (List<WorkflowDefinitionLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3019,9 +3080,9 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		long groupId, long companyId, long classNameId, long classPK) {
 
 		for (WorkflowDefinitionLink workflowDefinitionLink :
-				findByG_C_C_C(
+				_findByG_C_C_C(
 					groupId, companyId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(workflowDefinitionLink);
 		}
@@ -3139,8 +3200,18 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			long typePK)
 		throws NoSuchWorkflowDefinitionLinkException {
 
-		WorkflowDefinitionLink workflowDefinitionLink = fetchByG_C_C_C_T(
-			groupId, companyId, classNameId, classPK, typePK);
+		return _findByG_C_C_C_T(
+			groupId, companyId, classNameId, classPK, typePK, false);
+	}
+
+	private WorkflowDefinitionLink _findByG_C_C_C_T(
+			long groupId, long companyId, long classNameId, long classPK,
+			long typePK, boolean readOnlyCache)
+		throws NoSuchWorkflowDefinitionLinkException {
+
+		WorkflowDefinitionLink workflowDefinitionLink = _fetchByG_C_C_C_T(
+			groupId, companyId, classNameId, classPK, typePK, true,
+			readOnlyCache);
 
 		if (workflowDefinitionLink == null) {
 			StringBundler sb = new StringBundler(12);
@@ -3208,6 +3279,15 @@ public class WorkflowDefinitionLinkPersistenceImpl
 	public WorkflowDefinitionLink fetchByG_C_C_C_T(
 		long groupId, long companyId, long classNameId, long classPK,
 		long typePK, boolean useFinderCache) {
+
+		return _fetchByG_C_C_C_T(
+			groupId, companyId, classNameId, classPK, typePK, useFinderCache,
+			false);
+	}
+
+	private WorkflowDefinitionLink _fetchByG_C_C_C_T(
+		long groupId, long companyId, long classNameId, long classPK,
+		long typePK, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowDefinitionLink.class);
@@ -3306,9 +3386,11 @@ public class WorkflowDefinitionLinkPersistenceImpl
 
 					WorkflowDefinitionLink workflowDefinitionLink = list.get(0);
 
-					result = workflowDefinitionLink;
+					if (!readOnlyCache) {
+						result = workflowDefinitionLink;
 
-					cacheResult(workflowDefinitionLink);
+						cacheResult(workflowDefinitionLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3343,8 +3425,8 @@ public class WorkflowDefinitionLinkPersistenceImpl
 			long typePK)
 		throws NoSuchWorkflowDefinitionLinkException {
 
-		WorkflowDefinitionLink workflowDefinitionLink = findByG_C_C_C_T(
-			groupId, companyId, classNameId, classPK, typePK);
+		WorkflowDefinitionLink workflowDefinitionLink = _findByG_C_C_C_T(
+			groupId, companyId, classNameId, classPK, typePK, true);
 
 		return remove(workflowDefinitionLink);
 	}
@@ -4056,6 +4138,14 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WorkflowDefinitionLink> _findAll(
+		int start, int end,
+		OrderByComparator<WorkflowDefinitionLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			WorkflowDefinitionLink.class);
 
@@ -4113,10 +4203,12 @@ public class WorkflowDefinitionLinkPersistenceImpl
 				list = (List<WorkflowDefinitionLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4136,7 +4228,10 @@ public class WorkflowDefinitionLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WorkflowDefinitionLink workflowDefinitionLink : findAll()) {
+		for (WorkflowDefinitionLink workflowDefinitionLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(workflowDefinitionLink);
 		}
 	}

@@ -180,6 +180,15 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -267,10 +276,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -943,7 +954,9 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceInventoryWarehouse);
 		}
@@ -1167,6 +1180,16 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1263,10 +1286,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1970,9 +1995,9 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryWarehouse);
 		}
@@ -2202,6 +2227,15 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2280,10 +2314,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2919,8 +2955,9 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceInventoryWarehouse);
 		}
@@ -3109,6 +3146,16 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findByC_A(
+		long companyId, boolean active, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3192,10 +3239,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3860,9 +3909,9 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, boolean active) {
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findByC_A(
+				_findByC_A(
 					companyId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceInventoryWarehouse);
 		}
@@ -4069,6 +4118,16 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, countryTwoLettersISOCode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findByC_C(
+		long companyId, String countryTwoLettersISOCode, int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		countryTwoLettersISOCode = Objects.toString(
 			countryTwoLettersISOCode, "");
 
@@ -4169,10 +4228,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4887,9 +4948,9 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, String countryTwoLettersISOCode) {
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findByC_C(
+				_findByC_C(
 					companyId, countryTwoLettersISOCode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryWarehouse);
 		}
@@ -5136,6 +5197,17 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_C(
+			companyId, active, countryTwoLettersISOCode, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findByC_A_C(
+		long companyId, boolean active, String countryTwoLettersISOCode,
+		int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		countryTwoLettersISOCode = Objects.toString(
 			countryTwoLettersISOCode, "");
 
@@ -5243,10 +5315,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5995,9 +6069,9 @@ public class CommerceInventoryWarehousePersistenceImpl
 		long companyId, boolean active, String countryTwoLettersISOCode) {
 
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findByC_A_C(
+				_findByC_A_C(
 					companyId, active, countryTwoLettersISOCode,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryWarehouse);
 		}
@@ -6187,8 +6261,15 @@ public class CommerceInventoryWarehousePersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchInventoryWarehouseException {
 
-		CommerceInventoryWarehouse commerceInventoryWarehouse = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceInventoryWarehouse _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchInventoryWarehouseException {
+
+		CommerceInventoryWarehouse commerceInventoryWarehouse = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceInventoryWarehouse == null) {
 			StringBundler sb = new StringBundler(6);
@@ -6238,6 +6319,14 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public CommerceInventoryWarehouse fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceInventoryWarehouse _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -6313,9 +6402,11 @@ public class CommerceInventoryWarehousePersistenceImpl
 					CommerceInventoryWarehouse commerceInventoryWarehouse =
 						list.get(0);
 
-					result = commerceInventoryWarehouse;
+					if (!readOnlyCache) {
+						result = commerceInventoryWarehouse;
 
-					cacheResult(commerceInventoryWarehouse);
+						cacheResult(commerceInventoryWarehouse);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6346,8 +6437,8 @@ public class CommerceInventoryWarehousePersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchInventoryWarehouseException {
 
-		CommerceInventoryWarehouse commerceInventoryWarehouse = findByC_ERC(
-			companyId, externalReferenceCode);
+		CommerceInventoryWarehouse commerceInventoryWarehouse = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(commerceInventoryWarehouse);
 	}
@@ -6904,6 +6995,14 @@ public class CommerceInventoryWarehousePersistenceImpl
 		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryWarehouse> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceInventoryWarehouse> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6959,10 +7058,12 @@ public class CommerceInventoryWarehousePersistenceImpl
 				list = (List<CommerceInventoryWarehouse>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6983,7 +7084,8 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryWarehouse);
 		}

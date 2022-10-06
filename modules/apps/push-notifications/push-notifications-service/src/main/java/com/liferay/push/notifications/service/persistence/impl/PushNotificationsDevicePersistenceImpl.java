@@ -113,7 +113,15 @@ public class PushNotificationsDevicePersistenceImpl
 	public PushNotificationsDevice findByToken(String token)
 		throws NoSuchDeviceException {
 
-		PushNotificationsDevice pushNotificationsDevice = fetchByToken(token);
+		return _findByToken(token, false);
+	}
+
+	private PushNotificationsDevice _findByToken(
+			String token, boolean readOnlyCache)
+		throws NoSuchDeviceException {
+
+		PushNotificationsDevice pushNotificationsDevice = _fetchByToken(
+			token, true, readOnlyCache);
 
 		if (pushNotificationsDevice == null) {
 			StringBundler sb = new StringBundler(4);
@@ -156,6 +164,12 @@ public class PushNotificationsDevicePersistenceImpl
 	@Override
 	public PushNotificationsDevice fetchByToken(
 		String token, boolean useFinderCache) {
+
+		return _fetchByToken(token, useFinderCache, false);
+	}
+
+	private PushNotificationsDevice _fetchByToken(
+		String token, boolean useFinderCache, boolean readOnlyCache) {
 
 		token = Objects.toString(token, "");
 
@@ -223,9 +237,11 @@ public class PushNotificationsDevicePersistenceImpl
 					PushNotificationsDevice pushNotificationsDevice = list.get(
 						0);
 
-					result = pushNotificationsDevice;
+					if (!readOnlyCache) {
+						result = pushNotificationsDevice;
 
-					cacheResult(pushNotificationsDevice);
+						cacheResult(pushNotificationsDevice);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -254,7 +270,8 @@ public class PushNotificationsDevicePersistenceImpl
 	public PushNotificationsDevice removeByToken(String token)
 		throws NoSuchDeviceException {
 
-		PushNotificationsDevice pushNotificationsDevice = findByToken(token);
+		PushNotificationsDevice pushNotificationsDevice = _findByToken(
+			token, true);
 
 		return remove(pushNotificationsDevice);
 	}
@@ -410,6 +427,16 @@ public class PushNotificationsDevicePersistenceImpl
 		OrderByComparator<PushNotificationsDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_P(
+			userId, platform, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PushNotificationsDevice> _findByU_P(
+		long userId, String platform, int start, int end,
+		OrderByComparator<PushNotificationsDevice> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		platform = Objects.toString(platform, "");
 
 		FinderPath finderPath = null;
@@ -504,10 +531,12 @@ public class PushNotificationsDevicePersistenceImpl
 				list = (List<PushNotificationsDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -905,6 +934,16 @@ public class PushNotificationsDevicePersistenceImpl
 		OrderByComparator<PushNotificationsDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_P(
+			userIds, platform, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<PushNotificationsDevice> _findByU_P(
+		long[] userIds, String platform, int start, int end,
+		OrderByComparator<PushNotificationsDevice> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (userIds == null) {
 			userIds = new long[0];
 		}
@@ -1015,11 +1054,14 @@ public class PushNotificationsDevicePersistenceImpl
 				list = (List<PushNotificationsDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByU_P, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByU_P, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1042,9 +1084,9 @@ public class PushNotificationsDevicePersistenceImpl
 	@Override
 	public void removeByU_P(long userId, String platform) {
 		for (PushNotificationsDevice pushNotificationsDevice :
-				findByU_P(
+				_findByU_P(
 					userId, platform, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(pushNotificationsDevice);
 		}
@@ -1642,6 +1684,14 @@ public class PushNotificationsDevicePersistenceImpl
 		OrderByComparator<PushNotificationsDevice> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<PushNotificationsDevice> _findAll(
+		int start, int end,
+		OrderByComparator<PushNotificationsDevice> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1697,10 +1747,12 @@ public class PushNotificationsDevicePersistenceImpl
 				list = (List<PushNotificationsDevice>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1720,7 +1772,10 @@ public class PushNotificationsDevicePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (PushNotificationsDevice pushNotificationsDevice : findAll()) {
+		for (PushNotificationsDevice pushNotificationsDevice :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(pushNotificationsDevice);
 		}
 	}

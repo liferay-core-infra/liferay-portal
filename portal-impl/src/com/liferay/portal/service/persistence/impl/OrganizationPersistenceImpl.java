@@ -179,6 +179,15 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Organization> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -267,10 +276,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -920,7 +931,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Organization organization :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(organization);
 		}
@@ -1154,6 +1167,16 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Organization> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1250,10 +1273,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1942,9 +1967,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Organization organization :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(organization);
 		}
@@ -2186,6 +2211,15 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Organization> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Organization.class);
 
@@ -2263,10 +2297,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2880,8 +2916,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Organization organization :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(organization);
 		}
@@ -3076,6 +3113,15 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyIdLocations(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Organization> _findByCompanyIdLocations(
+		long companyId, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Organization.class);
 
@@ -3154,10 +3200,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3772,8 +3820,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByCompanyIdLocations(long companyId) {
 		for (Organization organization :
-				findByCompanyIdLocations(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyIdLocations(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(organization);
 		}
@@ -3976,6 +4025,16 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_P(
+			companyId, parentOrganizationId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Organization> _findByC_P(
+		long companyId, long parentOrganizationId, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Organization.class);
 
@@ -4060,10 +4119,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4722,9 +4783,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByC_P(long companyId, long parentOrganizationId) {
 		for (Organization organization :
-				findByC_P(
+				_findByC_P(
 					companyId, parentOrganizationId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(organization);
 		}
@@ -4935,6 +4996,16 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeT(
+			companyId, treePath, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Organization> _findByC_LikeT(
+		long companyId, String treePath, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		treePath = Objects.toString(treePath, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -5023,10 +5094,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5720,9 +5793,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByC_LikeT(long companyId, String treePath) {
 		for (Organization organization :
-				findByC_LikeT(
+				_findByC_LikeT(
 					companyId, treePath, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(organization);
 		}
@@ -5897,7 +5970,15 @@ public class OrganizationPersistenceImpl
 	public Organization findByC_N(long companyId, String name)
 		throws NoSuchOrganizationException {
 
-		Organization organization = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private Organization _findByC_N(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchOrganizationException {
+
+		Organization organization = _fetchByC_N(
+			companyId, name, true, readOnlyCache);
 
 		if (organization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -5945,6 +6026,13 @@ public class OrganizationPersistenceImpl
 	@Override
 	public Organization fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private Organization _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -6020,9 +6108,11 @@ public class OrganizationPersistenceImpl
 				else {
 					Organization organization = list.get(0);
 
-					result = organization;
+					if (!readOnlyCache) {
+						result = organization;
 
-					cacheResult(organization);
+						cacheResult(organization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6052,7 +6142,7 @@ public class OrganizationPersistenceImpl
 	public Organization removeByC_N(long companyId, String name)
 		throws NoSuchOrganizationException {
 
-		Organization organization = findByC_N(companyId, name);
+		Organization organization = _findByC_N(companyId, name, true);
 
 		return remove(organization);
 	}
@@ -6225,6 +6315,16 @@ public class OrganizationPersistenceImpl
 		OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_LikeN(
+			companyId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Organization> _findByC_LikeN(
+		long companyId, String name, int start, int end,
+		OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -6313,10 +6413,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7006,9 +7108,9 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void removeByC_LikeN(long companyId, String name) {
 		for (Organization organization :
-				findByC_LikeN(
-					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_LikeN(
+					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(organization);
 		}
@@ -7258,6 +7360,16 @@ public class OrganizationPersistenceImpl
 		int start, int end, OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGtO_C_P(
+			organizationId, companyId, parentOrganizationId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Organization> _findByGtO_C_P(
+		long organizationId, long companyId, long parentOrganizationId,
+		int start, int end, OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Organization.class);
 
@@ -7338,10 +7450,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7659,9 +7773,9 @@ public class OrganizationPersistenceImpl
 		long organizationId, long companyId, long parentOrganizationId) {
 
 		for (Organization organization :
-				findByGtO_C_P(
+				_findByGtO_C_P(
 					organizationId, companyId, parentOrganizationId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(organization);
 		}
@@ -7902,6 +8016,16 @@ public class OrganizationPersistenceImpl
 		int end, OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_P_LikeN(
+			companyId, parentOrganizationId, name, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Organization> _findByC_P_LikeN(
+		long companyId, long parentOrganizationId, String name, int start,
+		int end, OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -7996,10 +8120,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8729,9 +8855,9 @@ public class OrganizationPersistenceImpl
 		long companyId, long parentOrganizationId, String name) {
 
 		for (Organization organization :
-				findByC_P_LikeN(
+				_findByC_P_LikeN(
 					companyId, parentOrganizationId, name, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(organization);
 		}
@@ -8925,8 +9051,15 @@ public class OrganizationPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchOrganizationException {
 
-		Organization organization = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private Organization _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchOrganizationException {
+
+		Organization organization = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (organization == null) {
 			StringBundler sb = new StringBundler(6);
@@ -8976,6 +9109,14 @@ public class OrganizationPersistenceImpl
 	@Override
 	public Organization fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private Organization _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -9053,9 +9194,11 @@ public class OrganizationPersistenceImpl
 				else {
 					Organization organization = list.get(0);
 
-					result = organization;
+					if (!readOnlyCache) {
+						result = organization;
 
-					cacheResult(organization);
+						cacheResult(organization);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9086,8 +9229,8 @@ public class OrganizationPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchOrganizationException {
 
-		Organization organization = findByC_ERC(
-			companyId, externalReferenceCode);
+		Organization organization = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(organization);
 	}
@@ -9784,6 +9927,13 @@ public class OrganizationPersistenceImpl
 		int start, int end, OrderByComparator<Organization> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Organization> _findAll(
+		int start, int end, OrderByComparator<Organization> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Organization.class);
 
@@ -9841,10 +9991,12 @@ public class OrganizationPersistenceImpl
 				list = (List<Organization>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9864,7 +10016,10 @@ public class OrganizationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Organization organization : findAll()) {
+		for (Organization organization :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(organization);
 		}
 	}

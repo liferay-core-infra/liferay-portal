@@ -175,6 +175,15 @@ public class COREntryPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<COREntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -260,10 +269,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -904,7 +915,9 @@ public class COREntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (COREntry corEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(corEntry);
 		}
@@ -1125,6 +1138,16 @@ public class COREntryPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<COREntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1218,10 +1241,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1900,9 +1925,9 @@ public class COREntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (COREntry corEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(corEntry);
 		}
@@ -2136,6 +2161,16 @@ public class COREntryPersistenceImpl
 		long companyId, boolean active, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, active, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<COREntry> _findByC_A(
+		long companyId, boolean active, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2216,10 +2251,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2859,9 +2896,9 @@ public class COREntryPersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, boolean active) {
 		for (COREntry corEntry :
-				findByC_A(
+				_findByC_A(
 					companyId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(corEntry);
 		}
@@ -3062,6 +3099,16 @@ public class COREntryPersistenceImpl
 		long companyId, String type, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_LikeType(
+			companyId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<COREntry> _findByC_LikeType(
+		long companyId, String type, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -3146,10 +3193,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3829,9 +3878,9 @@ public class COREntryPersistenceImpl
 	@Override
 	public void removeByC_LikeType(long companyId, String type) {
 		for (COREntry corEntry :
-				findByC_LikeType(
-					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_LikeType(
+					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(corEntry);
 		}
@@ -4064,6 +4113,16 @@ public class COREntryPersistenceImpl
 		Date displayDate, int status, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByLtD_S(
+			displayDate, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<COREntry> _findByLtD_S(
+		Date displayDate, int status, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4145,10 +4204,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4826,9 +4887,9 @@ public class COREntryPersistenceImpl
 	@Override
 	public void removeByLtD_S(Date displayDate, int status) {
 		for (COREntry corEntry :
-				findByLtD_S(
+				_findByLtD_S(
 					displayDate, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(corEntry);
 		}
@@ -5051,6 +5112,16 @@ public class COREntryPersistenceImpl
 		Date expirationDate, int status, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByLtE_S(
+			expirationDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<COREntry> _findByLtE_S(
+		Date expirationDate, int status, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5132,10 +5203,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5813,9 +5886,9 @@ public class COREntryPersistenceImpl
 	@Override
 	public void removeByLtE_S(Date expirationDate, int status) {
 		for (COREntry corEntry :
-				findByLtE_S(
+				_findByLtE_S(
 					expirationDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(corEntry);
 		}
@@ -6045,6 +6118,16 @@ public class COREntryPersistenceImpl
 		long companyId, boolean active, String type, int start, int end,
 		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_A_LikeType(
+			companyId, active, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<COREntry> _findByC_A_LikeType(
+		long companyId, boolean active, String type, int start, int end,
+		OrderByComparator<COREntry> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -6134,10 +6217,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6857,9 +6942,9 @@ public class COREntryPersistenceImpl
 		long companyId, boolean active, String type) {
 
 		for (COREntry corEntry :
-				findByC_A_LikeType(
+				_findByC_A_LikeType(
 					companyId, active, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(corEntry);
 		}
@@ -7048,7 +7133,15 @@ public class COREntryPersistenceImpl
 	public COREntry findByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchCOREntryException {
 
-		COREntry corEntry = fetchByC_ERC(companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private COREntry _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchCOREntryException {
+
+		COREntry corEntry = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (corEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -7096,6 +7189,14 @@ public class COREntryPersistenceImpl
 	@Override
 	public COREntry fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private COREntry _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -7169,9 +7270,11 @@ public class COREntryPersistenceImpl
 				else {
 					COREntry corEntry = list.get(0);
 
-					result = corEntry;
+					if (!readOnlyCache) {
+						result = corEntry;
 
-					cacheResult(corEntry);
+						cacheResult(corEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7201,7 +7304,8 @@ public class COREntryPersistenceImpl
 	public COREntry removeByC_ERC(long companyId, String externalReferenceCode)
 		throws NoSuchCOREntryException {
 
-		COREntry corEntry = findByC_ERC(companyId, externalReferenceCode);
+		COREntry corEntry = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(corEntry);
 	}
@@ -7702,6 +7806,13 @@ public class COREntryPersistenceImpl
 		int start, int end, OrderByComparator<COREntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<COREntry> _findAll(
+		int start, int end, OrderByComparator<COREntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7756,10 +7867,12 @@ public class COREntryPersistenceImpl
 				list = (List<COREntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7779,7 +7892,10 @@ public class COREntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (COREntry corEntry : findAll()) {
+		for (COREntry corEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(corEntry);
 		}
 	}

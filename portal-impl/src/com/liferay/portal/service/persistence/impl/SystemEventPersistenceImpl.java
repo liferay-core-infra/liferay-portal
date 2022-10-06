@@ -166,6 +166,15 @@ public class SystemEventPersistenceImpl
 		OrderByComparator<SystemEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SystemEvent> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SystemEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SystemEvent.class);
 
@@ -241,10 +250,12 @@ public class SystemEventPersistenceImpl
 				list = (List<SystemEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -528,8 +539,9 @@ public class SystemEventPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SystemEvent systemEvent :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(systemEvent);
 		}
@@ -681,6 +693,16 @@ public class SystemEventPersistenceImpl
 		OrderByComparator<SystemEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, systemEventSetKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SystemEvent> _findByG_S(
+		long groupId, long systemEventSetKey, int start, int end,
+		OrderByComparator<SystemEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SystemEvent.class);
 
@@ -765,10 +787,12 @@ public class SystemEventPersistenceImpl
 				list = (List<SystemEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1075,9 +1099,9 @@ public class SystemEventPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, long systemEventSetKey) {
 		for (SystemEvent systemEvent :
-				findByG_S(
+				_findByG_S(
 					groupId, systemEventSetKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(systemEvent);
 		}
@@ -1243,6 +1267,16 @@ public class SystemEventPersistenceImpl
 		OrderByComparator<SystemEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SystemEvent> _findByG_C_C(
+		long groupId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<SystemEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SystemEvent.class);
 
@@ -1331,10 +1365,12 @@ public class SystemEventPersistenceImpl
 				list = (List<SystemEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1657,9 +1693,9 @@ public class SystemEventPersistenceImpl
 	@Override
 	public void removeByG_C_C(long groupId, long classNameId, long classPK) {
 		for (SystemEvent systemEvent :
-				findByG_C_C(
+				_findByG_C_C(
 					groupId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(systemEvent);
 		}
@@ -1840,6 +1876,16 @@ public class SystemEventPersistenceImpl
 		int end, OrderByComparator<SystemEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_T(
+			groupId, classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SystemEvent> _findByG_C_C_T(
+		long groupId, long classNameId, long classPK, int type, int start,
+		int end, OrderByComparator<SystemEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SystemEvent.class);
 
@@ -1934,10 +1980,12 @@ public class SystemEventPersistenceImpl
 				list = (List<SystemEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2279,9 +2327,9 @@ public class SystemEventPersistenceImpl
 		long groupId, long classNameId, long classPK, int type) {
 
 		for (SystemEvent systemEvent :
-				findByG_C_C_T(
+				_findByG_C_C_T(
 					groupId, classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(systemEvent);
 		}
@@ -2909,6 +2957,13 @@ public class SystemEventPersistenceImpl
 		int start, int end, OrderByComparator<SystemEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SystemEvent> _findAll(
+		int start, int end, OrderByComparator<SystemEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SystemEvent.class);
 
@@ -2966,10 +3021,12 @@ public class SystemEventPersistenceImpl
 				list = (List<SystemEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2989,7 +3046,10 @@ public class SystemEventPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SystemEvent systemEvent : findAll()) {
+		for (SystemEvent systemEvent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(systemEvent);
 		}
 	}

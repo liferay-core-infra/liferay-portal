@@ -176,6 +176,15 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		OrderByComparator<CommerceVirtualOrderItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceVirtualOrderItem> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceVirtualOrderItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class CommerceVirtualOrderItemPersistenceImpl
 				list = (List<CommerceVirtualOrderItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -572,7 +583,9 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceVirtualOrderItem commerceVirtualOrderItem :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceVirtualOrderItem);
 		}
@@ -661,8 +674,15 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	public CommerceVirtualOrderItem findByUUID_G(String uuid, long groupId)
 		throws NoSuchVirtualOrderItemException {
 
-		CommerceVirtualOrderItem commerceVirtualOrderItem = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CommerceVirtualOrderItem _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchVirtualOrderItemException {
+
+		CommerceVirtualOrderItem commerceVirtualOrderItem = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (commerceVirtualOrderItem == null) {
 			StringBundler sb = new StringBundler(6);
@@ -710,6 +730,13 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	@Override
 	public CommerceVirtualOrderItem fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CommerceVirtualOrderItem _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -784,9 +811,11 @@ public class CommerceVirtualOrderItemPersistenceImpl
 					CommerceVirtualOrderItem commerceVirtualOrderItem =
 						list.get(0);
 
-					result = commerceVirtualOrderItem;
+					if (!readOnlyCache) {
+						result = commerceVirtualOrderItem;
 
-					cacheResult(commerceVirtualOrderItem);
+						cacheResult(commerceVirtualOrderItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -816,8 +845,8 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	public CommerceVirtualOrderItem removeByUUID_G(String uuid, long groupId)
 		throws NoSuchVirtualOrderItemException {
 
-		CommerceVirtualOrderItem commerceVirtualOrderItem = findByUUID_G(
-			uuid, groupId);
+		CommerceVirtualOrderItem commerceVirtualOrderItem = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(commerceVirtualOrderItem);
 	}
@@ -981,6 +1010,16 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		OrderByComparator<CommerceVirtualOrderItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceVirtualOrderItem> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceVirtualOrderItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1075,10 +1114,12 @@ public class CommerceVirtualOrderItemPersistenceImpl
 				list = (List<CommerceVirtualOrderItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1402,9 +1443,9 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceVirtualOrderItem commerceVirtualOrderItem :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceVirtualOrderItem);
 		}
@@ -1501,8 +1542,16 @@ public class CommerceVirtualOrderItemPersistenceImpl
 			long commerceOrderItemId)
 		throws NoSuchVirtualOrderItemException {
 
+		return _findByCommerceOrderItemId(commerceOrderItemId, false);
+	}
+
+	private CommerceVirtualOrderItem _findByCommerceOrderItemId(
+			long commerceOrderItemId, boolean readOnlyCache)
+		throws NoSuchVirtualOrderItemException {
+
 		CommerceVirtualOrderItem commerceVirtualOrderItem =
-			fetchByCommerceOrderItemId(commerceOrderItemId);
+			_fetchByCommerceOrderItemId(
+				commerceOrderItemId, true, readOnlyCache);
 
 		if (commerceVirtualOrderItem == null) {
 			StringBundler sb = new StringBundler(4);
@@ -1547,6 +1596,14 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	@Override
 	public CommerceVirtualOrderItem fetchByCommerceOrderItemId(
 		long commerceOrderItemId, boolean useFinderCache) {
+
+		return _fetchByCommerceOrderItemId(
+			commerceOrderItemId, useFinderCache, false);
+	}
+
+	private CommerceVirtualOrderItem _fetchByCommerceOrderItemId(
+		long commerceOrderItemId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1605,9 +1662,11 @@ public class CommerceVirtualOrderItemPersistenceImpl
 					CommerceVirtualOrderItem commerceVirtualOrderItem =
 						list.get(0);
 
-					result = commerceVirtualOrderItem;
+					if (!readOnlyCache) {
+						result = commerceVirtualOrderItem;
 
-					cacheResult(commerceVirtualOrderItem);
+						cacheResult(commerceVirtualOrderItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1638,7 +1697,7 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		throws NoSuchVirtualOrderItemException {
 
 		CommerceVirtualOrderItem commerceVirtualOrderItem =
-			findByCommerceOrderItemId(commerceOrderItemId);
+			_findByCommerceOrderItemId(commerceOrderItemId, true);
 
 		return remove(commerceVirtualOrderItem);
 	}
@@ -2168,6 +2227,14 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		OrderByComparator<CommerceVirtualOrderItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceVirtualOrderItem> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceVirtualOrderItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2223,10 +2290,12 @@ public class CommerceVirtualOrderItemPersistenceImpl
 				list = (List<CommerceVirtualOrderItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2246,7 +2315,10 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceVirtualOrderItem commerceVirtualOrderItem : findAll()) {
+		for (CommerceVirtualOrderItem commerceVirtualOrderItem :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceVirtualOrderItem);
 		}
 	}

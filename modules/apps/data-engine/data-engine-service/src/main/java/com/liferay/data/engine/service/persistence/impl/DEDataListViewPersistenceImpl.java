@@ -179,6 +179,15 @@ public class DEDataListViewPersistenceImpl
 		OrderByComparator<DEDataListView> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DEDataListView> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DEDataListView> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class DEDataListViewPersistenceImpl
 				list = (List<DEDataListView>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class DEDataListViewPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DEDataListView deDataListView :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(deDataListView);
 		}
@@ -668,7 +681,15 @@ public class DEDataListViewPersistenceImpl
 	public DEDataListView findByUUID_G(String uuid, long groupId)
 		throws NoSuchDataListViewException {
 
-		DEDataListView deDataListView = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DEDataListView _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchDataListViewException {
+
+		DEDataListView deDataListView = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (deDataListView == null) {
 			StringBundler sb = new StringBundler(6);
@@ -716,6 +737,13 @@ public class DEDataListViewPersistenceImpl
 	@Override
 	public DEDataListView fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DEDataListView _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +819,11 @@ public class DEDataListViewPersistenceImpl
 				else {
 					DEDataListView deDataListView = list.get(0);
 
-					result = deDataListView;
+					if (!readOnlyCache) {
+						result = deDataListView;
 
-					cacheResult(deDataListView);
+						cacheResult(deDataListView);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,7 +853,7 @@ public class DEDataListViewPersistenceImpl
 	public DEDataListView removeByUUID_G(String uuid, long groupId)
 		throws NoSuchDataListViewException {
 
-		DEDataListView deDataListView = findByUUID_G(uuid, groupId);
+		DEDataListView deDataListView = _findByUUID_G(uuid, groupId, true);
 
 		return remove(deDataListView);
 	}
@@ -997,6 +1027,16 @@ public class DEDataListViewPersistenceImpl
 		OrderByComparator<DEDataListView> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DEDataListView> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DEDataListView> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1093,10 +1133,12 @@ public class DEDataListViewPersistenceImpl
 				list = (List<DEDataListView>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1417,9 +1459,9 @@ public class DEDataListViewPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DEDataListView deDataListView :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(deDataListView);
 		}
@@ -1590,6 +1632,16 @@ public class DEDataListViewPersistenceImpl
 		OrderByComparator<DEDataListView> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMStructureId(
+			ddmStructureId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DEDataListView> _findByDDMStructureId(
+		long ddmStructureId, int start, int end,
+		OrderByComparator<DEDataListView> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataListView.class);
 
@@ -1667,10 +1719,12 @@ public class DEDataListViewPersistenceImpl
 				list = (List<DEDataListView>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1961,9 +2015,9 @@ public class DEDataListViewPersistenceImpl
 	@Override
 	public void removeByDDMStructureId(long ddmStructureId) {
 		for (DEDataListView deDataListView :
-				findByDDMStructureId(
-					ddmStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByDDMStructureId(
+					ddmStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(deDataListView);
 		}
@@ -2123,6 +2177,16 @@ public class DEDataListViewPersistenceImpl
 		OrderByComparator<DEDataListView> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_DDMSI(
+			groupId, companyId, ddmStructureId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DEDataListView> _findByG_C_DDMSI(
+		long groupId, long companyId, long ddmStructureId, int start, int end,
+		OrderByComparator<DEDataListView> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataListView.class);
 
@@ -2213,10 +2277,12 @@ public class DEDataListViewPersistenceImpl
 				list = (List<DEDataListView>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2544,9 +2610,9 @@ public class DEDataListViewPersistenceImpl
 		long groupId, long companyId, long ddmStructureId) {
 
 		for (DEDataListView deDataListView :
-				findByG_C_DDMSI(
+				_findByG_C_DDMSI(
 					groupId, companyId, ddmStructureId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(deDataListView);
 		}
@@ -3216,6 +3282,13 @@ public class DEDataListViewPersistenceImpl
 		int start, int end, OrderByComparator<DEDataListView> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DEDataListView> _findAll(
+		int start, int end, OrderByComparator<DEDataListView> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataListView.class);
 
@@ -3273,10 +3346,12 @@ public class DEDataListViewPersistenceImpl
 				list = (List<DEDataListView>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3296,7 +3371,10 @@ public class DEDataListViewPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DEDataListView deDataListView : findAll()) {
+		for (DEDataListView deDataListView :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(deDataListView);
 		}
 	}

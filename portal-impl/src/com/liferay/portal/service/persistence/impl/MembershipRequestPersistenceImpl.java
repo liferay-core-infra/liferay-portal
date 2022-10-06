@@ -160,6 +160,15 @@ public class MembershipRequestPersistenceImpl
 		OrderByComparator<MembershipRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MembershipRequest> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<MembershipRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -232,10 +241,12 @@ public class MembershipRequestPersistenceImpl
 				list = (List<MembershipRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -524,8 +535,9 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (MembershipRequest membershipRequest :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(membershipRequest);
 		}
@@ -658,6 +670,15 @@ public class MembershipRequestPersistenceImpl
 		OrderByComparator<MembershipRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MembershipRequest> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<MembershipRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -730,10 +751,12 @@ public class MembershipRequestPersistenceImpl
 				list = (List<MembershipRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1020,8 +1043,9 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (MembershipRequest membershipRequest :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(membershipRequest);
 		}
@@ -1160,6 +1184,16 @@ public class MembershipRequestPersistenceImpl
 		OrderByComparator<MembershipRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, statusId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MembershipRequest> _findByG_S(
+		long groupId, long statusId, int start, int end,
+		OrderByComparator<MembershipRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1240,10 +1274,12 @@ public class MembershipRequestPersistenceImpl
 				list = (List<MembershipRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1552,9 +1588,9 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, long statusId) {
 		for (MembershipRequest membershipRequest :
-				findByG_S(
+				_findByG_S(
 					groupId, statusId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(membershipRequest);
 		}
@@ -1708,6 +1744,16 @@ public class MembershipRequestPersistenceImpl
 		OrderByComparator<MembershipRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_S(
+			groupId, userId, statusId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MembershipRequest> _findByG_U_S(
+		long groupId, long userId, long statusId, int start, int end,
+		OrderByComparator<MembershipRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1793,10 +1839,12 @@ public class MembershipRequestPersistenceImpl
 				list = (List<MembershipRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2122,9 +2170,9 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void removeByG_U_S(long groupId, long userId, long statusId) {
 		for (MembershipRequest membershipRequest :
-				findByG_U_S(
+				_findByG_U_S(
 					groupId, userId, statusId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(membershipRequest);
 		}
@@ -2585,6 +2633,14 @@ public class MembershipRequestPersistenceImpl
 		OrderByComparator<MembershipRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MembershipRequest> _findAll(
+		int start, int end,
+		OrderByComparator<MembershipRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2639,10 +2695,12 @@ public class MembershipRequestPersistenceImpl
 				list = (List<MembershipRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2662,7 +2720,10 @@ public class MembershipRequestPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MembershipRequest membershipRequest : findAll()) {
+		for (MembershipRequest membershipRequest :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(membershipRequest);
 		}
 	}

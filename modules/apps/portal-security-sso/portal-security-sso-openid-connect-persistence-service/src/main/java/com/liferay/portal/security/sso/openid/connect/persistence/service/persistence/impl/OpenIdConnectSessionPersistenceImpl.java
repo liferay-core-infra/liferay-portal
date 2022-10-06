@@ -174,6 +174,15 @@ public class OpenIdConnectSessionPersistenceImpl
 		OrderByComparator<OpenIdConnectSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OpenIdConnectSession> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<OpenIdConnectSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -246,10 +255,12 @@ public class OpenIdConnectSessionPersistenceImpl
 				list = (List<OpenIdConnectSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -541,8 +552,9 @@ public class OpenIdConnectSessionPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (OpenIdConnectSession openIdConnectSession :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(openIdConnectSession);
 		}
@@ -682,6 +694,16 @@ public class OpenIdConnectSessionPersistenceImpl
 		OrderByComparator<OpenIdConnectSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtAccessTokenExpirationDate(
+			accessTokenExpirationDate, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<OpenIdConnectSession> _findByLtAccessTokenExpirationDate(
+		Date accessTokenExpirationDate, int start, int end,
+		OrderByComparator<OpenIdConnectSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -763,10 +785,12 @@ public class OpenIdConnectSessionPersistenceImpl
 				list = (List<OpenIdConnectSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1078,9 +1102,9 @@ public class OpenIdConnectSessionPersistenceImpl
 		Date accessTokenExpirationDate) {
 
 		for (OpenIdConnectSession openIdConnectSession :
-				findByLtAccessTokenExpirationDate(
+				_findByLtAccessTokenExpirationDate(
 					accessTokenExpirationDate, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(openIdConnectSession);
 		}
@@ -1255,6 +1279,17 @@ public class OpenIdConnectSessionPersistenceImpl
 		OrderByComparator<OpenIdConnectSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A_C(
+			companyId, authServerWellKnownURI, clientId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<OpenIdConnectSession> _findByC_A_C(
+		long companyId, String authServerWellKnownURI, String clientId,
+		int start, int end,
+		OrderByComparator<OpenIdConnectSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		authServerWellKnownURI = Objects.toString(authServerWellKnownURI, "");
 		clientId = Objects.toString(clientId, "");
 
@@ -1369,10 +1404,12 @@ public class OpenIdConnectSessionPersistenceImpl
 				list = (List<OpenIdConnectSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1728,9 +1765,9 @@ public class OpenIdConnectSessionPersistenceImpl
 		long companyId, String authServerWellKnownURI, String clientId) {
 
 		for (OpenIdConnectSession openIdConnectSession :
-				findByC_A_C(
+				_findByC_A_C(
 					companyId, authServerWellKnownURI, clientId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(openIdConnectSession);
 		}
@@ -1856,8 +1893,16 @@ public class OpenIdConnectSessionPersistenceImpl
 			long userId, String authServerWellKnownURI, String clientId)
 		throws NoSuchSessionException {
 
-		OpenIdConnectSession openIdConnectSession = fetchByU_A_C(
-			userId, authServerWellKnownURI, clientId);
+		return _findByU_A_C(userId, authServerWellKnownURI, clientId, false);
+	}
+
+	private OpenIdConnectSession _findByU_A_C(
+			long userId, String authServerWellKnownURI, String clientId,
+			boolean readOnlyCache)
+		throws NoSuchSessionException {
+
+		OpenIdConnectSession openIdConnectSession = _fetchByU_A_C(
+			userId, authServerWellKnownURI, clientId, true, readOnlyCache);
 
 		if (openIdConnectSession == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1913,6 +1958,14 @@ public class OpenIdConnectSessionPersistenceImpl
 	public OpenIdConnectSession fetchByU_A_C(
 		long userId, String authServerWellKnownURI, String clientId,
 		boolean useFinderCache) {
+
+		return _fetchByU_A_C(
+			userId, authServerWellKnownURI, clientId, useFinderCache, false);
+	}
+
+	private OpenIdConnectSession _fetchByU_A_C(
+		long userId, String authServerWellKnownURI, String clientId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		authServerWellKnownURI = Objects.toString(authServerWellKnownURI, "");
 		clientId = Objects.toString(clientId, "");
@@ -2006,9 +2059,11 @@ public class OpenIdConnectSessionPersistenceImpl
 				else {
 					OpenIdConnectSession openIdConnectSession = list.get(0);
 
-					result = openIdConnectSession;
+					if (!readOnlyCache) {
+						result = openIdConnectSession;
 
-					cacheResult(openIdConnectSession);
+						cacheResult(openIdConnectSession);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2040,8 +2095,8 @@ public class OpenIdConnectSessionPersistenceImpl
 			long userId, String authServerWellKnownURI, String clientId)
 		throws NoSuchSessionException {
 
-		OpenIdConnectSession openIdConnectSession = findByU_A_C(
-			userId, authServerWellKnownURI, clientId);
+		OpenIdConnectSession openIdConnectSession = _findByU_A_C(
+			userId, authServerWellKnownURI, clientId, true);
 
 		return remove(openIdConnectSession);
 	}
@@ -2569,6 +2624,14 @@ public class OpenIdConnectSessionPersistenceImpl
 		OrderByComparator<OpenIdConnectSession> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OpenIdConnectSession> _findAll(
+		int start, int end,
+		OrderByComparator<OpenIdConnectSession> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2623,10 +2686,12 @@ public class OpenIdConnectSessionPersistenceImpl
 				list = (List<OpenIdConnectSession>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2646,7 +2711,10 @@ public class OpenIdConnectSessionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OpenIdConnectSession openIdConnectSession : findAll()) {
+		for (OpenIdConnectSession openIdConnectSession :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(openIdConnectSession);
 		}
 	}

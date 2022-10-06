@@ -180,6 +180,15 @@ public class JournalFeedPersistenceImpl
 		OrderByComparator<JournalFeed> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalFeed> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<JournalFeed> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -268,10 +277,12 @@ public class JournalFeedPersistenceImpl
 				list = (List<JournalFeed>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -565,7 +576,9 @@ public class JournalFeedPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (JournalFeed journalFeed :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(journalFeed);
 		}
@@ -666,7 +679,15 @@ public class JournalFeedPersistenceImpl
 	public JournalFeed findByUUID_G(String uuid, long groupId)
 		throws NoSuchFeedException {
 
-		JournalFeed journalFeed = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private JournalFeed _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFeedException {
+
+		JournalFeed journalFeed = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (journalFeed == null) {
 			StringBundler sb = new StringBundler(6);
@@ -714,6 +735,13 @@ public class JournalFeedPersistenceImpl
 	@Override
 	public JournalFeed fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private JournalFeed _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -789,9 +817,11 @@ public class JournalFeedPersistenceImpl
 				else {
 					JournalFeed journalFeed = list.get(0);
 
-					result = journalFeed;
+					if (!readOnlyCache) {
+						result = journalFeed;
 
-					cacheResult(journalFeed);
+						cacheResult(journalFeed);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -821,7 +851,7 @@ public class JournalFeedPersistenceImpl
 	public JournalFeed removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFeedException {
 
-		JournalFeed journalFeed = findByUUID_G(uuid, groupId);
+		JournalFeed journalFeed = _findByUUID_G(uuid, groupId, true);
 
 		return remove(journalFeed);
 	}
@@ -995,6 +1025,16 @@ public class JournalFeedPersistenceImpl
 		OrderByComparator<JournalFeed> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<JournalFeed> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<JournalFeed> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1091,10 +1131,12 @@ public class JournalFeedPersistenceImpl
 				list = (List<JournalFeed>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1412,9 +1454,9 @@ public class JournalFeedPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (JournalFeed journalFeed :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(journalFeed);
 		}
@@ -1582,6 +1624,15 @@ public class JournalFeedPersistenceImpl
 		OrderByComparator<JournalFeed> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalFeed> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<JournalFeed> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalFeed.class);
 
@@ -1657,10 +1708,12 @@ public class JournalFeedPersistenceImpl
 				list = (List<JournalFeed>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2271,8 +2324,9 @@ public class JournalFeedPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (JournalFeed journalFeed :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(journalFeed);
 		}
@@ -2405,7 +2459,15 @@ public class JournalFeedPersistenceImpl
 	public JournalFeed findByG_F(long groupId, String feedId)
 		throws NoSuchFeedException {
 
-		JournalFeed journalFeed = fetchByG_F(groupId, feedId);
+		return _findByG_F(groupId, feedId, false);
+	}
+
+	private JournalFeed _findByG_F(
+			long groupId, String feedId, boolean readOnlyCache)
+		throws NoSuchFeedException {
+
+		JournalFeed journalFeed = _fetchByG_F(
+			groupId, feedId, true, readOnlyCache);
 
 		if (journalFeed == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2453,6 +2515,13 @@ public class JournalFeedPersistenceImpl
 	@Override
 	public JournalFeed fetchByG_F(
 		long groupId, String feedId, boolean useFinderCache) {
+
+		return _fetchByG_F(groupId, feedId, useFinderCache, false);
+	}
+
+	private JournalFeed _fetchByG_F(
+		long groupId, String feedId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		feedId = Objects.toString(feedId, "");
 
@@ -2527,9 +2596,11 @@ public class JournalFeedPersistenceImpl
 				else {
 					JournalFeed journalFeed = list.get(0);
 
-					result = journalFeed;
+					if (!readOnlyCache) {
+						result = journalFeed;
 
-					cacheResult(journalFeed);
+						cacheResult(journalFeed);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2559,7 +2630,7 @@ public class JournalFeedPersistenceImpl
 	public JournalFeed removeByG_F(long groupId, String feedId)
 		throws NoSuchFeedException {
 
-		JournalFeed journalFeed = findByG_F(groupId, feedId);
+		JournalFeed journalFeed = _findByG_F(groupId, feedId, true);
 
 		return remove(journalFeed);
 	}
@@ -3233,6 +3304,13 @@ public class JournalFeedPersistenceImpl
 		int start, int end, OrderByComparator<JournalFeed> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<JournalFeed> _findAll(
+		int start, int end, OrderByComparator<JournalFeed> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			JournalFeed.class);
 
@@ -3290,10 +3368,12 @@ public class JournalFeedPersistenceImpl
 				list = (List<JournalFeed>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3313,7 +3393,10 @@ public class JournalFeedPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (JournalFeed journalFeed : findAll()) {
+		for (JournalFeed journalFeed :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(journalFeed);
 		}
 	}

@@ -93,7 +93,14 @@ public class CacheDisabledEntryPersistenceImpl
 	public CacheDisabledEntry findByName(String name)
 		throws NoSuchCacheDisabledEntryException {
 
-		CacheDisabledEntry cacheDisabledEntry = fetchByName(name);
+		return _findByName(name, false);
+	}
+
+	private CacheDisabledEntry _findByName(String name, boolean readOnlyCache)
+		throws NoSuchCacheDisabledEntryException {
+
+		CacheDisabledEntry cacheDisabledEntry = _fetchByName(
+			name, true, readOnlyCache);
 
 		if (cacheDisabledEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -135,6 +142,12 @@ public class CacheDisabledEntryPersistenceImpl
 	 */
 	@Override
 	public CacheDisabledEntry fetchByName(String name, boolean useFinderCache) {
+		return _fetchByName(name, useFinderCache, false);
+	}
+
+	private CacheDisabledEntry _fetchByName(
+		String name, boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		Object[] finderArgs = null;
@@ -200,9 +213,11 @@ public class CacheDisabledEntryPersistenceImpl
 				else {
 					CacheDisabledEntry cacheDisabledEntry = list.get(0);
 
-					result = cacheDisabledEntry;
+					if (!readOnlyCache) {
+						result = cacheDisabledEntry;
 
-					cacheResult(cacheDisabledEntry);
+						cacheResult(cacheDisabledEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -231,7 +246,7 @@ public class CacheDisabledEntryPersistenceImpl
 	public CacheDisabledEntry removeByName(String name)
 		throws NoSuchCacheDisabledEntryException {
 
-		CacheDisabledEntry cacheDisabledEntry = findByName(name);
+		CacheDisabledEntry cacheDisabledEntry = _findByName(name, true);
 
 		return remove(cacheDisabledEntry);
 	}
@@ -693,6 +708,14 @@ public class CacheDisabledEntryPersistenceImpl
 		OrderByComparator<CacheDisabledEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CacheDisabledEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CacheDisabledEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -747,10 +770,13 @@ public class CacheDisabledEntryPersistenceImpl
 				list = (List<CacheDisabledEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					dummyFinderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						dummyFinderCache.putResult(
+							finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -770,7 +796,10 @@ public class CacheDisabledEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CacheDisabledEntry cacheDisabledEntry : findAll()) {
+		for (CacheDisabledEntry cacheDisabledEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cacheDisabledEntry);
 		}
 	}

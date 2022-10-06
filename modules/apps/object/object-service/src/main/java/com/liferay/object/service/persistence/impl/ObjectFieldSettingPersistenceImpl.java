@@ -176,6 +176,15 @@ public class ObjectFieldSettingPersistenceImpl
 		OrderByComparator<ObjectFieldSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectFieldSetting> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectFieldSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class ObjectFieldSettingPersistenceImpl
 				list = (List<ObjectFieldSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -566,7 +577,9 @@ public class ObjectFieldSettingPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectFieldSetting objectFieldSetting :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectFieldSetting);
 		}
@@ -721,6 +734,16 @@ public class ObjectFieldSettingPersistenceImpl
 		OrderByComparator<ObjectFieldSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectFieldSetting> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectFieldSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -814,10 +837,12 @@ public class ObjectFieldSettingPersistenceImpl
 				list = (List<ObjectFieldSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1139,9 +1164,9 @@ public class ObjectFieldSettingPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectFieldSetting objectFieldSetting :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectFieldSetting);
 		}
@@ -1300,6 +1325,16 @@ public class ObjectFieldSettingPersistenceImpl
 		OrderByComparator<ObjectFieldSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectFieldId(
+			objectFieldId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectFieldSetting> _findByObjectFieldId(
+		long objectFieldId, int start, int end,
+		OrderByComparator<ObjectFieldSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1376,10 +1411,12 @@ public class ObjectFieldSettingPersistenceImpl
 				list = (List<ObjectFieldSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1673,9 +1710,9 @@ public class ObjectFieldSettingPersistenceImpl
 	@Override
 	public void removeByObjectFieldId(long objectFieldId) {
 		for (ObjectFieldSetting objectFieldSetting :
-				findByObjectFieldId(
-					objectFieldId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByObjectFieldId(
+					objectFieldId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectFieldSetting);
 		}
@@ -1748,8 +1785,15 @@ public class ObjectFieldSettingPersistenceImpl
 	public ObjectFieldSetting findByOFI_N(long objectFieldId, String name)
 		throws NoSuchObjectFieldSettingException {
 
-		ObjectFieldSetting objectFieldSetting = fetchByOFI_N(
-			objectFieldId, name);
+		return _findByOFI_N(objectFieldId, name, false);
+	}
+
+	private ObjectFieldSetting _findByOFI_N(
+			long objectFieldId, String name, boolean readOnlyCache)
+		throws NoSuchObjectFieldSettingException {
+
+		ObjectFieldSetting objectFieldSetting = _fetchByOFI_N(
+			objectFieldId, name, true, readOnlyCache);
 
 		if (objectFieldSetting == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1797,6 +1841,13 @@ public class ObjectFieldSettingPersistenceImpl
 	@Override
 	public ObjectFieldSetting fetchByOFI_N(
 		long objectFieldId, String name, boolean useFinderCache) {
+
+		return _fetchByOFI_N(objectFieldId, name, useFinderCache, false);
+	}
+
+	private ObjectFieldSetting _fetchByOFI_N(
+		long objectFieldId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -1868,9 +1919,11 @@ public class ObjectFieldSettingPersistenceImpl
 				else {
 					ObjectFieldSetting objectFieldSetting = list.get(0);
 
-					result = objectFieldSetting;
+					if (!readOnlyCache) {
+						result = objectFieldSetting;
 
-					cacheResult(objectFieldSetting);
+						cacheResult(objectFieldSetting);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1900,8 +1953,8 @@ public class ObjectFieldSettingPersistenceImpl
 	public ObjectFieldSetting removeByOFI_N(long objectFieldId, String name)
 		throws NoSuchObjectFieldSettingException {
 
-		ObjectFieldSetting objectFieldSetting = findByOFI_N(
-			objectFieldId, name);
+		ObjectFieldSetting objectFieldSetting = _findByOFI_N(
+			objectFieldId, name, true);
 
 		return remove(objectFieldSetting);
 	}
@@ -2419,6 +2472,14 @@ public class ObjectFieldSettingPersistenceImpl
 		OrderByComparator<ObjectFieldSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectFieldSetting> _findAll(
+		int start, int end,
+		OrderByComparator<ObjectFieldSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2473,10 +2534,12 @@ public class ObjectFieldSettingPersistenceImpl
 				list = (List<ObjectFieldSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2496,7 +2559,10 @@ public class ObjectFieldSettingPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectFieldSetting objectFieldSetting : findAll()) {
+		for (ObjectFieldSetting objectFieldSetting :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectFieldSetting);
 		}
 	}

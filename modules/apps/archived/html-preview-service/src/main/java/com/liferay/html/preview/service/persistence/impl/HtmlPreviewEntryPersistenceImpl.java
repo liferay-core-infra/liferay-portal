@@ -113,8 +113,15 @@ public class HtmlPreviewEntryPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchHtmlPreviewEntryException {
 
-		HtmlPreviewEntry htmlPreviewEntry = fetchByG_C_C(
-			groupId, classNameId, classPK);
+		return _findByG_C_C(groupId, classNameId, classPK, false);
+	}
+
+	private HtmlPreviewEntry _findByG_C_C(
+			long groupId, long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchHtmlPreviewEntryException {
+
+		HtmlPreviewEntry htmlPreviewEntry = _fetchByG_C_C(
+			groupId, classNameId, classPK, true, readOnlyCache);
 
 		if (htmlPreviewEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -169,6 +176,14 @@ public class HtmlPreviewEntryPersistenceImpl
 	@Override
 	public HtmlPreviewEntry fetchByG_C_C(
 		long groupId, long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByG_C_C(
+			groupId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private HtmlPreviewEntry _fetchByG_C_C(
+		long groupId, long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -249,9 +264,11 @@ public class HtmlPreviewEntryPersistenceImpl
 
 					HtmlPreviewEntry htmlPreviewEntry = list.get(0);
 
-					result = htmlPreviewEntry;
+					if (!readOnlyCache) {
+						result = htmlPreviewEntry;
 
-					cacheResult(htmlPreviewEntry);
+						cacheResult(htmlPreviewEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -283,8 +300,8 @@ public class HtmlPreviewEntryPersistenceImpl
 			long groupId, long classNameId, long classPK)
 		throws NoSuchHtmlPreviewEntryException {
 
-		HtmlPreviewEntry htmlPreviewEntry = findByG_C_C(
-			groupId, classNameId, classPK);
+		HtmlPreviewEntry htmlPreviewEntry = _findByG_C_C(
+			groupId, classNameId, classPK, true);
 
 		return remove(htmlPreviewEntry);
 	}
@@ -772,6 +789,14 @@ public class HtmlPreviewEntryPersistenceImpl
 		OrderByComparator<HtmlPreviewEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<HtmlPreviewEntry> _findAll(
+		int start, int end,
+		OrderByComparator<HtmlPreviewEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -826,10 +851,12 @@ public class HtmlPreviewEntryPersistenceImpl
 				list = (List<HtmlPreviewEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -849,7 +876,10 @@ public class HtmlPreviewEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (HtmlPreviewEntry htmlPreviewEntry : findAll()) {
+		for (HtmlPreviewEntry htmlPreviewEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(htmlPreviewEntry);
 		}
 	}

@@ -187,6 +187,15 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -277,10 +286,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -588,7 +599,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -689,8 +702,15 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	public DEDataDefinitionFieldLink findByUUID_G(String uuid, long groupId)
 		throws NoSuchDataDefinitionFieldLinkException {
 
-		DEDataDefinitionFieldLink deDataDefinitionFieldLink = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DEDataDefinitionFieldLink _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchDataDefinitionFieldLinkException {
+
+		DEDataDefinitionFieldLink deDataDefinitionFieldLink = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (deDataDefinitionFieldLink == null) {
 			StringBundler sb = new StringBundler(6);
@@ -738,6 +758,13 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public DEDataDefinitionFieldLink fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DEDataDefinitionFieldLink _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -815,9 +842,11 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 					DEDataDefinitionFieldLink deDataDefinitionFieldLink =
 						list.get(0);
 
-					result = deDataDefinitionFieldLink;
+					if (!readOnlyCache) {
+						result = deDataDefinitionFieldLink;
 
-					cacheResult(deDataDefinitionFieldLink);
+						cacheResult(deDataDefinitionFieldLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -847,8 +876,8 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	public DEDataDefinitionFieldLink removeByUUID_G(String uuid, long groupId)
 		throws NoSuchDataDefinitionFieldLinkException {
 
-		DEDataDefinitionFieldLink deDataDefinitionFieldLink = findByUUID_G(
-			uuid, groupId);
+		DEDataDefinitionFieldLink deDataDefinitionFieldLink = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(deDataDefinitionFieldLink);
 	}
@@ -1024,6 +1053,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1123,10 +1162,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1450,9 +1491,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -1625,6 +1666,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMStructureId(
+			ddmStructureId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByDDMStructureId(
+		long ddmStructureId, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataDefinitionFieldLink.class);
 
@@ -1706,10 +1757,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2004,9 +2057,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void removeByDDMStructureId(long ddmStructureId) {
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByDDMStructureId(
-					ddmStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByDDMStructureId(
+					ddmStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -2159,6 +2212,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataDefinitionFieldLink.class);
 
@@ -2245,10 +2308,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2559,9 +2624,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -2723,6 +2788,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_DDMSI(
+			classNameId, ddmStructureId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByC_DDMSI(
+		long classNameId, long ddmStructureId, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataDefinitionFieldLink.class);
 
@@ -2810,10 +2885,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3126,9 +3203,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void removeByC_DDMSI(long classNameId, long ddmStructureId) {
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByC_DDMSI(
+				_findByC_DDMSI(
 					classNameId, ddmStructureId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -3291,6 +3368,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMSI_F(
+			ddmStructureId, fieldName, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByDDMSI_F(
+		long ddmStructureId, String fieldName, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		fieldName = Objects.toString(fieldName, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3391,10 +3478,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3794,6 +3883,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByDDMSI_F(
+			ddmStructureId, fieldNames, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByDDMSI_F(
+		long ddmStructureId, String[] fieldNames, int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (fieldNames == null) {
 			fieldNames = new String[0];
 		}
@@ -3916,12 +4015,14 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByDDMSI_F, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByDDMSI_F, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3944,9 +4045,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void removeByDDMSI_F(long ddmStructureId, String fieldName) {
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByDDMSI_F(
+				_findByDDMSI_F(
 					ddmStructureId, fieldName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -4238,6 +4339,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		int end, OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_DDMSI_F(
+			classNameId, ddmStructureId, fieldName, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByC_DDMSI_F(
+		long classNameId, long ddmStructureId, String fieldName, int start,
+		int end, OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		fieldName = Objects.toString(fieldName, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -4347,10 +4458,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4776,6 +4889,16 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		int end, OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_DDMSI_F(
+			classNameId, ddmStructureId, fieldNames, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findByC_DDMSI_F(
+		long classNameId, long ddmStructureId, String[] fieldNames, int start,
+		int end, OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (fieldNames == null) {
 			fieldNames = new String[0];
 		}
@@ -4905,12 +5028,14 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_DDMSI_F, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_DDMSI_F,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4936,9 +5061,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		long classNameId, long ddmStructureId, String fieldName) {
 
 		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				findByC_DDMSI_F(
+				_findByC_DDMSI_F(
 					classNameId, ddmStructureId, fieldName, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(deDataDefinitionFieldLink);
 		}
@@ -5174,8 +5299,19 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			String fieldName)
 		throws NoSuchDataDefinitionFieldLinkException {
 
+		return _findByC_C_DDMSI_F(
+			classNameId, classPK, ddmStructureId, fieldName, false);
+	}
+
+	private DEDataDefinitionFieldLink _findByC_C_DDMSI_F(
+			long classNameId, long classPK, long ddmStructureId,
+			String fieldName, boolean readOnlyCache)
+		throws NoSuchDataDefinitionFieldLinkException {
+
 		DEDataDefinitionFieldLink deDataDefinitionFieldLink =
-			fetchByC_C_DDMSI_F(classNameId, classPK, ddmStructureId, fieldName);
+			_fetchByC_C_DDMSI_F(
+				classNameId, classPK, ddmStructureId, fieldName, true,
+				readOnlyCache);
 
 		if (deDataDefinitionFieldLink == null) {
 			StringBundler sb = new StringBundler(10);
@@ -5237,6 +5373,15 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	public DEDataDefinitionFieldLink fetchByC_C_DDMSI_F(
 		long classNameId, long classPK, long ddmStructureId, String fieldName,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_DDMSI_F(
+			classNameId, classPK, ddmStructureId, fieldName, useFinderCache,
+			false);
+	}
+
+	private DEDataDefinitionFieldLink _fetchByC_C_DDMSI_F(
+		long classNameId, long classPK, long ddmStructureId, String fieldName,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		fieldName = Objects.toString(fieldName, "");
 
@@ -5328,9 +5473,11 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 					DEDataDefinitionFieldLink deDataDefinitionFieldLink =
 						list.get(0);
 
-					result = deDataDefinitionFieldLink;
+					if (!readOnlyCache) {
+						result = deDataDefinitionFieldLink;
 
-					cacheResult(deDataDefinitionFieldLink);
+						cacheResult(deDataDefinitionFieldLink);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5364,8 +5511,9 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 			String fieldName)
 		throws NoSuchDataDefinitionFieldLinkException {
 
-		DEDataDefinitionFieldLink deDataDefinitionFieldLink = findByC_C_DDMSI_F(
-			classNameId, classPK, ddmStructureId, fieldName);
+		DEDataDefinitionFieldLink deDataDefinitionFieldLink =
+			_findByC_C_DDMSI_F(
+				classNameId, classPK, ddmStructureId, fieldName, true);
 
 		return remove(deDataDefinitionFieldLink);
 	}
@@ -6245,6 +6393,14 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DEDataDefinitionFieldLink> _findAll(
+		int start, int end,
+		OrderByComparator<DEDataDefinitionFieldLink> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DEDataDefinitionFieldLink.class);
 
@@ -6303,10 +6459,12 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 				list = (List<DEDataDefinitionFieldLink>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6326,7 +6484,10 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink : findAll()) {
+		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(deDataDefinitionFieldLink);
 		}
 	}

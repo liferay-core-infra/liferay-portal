@@ -178,6 +178,15 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySku(
+			sku, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryBookedQuantity> _findBySku(
+		String sku, int start, int end,
+		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -266,10 +275,12 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 				list = (List<CommerceInventoryBookedQuantity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -581,7 +592,9 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	@Override
 	public void removeBySku(String sku) {
 		for (CommerceInventoryBookedQuantity commerceInventoryBookedQuantity :
-				findBySku(sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findBySku(
+					sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceInventoryBookedQuantity);
 		}
@@ -733,6 +746,16 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtExpirationDate(
+			expirationDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryBookedQuantity> _findByLtExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -814,10 +837,12 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 				list = (List<CommerceInventoryBookedQuantity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1127,9 +1152,9 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	@Override
 	public void removeByLtExpirationDate(Date expirationDate) {
 		for (CommerceInventoryBookedQuantity commerceInventoryBookedQuantity :
-				findByLtExpirationDate(
-					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByLtExpirationDate(
+					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryBookedQuantity);
 		}
@@ -1286,6 +1311,16 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, sku, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryBookedQuantity> _findByC_S(
+		long companyId, String sku, int start, int end,
+		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -1383,10 +1418,12 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 				list = (List<CommerceInventoryBookedQuantity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1714,9 +1751,9 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, String sku) {
 		for (CommerceInventoryBookedQuantity commerceInventoryBookedQuantity :
-				findByC_S(
-					companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_S(
+					companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceInventoryBookedQuantity);
 		}
@@ -2244,6 +2281,14 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryBookedQuantity> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceInventoryBookedQuantity> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2299,10 +2344,12 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 				list = (List<CommerceInventoryBookedQuantity>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2323,7 +2370,8 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceInventoryBookedQuantity commerceInventoryBookedQuantity :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryBookedQuantity);
 		}

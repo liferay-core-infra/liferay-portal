@@ -182,6 +182,15 @@ public class KaleoNotificationRecipientPersistenceImpl
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoNotificationRecipient> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoNotificationRecipient.class);
 
@@ -263,10 +272,12 @@ public class KaleoNotificationRecipientPersistenceImpl
 				list = (List<KaleoNotificationRecipient>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -561,8 +572,9 @@ public class KaleoNotificationRecipientPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (KaleoNotificationRecipient kaleoNotificationRecipient :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kaleoNotificationRecipient);
 		}
@@ -714,6 +726,16 @@ public class KaleoNotificationRecipientPersistenceImpl
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KaleoNotificationRecipient> _findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoNotificationRecipient.class);
 
@@ -799,10 +821,12 @@ public class KaleoNotificationRecipientPersistenceImpl
 				list = (List<KaleoNotificationRecipient>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1106,9 +1130,9 @@ public class KaleoNotificationRecipientPersistenceImpl
 		long kaleoDefinitionVersionId) {
 
 		for (KaleoNotificationRecipient kaleoNotificationRecipient :
-				findByKaleoDefinitionVersionId(
+				_findByKaleoDefinitionVersionId(
 					kaleoDefinitionVersionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoNotificationRecipient);
 		}
@@ -1259,6 +1283,16 @@ public class KaleoNotificationRecipientPersistenceImpl
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoNotificationId(
+			kaleoNotificationId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KaleoNotificationRecipient> _findByKaleoNotificationId(
+		long kaleoNotificationId, int start, int end,
+		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoNotificationRecipient.class);
 
@@ -1342,10 +1376,12 @@ public class KaleoNotificationRecipientPersistenceImpl
 				list = (List<KaleoNotificationRecipient>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1642,9 +1678,9 @@ public class KaleoNotificationRecipientPersistenceImpl
 	@Override
 	public void removeByKaleoNotificationId(long kaleoNotificationId) {
 		for (KaleoNotificationRecipient kaleoNotificationRecipient :
-				findByKaleoNotificationId(
+				_findByKaleoNotificationId(
 					kaleoNotificationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(kaleoNotificationRecipient);
 		}
@@ -2306,6 +2342,14 @@ public class KaleoNotificationRecipientPersistenceImpl
 		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoNotificationRecipient> _findAll(
+		int start, int end,
+		OrderByComparator<KaleoNotificationRecipient> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoNotificationRecipient.class);
 
@@ -2364,10 +2408,12 @@ public class KaleoNotificationRecipientPersistenceImpl
 				list = (List<KaleoNotificationRecipient>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2388,7 +2434,8 @@ public class KaleoNotificationRecipientPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (KaleoNotificationRecipient kaleoNotificationRecipient :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoNotificationRecipient);
 		}

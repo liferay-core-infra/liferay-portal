@@ -108,7 +108,14 @@ public class MFAEmailOTPEntryPersistenceImpl
 	public MFAEmailOTPEntry findByUserId(long userId)
 		throws NoSuchEntryException {
 
-		MFAEmailOTPEntry mfaEmailOTPEntry = fetchByUserId(userId);
+		return _findByUserId(userId, false);
+	}
+
+	private MFAEmailOTPEntry _findByUserId(long userId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		MFAEmailOTPEntry mfaEmailOTPEntry = _fetchByUserId(
+			userId, true, readOnlyCache);
 
 		if (mfaEmailOTPEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -150,6 +157,12 @@ public class MFAEmailOTPEntryPersistenceImpl
 	 */
 	@Override
 	public MFAEmailOTPEntry fetchByUserId(long userId, boolean useFinderCache) {
+		return _fetchByUserId(userId, useFinderCache, false);
+	}
+
+	private MFAEmailOTPEntry _fetchByUserId(
+		long userId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -202,9 +215,11 @@ public class MFAEmailOTPEntryPersistenceImpl
 				else {
 					MFAEmailOTPEntry mfaEmailOTPEntry = list.get(0);
 
-					result = mfaEmailOTPEntry;
+					if (!readOnlyCache) {
+						result = mfaEmailOTPEntry;
 
-					cacheResult(mfaEmailOTPEntry);
+						cacheResult(mfaEmailOTPEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -233,7 +248,7 @@ public class MFAEmailOTPEntryPersistenceImpl
 	public MFAEmailOTPEntry removeByUserId(long userId)
 		throws NoSuchEntryException {
 
-		MFAEmailOTPEntry mfaEmailOTPEntry = findByUserId(userId);
+		MFAEmailOTPEntry mfaEmailOTPEntry = _findByUserId(userId, true);
 
 		return remove(mfaEmailOTPEntry);
 	}
@@ -697,6 +712,14 @@ public class MFAEmailOTPEntryPersistenceImpl
 		OrderByComparator<MFAEmailOTPEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MFAEmailOTPEntry> _findAll(
+		int start, int end,
+		OrderByComparator<MFAEmailOTPEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -751,10 +774,12 @@ public class MFAEmailOTPEntryPersistenceImpl
 				list = (List<MFAEmailOTPEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -774,7 +799,10 @@ public class MFAEmailOTPEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MFAEmailOTPEntry mfaEmailOTPEntry : findAll()) {
+		for (MFAEmailOTPEntry mfaEmailOTPEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mfaEmailOTPEntry);
 		}
 	}

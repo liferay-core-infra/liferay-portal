@@ -179,6 +179,16 @@ public class CSDiagramPinPersistenceImpl
 		OrderByComparator<CSDiagramPin> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCPDefinitionId(
+			CPDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CSDiagramPin> _findByCPDefinitionId(
+		long CPDefinitionId, int start, int end,
+		OrderByComparator<CSDiagramPin> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramPin.class);
 
@@ -256,10 +266,12 @@ public class CSDiagramPinPersistenceImpl
 				list = (List<CSDiagramPin>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -548,9 +560,9 @@ public class CSDiagramPinPersistenceImpl
 	@Override
 	public void removeByCPDefinitionId(long CPDefinitionId) {
 		for (CSDiagramPin csDiagramPin :
-				findByCPDefinitionId(
-					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCPDefinitionId(
+					CPDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(csDiagramPin);
 		}
@@ -1158,6 +1170,13 @@ public class CSDiagramPinPersistenceImpl
 		int start, int end, OrderByComparator<CSDiagramPin> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CSDiagramPin> _findAll(
+		int start, int end, OrderByComparator<CSDiagramPin> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CSDiagramPin.class);
 
@@ -1215,10 +1234,12 @@ public class CSDiagramPinPersistenceImpl
 				list = (List<CSDiagramPin>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1238,7 +1259,10 @@ public class CSDiagramPinPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CSDiagramPin csDiagramPin : findAll()) {
+		for (CSDiagramPin csDiagramPin :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(csDiagramPin);
 		}
 	}

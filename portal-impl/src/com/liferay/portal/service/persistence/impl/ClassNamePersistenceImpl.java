@@ -92,7 +92,13 @@ public class ClassNamePersistenceImpl
 	 */
 	@Override
 	public ClassName findByValue(String value) throws NoSuchClassNameException {
-		ClassName className = fetchByValue(value);
+		return _findByValue(value, false);
+	}
+
+	private ClassName _findByValue(String value, boolean readOnlyCache)
+		throws NoSuchClassNameException {
+
+		ClassName className = _fetchByValue(value, true, readOnlyCache);
 
 		if (className == null) {
 			StringBundler sb = new StringBundler(4);
@@ -134,6 +140,12 @@ public class ClassNamePersistenceImpl
 	 */
 	@Override
 	public ClassName fetchByValue(String value, boolean useFinderCache) {
+		return _fetchByValue(value, useFinderCache, false);
+	}
+
+	private ClassName _fetchByValue(
+		String value, boolean useFinderCache, boolean readOnlyCache) {
+
 		value = Objects.toString(value, "");
 
 		Object[] finderArgs = null;
@@ -199,9 +211,11 @@ public class ClassNamePersistenceImpl
 				else {
 					ClassName className = list.get(0);
 
-					result = className;
+					if (!readOnlyCache) {
+						result = className;
 
-					cacheResult(className);
+						cacheResult(className);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -230,7 +244,7 @@ public class ClassNamePersistenceImpl
 	public ClassName removeByValue(String value)
 		throws NoSuchClassNameException {
 
-		ClassName className = findByValue(value);
+		ClassName className = _findByValue(value, true);
 
 		return remove(className);
 	}
@@ -672,6 +686,13 @@ public class ClassNamePersistenceImpl
 		int start, int end, OrderByComparator<ClassName> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ClassName> _findAll(
+		int start, int end, OrderByComparator<ClassName> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -726,10 +747,12 @@ public class ClassNamePersistenceImpl
 				list = (List<ClassName>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -749,7 +772,10 @@ public class ClassNamePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ClassName className : findAll()) {
+		for (ClassName className :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(className);
 		}
 	}

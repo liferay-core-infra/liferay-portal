@@ -169,6 +169,15 @@ public class CPMeasurementUnitPersistenceImpl
 		OrderByComparator<CPMeasurementUnit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPMeasurementUnit> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPMeasurementUnit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -257,10 +266,12 @@ public class CPMeasurementUnitPersistenceImpl
 				list = (List<CPMeasurementUnit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -560,7 +571,9 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPMeasurementUnit cpMeasurementUnit :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpMeasurementUnit);
 		}
@@ -661,7 +674,15 @@ public class CPMeasurementUnitPersistenceImpl
 	public CPMeasurementUnit findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPMeasurementUnitException {
 
-		CPMeasurementUnit cpMeasurementUnit = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPMeasurementUnit _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPMeasurementUnitException {
+
+		CPMeasurementUnit cpMeasurementUnit = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpMeasurementUnit == null) {
 			StringBundler sb = new StringBundler(6);
@@ -709,6 +730,13 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public CPMeasurementUnit fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPMeasurementUnit _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -784,9 +812,11 @@ public class CPMeasurementUnitPersistenceImpl
 				else {
 					CPMeasurementUnit cpMeasurementUnit = list.get(0);
 
-					result = cpMeasurementUnit;
+					if (!readOnlyCache) {
+						result = cpMeasurementUnit;
 
-					cacheResult(cpMeasurementUnit);
+						cacheResult(cpMeasurementUnit);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -816,7 +846,8 @@ public class CPMeasurementUnitPersistenceImpl
 	public CPMeasurementUnit removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPMeasurementUnitException {
 
-		CPMeasurementUnit cpMeasurementUnit = findByUUID_G(uuid, groupId);
+		CPMeasurementUnit cpMeasurementUnit = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(cpMeasurementUnit);
 	}
@@ -990,6 +1021,16 @@ public class CPMeasurementUnitPersistenceImpl
 		OrderByComparator<CPMeasurementUnit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPMeasurementUnit> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPMeasurementUnit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1086,10 +1127,12 @@ public class CPMeasurementUnitPersistenceImpl
 				list = (List<CPMeasurementUnit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1411,9 +1454,9 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPMeasurementUnit cpMeasurementUnit :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpMeasurementUnit);
 		}
@@ -1583,6 +1626,15 @@ public class CPMeasurementUnitPersistenceImpl
 		OrderByComparator<CPMeasurementUnit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPMeasurementUnit> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CPMeasurementUnit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPMeasurementUnit.class);
 
@@ -1660,10 +1712,12 @@ public class CPMeasurementUnitPersistenceImpl
 				list = (List<CPMeasurementUnit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1955,8 +2009,9 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CPMeasurementUnit cpMeasurementUnit :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpMeasurementUnit);
 		}
@@ -2041,7 +2096,15 @@ public class CPMeasurementUnitPersistenceImpl
 	public CPMeasurementUnit findByC_K(long companyId, String key)
 		throws NoSuchCPMeasurementUnitException {
 
-		CPMeasurementUnit cpMeasurementUnit = fetchByC_K(companyId, key);
+		return _findByC_K(companyId, key, false);
+	}
+
+	private CPMeasurementUnit _findByC_K(
+			long companyId, String key, boolean readOnlyCache)
+		throws NoSuchCPMeasurementUnitException {
+
+		CPMeasurementUnit cpMeasurementUnit = _fetchByC_K(
+			companyId, key, true, readOnlyCache);
 
 		if (cpMeasurementUnit == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2089,6 +2152,13 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public CPMeasurementUnit fetchByC_K(
 		long companyId, String key, boolean useFinderCache) {
+
+		return _fetchByC_K(companyId, key, useFinderCache, false);
+	}
+
+	private CPMeasurementUnit _fetchByC_K(
+		long companyId, String key, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 
@@ -2163,9 +2233,11 @@ public class CPMeasurementUnitPersistenceImpl
 				else {
 					CPMeasurementUnit cpMeasurementUnit = list.get(0);
 
-					result = cpMeasurementUnit;
+					if (!readOnlyCache) {
+						result = cpMeasurementUnit;
 
-					cacheResult(cpMeasurementUnit);
+						cacheResult(cpMeasurementUnit);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2195,7 +2267,7 @@ public class CPMeasurementUnitPersistenceImpl
 	public CPMeasurementUnit removeByC_K(long companyId, String key)
 		throws NoSuchCPMeasurementUnitException {
 
-		CPMeasurementUnit cpMeasurementUnit = findByC_K(companyId, key);
+		CPMeasurementUnit cpMeasurementUnit = _findByC_K(companyId, key, true);
 
 		return remove(cpMeasurementUnit);
 	}
@@ -2368,6 +2440,16 @@ public class CPMeasurementUnitPersistenceImpl
 		OrderByComparator<CPMeasurementUnit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_T(
+			companyId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPMeasurementUnit> _findByC_T(
+		long companyId, int type, int start, int end,
+		OrderByComparator<CPMeasurementUnit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPMeasurementUnit.class);
 
@@ -2451,10 +2533,12 @@ public class CPMeasurementUnitPersistenceImpl
 				list = (List<CPMeasurementUnit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2763,9 +2847,9 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public void removeByC_T(long companyId, int type) {
 		for (CPMeasurementUnit cpMeasurementUnit :
-				findByC_T(
-					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_T(
+					companyId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpMeasurementUnit);
 		}
@@ -2931,6 +3015,16 @@ public class CPMeasurementUnitPersistenceImpl
 		OrderByComparator<CPMeasurementUnit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_P_T(
+			companyId, primary, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CPMeasurementUnit> _findByC_P_T(
+		long companyId, boolean primary, int type, int start, int end,
+		OrderByComparator<CPMeasurementUnit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPMeasurementUnit.class);
 
@@ -3019,10 +3113,12 @@ public class CPMeasurementUnitPersistenceImpl
 				list = (List<CPMeasurementUnit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3348,9 +3444,9 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public void removeByC_P_T(long companyId, boolean primary, int type) {
 		for (CPMeasurementUnit cpMeasurementUnit :
-				findByC_P_T(
+				_findByC_P_T(
 					companyId, primary, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpMeasurementUnit);
 		}
@@ -3452,8 +3548,15 @@ public class CPMeasurementUnitPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPMeasurementUnitException {
 
-		CPMeasurementUnit cpMeasurementUnit = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CPMeasurementUnit _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchCPMeasurementUnitException {
+
+		CPMeasurementUnit cpMeasurementUnit = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (cpMeasurementUnit == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3503,6 +3606,14 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public CPMeasurementUnit fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CPMeasurementUnit _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -3579,9 +3690,11 @@ public class CPMeasurementUnitPersistenceImpl
 				else {
 					CPMeasurementUnit cpMeasurementUnit = list.get(0);
 
-					result = cpMeasurementUnit;
+					if (!readOnlyCache) {
+						result = cpMeasurementUnit;
 
-					cacheResult(cpMeasurementUnit);
+						cacheResult(cpMeasurementUnit);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3612,8 +3725,8 @@ public class CPMeasurementUnitPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchCPMeasurementUnitException {
 
-		CPMeasurementUnit cpMeasurementUnit = findByC_ERC(
-			companyId, externalReferenceCode);
+		CPMeasurementUnit cpMeasurementUnit = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(cpMeasurementUnit);
 	}
@@ -4339,6 +4452,14 @@ public class CPMeasurementUnitPersistenceImpl
 		OrderByComparator<CPMeasurementUnit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPMeasurementUnit> _findAll(
+		int start, int end,
+		OrderByComparator<CPMeasurementUnit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CPMeasurementUnit.class);
 
@@ -4396,10 +4517,12 @@ public class CPMeasurementUnitPersistenceImpl
 				list = (List<CPMeasurementUnit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4419,7 +4542,10 @@ public class CPMeasurementUnitPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CPMeasurementUnit cpMeasurementUnit : findAll()) {
+		for (CPMeasurementUnit cpMeasurementUnit :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cpMeasurementUnit);
 		}
 	}

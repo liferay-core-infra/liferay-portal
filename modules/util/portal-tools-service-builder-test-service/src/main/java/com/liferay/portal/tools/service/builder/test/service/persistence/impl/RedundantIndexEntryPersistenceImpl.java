@@ -96,7 +96,15 @@ public class RedundantIndexEntryPersistenceImpl
 	public RedundantIndexEntry findByC_N(long companyId, String name)
 		throws NoSuchRedundantIndexEntryException {
 
-		RedundantIndexEntry redundantIndexEntry = fetchByC_N(companyId, name);
+		return _findByC_N(companyId, name, false);
+	}
+
+	private RedundantIndexEntry _findByC_N(
+			long companyId, String name, boolean readOnlyCache)
+		throws NoSuchRedundantIndexEntryException {
+
+		RedundantIndexEntry redundantIndexEntry = _fetchByC_N(
+			companyId, name, true, readOnlyCache);
 
 		if (redundantIndexEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -144,6 +152,13 @@ public class RedundantIndexEntryPersistenceImpl
 	@Override
 	public RedundantIndexEntry fetchByC_N(
 		long companyId, String name, boolean useFinderCache) {
+
+		return _fetchByC_N(companyId, name, useFinderCache, false);
+	}
+
+	private RedundantIndexEntry _fetchByC_N(
+		long companyId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -216,9 +231,11 @@ public class RedundantIndexEntryPersistenceImpl
 				else {
 					RedundantIndexEntry redundantIndexEntry = list.get(0);
 
-					result = redundantIndexEntry;
+					if (!readOnlyCache) {
+						result = redundantIndexEntry;
 
-					cacheResult(redundantIndexEntry);
+						cacheResult(redundantIndexEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -248,7 +265,8 @@ public class RedundantIndexEntryPersistenceImpl
 	public RedundantIndexEntry removeByC_N(long companyId, String name)
 		throws NoSuchRedundantIndexEntryException {
 
-		RedundantIndexEntry redundantIndexEntry = findByC_N(companyId, name);
+		RedundantIndexEntry redundantIndexEntry = _findByC_N(
+			companyId, name, true);
 
 		return remove(redundantIndexEntry);
 	}
@@ -725,6 +743,14 @@ public class RedundantIndexEntryPersistenceImpl
 		OrderByComparator<RedundantIndexEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RedundantIndexEntry> _findAll(
+		int start, int end,
+		OrderByComparator<RedundantIndexEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -779,10 +805,12 @@ public class RedundantIndexEntryPersistenceImpl
 				list = (List<RedundantIndexEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -802,7 +830,10 @@ public class RedundantIndexEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RedundantIndexEntry redundantIndexEntry : findAll()) {
+		for (RedundantIndexEntry redundantIndexEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(redundantIndexEntry);
 		}
 	}

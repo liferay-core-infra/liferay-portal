@@ -180,6 +180,15 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -268,10 +277,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (FragmentEntry fragmentEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(fragmentEntry);
 		}
@@ -733,6 +746,15 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_Head(
+			uuid, head, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByUuid_Head(
+		String uuid, boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -829,10 +851,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1150,8 +1174,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByUuid_Head(String uuid, boolean head) {
 		for (FragmentEntry fragmentEntry :
-				findByUuid_Head(
-					uuid, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid_Head(
+					uuid, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -1325,6 +1350,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUUID_G(
+			uuid, groupId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<FragmentEntry> _findByUUID_G(
+		String uuid, long groupId, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1421,10 +1456,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1743,9 +1780,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByUUID_G(String uuid, long groupId) {
 		for (FragmentEntry fragmentEntry :
-				findByUUID_G(
-					uuid, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUUID_G(
+					uuid, groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -1856,7 +1893,15 @@ public class FragmentEntryPersistenceImpl
 			String uuid, long groupId, boolean head)
 		throws NoSuchEntryException {
 
-		FragmentEntry fragmentEntry = fetchByUUID_G_Head(uuid, groupId, head);
+		return _findByUUID_G_Head(uuid, groupId, head, false);
+	}
+
+	private FragmentEntry _findByUUID_G_Head(
+			String uuid, long groupId, boolean head, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		FragmentEntry fragmentEntry = _fetchByUUID_G_Head(
+			uuid, groupId, head, true, readOnlyCache);
 
 		if (fragmentEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1911,6 +1956,13 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public FragmentEntry fetchByUUID_G_Head(
 		String uuid, long groupId, boolean head, boolean useFinderCache) {
+
+		return _fetchByUUID_G_Head(uuid, groupId, head, useFinderCache, false);
+	}
+
+	private FragmentEntry _fetchByUUID_G_Head(
+		String uuid, long groupId, boolean head, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -1991,9 +2043,11 @@ public class FragmentEntryPersistenceImpl
 				else {
 					FragmentEntry fragmentEntry = list.get(0);
 
-					result = fragmentEntry;
+					if (!readOnlyCache) {
+						result = fragmentEntry;
 
-					cacheResult(fragmentEntry);
+						cacheResult(fragmentEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2025,7 +2079,8 @@ public class FragmentEntryPersistenceImpl
 			String uuid, long groupId, boolean head)
 		throws NoSuchEntryException {
 
-		FragmentEntry fragmentEntry = findByUUID_G_Head(uuid, groupId, head);
+		FragmentEntry fragmentEntry = _findByUUID_G_Head(
+			uuid, groupId, head, true);
 
 		return remove(fragmentEntry);
 	}
@@ -2207,6 +2262,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<FragmentEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2303,10 +2368,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2627,9 +2694,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (FragmentEntry fragmentEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -2810,6 +2877,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C_Head(
+			uuid, companyId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByUuid_C_Head(
+		String uuid, long companyId, boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -2911,10 +2988,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3251,9 +3330,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C_Head(String uuid, long companyId, boolean head) {
 		for (FragmentEntry fragmentEntry :
-				findByUuid_C_Head(
+				_findByUuid_C_Head(
 					uuid, companyId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -3429,6 +3508,15 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -3504,10 +3592,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3792,8 +3882,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (FragmentEntry fragmentEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(fragmentEntry);
 		}
@@ -3944,6 +4035,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId_Head(
+			groupId, head, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<FragmentEntry> _findByGroupId_Head(
+		long groupId, boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -4027,10 +4128,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4337,9 +4440,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByGroupId_Head(long groupId, boolean head) {
 		for (FragmentEntry fragmentEntry :
-				findByGroupId_Head(
-					groupId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByGroupId_Head(
+					groupId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -4497,6 +4600,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFragmentCollectionId(
+			fragmentCollectionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<FragmentEntry> _findByFragmentCollectionId(
+		long fragmentCollectionId, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -4578,10 +4691,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4872,9 +4987,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByFragmentCollectionId(long fragmentCollectionId) {
 		for (FragmentEntry fragmentEntry :
-				findByFragmentCollectionId(
+				_findByFragmentCollectionId(
 					fragmentCollectionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -5032,6 +5147,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFragmentCollectionId_Head(
+			fragmentCollectionId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByFragmentCollectionId_Head(
+		long fragmentCollectionId, boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -5119,10 +5244,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5434,9 +5561,9 @@ public class FragmentEntryPersistenceImpl
 		long fragmentCollectionId, boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByFragmentCollectionId_Head(
+				_findByFragmentCollectionId_Head(
 					fragmentCollectionId, head, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -5592,6 +5719,15 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByType(
+		int type, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -5667,10 +5803,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5953,7 +6091,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByType(int type) {
 		for (FragmentEntry fragmentEntry :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(fragmentEntry);
 		}
@@ -6103,6 +6243,15 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType_Head(
+			type, head, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByType_Head(
+		int type, boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -6186,10 +6335,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6494,8 +6645,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByType_Head(int type, boolean head) {
 		for (FragmentEntry fragmentEntry :
-				findByType_Head(
-					type, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType_Head(
+					type, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -6657,6 +6809,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI(
+			groupId, fragmentCollectionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI(
+		long groupId, long fragmentCollectionId, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -6741,10 +6903,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7052,9 +7216,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByG_FCI(long groupId, long fragmentCollectionId) {
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI(
+				_findByG_FCI(
 					groupId, fragmentCollectionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -7223,6 +7387,16 @@ public class FragmentEntryPersistenceImpl
 		int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_Head(
+			groupId, fragmentCollectionId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_Head(
+		long groupId, long fragmentCollectionId, boolean head, int start,
+		int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -7313,10 +7487,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7643,9 +7819,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_Head(
+				_findByG_FCI_Head(
 					groupId, fragmentCollectionId, head, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -7818,6 +7994,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FEK(
+			groupId, fragmentEntryKey, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FEK(
+		long groupId, String fragmentEntryKey, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		fragmentEntryKey = Objects.toString(fragmentEntryKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -7915,10 +8101,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8239,9 +8427,9 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void removeByG_FEK(long groupId, String fragmentEntryKey) {
 		for (FragmentEntry fragmentEntry :
-				findByG_FEK(
+				_findByG_FEK(
 					groupId, fragmentEntryKey, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -8352,8 +8540,16 @@ public class FragmentEntryPersistenceImpl
 			long groupId, String fragmentEntryKey, boolean head)
 		throws NoSuchEntryException {
 
-		FragmentEntry fragmentEntry = fetchByG_FEK_Head(
-			groupId, fragmentEntryKey, head);
+		return _findByG_FEK_Head(groupId, fragmentEntryKey, head, false);
+	}
+
+	private FragmentEntry _findByG_FEK_Head(
+			long groupId, String fragmentEntryKey, boolean head,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		FragmentEntry fragmentEntry = _fetchByG_FEK_Head(
+			groupId, fragmentEntryKey, head, true, readOnlyCache);
 
 		if (fragmentEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -8409,6 +8605,14 @@ public class FragmentEntryPersistenceImpl
 	public FragmentEntry fetchByG_FEK_Head(
 		long groupId, String fragmentEntryKey, boolean head,
 		boolean useFinderCache) {
+
+		return _fetchByG_FEK_Head(
+			groupId, fragmentEntryKey, head, useFinderCache, false);
+	}
+
+	private FragmentEntry _fetchByG_FEK_Head(
+		long groupId, String fragmentEntryKey, boolean head,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		fragmentEntryKey = Objects.toString(fragmentEntryKey, "");
 
@@ -8490,9 +8694,11 @@ public class FragmentEntryPersistenceImpl
 				else {
 					FragmentEntry fragmentEntry = list.get(0);
 
-					result = fragmentEntry;
+					if (!readOnlyCache) {
+						result = fragmentEntry;
 
-					cacheResult(fragmentEntry);
+						cacheResult(fragmentEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8524,8 +8730,8 @@ public class FragmentEntryPersistenceImpl
 			long groupId, String fragmentEntryKey, boolean head)
 		throws NoSuchEntryException {
 
-		FragmentEntry fragmentEntry = findByG_FEK_Head(
-			groupId, fragmentEntryKey, head);
+		FragmentEntry fragmentEntry = _findByG_FEK_Head(
+			groupId, fragmentEntryKey, head, true);
 
 		return remove(fragmentEntry);
 	}
@@ -8718,6 +8924,16 @@ public class FragmentEntryPersistenceImpl
 		int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_LikeN(
+			groupId, fragmentCollectionId, name, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_LikeN(
+		long groupId, long fragmentCollectionId, String name, int start,
+		int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -8812,10 +9028,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9155,9 +9373,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, String name) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_LikeN(
+				_findByG_FCI_LikeN(
 					groupId, fragmentCollectionId, name, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -9357,6 +9575,16 @@ public class FragmentEntryPersistenceImpl
 		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_LikeN_Head(
+			groupId, fragmentCollectionId, name, head, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_LikeN_Head(
+		long groupId, long fragmentCollectionId, String name, boolean head,
+		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -9457,10 +9685,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9818,9 +10048,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, String name, boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_LikeN_Head(
+				_findByG_FCI_LikeN_Head(
 					groupId, fragmentCollectionId, name, head,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -10025,6 +10255,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_T(
+			groupId, fragmentCollectionId, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_T(
+		long groupId, long fragmentCollectionId, int type, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -10115,10 +10355,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10445,9 +10687,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, int type) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_T(
+				_findByG_FCI_T(
 					groupId, fragmentCollectionId, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -10631,6 +10873,16 @@ public class FragmentEntryPersistenceImpl
 		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_T_Head(
+			groupId, fragmentCollectionId, type, head, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_T_Head(
+		long groupId, long fragmentCollectionId, int type, boolean head,
+		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -10728,10 +10980,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11076,9 +11330,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, int type, boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_T_Head(
+				_findByG_FCI_T_Head(
 					groupId, fragmentCollectionId, type, head,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -11268,6 +11522,16 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_S(
+			groupId, fragmentCollectionId, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_S(
+		long groupId, long fragmentCollectionId, int status, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -11360,10 +11624,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11690,9 +11956,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, int status) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_S(
+				_findByG_FCI_S(
 					groupId, fragmentCollectionId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -11876,6 +12142,16 @@ public class FragmentEntryPersistenceImpl
 		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_S_Head(
+			groupId, fragmentCollectionId, status, head, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_S_Head(
+		long groupId, long fragmentCollectionId, int status, boolean head,
+		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -11973,10 +12249,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12322,9 +12600,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, int status, boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_S_Head(
+				_findByG_FCI_S_Head(
 					groupId, fragmentCollectionId, status, head,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -12518,6 +12796,16 @@ public class FragmentEntryPersistenceImpl
 		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_LikeN_S(
+			groupId, fragmentCollectionId, name, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_LikeN_S(
+		long groupId, long fragmentCollectionId, String name, int status,
+		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -12618,10 +12906,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12980,9 +13270,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, String name, int status) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_LikeN_S(
+				_findByG_FCI_LikeN_S(
 					groupId, fragmentCollectionId, name, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -13199,6 +13489,17 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_LikeN_S_Head(
+			groupId, fragmentCollectionId, name, status, head, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_LikeN_S_Head(
+		long groupId, long fragmentCollectionId, String name, int status,
+		boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -13304,10 +13605,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13685,9 +13988,9 @@ public class FragmentEntryPersistenceImpl
 		boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_LikeN_S_Head(
+				_findByG_FCI_LikeN_S_Head(
 					groupId, fragmentCollectionId, name, status, head,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -13907,6 +14210,16 @@ public class FragmentEntryPersistenceImpl
 		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_T_S(
+			groupId, fragmentCollectionId, type, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_T_S(
+		long groupId, long fragmentCollectionId, int type, int status,
+		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -14004,10 +14317,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14353,9 +14668,9 @@ public class FragmentEntryPersistenceImpl
 		long groupId, long fragmentCollectionId, int type, int status) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_T_S(
+				_findByG_FCI_T_S(
 					groupId, fragmentCollectionId, type, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -14557,6 +14872,17 @@ public class FragmentEntryPersistenceImpl
 		OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_FCI_T_S_Head(
+			groupId, fragmentCollectionId, type, status, head, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findByG_FCI_T_S_Head(
+		long groupId, long fragmentCollectionId, int type, int status,
+		boolean head, int start, int end,
+		OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -14659,10 +14985,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15027,9 +15355,9 @@ public class FragmentEntryPersistenceImpl
 		boolean head) {
 
 		for (FragmentEntry fragmentEntry :
-				findByG_FCI_T_S_Head(
+				_findByG_FCI_T_S_Head(
 					groupId, fragmentCollectionId, type, status, head,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(fragmentEntry);
 		}
@@ -15149,7 +15477,14 @@ public class FragmentEntryPersistenceImpl
 	 */
 	@Override
 	public FragmentEntry findByHeadId(long headId) throws NoSuchEntryException {
-		FragmentEntry fragmentEntry = fetchByHeadId(headId);
+		return _findByHeadId(headId, false);
+	}
+
+	private FragmentEntry _findByHeadId(long headId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		FragmentEntry fragmentEntry = _fetchByHeadId(
+			headId, true, readOnlyCache);
 
 		if (fragmentEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -15191,6 +15526,12 @@ public class FragmentEntryPersistenceImpl
 	 */
 	@Override
 	public FragmentEntry fetchByHeadId(long headId, boolean useFinderCache) {
+		return _fetchByHeadId(headId, useFinderCache, false);
+	}
+
+	private FragmentEntry _fetchByHeadId(
+		long headId, boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -15246,9 +15587,11 @@ public class FragmentEntryPersistenceImpl
 				else {
 					FragmentEntry fragmentEntry = list.get(0);
 
-					result = fragmentEntry;
+					if (!readOnlyCache) {
+						result = fragmentEntry;
 
-					cacheResult(fragmentEntry);
+						cacheResult(fragmentEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15277,7 +15620,7 @@ public class FragmentEntryPersistenceImpl
 	public FragmentEntry removeByHeadId(long headId)
 		throws NoSuchEntryException {
 
-		FragmentEntry fragmentEntry = findByHeadId(headId);
+		FragmentEntry fragmentEntry = _findByHeadId(headId, true);
 
 		return remove(fragmentEntry);
 	}
@@ -15958,6 +16301,13 @@ public class FragmentEntryPersistenceImpl
 		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<FragmentEntry> _findAll(
+		int start, int end, OrderByComparator<FragmentEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			FragmentEntry.class);
 
@@ -16015,10 +16365,12 @@ public class FragmentEntryPersistenceImpl
 				list = (List<FragmentEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16038,7 +16390,10 @@ public class FragmentEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (FragmentEntry fragmentEntry : findAll()) {
+		for (FragmentEntry fragmentEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(fragmentEntry);
 		}
 	}

@@ -93,7 +93,14 @@ public class NullConvertibleEntryPersistenceImpl
 	public NullConvertibleEntry findByName(String name)
 		throws NoSuchNullConvertibleEntryException {
 
-		NullConvertibleEntry nullConvertibleEntry = fetchByName(name);
+		return _findByName(name, false);
+	}
+
+	private NullConvertibleEntry _findByName(String name, boolean readOnlyCache)
+		throws NoSuchNullConvertibleEntryException {
+
+		NullConvertibleEntry nullConvertibleEntry = _fetchByName(
+			name, true, readOnlyCache);
 
 		if (nullConvertibleEntry == null) {
 			StringBundler sb = new StringBundler(4);
@@ -136,6 +143,12 @@ public class NullConvertibleEntryPersistenceImpl
 	@Override
 	public NullConvertibleEntry fetchByName(
 		String name, boolean useFinderCache) {
+
+		return _fetchByName(name, useFinderCache, false);
+	}
+
+	private NullConvertibleEntry _fetchByName(
+		String name, boolean useFinderCache, boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -203,9 +216,11 @@ public class NullConvertibleEntryPersistenceImpl
 				else {
 					NullConvertibleEntry nullConvertibleEntry = list.get(0);
 
-					result = nullConvertibleEntry;
+					if (!readOnlyCache) {
+						result = nullConvertibleEntry;
 
-					cacheResult(nullConvertibleEntry);
+						cacheResult(nullConvertibleEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -234,7 +249,7 @@ public class NullConvertibleEntryPersistenceImpl
 	public NullConvertibleEntry removeByName(String name)
 		throws NoSuchNullConvertibleEntryException {
 
-		NullConvertibleEntry nullConvertibleEntry = findByName(name);
+		NullConvertibleEntry nullConvertibleEntry = _findByName(name, true);
 
 		return remove(nullConvertibleEntry);
 	}
@@ -703,6 +718,14 @@ public class NullConvertibleEntryPersistenceImpl
 		OrderByComparator<NullConvertibleEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<NullConvertibleEntry> _findAll(
+		int start, int end,
+		OrderByComparator<NullConvertibleEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -757,10 +780,13 @@ public class NullConvertibleEntryPersistenceImpl
 				list = (List<NullConvertibleEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					dummyFinderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						dummyFinderCache.putResult(
+							finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -780,7 +806,10 @@ public class NullConvertibleEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (NullConvertibleEntry nullConvertibleEntry : findAll()) {
+		for (NullConvertibleEntry nullConvertibleEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(nullConvertibleEntry);
 		}
 	}

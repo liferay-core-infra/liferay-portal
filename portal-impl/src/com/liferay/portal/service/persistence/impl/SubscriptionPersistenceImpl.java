@@ -163,6 +163,15 @@ public class SubscriptionPersistenceImpl
 		OrderByComparator<Subscription> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Subscription> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<Subscription> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -235,10 +244,12 @@ public class SubscriptionPersistenceImpl
 				list = (List<Subscription>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -521,8 +532,9 @@ public class SubscriptionPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (Subscription subscription :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(subscription);
 		}
@@ -660,6 +672,16 @@ public class SubscriptionPersistenceImpl
 		OrderByComparator<Subscription> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U(
+			groupId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Subscription> _findByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<Subscription> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -740,10 +762,12 @@ public class SubscriptionPersistenceImpl
 				list = (List<Subscription>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1049,9 +1073,9 @@ public class SubscriptionPersistenceImpl
 	@Override
 	public void removeByG_U(long groupId, long userId) {
 		for (Subscription subscription :
-				findByG_U(
-					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_U(
+					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(subscription);
 		}
@@ -1198,6 +1222,16 @@ public class SubscriptionPersistenceImpl
 		OrderByComparator<Subscription> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C(
+			userId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Subscription> _findByU_C(
+		long userId, long classNameId, int start, int end,
+		OrderByComparator<Subscription> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1278,10 +1312,12 @@ public class SubscriptionPersistenceImpl
 				list = (List<Subscription>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1588,9 +1624,9 @@ public class SubscriptionPersistenceImpl
 	@Override
 	public void removeByU_C(long userId, long classNameId) {
 		for (Subscription subscription :
-				findByU_C(
+				_findByU_C(
 					userId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(subscription);
 		}
@@ -1745,6 +1781,16 @@ public class SubscriptionPersistenceImpl
 		OrderByComparator<Subscription> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C(
+			companyId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Subscription> _findByC_C_C(
+		long companyId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<Subscription> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1830,10 +1876,12 @@ public class SubscriptionPersistenceImpl
 				list = (List<Subscription>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2157,9 +2205,9 @@ public class SubscriptionPersistenceImpl
 	@Override
 	public void removeByC_C_C(long companyId, long classNameId, long classPK) {
 		for (Subscription subscription :
-				findByC_C_C(
+				_findByC_C_C(
 					companyId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(subscription);
 		}
@@ -2334,6 +2382,16 @@ public class SubscriptionPersistenceImpl
 		int start, int end, OrderByComparator<Subscription> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U_C_C(
+			companyId, userId, classNameId, classPKs, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Subscription> _findByC_U_C_C(
+		long companyId, long userId, long classNameId, long[] classPKs,
+		int start, int end, OrderByComparator<Subscription> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (classPKs == null) {
 			classPKs = new long[0];
 		}
@@ -2451,12 +2509,14 @@ public class SubscriptionPersistenceImpl
 				list = (List<Subscription>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByC_U_C_C, finderArgs,
-						list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByC_U_C_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2485,8 +2545,16 @@ public class SubscriptionPersistenceImpl
 			long companyId, long userId, long classNameId, long classPK)
 		throws NoSuchSubscriptionException {
 
-		Subscription subscription = fetchByC_U_C_C(
-			companyId, userId, classNameId, classPK);
+		return _findByC_U_C_C(companyId, userId, classNameId, classPK, false);
+	}
+
+	private Subscription _findByC_U_C_C(
+			long companyId, long userId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchSubscriptionException {
+
+		Subscription subscription = _fetchByC_U_C_C(
+			companyId, userId, classNameId, classPK, true, readOnlyCache);
 
 		if (subscription == null) {
 			StringBundler sb = new StringBundler(10);
@@ -2547,6 +2615,14 @@ public class SubscriptionPersistenceImpl
 	public Subscription fetchByC_U_C_C(
 		long companyId, long userId, long classNameId, long classPK,
 		boolean useFinderCache) {
+
+		return _fetchByC_U_C_C(
+			companyId, userId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private Subscription _fetchByC_U_C_C(
+		long companyId, long userId, long classNameId, long classPK,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2616,9 +2692,11 @@ public class SubscriptionPersistenceImpl
 				else {
 					Subscription subscription = list.get(0);
 
-					result = subscription;
+					if (!readOnlyCache) {
+						result = subscription;
 
-					cacheResult(subscription);
+						cacheResult(subscription);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2651,8 +2729,8 @@ public class SubscriptionPersistenceImpl
 			long companyId, long userId, long classNameId, long classPK)
 		throws NoSuchSubscriptionException {
 
-		Subscription subscription = findByC_U_C_C(
-			companyId, userId, classNameId, classPK);
+		Subscription subscription = _findByC_U_C_C(
+			companyId, userId, classNameId, classPK, true);
 
 		return remove(subscription);
 	}
@@ -3235,6 +3313,13 @@ public class SubscriptionPersistenceImpl
 		int start, int end, OrderByComparator<Subscription> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Subscription> _findAll(
+		int start, int end, OrderByComparator<Subscription> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3289,10 +3374,12 @@ public class SubscriptionPersistenceImpl
 				list = (List<Subscription>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3312,7 +3399,10 @@ public class SubscriptionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Subscription subscription : findAll()) {
+		for (Subscription subscription :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(subscription);
 		}
 	}

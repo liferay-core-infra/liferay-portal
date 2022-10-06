@@ -162,6 +162,15 @@ public class ExportImportConfigurationPersistenceImpl
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExportImportConfiguration> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -236,10 +245,12 @@ public class ExportImportConfigurationPersistenceImpl
 				list = (List<ExportImportConfiguration>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -534,8 +545,9 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (ExportImportConfiguration exportImportConfiguration :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(exportImportConfiguration);
 		}
@@ -669,6 +681,15 @@ public class ExportImportConfigurationPersistenceImpl
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExportImportConfiguration> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -745,10 +766,12 @@ public class ExportImportConfigurationPersistenceImpl
 				list = (List<ExportImportConfiguration>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1043,8 +1066,9 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (ExportImportConfiguration exportImportConfiguration :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(exportImportConfiguration);
 		}
@@ -1182,6 +1206,16 @@ public class ExportImportConfigurationPersistenceImpl
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T(
+			groupId, type, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ExportImportConfiguration> _findByG_T(
+		long groupId, int type, int start, int end,
+		OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1264,10 +1298,12 @@ public class ExportImportConfigurationPersistenceImpl
 				list = (List<ExportImportConfiguration>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1578,9 +1614,9 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void removeByG_T(long groupId, int type) {
 		for (ExportImportConfiguration exportImportConfiguration :
-				findByG_T(
-					groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_T(
+					groupId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(exportImportConfiguration);
 		}
@@ -1726,6 +1762,16 @@ public class ExportImportConfigurationPersistenceImpl
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ExportImportConfiguration> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1808,10 +1854,12 @@ public class ExportImportConfigurationPersistenceImpl
 				list = (List<ExportImportConfiguration>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2122,9 +2170,9 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (ExportImportConfiguration exportImportConfiguration :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(exportImportConfiguration);
 		}
@@ -2277,6 +2325,16 @@ public class ExportImportConfigurationPersistenceImpl
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_T_S(
+			groupId, type, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ExportImportConfiguration> _findByG_T_S(
+		long groupId, int type, int status, int start, int end,
+		OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2364,10 +2422,12 @@ public class ExportImportConfigurationPersistenceImpl
 				list = (List<ExportImportConfiguration>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2695,9 +2755,9 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void removeByG_T_S(long groupId, int type, int status) {
 		for (ExportImportConfiguration exportImportConfiguration :
-				findByG_T_S(
+				_findByG_T_S(
 					groupId, type, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(exportImportConfiguration);
 		}
@@ -3200,6 +3260,14 @@ public class ExportImportConfigurationPersistenceImpl
 		OrderByComparator<ExportImportConfiguration> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ExportImportConfiguration> _findAll(
+		int start, int end,
+		OrderByComparator<ExportImportConfiguration> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3255,10 +3323,12 @@ public class ExportImportConfigurationPersistenceImpl
 				list = (List<ExportImportConfiguration>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3278,7 +3348,10 @@ public class ExportImportConfigurationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ExportImportConfiguration exportImportConfiguration : findAll()) {
+		for (ExportImportConfiguration exportImportConfiguration :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(exportImportConfiguration);
 		}
 	}

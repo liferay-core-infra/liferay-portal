@@ -172,6 +172,15 @@ public class SiteFriendlyURLPersistenceImpl
 		OrderByComparator<SiteFriendlyURL> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SiteFriendlyURL> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SiteFriendlyURL> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -257,10 +266,12 @@ public class SiteFriendlyURLPersistenceImpl
 				list = (List<SiteFriendlyURL>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -558,7 +569,9 @@ public class SiteFriendlyURLPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SiteFriendlyURL siteFriendlyURL :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(siteFriendlyURL);
 		}
@@ -647,7 +660,15 @@ public class SiteFriendlyURLPersistenceImpl
 	public SiteFriendlyURL findByUUID_G(String uuid, long groupId)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private SiteFriendlyURL _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFriendlyURLException {
+
+		SiteFriendlyURL siteFriendlyURL = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (siteFriendlyURL == null) {
 			StringBundler sb = new StringBundler(6);
@@ -695,6 +716,13 @@ public class SiteFriendlyURLPersistenceImpl
 	@Override
 	public SiteFriendlyURL fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private SiteFriendlyURL _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -767,9 +795,11 @@ public class SiteFriendlyURLPersistenceImpl
 				else {
 					SiteFriendlyURL siteFriendlyURL = list.get(0);
 
-					result = siteFriendlyURL;
+					if (!readOnlyCache) {
+						result = siteFriendlyURL;
 
-					cacheResult(siteFriendlyURL);
+						cacheResult(siteFriendlyURL);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -799,7 +829,7 @@ public class SiteFriendlyURLPersistenceImpl
 	public SiteFriendlyURL removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = findByUUID_G(uuid, groupId);
+		SiteFriendlyURL siteFriendlyURL = _findByUUID_G(uuid, groupId, true);
 
 		return remove(siteFriendlyURL);
 	}
@@ -961,6 +991,16 @@ public class SiteFriendlyURLPersistenceImpl
 		OrderByComparator<SiteFriendlyURL> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SiteFriendlyURL> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SiteFriendlyURL> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1054,10 +1094,12 @@ public class SiteFriendlyURLPersistenceImpl
 				list = (List<SiteFriendlyURL>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1378,9 +1420,9 @@ public class SiteFriendlyURLPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SiteFriendlyURL siteFriendlyURL :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(siteFriendlyURL);
 		}
@@ -1543,6 +1585,16 @@ public class SiteFriendlyURLPersistenceImpl
 		OrderByComparator<SiteFriendlyURL> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SiteFriendlyURL> _findByG_C(
+		long groupId, long companyId, int start, int end,
+		OrderByComparator<SiteFriendlyURL> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1623,10 +1675,12 @@ public class SiteFriendlyURLPersistenceImpl
 				list = (List<SiteFriendlyURL>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1934,9 +1988,9 @@ public class SiteFriendlyURLPersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long companyId) {
 		for (SiteFriendlyURL siteFriendlyURL :
-				findByG_C(
+				_findByG_C(
 					groupId, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(siteFriendlyURL);
 		}
@@ -2017,7 +2071,15 @@ public class SiteFriendlyURLPersistenceImpl
 	public SiteFriendlyURL findByC_F(long companyId, String friendlyURL)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = fetchByC_F(companyId, friendlyURL);
+		return _findByC_F(companyId, friendlyURL, false);
+	}
+
+	private SiteFriendlyURL _findByC_F(
+			long companyId, String friendlyURL, boolean readOnlyCache)
+		throws NoSuchFriendlyURLException {
+
+		SiteFriendlyURL siteFriendlyURL = _fetchByC_F(
+			companyId, friendlyURL, true, readOnlyCache);
 
 		if (siteFriendlyURL == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2065,6 +2127,13 @@ public class SiteFriendlyURLPersistenceImpl
 	@Override
 	public SiteFriendlyURL fetchByC_F(
 		long companyId, String friendlyURL, boolean useFinderCache) {
+
+		return _fetchByC_F(companyId, friendlyURL, useFinderCache, false);
+	}
+
+	private SiteFriendlyURL _fetchByC_F(
+		long companyId, String friendlyURL, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		friendlyURL = Objects.toString(friendlyURL, "");
 
@@ -2137,9 +2206,11 @@ public class SiteFriendlyURLPersistenceImpl
 				else {
 					SiteFriendlyURL siteFriendlyURL = list.get(0);
 
-					result = siteFriendlyURL;
+					if (!readOnlyCache) {
+						result = siteFriendlyURL;
 
-					cacheResult(siteFriendlyURL);
+						cacheResult(siteFriendlyURL);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2169,7 +2240,8 @@ public class SiteFriendlyURLPersistenceImpl
 	public SiteFriendlyURL removeByC_F(long companyId, String friendlyURL)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = findByC_F(companyId, friendlyURL);
+		SiteFriendlyURL siteFriendlyURL = _findByC_F(
+			companyId, friendlyURL, true);
 
 		return remove(siteFriendlyURL);
 	}
@@ -2267,8 +2339,16 @@ public class SiteFriendlyURLPersistenceImpl
 			long groupId, long companyId, String languageId)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = fetchByG_C_L(
-			groupId, companyId, languageId);
+		return _findByG_C_L(groupId, companyId, languageId, false);
+	}
+
+	private SiteFriendlyURL _findByG_C_L(
+			long groupId, long companyId, String languageId,
+			boolean readOnlyCache)
+		throws NoSuchFriendlyURLException {
+
+		SiteFriendlyURL siteFriendlyURL = _fetchByG_C_L(
+			groupId, companyId, languageId, true, readOnlyCache);
 
 		if (siteFriendlyURL == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2324,6 +2404,14 @@ public class SiteFriendlyURLPersistenceImpl
 	public SiteFriendlyURL fetchByG_C_L(
 		long groupId, long companyId, String languageId,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_L(
+			groupId, companyId, languageId, useFinderCache, false);
+	}
+
+	private SiteFriendlyURL _fetchByG_C_L(
+		long groupId, long companyId, String languageId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		languageId = Objects.toString(languageId, "");
 
@@ -2400,9 +2488,11 @@ public class SiteFriendlyURLPersistenceImpl
 				else {
 					SiteFriendlyURL siteFriendlyURL = list.get(0);
 
-					result = siteFriendlyURL;
+					if (!readOnlyCache) {
+						result = siteFriendlyURL;
 
-					cacheResult(siteFriendlyURL);
+						cacheResult(siteFriendlyURL);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2434,8 +2524,8 @@ public class SiteFriendlyURLPersistenceImpl
 			long groupId, long companyId, String languageId)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = findByG_C_L(
-			groupId, companyId, languageId);
+		SiteFriendlyURL siteFriendlyURL = _findByG_C_L(
+			groupId, companyId, languageId, true);
 
 		return remove(siteFriendlyURL);
 	}
@@ -2541,8 +2631,16 @@ public class SiteFriendlyURLPersistenceImpl
 			long companyId, String friendlyURL, String languageId)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = fetchByC_F_L(
-			companyId, friendlyURL, languageId);
+		return _findByC_F_L(companyId, friendlyURL, languageId, false);
+	}
+
+	private SiteFriendlyURL _findByC_F_L(
+			long companyId, String friendlyURL, String languageId,
+			boolean readOnlyCache)
+		throws NoSuchFriendlyURLException {
+
+		SiteFriendlyURL siteFriendlyURL = _fetchByC_F_L(
+			companyId, friendlyURL, languageId, true, readOnlyCache);
 
 		if (siteFriendlyURL == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2598,6 +2696,14 @@ public class SiteFriendlyURLPersistenceImpl
 	public SiteFriendlyURL fetchByC_F_L(
 		long companyId, String friendlyURL, String languageId,
 		boolean useFinderCache) {
+
+		return _fetchByC_F_L(
+			companyId, friendlyURL, languageId, useFinderCache, false);
+	}
+
+	private SiteFriendlyURL _fetchByC_F_L(
+		long companyId, String friendlyURL, String languageId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		friendlyURL = Objects.toString(friendlyURL, "");
 		languageId = Objects.toString(languageId, "");
@@ -2687,9 +2793,11 @@ public class SiteFriendlyURLPersistenceImpl
 				else {
 					SiteFriendlyURL siteFriendlyURL = list.get(0);
 
-					result = siteFriendlyURL;
+					if (!readOnlyCache) {
+						result = siteFriendlyURL;
 
-					cacheResult(siteFriendlyURL);
+						cacheResult(siteFriendlyURL);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2721,8 +2829,8 @@ public class SiteFriendlyURLPersistenceImpl
 			long companyId, String friendlyURL, String languageId)
 		throws NoSuchFriendlyURLException {
 
-		SiteFriendlyURL siteFriendlyURL = findByC_F_L(
-			companyId, friendlyURL, languageId);
+		SiteFriendlyURL siteFriendlyURL = _findByC_F_L(
+			companyId, friendlyURL, languageId, true);
 
 		return remove(siteFriendlyURL);
 	}
@@ -3310,6 +3418,14 @@ public class SiteFriendlyURLPersistenceImpl
 		OrderByComparator<SiteFriendlyURL> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SiteFriendlyURL> _findAll(
+		int start, int end,
+		OrderByComparator<SiteFriendlyURL> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3364,10 +3480,12 @@ public class SiteFriendlyURLPersistenceImpl
 				list = (List<SiteFriendlyURL>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3387,7 +3505,10 @@ public class SiteFriendlyURLPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SiteFriendlyURL siteFriendlyURL : findAll()) {
+		for (SiteFriendlyURL siteFriendlyURL :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(siteFriendlyURL);
 		}
 	}

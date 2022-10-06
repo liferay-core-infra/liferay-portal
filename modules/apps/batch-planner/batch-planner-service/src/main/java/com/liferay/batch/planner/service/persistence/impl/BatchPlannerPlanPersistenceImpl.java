@@ -175,6 +175,15 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchPlannerPlan> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -249,10 +258,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -876,8 +887,9 @@ public class BatchPlannerPlanPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (BatchPlannerPlan batchPlannerPlan :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(batchPlannerPlan);
 		}
@@ -1064,6 +1076,16 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_U(
+			companyId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchPlannerPlan> _findByC_U(
+		long companyId, long userId, int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1144,10 +1166,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1805,9 +1829,9 @@ public class BatchPlannerPlanPersistenceImpl
 	@Override
 	public void removeByC_U(long companyId, long userId) {
 		for (BatchPlannerPlan batchPlannerPlan :
-				findByC_U(
+				_findByC_U(
 					companyId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(batchPlannerPlan);
 		}
@@ -2007,6 +2031,16 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_E(
+			companyId, export, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchPlannerPlan> _findByC_E(
+		long companyId, boolean export, int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2087,10 +2121,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2750,9 +2786,9 @@ public class BatchPlannerPlanPersistenceImpl
 	@Override
 	public void removeByC_E(long companyId, boolean export) {
 		for (BatchPlannerPlan batchPlannerPlan :
-				findByC_E(
+				_findByC_E(
 					companyId, export, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(batchPlannerPlan);
 		}
@@ -2951,6 +2987,16 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_N(
+			companyId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchPlannerPlan> _findByC_N(
+		long companyId, String name, int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		FinderPath finderPath = null;
@@ -3044,10 +3090,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3744,9 +3792,9 @@ public class BatchPlannerPlanPersistenceImpl
 	@Override
 	public void removeByC_N(long companyId, String name) {
 		for (BatchPlannerPlan batchPlannerPlan :
-				findByC_N(
-					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByC_N(
+					companyId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(batchPlannerPlan);
 		}
@@ -3975,6 +4023,16 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_T(
+			companyId, template, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<BatchPlannerPlan> _findByC_T(
+		long companyId, boolean template, int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4055,10 +4113,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4719,9 +4779,9 @@ public class BatchPlannerPlanPersistenceImpl
 	@Override
 	public void removeByC_T(long companyId, boolean template) {
 		for (BatchPlannerPlan batchPlannerPlan :
-				findByC_T(
+				_findByC_T(
 					companyId, template, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(batchPlannerPlan);
 		}
@@ -4928,6 +4988,16 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_E_T(
+			companyId, export, template, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<BatchPlannerPlan> _findByC_E_T(
+		long companyId, boolean export, boolean template, int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5013,10 +5083,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5713,9 +5785,9 @@ public class BatchPlannerPlanPersistenceImpl
 		long companyId, boolean export, boolean template) {
 
 		for (BatchPlannerPlan batchPlannerPlan :
-				findByC_E_T(
+				_findByC_E_T(
 					companyId, export, template, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(batchPlannerPlan);
 		}
@@ -6247,6 +6319,14 @@ public class BatchPlannerPlanPersistenceImpl
 		OrderByComparator<BatchPlannerPlan> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<BatchPlannerPlan> _findAll(
+		int start, int end,
+		OrderByComparator<BatchPlannerPlan> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6301,10 +6381,12 @@ public class BatchPlannerPlanPersistenceImpl
 				list = (List<BatchPlannerPlan>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6324,7 +6406,10 @@ public class BatchPlannerPlanPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (BatchPlannerPlan batchPlannerPlan : findAll()) {
+		for (BatchPlannerPlan batchPlannerPlan :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(batchPlannerPlan);
 		}
 	}

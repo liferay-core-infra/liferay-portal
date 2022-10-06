@@ -178,6 +178,15 @@ public class OAuth2ApplicationPersistenceImpl
 		OrderByComparator<OAuth2Application> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2Application> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<OAuth2Application> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -263,10 +272,12 @@ public class OAuth2ApplicationPersistenceImpl
 				list = (List<OAuth2Application>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -927,7 +938,9 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (OAuth2Application oAuth2Application :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuth2Application);
 		}
@@ -1149,6 +1162,16 @@ public class OAuth2ApplicationPersistenceImpl
 		OrderByComparator<OAuth2Application> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<OAuth2Application> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<OAuth2Application> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1242,10 +1265,12 @@ public class OAuth2ApplicationPersistenceImpl
 				list = (List<OAuth2Application>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1944,9 +1969,9 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (OAuth2Application oAuth2Application :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(oAuth2Application);
 		}
@@ -2176,6 +2201,15 @@ public class OAuth2ApplicationPersistenceImpl
 		OrderByComparator<OAuth2Application> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2Application> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<OAuth2Application> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2250,10 +2284,12 @@ public class OAuth2ApplicationPersistenceImpl
 				list = (List<OAuth2Application>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2881,8 +2917,9 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (OAuth2Application oAuth2Application :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuth2Application);
 		}
@@ -3003,7 +3040,15 @@ public class OAuth2ApplicationPersistenceImpl
 	public OAuth2Application findByC_C(long companyId, String clientId)
 		throws NoSuchOAuth2ApplicationException {
 
-		OAuth2Application oAuth2Application = fetchByC_C(companyId, clientId);
+		return _findByC_C(companyId, clientId, false);
+	}
+
+	private OAuth2Application _findByC_C(
+			long companyId, String clientId, boolean readOnlyCache)
+		throws NoSuchOAuth2ApplicationException {
+
+		OAuth2Application oAuth2Application = _fetchByC_C(
+			companyId, clientId, true, readOnlyCache);
 
 		if (oAuth2Application == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3051,6 +3096,13 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public OAuth2Application fetchByC_C(
 		long companyId, String clientId, boolean useFinderCache) {
+
+		return _fetchByC_C(companyId, clientId, useFinderCache, false);
+	}
+
+	private OAuth2Application _fetchByC_C(
+		long companyId, String clientId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		clientId = Objects.toString(clientId, "");
 
@@ -3137,9 +3189,11 @@ public class OAuth2ApplicationPersistenceImpl
 
 					OAuth2Application oAuth2Application = list.get(0);
 
-					result = oAuth2Application;
+					if (!readOnlyCache) {
+						result = oAuth2Application;
 
-					cacheResult(oAuth2Application);
+						cacheResult(oAuth2Application);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3169,7 +3223,8 @@ public class OAuth2ApplicationPersistenceImpl
 	public OAuth2Application removeByC_C(long companyId, String clientId)
 		throws NoSuchOAuth2ApplicationException {
 
-		OAuth2Application oAuth2Application = findByC_C(companyId, clientId);
+		OAuth2Application oAuth2Application = _findByC_C(
+			companyId, clientId, true);
 
 		return remove(oAuth2Application);
 	}
@@ -3334,6 +3389,16 @@ public class OAuth2ApplicationPersistenceImpl
 		OrderByComparator<OAuth2Application> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_CP(
+			companyId, clientProfile, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<OAuth2Application> _findByC_CP(
+		long companyId, int clientProfile, int start, int end,
+		OrderByComparator<OAuth2Application> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3415,10 +3480,12 @@ public class OAuth2ApplicationPersistenceImpl
 				list = (List<OAuth2Application>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4083,9 +4150,9 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public void removeByC_CP(long companyId, int clientProfile) {
 		for (OAuth2Application oAuth2Application :
-				findByC_CP(
+				_findByC_CP(
 					companyId, clientProfile, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuth2Application);
 		}
@@ -4220,8 +4287,15 @@ public class OAuth2ApplicationPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchOAuth2ApplicationException {
 
-		OAuth2Application oAuth2Application = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private OAuth2Application _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchOAuth2ApplicationException {
+
+		OAuth2Application oAuth2Application = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (oAuth2Application == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4271,6 +4345,14 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public OAuth2Application fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private OAuth2Application _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -4344,9 +4426,11 @@ public class OAuth2ApplicationPersistenceImpl
 				else {
 					OAuth2Application oAuth2Application = list.get(0);
 
-					result = oAuth2Application;
+					if (!readOnlyCache) {
+						result = oAuth2Application;
 
-					cacheResult(oAuth2Application);
+						cacheResult(oAuth2Application);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4377,8 +4461,8 @@ public class OAuth2ApplicationPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchOAuth2ApplicationException {
 
-		OAuth2Application oAuth2Application = findByC_ERC(
-			companyId, externalReferenceCode);
+		OAuth2Application oAuth2Application = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(oAuth2Application);
 	}
@@ -4918,6 +5002,14 @@ public class OAuth2ApplicationPersistenceImpl
 		OrderByComparator<OAuth2Application> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2Application> _findAll(
+		int start, int end,
+		OrderByComparator<OAuth2Application> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4972,10 +5064,12 @@ public class OAuth2ApplicationPersistenceImpl
 				list = (List<OAuth2Application>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4995,7 +5089,10 @@ public class OAuth2ApplicationPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OAuth2Application oAuth2Application : findAll()) {
+		for (OAuth2Application oAuth2Application :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(oAuth2Application);
 		}
 	}

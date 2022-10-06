@@ -172,6 +172,16 @@ public class AccountEntryUserRelPersistenceImpl
 		OrderByComparator<AccountEntryUserRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountEntryId(
+			accountEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountEntryUserRel> _findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<AccountEntryUserRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -248,10 +258,12 @@ public class AccountEntryUserRelPersistenceImpl
 				list = (List<AccountEntryUserRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -545,9 +557,9 @@ public class AccountEntryUserRelPersistenceImpl
 	@Override
 	public void removeByAccountEntryId(long accountEntryId) {
 		for (AccountEntryUserRel accountEntryUserRel :
-				findByAccountEntryId(
-					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByAccountEntryId(
+					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(accountEntryUserRel);
 		}
@@ -682,6 +694,16 @@ public class AccountEntryUserRelPersistenceImpl
 		OrderByComparator<AccountEntryUserRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountUserId(
+			accountUserId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountEntryUserRel> _findByAccountUserId(
+		long accountUserId, int start, int end,
+		OrderByComparator<AccountEntryUserRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -758,10 +780,12 @@ public class AccountEntryUserRelPersistenceImpl
 				list = (List<AccountEntryUserRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1055,9 +1079,9 @@ public class AccountEntryUserRelPersistenceImpl
 	@Override
 	public void removeByAccountUserId(long accountUserId) {
 		for (AccountEntryUserRel accountEntryUserRel :
-				findByAccountUserId(
-					accountUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByAccountUserId(
+					accountUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(accountEntryUserRel);
 		}
@@ -1131,8 +1155,15 @@ public class AccountEntryUserRelPersistenceImpl
 			long accountEntryId, long accountUserId)
 		throws NoSuchEntryUserRelException {
 
-		AccountEntryUserRel accountEntryUserRel = fetchByAEI_AUI(
-			accountEntryId, accountUserId);
+		return _findByAEI_AUI(accountEntryId, accountUserId, false);
+	}
+
+	private AccountEntryUserRel _findByAEI_AUI(
+			long accountEntryId, long accountUserId, boolean readOnlyCache)
+		throws NoSuchEntryUserRelException {
+
+		AccountEntryUserRel accountEntryUserRel = _fetchByAEI_AUI(
+			accountEntryId, accountUserId, true, readOnlyCache);
 
 		if (accountEntryUserRel == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1182,6 +1213,14 @@ public class AccountEntryUserRelPersistenceImpl
 	@Override
 	public AccountEntryUserRel fetchByAEI_AUI(
 		long accountEntryId, long accountUserId, boolean useFinderCache) {
+
+		return _fetchByAEI_AUI(
+			accountEntryId, accountUserId, useFinderCache, false);
+	}
+
+	private AccountEntryUserRel _fetchByAEI_AUI(
+		long accountEntryId, long accountUserId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1259,9 +1298,11 @@ public class AccountEntryUserRelPersistenceImpl
 
 					AccountEntryUserRel accountEntryUserRel = list.get(0);
 
-					result = accountEntryUserRel;
+					if (!readOnlyCache) {
+						result = accountEntryUserRel;
 
-					cacheResult(accountEntryUserRel);
+						cacheResult(accountEntryUserRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1292,8 +1333,8 @@ public class AccountEntryUserRelPersistenceImpl
 			long accountEntryId, long accountUserId)
 		throws NoSuchEntryUserRelException {
 
-		AccountEntryUserRel accountEntryUserRel = findByAEI_AUI(
-			accountEntryId, accountUserId);
+		AccountEntryUserRel accountEntryUserRel = _findByAEI_AUI(
+			accountEntryId, accountUserId, true);
 
 		return remove(accountEntryUserRel);
 	}
@@ -1754,6 +1795,14 @@ public class AccountEntryUserRelPersistenceImpl
 		OrderByComparator<AccountEntryUserRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AccountEntryUserRel> _findAll(
+		int start, int end,
+		OrderByComparator<AccountEntryUserRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1808,10 +1857,12 @@ public class AccountEntryUserRelPersistenceImpl
 				list = (List<AccountEntryUserRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1831,7 +1882,10 @@ public class AccountEntryUserRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AccountEntryUserRel accountEntryUserRel : findAll()) {
+		for (AccountEntryUserRel accountEntryUserRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(accountEntryUserRel);
 		}
 	}

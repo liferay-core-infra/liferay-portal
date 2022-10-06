@@ -183,6 +183,15 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -270,10 +279,12 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -581,7 +592,9 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceMLForecastAlertEntry);
 		}
@@ -738,6 +751,16 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -834,10 +857,12 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1162,9 +1187,9 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceMLForecastAlertEntry);
 		}
@@ -1263,8 +1288,17 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 			long companyId, long commerceAccountId, Date timestamp)
 		throws NoSuchMLForecastAlertEntryException {
 
+		return _findByC_C_T(companyId, commerceAccountId, timestamp, false);
+	}
+
+	private CommerceMLForecastAlertEntry _findByC_C_T(
+			long companyId, long commerceAccountId, Date timestamp,
+			boolean readOnlyCache)
+		throws NoSuchMLForecastAlertEntryException {
+
 		CommerceMLForecastAlertEntry commerceMLForecastAlertEntry =
-			fetchByC_C_T(companyId, commerceAccountId, timestamp);
+			_fetchByC_C_T(
+				companyId, commerceAccountId, timestamp, true, readOnlyCache);
 
 		if (commerceMLForecastAlertEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1320,6 +1354,14 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	public CommerceMLForecastAlertEntry fetchByC_C_T(
 		long companyId, long commerceAccountId, Date timestamp,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_T(
+			companyId, commerceAccountId, timestamp, useFinderCache, false);
+	}
+
+	private CommerceMLForecastAlertEntry _fetchByC_C_T(
+		long companyId, long commerceAccountId, Date timestamp,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1418,9 +1460,11 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 					CommerceMLForecastAlertEntry commerceMLForecastAlertEntry =
 						list.get(0);
 
-					result = commerceMLForecastAlertEntry;
+					if (!readOnlyCache) {
+						result = commerceMLForecastAlertEntry;
 
-					cacheResult(commerceMLForecastAlertEntry);
+						cacheResult(commerceMLForecastAlertEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1452,8 +1496,8 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 			long companyId, long commerceAccountId, Date timestamp)
 		throws NoSuchMLForecastAlertEntryException {
 
-		CommerceMLForecastAlertEntry commerceMLForecastAlertEntry = findByC_C_T(
-			companyId, commerceAccountId, timestamp);
+		CommerceMLForecastAlertEntry commerceMLForecastAlertEntry =
+			_findByC_C_T(companyId, commerceAccountId, timestamp, true);
 
 		return remove(commerceMLForecastAlertEntry);
 	}
@@ -1636,6 +1680,16 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_S(
+			companyId, commerceAccountId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByC_C_S(
+		long companyId, long commerceAccountId, int status, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1729,10 +1783,12 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2147,6 +2203,17 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_S(
+			companyId, commerceAccountIds, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByC_C_S(
+		long companyId, long[] commerceAccountIds, int status, int start,
+		int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (commerceAccountIds == null) {
 			commerceAccountIds = new long[0];
 		}
@@ -2256,11 +2323,14 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_C_S, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_C_S, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2286,9 +2356,9 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		long companyId, long commerceAccountId, int status) {
 
 		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				findByC_C_S(
+				_findByC_C_S(
 					companyId, commerceAccountId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceMLForecastAlertEntry);
 		}
@@ -2550,6 +2620,17 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_GtRc_S(
+			companyId, commerceAccountId, relativeChange, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByC_C_GtRc_S(
+		long companyId, long commerceAccountId, double relativeChange,
+		int status, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2637,10 +2718,12 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3087,6 +3170,17 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_GtRc_S(
+			companyId, commerceAccountIds, relativeChange, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByC_C_GtRc_S(
+		long companyId, long[] commerceAccountIds, double relativeChange,
+		int status, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (commerceAccountIds == null) {
 			commerceAccountIds = new long[0];
 		}
@@ -3203,12 +3297,14 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_C_GtRc_S, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_C_GtRc_S,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3236,9 +3332,9 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		int status) {
 
 		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				findByC_C_GtRc_S(
+				_findByC_C_GtRc_S(
 					companyId, commerceAccountId, relativeChange, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceMLForecastAlertEntry);
 		}
@@ -3517,6 +3613,17 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_LtRc_S(
+			companyId, commerceAccountId, relativeChange, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByC_C_LtRc_S(
+		long companyId, long commerceAccountId, double relativeChange,
+		int status, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3604,10 +3711,12 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4054,6 +4163,17 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_LtRc_S(
+			companyId, commerceAccountIds, relativeChange, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findByC_C_LtRc_S(
+		long companyId, long[] commerceAccountIds, double relativeChange,
+		int status, int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (commerceAccountIds == null) {
 			commerceAccountIds = new long[0];
 		}
@@ -4170,12 +4290,14 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_C_LtRc_S, finderArgs,
-						list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_C_LtRc_S,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4203,9 +4325,9 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		int status) {
 
 		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				findByC_C_LtRc_S(
+				_findByC_C_LtRc_S(
 					companyId, commerceAccountId, relativeChange, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceMLForecastAlertEntry);
 		}
@@ -4862,6 +4984,14 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceMLForecastAlertEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceMLForecastAlertEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4917,10 +5047,12 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 				list = (List<CommerceMLForecastAlertEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4941,7 +5073,8 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceMLForecastAlertEntry);
 		}

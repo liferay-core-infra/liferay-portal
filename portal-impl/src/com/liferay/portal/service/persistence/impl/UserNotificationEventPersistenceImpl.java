@@ -161,6 +161,15 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -246,10 +255,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,7 +564,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -710,6 +723,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserNotificationEvent> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -803,10 +826,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1129,9 +1154,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -1288,6 +1313,15 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1360,10 +1394,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1656,8 +1692,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -1790,6 +1827,15 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByType(
+		String type, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -1875,10 +1921,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2182,7 +2230,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByType(String type) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -2339,6 +2389,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT(
+			userId, deliveryType, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT(
+		long userId, int deliveryType, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2420,10 +2480,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2733,9 +2795,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByU_DT(long userId, int deliveryType) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT(
+				_findByU_DT(
 					userId, deliveryType, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -2884,6 +2946,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_D(
+			userId, delivered, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserNotificationEvent> _findByU_D(
+		long userId, boolean delivered, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2964,10 +3036,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3277,9 +3351,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByU_D(long userId, boolean delivered) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_D(
+				_findByU_D(
 					userId, delivered, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -3427,6 +3501,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_A(
+			userId, archived, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<UserNotificationEvent> _findByU_A(
+		long userId, boolean archived, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3507,10 +3591,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3820,9 +3906,9 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void removeByU_A(long userId, boolean archived) {
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_A(
+				_findByU_A(
 					userId, archived, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -3977,6 +4063,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT_D(
+			userId, deliveryType, delivered, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT_D(
+		long userId, int deliveryType, boolean delivered, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4063,10 +4159,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4396,9 +4494,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, int deliveryType, boolean delivered) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT_D(
+				_findByU_DT_D(
 					userId, deliveryType, delivered, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -4561,6 +4659,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT_A(
+			userId, deliveryType, archived, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT_A(
+		long userId, int deliveryType, boolean archived, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4647,10 +4755,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4980,9 +5090,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, int deliveryType, boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT_A(
+				_findByU_DT_A(
 					userId, deliveryType, archived, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -5147,6 +5257,16 @@ public class UserNotificationEventPersistenceImpl
 		int end, OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_D_AR(
+			userId, delivered, actionRequired, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_D_AR(
+		long userId, boolean delivered, boolean actionRequired, int start,
+		int end, OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5233,10 +5353,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5566,9 +5688,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, boolean delivered, boolean actionRequired) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_D_AR(
+				_findByU_D_AR(
 					userId, delivered, actionRequired, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -5732,6 +5854,16 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_D_A(
+			userId, delivered, archived, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_D_A(
+		long userId, boolean delivered, boolean archived, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5817,10 +5949,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6149,9 +6283,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, boolean delivered, boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_D_A(
+				_findByU_D_A(
 					userId, delivered, archived, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -6315,6 +6449,16 @@ public class UserNotificationEventPersistenceImpl
 		int end, OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_AR_A(
+			userId, actionRequired, archived, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_AR_A(
+		long userId, boolean actionRequired, boolean archived, int start,
+		int end, OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6401,10 +6545,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6734,9 +6880,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, boolean actionRequired, boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_AR_A(
+				_findByU_AR_A(
 					userId, actionRequired, archived, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -6909,6 +7055,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_T_DT_D(
+			userId, type, deliveryType, delivered, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_T_DT_D(
+		long userId, String type, int deliveryType, boolean delivered,
+		int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -7016,10 +7173,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7378,9 +7537,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, String type, int deliveryType, boolean delivered) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_T_DT_D(
+				_findByU_T_DT_D(
 					userId, type, deliveryType, delivered, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -7580,6 +7739,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT_D_AR(
+			userId, deliveryType, delivered, actionRequired, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT_D_AR(
+		long userId, int deliveryType, boolean delivered,
+		boolean actionRequired, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7675,10 +7845,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8032,9 +8204,9 @@ public class UserNotificationEventPersistenceImpl
 		boolean actionRequired) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT_D_AR(
+				_findByU_DT_D_AR(
 					userId, deliveryType, delivered, actionRequired,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -8218,6 +8390,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT_D_A(
+			userId, deliveryType, delivered, archived, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT_D_A(
+		long userId, int deliveryType, boolean delivered, boolean archived,
+		int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8312,10 +8495,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8661,9 +8846,9 @@ public class UserNotificationEventPersistenceImpl
 		long userId, int deliveryType, boolean delivered, boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT_D_A(
+				_findByU_DT_D_A(
 					userId, deliveryType, delivered, archived,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -8847,6 +9032,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT_AR_A(
+			userId, deliveryType, actionRequired, archived, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT_AR_A(
+		long userId, int deliveryType, boolean actionRequired, boolean archived,
+		int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8942,10 +9138,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9296,9 +9494,9 @@ public class UserNotificationEventPersistenceImpl
 		boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT_AR_A(
+				_findByU_DT_AR_A(
 					userId, deliveryType, actionRequired, archived,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -9483,6 +9681,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_D_AR_A(
+			userId, delivered, actionRequired, archived, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_D_AR_A(
+		long userId, boolean delivered, boolean actionRequired,
+		boolean archived, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -9577,10 +9786,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9934,9 +10145,9 @@ public class UserNotificationEventPersistenceImpl
 		boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_D_AR_A(
+				_findByU_D_AR_A(
 					userId, delivered, actionRequired, archived,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -10125,6 +10336,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_T_DT_D_A(
+			userId, type, deliveryType, delivered, archived, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_T_DT_D_A(
+		long userId, String type, int deliveryType, boolean delivered,
+		boolean archived, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		FinderPath finderPath = null;
@@ -10237,10 +10459,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10623,9 +10847,9 @@ public class UserNotificationEventPersistenceImpl
 		boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_T_DT_D_A(
+				_findByU_T_DT_D_A(
 					userId, type, deliveryType, delivered, archived,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -10839,6 +11063,17 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_DT_D_AR_A(
+			userId, deliveryType, delivered, actionRequired, archived, start,
+			end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findByU_DT_D_AR_A(
+		long userId, int deliveryType, boolean delivered,
+		boolean actionRequired, boolean archived, int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -10939,10 +11174,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11314,9 +11551,9 @@ public class UserNotificationEventPersistenceImpl
 		boolean actionRequired, boolean archived) {
 
 		for (UserNotificationEvent userNotificationEvent :
-				findByU_DT_D_AR_A(
+				_findByU_DT_D_AR_A(
 					userId, deliveryType, delivered, actionRequired, archived,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(userNotificationEvent);
 		}
@@ -11814,6 +12051,14 @@ public class UserNotificationEventPersistenceImpl
 		OrderByComparator<UserNotificationEvent> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<UserNotificationEvent> _findAll(
+		int start, int end,
+		OrderByComparator<UserNotificationEvent> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -11868,10 +12113,12 @@ public class UserNotificationEventPersistenceImpl
 				list = (List<UserNotificationEvent>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11891,7 +12138,10 @@ public class UserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (UserNotificationEvent userNotificationEvent : findAll()) {
+		for (UserNotificationEvent userNotificationEvent :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(userNotificationEvent);
 		}
 	}

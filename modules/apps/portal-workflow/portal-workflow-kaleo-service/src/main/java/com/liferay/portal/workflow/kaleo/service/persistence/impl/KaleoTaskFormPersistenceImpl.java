@@ -180,6 +180,15 @@ public class KaleoTaskFormPersistenceImpl
 		OrderByComparator<KaleoTaskForm> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTaskForm> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<KaleoTaskForm> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTaskForm.class);
 
@@ -257,10 +266,12 @@ public class KaleoTaskFormPersistenceImpl
 				list = (List<KaleoTaskForm>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -545,8 +556,9 @@ public class KaleoTaskFormPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (KaleoTaskForm kaleoTaskForm :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kaleoTaskForm);
 		}
@@ -698,6 +710,16 @@ public class KaleoTaskFormPersistenceImpl
 		OrderByComparator<KaleoTaskForm> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoDefinitionVersionId(
+			kaleoDefinitionVersionId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KaleoTaskForm> _findByKaleoDefinitionVersionId(
+		long kaleoDefinitionVersionId, int start, int end,
+		OrderByComparator<KaleoTaskForm> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTaskForm.class);
 
@@ -780,10 +802,12 @@ public class KaleoTaskFormPersistenceImpl
 				list = (List<KaleoTaskForm>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1078,9 +1102,9 @@ public class KaleoTaskFormPersistenceImpl
 		long kaleoDefinitionVersionId) {
 
 		for (KaleoTaskForm kaleoTaskForm :
-				findByKaleoDefinitionVersionId(
+				_findByKaleoDefinitionVersionId(
 					kaleoDefinitionVersionId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoTaskForm);
 		}
@@ -1229,6 +1253,15 @@ public class KaleoTaskFormPersistenceImpl
 		OrderByComparator<KaleoTaskForm> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoNodeId(
+			kaleoNodeId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTaskForm> _findByKaleoNodeId(
+		long kaleoNodeId, int start, int end,
+		OrderByComparator<KaleoTaskForm> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTaskForm.class);
 
@@ -1306,10 +1339,12 @@ public class KaleoTaskFormPersistenceImpl
 				list = (List<KaleoTaskForm>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1596,8 +1631,9 @@ public class KaleoTaskFormPersistenceImpl
 	@Override
 	public void removeByKaleoNodeId(long kaleoNodeId) {
 		for (KaleoTaskForm kaleoTaskForm :
-				findByKaleoNodeId(
-					kaleoNodeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByKaleoNodeId(
+					kaleoNodeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kaleoTaskForm);
 		}
@@ -1744,6 +1780,15 @@ public class KaleoTaskFormPersistenceImpl
 		OrderByComparator<KaleoTaskForm> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoTaskId(
+			kaleoTaskId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTaskForm> _findByKaleoTaskId(
+		long kaleoTaskId, int start, int end,
+		OrderByComparator<KaleoTaskForm> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTaskForm.class);
 
@@ -1821,10 +1866,12 @@ public class KaleoTaskFormPersistenceImpl
 				list = (List<KaleoTaskForm>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2111,8 +2158,9 @@ public class KaleoTaskFormPersistenceImpl
 	@Override
 	public void removeByKaleoTaskId(long kaleoTaskId) {
 		for (KaleoTaskForm kaleoTaskForm :
-				findByKaleoTaskId(
-					kaleoTaskId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByKaleoTaskId(
+					kaleoTaskId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kaleoTaskForm);
 		}
@@ -2197,8 +2245,15 @@ public class KaleoTaskFormPersistenceImpl
 	public KaleoTaskForm findByFormUuid_KTI(long kaleoTaskId, String formUuid)
 		throws NoSuchTaskFormException {
 
-		KaleoTaskForm kaleoTaskForm = fetchByFormUuid_KTI(
-			kaleoTaskId, formUuid);
+		return _findByFormUuid_KTI(kaleoTaskId, formUuid, false);
+	}
+
+	private KaleoTaskForm _findByFormUuid_KTI(
+			long kaleoTaskId, String formUuid, boolean readOnlyCache)
+		throws NoSuchTaskFormException {
+
+		KaleoTaskForm kaleoTaskForm = _fetchByFormUuid_KTI(
+			kaleoTaskId, formUuid, true, readOnlyCache);
 
 		if (kaleoTaskForm == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2248,6 +2303,14 @@ public class KaleoTaskFormPersistenceImpl
 	@Override
 	public KaleoTaskForm fetchByFormUuid_KTI(
 		long kaleoTaskId, String formUuid, boolean useFinderCache) {
+
+		return _fetchByFormUuid_KTI(
+			kaleoTaskId, formUuid, useFinderCache, false);
+	}
+
+	private KaleoTaskForm _fetchByFormUuid_KTI(
+		long kaleoTaskId, String formUuid, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		formUuid = Objects.toString(formUuid, "");
 
@@ -2340,9 +2403,11 @@ public class KaleoTaskFormPersistenceImpl
 
 					KaleoTaskForm kaleoTaskForm = list.get(0);
 
-					result = kaleoTaskForm;
+					if (!readOnlyCache) {
+						result = kaleoTaskForm;
 
-					cacheResult(kaleoTaskForm);
+						cacheResult(kaleoTaskForm);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2372,7 +2437,8 @@ public class KaleoTaskFormPersistenceImpl
 	public KaleoTaskForm removeByFormUuid_KTI(long kaleoTaskId, String formUuid)
 		throws NoSuchTaskFormException {
 
-		KaleoTaskForm kaleoTaskForm = findByFormUuid_KTI(kaleoTaskId, formUuid);
+		KaleoTaskForm kaleoTaskForm = _findByFormUuid_KTI(
+			kaleoTaskId, formUuid, true);
 
 		return remove(kaleoTaskForm);
 	}
@@ -3030,6 +3096,13 @@ public class KaleoTaskFormPersistenceImpl
 		int start, int end, OrderByComparator<KaleoTaskForm> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTaskForm> _findAll(
+		int start, int end, OrderByComparator<KaleoTaskForm> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTaskForm.class);
 
@@ -3087,10 +3160,12 @@ public class KaleoTaskFormPersistenceImpl
 				list = (List<KaleoTaskForm>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3110,7 +3185,10 @@ public class KaleoTaskFormPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KaleoTaskForm kaleoTaskForm : findAll()) {
+		for (KaleoTaskForm kaleoTaskForm :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kaleoTaskForm);
 		}
 	}

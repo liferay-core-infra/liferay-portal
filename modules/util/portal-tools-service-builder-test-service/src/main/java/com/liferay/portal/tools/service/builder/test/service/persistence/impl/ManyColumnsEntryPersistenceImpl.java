@@ -421,6 +421,14 @@ public class ManyColumnsEntryPersistenceImpl
 		OrderByComparator<ManyColumnsEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ManyColumnsEntry> _findAll(
+		int start, int end,
+		OrderByComparator<ManyColumnsEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -475,10 +483,12 @@ public class ManyColumnsEntryPersistenceImpl
 				list = (List<ManyColumnsEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -498,7 +508,10 @@ public class ManyColumnsEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ManyColumnsEntry manyColumnsEntry : findAll()) {
+		for (ManyColumnsEntry manyColumnsEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(manyColumnsEntry);
 		}
 	}

@@ -183,6 +183,15 @@ public class DDLRecordSetVersionPersistenceImpl
 		OrderByComparator<DDLRecordSetVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRecordSetId(
+			recordSetId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDLRecordSetVersion> _findByRecordSetId(
+		long recordSetId, int start, int end,
+		OrderByComparator<DDLRecordSetVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecordSetVersion.class);
 
@@ -260,10 +269,12 @@ public class DDLRecordSetVersionPersistenceImpl
 				list = (List<DDLRecordSetVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,8 +568,9 @@ public class DDLRecordSetVersionPersistenceImpl
 	@Override
 	public void removeByRecordSetId(long recordSetId) {
 		for (DDLRecordSetVersion ddlRecordSetVersion :
-				findByRecordSetId(
-					recordSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRecordSetId(
+					recordSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddlRecordSetVersion);
 		}
@@ -643,8 +655,15 @@ public class DDLRecordSetVersionPersistenceImpl
 	public DDLRecordSetVersion findByRS_V(long recordSetId, String version)
 		throws NoSuchRecordSetVersionException {
 
-		DDLRecordSetVersion ddlRecordSetVersion = fetchByRS_V(
-			recordSetId, version);
+		return _findByRS_V(recordSetId, version, false);
+	}
+
+	private DDLRecordSetVersion _findByRS_V(
+			long recordSetId, String version, boolean readOnlyCache)
+		throws NoSuchRecordSetVersionException {
+
+		DDLRecordSetVersion ddlRecordSetVersion = _fetchByRS_V(
+			recordSetId, version, true, readOnlyCache);
 
 		if (ddlRecordSetVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -692,6 +711,13 @@ public class DDLRecordSetVersionPersistenceImpl
 	@Override
 	public DDLRecordSetVersion fetchByRS_V(
 		long recordSetId, String version, boolean useFinderCache) {
+
+		return _fetchByRS_V(recordSetId, version, useFinderCache, false);
+	}
+
+	private DDLRecordSetVersion _fetchByRS_V(
+		long recordSetId, String version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		version = Objects.toString(version, "");
 
@@ -767,9 +793,11 @@ public class DDLRecordSetVersionPersistenceImpl
 				else {
 					DDLRecordSetVersion ddlRecordSetVersion = list.get(0);
 
-					result = ddlRecordSetVersion;
+					if (!readOnlyCache) {
+						result = ddlRecordSetVersion;
 
-					cacheResult(ddlRecordSetVersion);
+						cacheResult(ddlRecordSetVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -799,8 +827,8 @@ public class DDLRecordSetVersionPersistenceImpl
 	public DDLRecordSetVersion removeByRS_V(long recordSetId, String version)
 		throws NoSuchRecordSetVersionException {
 
-		DDLRecordSetVersion ddlRecordSetVersion = findByRS_V(
-			recordSetId, version);
+		DDLRecordSetVersion ddlRecordSetVersion = _findByRS_V(
+			recordSetId, version, true);
 
 		return remove(ddlRecordSetVersion);
 	}
@@ -974,6 +1002,16 @@ public class DDLRecordSetVersionPersistenceImpl
 		OrderByComparator<DDLRecordSetVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRS_S(
+			recordSetId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDLRecordSetVersion> _findByRS_S(
+		long recordSetId, int status, int start, int end,
+		OrderByComparator<DDLRecordSetVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecordSetVersion.class);
 
@@ -1057,10 +1095,12 @@ public class DDLRecordSetVersionPersistenceImpl
 				list = (List<DDLRecordSetVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1370,9 +1410,9 @@ public class DDLRecordSetVersionPersistenceImpl
 	@Override
 	public void removeByRS_S(long recordSetId, int status) {
 		for (DDLRecordSetVersion ddlRecordSetVersion :
-				findByRS_S(
+				_findByRS_S(
 					recordSetId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddlRecordSetVersion);
 		}
@@ -2027,6 +2067,14 @@ public class DDLRecordSetVersionPersistenceImpl
 		OrderByComparator<DDLRecordSetVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDLRecordSetVersion> _findAll(
+		int start, int end,
+		OrderByComparator<DDLRecordSetVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecordSetVersion.class);
 
@@ -2084,10 +2132,12 @@ public class DDLRecordSetVersionPersistenceImpl
 				list = (List<DDLRecordSetVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2107,7 +2157,10 @@ public class DDLRecordSetVersionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDLRecordSetVersion ddlRecordSetVersion : findAll()) {
+		for (DDLRecordSetVersion ddlRecordSetVersion :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddlRecordSetVersion);
 		}
 	}

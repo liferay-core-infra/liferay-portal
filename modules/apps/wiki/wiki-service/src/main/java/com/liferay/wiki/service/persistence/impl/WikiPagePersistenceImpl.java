@@ -183,6 +183,16 @@ public class WikiPagePersistenceImpl
 		long resourcePrimKey, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByResourcePrimKey(
+			resourcePrimKey, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByResourcePrimKey(
+		long resourcePrimKey, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -257,10 +267,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -544,9 +556,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByResourcePrimKey(long resourcePrimKey) {
 		for (WikiPage wikiPage :
-				findByResourcePrimKey(
-					resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByResourcePrimKey(
+					resourcePrimKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiPage);
 		}
@@ -677,6 +689,15 @@ public class WikiPagePersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -762,10 +783,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1059,7 +1082,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (WikiPage wikiPage :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiPage);
 		}
@@ -1148,7 +1173,14 @@ public class WikiPagePersistenceImpl
 	public WikiPage findByUUID_G(String uuid, long groupId)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private WikiPage _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchPageException {
+
+		WikiPage wikiPage = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (wikiPage == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1196,6 +1228,13 @@ public class WikiPagePersistenceImpl
 	@Override
 	public WikiPage fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private WikiPage _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -1268,9 +1307,11 @@ public class WikiPagePersistenceImpl
 				else {
 					WikiPage wikiPage = list.get(0);
 
-					result = wikiPage;
+					if (!readOnlyCache) {
+						result = wikiPage;
 
-					cacheResult(wikiPage);
+						cacheResult(wikiPage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1300,7 +1341,7 @@ public class WikiPagePersistenceImpl
 	public WikiPage removeByUUID_G(String uuid, long groupId)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = findByUUID_G(uuid, groupId);
+		WikiPage wikiPage = _findByUUID_G(uuid, groupId, true);
 
 		return remove(wikiPage);
 	}
@@ -1461,6 +1502,16 @@ public class WikiPagePersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1554,10 +1605,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1874,9 +1927,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (WikiPage wikiPage :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiPage);
 		}
@@ -2031,6 +2084,15 @@ public class WikiPagePersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2105,10 +2167,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2391,8 +2455,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (WikiPage wikiPage :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiPage);
 		}
@@ -2522,6 +2587,15 @@ public class WikiPagePersistenceImpl
 		long nodeId, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByNodeId(
+			nodeId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByNodeId(
+		long nodeId, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2594,10 +2668,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2878,8 +2954,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByNodeId(long nodeId) {
 		for (WikiPage wikiPage :
-				findByNodeId(
-					nodeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByNodeId(
+					nodeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiPage);
 		}
@@ -3009,6 +3086,15 @@ public class WikiPagePersistenceImpl
 		String format, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByFormat(
+			format, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByFormat(
+		String format, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		format = Objects.toString(format, "");
 
 		FinderPath finderPath = null;
@@ -3094,10 +3180,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3391,8 +3479,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByFormat(String format) {
 		for (WikiPage wikiPage :
-				findByFormat(
-					format, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByFormat(
+					format, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiPage);
 		}
@@ -3547,6 +3636,16 @@ public class WikiPagePersistenceImpl
 		long resourcePrimKey, long nodeId, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByR_N(
+			resourcePrimKey, nodeId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByR_N(
+		long resourcePrimKey, long nodeId, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3627,10 +3726,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3936,9 +4037,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByR_N(long resourcePrimKey, long nodeId) {
 		for (WikiPage wikiPage :
-				findByR_N(
+				_findByR_N(
 					resourcePrimKey, nodeId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -4085,6 +4186,16 @@ public class WikiPagePersistenceImpl
 		long resourcePrimKey, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByR_S(
+			resourcePrimKey, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByR_S(
+		long resourcePrimKey, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4165,10 +4276,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4474,9 +4587,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByR_S(long resourcePrimKey, int status) {
 		for (WikiPage wikiPage :
-				findByR_S(
+				_findByR_S(
 					resourcePrimKey, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -4626,6 +4739,16 @@ public class WikiPagePersistenceImpl
 		long groupId, String externalReferenceCode, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_ERC(
+			groupId, externalReferenceCode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_ERC(
+		long groupId, String externalReferenceCode, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
 		FinderPath finderPath = null;
@@ -4720,10 +4843,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5414,9 +5539,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByG_ERC(long groupId, String externalReferenceCode) {
 		for (WikiPage wikiPage :
-				findByG_ERC(
+				_findByG_ERC(
 					groupId, externalReferenceCode, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -5643,6 +5768,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, String title, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_T(
+			nodeId, title, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByN_T(
+		long nodeId, String title, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		title = Objects.toString(title, "");
 
 		FinderPath finderPath = null;
@@ -5736,10 +5871,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6053,9 +6190,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_T(long nodeId, String title) {
 		for (WikiPage wikiPage :
-				findByN_T(
-					nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByN_T(
+					nodeId, title, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiPage);
 		}
@@ -6216,6 +6353,15 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_H(
+			nodeId, head, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H(
+		long nodeId, boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -6296,10 +6442,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6600,8 +6748,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_H(long nodeId, boolean head) {
 		for (WikiPage wikiPage :
-				findByN_H(
-					nodeId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByN_H(
+					nodeId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiPage);
 		}
@@ -6746,6 +6895,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, String parentTitle, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_P(
+			nodeId, parentTitle, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByN_P(
+		long nodeId, String parentTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		parentTitle = Objects.toString(parentTitle, "");
 
 		FinderPath finderPath = null;
@@ -6839,10 +6998,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7161,9 +7322,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_P(long nodeId, String parentTitle) {
 		for (WikiPage wikiPage :
-				findByN_P(
+				_findByN_P(
 					nodeId, parentTitle, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -7325,6 +7486,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, String redirectTitle, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_R(
+			nodeId, redirectTitle, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_R(
+		long nodeId, String redirectTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		redirectTitle = Objects.toString(redirectTitle, "");
 
 		FinderPath finderPath = null;
@@ -7418,10 +7589,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7740,9 +7913,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_R(long nodeId, String redirectTitle) {
 		for (WikiPage wikiPage :
-				findByN_R(
+				_findByN_R(
 					nodeId, redirectTitle, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -7903,6 +8076,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_S(
+			nodeId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByN_S(
+		long nodeId, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -7983,10 +8166,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8288,9 +8473,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_S(long nodeId, int status) {
 		for (WikiPage wikiPage :
-				findByN_S(
-					nodeId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByN_S(
+					nodeId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiPage);
 		}
@@ -8373,7 +8558,16 @@ public class WikiPagePersistenceImpl
 			long resourcePrimKey, long nodeId, double version)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = fetchByR_N_V(resourcePrimKey, nodeId, version);
+		return _findByR_N_V(resourcePrimKey, nodeId, version, false);
+	}
+
+	private WikiPage _findByR_N_V(
+			long resourcePrimKey, long nodeId, double version,
+			boolean readOnlyCache)
+		throws NoSuchPageException {
+
+		WikiPage wikiPage = _fetchByR_N_V(
+			resourcePrimKey, nodeId, version, true, readOnlyCache);
 
 		if (wikiPage == null) {
 			StringBundler sb = new StringBundler(8);
@@ -8429,6 +8623,14 @@ public class WikiPagePersistenceImpl
 	public WikiPage fetchByR_N_V(
 		long resourcePrimKey, long nodeId, double version,
 		boolean useFinderCache) {
+
+		return _fetchByR_N_V(
+			resourcePrimKey, nodeId, version, useFinderCache, false);
+	}
+
+	private WikiPage _fetchByR_N_V(
+		long resourcePrimKey, long nodeId, double version,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -8492,9 +8694,11 @@ public class WikiPagePersistenceImpl
 				else {
 					WikiPage wikiPage = list.get(0);
 
-					result = wikiPage;
+					if (!readOnlyCache) {
+						result = wikiPage;
 
-					cacheResult(wikiPage);
+						cacheResult(wikiPage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8526,7 +8730,8 @@ public class WikiPagePersistenceImpl
 			long resourcePrimKey, long nodeId, double version)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = findByR_N_V(resourcePrimKey, nodeId, version);
+		WikiPage wikiPage = _findByR_N_V(
+			resourcePrimKey, nodeId, version, true);
 
 		return remove(wikiPage);
 	}
@@ -8686,6 +8891,16 @@ public class WikiPagePersistenceImpl
 		long resourcePrimKey, long nodeId, boolean head, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByR_N_H(
+			resourcePrimKey, nodeId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByR_N_H(
+		long resourcePrimKey, long nodeId, boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8771,10 +8986,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9097,9 +9314,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByR_N_H(long resourcePrimKey, long nodeId, boolean head) {
 		for (WikiPage wikiPage :
-				findByR_N_H(
+				_findByR_N_H(
 					resourcePrimKey, nodeId, head, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -9261,6 +9478,16 @@ public class WikiPagePersistenceImpl
 		long resourcePrimKey, long nodeId, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByR_N_S(
+			resourcePrimKey, nodeId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByR_N_S(
+		long resourcePrimKey, long nodeId, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -9346,10 +9573,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9673,9 +9902,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByR_N_S(long resourcePrimKey, long nodeId, int status) {
 		for (WikiPage wikiPage :
-				findByR_N_S(
+				_findByR_N_S(
 					resourcePrimKey, nodeId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -9766,8 +9995,16 @@ public class WikiPagePersistenceImpl
 			long groupId, String externalReferenceCode, double version)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = fetchByG_ERC_V(
-			groupId, externalReferenceCode, version);
+		return _findByG_ERC_V(groupId, externalReferenceCode, version, false);
+	}
+
+	private WikiPage _findByG_ERC_V(
+			long groupId, String externalReferenceCode, double version,
+			boolean readOnlyCache)
+		throws NoSuchPageException {
+
+		WikiPage wikiPage = _fetchByG_ERC_V(
+			groupId, externalReferenceCode, version, true, readOnlyCache);
 
 		if (wikiPage == null) {
 			StringBundler sb = new StringBundler(8);
@@ -9823,6 +10060,14 @@ public class WikiPagePersistenceImpl
 	public WikiPage fetchByG_ERC_V(
 		long groupId, String externalReferenceCode, double version,
 		boolean useFinderCache) {
+
+		return _fetchByG_ERC_V(
+			groupId, externalReferenceCode, version, useFinderCache, false);
+	}
+
+	private WikiPage _fetchByG_ERC_V(
+		long groupId, String externalReferenceCode, double version,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -9902,9 +10147,11 @@ public class WikiPagePersistenceImpl
 				else {
 					WikiPage wikiPage = list.get(0);
 
-					result = wikiPage;
+					if (!readOnlyCache) {
+						result = wikiPage;
 
-					cacheResult(wikiPage);
+						cacheResult(wikiPage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9936,8 +10183,8 @@ public class WikiPagePersistenceImpl
 			long groupId, String externalReferenceCode, double version)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = findByG_ERC_V(
-			groupId, externalReferenceCode, version);
+		WikiPage wikiPage = _findByG_ERC_V(
+			groupId, externalReferenceCode, version, true);
 
 		return remove(wikiPage);
 	}
@@ -10114,6 +10361,16 @@ public class WikiPagePersistenceImpl
 		long groupId, long nodeId, boolean head, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_N_H(
+			groupId, nodeId, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_N_H(
+		long groupId, long nodeId, boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -10199,10 +10456,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10879,9 +11138,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByG_N_H(long groupId, long nodeId, boolean head) {
 		for (WikiPage wikiPage :
-				findByG_N_H(
+				_findByG_N_H(
 					groupId, nodeId, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -11098,6 +11357,16 @@ public class WikiPagePersistenceImpl
 		long groupId, long nodeId, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_N_S(
+			groupId, nodeId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_N_S(
+		long groupId, long nodeId, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -11183,10 +11452,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11864,9 +12135,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByG_N_S(long groupId, long nodeId, int status) {
 		for (WikiPage wikiPage :
-				findByG_N_S(
+				_findByG_N_S(
 					groupId, nodeId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -12082,6 +12353,16 @@ public class WikiPagePersistenceImpl
 		long userId, long nodeId, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByU_N_S(
+			userId, nodeId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByU_N_S(
+		long userId, long nodeId, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -12167,10 +12448,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12493,9 +12776,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByU_N_S(long userId, long nodeId, int status) {
 		for (WikiPage wikiPage :
-				findByU_N_S(
+				_findByU_N_S(
 					userId, nodeId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -12585,7 +12868,15 @@ public class WikiPagePersistenceImpl
 	public WikiPage findByN_T_V(long nodeId, String title, double version)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = fetchByN_T_V(nodeId, title, version);
+		return _findByN_T_V(nodeId, title, version, false);
+	}
+
+	private WikiPage _findByN_T_V(
+			long nodeId, String title, double version, boolean readOnlyCache)
+		throws NoSuchPageException {
+
+		WikiPage wikiPage = _fetchByN_T_V(
+			nodeId, title, version, true, readOnlyCache);
 
 		if (wikiPage == null) {
 			StringBundler sb = new StringBundler(8);
@@ -12638,6 +12929,13 @@ public class WikiPagePersistenceImpl
 	@Override
 	public WikiPage fetchByN_T_V(
 		long nodeId, String title, double version, boolean useFinderCache) {
+
+		return _fetchByN_T_V(nodeId, title, version, useFinderCache, false);
+	}
+
+	private WikiPage _fetchByN_T_V(
+		long nodeId, String title, double version, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		title = Objects.toString(title, "");
 
@@ -12714,9 +13012,11 @@ public class WikiPagePersistenceImpl
 				else {
 					WikiPage wikiPage = list.get(0);
 
-					result = wikiPage;
+					if (!readOnlyCache) {
+						result = wikiPage;
 
-					cacheResult(wikiPage);
+						cacheResult(wikiPage);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12747,7 +13047,7 @@ public class WikiPagePersistenceImpl
 	public WikiPage removeByN_T_V(long nodeId, String title, double version)
 		throws NoSuchPageException {
 
-		WikiPage wikiPage = findByN_T_V(nodeId, title, version);
+		WikiPage wikiPage = _findByN_T_V(nodeId, title, version, true);
 
 		return remove(wikiPage);
 	}
@@ -12920,6 +13220,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, String title, boolean head, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_T_H(
+			nodeId, title, head, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByN_T_H(
+		long nodeId, String title, boolean head, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		title = Objects.toString(title, "");
 
 		FinderPath finderPath = null;
@@ -13018,10 +13328,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13357,9 +13669,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_T_H(long nodeId, String title, boolean head) {
 		for (WikiPage wikiPage :
-				findByN_T_H(
+				_findByN_T_H(
 					nodeId, title, head, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -13533,6 +13845,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, String title, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_T_S(
+			nodeId, title, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_T_S(
+		long nodeId, String title, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		title = Objects.toString(title, "");
 
 		FinderPath finderPath = null;
@@ -13631,10 +13953,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13970,9 +14294,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_T_S(long nodeId, String title, int status) {
 		for (WikiPage wikiPage :
-				findByN_T_S(
+				_findByN_T_S(
 					nodeId, title, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -14149,6 +14473,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, String parentTitle, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_H_P(
+			nodeId, head, parentTitle, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H_P(
+		long nodeId, boolean head, String parentTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		parentTitle = Objects.toString(parentTitle, "");
 
 		FinderPath finderPath = null;
@@ -14247,10 +14581,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14586,9 +14922,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_H_P(long nodeId, boolean head, String parentTitle) {
 		for (WikiPage wikiPage :
-				findByN_H_P(
+				_findByN_H_P(
 					nodeId, head, parentTitle, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -14765,6 +15101,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, String redirectTitle, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_H_R(
+			nodeId, head, redirectTitle, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H_R(
+		long nodeId, boolean head, String redirectTitle, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		redirectTitle = Objects.toString(redirectTitle, "");
 
 		FinderPath finderPath = null;
@@ -14863,10 +15209,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15202,9 +15550,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_H_R(long nodeId, boolean head, String redirectTitle) {
 		for (WikiPage wikiPage :
-				findByN_H_R(
+				_findByN_H_R(
 					nodeId, head, redirectTitle, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -15378,6 +15726,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_H_S(
+			nodeId, head, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByN_H_S(
+		long nodeId, boolean head, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -15463,10 +15821,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15789,9 +16149,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_H_S(long nodeId, boolean head, int status) {
 		for (WikiPage wikiPage :
-				findByN_H_S(
+				_findByN_H_S(
 					nodeId, head, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -15950,6 +16310,16 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByN_H_NotS(
+			nodeId, head, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiPage> _findByN_H_NotS(
+		long nodeId, boolean head, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -16025,10 +16395,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -16351,9 +16723,9 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void removeByN_H_NotS(long nodeId, boolean head, int status) {
 		for (WikiPage wikiPage :
-				findByN_H_NotS(
+				_findByN_H_NotS(
 					nodeId, head, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -16520,6 +16892,16 @@ public class WikiPagePersistenceImpl
 		long groupId, long userId, long nodeId, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_U_N_S(
+			groupId, userId, nodeId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_U_N_S(
+		long groupId, long userId, long nodeId, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -16610,10 +16992,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -17324,9 +17708,9 @@ public class WikiPagePersistenceImpl
 		long groupId, long userId, long nodeId, int status) {
 
 		for (WikiPage wikiPage :
-				findByG_U_N_S(
+				_findByG_U_N_S(
 					groupId, userId, nodeId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -17568,6 +17952,16 @@ public class WikiPagePersistenceImpl
 		int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_T_H(
+			groupId, nodeId, title, head, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_N_T_H(
+		long groupId, long nodeId, String title, boolean head, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		title = Objects.toString(title, "");
 
 		FinderPath finderPath = null;
@@ -17671,10 +18065,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -18423,9 +18819,9 @@ public class WikiPagePersistenceImpl
 		long groupId, long nodeId, String title, boolean head) {
 
 		for (WikiPage wikiPage :
-				findByG_N_T_H(
+				_findByG_N_T_H(
 					groupId, nodeId, title, head, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -18695,6 +19091,16 @@ public class WikiPagePersistenceImpl
 		long groupId, long nodeId, boolean head, int status, int start, int end,
 		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_N_H_S(
+			groupId, nodeId, head, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_N_H_S(
+		long groupId, long nodeId, boolean head, int status, int start, int end,
+		OrderByComparator<WikiPage> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -18785,10 +19191,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -19498,9 +19906,9 @@ public class WikiPagePersistenceImpl
 		long groupId, long nodeId, boolean head, int status) {
 
 		for (WikiPage wikiPage :
-				findByG_N_H_S(
+				_findByG_N_H_S(
 					groupId, nodeId, head, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -19744,6 +20152,16 @@ public class WikiPagePersistenceImpl
 		int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByN_H_P_S(
+			nodeId, head, parentTitle, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H_P_S(
+		long nodeId, boolean head, String parentTitle, int status, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		parentTitle = Objects.toString(parentTitle, "");
 
 		FinderPath finderPath = null;
@@ -19847,10 +20265,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -20205,9 +20625,9 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, String parentTitle, int status) {
 
 		for (WikiPage wikiPage :
-				findByN_H_P_S(
+				_findByN_H_P_S(
 					nodeId, head, parentTitle, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -20401,6 +20821,16 @@ public class WikiPagePersistenceImpl
 		int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByN_H_P_NotS(
+			nodeId, head, parentTitle, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H_P_NotS(
+		long nodeId, boolean head, String parentTitle, int status, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		parentTitle = Objects.toString(parentTitle, "");
 
 		FinderPath finderPath = null;
@@ -20494,10 +20924,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -20852,9 +21284,9 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, String parentTitle, int status) {
 
 		for (WikiPage wikiPage :
-				findByN_H_P_NotS(
+				_findByN_H_P_NotS(
 					nodeId, head, parentTitle, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -21049,6 +21481,16 @@ public class WikiPagePersistenceImpl
 		int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByN_H_R_S(
+			nodeId, head, redirectTitle, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H_R_S(
+		long nodeId, boolean head, String redirectTitle, int status, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		redirectTitle = Objects.toString(redirectTitle, "");
 
 		FinderPath finderPath = null;
@@ -21153,10 +21595,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -21511,9 +21955,9 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, String redirectTitle, int status) {
 
 		for (WikiPage wikiPage :
-				findByN_H_R_S(
+				_findByN_H_R_S(
 					nodeId, head, redirectTitle, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -21709,6 +22153,16 @@ public class WikiPagePersistenceImpl
 		int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByN_H_R_NotS(
+			nodeId, head, redirectTitle, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByN_H_R_NotS(
+		long nodeId, boolean head, String redirectTitle, int status, int start,
+		int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		redirectTitle = Objects.toString(redirectTitle, "");
 
 		FinderPath finderPath = null;
@@ -21802,10 +22256,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -22160,9 +22616,9 @@ public class WikiPagePersistenceImpl
 		long nodeId, boolean head, String redirectTitle, int status) {
 
 		for (WikiPage wikiPage :
-				findByN_H_R_NotS(
+				_findByN_H_R_NotS(
 					nodeId, head, redirectTitle, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -22364,6 +22820,16 @@ public class WikiPagePersistenceImpl
 		int start, int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_H_P_S(
+			groupId, nodeId, head, parentTitle, status, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findByG_N_H_P_S(
+		long groupId, long nodeId, boolean head, String parentTitle, int status,
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		parentTitle = Objects.toString(parentTitle, "");
 
 		FinderPath finderPath = null;
@@ -22475,10 +22941,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -23264,9 +23732,9 @@ public class WikiPagePersistenceImpl
 		int status) {
 
 		for (WikiPage wikiPage :
-				findByG_N_H_P_S(
+				_findByG_N_H_P_S(
 					groupId, nodeId, head, parentTitle, status,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(wikiPage);
 		}
@@ -23946,6 +24414,13 @@ public class WikiPagePersistenceImpl
 		int start, int end, OrderByComparator<WikiPage> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiPage> _findAll(
+		int start, int end, OrderByComparator<WikiPage> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -24000,10 +24475,12 @@ public class WikiPagePersistenceImpl
 				list = (List<WikiPage>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -24023,7 +24500,10 @@ public class WikiPagePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WikiPage wikiPage : findAll()) {
+		for (WikiPage wikiPage :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(wikiPage);
 		}
 	}

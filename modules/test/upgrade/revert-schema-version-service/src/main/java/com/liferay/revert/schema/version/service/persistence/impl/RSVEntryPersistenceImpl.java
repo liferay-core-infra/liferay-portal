@@ -423,6 +423,13 @@ public class RSVEntryPersistenceImpl
 		int start, int end, OrderByComparator<RSVEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<RSVEntry> _findAll(
+		int start, int end, OrderByComparator<RSVEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -477,10 +484,12 @@ public class RSVEntryPersistenceImpl
 				list = (List<RSVEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -500,7 +509,10 @@ public class RSVEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (RSVEntry rsvEntry : findAll()) {
+		for (RSVEntry rsvEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(rsvEntry);
 		}
 	}

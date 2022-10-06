@@ -178,6 +178,15 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 		OrderByComparator<CPDefinitionVirtualSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionVirtualSetting> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CPDefinitionVirtualSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -265,10 +274,12 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 				list = (List<CPDefinitionVirtualSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -576,7 +587,9 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CPDefinitionVirtualSetting cpDefinitionVirtualSetting :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cpDefinitionVirtualSetting);
 		}
@@ -665,8 +678,15 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	public CPDefinitionVirtualSetting findByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionVirtualSettingException {
 
-		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CPDefinitionVirtualSetting _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchCPDefinitionVirtualSettingException {
+
+		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (cpDefinitionVirtualSetting == null) {
 			StringBundler sb = new StringBundler(6);
@@ -714,6 +734,13 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	@Override
 	public CPDefinitionVirtualSetting fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CPDefinitionVirtualSetting _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -788,9 +815,11 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 					CPDefinitionVirtualSetting cpDefinitionVirtualSetting =
 						list.get(0);
 
-					result = cpDefinitionVirtualSetting;
+					if (!readOnlyCache) {
+						result = cpDefinitionVirtualSetting;
 
-					cacheResult(cpDefinitionVirtualSetting);
+						cacheResult(cpDefinitionVirtualSetting);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -820,8 +849,8 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	public CPDefinitionVirtualSetting removeByUUID_G(String uuid, long groupId)
 		throws NoSuchCPDefinitionVirtualSettingException {
 
-		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = findByUUID_G(
-			uuid, groupId);
+		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(cpDefinitionVirtualSetting);
 	}
@@ -985,6 +1014,16 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 		OrderByComparator<CPDefinitionVirtualSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CPDefinitionVirtualSetting> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CPDefinitionVirtualSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1081,10 +1120,12 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 				list = (List<CPDefinitionVirtualSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1408,9 +1449,9 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CPDefinitionVirtualSetting cpDefinitionVirtualSetting :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(cpDefinitionVirtualSetting);
 		}
@@ -1507,8 +1548,15 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	public CPDefinitionVirtualSetting findByC_C(long classNameId, long classPK)
 		throws NoSuchCPDefinitionVirtualSettingException {
 
-		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = fetchByC_C(
-			classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private CPDefinitionVirtualSetting _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchCPDefinitionVirtualSettingException {
+
+		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (cpDefinitionVirtualSetting == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1558,6 +1606,13 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	@Override
 	public CPDefinitionVirtualSetting fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private CPDefinitionVirtualSetting _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1618,9 +1673,11 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 					CPDefinitionVirtualSetting cpDefinitionVirtualSetting =
 						list.get(0);
 
-					result = cpDefinitionVirtualSetting;
+					if (!readOnlyCache) {
+						result = cpDefinitionVirtualSetting;
 
-					cacheResult(cpDefinitionVirtualSetting);
+						cacheResult(cpDefinitionVirtualSetting);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1651,8 +1708,8 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 			long classNameId, long classPK)
 		throws NoSuchCPDefinitionVirtualSettingException {
 
-		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = findByC_C(
-			classNameId, classPK);
+		CPDefinitionVirtualSetting cpDefinitionVirtualSetting = _findByC_C(
+			classNameId, classPK, true);
 
 		return remove(cpDefinitionVirtualSetting);
 	}
@@ -2206,6 +2263,14 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 		OrderByComparator<CPDefinitionVirtualSetting> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CPDefinitionVirtualSetting> _findAll(
+		int start, int end,
+		OrderByComparator<CPDefinitionVirtualSetting> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2261,10 +2326,12 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 				list = (List<CPDefinitionVirtualSetting>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2285,7 +2352,8 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CPDefinitionVirtualSetting cpDefinitionVirtualSetting :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(cpDefinitionVirtualSetting);
 		}

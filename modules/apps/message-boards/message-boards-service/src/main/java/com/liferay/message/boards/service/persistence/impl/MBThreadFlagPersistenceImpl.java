@@ -179,6 +179,15 @@ public class MBThreadFlagPersistenceImpl
 		OrderByComparator<MBThreadFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBThreadFlag> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBThreadFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class MBThreadFlagPersistenceImpl
 				list = (List<MBThreadFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -564,7 +575,9 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBThreadFlag mbThreadFlag :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbThreadFlag);
 		}
@@ -665,7 +678,15 @@ public class MBThreadFlagPersistenceImpl
 	public MBThreadFlag findByUUID_G(String uuid, long groupId)
 		throws NoSuchThreadFlagException {
 
-		MBThreadFlag mbThreadFlag = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBThreadFlag _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchThreadFlagException {
+
+		MBThreadFlag mbThreadFlag = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (mbThreadFlag == null) {
 			StringBundler sb = new StringBundler(6);
@@ -713,6 +734,13 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public MBThreadFlag fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBThreadFlag _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -788,9 +816,11 @@ public class MBThreadFlagPersistenceImpl
 				else {
 					MBThreadFlag mbThreadFlag = list.get(0);
 
-					result = mbThreadFlag;
+					if (!readOnlyCache) {
+						result = mbThreadFlag;
 
-					cacheResult(mbThreadFlag);
+						cacheResult(mbThreadFlag);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -820,7 +850,7 @@ public class MBThreadFlagPersistenceImpl
 	public MBThreadFlag removeByUUID_G(String uuid, long groupId)
 		throws NoSuchThreadFlagException {
 
-		MBThreadFlag mbThreadFlag = findByUUID_G(uuid, groupId);
+		MBThreadFlag mbThreadFlag = _findByUUID_G(uuid, groupId, true);
 
 		return remove(mbThreadFlag);
 	}
@@ -994,6 +1024,16 @@ public class MBThreadFlagPersistenceImpl
 		OrderByComparator<MBThreadFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBThreadFlag> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBThreadFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1090,10 +1130,12 @@ public class MBThreadFlagPersistenceImpl
 				list = (List<MBThreadFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1412,9 +1454,9 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBThreadFlag mbThreadFlag :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbThreadFlag);
 		}
@@ -1581,6 +1623,15 @@ public class MBThreadFlagPersistenceImpl
 		OrderByComparator<MBThreadFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBThreadFlag> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<MBThreadFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBThreadFlag.class);
 
@@ -1656,10 +1707,12 @@ public class MBThreadFlagPersistenceImpl
 				list = (List<MBThreadFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1942,8 +1995,9 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (MBThreadFlag mbThreadFlag :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbThreadFlag);
 		}
@@ -2089,6 +2143,15 @@ public class MBThreadFlagPersistenceImpl
 		OrderByComparator<MBThreadFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByThreadId(
+			threadId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBThreadFlag> _findByThreadId(
+		long threadId, int start, int end,
+		OrderByComparator<MBThreadFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBThreadFlag.class);
 
@@ -2164,10 +2227,12 @@ public class MBThreadFlagPersistenceImpl
 				list = (List<MBThreadFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2451,8 +2516,9 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public void removeByThreadId(long threadId) {
 		for (MBThreadFlag mbThreadFlag :
-				findByThreadId(
-					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByThreadId(
+					threadId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbThreadFlag);
 		}
@@ -2537,7 +2603,15 @@ public class MBThreadFlagPersistenceImpl
 	public MBThreadFlag findByU_T(long userId, long threadId)
 		throws NoSuchThreadFlagException {
 
-		MBThreadFlag mbThreadFlag = fetchByU_T(userId, threadId);
+		return _findByU_T(userId, threadId, false);
+	}
+
+	private MBThreadFlag _findByU_T(
+			long userId, long threadId, boolean readOnlyCache)
+		throws NoSuchThreadFlagException {
+
+		MBThreadFlag mbThreadFlag = _fetchByU_T(
+			userId, threadId, true, readOnlyCache);
 
 		if (mbThreadFlag == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2585,6 +2659,13 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public MBThreadFlag fetchByU_T(
 		long userId, long threadId, boolean useFinderCache) {
+
+		return _fetchByU_T(userId, threadId, useFinderCache, false);
+	}
+
+	private MBThreadFlag _fetchByU_T(
+		long userId, long threadId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBThreadFlag.class);
@@ -2646,9 +2727,11 @@ public class MBThreadFlagPersistenceImpl
 				else {
 					MBThreadFlag mbThreadFlag = list.get(0);
 
-					result = mbThreadFlag;
+					if (!readOnlyCache) {
+						result = mbThreadFlag;
 
-					cacheResult(mbThreadFlag);
+						cacheResult(mbThreadFlag);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2678,7 +2761,7 @@ public class MBThreadFlagPersistenceImpl
 	public MBThreadFlag removeByU_T(long userId, long threadId)
 		throws NoSuchThreadFlagException {
 
-		MBThreadFlag mbThreadFlag = findByU_T(userId, threadId);
+		MBThreadFlag mbThreadFlag = _findByU_T(userId, threadId, true);
 
 		return remove(mbThreadFlag);
 	}
@@ -3342,6 +3425,13 @@ public class MBThreadFlagPersistenceImpl
 		int start, int end, OrderByComparator<MBThreadFlag> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBThreadFlag> _findAll(
+		int start, int end, OrderByComparator<MBThreadFlag> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBThreadFlag.class);
 
@@ -3399,10 +3489,12 @@ public class MBThreadFlagPersistenceImpl
 				list = (List<MBThreadFlag>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3422,7 +3514,10 @@ public class MBThreadFlagPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBThreadFlag mbThreadFlag : findAll()) {
+		for (MBThreadFlag mbThreadFlag :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbThreadFlag);
 		}
 	}

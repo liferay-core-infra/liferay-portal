@@ -184,6 +184,16 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKaleoInstanceId(
+			kaleoInstanceId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KaleoTimerInstanceToken> _findByKaleoInstanceId(
+		long kaleoInstanceId, int start, int end,
+		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTimerInstanceToken.class);
 
@@ -263,10 +273,12 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				list = (List<KaleoTimerInstanceToken>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -561,9 +573,9 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	@Override
 	public void removeByKaleoInstanceId(long kaleoInstanceId) {
 		for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
-				findByKaleoInstanceId(
-					kaleoInstanceId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByKaleoInstanceId(
+					kaleoInstanceId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kaleoTimerInstanceToken);
 		}
@@ -650,8 +662,15 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 			long kaleoInstanceTokenId, long kaleoTimerId)
 		throws NoSuchTimerInstanceTokenException {
 
-		KaleoTimerInstanceToken kaleoTimerInstanceToken = fetchByKITI_KTI(
-			kaleoInstanceTokenId, kaleoTimerId);
+		return _findByKITI_KTI(kaleoInstanceTokenId, kaleoTimerId, false);
+	}
+
+	private KaleoTimerInstanceToken _findByKITI_KTI(
+			long kaleoInstanceTokenId, long kaleoTimerId, boolean readOnlyCache)
+		throws NoSuchTimerInstanceTokenException {
+
+		KaleoTimerInstanceToken kaleoTimerInstanceToken = _fetchByKITI_KTI(
+			kaleoInstanceTokenId, kaleoTimerId, true, readOnlyCache);
 
 		if (kaleoTimerInstanceToken == null) {
 			StringBundler sb = new StringBundler(6);
@@ -701,6 +720,14 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	@Override
 	public KaleoTimerInstanceToken fetchByKITI_KTI(
 		long kaleoInstanceTokenId, long kaleoTimerId, boolean useFinderCache) {
+
+		return _fetchByKITI_KTI(
+			kaleoInstanceTokenId, kaleoTimerId, useFinderCache, false);
+	}
+
+	private KaleoTimerInstanceToken _fetchByKITI_KTI(
+		long kaleoInstanceTokenId, long kaleoTimerId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTimerInstanceToken.class);
@@ -783,9 +810,11 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 					KaleoTimerInstanceToken kaleoTimerInstanceToken = list.get(
 						0);
 
-					result = kaleoTimerInstanceToken;
+					if (!readOnlyCache) {
+						result = kaleoTimerInstanceToken;
 
-					cacheResult(kaleoTimerInstanceToken);
+						cacheResult(kaleoTimerInstanceToken);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -816,8 +845,8 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 			long kaleoInstanceTokenId, long kaleoTimerId)
 		throws NoSuchTimerInstanceTokenException {
 
-		KaleoTimerInstanceToken kaleoTimerInstanceToken = findByKITI_KTI(
-			kaleoInstanceTokenId, kaleoTimerId);
+		KaleoTimerInstanceToken kaleoTimerInstanceToken = _findByKITI_KTI(
+			kaleoInstanceTokenId, kaleoTimerId, true);
 
 		return remove(kaleoTimerInstanceToken);
 	}
@@ -979,6 +1008,16 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKITI_C(
+			kaleoInstanceTokenId, completed, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<KaleoTimerInstanceToken> _findByKITI_C(
+		long kaleoInstanceTokenId, boolean completed, int start, int end,
+		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTimerInstanceToken.class);
 
@@ -1064,10 +1103,12 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				list = (List<KaleoTimerInstanceToken>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1380,9 +1421,9 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	@Override
 	public void removeByKITI_C(long kaleoInstanceTokenId, boolean completed) {
 		for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
-				findByKITI_C(
+				_findByKITI_C(
 					kaleoInstanceTokenId, completed, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoTimerInstanceToken);
 		}
@@ -1553,6 +1594,17 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByKITI_B_C(
+			kaleoInstanceTokenId, blocking, completed, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTimerInstanceToken> _findByKITI_B_C(
+		long kaleoInstanceTokenId, boolean blocking, boolean completed,
+		int start, int end,
+		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTimerInstanceToken.class);
 
@@ -1646,10 +1698,12 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				list = (List<KaleoTimerInstanceToken>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1980,9 +2034,9 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		long kaleoInstanceTokenId, boolean blocking, boolean completed) {
 
 		for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
-				findByKITI_B_C(
+				_findByKITI_B_C(
 					kaleoInstanceTokenId, blocking, completed,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(kaleoTimerInstanceToken);
 		}
@@ -2673,6 +2727,14 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoTimerInstanceToken> _findAll(
+		int start, int end,
+		OrderByComparator<KaleoTimerInstanceToken> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			KaleoTimerInstanceToken.class);
 
@@ -2731,10 +2793,12 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 				list = (List<KaleoTimerInstanceToken>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2754,7 +2818,10 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KaleoTimerInstanceToken kaleoTimerInstanceToken : findAll()) {
+		for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kaleoTimerInstanceToken);
 		}
 	}

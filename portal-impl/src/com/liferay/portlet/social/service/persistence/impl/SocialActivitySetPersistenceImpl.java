@@ -166,6 +166,15 @@ public class SocialActivitySetPersistenceImpl
 		OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -241,10 +250,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -532,8 +543,9 @@ public class SocialActivitySetPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SocialActivitySet socialActivitySet :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialActivitySet);
 		}
@@ -678,6 +690,15 @@ public class SocialActivitySetPersistenceImpl
 		OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -753,10 +774,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1042,8 +1065,9 @@ public class SocialActivitySetPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (SocialActivitySet socialActivitySet :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialActivitySet);
 		}
@@ -1200,6 +1224,16 @@ public class SocialActivitySetPersistenceImpl
 		OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_T(
+			groupId, userId, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findByG_U_T(
+		long groupId, long userId, int type, int start, int end,
+		OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -1288,10 +1322,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1616,9 +1652,9 @@ public class SocialActivitySetPersistenceImpl
 	@Override
 	public void removeByG_U_T(long groupId, long userId, int type) {
 		for (SocialActivitySet socialActivitySet :
-				findByG_U_T(
+				_findByG_U_T(
 					groupId, userId, type, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(socialActivitySet);
 		}
@@ -1792,6 +1828,16 @@ public class SocialActivitySetPersistenceImpl
 		OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_T(
+			classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findByC_C_T(
+		long classNameId, long classPK, int type, int start, int end,
+		OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -1880,10 +1926,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2208,9 +2256,9 @@ public class SocialActivitySetPersistenceImpl
 	@Override
 	public void removeByC_C_T(long classNameId, long classPK, int type) {
 		for (SocialActivitySet socialActivitySet :
-				findByC_C_T(
+				_findByC_C_T(
 					classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(socialActivitySet);
 		}
@@ -2391,6 +2439,16 @@ public class SocialActivitySetPersistenceImpl
 		int end, OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_C_T(
+			groupId, userId, classNameId, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findByG_U_C_T(
+		long groupId, long userId, long classNameId, int type, int start,
+		int end, OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -2485,10 +2543,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2832,9 +2892,9 @@ public class SocialActivitySetPersistenceImpl
 		long groupId, long userId, long classNameId, int type) {
 
 		for (SocialActivitySet socialActivitySet :
-				findByG_U_C_T(
+				_findByG_U_C_T(
 					groupId, userId, classNameId, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(socialActivitySet);
 		}
@@ -3025,6 +3085,16 @@ public class SocialActivitySetPersistenceImpl
 		int end, OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByU_C_C_T(
+			userId, classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findByU_C_C_T(
+		long userId, long classNameId, long classPK, int type, int start,
+		int end, OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -3119,10 +3189,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3466,9 +3538,9 @@ public class SocialActivitySetPersistenceImpl
 		long userId, long classNameId, long classPK, int type) {
 
 		for (SocialActivitySet socialActivitySet :
-				findByU_C_C_T(
+				_findByU_C_C_T(
 					userId, classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(socialActivitySet);
 		}
@@ -4100,6 +4172,14 @@ public class SocialActivitySetPersistenceImpl
 		OrderByComparator<SocialActivitySet> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivitySet> _findAll(
+		int start, int end,
+		OrderByComparator<SocialActivitySet> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivitySet.class);
 
@@ -4157,10 +4237,12 @@ public class SocialActivitySetPersistenceImpl
 				list = (List<SocialActivitySet>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4180,7 +4262,10 @@ public class SocialActivitySetPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SocialActivitySet socialActivitySet : findAll()) {
+		for (SocialActivitySet socialActivitySet :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(socialActivitySet);
 		}
 	}

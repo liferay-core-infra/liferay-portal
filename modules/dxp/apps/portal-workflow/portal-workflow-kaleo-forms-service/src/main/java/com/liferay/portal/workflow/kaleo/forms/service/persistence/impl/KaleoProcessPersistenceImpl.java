@@ -176,6 +176,15 @@ public class KaleoProcessPersistenceImpl
 		OrderByComparator<KaleoProcess> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoProcess> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<KaleoProcess> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class KaleoProcessPersistenceImpl
 				list = (List<KaleoProcess>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -558,7 +569,9 @@ public class KaleoProcessPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (KaleoProcess kaleoProcess :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kaleoProcess);
 		}
@@ -647,7 +660,15 @@ public class KaleoProcessPersistenceImpl
 	public KaleoProcess findByUUID_G(String uuid, long groupId)
 		throws NoSuchKaleoProcessException {
 
-		KaleoProcess kaleoProcess = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private KaleoProcess _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchKaleoProcessException {
+
+		KaleoProcess kaleoProcess = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (kaleoProcess == null) {
 			StringBundler sb = new StringBundler(6);
@@ -695,6 +716,13 @@ public class KaleoProcessPersistenceImpl
 	@Override
 	public KaleoProcess fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private KaleoProcess _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -767,9 +795,11 @@ public class KaleoProcessPersistenceImpl
 				else {
 					KaleoProcess kaleoProcess = list.get(0);
 
-					result = kaleoProcess;
+					if (!readOnlyCache) {
+						result = kaleoProcess;
 
-					cacheResult(kaleoProcess);
+						cacheResult(kaleoProcess);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -799,7 +829,7 @@ public class KaleoProcessPersistenceImpl
 	public KaleoProcess removeByUUID_G(String uuid, long groupId)
 		throws NoSuchKaleoProcessException {
 
-		KaleoProcess kaleoProcess = findByUUID_G(uuid, groupId);
+		KaleoProcess kaleoProcess = _findByUUID_G(uuid, groupId, true);
 
 		return remove(kaleoProcess);
 	}
@@ -961,6 +991,16 @@ public class KaleoProcessPersistenceImpl
 		OrderByComparator<KaleoProcess> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<KaleoProcess> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<KaleoProcess> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1054,10 +1094,12 @@ public class KaleoProcessPersistenceImpl
 				list = (List<KaleoProcess>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1376,9 +1418,9 @@ public class KaleoProcessPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (KaleoProcess kaleoProcess :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(kaleoProcess);
 		}
@@ -1534,6 +1576,15 @@ public class KaleoProcessPersistenceImpl
 		OrderByComparator<KaleoProcess> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoProcess> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<KaleoProcess> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1606,10 +1657,12 @@ public class KaleoProcessPersistenceImpl
 				list = (List<KaleoProcess>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2223,8 +2276,9 @@ public class KaleoProcessPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (KaleoProcess kaleoProcess :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(kaleoProcess);
 		}
@@ -2344,7 +2398,15 @@ public class KaleoProcessPersistenceImpl
 	public KaleoProcess findByDDLRecordSetId(long DDLRecordSetId)
 		throws NoSuchKaleoProcessException {
 
-		KaleoProcess kaleoProcess = fetchByDDLRecordSetId(DDLRecordSetId);
+		return _findByDDLRecordSetId(DDLRecordSetId, false);
+	}
+
+	private KaleoProcess _findByDDLRecordSetId(
+			long DDLRecordSetId, boolean readOnlyCache)
+		throws NoSuchKaleoProcessException {
+
+		KaleoProcess kaleoProcess = _fetchByDDLRecordSetId(
+			DDLRecordSetId, true, readOnlyCache);
 
 		if (kaleoProcess == null) {
 			StringBundler sb = new StringBundler(4);
@@ -2387,6 +2449,12 @@ public class KaleoProcessPersistenceImpl
 	@Override
 	public KaleoProcess fetchByDDLRecordSetId(
 		long DDLRecordSetId, boolean useFinderCache) {
+
+		return _fetchByDDLRecordSetId(DDLRecordSetId, useFinderCache, false);
+	}
+
+	private KaleoProcess _fetchByDDLRecordSetId(
+		long DDLRecordSetId, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -2455,9 +2523,11 @@ public class KaleoProcessPersistenceImpl
 
 					KaleoProcess kaleoProcess = list.get(0);
 
-					result = kaleoProcess;
+					if (!readOnlyCache) {
+						result = kaleoProcess;
 
-					cacheResult(kaleoProcess);
+						cacheResult(kaleoProcess);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2486,7 +2556,7 @@ public class KaleoProcessPersistenceImpl
 	public KaleoProcess removeByDDLRecordSetId(long DDLRecordSetId)
 		throws NoSuchKaleoProcessException {
 
-		KaleoProcess kaleoProcess = findByDDLRecordSetId(DDLRecordSetId);
+		KaleoProcess kaleoProcess = _findByDDLRecordSetId(DDLRecordSetId, true);
 
 		return remove(kaleoProcess);
 	}
@@ -2972,6 +3042,13 @@ public class KaleoProcessPersistenceImpl
 		int start, int end, OrderByComparator<KaleoProcess> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<KaleoProcess> _findAll(
+		int start, int end, OrderByComparator<KaleoProcess> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3026,10 +3103,12 @@ public class KaleoProcessPersistenceImpl
 				list = (List<KaleoProcess>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3049,7 +3128,10 @@ public class KaleoProcessPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (KaleoProcess kaleoProcess : findAll()) {
+		for (KaleoProcess kaleoProcess :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(kaleoProcess);
 		}
 	}

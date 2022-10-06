@@ -172,6 +172,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -260,10 +269,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -557,7 +568,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DLFileEntry dlFileEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntry);
 		}
@@ -658,7 +671,15 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DLFileEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFileEntryException {
+
+		DLFileEntry dlFileEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (dlFileEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -706,6 +727,13 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public DLFileEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DLFileEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -781,9 +809,11 @@ public class DLFileEntryPersistenceImpl
 				else {
 					DLFileEntry dlFileEntry = list.get(0);
 
-					result = dlFileEntry;
+					if (!readOnlyCache) {
+						result = dlFileEntry;
 
-					cacheResult(dlFileEntry);
+						cacheResult(dlFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -813,7 +843,7 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = findByUUID_G(uuid, groupId);
+		DLFileEntry dlFileEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(dlFileEntry);
 	}
@@ -987,6 +1017,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1083,10 +1123,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1404,9 +1446,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DLFileEntry dlFileEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -1574,6 +1616,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -1649,10 +1700,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2264,8 +2317,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DLFileEntry dlFileEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntry);
 		}
@@ -2459,6 +2513,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -2536,10 +2599,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2823,8 +2888,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (DLFileEntry dlFileEntry :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntry);
 		}
@@ -2971,6 +3037,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRepositoryId(
+			repositoryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByRepositoryId(
+		long repositoryId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -3048,10 +3123,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3335,8 +3412,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByRepositoryId(long repositoryId) {
 		for (DLFileEntry dlFileEntry :
-				findByRepositoryId(
-					repositoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRepositoryId(
+					repositoryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -3482,6 +3560,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByMimeType(
+			mimeType, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByMimeType(
+		String mimeType, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		mimeType = Objects.toString(mimeType, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -3570,10 +3657,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3870,8 +3959,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByMimeType(String mimeType) {
 		for (DLFileEntry dlFileEntry :
-				findByMimeType(
-					mimeType, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByMimeType(
+					mimeType, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntry);
 		}
@@ -4034,6 +4124,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByFileEntryTypeId(
+			fileEntryTypeId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByFileEntryTypeId(
+		long fileEntryTypeId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -4111,10 +4211,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4403,9 +4505,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByFileEntryTypeId(long fileEntryTypeId) {
 		for (DLFileEntry dlFileEntry :
-				findByFileEntryTypeId(
-					fileEntryTypeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByFileEntryTypeId(
+					fileEntryTypeId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -4553,6 +4655,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySmallImageId(
+			smallImageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findBySmallImageId(
+		long smallImageId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -4630,10 +4741,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4917,8 +5030,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeBySmallImageId(long smallImageId) {
 		for (DLFileEntry dlFileEntry :
-				findBySmallImageId(
-					smallImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findBySmallImageId(
+					smallImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -5065,6 +5179,15 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLargeImageId(
+			largeImageId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByLargeImageId(
+		long largeImageId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -5142,10 +5265,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5429,8 +5554,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByLargeImageId(long largeImageId) {
 		for (DLFileEntry dlFileEntry :
-				findByLargeImageId(
-					largeImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLargeImageId(
+					largeImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -5577,6 +5703,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCustom1ImageId(
+			custom1ImageId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByCustom1ImageId(
+		long custom1ImageId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -5654,10 +5790,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5943,9 +6081,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByCustom1ImageId(long custom1ImageId) {
 		for (DLFileEntry dlFileEntry :
-				findByCustom1ImageId(
-					custom1ImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCustom1ImageId(
+					custom1ImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -6092,6 +6230,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCustom2ImageId(
+			custom2ImageId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByCustom2ImageId(
+		long custom2ImageId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -6169,10 +6317,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6458,9 +6608,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByCustom2ImageId(long custom2ImageId) {
 		for (DLFileEntry dlFileEntry :
-				findByCustom2ImageId(
-					custom2ImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByCustom2ImageId(
+					custom2ImageId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -6610,6 +6760,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U(
+			groupId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByG_U(
+		long groupId, long userId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -6693,10 +6853,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7342,9 +7504,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByG_U(long groupId, long userId) {
 		for (DLFileEntry dlFileEntry :
-				findByG_U(
-					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_U(
+					groupId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -7557,6 +7719,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F(
+			groupId, folderId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByG_F(
+		long groupId, long folderId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -7640,10 +7812,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8510,6 +8684,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F(
+			groupId, folderIds, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByG_F(
+		long groupId, long[] folderIds, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -8609,11 +8793,14 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByG_F, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByG_F, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8636,9 +8823,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByG_F(long groupId, long folderId) {
 		for (DLFileEntry dlFileEntry :
-				findByG_F(
+				_findByG_F(
 					groupId, folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -9007,6 +9194,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_F(
+			repositoryId, folderId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByR_F(
+		long repositoryId, long folderId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -9090,10 +9287,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9400,9 +9599,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByR_F(long repositoryId, long folderId) {
 		for (DLFileEntry dlFileEntry :
-				findByR_F(
+				_findByR_F(
 					repositoryId, folderId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -9560,6 +9759,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByF_N(
+			folderId, name, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntry> _findByF_N(
+		long folderId, String name, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -9656,10 +9865,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9976,9 +10187,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByF_N(long folderId, String name) {
 		for (DLFileEntry dlFileEntry :
-				findByF_N(
-					folderId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByF_N(
+					folderId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -10161,6 +10372,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_F(
+			groupId, userId, folderId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByG_U_F(
+		long groupId, long userId, long folderId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -10249,10 +10470,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11170,6 +11393,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_U_F(
+			groupId, userId, folderIds, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByG_U_F(
+		long groupId, long userId, long[] folderIds, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -11274,11 +11507,14 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByG_U_F, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByG_U_F, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11302,9 +11538,9 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public void removeByG_U_F(long groupId, long userId, long folderId) {
 		for (DLFileEntry dlFileEntry :
-				findByG_U_F(
+				_findByG_U_F(
 					groupId, userId, folderId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -11634,7 +11870,15 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry findByG_F_N(long groupId, long folderId, String name)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = fetchByG_F_N(groupId, folderId, name);
+		return _findByG_F_N(groupId, folderId, name, false);
+	}
+
+	private DLFileEntry _findByG_F_N(
+			long groupId, long folderId, String name, boolean readOnlyCache)
+		throws NoSuchFileEntryException {
+
+		DLFileEntry dlFileEntry = _fetchByG_F_N(
+			groupId, folderId, name, true, readOnlyCache);
 
 		if (dlFileEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -11687,6 +11931,13 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public DLFileEntry fetchByG_F_N(
 		long groupId, long folderId, String name, boolean useFinderCache) {
+
+		return _fetchByG_F_N(groupId, folderId, name, useFinderCache, false);
+	}
+
+	private DLFileEntry _fetchByG_F_N(
+		long groupId, long folderId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -11767,9 +12018,11 @@ public class DLFileEntryPersistenceImpl
 				else {
 					DLFileEntry dlFileEntry = list.get(0);
 
-					result = dlFileEntry;
+					if (!readOnlyCache) {
+						result = dlFileEntry;
 
-					cacheResult(dlFileEntry);
+						cacheResult(dlFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11800,7 +12053,7 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry removeByG_F_N(long groupId, long folderId, String name)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = findByG_F_N(groupId, folderId, name);
+		DLFileEntry dlFileEntry = _findByG_F_N(groupId, folderId, name, true);
 
 		return remove(dlFileEntry);
 	}
@@ -11918,7 +12171,15 @@ public class DLFileEntryPersistenceImpl
 			long groupId, long folderId, String fileName)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = fetchByG_F_FN(groupId, folderId, fileName);
+		return _findByG_F_FN(groupId, folderId, fileName, false);
+	}
+
+	private DLFileEntry _findByG_F_FN(
+			long groupId, long folderId, String fileName, boolean readOnlyCache)
+		throws NoSuchFileEntryException {
+
+		DLFileEntry dlFileEntry = _fetchByG_F_FN(
+			groupId, folderId, fileName, true, readOnlyCache);
 
 		if (dlFileEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -11973,6 +12234,14 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public DLFileEntry fetchByG_F_FN(
 		long groupId, long folderId, String fileName, boolean useFinderCache) {
+
+		return _fetchByG_F_FN(
+			groupId, folderId, fileName, useFinderCache, false);
+	}
+
+	private DLFileEntry _fetchByG_F_FN(
+		long groupId, long folderId, String fileName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		fileName = Objects.toString(fileName, "");
 
@@ -12053,9 +12322,11 @@ public class DLFileEntryPersistenceImpl
 				else {
 					DLFileEntry dlFileEntry = list.get(0);
 
-					result = dlFileEntry;
+					if (!readOnlyCache) {
+						result = dlFileEntry;
 
-					cacheResult(dlFileEntry);
+						cacheResult(dlFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12087,7 +12358,8 @@ public class DLFileEntryPersistenceImpl
 			long groupId, long folderId, String fileName)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = findByG_F_FN(groupId, folderId, fileName);
+		DLFileEntry dlFileEntry = _findByG_F_FN(
+			groupId, folderId, fileName, true);
 
 		return remove(dlFileEntry);
 	}
@@ -12204,7 +12476,15 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry findByG_F_T(long groupId, long folderId, String title)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = fetchByG_F_T(groupId, folderId, title);
+		return _findByG_F_T(groupId, folderId, title, false);
+	}
+
+	private DLFileEntry _findByG_F_T(
+			long groupId, long folderId, String title, boolean readOnlyCache)
+		throws NoSuchFileEntryException {
+
+		DLFileEntry dlFileEntry = _fetchByG_F_T(
+			groupId, folderId, title, true, readOnlyCache);
 
 		if (dlFileEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -12257,6 +12537,13 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public DLFileEntry fetchByG_F_T(
 		long groupId, long folderId, String title, boolean useFinderCache) {
+
+		return _fetchByG_F_T(groupId, folderId, title, useFinderCache, false);
+	}
+
+	private DLFileEntry _fetchByG_F_T(
+		long groupId, long folderId, String title, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		title = Objects.toString(title, "");
 
@@ -12337,9 +12624,11 @@ public class DLFileEntryPersistenceImpl
 				else {
 					DLFileEntry dlFileEntry = list.get(0);
 
-					result = dlFileEntry;
+					if (!readOnlyCache) {
+						result = dlFileEntry;
 
-					cacheResult(dlFileEntry);
+						cacheResult(dlFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12370,7 +12659,7 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry removeByG_F_T(long groupId, long folderId, String title)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = findByG_F_T(groupId, folderId, title);
+		DLFileEntry dlFileEntry = _findByG_F_T(groupId, folderId, title, true);
 
 		return remove(dlFileEntry);
 	}
@@ -12562,6 +12851,16 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_F(
+			groupId, folderId, fileEntryTypeId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByG_F_F(
+		long groupId, long folderId, long fileEntryTypeId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -12651,10 +12950,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13584,6 +13885,16 @@ public class DLFileEntryPersistenceImpl
 		int end, OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_F(
+			groupId, folderIds, fileEntryTypeId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByG_F_F(
+		long groupId, long[] folderIds, long fileEntryTypeId, int start,
+		int end, OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (folderIds == null) {
 			folderIds = new long[0];
 		}
@@ -13691,11 +14002,14 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByG_F_F, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByG_F_F, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -13721,9 +14035,9 @@ public class DLFileEntryPersistenceImpl
 		long groupId, long folderId, long fileEntryTypeId) {
 
 		for (DLFileEntry dlFileEntry :
-				findByG_F_F(
+				_findByG_F_F(
 					groupId, folderId, fileEntryTypeId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -14146,6 +14460,17 @@ public class DLFileEntryPersistenceImpl
 		OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_L_C1_C2(
+			smallImageId, largeImageId, custom1ImageId, custom2ImageId, start,
+			end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findByS_L_C1_C2(
+		long smallImageId, long largeImageId, long custom1ImageId,
+		long custom2ImageId, int start, int end,
+		OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -14242,10 +14567,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14595,9 +14922,9 @@ public class DLFileEntryPersistenceImpl
 		long custom2ImageId) {
 
 		for (DLFileEntry dlFileEntry :
-				findByS_L_C1_C2(
+				_findByS_L_C1_C2(
 					smallImageId, largeImageId, custom1ImageId, custom2ImageId,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileEntry);
 		}
@@ -14711,7 +15038,15 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry findByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = fetchByG_ERC(groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private DLFileEntry _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchFileEntryException {
+
+		DLFileEntry dlFileEntry = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (dlFileEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -14761,6 +15096,14 @@ public class DLFileEntryPersistenceImpl
 	@Override
 	public DLFileEntry fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private DLFileEntry _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -14838,9 +15181,11 @@ public class DLFileEntryPersistenceImpl
 				else {
 					DLFileEntry dlFileEntry = list.get(0);
 
-					result = dlFileEntry;
+					if (!readOnlyCache) {
+						result = dlFileEntry;
 
-					cacheResult(dlFileEntry);
+						cacheResult(dlFileEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -14870,7 +15215,8 @@ public class DLFileEntryPersistenceImpl
 	public DLFileEntry removeByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchFileEntryException {
 
-		DLFileEntry dlFileEntry = findByG_ERC(groupId, externalReferenceCode);
+		DLFileEntry dlFileEntry = _findByG_ERC(
+			groupId, externalReferenceCode, true);
 
 		return remove(dlFileEntry);
 	}
@@ -15612,6 +15958,13 @@ public class DLFileEntryPersistenceImpl
 		int start, int end, OrderByComparator<DLFileEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntry> _findAll(
+		int start, int end, OrderByComparator<DLFileEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntry.class);
 
@@ -15669,10 +16022,12 @@ public class DLFileEntryPersistenceImpl
 				list = (List<DLFileEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -15692,7 +16047,10 @@ public class DLFileEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLFileEntry dlFileEntry : findAll()) {
+		for (DLFileEntry dlFileEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlFileEntry);
 		}
 	}

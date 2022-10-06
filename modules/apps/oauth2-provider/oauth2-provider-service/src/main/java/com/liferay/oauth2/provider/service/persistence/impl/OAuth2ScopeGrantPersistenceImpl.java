@@ -186,6 +186,16 @@ public class OAuth2ScopeGrantPersistenceImpl
 		OrderByComparator<OAuth2ScopeGrant> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOAuth2ApplicationScopeAliasesId(
+			oAuth2ApplicationScopeAliasesId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<OAuth2ScopeGrant> _findByOAuth2ApplicationScopeAliasesId(
+		long oAuth2ApplicationScopeAliasesId, int start, int end,
+		OrderByComparator<OAuth2ScopeGrant> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -266,10 +276,12 @@ public class OAuth2ScopeGrantPersistenceImpl
 				list = (List<OAuth2ScopeGrant>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -570,9 +582,9 @@ public class OAuth2ScopeGrantPersistenceImpl
 		long oAuth2ApplicationScopeAliasesId) {
 
 		for (OAuth2ScopeGrant oAuth2ScopeGrant :
-				findByOAuth2ApplicationScopeAliasesId(
+				_findByOAuth2ApplicationScopeAliasesId(
 					oAuth2ApplicationScopeAliasesId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuth2ScopeGrant);
 		}
@@ -655,9 +667,20 @@ public class OAuth2ScopeGrantPersistenceImpl
 			String applicationName, String bundleSymbolicName, String scope)
 		throws NoSuchOAuth2ScopeGrantException {
 
-		OAuth2ScopeGrant oAuth2ScopeGrant = fetchByC_O_A_B_S(
+		return _findByC_O_A_B_S(
 			companyId, oAuth2ApplicationScopeAliasesId, applicationName,
-			bundleSymbolicName, scope);
+			bundleSymbolicName, scope, false);
+	}
+
+	private OAuth2ScopeGrant _findByC_O_A_B_S(
+			long companyId, long oAuth2ApplicationScopeAliasesId,
+			String applicationName, String bundleSymbolicName, String scope,
+			boolean readOnlyCache)
+		throws NoSuchOAuth2ScopeGrantException {
+
+		OAuth2ScopeGrant oAuth2ScopeGrant = _fetchByC_O_A_B_S(
+			companyId, oAuth2ApplicationScopeAliasesId, applicationName,
+			bundleSymbolicName, scope, true, readOnlyCache);
 
 		if (oAuth2ScopeGrant == null) {
 			StringBundler sb = new StringBundler(12);
@@ -727,6 +750,16 @@ public class OAuth2ScopeGrantPersistenceImpl
 		long companyId, long oAuth2ApplicationScopeAliasesId,
 		String applicationName, String bundleSymbolicName, String scope,
 		boolean useFinderCache) {
+
+		return _fetchByC_O_A_B_S(
+			companyId, oAuth2ApplicationScopeAliasesId, applicationName,
+			bundleSymbolicName, scope, useFinderCache, false);
+	}
+
+	private OAuth2ScopeGrant _fetchByC_O_A_B_S(
+		long companyId, long oAuth2ApplicationScopeAliasesId,
+		String applicationName, String bundleSymbolicName, String scope,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		applicationName = Objects.toString(applicationName, "");
 		bundleSymbolicName = Objects.toString(bundleSymbolicName, "");
@@ -864,9 +897,11 @@ public class OAuth2ScopeGrantPersistenceImpl
 
 					OAuth2ScopeGrant oAuth2ScopeGrant = list.get(0);
 
-					result = oAuth2ScopeGrant;
+					if (!readOnlyCache) {
+						result = oAuth2ScopeGrant;
 
-					cacheResult(oAuth2ScopeGrant);
+						cacheResult(oAuth2ScopeGrant);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -901,9 +936,9 @@ public class OAuth2ScopeGrantPersistenceImpl
 			String applicationName, String bundleSymbolicName, String scope)
 		throws NoSuchOAuth2ScopeGrantException {
 
-		OAuth2ScopeGrant oAuth2ScopeGrant = findByC_O_A_B_S(
+		OAuth2ScopeGrant oAuth2ScopeGrant = _findByC_O_A_B_S(
 			companyId, oAuth2ApplicationScopeAliasesId, applicationName,
-			bundleSymbolicName, scope);
+			bundleSymbolicName, scope, true);
 
 		return remove(oAuth2ScopeGrant);
 	}
@@ -1452,6 +1487,14 @@ public class OAuth2ScopeGrantPersistenceImpl
 		OrderByComparator<OAuth2ScopeGrant> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2ScopeGrant> _findAll(
+		int start, int end,
+		OrderByComparator<OAuth2ScopeGrant> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1506,10 +1549,12 @@ public class OAuth2ScopeGrantPersistenceImpl
 				list = (List<OAuth2ScopeGrant>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1529,7 +1574,10 @@ public class OAuth2ScopeGrantPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (OAuth2ScopeGrant oAuth2ScopeGrant : findAll()) {
+		for (OAuth2ScopeGrant oAuth2ScopeGrant :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(oAuth2ScopeGrant);
 		}
 	}

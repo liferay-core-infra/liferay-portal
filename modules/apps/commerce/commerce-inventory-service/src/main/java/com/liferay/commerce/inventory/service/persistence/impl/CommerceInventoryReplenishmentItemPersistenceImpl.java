@@ -182,6 +182,15 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -273,10 +282,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -592,8 +603,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	public void removeByUuid(String uuid) {
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findByUuid(
-						uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					_findByUuid(
+						uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -751,6 +763,16 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -851,10 +873,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1187,9 +1211,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findByUuid_C(
+					_findByUuid_C(
 						uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -1359,6 +1383,18 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommerceInventoryWarehouseId(
+			commerceInventoryWarehouseId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem>
+		_findByCommerceInventoryWarehouseId(
+			long commerceInventoryWarehouseId, int start, int end,
+			OrderByComparator<CommerceInventoryReplenishmentItem>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1443,10 +1479,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1767,9 +1805,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findByCommerceInventoryWarehouseId(
+					_findByCommerceInventoryWarehouseId(
 						commerceInventoryWarehouseId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -1907,6 +1945,15 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySku(
+			sku, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findBySku(
+		String sku, int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -1998,10 +2045,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2317,8 +2366,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	public void removeBySku(String sku) {
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findBySku(
-						sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					_findBySku(
+						sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -2472,6 +2522,16 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAvailabilityDate(
+			availabilityDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findByAvailabilityDate(
+		Date availabilityDate, int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2565,10 +2625,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2887,9 +2949,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	public void removeByAvailabilityDate(Date availabilityDate) {
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findByAvailabilityDate(
+					_findByAvailabilityDate(
 						availabilityDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -3046,6 +3108,16 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, sku, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findByC_S(
+		long companyId, String sku, int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -3146,10 +3218,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3482,9 +3556,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	public void removeByC_S(long companyId, String sku) {
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findByC_S(
+					_findByC_S(
 						companyId, sku, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-						null)) {
+						null, true, true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -3650,6 +3724,16 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByS_AD(
+			sku, availabilityDate, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findByS_AD(
+		String sku, Date availabilityDate, int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		sku = Objects.toString(sku, "");
 
 		FinderPath finderPath = null;
@@ -3762,10 +3846,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4109,9 +4195,9 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	public void removeByS_AD(String sku, Date availabilityDate) {
 		for (CommerceInventoryReplenishmentItem
 				commerceInventoryReplenishmentItem :
-					findByS_AD(
+					_findByS_AD(
 						sku, availabilityDate, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}
@@ -4223,8 +4309,16 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchInventoryReplenishmentItemException {
 
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceInventoryReplenishmentItem _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchInventoryReplenishmentItemException {
+
 		CommerceInventoryReplenishmentItem commerceInventoryReplenishmentItem =
-			fetchByC_ERC(companyId, externalReferenceCode);
+			_fetchByC_ERC(
+				companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceInventoryReplenishmentItem == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4274,6 +4368,14 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	@Override
 	public CommerceInventoryReplenishmentItem fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceInventoryReplenishmentItem _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -4352,9 +4454,11 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 					CommerceInventoryReplenishmentItem
 						commerceInventoryReplenishmentItem = list.get(0);
 
-					result = commerceInventoryReplenishmentItem;
+					if (!readOnlyCache) {
+						result = commerceInventoryReplenishmentItem;
 
-					cacheResult(commerceInventoryReplenishmentItem);
+						cacheResult(commerceInventoryReplenishmentItem);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4386,7 +4490,7 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		throws NoSuchInventoryReplenishmentItemException {
 
 		CommerceInventoryReplenishmentItem commerceInventoryReplenishmentItem =
-			findByC_ERC(companyId, externalReferenceCode);
+			_findByC_ERC(companyId, externalReferenceCode, true);
 
 		return remove(commerceInventoryReplenishmentItem);
 	}
@@ -4968,6 +5072,14 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceInventoryReplenishmentItem> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceInventoryReplenishmentItem> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5024,10 +5136,12 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 				list = (List<CommerceInventoryReplenishmentItem>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5048,7 +5162,10 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommerceInventoryReplenishmentItem
-				commerceInventoryReplenishmentItem : findAll()) {
+				commerceInventoryReplenishmentItem :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commerceInventoryReplenishmentItem);
 		}

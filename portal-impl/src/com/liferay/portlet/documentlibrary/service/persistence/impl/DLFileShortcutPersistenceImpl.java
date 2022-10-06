@@ -171,6 +171,15 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileShortcut> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -259,10 +268,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -559,7 +570,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DLFileShortcut dlFileShortcut :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -660,7 +673,15 @@ public class DLFileShortcutPersistenceImpl
 	public DLFileShortcut findByUUID_G(String uuid, long groupId)
 		throws NoSuchFileShortcutException {
 
-		DLFileShortcut dlFileShortcut = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DLFileShortcut _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFileShortcutException {
+
+		DLFileShortcut dlFileShortcut = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (dlFileShortcut == null) {
 			StringBundler sb = new StringBundler(6);
@@ -708,6 +729,13 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public DLFileShortcut fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DLFileShortcut _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -783,9 +811,11 @@ public class DLFileShortcutPersistenceImpl
 				else {
 					DLFileShortcut dlFileShortcut = list.get(0);
 
-					result = dlFileShortcut;
+					if (!readOnlyCache) {
+						result = dlFileShortcut;
 
-					cacheResult(dlFileShortcut);
+						cacheResult(dlFileShortcut);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -815,7 +845,7 @@ public class DLFileShortcutPersistenceImpl
 	public DLFileShortcut removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFileShortcutException {
 
-		DLFileShortcut dlFileShortcut = findByUUID_G(uuid, groupId);
+		DLFileShortcut dlFileShortcut = _findByUUID_G(uuid, groupId, true);
 
 		return remove(dlFileShortcut);
 	}
@@ -989,6 +1019,16 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileShortcut> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1085,10 +1125,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1409,9 +1451,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DLFileShortcut dlFileShortcut :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -1581,6 +1623,15 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileShortcut> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -1658,10 +1709,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1946,8 +1999,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (DLFileShortcut dlFileShortcut :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -2094,6 +2148,16 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByToFileEntryId(
+			toFileEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileShortcut> _findByToFileEntryId(
+		long toFileEntryId, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -2171,10 +2235,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2465,9 +2531,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByToFileEntryId(long toFileEntryId) {
 		for (DLFileShortcut dlFileShortcut :
-				findByToFileEntryId(
-					toFileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByToFileEntryId(
+					toFileEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -2618,6 +2684,16 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F(
+			groupId, folderId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileShortcut> _findByG_F(
+		long groupId, long folderId, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -2701,10 +2777,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3358,9 +3436,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByG_F(long groupId, long folderId) {
 		for (DLFileShortcut dlFileShortcut :
-				findByG_F(
+				_findByG_F(
 					groupId, folderId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -3571,6 +3649,16 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_NotS(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileShortcut> _findByC_NotS(
+		long companyId, int status, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -3644,10 +3732,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3955,9 +4045,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByC_NotS(long companyId, int status) {
 		for (DLFileShortcut dlFileShortcut :
-				findByC_NotS(
+				_findByC_NotS(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -4123,6 +4213,16 @@ public class DLFileShortcutPersistenceImpl
 		OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_A(
+			groupId, folderId, active, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileShortcut> _findByG_F_A(
+		long groupId, long folderId, boolean active, int start, int end,
+		OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -4211,10 +4311,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4900,9 +5002,9 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void removeByG_F_A(long groupId, long folderId, boolean active) {
 		for (DLFileShortcut dlFileShortcut :
-				findByG_F_A(
+				_findByG_F_A(
 					groupId, folderId, active, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -5144,6 +5246,16 @@ public class DLFileShortcutPersistenceImpl
 		int end, OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_F_A_S(
+			groupId, folderId, active, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DLFileShortcut> _findByG_F_A_S(
+		long groupId, long folderId, boolean active, int status, int start,
+		int end, OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -5237,10 +5349,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5961,9 +6075,9 @@ public class DLFileShortcutPersistenceImpl
 		long groupId, long folderId, boolean active, int status) {
 
 		for (DLFileShortcut dlFileShortcut :
-				findByG_F_A_S(
+				_findByG_F_A_S(
 					groupId, folderId, active, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlFileShortcut);
 		}
@@ -6712,6 +6826,13 @@ public class DLFileShortcutPersistenceImpl
 		int start, int end, OrderByComparator<DLFileShortcut> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileShortcut> _findAll(
+		int start, int end, OrderByComparator<DLFileShortcut> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileShortcut.class);
 
@@ -6769,10 +6890,12 @@ public class DLFileShortcutPersistenceImpl
 				list = (List<DLFileShortcut>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6792,7 +6915,10 @@ public class DLFileShortcutPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLFileShortcut dlFileShortcut : findAll()) {
+		for (DLFileShortcut dlFileShortcut :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlFileShortcut);
 		}
 	}

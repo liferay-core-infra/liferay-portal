@@ -178,6 +178,15 @@ public class DLFileEntryTypePersistenceImpl
 		OrderByComparator<DLFileEntryType> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryType> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DLFileEntryType> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -266,10 +275,12 @@ public class DLFileEntryTypePersistenceImpl
 				list = (List<DLFileEntryType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DLFileEntryType dlFileEntryType :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntryType);
 		}
@@ -668,7 +681,15 @@ public class DLFileEntryTypePersistenceImpl
 	public DLFileEntryType findByUUID_G(String uuid, long groupId)
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DLFileEntryType _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchFileEntryTypeException {
+
+		DLFileEntryType dlFileEntryType = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (dlFileEntryType == null) {
 			StringBundler sb = new StringBundler(6);
@@ -716,6 +737,13 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public DLFileEntryType fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DLFileEntryType _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +819,11 @@ public class DLFileEntryTypePersistenceImpl
 				else {
 					DLFileEntryType dlFileEntryType = list.get(0);
 
-					result = dlFileEntryType;
+					if (!readOnlyCache) {
+						result = dlFileEntryType;
 
-					cacheResult(dlFileEntryType);
+						cacheResult(dlFileEntryType);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,7 +853,7 @@ public class DLFileEntryTypePersistenceImpl
 	public DLFileEntryType removeByUUID_G(String uuid, long groupId)
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = findByUUID_G(uuid, groupId);
+		DLFileEntryType dlFileEntryType = _findByUUID_G(uuid, groupId, true);
 
 		return remove(dlFileEntryType);
 	}
@@ -997,6 +1027,16 @@ public class DLFileEntryTypePersistenceImpl
 		OrderByComparator<DLFileEntryType> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DLFileEntryType> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DLFileEntryType> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1093,10 +1133,12 @@ public class DLFileEntryTypePersistenceImpl
 				list = (List<DLFileEntryType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1417,9 +1459,9 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DLFileEntryType dlFileEntryType :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(dlFileEntryType);
 		}
@@ -1590,6 +1632,15 @@ public class DLFileEntryTypePersistenceImpl
 		OrderByComparator<DLFileEntryType> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryType> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DLFileEntryType> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryType.class);
 
@@ -1665,10 +1716,12 @@ public class DLFileEntryTypePersistenceImpl
 				list = (List<DLFileEntryType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2494,6 +2547,15 @@ public class DLFileEntryTypePersistenceImpl
 		OrderByComparator<DLFileEntryType> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryType> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<DLFileEntryType> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2582,12 +2644,14 @@ public class DLFileEntryTypePersistenceImpl
 				list = (List<DLFileEntryType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2609,8 +2673,9 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DLFileEntryType dlFileEntryType :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(dlFileEntryType);
 		}
@@ -2887,8 +2952,15 @@ public class DLFileEntryTypePersistenceImpl
 	public DLFileEntryType findByG_DDI(long groupId, long dataDefinitionId)
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = fetchByG_DDI(
-			groupId, dataDefinitionId);
+		return _findByG_DDI(groupId, dataDefinitionId, false);
+	}
+
+	private DLFileEntryType _findByG_DDI(
+			long groupId, long dataDefinitionId, boolean readOnlyCache)
+		throws NoSuchFileEntryTypeException {
+
+		DLFileEntryType dlFileEntryType = _fetchByG_DDI(
+			groupId, dataDefinitionId, true, readOnlyCache);
 
 		if (dlFileEntryType == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2936,6 +3008,13 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public DLFileEntryType fetchByG_DDI(
 		long groupId, long dataDefinitionId, boolean useFinderCache) {
+
+		return _fetchByG_DDI(groupId, dataDefinitionId, useFinderCache, false);
+	}
+
+	private DLFileEntryType _fetchByG_DDI(
+		long groupId, long dataDefinitionId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryType.class);
@@ -2998,9 +3077,11 @@ public class DLFileEntryTypePersistenceImpl
 				else {
 					DLFileEntryType dlFileEntryType = list.get(0);
 
-					result = dlFileEntryType;
+					if (!readOnlyCache) {
+						result = dlFileEntryType;
 
-					cacheResult(dlFileEntryType);
+						cacheResult(dlFileEntryType);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3030,8 +3111,8 @@ public class DLFileEntryTypePersistenceImpl
 	public DLFileEntryType removeByG_DDI(long groupId, long dataDefinitionId)
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = findByG_DDI(
-			groupId, dataDefinitionId);
+		DLFileEntryType dlFileEntryType = _findByG_DDI(
+			groupId, dataDefinitionId, true);
 
 		return remove(dlFileEntryType);
 	}
@@ -3123,7 +3204,15 @@ public class DLFileEntryTypePersistenceImpl
 	public DLFileEntryType findByG_F(long groupId, String fileEntryTypeKey)
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = fetchByG_F(groupId, fileEntryTypeKey);
+		return _findByG_F(groupId, fileEntryTypeKey, false);
+	}
+
+	private DLFileEntryType _findByG_F(
+			long groupId, String fileEntryTypeKey, boolean readOnlyCache)
+		throws NoSuchFileEntryTypeException {
+
+		DLFileEntryType dlFileEntryType = _fetchByG_F(
+			groupId, fileEntryTypeKey, true, readOnlyCache);
 
 		if (dlFileEntryType == null) {
 			StringBundler sb = new StringBundler(6);
@@ -3171,6 +3260,13 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public DLFileEntryType fetchByG_F(
 		long groupId, String fileEntryTypeKey, boolean useFinderCache) {
+
+		return _fetchByG_F(groupId, fileEntryTypeKey, useFinderCache, false);
+	}
+
+	private DLFileEntryType _fetchByG_F(
+		long groupId, String fileEntryTypeKey, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		fileEntryTypeKey = Objects.toString(fileEntryTypeKey, "");
 
@@ -3247,9 +3343,11 @@ public class DLFileEntryTypePersistenceImpl
 				else {
 					DLFileEntryType dlFileEntryType = list.get(0);
 
-					result = dlFileEntryType;
+					if (!readOnlyCache) {
+						result = dlFileEntryType;
 
-					cacheResult(dlFileEntryType);
+						cacheResult(dlFileEntryType);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3279,7 +3377,8 @@ public class DLFileEntryTypePersistenceImpl
 	public DLFileEntryType removeByG_F(long groupId, String fileEntryTypeKey)
 		throws NoSuchFileEntryTypeException {
 
-		DLFileEntryType dlFileEntryType = findByG_F(groupId, fileEntryTypeKey);
+		DLFileEntryType dlFileEntryType = _findByG_F(
+			groupId, fileEntryTypeKey, true);
 
 		return remove(dlFileEntryType);
 	}
@@ -3998,6 +4097,14 @@ public class DLFileEntryTypePersistenceImpl
 		OrderByComparator<DLFileEntryType> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLFileEntryType> _findAll(
+		int start, int end,
+		OrderByComparator<DLFileEntryType> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			DLFileEntryType.class);
 
@@ -4055,10 +4162,12 @@ public class DLFileEntryTypePersistenceImpl
 				list = (List<DLFileEntryType>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4078,7 +4187,10 @@ public class DLFileEntryTypePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLFileEntryType dlFileEntryType : findAll()) {
+		for (DLFileEntryType dlFileEntryType :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlFileEntryType);
 		}
 	}

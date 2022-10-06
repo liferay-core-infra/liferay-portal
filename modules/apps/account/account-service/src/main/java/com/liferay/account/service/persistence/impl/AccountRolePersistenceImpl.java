@@ -171,6 +171,15 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AccountRole> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<AccountRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -245,10 +254,12 @@ public class AccountRolePersistenceImpl
 				list = (List<AccountRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -860,8 +871,9 @@ public class AccountRolePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (AccountRole accountRole :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(accountRole);
 		}
@@ -1045,6 +1057,16 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountEntryId(
+			accountEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountRole> _findByAccountEntryId(
+		long accountEntryId, int start, int end,
+		OrderByComparator<AccountRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1119,10 +1141,12 @@ public class AccountRolePersistenceImpl
 				list = (List<AccountRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1947,6 +1971,16 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountEntryId(
+			accountEntryIds, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountRole> _findByAccountEntryId(
+		long[] accountEntryIds, int start, int end,
+		OrderByComparator<AccountRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (accountEntryIds == null) {
 			accountEntryIds = new long[0];
 		}
@@ -2033,12 +2067,14 @@ public class AccountRolePersistenceImpl
 				list = (List<AccountRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByAccountEntryId,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByAccountEntryId,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2060,9 +2096,9 @@ public class AccountRolePersistenceImpl
 	@Override
 	public void removeByAccountEntryId(long accountEntryId) {
 		for (AccountRole accountRole :
-				findByAccountEntryId(
-					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByAccountEntryId(
+					accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(accountRole);
 		}
@@ -2313,7 +2349,13 @@ public class AccountRolePersistenceImpl
 	 */
 	@Override
 	public AccountRole findByRoleId(long roleId) throws NoSuchRoleException {
-		AccountRole accountRole = fetchByRoleId(roleId);
+		return _findByRoleId(roleId, false);
+	}
+
+	private AccountRole _findByRoleId(long roleId, boolean readOnlyCache)
+		throws NoSuchRoleException {
+
+		AccountRole accountRole = _fetchByRoleId(roleId, true, readOnlyCache);
 
 		if (accountRole == null) {
 			StringBundler sb = new StringBundler(4);
@@ -2355,6 +2397,12 @@ public class AccountRolePersistenceImpl
 	 */
 	@Override
 	public AccountRole fetchByRoleId(long roleId, boolean useFinderCache) {
+		return _fetchByRoleId(roleId, useFinderCache, false);
+	}
+
+	private AccountRole _fetchByRoleId(
+		long roleId, boolean useFinderCache, boolean readOnlyCache) {
+
 		Object[] finderArgs = null;
 
 		if (useFinderCache) {
@@ -2422,9 +2470,11 @@ public class AccountRolePersistenceImpl
 
 					AccountRole accountRole = list.get(0);
 
-					result = accountRole;
+					if (!readOnlyCache) {
+						result = accountRole;
 
-					cacheResult(accountRole);
+						cacheResult(accountRole);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2451,7 +2501,7 @@ public class AccountRolePersistenceImpl
 	 */
 	@Override
 	public AccountRole removeByRoleId(long roleId) throws NoSuchRoleException {
-		AccountRole accountRole = findByRoleId(roleId);
+		AccountRole accountRole = _findByRoleId(roleId, true);
 
 		return remove(accountRole);
 	}
@@ -2591,6 +2641,16 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, accountEntryId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AccountRole> _findByC_A(
+		long companyId, long accountEntryId, int start, int end,
+		OrderByComparator<AccountRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2671,10 +2731,12 @@ public class AccountRolePersistenceImpl
 				list = (List<AccountRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3552,6 +3614,16 @@ public class AccountRolePersistenceImpl
 		OrderByComparator<AccountRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_A(
+			companyId, accountEntryIds, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AccountRole> _findByC_A(
+		long companyId, long[] accountEntryIds, int start, int end,
+		OrderByComparator<AccountRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (accountEntryIds == null) {
 			accountEntryIds = new long[0];
 		}
@@ -3648,11 +3720,14 @@ public class AccountRolePersistenceImpl
 				list = (List<AccountRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByC_A, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByC_A, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3675,9 +3750,9 @@ public class AccountRolePersistenceImpl
 	@Override
 	public void removeByC_A(long companyId, long accountEntryId) {
 		for (AccountRole accountRole :
-				findByC_A(
+				_findByC_A(
 					companyId, accountEntryId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(accountRole);
 		}
@@ -4316,6 +4391,13 @@ public class AccountRolePersistenceImpl
 		int start, int end, OrderByComparator<AccountRole> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AccountRole> _findAll(
+		int start, int end, OrderByComparator<AccountRole> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4370,10 +4452,12 @@ public class AccountRolePersistenceImpl
 				list = (List<AccountRole>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4393,7 +4477,10 @@ public class AccountRolePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AccountRole accountRole : findAll()) {
+		for (AccountRole accountRole :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(accountRole);
 		}
 	}

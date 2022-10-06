@@ -173,6 +173,16 @@ public class AccountGroupRelPersistenceImpl
 		OrderByComparator<AccountGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByAccountGroupId(
+			accountGroupId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountGroupRel> _findByAccountGroupId(
+		long accountGroupId, int start, int end,
+		OrderByComparator<AccountGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -247,10 +257,12 @@ public class AccountGroupRelPersistenceImpl
 				list = (List<AccountGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,9 +554,9 @@ public class AccountGroupRelPersistenceImpl
 	@Override
 	public void removeByAccountGroupId(long accountGroupId) {
 		for (AccountGroupRel accountGroupRel :
-				findByAccountGroupId(
-					accountGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByAccountGroupId(
+					accountGroupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(accountGroupRel);
 		}
@@ -686,6 +698,16 @@ public class AccountGroupRelPersistenceImpl
 		OrderByComparator<AccountGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByA_C(
+			accountGroupId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<AccountGroupRel> _findByA_C(
+		long accountGroupId, long classNameId, int start, int end,
+		OrderByComparator<AccountGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -767,10 +789,12 @@ public class AccountGroupRelPersistenceImpl
 				list = (List<AccountGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1078,9 +1102,9 @@ public class AccountGroupRelPersistenceImpl
 	@Override
 	public void removeByA_C(long accountGroupId, long classNameId) {
 		for (AccountGroupRel accountGroupRel :
-				findByA_C(
+				_findByA_C(
 					accountGroupId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(accountGroupRel);
 		}
@@ -1227,6 +1251,16 @@ public class AccountGroupRelPersistenceImpl
 		OrderByComparator<AccountGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<AccountGroupRel> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<AccountGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1307,10 +1341,12 @@ public class AccountGroupRelPersistenceImpl
 				list = (List<AccountGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1618,9 +1654,9 @@ public class AccountGroupRelPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (AccountGroupRel accountGroupRel :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(accountGroupRel);
 		}
@@ -1703,8 +1739,16 @@ public class AccountGroupRelPersistenceImpl
 			long accountGroupId, long classNameId, long classPK)
 		throws NoSuchGroupRelException {
 
-		AccountGroupRel accountGroupRel = fetchByA_C_C(
-			accountGroupId, classNameId, classPK);
+		return _findByA_C_C(accountGroupId, classNameId, classPK, false);
+	}
+
+	private AccountGroupRel _findByA_C_C(
+			long accountGroupId, long classNameId, long classPK,
+			boolean readOnlyCache)
+		throws NoSuchGroupRelException {
+
+		AccountGroupRel accountGroupRel = _fetchByA_C_C(
+			accountGroupId, classNameId, classPK, true, readOnlyCache);
 
 		if (accountGroupRel == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1760,6 +1804,14 @@ public class AccountGroupRelPersistenceImpl
 	public AccountGroupRel fetchByA_C_C(
 		long accountGroupId, long classNameId, long classPK,
 		boolean useFinderCache) {
+
+		return _fetchByA_C_C(
+			accountGroupId, classNameId, classPK, useFinderCache, false);
+	}
+
+	private AccountGroupRel _fetchByA_C_C(
+		long accountGroupId, long classNameId, long classPK,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1840,9 +1892,11 @@ public class AccountGroupRelPersistenceImpl
 
 					AccountGroupRel accountGroupRel = list.get(0);
 
-					result = accountGroupRel;
+					if (!readOnlyCache) {
+						result = accountGroupRel;
 
-					cacheResult(accountGroupRel);
+						cacheResult(accountGroupRel);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1874,8 +1928,8 @@ public class AccountGroupRelPersistenceImpl
 			long accountGroupId, long classNameId, long classPK)
 		throws NoSuchGroupRelException {
 
-		AccountGroupRel accountGroupRel = findByA_C_C(
-			accountGroupId, classNameId, classPK);
+		AccountGroupRel accountGroupRel = _findByA_C_C(
+			accountGroupId, classNameId, classPK, true);
 
 		return remove(accountGroupRel);
 	}
@@ -2367,6 +2421,14 @@ public class AccountGroupRelPersistenceImpl
 		OrderByComparator<AccountGroupRel> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<AccountGroupRel> _findAll(
+		int start, int end,
+		OrderByComparator<AccountGroupRel> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2421,10 +2483,12 @@ public class AccountGroupRelPersistenceImpl
 				list = (List<AccountGroupRel>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2444,7 +2508,10 @@ public class AccountGroupRelPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (AccountGroupRel accountGroupRel : findAll()) {
+		for (AccountGroupRel accountGroupRel :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(accountGroupRel);
 		}
 	}

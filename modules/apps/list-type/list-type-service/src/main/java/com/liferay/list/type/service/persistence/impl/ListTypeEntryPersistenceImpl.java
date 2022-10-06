@@ -175,6 +175,15 @@ public class ListTypeEntryPersistenceImpl
 		OrderByComparator<ListTypeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ListTypeEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ListTypeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -260,10 +269,12 @@ public class ListTypeEntryPersistenceImpl
 				list = (List<ListTypeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -559,7 +570,9 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ListTypeEntry listTypeEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(listTypeEntry);
 		}
@@ -714,6 +727,16 @@ public class ListTypeEntryPersistenceImpl
 		OrderByComparator<ListTypeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ListTypeEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ListTypeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -807,10 +830,12 @@ public class ListTypeEntryPersistenceImpl
 				list = (List<ListTypeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1131,9 +1156,9 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ListTypeEntry listTypeEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(listTypeEntry);
 		}
@@ -1293,6 +1318,16 @@ public class ListTypeEntryPersistenceImpl
 		OrderByComparator<ListTypeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByListTypeEntryId(
+			listTypeEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ListTypeEntry> _findByListTypeEntryId(
+		long listTypeEntryId, int start, int end,
+		OrderByComparator<ListTypeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1367,10 +1402,12 @@ public class ListTypeEntryPersistenceImpl
 				list = (List<ListTypeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1577,6 +1614,16 @@ public class ListTypeEntryPersistenceImpl
 		OrderByComparator<ListTypeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByListTypeEntryId(
+			listTypeEntryIds, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ListTypeEntry> _findByListTypeEntryId(
+		long[] listTypeEntryIds, int start, int end,
+		OrderByComparator<ListTypeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (listTypeEntryIds == null) {
 			listTypeEntryIds = new long[0];
 		}
@@ -1665,12 +1712,14 @@ public class ListTypeEntryPersistenceImpl
 				list = (List<ListTypeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByListTypeEntryId,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByListTypeEntryId,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1692,9 +1741,9 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public void removeByListTypeEntryId(long listTypeEntryId) {
 		for (ListTypeEntry listTypeEntry :
-				findByListTypeEntryId(
-					listTypeEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByListTypeEntryId(
+					listTypeEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(listTypeEntry);
 		}
@@ -1903,6 +1952,16 @@ public class ListTypeEntryPersistenceImpl
 		OrderByComparator<ListTypeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByListTypeDefinitionId(
+			listTypeDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ListTypeEntry> _findByListTypeDefinitionId(
+		long listTypeDefinitionId, int start, int end,
+		OrderByComparator<ListTypeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1981,10 +2040,12 @@ public class ListTypeEntryPersistenceImpl
 				list = (List<ListTypeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2275,9 +2336,9 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public void removeByListTypeDefinitionId(long listTypeDefinitionId) {
 		for (ListTypeEntry listTypeEntry :
-				findByListTypeDefinitionId(
+				_findByListTypeDefinitionId(
 					listTypeDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(listTypeEntry);
 		}
@@ -2352,7 +2413,15 @@ public class ListTypeEntryPersistenceImpl
 	public ListTypeEntry findByLTDI_K(long listTypeDefinitionId, String key)
 		throws NoSuchListTypeEntryException {
 
-		ListTypeEntry listTypeEntry = fetchByLTDI_K(listTypeDefinitionId, key);
+		return _findByLTDI_K(listTypeDefinitionId, key, false);
+	}
+
+	private ListTypeEntry _findByLTDI_K(
+			long listTypeDefinitionId, String key, boolean readOnlyCache)
+		throws NoSuchListTypeEntryException {
+
+		ListTypeEntry listTypeEntry = _fetchByLTDI_K(
+			listTypeDefinitionId, key, true, readOnlyCache);
 
 		if (listTypeEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2400,6 +2469,13 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public ListTypeEntry fetchByLTDI_K(
 		long listTypeDefinitionId, String key, boolean useFinderCache) {
+
+		return _fetchByLTDI_K(listTypeDefinitionId, key, useFinderCache, false);
+	}
+
+	private ListTypeEntry _fetchByLTDI_K(
+		long listTypeDefinitionId, String key, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		key = Objects.toString(key, "");
 
@@ -2490,9 +2566,11 @@ public class ListTypeEntryPersistenceImpl
 
 					ListTypeEntry listTypeEntry = list.get(0);
 
-					result = listTypeEntry;
+					if (!readOnlyCache) {
+						result = listTypeEntry;
 
-					cacheResult(listTypeEntry);
+						cacheResult(listTypeEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2522,7 +2600,8 @@ public class ListTypeEntryPersistenceImpl
 	public ListTypeEntry removeByLTDI_K(long listTypeDefinitionId, String key)
 		throws NoSuchListTypeEntryException {
 
-		ListTypeEntry listTypeEntry = findByLTDI_K(listTypeDefinitionId, key);
+		ListTypeEntry listTypeEntry = _findByLTDI_K(
+			listTypeDefinitionId, key, true);
 
 		return remove(listTypeEntry);
 	}
@@ -3028,6 +3107,13 @@ public class ListTypeEntryPersistenceImpl
 		int start, int end, OrderByComparator<ListTypeEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ListTypeEntry> _findAll(
+		int start, int end, OrderByComparator<ListTypeEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3082,10 +3168,12 @@ public class ListTypeEntryPersistenceImpl
 				list = (List<ListTypeEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3105,7 +3193,10 @@ public class ListTypeEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ListTypeEntry listTypeEntry : findAll()) {
+		for (ListTypeEntry listTypeEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(listTypeEntry);
 		}
 	}

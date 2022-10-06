@@ -113,7 +113,13 @@ public class MemberRequestPersistenceImpl
 	public MemberRequest findByKey(String key)
 		throws NoSuchMemberRequestException {
 
-		MemberRequest memberRequest = fetchByKey(key);
+		return _findByKey(key, false);
+	}
+
+	private MemberRequest _findByKey(String key, boolean readOnlyCache)
+		throws NoSuchMemberRequestException {
+
+		MemberRequest memberRequest = _fetchByKey(key, true, readOnlyCache);
 
 		if (memberRequest == null) {
 			StringBundler sb = new StringBundler(4);
@@ -155,6 +161,12 @@ public class MemberRequestPersistenceImpl
 	 */
 	@Override
 	public MemberRequest fetchByKey(String key, boolean useFinderCache) {
+		return _fetchByKey(key, useFinderCache, false);
+	}
+
+	private MemberRequest _fetchByKey(
+		String key, boolean useFinderCache, boolean readOnlyCache) {
+
 		key = Objects.toString(key, "");
 
 		Object[] finderArgs = null;
@@ -234,9 +246,11 @@ public class MemberRequestPersistenceImpl
 
 					MemberRequest memberRequest = list.get(0);
 
-					result = memberRequest;
+					if (!readOnlyCache) {
+						result = memberRequest;
 
-					cacheResult(memberRequest);
+						cacheResult(memberRequest);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -265,7 +279,7 @@ public class MemberRequestPersistenceImpl
 	public MemberRequest removeByKey(String key)
 		throws NoSuchMemberRequestException {
 
-		MemberRequest memberRequest = findByKey(key);
+		MemberRequest memberRequest = _findByKey(key, true);
 
 		return remove(memberRequest);
 	}
@@ -415,6 +429,16 @@ public class MemberRequestPersistenceImpl
 		OrderByComparator<MemberRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByReceiverUserId(
+			receiverUserId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MemberRequest> _findByReceiverUserId(
+		long receiverUserId, int start, int end,
+		OrderByComparator<MemberRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -489,10 +513,12 @@ public class MemberRequestPersistenceImpl
 				list = (List<MemberRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -783,9 +809,9 @@ public class MemberRequestPersistenceImpl
 	@Override
 	public void removeByReceiverUserId(long receiverUserId) {
 		for (MemberRequest memberRequest :
-				findByReceiverUserId(
-					receiverUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByReceiverUserId(
+					receiverUserId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(memberRequest);
 		}
@@ -924,6 +950,16 @@ public class MemberRequestPersistenceImpl
 		OrderByComparator<MemberRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_S(
+			receiverUserId, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<MemberRequest> _findByR_S(
+		long receiverUserId, int status, int start, int end,
+		OrderByComparator<MemberRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1004,10 +1040,12 @@ public class MemberRequestPersistenceImpl
 				list = (List<MemberRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1315,9 +1353,9 @@ public class MemberRequestPersistenceImpl
 	@Override
 	public void removeByR_S(long receiverUserId, int status) {
 		for (MemberRequest memberRequest :
-				findByR_S(
+				_findByR_S(
 					receiverUserId, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(memberRequest);
 		}
@@ -1400,8 +1438,16 @@ public class MemberRequestPersistenceImpl
 			long groupId, long receiverUserId, int status)
 		throws NoSuchMemberRequestException {
 
-		MemberRequest memberRequest = fetchByG_R_S(
-			groupId, receiverUserId, status);
+		return _findByG_R_S(groupId, receiverUserId, status, false);
+	}
+
+	private MemberRequest _findByG_R_S(
+			long groupId, long receiverUserId, int status,
+			boolean readOnlyCache)
+		throws NoSuchMemberRequestException {
+
+		MemberRequest memberRequest = _fetchByG_R_S(
+			groupId, receiverUserId, status, true, readOnlyCache);
 
 		if (memberRequest == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1456,6 +1502,14 @@ public class MemberRequestPersistenceImpl
 	@Override
 	public MemberRequest fetchByG_R_S(
 		long groupId, long receiverUserId, int status, boolean useFinderCache) {
+
+		return _fetchByG_R_S(
+			groupId, receiverUserId, status, useFinderCache, false);
+	}
+
+	private MemberRequest _fetchByG_R_S(
+		long groupId, long receiverUserId, int status, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1536,9 +1590,11 @@ public class MemberRequestPersistenceImpl
 
 					MemberRequest memberRequest = list.get(0);
 
-					result = memberRequest;
+					if (!readOnlyCache) {
+						result = memberRequest;
 
-					cacheResult(memberRequest);
+						cacheResult(memberRequest);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1570,8 +1626,8 @@ public class MemberRequestPersistenceImpl
 			long groupId, long receiverUserId, int status)
 		throws NoSuchMemberRequestException {
 
-		MemberRequest memberRequest = findByG_R_S(
-			groupId, receiverUserId, status);
+		MemberRequest memberRequest = _findByG_R_S(
+			groupId, receiverUserId, status, true);
 
 		return remove(memberRequest);
 	}
@@ -2069,6 +2125,13 @@ public class MemberRequestPersistenceImpl
 		int start, int end, OrderByComparator<MemberRequest> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MemberRequest> _findAll(
+		int start, int end, OrderByComparator<MemberRequest> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2123,10 +2186,12 @@ public class MemberRequestPersistenceImpl
 				list = (List<MemberRequest>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2146,7 +2211,10 @@ public class MemberRequestPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MemberRequest memberRequest : findAll()) {
+		for (MemberRequest memberRequest :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(memberRequest);
 		}
 	}

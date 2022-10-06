@@ -176,6 +176,15 @@ public class TeamPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Team> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Team> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Team> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -264,10 +273,12 @@ public class TeamPersistenceImpl
 				list = (List<Team>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -559,7 +570,9 @@ public class TeamPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Team team :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(team);
 		}
@@ -659,7 +672,13 @@ public class TeamPersistenceImpl
 	public Team findByUUID_G(String uuid, long groupId)
 		throws NoSuchTeamException {
 
-		Team team = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private Team _findByUUID_G(String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchTeamException {
+
+		Team team = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (team == null) {
 			StringBundler sb = new StringBundler(6);
@@ -707,6 +726,13 @@ public class TeamPersistenceImpl
 	@Override
 	public Team fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private Team _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -782,9 +808,11 @@ public class TeamPersistenceImpl
 				else {
 					Team team = list.get(0);
 
-					result = team;
+					if (!readOnlyCache) {
+						result = team;
 
-					cacheResult(team);
+						cacheResult(team);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -814,7 +842,7 @@ public class TeamPersistenceImpl
 	public Team removeByUUID_G(String uuid, long groupId)
 		throws NoSuchTeamException {
 
-		Team team = findByUUID_G(uuid, groupId);
+		Team team = _findByUUID_G(uuid, groupId, true);
 
 		return remove(team);
 	}
@@ -987,6 +1015,16 @@ public class TeamPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Team> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Team> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Team> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -1083,10 +1121,12 @@ public class TeamPersistenceImpl
 				list = (List<Team>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1401,9 +1441,9 @@ public class TeamPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Team team :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(team);
 		}
@@ -1570,6 +1610,15 @@ public class TeamPersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Team> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Team> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Team> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Team.class);
 
@@ -1647,10 +1696,12 @@ public class TeamPersistenceImpl
 				list = (List<Team>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1931,8 +1982,9 @@ public class TeamPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Team team :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(team);
 		}
@@ -2075,6 +2127,15 @@ public class TeamPersistenceImpl
 		long groupId, int start, int end,
 		OrderByComparator<Team> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Team> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<Team> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Team.class);
 
@@ -2150,10 +2211,12 @@ public class TeamPersistenceImpl
 				list = (List<Team>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2756,8 +2819,9 @@ public class TeamPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (Team team :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(team);
 		}
@@ -2890,7 +2954,13 @@ public class TeamPersistenceImpl
 	public Team findByG_N(long groupId, String name)
 		throws NoSuchTeamException {
 
-		Team team = fetchByG_N(groupId, name);
+		return _findByG_N(groupId, name, false);
+	}
+
+	private Team _findByG_N(long groupId, String name, boolean readOnlyCache)
+		throws NoSuchTeamException {
+
+		Team team = _fetchByG_N(groupId, name, true, readOnlyCache);
 
 		if (team == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2937,6 +3007,13 @@ public class TeamPersistenceImpl
 	 */
 	@Override
 	public Team fetchByG_N(long groupId, String name, boolean useFinderCache) {
+		return _fetchByG_N(groupId, name, useFinderCache, false);
+	}
+
+	private Team _fetchByG_N(
+		long groupId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -3011,9 +3088,11 @@ public class TeamPersistenceImpl
 				else {
 					Team team = list.get(0);
 
-					result = team;
+					if (!readOnlyCache) {
+						result = team;
 
-					cacheResult(team);
+						cacheResult(team);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3043,7 +3122,7 @@ public class TeamPersistenceImpl
 	public Team removeByG_N(long groupId, String name)
 		throws NoSuchTeamException {
 
-		Team team = findByG_N(groupId, name);
+		Team team = _findByG_N(groupId, name, true);
 
 		return remove(team);
 	}
@@ -3702,6 +3781,13 @@ public class TeamPersistenceImpl
 		int start, int end, OrderByComparator<Team> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Team> _findAll(
+		int start, int end, OrderByComparator<Team> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			Team.class);
 
@@ -3759,10 +3845,12 @@ public class TeamPersistenceImpl
 				list = (List<Team>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3782,7 +3870,10 @@ public class TeamPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Team team : findAll()) {
+		for (Team team :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(team);
 		}
 	}

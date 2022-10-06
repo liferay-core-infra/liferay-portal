@@ -178,6 +178,15 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscount> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -263,10 +272,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -926,7 +937,9 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CommerceDiscount commerceDiscount :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceDiscount);
 		}
@@ -1148,6 +1161,16 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceDiscount> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1241,10 +1264,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1943,9 +1968,9 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CommerceDiscount commerceDiscount :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(commerceDiscount);
 		}
@@ -2175,6 +2200,15 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscount> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2249,10 +2283,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2876,8 +2912,9 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (CommerceDiscount commerceDiscount :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(commerceDiscount);
 		}
@@ -3064,6 +3101,16 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, couponCode, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceDiscount> _findByC_C(
+		long companyId, String couponCode, int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		couponCode = Objects.toString(couponCode, "");
 
 		FinderPath finderPath = null;
@@ -3157,10 +3204,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3862,9 +3911,9 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, String couponCode) {
 		for (CommerceDiscount commerceDiscount :
-				findByC_C(
+				_findByC_C(
 					companyId, couponCode, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceDiscount);
 		}
@@ -4092,6 +4141,16 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtD_S(
+			displayDate, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CommerceDiscount> _findByLtD_S(
+		Date displayDate, int status, int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4175,10 +4234,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4872,9 +4933,9 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public void removeByLtD_S(Date displayDate, int status) {
 		for (CommerceDiscount commerceDiscount :
-				findByLtD_S(
+				_findByLtD_S(
 					displayDate, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(commerceDiscount);
 		}
@@ -5098,6 +5159,16 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLtE_S(
+			expirationDate, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceDiscount> _findByLtE_S(
+		Date expirationDate, int status, int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5181,10 +5252,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5878,9 +5951,9 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public void removeByLtE_S(Date expirationDate, int status) {
 		for (CommerceDiscount commerceDiscount :
-				findByLtE_S(
+				_findByLtE_S(
 					expirationDate, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceDiscount);
 		}
@@ -6041,8 +6114,16 @@ public class CommerceDiscountPersistenceImpl
 			long companyId, String couponCode, boolean active)
 		throws NoSuchDiscountException {
 
-		CommerceDiscount commerceDiscount = fetchByC_C_A(
-			companyId, couponCode, active);
+		return _findByC_C_A(companyId, couponCode, active, false);
+	}
+
+	private CommerceDiscount _findByC_C_A(
+			long companyId, String couponCode, boolean active,
+			boolean readOnlyCache)
+		throws NoSuchDiscountException {
+
+		CommerceDiscount commerceDiscount = _fetchByC_C_A(
+			companyId, couponCode, active, true, readOnlyCache);
 
 		if (commerceDiscount == null) {
 			StringBundler sb = new StringBundler(8);
@@ -6098,6 +6179,14 @@ public class CommerceDiscountPersistenceImpl
 	public CommerceDiscount fetchByC_C_A(
 		long companyId, String couponCode, boolean active,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_A(
+			companyId, couponCode, active, useFinderCache, false);
+	}
+
+	private CommerceDiscount _fetchByC_C_A(
+		long companyId, String couponCode, boolean active,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		couponCode = Objects.toString(couponCode, "");
 
@@ -6191,9 +6280,11 @@ public class CommerceDiscountPersistenceImpl
 
 					CommerceDiscount commerceDiscount = list.get(0);
 
-					result = commerceDiscount;
+					if (!readOnlyCache) {
+						result = commerceDiscount;
 
-					cacheResult(commerceDiscount);
+						cacheResult(commerceDiscount);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6225,8 +6316,8 @@ public class CommerceDiscountPersistenceImpl
 			long companyId, String couponCode, boolean active)
 		throws NoSuchDiscountException {
 
-		CommerceDiscount commerceDiscount = findByC_C_A(
-			companyId, couponCode, active);
+		CommerceDiscount commerceDiscount = _findByC_C_A(
+			companyId, couponCode, active, true);
 
 		return remove(commerceDiscount);
 	}
@@ -6410,6 +6501,16 @@ public class CommerceDiscountPersistenceImpl
 		int end, OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_L_A_S(
+			companyId, level, active, status, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommerceDiscount> _findByC_L_A_S(
+		long companyId, String level, boolean active, int status, int start,
+		int end, OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		level = Objects.toString(level, "");
 
 		FinderPath finderPath = null;
@@ -6513,10 +6614,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7284,9 +7387,9 @@ public class CommerceDiscountPersistenceImpl
 		long companyId, String level, boolean active, int status) {
 
 		for (CommerceDiscount commerceDiscount :
-				findByC_L_A_S(
+				_findByC_L_A_S(
 					companyId, level, active, status, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commerceDiscount);
 		}
@@ -7489,8 +7592,15 @@ public class CommerceDiscountPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchDiscountException {
 
-		CommerceDiscount commerceDiscount = fetchByC_ERC(
-			companyId, externalReferenceCode);
+		return _findByC_ERC(companyId, externalReferenceCode, false);
+	}
+
+	private CommerceDiscount _findByC_ERC(
+			long companyId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchDiscountException {
+
+		CommerceDiscount commerceDiscount = _fetchByC_ERC(
+			companyId, externalReferenceCode, true, readOnlyCache);
 
 		if (commerceDiscount == null) {
 			StringBundler sb = new StringBundler(6);
@@ -7540,6 +7650,14 @@ public class CommerceDiscountPersistenceImpl
 	@Override
 	public CommerceDiscount fetchByC_ERC(
 		long companyId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByC_ERC(
+			companyId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private CommerceDiscount _fetchByC_ERC(
+		long companyId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -7613,9 +7731,11 @@ public class CommerceDiscountPersistenceImpl
 				else {
 					CommerceDiscount commerceDiscount = list.get(0);
 
-					result = commerceDiscount;
+					if (!readOnlyCache) {
+						result = commerceDiscount;
 
-					cacheResult(commerceDiscount);
+						cacheResult(commerceDiscount);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7646,8 +7766,8 @@ public class CommerceDiscountPersistenceImpl
 			long companyId, String externalReferenceCode)
 		throws NoSuchDiscountException {
 
-		CommerceDiscount commerceDiscount = findByC_ERC(
-			companyId, externalReferenceCode);
+		CommerceDiscount commerceDiscount = _findByC_ERC(
+			companyId, externalReferenceCode, true);
 
 		return remove(commerceDiscount);
 	}
@@ -8183,6 +8303,14 @@ public class CommerceDiscountPersistenceImpl
 		OrderByComparator<CommerceDiscount> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommerceDiscount> _findAll(
+		int start, int end,
+		OrderByComparator<CommerceDiscount> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -8237,10 +8365,12 @@ public class CommerceDiscountPersistenceImpl
 				list = (List<CommerceDiscount>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8260,7 +8390,10 @@ public class CommerceDiscountPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CommerceDiscount commerceDiscount : findAll()) {
+		for (CommerceDiscount commerceDiscount :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(commerceDiscount);
 		}
 	}

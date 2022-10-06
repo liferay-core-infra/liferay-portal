@@ -105,7 +105,15 @@ public class DLStorageQuotaPersistenceImpl
 	public DLStorageQuota findByCompanyId(long companyId)
 		throws NoSuchStorageQuotaException {
 
-		DLStorageQuota dlStorageQuota = fetchByCompanyId(companyId);
+		return _findByCompanyId(companyId, false);
+	}
+
+	private DLStorageQuota _findByCompanyId(
+			long companyId, boolean readOnlyCache)
+		throws NoSuchStorageQuotaException {
+
+		DLStorageQuota dlStorageQuota = _fetchByCompanyId(
+			companyId, true, readOnlyCache);
 
 		if (dlStorageQuota == null) {
 			StringBundler sb = new StringBundler(4);
@@ -148,6 +156,12 @@ public class DLStorageQuotaPersistenceImpl
 	@Override
 	public DLStorageQuota fetchByCompanyId(
 		long companyId, boolean useFinderCache) {
+
+		return _fetchByCompanyId(companyId, useFinderCache, false);
+	}
+
+	private DLStorageQuota _fetchByCompanyId(
+		long companyId, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -201,9 +215,11 @@ public class DLStorageQuotaPersistenceImpl
 				else {
 					DLStorageQuota dlStorageQuota = list.get(0);
 
-					result = dlStorageQuota;
+					if (!readOnlyCache) {
+						result = dlStorageQuota;
 
-					cacheResult(dlStorageQuota);
+						cacheResult(dlStorageQuota);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -232,7 +248,7 @@ public class DLStorageQuotaPersistenceImpl
 	public DLStorageQuota removeByCompanyId(long companyId)
 		throws NoSuchStorageQuotaException {
 
-		DLStorageQuota dlStorageQuota = findByCompanyId(companyId);
+		DLStorageQuota dlStorageQuota = _findByCompanyId(companyId, true);
 
 		return remove(dlStorageQuota);
 	}
@@ -668,6 +684,13 @@ public class DLStorageQuotaPersistenceImpl
 		int start, int end, OrderByComparator<DLStorageQuota> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLStorageQuota> _findAll(
+		int start, int end, OrderByComparator<DLStorageQuota> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -722,10 +745,12 @@ public class DLStorageQuotaPersistenceImpl
 				list = (List<DLStorageQuota>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -745,7 +770,10 @@ public class DLStorageQuotaPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DLStorageQuota dlStorageQuota : findAll()) {
+		for (DLStorageQuota dlStorageQuota :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(dlStorageQuota);
 		}
 	}

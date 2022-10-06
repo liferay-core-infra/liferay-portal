@@ -155,6 +155,15 @@ public class CacheFieldEntryPersistenceImpl
 		OrderByComparator<CacheFieldEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CacheFieldEntry> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<CacheFieldEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -227,10 +236,12 @@ public class CacheFieldEntryPersistenceImpl
 				list = (List<CacheFieldEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -516,8 +527,9 @@ public class CacheFieldEntryPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (CacheFieldEntry cacheFieldEntry :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(cacheFieldEntry);
 		}
@@ -949,6 +961,14 @@ public class CacheFieldEntryPersistenceImpl
 		OrderByComparator<CacheFieldEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CacheFieldEntry> _findAll(
+		int start, int end,
+		OrderByComparator<CacheFieldEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1003,10 +1023,12 @@ public class CacheFieldEntryPersistenceImpl
 				list = (List<CacheFieldEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1026,7 +1048,10 @@ public class CacheFieldEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (CacheFieldEntry cacheFieldEntry : findAll()) {
+		for (CacheFieldEntry cacheFieldEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(cacheFieldEntry);
 		}
 	}

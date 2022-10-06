@@ -178,6 +178,15 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDLRecord> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -266,10 +275,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -563,7 +574,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDLRecord ddlRecord :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddlRecord);
 		}
@@ -664,7 +677,15 @@ public class DDLRecordPersistenceImpl
 	public DDLRecord findByUUID_G(String uuid, long groupId)
 		throws NoSuchRecordException {
 
-		DDLRecord ddlRecord = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DDLRecord _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchRecordException {
+
+		DDLRecord ddlRecord = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ddlRecord == null) {
 			StringBundler sb = new StringBundler(6);
@@ -712,6 +733,13 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public DDLRecord fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DDLRecord _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -787,9 +815,11 @@ public class DDLRecordPersistenceImpl
 				else {
 					DDLRecord ddlRecord = list.get(0);
 
-					result = ddlRecord;
+					if (!readOnlyCache) {
+						result = ddlRecord;
 
-					cacheResult(ddlRecord);
+						cacheResult(ddlRecord);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -819,7 +849,7 @@ public class DDLRecordPersistenceImpl
 	public DDLRecord removeByUUID_G(String uuid, long groupId)
 		throws NoSuchRecordException {
 
-		DDLRecord ddlRecord = findByUUID_G(uuid, groupId);
+		DDLRecord ddlRecord = _findByUUID_G(uuid, groupId, true);
 
 		return remove(ddlRecord);
 	}
@@ -993,6 +1023,16 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDLRecord> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1089,10 +1129,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1409,9 +1451,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDLRecord ddlRecord :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddlRecord);
 		}
@@ -1579,6 +1621,15 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDLRecord> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecord.class);
 
@@ -1656,10 +1707,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1943,8 +1996,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (DDLRecord ddlRecord :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddlRecord);
 		}
@@ -2091,6 +2145,15 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByRecordSetId(
+			recordSetId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDLRecord> _findByRecordSetId(
+		long recordSetId, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecord.class);
 
@@ -2168,10 +2231,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2455,8 +2520,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByRecordSetId(long recordSetId) {
 		for (DDLRecord ddlRecord :
-				findByRecordSetId(
-					recordSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByRecordSetId(
+					recordSetId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddlRecord);
 		}
@@ -2607,6 +2673,16 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_U(
+			recordSetId, userId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDLRecord> _findByR_U(
+		long recordSetId, long userId, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecord.class);
 
@@ -2690,10 +2766,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2999,9 +3077,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByR_U(long recordSetId, long userId) {
 		for (DDLRecord ddlRecord :
-				findByR_U(
+				_findByR_U(
 					recordSetId, userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddlRecord);
 		}
@@ -3163,6 +3241,16 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByR_R(
+			recordSetId, recordSetVersion, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDLRecord> _findByR_R(
+		long recordSetId, String recordSetVersion, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		recordSetVersion = Objects.toString(recordSetVersion, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3260,10 +3348,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3583,9 +3673,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByR_R(long recordSetId, String recordSetVersion) {
 		for (DDLRecord ddlRecord :
-				findByR_R(
+				_findByR_R(
 					recordSetId, recordSetVersion, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddlRecord);
 		}
@@ -3760,6 +3850,16 @@ public class DDLRecordPersistenceImpl
 		OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			className, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDLRecord> _findByC_C(
+		String className, long classPK, int start, int end,
+		OrderByComparator<DDLRecord> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		className = Objects.toString(className, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3856,10 +3956,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4178,9 +4280,9 @@ public class DDLRecordPersistenceImpl
 	@Override
 	public void removeByC_C(String className, long classPK) {
 		for (DDLRecord ddlRecord :
-				findByC_C(
+				_findByC_C(
 					className, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddlRecord);
 		}
@@ -4837,6 +4939,13 @@ public class DDLRecordPersistenceImpl
 		int start, int end, OrderByComparator<DDLRecord> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDLRecord> _findAll(
+		int start, int end, OrderByComparator<DDLRecord> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDLRecord.class);
 
@@ -4894,10 +5003,12 @@ public class DDLRecordPersistenceImpl
 				list = (List<DDLRecord>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4917,7 +5028,10 @@ public class DDLRecordPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDLRecord ddlRecord : findAll()) {
+		for (DDLRecord ddlRecord :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddlRecord);
 		}
 	}

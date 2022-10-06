@@ -173,6 +173,15 @@ public class TrashVersionPersistenceImpl
 		OrderByComparator<TrashVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByEntryId(
+			entryId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TrashVersion> _findByEntryId(
+		long entryId, int start, int end,
+		OrderByComparator<TrashVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashVersion.class);
 
@@ -248,10 +257,12 @@ public class TrashVersionPersistenceImpl
 				list = (List<TrashVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -535,8 +546,9 @@ public class TrashVersionPersistenceImpl
 	@Override
 	public void removeByEntryId(long entryId) {
 		for (TrashVersion trashVersion :
-				findByEntryId(
-					entryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByEntryId(
+					entryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(trashVersion);
 		}
@@ -687,6 +699,16 @@ public class TrashVersionPersistenceImpl
 		OrderByComparator<TrashVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByE_C(
+			entryId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<TrashVersion> _findByE_C(
+		long entryId, long classNameId, int start, int end,
+		OrderByComparator<TrashVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashVersion.class);
 
@@ -770,10 +792,12 @@ public class TrashVersionPersistenceImpl
 				list = (List<TrashVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1080,9 +1104,9 @@ public class TrashVersionPersistenceImpl
 	@Override
 	public void removeByE_C(long entryId, long classNameId) {
 		for (TrashVersion trashVersion :
-				findByE_C(
+				_findByE_C(
 					entryId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(trashVersion);
 		}
@@ -1175,7 +1199,15 @@ public class TrashVersionPersistenceImpl
 	public TrashVersion findByC_C(long classNameId, long classPK)
 		throws NoSuchVersionException {
 
-		TrashVersion trashVersion = fetchByC_C(classNameId, classPK);
+		return _findByC_C(classNameId, classPK, false);
+	}
+
+	private TrashVersion _findByC_C(
+			long classNameId, long classPK, boolean readOnlyCache)
+		throws NoSuchVersionException {
+
+		TrashVersion trashVersion = _fetchByC_C(
+			classNameId, classPK, true, readOnlyCache);
 
 		if (trashVersion == null) {
 			StringBundler sb = new StringBundler(6);
@@ -1223,6 +1255,13 @@ public class TrashVersionPersistenceImpl
 	@Override
 	public TrashVersion fetchByC_C(
 		long classNameId, long classPK, boolean useFinderCache) {
+
+		return _fetchByC_C(classNameId, classPK, useFinderCache, false);
+	}
+
+	private TrashVersion _fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashVersion.class);
@@ -1284,9 +1323,11 @@ public class TrashVersionPersistenceImpl
 				else {
 					TrashVersion trashVersion = list.get(0);
 
-					result = trashVersion;
+					if (!readOnlyCache) {
+						result = trashVersion;
 
-					cacheResult(trashVersion);
+						cacheResult(trashVersion);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1316,7 +1357,7 @@ public class TrashVersionPersistenceImpl
 	public TrashVersion removeByC_C(long classNameId, long classPK)
 		throws NoSuchVersionException {
 
-		TrashVersion trashVersion = findByC_C(classNameId, classPK);
+		TrashVersion trashVersion = _findByC_C(classNameId, classPK, true);
 
 		return remove(trashVersion);
 	}
@@ -1927,6 +1968,13 @@ public class TrashVersionPersistenceImpl
 		int start, int end, OrderByComparator<TrashVersion> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<TrashVersion> _findAll(
+		int start, int end, OrderByComparator<TrashVersion> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			TrashVersion.class);
 
@@ -1984,10 +2032,12 @@ public class TrashVersionPersistenceImpl
 				list = (List<TrashVersion>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2007,7 +2057,10 @@ public class TrashVersionPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (TrashVersion trashVersion : findAll()) {
+		for (TrashVersion trashVersion :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(trashVersion);
 		}
 	}

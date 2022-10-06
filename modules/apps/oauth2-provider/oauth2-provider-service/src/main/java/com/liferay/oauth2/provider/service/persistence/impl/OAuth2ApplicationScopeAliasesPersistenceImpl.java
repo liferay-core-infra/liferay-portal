@@ -176,6 +176,15 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 		OrderByComparator<OAuth2ApplicationScopeAliases> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2ApplicationScopeAliases> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<OAuth2ApplicationScopeAliases> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -254,10 +263,12 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 				list = (List<OAuth2ApplicationScopeAliases>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -553,8 +564,9 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(oAuth2ApplicationScopeAliases);
 		}
@@ -691,6 +703,16 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 		OrderByComparator<OAuth2ApplicationScopeAliases> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByOAuth2ApplicationId(
+			oAuth2ApplicationId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<OAuth2ApplicationScopeAliases> _findByOAuth2ApplicationId(
+		long oAuth2ApplicationId, int start, int end,
+		OrderByComparator<OAuth2ApplicationScopeAliases> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -771,10 +793,12 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 				list = (List<OAuth2ApplicationScopeAliases>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1075,9 +1099,9 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 	@Override
 	public void removeByOAuth2ApplicationId(long oAuth2ApplicationId) {
 		for (OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases :
-				findByOAuth2ApplicationId(
+				_findByOAuth2ApplicationId(
 					oAuth2ApplicationId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(oAuth2ApplicationScopeAliases);
 		}
@@ -1568,6 +1592,14 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 		OrderByComparator<OAuth2ApplicationScopeAliases> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<OAuth2ApplicationScopeAliases> _findAll(
+		int start, int end,
+		OrderByComparator<OAuth2ApplicationScopeAliases> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1623,10 +1655,12 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 				list = (List<OAuth2ApplicationScopeAliases>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1647,7 +1681,8 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(oAuth2ApplicationScopeAliases);
 		}

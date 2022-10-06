@@ -187,6 +187,15 @@ public class DDMDataProviderInstancePersistenceImpl
 		OrderByComparator<DDMDataProviderInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMDataProviderInstance> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDMDataProviderInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -275,10 +284,12 @@ public class DDMDataProviderInstancePersistenceImpl
 				list = (List<DDMDataProviderInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -586,7 +597,9 @@ public class DDMDataProviderInstancePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDMDataProviderInstance ddmDataProviderInstance :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmDataProviderInstance);
 		}
@@ -687,8 +700,15 @@ public class DDMDataProviderInstancePersistenceImpl
 	public DDMDataProviderInstance findByUUID_G(String uuid, long groupId)
 		throws NoSuchDataProviderInstanceException {
 
-		DDMDataProviderInstance ddmDataProviderInstance = fetchByUUID_G(
-			uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DDMDataProviderInstance _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchDataProviderInstanceException {
+
+		DDMDataProviderInstance ddmDataProviderInstance = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ddmDataProviderInstance == null) {
 			StringBundler sb = new StringBundler(6);
@@ -736,6 +756,13 @@ public class DDMDataProviderInstancePersistenceImpl
 	@Override
 	public DDMDataProviderInstance fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DDMDataProviderInstance _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -813,9 +840,11 @@ public class DDMDataProviderInstancePersistenceImpl
 					DDMDataProviderInstance ddmDataProviderInstance = list.get(
 						0);
 
-					result = ddmDataProviderInstance;
+					if (!readOnlyCache) {
+						result = ddmDataProviderInstance;
 
-					cacheResult(ddmDataProviderInstance);
+						cacheResult(ddmDataProviderInstance);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -845,8 +874,8 @@ public class DDMDataProviderInstancePersistenceImpl
 	public DDMDataProviderInstance removeByUUID_G(String uuid, long groupId)
 		throws NoSuchDataProviderInstanceException {
 
-		DDMDataProviderInstance ddmDataProviderInstance = findByUUID_G(
-			uuid, groupId);
+		DDMDataProviderInstance ddmDataProviderInstance = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(ddmDataProviderInstance);
 	}
@@ -1022,6 +1051,16 @@ public class DDMDataProviderInstancePersistenceImpl
 		OrderByComparator<DDMDataProviderInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMDataProviderInstance> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDMDataProviderInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1118,10 +1157,12 @@ public class DDMDataProviderInstancePersistenceImpl
 				list = (List<DDMDataProviderInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1445,9 +1486,9 @@ public class DDMDataProviderInstancePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDMDataProviderInstance ddmDataProviderInstance :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmDataProviderInstance);
 		}
@@ -1618,6 +1659,15 @@ public class DDMDataProviderInstancePersistenceImpl
 		OrderByComparator<DDMDataProviderInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMDataProviderInstance> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DDMDataProviderInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMDataProviderInstance.class);
 
@@ -1693,10 +1743,12 @@ public class DDMDataProviderInstancePersistenceImpl
 				list = (List<DDMDataProviderInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2538,6 +2590,15 @@ public class DDMDataProviderInstancePersistenceImpl
 		OrderByComparator<DDMDataProviderInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMDataProviderInstance> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<DDMDataProviderInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2626,12 +2687,14 @@ public class DDMDataProviderInstancePersistenceImpl
 				list = (List<DDMDataProviderInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2653,8 +2716,9 @@ public class DDMDataProviderInstancePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DDMDataProviderInstance ddmDataProviderInstance :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmDataProviderInstance);
 		}
@@ -2992,6 +3056,15 @@ public class DDMDataProviderInstancePersistenceImpl
 		OrderByComparator<DDMDataProviderInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMDataProviderInstance> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<DDMDataProviderInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMDataProviderInstance.class);
 
@@ -3069,10 +3142,12 @@ public class DDMDataProviderInstancePersistenceImpl
 				list = (List<DDMDataProviderInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3367,8 +3442,9 @@ public class DDMDataProviderInstancePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (DDMDataProviderInstance ddmDataProviderInstance :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmDataProviderInstance);
 		}
@@ -4054,6 +4130,14 @@ public class DDMDataProviderInstancePersistenceImpl
 		OrderByComparator<DDMDataProviderInstance> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMDataProviderInstance> _findAll(
+		int start, int end,
+		OrderByComparator<DDMDataProviderInstance> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMDataProviderInstance.class);
 
@@ -4112,10 +4196,12 @@ public class DDMDataProviderInstancePersistenceImpl
 				list = (List<DDMDataProviderInstance>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4135,7 +4221,10 @@ public class DDMDataProviderInstancePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMDataProviderInstance ddmDataProviderInstance : findAll()) {
+		for (DDMDataProviderInstance ddmDataProviderInstance :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmDataProviderInstance);
 		}
 	}

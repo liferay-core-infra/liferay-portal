@@ -182,6 +182,15 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -270,10 +279,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDMTemplate ddmTemplate :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmTemplate);
 		}
@@ -668,7 +681,15 @@ public class DDMTemplatePersistenceImpl
 	public DDMTemplate findByUUID_G(String uuid, long groupId)
 		throws NoSuchTemplateException {
 
-		DDMTemplate ddmTemplate = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DDMTemplate _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchTemplateException {
+
+		DDMTemplate ddmTemplate = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ddmTemplate == null) {
 			StringBundler sb = new StringBundler(6);
@@ -716,6 +737,13 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public DDMTemplate fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DDMTemplate _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +819,11 @@ public class DDMTemplatePersistenceImpl
 				else {
 					DDMTemplate ddmTemplate = list.get(0);
 
-					result = ddmTemplate;
+					if (!readOnlyCache) {
+						result = ddmTemplate;
 
-					cacheResult(ddmTemplate);
+						cacheResult(ddmTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,7 +853,7 @@ public class DDMTemplatePersistenceImpl
 	public DDMTemplate removeByUUID_G(String uuid, long groupId)
 		throws NoSuchTemplateException {
 
-		DDMTemplate ddmTemplate = findByUUID_G(uuid, groupId);
+		DDMTemplate ddmTemplate = _findByUUID_G(uuid, groupId, true);
 
 		return remove(ddmTemplate);
 	}
@@ -997,6 +1027,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMTemplate> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1093,10 +1133,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1414,9 +1456,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDMTemplate ddmTemplate :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -1584,6 +1626,15 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
 
@@ -1659,10 +1710,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2274,8 +2327,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DDMTemplate ddmTemplate :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmTemplate);
 		}
@@ -2467,6 +2521,15 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByClassPK(
+			classPK, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByClassPK(
+		long classPK, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
 
@@ -2542,10 +2605,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2829,8 +2894,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByClassPK(long classPK) {
 		for (DDMTemplate ddmTemplate :
-				findByClassPK(
-					classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByClassPK(
+					classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmTemplate);
 		}
@@ -2977,6 +3043,15 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByTemplateKey(
+			templateKey, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByTemplateKey(
+		String templateKey, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		templateKey = Objects.toString(templateKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3067,10 +3142,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3369,8 +3446,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByTemplateKey(String templateKey) {
 		for (DDMTemplate ddmTemplate :
-				findByTemplateKey(
-					templateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByTemplateKey(
+					templateKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -3529,6 +3607,15 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByType(
+			type, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByType(
+		String type, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3617,10 +3704,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3914,7 +4003,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByType(String type) {
 		for (DDMTemplate ddmTemplate :
-				findByType(type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByType(
+					type, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmTemplate);
 		}
@@ -4076,6 +4167,15 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByLanguage(
+			language, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByLanguage(
+		String language, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		language = Objects.toString(language, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -4164,10 +4264,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4464,8 +4566,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByLanguage(String language) {
 		for (DDMTemplate ddmTemplate :
-				findByLanguage(
-					language, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByLanguage(
+					language, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmTemplate);
 		}
@@ -4565,7 +4668,15 @@ public class DDMTemplatePersistenceImpl
 	public DDMTemplate findBySmallImageId(long smallImageId)
 		throws NoSuchTemplateException {
 
-		DDMTemplate ddmTemplate = fetchBySmallImageId(smallImageId);
+		return _findBySmallImageId(smallImageId, false);
+	}
+
+	private DDMTemplate _findBySmallImageId(
+			long smallImageId, boolean readOnlyCache)
+		throws NoSuchTemplateException {
+
+		DDMTemplate ddmTemplate = _fetchBySmallImageId(
+			smallImageId, true, readOnlyCache);
 
 		if (ddmTemplate == null) {
 			StringBundler sb = new StringBundler(4);
@@ -4608,6 +4719,12 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public DDMTemplate fetchBySmallImageId(
 		long smallImageId, boolean useFinderCache) {
+
+		return _fetchBySmallImageId(smallImageId, useFinderCache, false);
+	}
+
+	private DDMTemplate _fetchBySmallImageId(
+		long smallImageId, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
@@ -4679,9 +4796,11 @@ public class DDMTemplatePersistenceImpl
 
 					DDMTemplate ddmTemplate = list.get(0);
 
-					result = ddmTemplate;
+					if (!readOnlyCache) {
+						result = ddmTemplate;
 
-					cacheResult(ddmTemplate);
+						cacheResult(ddmTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4710,7 +4829,7 @@ public class DDMTemplatePersistenceImpl
 	public DDMTemplate removeBySmallImageId(long smallImageId)
 		throws NoSuchTemplateException {
 
-		DDMTemplate ddmTemplate = findBySmallImageId(smallImageId);
+		DDMTemplate ddmTemplate = _findBySmallImageId(smallImageId, true);
 
 		return remove(ddmTemplate);
 	}
@@ -4860,6 +4979,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMTemplate> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
 
@@ -4943,10 +5072,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5597,9 +5728,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (DDMTemplate ddmTemplate :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -5812,6 +5943,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_CPK(
+			groupId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMTemplate> _findByG_CPK(
+		long groupId, long classPK, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
 
@@ -5895,10 +6036,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6768,6 +6911,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_CPK(
+			groupIds, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMTemplate> _findByG_CPK(
+		long[] groupIds, long classPK, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -6867,11 +7020,14 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_CPK, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_CPK, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6894,9 +7050,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByG_CPK(long groupId, long classPK) {
 		for (DDMTemplate ddmTemplate :
-				findByG_CPK(
+				_findByG_CPK(
 					groupId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -7278,6 +7434,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByG_C_C(
+		long groupId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
 
@@ -7366,10 +7532,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8292,6 +8460,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupIds, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByG_C_C(
+		long[] groupIds, long classNameId, long classPK, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -8399,11 +8577,14 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_C_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_C_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8427,9 +8608,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByG_C_C(long groupId, long classNameId, long classPK) {
 		for (DDMTemplate ddmTemplate :
-				findByG_C_C(
+				_findByG_C_C(
 					groupId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -8768,8 +8949,16 @@ public class DDMTemplatePersistenceImpl
 			long groupId, long classNameId, String templateKey)
 		throws NoSuchTemplateException {
 
-		DDMTemplate ddmTemplate = fetchByG_C_T(
-			groupId, classNameId, templateKey);
+		return _findByG_C_T(groupId, classNameId, templateKey, false);
+	}
+
+	private DDMTemplate _findByG_C_T(
+			long groupId, long classNameId, String templateKey,
+			boolean readOnlyCache)
+		throws NoSuchTemplateException {
+
+		DDMTemplate ddmTemplate = _fetchByG_C_T(
+			groupId, classNameId, templateKey, true, readOnlyCache);
 
 		if (ddmTemplate == null) {
 			StringBundler sb = new StringBundler(8);
@@ -8825,6 +9014,14 @@ public class DDMTemplatePersistenceImpl
 	public DDMTemplate fetchByG_C_T(
 		long groupId, long classNameId, String templateKey,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_T(
+			groupId, classNameId, templateKey, useFinderCache, false);
+	}
+
+	private DDMTemplate _fetchByG_C_T(
+		long groupId, long classNameId, String templateKey,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		templateKey = Objects.toString(templateKey, "");
 
@@ -8904,9 +9101,11 @@ public class DDMTemplatePersistenceImpl
 				else {
 					DDMTemplate ddmTemplate = list.get(0);
 
-					result = ddmTemplate;
+					if (!readOnlyCache) {
+						result = ddmTemplate;
 
-					cacheResult(ddmTemplate);
+						cacheResult(ddmTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8938,8 +9137,8 @@ public class DDMTemplatePersistenceImpl
 			long groupId, long classNameId, String templateKey)
 		throws NoSuchTemplateException {
 
-		DDMTemplate ddmTemplate = findByG_C_T(
-			groupId, classNameId, templateKey);
+		DDMTemplate ddmTemplate = _findByG_C_T(
+			groupId, classNameId, templateKey, true);
 
 		return remove(ddmTemplate);
 	}
@@ -9130,6 +9329,16 @@ public class DDMTemplatePersistenceImpl
 		OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_T(
+			classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByC_C_T(
+		long classNameId, long classPK, String type, int start, int end,
+		OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -9231,10 +9440,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9570,9 +9781,9 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void removeByC_C_T(long classNameId, long classPK, String type) {
 		for (DDMTemplate ddmTemplate :
-				findByC_C_T(
+				_findByC_C_T(
 					classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -9769,6 +9980,16 @@ public class DDMTemplatePersistenceImpl
 		int end, OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_T(
+			groupId, classNameId, classPK, type, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByG_C_C_T(
+		long groupId, long classNameId, long classPK, String type, int start,
+		int end, OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -9876,10 +10097,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10635,9 +10858,9 @@ public class DDMTemplatePersistenceImpl
 		long groupId, long classNameId, long classPK, String type) {
 
 		for (DDMTemplate ddmTemplate :
-				findByG_C_C_T(
+				_findByG_C_C_T(
 					groupId, classNameId, classPK, type, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -10933,6 +11156,16 @@ public class DDMTemplatePersistenceImpl
 		int start, int end, OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_T_M(
+			groupId, classNameId, classPK, type, mode, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findByG_C_C_T_M(
+		long groupId, long classNameId, long classPK, String type, String mode,
+		int start, int end, OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		type = Objects.toString(type, "");
 		mode = Objects.toString(mode, "");
 
@@ -11059,10 +11292,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11886,9 +12121,9 @@ public class DDMTemplatePersistenceImpl
 		String mode) {
 
 		for (DDMTemplate ddmTemplate :
-				findByG_C_C_T_M(
+				_findByG_C_C_T_M(
 					groupId, classNameId, classPK, type, mode,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmTemplate);
 		}
@@ -12743,6 +12978,13 @@ public class DDMTemplatePersistenceImpl
 		int start, int end, OrderByComparator<DDMTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMTemplate> _findAll(
+		int start, int end, OrderByComparator<DDMTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMTemplate.class);
 
@@ -12800,10 +13042,12 @@ public class DDMTemplatePersistenceImpl
 				list = (List<DDMTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -12823,7 +13067,10 @@ public class DDMTemplatePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMTemplate ddmTemplate : findAll()) {
+		for (DDMTemplate ddmTemplate :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmTemplate);
 		}
 	}

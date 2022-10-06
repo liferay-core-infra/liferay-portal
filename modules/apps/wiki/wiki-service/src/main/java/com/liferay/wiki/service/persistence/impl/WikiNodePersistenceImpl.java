@@ -172,6 +172,15 @@ public class WikiNodePersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiNode> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -257,10 +266,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -554,7 +565,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (WikiNode wikiNode :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiNode);
 		}
@@ -643,7 +656,14 @@ public class WikiNodePersistenceImpl
 	public WikiNode findByUUID_G(String uuid, long groupId)
 		throws NoSuchNodeException {
 
-		WikiNode wikiNode = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private WikiNode _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchNodeException {
+
+		WikiNode wikiNode = _fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (wikiNode == null) {
 			StringBundler sb = new StringBundler(6);
@@ -691,6 +711,13 @@ public class WikiNodePersistenceImpl
 	@Override
 	public WikiNode fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private WikiNode _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -763,9 +790,11 @@ public class WikiNodePersistenceImpl
 				else {
 					WikiNode wikiNode = list.get(0);
 
-					result = wikiNode;
+					if (!readOnlyCache) {
+						result = wikiNode;
 
-					cacheResult(wikiNode);
+						cacheResult(wikiNode);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -795,7 +824,7 @@ public class WikiNodePersistenceImpl
 	public WikiNode removeByUUID_G(String uuid, long groupId)
 		throws NoSuchNodeException {
 
-		WikiNode wikiNode = findByUUID_G(uuid, groupId);
+		WikiNode wikiNode = _findByUUID_G(uuid, groupId, true);
 
 		return remove(wikiNode);
 	}
@@ -956,6 +985,16 @@ public class WikiNodePersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiNode> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -1049,10 +1088,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1369,9 +1410,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (WikiNode wikiNode :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiNode);
 		}
@@ -1526,6 +1567,15 @@ public class WikiNodePersistenceImpl
 		long groupId, int start, int end,
 		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiNode> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1598,10 +1648,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2206,8 +2258,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (WikiNode wikiNode :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiNode);
 		}
@@ -2386,6 +2439,15 @@ public class WikiNodePersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiNode> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2460,10 +2522,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2746,8 +2810,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (WikiNode wikiNode :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(wikiNode);
 		}
@@ -2820,7 +2885,14 @@ public class WikiNodePersistenceImpl
 	public WikiNode findByG_N(long groupId, String name)
 		throws NoSuchNodeException {
 
-		WikiNode wikiNode = fetchByG_N(groupId, name);
+		return _findByG_N(groupId, name, false);
+	}
+
+	private WikiNode _findByG_N(
+			long groupId, String name, boolean readOnlyCache)
+		throws NoSuchNodeException {
+
+		WikiNode wikiNode = _fetchByG_N(groupId, name, true, readOnlyCache);
 
 		if (wikiNode == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2868,6 +2940,13 @@ public class WikiNodePersistenceImpl
 	@Override
 	public WikiNode fetchByG_N(
 		long groupId, String name, boolean useFinderCache) {
+
+		return _fetchByG_N(groupId, name, useFinderCache, false);
+	}
+
+	private WikiNode _fetchByG_N(
+		long groupId, String name, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		name = Objects.toString(name, "");
 
@@ -2939,9 +3018,11 @@ public class WikiNodePersistenceImpl
 				else {
 					WikiNode wikiNode = list.get(0);
 
-					result = wikiNode;
+					if (!readOnlyCache) {
+						result = wikiNode;
 
-					cacheResult(wikiNode);
+						cacheResult(wikiNode);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2971,7 +3052,7 @@ public class WikiNodePersistenceImpl
 	public WikiNode removeByG_N(long groupId, String name)
 		throws NoSuchNodeException {
 
-		WikiNode wikiNode = findByG_N(groupId, name);
+		WikiNode wikiNode = _findByG_N(groupId, name, true);
 
 		return remove(wikiNode);
 	}
@@ -3130,6 +3211,16 @@ public class WikiNodePersistenceImpl
 		long groupId, int status, int start, int end,
 		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache) {
 
+		return _findByG_S(
+			groupId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiNode> _findByG_S(
+		long groupId, int status, int start, int end,
+		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3210,10 +3301,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3852,9 +3945,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void removeByG_S(long groupId, int status) {
 		for (WikiNode wikiNode :
-				findByG_S(
-					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByG_S(
+					groupId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(wikiNode);
 		}
@@ -4053,6 +4146,16 @@ public class WikiNodePersistenceImpl
 		long companyId, int status, int start, int end,
 		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_S(
+			companyId, status, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<WikiNode> _findByC_S(
+		long companyId, int status, int start, int end,
+		OrderByComparator<WikiNode> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4133,10 +4236,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4440,9 +4545,9 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void removeByC_S(long companyId, int status) {
 		for (WikiNode wikiNode :
-				findByC_S(
+				_findByC_S(
 					companyId, status, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(wikiNode);
 		}
@@ -4523,7 +4628,15 @@ public class WikiNodePersistenceImpl
 	public WikiNode findByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchNodeException {
 
-		WikiNode wikiNode = fetchByG_ERC(groupId, externalReferenceCode);
+		return _findByG_ERC(groupId, externalReferenceCode, false);
+	}
+
+	private WikiNode _findByG_ERC(
+			long groupId, String externalReferenceCode, boolean readOnlyCache)
+		throws NoSuchNodeException {
+
+		WikiNode wikiNode = _fetchByG_ERC(
+			groupId, externalReferenceCode, true, readOnlyCache);
 
 		if (wikiNode == null) {
 			StringBundler sb = new StringBundler(6);
@@ -4571,6 +4684,14 @@ public class WikiNodePersistenceImpl
 	@Override
 	public WikiNode fetchByG_ERC(
 		long groupId, String externalReferenceCode, boolean useFinderCache) {
+
+		return _fetchByG_ERC(
+			groupId, externalReferenceCode, useFinderCache, false);
+	}
+
+	private WikiNode _fetchByG_ERC(
+		long groupId, String externalReferenceCode, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
@@ -4644,9 +4765,11 @@ public class WikiNodePersistenceImpl
 				else {
 					WikiNode wikiNode = list.get(0);
 
-					result = wikiNode;
+					if (!readOnlyCache) {
+						result = wikiNode;
 
-					cacheResult(wikiNode);
+						cacheResult(wikiNode);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4676,7 +4799,7 @@ public class WikiNodePersistenceImpl
 	public WikiNode removeByG_ERC(long groupId, String externalReferenceCode)
 		throws NoSuchNodeException {
 
-		WikiNode wikiNode = findByG_ERC(groupId, externalReferenceCode);
+		WikiNode wikiNode = _findByG_ERC(groupId, externalReferenceCode, true);
 
 		return remove(wikiNode);
 	}
@@ -5194,6 +5317,13 @@ public class WikiNodePersistenceImpl
 		int start, int end, OrderByComparator<WikiNode> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<WikiNode> _findAll(
+		int start, int end, OrderByComparator<WikiNode> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -5248,10 +5378,12 @@ public class WikiNodePersistenceImpl
 				list = (List<WikiNode>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5271,7 +5403,10 @@ public class WikiNodePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (WikiNode wikiNode : findAll()) {
+		for (WikiNode wikiNode :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(wikiNode);
 		}
 	}

@@ -172,6 +172,15 @@ public class LockPersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Lock> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -256,10 +265,12 @@ public class LockPersistenceImpl
 				list = (List<Lock>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -551,7 +562,9 @@ public class LockPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Lock lock :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lock);
 		}
@@ -704,6 +717,16 @@ public class LockPersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Lock> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -796,10 +819,12 @@ public class LockPersistenceImpl
 				list = (List<Lock>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1114,9 +1139,9 @@ public class LockPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Lock lock :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(lock);
 		}
@@ -1271,6 +1296,15 @@ public class LockPersistenceImpl
 		String className, int start, int end,
 		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
+		return _findByClassName(
+			className, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Lock> _findByClassName(
+		String className, int start, int end,
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		className = Objects.toString(className, "");
 
 		FinderPath finderPath = null;
@@ -1357,10 +1391,12 @@ public class LockPersistenceImpl
 				list = (List<Lock>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1654,8 +1690,9 @@ public class LockPersistenceImpl
 	@Override
 	public void removeByClassName(String className) {
 		for (Lock lock :
-				findByClassName(
-					className, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByClassName(
+					className, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lock);
 		}
@@ -1804,6 +1841,16 @@ public class LockPersistenceImpl
 		Date expirationDate, int start, int end,
 		OrderByComparator<Lock> orderByComparator, boolean useFinderCache) {
 
+		return _findByLtExpirationDate(
+			expirationDate, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Lock> _findByLtExpirationDate(
+		Date expirationDate, int start, int end,
+		OrderByComparator<Lock> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1880,10 +1927,12 @@ public class LockPersistenceImpl
 				list = (List<Lock>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2178,9 +2227,9 @@ public class LockPersistenceImpl
 	@Override
 	public void removeByLtExpirationDate(Date expirationDate) {
 		for (Lock lock :
-				findByLtExpirationDate(
-					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByLtExpirationDate(
+					expirationDate, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(lock);
 		}
@@ -2270,7 +2319,13 @@ public class LockPersistenceImpl
 	public Lock findByC_K(String className, String key)
 		throws NoSuchLockException {
 
-		Lock lock = fetchByC_K(className, key);
+		return _findByC_K(className, key, false);
+	}
+
+	private Lock _findByC_K(String className, String key, boolean readOnlyCache)
+		throws NoSuchLockException {
+
+		Lock lock = _fetchByC_K(className, key, true, readOnlyCache);
 
 		if (lock == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2318,6 +2373,13 @@ public class LockPersistenceImpl
 	@Override
 	public Lock fetchByC_K(
 		String className, String key, boolean useFinderCache) {
+
+		return _fetchByC_K(className, key, useFinderCache, false);
+	}
+
+	private Lock _fetchByC_K(
+		String className, String key, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		className = Objects.toString(className, "");
 		key = Objects.toString(key, "");
@@ -2401,9 +2463,11 @@ public class LockPersistenceImpl
 				else {
 					Lock lock = list.get(0);
 
-					result = lock;
+					if (!readOnlyCache) {
+						result = lock;
 
-					cacheResult(lock);
+						cacheResult(lock);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2433,7 +2497,7 @@ public class LockPersistenceImpl
 	public Lock removeByC_K(String className, String key)
 		throws NoSuchLockException {
 
-		Lock lock = findByC_K(className, key);
+		Lock lock = _findByC_K(className, key, true);
 
 		return remove(lock);
 	}
@@ -2921,6 +2985,13 @@ public class LockPersistenceImpl
 		int start, int end, OrderByComparator<Lock> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Lock> _findAll(
+		int start, int end, OrderByComparator<Lock> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2974,10 +3045,12 @@ public class LockPersistenceImpl
 				list = (List<Lock>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2997,7 +3070,10 @@ public class LockPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Lock lock : findAll()) {
+		for (Lock lock :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(lock);
 		}
 	}

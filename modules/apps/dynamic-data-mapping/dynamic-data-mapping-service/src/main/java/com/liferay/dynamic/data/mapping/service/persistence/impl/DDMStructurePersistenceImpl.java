@@ -183,6 +183,15 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -271,10 +280,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -568,7 +579,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (DDMStructure ddmStructure :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmStructure);
 		}
@@ -669,7 +682,15 @@ public class DDMStructurePersistenceImpl
 	public DDMStructure findByUUID_G(String uuid, long groupId)
 		throws NoSuchStructureException {
 
-		DDMStructure ddmStructure = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private DDMStructure _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchStructureException {
+
+		DDMStructure ddmStructure = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (ddmStructure == null) {
 			StringBundler sb = new StringBundler(6);
@@ -717,6 +738,13 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public DDMStructure fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private DDMStructure _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -792,9 +820,11 @@ public class DDMStructurePersistenceImpl
 				else {
 					DDMStructure ddmStructure = list.get(0);
 
-					result = ddmStructure;
+					if (!readOnlyCache) {
+						result = ddmStructure;
 
-					cacheResult(ddmStructure);
+						cacheResult(ddmStructure);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -824,7 +854,7 @@ public class DDMStructurePersistenceImpl
 	public DDMStructure removeByUUID_G(String uuid, long groupId)
 		throws NoSuchStructureException {
 
-		DDMStructure ddmStructure = findByUUID_G(uuid, groupId);
+		DDMStructure ddmStructure = _findByUUID_G(uuid, groupId, true);
 
 		return remove(ddmStructure);
 	}
@@ -998,6 +1028,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructure> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1094,10 +1134,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1416,9 +1458,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (DDMStructure ddmStructure :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -1587,6 +1629,15 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructure.class);
 
@@ -1662,10 +1713,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2487,6 +2540,15 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupIds, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByGroupId(
+		long[] groupIds, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -2575,12 +2637,14 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByGroupId, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByGroupId, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2602,8 +2666,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (DDMStructure ddmStructure :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(ddmStructure);
 		}
@@ -2942,6 +3007,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByParentStructureId(
+			parentStructureId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructure> _findByParentStructureId(
+		long parentStructureId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructure.class);
 
@@ -3022,10 +3097,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3315,9 +3392,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByParentStructureId(long parentStructureId) {
 		for (DDMStructure ddmStructure :
-				findByParentStructureId(
+				_findByParentStructureId(
 					parentStructureId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -3465,6 +3542,15 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByStructureKey(
+			structureKey, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByStructureKey(
+		String structureKey, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		structureKey = Objects.toString(structureKey, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -3555,10 +3641,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3859,8 +3947,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByStructureKey(String structureKey) {
 		for (DDMStructure ddmStructure :
-				findByStructureKey(
-					structureKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByStructureKey(
+					structureKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -4028,6 +4117,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_P(
+			groupId, parentStructureId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByG_P(
+		long groupId, long parentStructureId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructure.class);
 
@@ -4112,10 +4211,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4771,9 +4872,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByG_P(long groupId, long parentStructureId) {
 		for (DDMStructure ddmStructure :
-				findByG_P(
+				_findByG_P(
 					groupId, parentStructureId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -4986,6 +5087,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupId, classNameId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<DDMStructure> _findByG_C(
+		long groupId, long classNameId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructure.class);
 
@@ -5069,10 +5180,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5951,6 +6064,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C(
+			groupIds, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByG_C(
+		long[] groupIds, long classNameId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -6052,11 +6175,14 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_C, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_C, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6079,9 +6205,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByG_C(long groupId, long classNameId) {
 		for (DDMStructure ddmStructure :
-				findByG_C(
+				_findByG_C(
 					groupId, classNameId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -6454,6 +6580,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByC_C(
+		long companyId, long classNameId, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructure.class);
 
@@ -6537,10 +6673,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6847,9 +6985,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, long classNameId) {
 		for (DDMStructure ddmStructure :
-				findByC_C(
+				_findByC_C(
 					companyId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -6944,8 +7082,16 @@ public class DDMStructurePersistenceImpl
 			long groupId, long classNameId, String structureKey)
 		throws NoSuchStructureException {
 
-		DDMStructure ddmStructure = fetchByG_C_S(
-			groupId, classNameId, structureKey);
+		return _findByG_C_S(groupId, classNameId, structureKey, false);
+	}
+
+	private DDMStructure _findByG_C_S(
+			long groupId, long classNameId, String structureKey,
+			boolean readOnlyCache)
+		throws NoSuchStructureException {
+
+		DDMStructure ddmStructure = _fetchByG_C_S(
+			groupId, classNameId, structureKey, true, readOnlyCache);
 
 		if (ddmStructure == null) {
 			StringBundler sb = new StringBundler(8);
@@ -7001,6 +7147,14 @@ public class DDMStructurePersistenceImpl
 	public DDMStructure fetchByG_C_S(
 		long groupId, long classNameId, String structureKey,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_S(
+			groupId, classNameId, structureKey, useFinderCache, false);
+	}
+
+	private DDMStructure _fetchByG_C_S(
+		long groupId, long classNameId, String structureKey,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		structureKey = Objects.toString(structureKey, "");
 
@@ -7080,9 +7234,11 @@ public class DDMStructurePersistenceImpl
 				else {
 					DDMStructure ddmStructure = list.get(0);
 
-					result = ddmStructure;
+					if (!readOnlyCache) {
+						result = ddmStructure;
 
-					cacheResult(ddmStructure);
+						cacheResult(ddmStructure);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7114,8 +7270,8 @@ public class DDMStructurePersistenceImpl
 			long groupId, long classNameId, String structureKey)
 		throws NoSuchStructureException {
 
-		DDMStructure ddmStructure = findByG_C_S(
-			groupId, classNameId, structureKey);
+		DDMStructure ddmStructure = _findByG_C_S(
+			groupId, classNameId, structureKey, true);
 
 		return remove(ddmStructure);
 	}
@@ -7306,6 +7462,16 @@ public class DDMStructurePersistenceImpl
 		OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_N_D(
+			groupId, name, description, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByG_N_D(
+		long groupId, String name, String description, int start, int end,
+		OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		description = Objects.toString(description, "");
 
@@ -7419,10 +7585,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8181,9 +8349,9 @@ public class DDMStructurePersistenceImpl
 	@Override
 	public void removeByG_N_D(long groupId, String name, String description) {
 		for (DDMStructure ddmStructure :
-				findByG_N_D(
+				_findByG_N_D(
 					groupId, name, description, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -8481,6 +8649,16 @@ public class DDMStructurePersistenceImpl
 		int start, int end, OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_N_D(
+			groupId, classNameId, name, description, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByG_C_N_D(
+		long groupId, long classNameId, String name, String description,
+		int start, int end, OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		name = Objects.toString(name, "");
 		description = Objects.toString(description, "");
 
@@ -8602,10 +8780,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9680,6 +9860,16 @@ public class DDMStructurePersistenceImpl
 		int start, int end, OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_N_D(
+			groupIds, classNameId, name, description, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findByG_C_N_D(
+		long[] groupIds, long classNameId, String name, String description,
+		int start, int end, OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (groupIds == null) {
 			groupIds = new long[0];
 		}
@@ -9817,12 +10007,14 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_C_N_D, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_C_N_D, finderArgs,
+							list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -9849,9 +10041,9 @@ public class DDMStructurePersistenceImpl
 		long groupId, long classNameId, String name, String description) {
 
 		for (DDMStructure ddmStructure :
-				findByG_C_N_D(
+				_findByG_C_N_D(
 					groupId, classNameId, name, description, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(ddmStructure);
 		}
@@ -10911,6 +11103,13 @@ public class DDMStructurePersistenceImpl
 		int start, int end, OrderByComparator<DDMStructure> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMStructure> _findAll(
+		int start, int end, OrderByComparator<DDMStructure> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMStructure.class);
 
@@ -10968,10 +11167,12 @@ public class DDMStructurePersistenceImpl
 				list = (List<DDMStructure>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10991,7 +11192,10 @@ public class DDMStructurePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMStructure ddmStructure : findAll()) {
+		for (DDMStructure ddmStructure :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmStructure);
 		}
 	}

@@ -191,6 +191,18 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 				orderByComparator,
 			boolean useFinderCache) {
 
+		return _findByCommercePaymentMethodGroupRelId(
+			CommercePaymentMethodGroupRelId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<CommercePaymentMethodGroupRelQualifier>
+		_findByCommercePaymentMethodGroupRelId(
+			long CommercePaymentMethodGroupRelId, int start, int end,
+			OrderByComparator<CommercePaymentMethodGroupRelQualifier>
+				orderByComparator,
+			boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -277,10 +289,12 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 					(List<CommercePaymentMethodGroupRelQualifier>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -604,9 +618,9 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 
 		for (CommercePaymentMethodGroupRelQualifier
 				commercePaymentMethodGroupRelQualifier :
-					findByCommercePaymentMethodGroupRelId(
+					_findByCommercePaymentMethodGroupRelId(
 						CommercePaymentMethodGroupRelId, QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(commercePaymentMethodGroupRelQualifier);
 		}
@@ -760,6 +774,18 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, CommercePaymentMethodGroupRelId, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePaymentMethodGroupRelQualifier> _findByC_C(
+		long classNameId, long CommercePaymentMethodGroupRelId, int start,
+		int end,
+		OrderByComparator<CommercePaymentMethodGroupRelQualifier>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -853,10 +879,12 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 					(List<CommercePaymentMethodGroupRelQualifier>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1187,9 +1215,10 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 
 		for (CommercePaymentMethodGroupRelQualifier
 				commercePaymentMethodGroupRelQualifier :
-					findByC_C(
+					_findByC_C(
 						classNameId, CommercePaymentMethodGroupRelId,
-						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commercePaymentMethodGroupRelQualifier);
 		}
@@ -1278,9 +1307,19 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 			long CommercePaymentMethodGroupRelId)
 		throws NoSuchPaymentMethodGroupRelQualifierException {
 
+		return _findByC_C_C(
+			classNameId, classPK, CommercePaymentMethodGroupRelId, false);
+	}
+
+	private CommercePaymentMethodGroupRelQualifier _findByC_C_C(
+			long classNameId, long classPK,
+			long CommercePaymentMethodGroupRelId, boolean readOnlyCache)
+		throws NoSuchPaymentMethodGroupRelQualifierException {
+
 		CommercePaymentMethodGroupRelQualifier
-			commercePaymentMethodGroupRelQualifier = fetchByC_C_C(
-				classNameId, classPK, CommercePaymentMethodGroupRelId);
+			commercePaymentMethodGroupRelQualifier = _fetchByC_C_C(
+				classNameId, classPK, CommercePaymentMethodGroupRelId, true,
+				readOnlyCache);
 
 		if (commercePaymentMethodGroupRelQualifier == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1338,6 +1377,15 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 	public CommercePaymentMethodGroupRelQualifier fetchByC_C_C(
 		long classNameId, long classPK, long CommercePaymentMethodGroupRelId,
 		boolean useFinderCache) {
+
+		return _fetchByC_C_C(
+			classNameId, classPK, CommercePaymentMethodGroupRelId,
+			useFinderCache, false);
+	}
+
+	private CommercePaymentMethodGroupRelQualifier _fetchByC_C_C(
+		long classNameId, long classPK, long CommercePaymentMethodGroupRelId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -1411,9 +1459,11 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 					CommercePaymentMethodGroupRelQualifier
 						commercePaymentMethodGroupRelQualifier = list.get(0);
 
-					result = commercePaymentMethodGroupRelQualifier;
+					if (!readOnlyCache) {
+						result = commercePaymentMethodGroupRelQualifier;
 
-					cacheResult(commercePaymentMethodGroupRelQualifier);
+						cacheResult(commercePaymentMethodGroupRelQualifier);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1447,8 +1497,8 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 		throws NoSuchPaymentMethodGroupRelQualifierException {
 
 		CommercePaymentMethodGroupRelQualifier
-			commercePaymentMethodGroupRelQualifier = findByC_C_C(
-				classNameId, classPK, CommercePaymentMethodGroupRelId);
+			commercePaymentMethodGroupRelQualifier = _findByC_C_C(
+				classNameId, classPK, CommercePaymentMethodGroupRelId, true);
 
 		return remove(commercePaymentMethodGroupRelQualifier);
 	}
@@ -2029,6 +2079,15 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 			orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CommercePaymentMethodGroupRelQualifier> _findAll(
+		int start, int end,
+		OrderByComparator<CommercePaymentMethodGroupRelQualifier>
+			orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2087,10 +2146,12 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 					(List<CommercePaymentMethodGroupRelQualifier>)
 						QueryUtil.list(query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2111,7 +2172,10 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CommercePaymentMethodGroupRelQualifier
-				commercePaymentMethodGroupRelQualifier : findAll()) {
+				commercePaymentMethodGroupRelQualifier :
+					_findAll(
+						QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+						true)) {
 
 			remove(commercePaymentMethodGroupRelQualifier);
 		}

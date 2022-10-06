@@ -115,8 +115,15 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 	public DLOpenerFileEntryReference findByFileEntryId(long fileEntryId)
 		throws NoSuchFileEntryReferenceException {
 
+		return _findByFileEntryId(fileEntryId, false);
+	}
+
+	private DLOpenerFileEntryReference _findByFileEntryId(
+			long fileEntryId, boolean readOnlyCache)
+		throws NoSuchFileEntryReferenceException {
+
 		DLOpenerFileEntryReference dlOpenerFileEntryReference =
-			fetchByFileEntryId(fileEntryId);
+			_fetchByFileEntryId(fileEntryId, true, readOnlyCache);
 
 		if (dlOpenerFileEntryReference == null) {
 			StringBundler sb = new StringBundler(4);
@@ -159,6 +166,12 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 	@Override
 	public DLOpenerFileEntryReference fetchByFileEntryId(
 		long fileEntryId, boolean useFinderCache) {
+
+		return _fetchByFileEntryId(fileEntryId, useFinderCache, false);
+	}
+
+	private DLOpenerFileEntryReference _fetchByFileEntryId(
+		long fileEntryId, boolean useFinderCache, boolean readOnlyCache) {
 
 		Object[] finderArgs = null;
 
@@ -214,9 +227,11 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 					DLOpenerFileEntryReference dlOpenerFileEntryReference =
 						list.get(0);
 
-					result = dlOpenerFileEntryReference;
+					if (!readOnlyCache) {
+						result = dlOpenerFileEntryReference;
 
-					cacheResult(dlOpenerFileEntryReference);
+						cacheResult(dlOpenerFileEntryReference);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -246,7 +261,7 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 		throws NoSuchFileEntryReferenceException {
 
 		DLOpenerFileEntryReference dlOpenerFileEntryReference =
-			findByFileEntryId(fileEntryId);
+			_findByFileEntryId(fileEntryId, true);
 
 		return remove(dlOpenerFileEntryReference);
 	}
@@ -319,8 +334,15 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 			String referenceType, long fileEntryId)
 		throws NoSuchFileEntryReferenceException {
 
-		DLOpenerFileEntryReference dlOpenerFileEntryReference = fetchByR_F(
-			referenceType, fileEntryId);
+		return _findByR_F(referenceType, fileEntryId, false);
+	}
+
+	private DLOpenerFileEntryReference _findByR_F(
+			String referenceType, long fileEntryId, boolean readOnlyCache)
+		throws NoSuchFileEntryReferenceException {
+
+		DLOpenerFileEntryReference dlOpenerFileEntryReference = _fetchByR_F(
+			referenceType, fileEntryId, true, readOnlyCache);
 
 		if (dlOpenerFileEntryReference == null) {
 			StringBundler sb = new StringBundler(6);
@@ -370,6 +392,13 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 	@Override
 	public DLOpenerFileEntryReference fetchByR_F(
 		String referenceType, long fileEntryId, boolean useFinderCache) {
+
+		return _fetchByR_F(referenceType, fileEntryId, useFinderCache, false);
+	}
+
+	private DLOpenerFileEntryReference _fetchByR_F(
+		String referenceType, long fileEntryId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		referenceType = Objects.toString(referenceType, "");
 
@@ -445,9 +474,11 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 					DLOpenerFileEntryReference dlOpenerFileEntryReference =
 						list.get(0);
 
-					result = dlOpenerFileEntryReference;
+					if (!readOnlyCache) {
+						result = dlOpenerFileEntryReference;
 
-					cacheResult(dlOpenerFileEntryReference);
+						cacheResult(dlOpenerFileEntryReference);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -478,8 +509,8 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 			String referenceType, long fileEntryId)
 		throws NoSuchFileEntryReferenceException {
 
-		DLOpenerFileEntryReference dlOpenerFileEntryReference = findByR_F(
-			referenceType, fileEntryId);
+		DLOpenerFileEntryReference dlOpenerFileEntryReference = _findByR_F(
+			referenceType, fileEntryId, true);
 
 		return remove(dlOpenerFileEntryReference);
 	}
@@ -1031,6 +1062,14 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 		OrderByComparator<DLOpenerFileEntryReference> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DLOpenerFileEntryReference> _findAll(
+		int start, int end,
+		OrderByComparator<DLOpenerFileEntryReference> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1086,10 +1125,12 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 				list = (List<DLOpenerFileEntryReference>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1110,7 +1151,8 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 	@Override
 	public void removeAll() {
 		for (DLOpenerFileEntryReference dlOpenerFileEntryReference :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(dlOpenerFileEntryReference);
 		}

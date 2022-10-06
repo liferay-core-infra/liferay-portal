@@ -179,6 +179,15 @@ public class LayoutSEOEntryPersistenceImpl
 		OrderByComparator<LayoutSEOEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutSEOEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LayoutSEOEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class LayoutSEOEntryPersistenceImpl
 				list = (List<LayoutSEOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -567,7 +578,9 @@ public class LayoutSEOEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LayoutSEOEntry layoutSEOEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(layoutSEOEntry);
 		}
@@ -668,7 +681,15 @@ public class LayoutSEOEntryPersistenceImpl
 	public LayoutSEOEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		LayoutSEOEntry layoutSEOEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private LayoutSEOEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		LayoutSEOEntry layoutSEOEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (layoutSEOEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -716,6 +737,13 @@ public class LayoutSEOEntryPersistenceImpl
 	@Override
 	public LayoutSEOEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private LayoutSEOEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -791,9 +819,11 @@ public class LayoutSEOEntryPersistenceImpl
 				else {
 					LayoutSEOEntry layoutSEOEntry = list.get(0);
 
-					result = layoutSEOEntry;
+					if (!readOnlyCache) {
+						result = layoutSEOEntry;
 
-					cacheResult(layoutSEOEntry);
+						cacheResult(layoutSEOEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -823,7 +853,7 @@ public class LayoutSEOEntryPersistenceImpl
 	public LayoutSEOEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchEntryException {
 
-		LayoutSEOEntry layoutSEOEntry = findByUUID_G(uuid, groupId);
+		LayoutSEOEntry layoutSEOEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(layoutSEOEntry);
 	}
@@ -997,6 +1027,16 @@ public class LayoutSEOEntryPersistenceImpl
 		OrderByComparator<LayoutSEOEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<LayoutSEOEntry> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<LayoutSEOEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1093,10 +1133,12 @@ public class LayoutSEOEntryPersistenceImpl
 				list = (List<LayoutSEOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1417,9 +1459,9 @@ public class LayoutSEOEntryPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (LayoutSEOEntry layoutSEOEntry :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(layoutSEOEntry);
 		}
@@ -1530,8 +1572,16 @@ public class LayoutSEOEntryPersistenceImpl
 			long groupId, boolean privateLayout, long layoutId)
 		throws NoSuchEntryException {
 
-		LayoutSEOEntry layoutSEOEntry = fetchByG_P_L(
-			groupId, privateLayout, layoutId);
+		return _findByG_P_L(groupId, privateLayout, layoutId, false);
+	}
+
+	private LayoutSEOEntry _findByG_P_L(
+			long groupId, boolean privateLayout, long layoutId,
+			boolean readOnlyCache)
+		throws NoSuchEntryException {
+
+		LayoutSEOEntry layoutSEOEntry = _fetchByG_P_L(
+			groupId, privateLayout, layoutId, true, readOnlyCache);
 
 		if (layoutSEOEntry == null) {
 			StringBundler sb = new StringBundler(8);
@@ -1587,6 +1637,14 @@ public class LayoutSEOEntryPersistenceImpl
 	public LayoutSEOEntry fetchByG_P_L(
 		long groupId, boolean privateLayout, long layoutId,
 		boolean useFinderCache) {
+
+		return _fetchByG_P_L(
+			groupId, privateLayout, layoutId, useFinderCache, false);
+	}
+
+	private LayoutSEOEntry _fetchByG_P_L(
+		long groupId, boolean privateLayout, long layoutId,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutSEOEntry.class);
@@ -1653,9 +1711,11 @@ public class LayoutSEOEntryPersistenceImpl
 				else {
 					LayoutSEOEntry layoutSEOEntry = list.get(0);
 
-					result = layoutSEOEntry;
+					if (!readOnlyCache) {
+						result = layoutSEOEntry;
 
-					cacheResult(layoutSEOEntry);
+						cacheResult(layoutSEOEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1687,8 +1747,8 @@ public class LayoutSEOEntryPersistenceImpl
 			long groupId, boolean privateLayout, long layoutId)
 		throws NoSuchEntryException {
 
-		LayoutSEOEntry layoutSEOEntry = findByG_P_L(
-			groupId, privateLayout, layoutId);
+		LayoutSEOEntry layoutSEOEntry = _findByG_P_L(
+			groupId, privateLayout, layoutId, true);
 
 		return remove(layoutSEOEntry);
 	}
@@ -2376,6 +2436,13 @@ public class LayoutSEOEntryPersistenceImpl
 		int start, int end, OrderByComparator<LayoutSEOEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LayoutSEOEntry> _findAll(
+		int start, int end, OrderByComparator<LayoutSEOEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			LayoutSEOEntry.class);
 
@@ -2433,10 +2500,12 @@ public class LayoutSEOEntryPersistenceImpl
 				list = (List<LayoutSEOEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2456,7 +2525,10 @@ public class LayoutSEOEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LayoutSEOEntry layoutSEOEntry : findAll()) {
+		for (LayoutSEOEntry layoutSEOEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(layoutSEOEntry);
 		}
 	}

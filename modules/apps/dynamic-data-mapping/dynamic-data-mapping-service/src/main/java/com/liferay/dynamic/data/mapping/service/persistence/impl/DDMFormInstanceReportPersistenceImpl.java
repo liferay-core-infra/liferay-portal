@@ -120,8 +120,15 @@ public class DDMFormInstanceReportPersistenceImpl
 	public DDMFormInstanceReport findByFormInstanceId(long formInstanceId)
 		throws NoSuchFormInstanceReportException {
 
-		DDMFormInstanceReport ddmFormInstanceReport = fetchByFormInstanceId(
-			formInstanceId);
+		return _findByFormInstanceId(formInstanceId, false);
+	}
+
+	private DDMFormInstanceReport _findByFormInstanceId(
+			long formInstanceId, boolean readOnlyCache)
+		throws NoSuchFormInstanceReportException {
+
+		DDMFormInstanceReport ddmFormInstanceReport = _fetchByFormInstanceId(
+			formInstanceId, true, readOnlyCache);
 
 		if (ddmFormInstanceReport == null) {
 			StringBundler sb = new StringBundler(4);
@@ -164,6 +171,12 @@ public class DDMFormInstanceReportPersistenceImpl
 	@Override
 	public DDMFormInstanceReport fetchByFormInstanceId(
 		long formInstanceId, boolean useFinderCache) {
+
+		return _fetchByFormInstanceId(formInstanceId, useFinderCache, false);
+	}
+
+	private DDMFormInstanceReport _fetchByFormInstanceId(
+		long formInstanceId, boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstanceReport.class);
@@ -236,9 +249,11 @@ public class DDMFormInstanceReportPersistenceImpl
 
 					DDMFormInstanceReport ddmFormInstanceReport = list.get(0);
 
-					result = ddmFormInstanceReport;
+					if (!readOnlyCache) {
+						result = ddmFormInstanceReport;
 
-					cacheResult(ddmFormInstanceReport);
+						cacheResult(ddmFormInstanceReport);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -267,8 +282,8 @@ public class DDMFormInstanceReportPersistenceImpl
 	public DDMFormInstanceReport removeByFormInstanceId(long formInstanceId)
 		throws NoSuchFormInstanceReportException {
 
-		DDMFormInstanceReport ddmFormInstanceReport = findByFormInstanceId(
-			formInstanceId);
+		DDMFormInstanceReport ddmFormInstanceReport = _findByFormInstanceId(
+			formInstanceId, true);
 
 		return remove(ddmFormInstanceReport);
 	}
@@ -933,6 +948,14 @@ public class DDMFormInstanceReportPersistenceImpl
 		OrderByComparator<DDMFormInstanceReport> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<DDMFormInstanceReport> _findAll(
+		int start, int end,
+		OrderByComparator<DDMFormInstanceReport> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			DDMFormInstanceReport.class);
 
@@ -990,10 +1013,12 @@ public class DDMFormInstanceReportPersistenceImpl
 				list = (List<DDMFormInstanceReport>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1013,7 +1038,10 @@ public class DDMFormInstanceReportPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (DDMFormInstanceReport ddmFormInstanceReport : findAll()) {
+		for (DDMFormInstanceReport ddmFormInstanceReport :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(ddmFormInstanceReport);
 		}
 	}

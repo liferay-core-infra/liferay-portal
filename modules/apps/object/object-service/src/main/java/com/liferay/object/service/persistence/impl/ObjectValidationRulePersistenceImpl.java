@@ -176,6 +176,15 @@ public class ObjectValidationRulePersistenceImpl
 		OrderByComparator<ObjectValidationRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectValidationRule> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<ObjectValidationRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -261,10 +270,12 @@ public class ObjectValidationRulePersistenceImpl
 				list = (List<ObjectValidationRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -568,7 +579,9 @@ public class ObjectValidationRulePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (ObjectValidationRule objectValidationRule :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(objectValidationRule);
 		}
@@ -725,6 +738,16 @@ public class ObjectValidationRulePersistenceImpl
 		OrderByComparator<ObjectValidationRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectValidationRule> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<ObjectValidationRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -818,10 +841,12 @@ public class ObjectValidationRulePersistenceImpl
 				list = (List<ObjectValidationRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1144,9 +1169,9 @@ public class ObjectValidationRulePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (ObjectValidationRule objectValidationRule :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(objectValidationRule);
 		}
@@ -1307,6 +1332,16 @@ public class ObjectValidationRulePersistenceImpl
 		OrderByComparator<ObjectValidationRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByObjectDefinitionId(
+			objectDefinitionId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<ObjectValidationRule> _findByObjectDefinitionId(
+		long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectValidationRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1384,10 +1419,12 @@ public class ObjectValidationRulePersistenceImpl
 				list = (List<ObjectValidationRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1683,9 +1720,9 @@ public class ObjectValidationRulePersistenceImpl
 	@Override
 	public void removeByObjectDefinitionId(long objectDefinitionId) {
 		for (ObjectValidationRule objectValidationRule :
-				findByObjectDefinitionId(
+				_findByObjectDefinitionId(
 					objectDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(objectValidationRule);
 		}
@@ -1828,6 +1865,16 @@ public class ObjectValidationRulePersistenceImpl
 		OrderByComparator<ObjectValidationRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByODI_A(
+			objectDefinitionId, active, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<ObjectValidationRule> _findByODI_A(
+		long objectDefinitionId, boolean active, int start, int end,
+		OrderByComparator<ObjectValidationRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1909,10 +1956,12 @@ public class ObjectValidationRulePersistenceImpl
 				list = (List<ObjectValidationRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2223,9 +2272,9 @@ public class ObjectValidationRulePersistenceImpl
 	@Override
 	public void removeByODI_A(long objectDefinitionId, boolean active) {
 		for (ObjectValidationRule objectValidationRule :
-				findByODI_A(
+				_findByODI_A(
 					objectDefinitionId, active, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(objectValidationRule);
 		}
@@ -2713,6 +2762,14 @@ public class ObjectValidationRulePersistenceImpl
 		OrderByComparator<ObjectValidationRule> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<ObjectValidationRule> _findAll(
+		int start, int end,
+		OrderByComparator<ObjectValidationRule> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2767,10 +2824,12 @@ public class ObjectValidationRulePersistenceImpl
 				list = (List<ObjectValidationRule>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2790,7 +2849,10 @@ public class ObjectValidationRulePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (ObjectValidationRule objectValidationRule : findAll()) {
+		for (ObjectValidationRule objectValidationRule :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(objectValidationRule);
 		}
 	}

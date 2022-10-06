@@ -187,6 +187,15 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -275,10 +284,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -580,7 +591,9 @@ public class SegmentsExperiencePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (SegmentsExperience segmentsExperience :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsExperience);
 		}
@@ -681,7 +694,15 @@ public class SegmentsExperiencePersistenceImpl
 	public SegmentsExperience findByUUID_G(String uuid, long groupId)
 		throws NoSuchExperienceException {
 
-		SegmentsExperience segmentsExperience = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private SegmentsExperience _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchExperienceException {
+
+		SegmentsExperience segmentsExperience = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (segmentsExperience == null) {
 			StringBundler sb = new StringBundler(6);
@@ -729,6 +750,13 @@ public class SegmentsExperiencePersistenceImpl
 	@Override
 	public SegmentsExperience fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private SegmentsExperience _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -804,9 +832,11 @@ public class SegmentsExperiencePersistenceImpl
 				else {
 					SegmentsExperience segmentsExperience = list.get(0);
 
-					result = segmentsExperience;
+					if (!readOnlyCache) {
+						result = segmentsExperience;
 
-					cacheResult(segmentsExperience);
+						cacheResult(segmentsExperience);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -836,7 +866,8 @@ public class SegmentsExperiencePersistenceImpl
 	public SegmentsExperience removeByUUID_G(String uuid, long groupId)
 		throws NoSuchExperienceException {
 
-		SegmentsExperience segmentsExperience = findByUUID_G(uuid, groupId);
+		SegmentsExperience segmentsExperience = _findByUUID_G(
+			uuid, groupId, true);
 
 		return remove(segmentsExperience);
 	}
@@ -1010,6 +1041,16 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsExperience> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1106,10 +1147,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1431,9 +1474,9 @@ public class SegmentsExperiencePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (SegmentsExperience segmentsExperience :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -1603,6 +1646,15 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -1678,10 +1730,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2305,8 +2359,9 @@ public class SegmentsExperiencePersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SegmentsExperience segmentsExperience :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(segmentsExperience);
 		}
@@ -2503,6 +2558,16 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findBySegmentsEntryId(
+			segmentsEntryId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SegmentsExperience> _findBySegmentsEntryId(
+		long segmentsEntryId, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -2582,10 +2647,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2879,9 +2946,9 @@ public class SegmentsExperiencePersistenceImpl
 	@Override
 	public void removeBySegmentsEntryId(long segmentsEntryId) {
 		for (SegmentsExperience segmentsExperience :
-				findBySegmentsEntryId(
-					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findBySegmentsEntryId(
+					segmentsEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -3040,6 +3107,16 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C(
+			groupId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_C_C(
+		long groupId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -3128,10 +3205,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3827,9 +3906,9 @@ public class SegmentsExperiencePersistenceImpl
 	@Override
 	public void removeByG_C_C(long groupId, long classNameId, long classPK) {
 		for (SegmentsExperience segmentsExperience :
-				findByG_C_C(
+				_findByG_C_C(
 					groupId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -4072,6 +4151,17 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S_C_C(
+			groupId, segmentsEntryId, classNameId, classPK, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_S_C_C(
+		long groupId, long segmentsEntryId, long classNameId, long classPK,
+		int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -4169,10 +4259,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4904,9 +4996,9 @@ public class SegmentsExperiencePersistenceImpl
 		long groupId, long segmentsEntryId, long classNameId, long classPK) {
 
 		for (SegmentsExperience segmentsExperience :
-				findByG_S_C_C(
+				_findByG_S_C_C(
 					groupId, segmentsEntryId, classNameId, classPK,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -5089,8 +5181,18 @@ public class SegmentsExperiencePersistenceImpl
 			long classPK)
 		throws NoSuchExperienceException {
 
-		SegmentsExperience segmentsExperience = fetchByG_SEK_C_C(
-			groupId, segmentsExperienceKey, classNameId, classPK);
+		return _findByG_SEK_C_C(
+			groupId, segmentsExperienceKey, classNameId, classPK, false);
+	}
+
+	private SegmentsExperience _findByG_SEK_C_C(
+			long groupId, String segmentsExperienceKey, long classNameId,
+			long classPK, boolean readOnlyCache)
+		throws NoSuchExperienceException {
+
+		SegmentsExperience segmentsExperience = _fetchByG_SEK_C_C(
+			groupId, segmentsExperienceKey, classNameId, classPK, true,
+			readOnlyCache);
 
 		if (segmentsExperience == null) {
 			StringBundler sb = new StringBundler(10);
@@ -5153,6 +5255,15 @@ public class SegmentsExperiencePersistenceImpl
 	public SegmentsExperience fetchByG_SEK_C_C(
 		long groupId, String segmentsExperienceKey, long classNameId,
 		long classPK, boolean useFinderCache) {
+
+		return _fetchByG_SEK_C_C(
+			groupId, segmentsExperienceKey, classNameId, classPK,
+			useFinderCache, false);
+	}
+
+	private SegmentsExperience _fetchByG_SEK_C_C(
+		long groupId, String segmentsExperienceKey, long classNameId,
+		long classPK, boolean useFinderCache, boolean readOnlyCache) {
 
 		segmentsExperienceKey = Objects.toString(segmentsExperienceKey, "");
 
@@ -5242,9 +5353,11 @@ public class SegmentsExperiencePersistenceImpl
 				else {
 					SegmentsExperience segmentsExperience = list.get(0);
 
-					result = segmentsExperience;
+					if (!readOnlyCache) {
+						result = segmentsExperience;
 
-					cacheResult(segmentsExperience);
+						cacheResult(segmentsExperience);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5278,8 +5391,8 @@ public class SegmentsExperiencePersistenceImpl
 			long classPK)
 		throws NoSuchExperienceException {
 
-		SegmentsExperience segmentsExperience = findByG_SEK_C_C(
-			groupId, segmentsExperienceKey, classNameId, classPK);
+		SegmentsExperience segmentsExperience = _findByG_SEK_C_C(
+			groupId, segmentsExperienceKey, classNameId, classPK, true);
 
 		return remove(segmentsExperience);
 	}
@@ -5413,8 +5526,16 @@ public class SegmentsExperiencePersistenceImpl
 			long groupId, long classNameId, long classPK, int priority)
 		throws NoSuchExperienceException {
 
-		SegmentsExperience segmentsExperience = fetchByG_C_C_P(
-			groupId, classNameId, classPK, priority);
+		return _findByG_C_C_P(groupId, classNameId, classPK, priority, false);
+	}
+
+	private SegmentsExperience _findByG_C_C_P(
+			long groupId, long classNameId, long classPK, int priority,
+			boolean readOnlyCache)
+		throws NoSuchExperienceException {
+
+		SegmentsExperience segmentsExperience = _fetchByG_C_C_P(
+			groupId, classNameId, classPK, priority, true, readOnlyCache);
 
 		if (segmentsExperience == null) {
 			StringBundler sb = new StringBundler(10);
@@ -5475,6 +5596,14 @@ public class SegmentsExperiencePersistenceImpl
 	public SegmentsExperience fetchByG_C_C_P(
 		long groupId, long classNameId, long classPK, int priority,
 		boolean useFinderCache) {
+
+		return _fetchByG_C_C_P(
+			groupId, classNameId, classPK, priority, useFinderCache, false);
+	}
+
+	private SegmentsExperience _fetchByG_C_C_P(
+		long groupId, long classNameId, long classPK, int priority,
+		boolean useFinderCache, boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
@@ -5547,9 +5676,11 @@ public class SegmentsExperiencePersistenceImpl
 				else {
 					SegmentsExperience segmentsExperience = list.get(0);
 
-					result = segmentsExperience;
+					if (!readOnlyCache) {
+						result = segmentsExperience;
 
-					cacheResult(segmentsExperience);
+						cacheResult(segmentsExperience);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -5582,8 +5713,8 @@ public class SegmentsExperiencePersistenceImpl
 			long groupId, long classNameId, long classPK, int priority)
 		throws NoSuchExperienceException {
 
-		SegmentsExperience segmentsExperience = findByG_C_C_P(
-			groupId, classNameId, classPK, priority);
+		SegmentsExperience segmentsExperience = _findByG_C_C_P(
+			groupId, classNameId, classPK, priority, true);
 
 		return remove(segmentsExperience);
 	}
@@ -5772,6 +5903,16 @@ public class SegmentsExperiencePersistenceImpl
 		int end, OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_GtP(
+			groupId, classNameId, classPK, priority, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_C_C_GtP(
+		long groupId, long classNameId, long classPK, int priority, int start,
+		int end, OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -5856,10 +5997,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -6588,9 +6731,9 @@ public class SegmentsExperiencePersistenceImpl
 		long groupId, long classNameId, long classPK, int priority) {
 
 		for (SegmentsExperience segmentsExperience :
-				findByG_C_C_GtP(
+				_findByG_C_C_GtP(
 					groupId, classNameId, classPK, priority, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -6845,6 +6988,16 @@ public class SegmentsExperiencePersistenceImpl
 		int end, OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_LtP(
+			groupId, classNameId, classPK, priority, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_C_C_LtP(
+		long groupId, long classNameId, long classPK, int priority, int start,
+		int end, OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -6929,10 +7082,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -7661,9 +7816,9 @@ public class SegmentsExperiencePersistenceImpl
 		long groupId, long classNameId, long classPK, int priority) {
 
 		for (SegmentsExperience segmentsExperience :
-				findByG_C_C_LtP(
+				_findByG_C_C_LtP(
 					groupId, classNameId, classPK, priority, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -7919,6 +8074,16 @@ public class SegmentsExperiencePersistenceImpl
 		int end, OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_C_C_A(
+			groupId, classNameId, classPK, active, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_C_C_A(
+		long groupId, long classNameId, long classPK, boolean active, int start,
+		int end, OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -8015,10 +8180,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -8747,9 +8914,9 @@ public class SegmentsExperiencePersistenceImpl
 		long groupId, long classNameId, long classPK, boolean active) {
 
 		for (SegmentsExperience segmentsExperience :
-				findByG_C_C_A(
+				_findByG_C_C_A(
 					groupId, classNameId, classPK, active, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -9017,6 +9184,17 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S_C_C_A(
+			groupId, segmentsEntryId, classNameId, classPK, active, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_S_C_C_A(
+		long groupId, long segmentsEntryId, long classNameId, long classPK,
+		boolean active, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -9119,10 +9297,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10161,6 +10341,17 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByG_S_C_C_A(
+			groupId, segmentsEntryIds, classNameId, classPK, active, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findByG_S_C_C_A(
+		long groupId, long[] segmentsEntryIds, long classNameId, long classPK,
+		boolean active, int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		if (segmentsEntryIds == null) {
 			segmentsEntryIds = new long[0];
 		}
@@ -10280,12 +10471,14 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(
-						_finderPathWithPaginationFindByG_S_C_C_A, finderArgs,
-						list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathWithPaginationFindByG_S_C_C_A,
+							finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -10314,9 +10507,9 @@ public class SegmentsExperiencePersistenceImpl
 		boolean active) {
 
 		for (SegmentsExperience segmentsExperience :
-				findByG_S_C_C_A(
+				_findByG_S_C_C_A(
 					groupId, segmentsEntryId, classNameId, classPK, active,
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(segmentsExperience);
 		}
@@ -11339,6 +11532,14 @@ public class SegmentsExperiencePersistenceImpl
 		OrderByComparator<SegmentsExperience> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SegmentsExperience> _findAll(
+		int start, int end,
+		OrderByComparator<SegmentsExperience> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			SegmentsExperience.class);
 
@@ -11396,10 +11597,12 @@ public class SegmentsExperiencePersistenceImpl
 				list = (List<SegmentsExperience>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -11419,7 +11622,10 @@ public class SegmentsExperiencePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SegmentsExperience segmentsExperience : findAll()) {
+		for (SegmentsExperience segmentsExperience :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(segmentsExperience);
 		}
 	}

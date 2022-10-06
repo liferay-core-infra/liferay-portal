@@ -166,6 +166,15 @@ public class SocialActivityLimitPersistenceImpl
 		OrderByComparator<SocialActivityLimit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByGroupId(
+			groupId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivityLimit> _findByGroupId(
+		long groupId, int start, int end,
+		OrderByComparator<SocialActivityLimit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityLimit.class);
 
@@ -241,10 +250,12 @@ public class SocialActivityLimitPersistenceImpl
 				list = (List<SocialActivityLimit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -536,8 +547,9 @@ public class SocialActivityLimitPersistenceImpl
 	@Override
 	public void removeByGroupId(long groupId) {
 		for (SocialActivityLimit socialActivityLimit :
-				findByGroupId(
-					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByGroupId(
+					groupId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialActivityLimit);
 		}
@@ -682,6 +694,15 @@ public class SocialActivityLimitPersistenceImpl
 		OrderByComparator<SocialActivityLimit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivityLimit> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<SocialActivityLimit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityLimit.class);
 
@@ -757,10 +778,12 @@ public class SocialActivityLimitPersistenceImpl
 				list = (List<SocialActivityLimit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1049,8 +1072,9 @@ public class SocialActivityLimitPersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (SocialActivityLimit socialActivityLimit :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(socialActivityLimit);
 		}
@@ -1201,6 +1225,16 @@ public class SocialActivityLimitPersistenceImpl
 		OrderByComparator<SocialActivityLimit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C(
+			classNameId, classPK, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<SocialActivityLimit> _findByC_C(
+		long classNameId, long classPK, int start, int end,
+		OrderByComparator<SocialActivityLimit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityLimit.class);
 
@@ -1284,10 +1318,12 @@ public class SocialActivityLimitPersistenceImpl
 				list = (List<SocialActivityLimit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1597,9 +1633,9 @@ public class SocialActivityLimitPersistenceImpl
 	@Override
 	public void removeByC_C(long classNameId, long classPK) {
 		for (SocialActivityLimit socialActivityLimit :
-				findByC_C(
+				_findByC_C(
 					classNameId, classPK, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+					null, true, true)) {
 
 			remove(socialActivityLimit);
 		}
@@ -1698,9 +1734,19 @@ public class SocialActivityLimitPersistenceImpl
 			int activityType, String activityCounterName)
 		throws NoSuchActivityLimitException {
 
-		SocialActivityLimit socialActivityLimit = fetchByG_U_C_C_A_A(
+		return _findByG_U_C_C_A_A(
 			groupId, userId, classNameId, classPK, activityType,
-			activityCounterName);
+			activityCounterName, false);
+	}
+
+	private SocialActivityLimit _findByG_U_C_C_A_A(
+			long groupId, long userId, long classNameId, long classPK,
+			int activityType, String activityCounterName, boolean readOnlyCache)
+		throws NoSuchActivityLimitException {
+
+		SocialActivityLimit socialActivityLimit = _fetchByG_U_C_C_A_A(
+			groupId, userId, classNameId, classPK, activityType,
+			activityCounterName, true, readOnlyCache);
 
 		if (socialActivityLimit == null) {
 			StringBundler sb = new StringBundler(14);
@@ -1774,6 +1820,16 @@ public class SocialActivityLimitPersistenceImpl
 	public SocialActivityLimit fetchByG_U_C_C_A_A(
 		long groupId, long userId, long classNameId, long classPK,
 		int activityType, String activityCounterName, boolean useFinderCache) {
+
+		return _fetchByG_U_C_C_A_A(
+			groupId, userId, classNameId, classPK, activityType,
+			activityCounterName, useFinderCache, false);
+	}
+
+	private SocialActivityLimit _fetchByG_U_C_C_A_A(
+		long groupId, long userId, long classNameId, long classPK,
+		int activityType, String activityCounterName, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		activityCounterName = Objects.toString(activityCounterName, "");
 
@@ -1875,9 +1931,11 @@ public class SocialActivityLimitPersistenceImpl
 				else {
 					SocialActivityLimit socialActivityLimit = list.get(0);
 
-					result = socialActivityLimit;
+					if (!readOnlyCache) {
+						result = socialActivityLimit;
 
-					cacheResult(socialActivityLimit);
+						cacheResult(socialActivityLimit);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1913,9 +1971,9 @@ public class SocialActivityLimitPersistenceImpl
 			int activityType, String activityCounterName)
 		throws NoSuchActivityLimitException {
 
-		SocialActivityLimit socialActivityLimit = findByG_U_C_C_A_A(
+		SocialActivityLimit socialActivityLimit = _findByG_U_C_C_A_A(
 			groupId, userId, classNameId, classPK, activityType,
-			activityCounterName);
+			activityCounterName, true);
 
 		return remove(socialActivityLimit);
 	}
@@ -2616,6 +2674,14 @@ public class SocialActivityLimitPersistenceImpl
 		OrderByComparator<SocialActivityLimit> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<SocialActivityLimit> _findAll(
+		int start, int end,
+		OrderByComparator<SocialActivityLimit> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			SocialActivityLimit.class);
 
@@ -2673,10 +2739,12 @@ public class SocialActivityLimitPersistenceImpl
 				list = (List<SocialActivityLimit>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2696,7 +2764,10 @@ public class SocialActivityLimitPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (SocialActivityLimit socialActivityLimit : findAll()) {
+		for (SocialActivityLimit socialActivityLimit :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(socialActivityLimit);
 		}
 	}

@@ -157,6 +157,15 @@ public class LazyBlobEntryPersistenceImpl
 		OrderByComparator<LazyBlobEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LazyBlobEntry> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<LazyBlobEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -242,10 +251,12 @@ public class LazyBlobEntryPersistenceImpl
 				list = (List<LazyBlobEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -541,7 +552,9 @@ public class LazyBlobEntryPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (LazyBlobEntry lazyBlobEntry :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(lazyBlobEntry);
 		}
@@ -630,7 +643,15 @@ public class LazyBlobEntryPersistenceImpl
 	public LazyBlobEntry findByUUID_G(String uuid, long groupId)
 		throws NoSuchLazyBlobEntryException {
 
-		LazyBlobEntry lazyBlobEntry = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private LazyBlobEntry _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchLazyBlobEntryException {
+
+		LazyBlobEntry lazyBlobEntry = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (lazyBlobEntry == null) {
 			StringBundler sb = new StringBundler(6);
@@ -678,6 +699,13 @@ public class LazyBlobEntryPersistenceImpl
 	@Override
 	public LazyBlobEntry fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private LazyBlobEntry _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -750,9 +778,11 @@ public class LazyBlobEntryPersistenceImpl
 				else {
 					LazyBlobEntry lazyBlobEntry = list.get(0);
 
-					result = lazyBlobEntry;
+					if (!readOnlyCache) {
+						result = lazyBlobEntry;
 
-					cacheResult(lazyBlobEntry);
+						cacheResult(lazyBlobEntry);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -782,7 +812,7 @@ public class LazyBlobEntryPersistenceImpl
 	public LazyBlobEntry removeByUUID_G(String uuid, long groupId)
 		throws NoSuchLazyBlobEntryException {
 
-		LazyBlobEntry lazyBlobEntry = findByUUID_G(uuid, groupId);
+		LazyBlobEntry lazyBlobEntry = _findByUUID_G(uuid, groupId, true);
 
 		return remove(lazyBlobEntry);
 	}
@@ -1264,6 +1294,13 @@ public class LazyBlobEntryPersistenceImpl
 		int start, int end, OrderByComparator<LazyBlobEntry> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<LazyBlobEntry> _findAll(
+		int start, int end, OrderByComparator<LazyBlobEntry> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1318,10 +1355,12 @@ public class LazyBlobEntryPersistenceImpl
 				list = (List<LazyBlobEntry>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1341,7 +1380,10 @@ public class LazyBlobEntryPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (LazyBlobEntry lazyBlobEntry : findAll()) {
+		for (LazyBlobEntry lazyBlobEntry :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(lazyBlobEntry);
 		}
 	}

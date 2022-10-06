@@ -179,6 +179,15 @@ public class MBMailingListPersistenceImpl
 		OrderByComparator<MBMailingList> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMailingList> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<MBMailingList> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -267,10 +276,12 @@ public class MBMailingListPersistenceImpl
 				list = (List<MBMailingList>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -566,7 +577,9 @@ public class MBMailingListPersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (MBMailingList mbMailingList :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMailingList);
 		}
@@ -667,7 +680,15 @@ public class MBMailingListPersistenceImpl
 	public MBMailingList findByUUID_G(String uuid, long groupId)
 		throws NoSuchMailingListException {
 
-		MBMailingList mbMailingList = fetchByUUID_G(uuid, groupId);
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private MBMailingList _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchMailingListException {
+
+		MBMailingList mbMailingList = _fetchByUUID_G(
+			uuid, groupId, true, readOnlyCache);
 
 		if (mbMailingList == null) {
 			StringBundler sb = new StringBundler(6);
@@ -715,6 +736,13 @@ public class MBMailingListPersistenceImpl
 	@Override
 	public MBMailingList fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private MBMailingList _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -790,9 +818,11 @@ public class MBMailingListPersistenceImpl
 				else {
 					MBMailingList mbMailingList = list.get(0);
 
-					result = mbMailingList;
+					if (!readOnlyCache) {
+						result = mbMailingList;
 
-					cacheResult(mbMailingList);
+						cacheResult(mbMailingList);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -822,7 +852,7 @@ public class MBMailingListPersistenceImpl
 	public MBMailingList removeByUUID_G(String uuid, long groupId)
 		throws NoSuchMailingListException {
 
-		MBMailingList mbMailingList = findByUUID_G(uuid, groupId);
+		MBMailingList mbMailingList = _findByUUID_G(uuid, groupId, true);
 
 		return remove(mbMailingList);
 	}
@@ -996,6 +1026,16 @@ public class MBMailingListPersistenceImpl
 		OrderByComparator<MBMailingList> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<MBMailingList> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<MBMailingList> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1092,10 +1132,12 @@ public class MBMailingListPersistenceImpl
 				list = (List<MBMailingList>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1416,9 +1458,9 @@ public class MBMailingListPersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (MBMailingList mbMailingList :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(mbMailingList);
 		}
@@ -1587,6 +1629,15 @@ public class MBMailingListPersistenceImpl
 		OrderByComparator<MBMailingList> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByActive(
+			active, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMailingList> _findByActive(
+		boolean active, int start, int end,
+		OrderByComparator<MBMailingList> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMailingList.class);
 
@@ -1662,10 +1713,12 @@ public class MBMailingListPersistenceImpl
 				list = (List<MBMailingList>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1950,8 +2003,9 @@ public class MBMailingListPersistenceImpl
 	@Override
 	public void removeByActive(boolean active) {
 		for (MBMailingList mbMailingList :
-				findByActive(
-					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByActive(
+					active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(mbMailingList);
 		}
@@ -2036,7 +2090,15 @@ public class MBMailingListPersistenceImpl
 	public MBMailingList findByG_C(long groupId, long categoryId)
 		throws NoSuchMailingListException {
 
-		MBMailingList mbMailingList = fetchByG_C(groupId, categoryId);
+		return _findByG_C(groupId, categoryId, false);
+	}
+
+	private MBMailingList _findByG_C(
+			long groupId, long categoryId, boolean readOnlyCache)
+		throws NoSuchMailingListException {
+
+		MBMailingList mbMailingList = _fetchByG_C(
+			groupId, categoryId, true, readOnlyCache);
 
 		if (mbMailingList == null) {
 			StringBundler sb = new StringBundler(6);
@@ -2084,6 +2146,13 @@ public class MBMailingListPersistenceImpl
 	@Override
 	public MBMailingList fetchByG_C(
 		long groupId, long categoryId, boolean useFinderCache) {
+
+		return _fetchByG_C(groupId, categoryId, useFinderCache, false);
+	}
+
+	private MBMailingList _fetchByG_C(
+		long groupId, long categoryId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMailingList.class);
@@ -2145,9 +2214,11 @@ public class MBMailingListPersistenceImpl
 				else {
 					MBMailingList mbMailingList = list.get(0);
 
-					result = mbMailingList;
+					if (!readOnlyCache) {
+						result = mbMailingList;
 
-					cacheResult(mbMailingList);
+						cacheResult(mbMailingList);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2177,7 +2248,7 @@ public class MBMailingListPersistenceImpl
 	public MBMailingList removeByG_C(long groupId, long categoryId)
 		throws NoSuchMailingListException {
 
-		MBMailingList mbMailingList = findByG_C(groupId, categoryId);
+		MBMailingList mbMailingList = _findByG_C(groupId, categoryId, true);
 
 		return remove(mbMailingList);
 	}
@@ -2849,6 +2920,13 @@ public class MBMailingListPersistenceImpl
 		int start, int end, OrderByComparator<MBMailingList> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<MBMailingList> _findAll(
+		int start, int end, OrderByComparator<MBMailingList> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			MBMailingList.class);
 
@@ -2906,10 +2984,12 @@ public class MBMailingListPersistenceImpl
 				list = (List<MBMailingList>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2929,7 +3009,10 @@ public class MBMailingListPersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (MBMailingList mbMailingList : findAll()) {
+		for (MBMailingList mbMailingList :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(mbMailingList);
 		}
 	}

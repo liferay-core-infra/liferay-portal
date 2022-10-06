@@ -186,6 +186,15 @@ public class CalendarNotificationTemplatePersistenceImpl
 		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarNotificationTemplate> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -276,10 +285,12 @@ public class CalendarNotificationTemplatePersistenceImpl
 				list = (List<CalendarNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -587,7 +598,9 @@ public class CalendarNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (CalendarNotificationTemplate calendarNotificationTemplate :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(calendarNotificationTemplate);
 		}
@@ -688,8 +701,15 @@ public class CalendarNotificationTemplatePersistenceImpl
 	public CalendarNotificationTemplate findByUUID_G(String uuid, long groupId)
 		throws NoSuchNotificationTemplateException {
 
+		return _findByUUID_G(uuid, groupId, false);
+	}
+
+	private CalendarNotificationTemplate _findByUUID_G(
+			String uuid, long groupId, boolean readOnlyCache)
+		throws NoSuchNotificationTemplateException {
+
 		CalendarNotificationTemplate calendarNotificationTemplate =
-			fetchByUUID_G(uuid, groupId);
+			_fetchByUUID_G(uuid, groupId, true, readOnlyCache);
 
 		if (calendarNotificationTemplate == null) {
 			StringBundler sb = new StringBundler(6);
@@ -739,6 +759,13 @@ public class CalendarNotificationTemplatePersistenceImpl
 	@Override
 	public CalendarNotificationTemplate fetchByUUID_G(
 		String uuid, long groupId, boolean useFinderCache) {
+
+		return _fetchByUUID_G(uuid, groupId, useFinderCache, false);
+	}
+
+	private CalendarNotificationTemplate _fetchByUUID_G(
+		String uuid, long groupId, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		uuid = Objects.toString(uuid, "");
 
@@ -816,9 +843,11 @@ public class CalendarNotificationTemplatePersistenceImpl
 					CalendarNotificationTemplate calendarNotificationTemplate =
 						list.get(0);
 
-					result = calendarNotificationTemplate;
+					if (!readOnlyCache) {
+						result = calendarNotificationTemplate;
 
-					cacheResult(calendarNotificationTemplate);
+						cacheResult(calendarNotificationTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -850,7 +879,7 @@ public class CalendarNotificationTemplatePersistenceImpl
 		throws NoSuchNotificationTemplateException {
 
 		CalendarNotificationTemplate calendarNotificationTemplate =
-			findByUUID_G(uuid, groupId);
+			_findByUUID_G(uuid, groupId, true);
 
 		return remove(calendarNotificationTemplate);
 	}
@@ -1026,6 +1055,16 @@ public class CalendarNotificationTemplatePersistenceImpl
 		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<CalendarNotificationTemplate> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -1125,10 +1164,12 @@ public class CalendarNotificationTemplatePersistenceImpl
 				list = (List<CalendarNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1453,9 +1494,9 @@ public class CalendarNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (CalendarNotificationTemplate calendarNotificationTemplate :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(calendarNotificationTemplate);
 		}
@@ -1628,6 +1669,15 @@ public class CalendarNotificationTemplatePersistenceImpl
 		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByCalendarId(
+			calendarId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarNotificationTemplate> _findByCalendarId(
+		long calendarId, int start, int end,
+		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarNotificationTemplate.class);
 
@@ -1709,10 +1759,12 @@ public class CalendarNotificationTemplatePersistenceImpl
 				list = (List<CalendarNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2008,8 +2060,9 @@ public class CalendarNotificationTemplatePersistenceImpl
 	@Override
 	public void removeByCalendarId(long calendarId) {
 		for (CalendarNotificationTemplate calendarNotificationTemplate :
-				findByCalendarId(
-					calendarId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCalendarId(
+					calendarId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(calendarNotificationTemplate);
 		}
@@ -2097,9 +2150,19 @@ public class CalendarNotificationTemplatePersistenceImpl
 			String notificationTemplateType)
 		throws NoSuchNotificationTemplateException {
 
+		return _findByC_NT_NTT(
+			calendarId, notificationType, notificationTemplateType, false);
+	}
+
+	private CalendarNotificationTemplate _findByC_NT_NTT(
+			long calendarId, String notificationType,
+			String notificationTemplateType, boolean readOnlyCache)
+		throws NoSuchNotificationTemplateException {
+
 		CalendarNotificationTemplate calendarNotificationTemplate =
-			fetchByC_NT_NTT(
-				calendarId, notificationType, notificationTemplateType);
+			_fetchByC_NT_NTT(
+				calendarId, notificationType, notificationTemplateType, true,
+				readOnlyCache);
 
 		if (calendarNotificationTemplate == null) {
 			StringBundler sb = new StringBundler(8);
@@ -2157,6 +2220,16 @@ public class CalendarNotificationTemplatePersistenceImpl
 	public CalendarNotificationTemplate fetchByC_NT_NTT(
 		long calendarId, String notificationType,
 		String notificationTemplateType, boolean useFinderCache) {
+
+		return _fetchByC_NT_NTT(
+			calendarId, notificationType, notificationTemplateType,
+			useFinderCache, false);
+	}
+
+	private CalendarNotificationTemplate _fetchByC_NT_NTT(
+		long calendarId, String notificationType,
+		String notificationTemplateType, boolean useFinderCache,
+		boolean readOnlyCache) {
 
 		notificationType = Objects.toString(notificationType, "");
 		notificationTemplateType = Objects.toString(
@@ -2277,9 +2350,11 @@ public class CalendarNotificationTemplatePersistenceImpl
 					CalendarNotificationTemplate calendarNotificationTemplate =
 						list.get(0);
 
-					result = calendarNotificationTemplate;
+					if (!readOnlyCache) {
+						result = calendarNotificationTemplate;
 
-					cacheResult(calendarNotificationTemplate);
+						cacheResult(calendarNotificationTemplate);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2313,8 +2388,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 		throws NoSuchNotificationTemplateException {
 
 		CalendarNotificationTemplate calendarNotificationTemplate =
-			findByC_NT_NTT(
-				calendarId, notificationType, notificationTemplateType);
+			_findByC_NT_NTT(
+				calendarId, notificationType, notificationTemplateType, true);
 
 		return remove(calendarNotificationTemplate);
 	}
@@ -3098,6 +3173,14 @@ public class CalendarNotificationTemplatePersistenceImpl
 		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<CalendarNotificationTemplate> _findAll(
+		int start, int end,
+		OrderByComparator<CalendarNotificationTemplate> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
 			CalendarNotificationTemplate.class);
 
@@ -3156,10 +3239,12 @@ public class CalendarNotificationTemplatePersistenceImpl
 				list = (List<CalendarNotificationTemplate>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache && productionMode) {
-					finderCache.putResult(finderPath, finderArgs, list);
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3180,7 +3265,8 @@ public class CalendarNotificationTemplatePersistenceImpl
 	@Override
 	public void removeAll() {
 		for (CalendarNotificationTemplate calendarNotificationTemplate :
-				findAll()) {
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(calendarNotificationTemplate);
 		}

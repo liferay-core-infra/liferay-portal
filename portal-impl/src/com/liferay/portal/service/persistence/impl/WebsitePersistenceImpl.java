@@ -160,6 +160,15 @@ public class WebsitePersistenceImpl
 		String uuid, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid(
+			uuid, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Website> _findByUuid(
+		String uuid, int start, int end,
+		OrderByComparator<Website> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -245,10 +254,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -542,7 +553,9 @@ public class WebsitePersistenceImpl
 	@Override
 	public void removeByUuid(String uuid) {
 		for (Website website :
-				findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUuid(
+					uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(website);
 		}
@@ -695,6 +708,16 @@ public class WebsitePersistenceImpl
 		String uuid, long companyId, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean useFinderCache) {
 
+		return _findByUuid_C(
+			uuid, companyId, start, end, orderByComparator, useFinderCache,
+			false);
+	}
+
+	private List<Website> _findByUuid_C(
+		String uuid, long companyId, int start, int end,
+		OrderByComparator<Website> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		uuid = Objects.toString(uuid, "");
 
 		FinderPath finderPath = null;
@@ -788,10 +811,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1108,9 +1133,9 @@ public class WebsitePersistenceImpl
 	@Override
 	public void removeByUuid_C(String uuid, long companyId) {
 		for (Website website :
-				findByUuid_C(
-					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-					null)) {
+				_findByUuid_C(
+					uuid, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null,
+					true, true)) {
 
 			remove(website);
 		}
@@ -1265,6 +1290,15 @@ public class WebsitePersistenceImpl
 		long companyId, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean useFinderCache) {
 
+		return _findByCompanyId(
+			companyId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Website> _findByCompanyId(
+		long companyId, int start, int end,
+		OrderByComparator<Website> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1339,10 +1373,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -1624,8 +1660,9 @@ public class WebsitePersistenceImpl
 	@Override
 	public void removeByCompanyId(long companyId) {
 		for (Website website :
-				findByCompanyId(
-					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByCompanyId(
+					companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(website);
 		}
@@ -1755,6 +1792,15 @@ public class WebsitePersistenceImpl
 		long userId, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean useFinderCache) {
 
+		return _findByUserId(
+			userId, start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Website> _findByUserId(
+		long userId, int start, int end,
+		OrderByComparator<Website> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -1827,10 +1873,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2111,8 +2159,9 @@ public class WebsitePersistenceImpl
 	@Override
 	public void removeByUserId(long userId) {
 		for (Website website :
-				findByUserId(
-					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+				_findByUserId(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true,
+					true)) {
 
 			remove(website);
 		}
@@ -2250,6 +2299,16 @@ public class WebsitePersistenceImpl
 		long companyId, long classNameId, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C(
+			companyId, classNameId, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Website> _findByC_C(
+		long companyId, long classNameId, int start, int end,
+		OrderByComparator<Website> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2330,10 +2389,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -2639,9 +2700,9 @@ public class WebsitePersistenceImpl
 	@Override
 	public void removeByC_C(long companyId, long classNameId) {
 		for (Website website :
-				findByC_C(
+				_findByC_C(
 					companyId, classNameId, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(website);
 		}
@@ -2795,6 +2856,16 @@ public class WebsitePersistenceImpl
 		long companyId, long classNameId, long classPK, int start, int end,
 		OrderByComparator<Website> orderByComparator, boolean useFinderCache) {
 
+		return _findByC_C_C(
+			companyId, classNameId, classPK, start, end, orderByComparator,
+			useFinderCache, false);
+	}
+
+	private List<Website> _findByC_C_C(
+		long companyId, long classNameId, long classPK, int start, int end,
+		OrderByComparator<Website> orderByComparator, boolean useFinderCache,
+		boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -2880,10 +2951,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3207,9 +3280,9 @@ public class WebsitePersistenceImpl
 	@Override
 	public void removeByC_C_C(long companyId, long classNameId, long classPK) {
 		for (Website website :
-				findByC_C_C(
+				_findByC_C_C(
 					companyId, classNameId, classPK, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(website);
 		}
@@ -3378,6 +3451,16 @@ public class WebsitePersistenceImpl
 		int start, int end, OrderByComparator<Website> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findByC_C_C_P(
+			companyId, classNameId, classPK, primary, start, end,
+			orderByComparator, useFinderCache, false);
+	}
+
+	private List<Website> _findByC_C_C_P(
+		long companyId, long classNameId, long classPK, boolean primary,
+		int start, int end, OrderByComparator<Website> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -3471,10 +3554,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -3816,9 +3901,9 @@ public class WebsitePersistenceImpl
 		long companyId, long classNameId, long classPK, boolean primary) {
 
 		for (Website website :
-				findByC_C_C_P(
+				_findByC_C_C_P(
 					companyId, classNameId, classPK, primary, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS, null)) {
+					QueryUtil.ALL_POS, null, true, true)) {
 
 			remove(website);
 		}
@@ -4298,6 +4383,13 @@ public class WebsitePersistenceImpl
 		int start, int end, OrderByComparator<Website> orderByComparator,
 		boolean useFinderCache) {
 
+		return _findAll(start, end, orderByComparator, useFinderCache, false);
+	}
+
+	private List<Website> _findAll(
+		int start, int end, OrderByComparator<Website> orderByComparator,
+		boolean useFinderCache, boolean readOnlyCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -4352,10 +4444,12 @@ public class WebsitePersistenceImpl
 				list = (List<Website>)QueryUtil.list(
 					query, getDialect(), start, end);
 
-				cacheResult(list);
+				if (!readOnlyCache) {
+					cacheResult(list);
 
-				if (useFinderCache) {
-					FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					if (useFinderCache) {
+						FinderCacheUtil.putResult(finderPath, finderArgs, list);
+					}
 				}
 			}
 			catch (Exception exception) {
@@ -4375,7 +4469,10 @@ public class WebsitePersistenceImpl
 	 */
 	@Override
 	public void removeAll() {
-		for (Website website : findAll()) {
+		for (Website website :
+				_findAll(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null, true, true)) {
+
 			remove(website);
 		}
 	}

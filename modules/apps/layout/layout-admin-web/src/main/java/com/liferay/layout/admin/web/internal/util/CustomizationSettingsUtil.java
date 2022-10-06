@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.taglib.util.DummyVelocityTaglib;
 import com.liferay.taglib.util.VelocityTaglib;
@@ -38,14 +37,14 @@ public class CustomizationSettingsUtil {
 
 	public static void processCustomizationSettings(
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content, String langType)
 		throws Exception {
 
 		ClassLoader pluginClassLoader = null;
 
 		LayoutTemplate layoutTemplate = RuntimePageUtil.getLayoutTemplate(
-			templateResource.getTemplateId());
+			templateId);
 
 		if (layoutTemplate != null) {
 			String pluginServletContextName = GetterUtil.getString(
@@ -73,7 +72,7 @@ public class CustomizationSettingsUtil {
 			}
 
 			_processCustomizationSettings(
-				httpServletRequest, httpServletResponse, templateResource,
+				httpServletRequest, httpServletResponse, templateId, content,
 				langType);
 		}
 		finally {
@@ -87,8 +86,8 @@ public class CustomizationSettingsUtil {
 
 	private static void _processCustomizationSettings(
 			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
+			HttpServletResponse httpServletResponse, String templateId,
+			String content, String langType)
 		throws Exception {
 
 		CustomizationSettingsProcessor processor =
@@ -96,7 +95,7 @@ public class CustomizationSettingsUtil {
 				httpServletRequest, httpServletResponse);
 
 		Template template = TemplateManagerUtil.getTemplate(
-			langType, templateResource, false);
+			langType, templateId, content, false);
 
 		template.put("processor", processor);
 

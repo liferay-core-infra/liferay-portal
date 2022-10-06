@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -874,6 +875,11 @@ public class DLFolderLocalServiceWrapper
 	@Override
 	public boolean hasInheritableLock(long folderId) {
 		return _dlFolderLocalService.hasInheritableLock(folderId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFolderLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

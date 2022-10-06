@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -96,9 +97,42 @@ public class CPInstanceOptionValueRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the cp instance option value rels where uuid = &#63;.
@@ -657,7 +691,18 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		"(cpInstanceOptionValueRel.uuid IS NULL OR cpInstanceOptionValueRel.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the cp instance option value rel where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCPInstanceOptionValueRelException</code> if it could not be found.
@@ -924,8 +969,25 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		"cpInstanceOptionValueRel.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the cp instance option value rels where uuid = &#63; and companyId = &#63;.
@@ -1527,9 +1589,30 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		"cpInstanceOptionValueRel.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCPDefinitionOptionRelId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCPDefinitionOptionRelId() {
+
+		return _finderPathWithPaginationFindByCPDefinitionOptionRelId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCPDefinitionOptionRelId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCPDefinitionOptionRelId() {
+
+		return _finderPathWithoutPaginationFindByCPDefinitionOptionRelId;
+	}
+
 	private FinderPath _finderPathCountByCPDefinitionOptionRelId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPDefinitionOptionRelId() {
+		return _finderPathCountByCPDefinitionOptionRelId;
+	}
 
 	/**
 	 * Returns all the cp instance option value rels where CPDefinitionOptionRelId = &#63;.
@@ -2066,8 +2149,25 @@ public class CPInstanceOptionValueRelPersistenceImpl
 			"cpInstanceOptionValueRel.CPDefinitionOptionRelId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCPInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCPInstanceId() {
+		return _finderPathWithPaginationFindByCPInstanceId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCPInstanceId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCPInstanceId() {
+		return _finderPathWithoutPaginationFindByCPInstanceId;
+	}
+
 	private FinderPath _finderPathCountByCPInstanceId;
+
+	@Override
+	public FinderPath getFinderPathCountByCPInstanceId() {
+		return _finderPathCountByCPInstanceId;
+	}
 
 	/**
 	 * Returns all the cp instance option value rels where CPInstanceId = &#63;.
@@ -2593,8 +2693,25 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		"cpInstanceOptionValueRel.CPInstanceId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCDORI_CII;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCDORI_CII() {
+		return _finderPathWithPaginationFindByCDORI_CII;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCDORI_CII;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCDORI_CII() {
+		return _finderPathWithoutPaginationFindByCDORI_CII;
+	}
+
 	private FinderPath _finderPathCountByCDORI_CII;
+
+	@Override
+	public FinderPath getFinderPathCountByCDORI_CII() {
+		return _finderPathCountByCDORI_CII;
+	}
 
 	/**
 	 * Returns all the cp instance option value rels where CPDefinitionOptionRelId = &#63; and CPInstanceId = &#63;.
@@ -3171,7 +3288,18 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		"cpInstanceOptionValueRel.CPInstanceId = ?";
 
 	private FinderPath _finderPathFetchByCDOVRI_CII;
+
+	@Override
+	public FinderPath getFinderPathFetchByCDOVRI_CII() {
+		return _finderPathFetchByCDOVRI_CII;
+	}
+
 	private FinderPath _finderPathCountByCDOVRI_CII;
+
+	@Override
+	public FinderPath getFinderPathCountByCDOVRI_CII() {
+		return _finderPathCountByCDOVRI_CII;
+	}
 
 	/**
 	 * Returns the cp instance option value rel where CPDefinitionOptionValueRelId = &#63; and CPInstanceId = &#63; or throws a <code>NoSuchCPInstanceOptionValueRelException</code> if it could not be found.
@@ -3441,7 +3569,18 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		"cpInstanceOptionValueRel.CPInstanceId = ?";
 
 	private FinderPath _finderPathFetchByCDORI_CDOVRI_CII;
+
+	@Override
+	public FinderPath getFinderPathFetchByCDORI_CDOVRI_CII() {
+		return _finderPathFetchByCDORI_CDOVRI_CII;
+	}
+
 	private FinderPath _finderPathCountByCDORI_CDOVRI_CII;
+
+	@Override
+	public FinderPath getFinderPathCountByCDORI_CDOVRI_CII() {
+		return _finderPathCountByCDORI_CDOVRI_CII;
+	}
 
 	/**
 	 * Returns the cp instance option value rel where CPDefinitionOptionRelId = &#63; and CPDefinitionOptionValueRelId = &#63; and CPInstanceId = &#63; or throws a <code>NoSuchCPInstanceOptionValueRelException</code> if it could not be found.
@@ -4779,6 +4918,67 @@ public class CPInstanceOptionValueRelPersistenceImpl
 		_setCPInstanceOptionValueRelUtilPersistence(null);
 
 		entityCache.removeCache(CPInstanceOptionValueRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPInstanceOptionValueRel> cpInstanceOptionValueRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPInstanceOptionValueRel>> resultMap =
+				new HashMap<>();
+
+			for (CPInstanceOptionValueRel cpInstanceOptionValueRel :
+					cpInstanceOptionValueRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPInstanceOptionValueRelModelImpl
+						cpInstanceOptionValueRelModelImpl =
+							(CPInstanceOptionValueRelModelImpl)
+								cpInstanceOptionValueRel;
+
+					arguments.add(
+						cpInstanceOptionValueRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						cpInstanceOptionValueRel);
+				}
+				else {
+					List<CPInstanceOptionValueRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpInstanceOptionValueRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPInstanceOptionValueRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPInstanceOptionValueRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPInstanceOptionValueRelUtilPersistence(

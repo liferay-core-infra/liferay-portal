@@ -14,6 +14,7 @@
 
 package com.liferay.style.book.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.style.book.exception.NoSuchEntryException;
@@ -41,6 +42,17 @@ public interface StyleBookEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link StyleBookEntryUtil} to access the style book entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the style book entries where uuid = &#63;.
@@ -184,6 +196,12 @@ public interface StyleBookEntryPersistence
 	 * @return the number of matching style book entries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_Head();
+
+	public FinderPath getFinderPathCountByUuid_Head();
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and head = &#63;.
@@ -340,6 +358,12 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByUuid_Head(String uuid, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByUUID_G();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns all the style book entries where uuid = &#63; and groupId = &#63;.
 	 *
@@ -495,6 +519,10 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByUUID_G(String uuid, long groupId);
 
+	public FinderPath getFinderPathFetchByUUID_G_Head();
+
+	public FinderPath getFinderPathCountByUUID_G_Head();
+
 	/**
 	 * Returns the style book entry where uuid = &#63; and groupId = &#63; and head = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -552,6 +580,12 @@ public interface StyleBookEntryPersistence
 	 * @return the number of matching style book entries
 	 */
 	public int countByUUID_G_Head(String uuid, long groupId, boolean head);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and companyId = &#63;.
@@ -707,6 +741,12 @@ public interface StyleBookEntryPersistence
 	 * @return the number of matching style book entries
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C_Head();
+
+	public FinderPath getFinderPathCountByUuid_C_Head();
 
 	/**
 	 * Returns all the style book entries where uuid = &#63; and companyId = &#63; and head = &#63;.
@@ -874,6 +914,12 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByUuid_C_Head(String uuid, long companyId, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
 	/**
 	 * Returns all the style book entries where groupId = &#63;.
 	 *
@@ -1016,6 +1062,12 @@ public interface StyleBookEntryPersistence
 	 * @return the number of matching style book entries
 	 */
 	public int countByGroupId(long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId_Head();
+
+	public FinderPath getFinderPathCountByGroupId_Head();
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and head = &#63;.
@@ -1172,6 +1224,12 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByGroupId_Head(long groupId, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByG_D();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_D();
+
+	public FinderPath getFinderPathCountByG_D();
+
 	/**
 	 * Returns all the style book entries where groupId = &#63; and defaultStyleBookEntry = &#63;.
 	 *
@@ -1326,6 +1384,12 @@ public interface StyleBookEntryPersistence
 	 * @return the number of matching style book entries
 	 */
 	public int countByG_D(long groupId, boolean defaultStyleBookEntry);
+
+	public FinderPath getFinderPathWithPaginationFindByG_D_Head();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_D_Head();
+
+	public FinderPath getFinderPathCountByG_D_Head();
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and defaultStyleBookEntry = &#63; and head = &#63;.
@@ -1499,6 +1563,10 @@ public interface StyleBookEntryPersistence
 	public int countByG_D_Head(
 		long groupId, boolean defaultStyleBookEntry, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN();
+
 	/**
 	 * Returns all the style book entries where groupId = &#63; and name LIKE &#63;.
 	 *
@@ -1653,6 +1721,10 @@ public interface StyleBookEntryPersistence
 	 * @return the number of matching style book entries
 	 */
 	public int countByG_LikeN(long groupId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN_Head();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN_Head();
 
 	/**
 	 * Returns all the style book entries where groupId = &#63; and name LIKE &#63; and head = &#63;.
@@ -1820,6 +1892,12 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByG_LikeN_Head(long groupId, String name, boolean head);
 
+	public FinderPath getFinderPathWithPaginationFindByG_SBEK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_SBEK();
+
+	public FinderPath getFinderPathCountByG_SBEK();
+
 	/**
 	 * Returns all the style book entries where groupId = &#63; and styleBookEntryKey = &#63;.
 	 *
@@ -1975,6 +2053,10 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByG_SBEK(long groupId, String styleBookEntryKey);
 
+	public FinderPath getFinderPathFetchByG_SBEK_Head();
+
+	public FinderPath getFinderPathCountByG_SBEK_Head();
+
 	/**
 	 * Returns the style book entry where groupId = &#63; and styleBookEntryKey = &#63; and head = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -2034,6 +2116,10 @@ public interface StyleBookEntryPersistence
 	 */
 	public int countByG_SBEK_Head(
 		long groupId, String styleBookEntryKey, boolean head);
+
+	public FinderPath getFinderPathFetchByHeadId();
+
+	public FinderPath getFinderPathCountByHeadId();
 
 	/**
 	 * Returns the style book entry where headId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
@@ -2197,5 +2283,7 @@ public interface StyleBookEntryPersistence
 	 * @return the number of style book entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

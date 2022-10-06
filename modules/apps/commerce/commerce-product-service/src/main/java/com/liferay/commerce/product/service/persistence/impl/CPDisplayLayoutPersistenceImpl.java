@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -95,9 +96,42 @@ public class CPDisplayLayoutPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the cp display layouts where uuid = &#63;.
@@ -644,7 +678,18 @@ public class CPDisplayLayoutPersistenceImpl
 		"(cpDisplayLayout.uuid IS NULL OR cpDisplayLayout.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the cp display layout where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCPDisplayLayoutException</code> if it could not be found.
@@ -907,8 +952,25 @@ public class CPDisplayLayoutPersistenceImpl
 		"cpDisplayLayout.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the cp display layouts where uuid = &#63; and companyId = &#63;.
@@ -1504,8 +1566,25 @@ public class CPDisplayLayoutPersistenceImpl
 		"cpDisplayLayout.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the cp display layouts where groupId = &#63;.
@@ -2015,8 +2094,25 @@ public class CPDisplayLayoutPersistenceImpl
 		"cpDisplayLayout.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
 
 	/**
 	 * Returns all the cp display layouts where groupId = &#63; and classNameId = &#63;.
@@ -2570,8 +2666,25 @@ public class CPDisplayLayoutPersistenceImpl
 		"cpDisplayLayout.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_L() {
+		return _finderPathWithPaginationFindByG_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_L() {
+		return _finderPathWithoutPaginationFindByG_L;
+	}
+
 	private FinderPath _finderPathCountByG_L;
+
+	@Override
+	public FinderPath getFinderPathCountByG_L() {
+		return _finderPathCountByG_L;
+	}
 
 	/**
 	 * Returns all the cp display layouts where groupId = &#63; and layoutUuid = &#63;.
@@ -3167,8 +3280,25 @@ public class CPDisplayLayoutPersistenceImpl
 		"(cpDisplayLayout.layoutUuid IS NULL OR cpDisplayLayout.layoutUuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the cp display layouts where classNameId = &#63; and classPK = &#63;.
@@ -3722,7 +3852,18 @@ public class CPDisplayLayoutPersistenceImpl
 		"cpDisplayLayout.classPK = ?";
 
 	private FinderPath _finderPathFetchByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_C() {
+		return _finderPathFetchByG_C_C;
+	}
+
 	private FinderPath _finderPathCountByG_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C() {
+		return _finderPathCountByG_C_C;
+	}
 
 	/**
 	 * Returns the cp display layout where groupId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchCPDisplayLayoutException</code> if it could not be found.
@@ -4965,6 +5106,61 @@ public class CPDisplayLayoutPersistenceImpl
 		_setCPDisplayLayoutUtilPersistence(null);
 
 		entityCache.removeCache(CPDisplayLayoutImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CPDisplayLayout> cpDisplayLayouts = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CPDisplayLayout>> resultMap =
+				new HashMap<>();
+
+			for (CPDisplayLayout cpDisplayLayout : cpDisplayLayouts) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CPDisplayLayoutModelImpl cpDisplayLayoutModelImpl =
+						(CPDisplayLayoutModelImpl)cpDisplayLayout;
+
+					arguments.add(
+						cpDisplayLayoutModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), cpDisplayLayout);
+				}
+				else {
+					List<CPDisplayLayout> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(cpDisplayLayout);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CPDisplayLayout>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CPDisplayLayout> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCPDisplayLayoutUtilPersistence(

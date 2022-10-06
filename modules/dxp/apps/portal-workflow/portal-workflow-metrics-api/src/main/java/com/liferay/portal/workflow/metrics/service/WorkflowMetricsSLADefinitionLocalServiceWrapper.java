@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.metrics.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -536,6 +537,11 @@ public class WorkflowMetricsSLADefinitionLocalServiceWrapper
 		return _workflowMetricsSLADefinitionLocalService.
 			getWorkflowMetricsSLADefinitionsCount(
 				companyId, active, processId, status);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_workflowMetricsSLADefinitionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

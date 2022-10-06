@@ -119,6 +119,42 @@ public class KaleoTimerUtil {
 		return getPersistence().update(kaleoTimer, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKCN_KCPK() {
+
+		return getPersistence().getFinderPathWithPaginationFindByKCN_KCPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKCN_KCPK() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByKCN_KCPK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKCN_KCPK() {
+
+		return getPersistence().getFinderPathCountByKCN_KCPK();
+	}
+
 	/**
 	 * Returns all the kaleo timers where kaleoClassName = &#63; and kaleoClassPK = &#63;.
 	 *
@@ -312,6 +348,26 @@ public class KaleoTimerUtil {
 		String kaleoClassName, long kaleoClassPK) {
 
 		return getPersistence().countByKCN_KCPK(kaleoClassName, kaleoClassPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByKCN_KCPK_Blocking() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByKCN_KCPK_Blocking();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByKCN_KCPK_Blocking() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByKCN_KCPK_Blocking();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByKCN_KCPK_Blocking() {
+
+		return getPersistence().getFinderPathCountByKCN_KCPK_Blocking();
 	}
 
 	/**
@@ -673,6 +729,12 @@ public class KaleoTimerUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static KaleoTimerPersistence getPersistence() {

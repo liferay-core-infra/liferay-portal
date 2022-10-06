@@ -14,6 +14,7 @@
 
 package com.liferay.saml.persistence.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -349,6 +350,11 @@ public class SamlPeerBindingLocalServiceWrapper
 	@Override
 	public int getSamlPeerBindingsCount() {
 		return _samlPeerBindingLocalService.getSamlPeerBindingsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_samlPeerBindingLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

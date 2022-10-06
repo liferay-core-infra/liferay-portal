@@ -122,6 +122,42 @@ public class FragmentCompositionUtil {
 		return getPersistence().update(fragmentComposition, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the fragment compositions where uuid = &#63;.
 	 *
@@ -288,6 +324,18 @@ public class FragmentCompositionUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the fragment composition where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCompositionException</code> if it could not be found.
 	 *
@@ -349,6 +397,24 @@ public class FragmentCompositionUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -537,6 +603,24 @@ public class FragmentCompositionUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByGroupId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByGroupId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByGroupId() {
+
+		return getPersistence().getFinderPathCountByGroupId();
+	}
+
 	/**
 	 * Returns all the fragment compositions where groupId = &#63;.
 	 *
@@ -705,6 +789,26 @@ public class FragmentCompositionUtil {
 	 */
 	public static int countByGroupId(long groupId) {
 		return getPersistence().countByGroupId(groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByFragmentCollectionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByFragmentCollectionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByFragmentCollectionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByFragmentCollectionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByFragmentCollectionId() {
+
+		return getPersistence().getFinderPathCountByFragmentCollectionId();
 	}
 
 	/**
@@ -884,6 +988,24 @@ public class FragmentCompositionUtil {
 	public static int countByFragmentCollectionId(long fragmentCollectionId) {
 		return getPersistence().countByFragmentCollectionId(
 			fragmentCollectionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_FCI() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_FCI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_FCI() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_FCI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_FCI() {
+
+		return getPersistence().getFinderPathCountByG_FCI();
 	}
 
 	/**
@@ -1075,6 +1197,18 @@ public class FragmentCompositionUtil {
 		return getPersistence().countByG_FCI(groupId, fragmentCollectionId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByG_FCK() {
+
+		return getPersistence().getFinderPathFetchByG_FCK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_FCK() {
+
+		return getPersistence().getFinderPathCountByG_FCK();
+	}
+
 	/**
 	 * Returns the fragment composition where groupId = &#63; and fragmentCompositionKey = &#63; or throws a <code>NoSuchCompositionException</code> if it could not be found.
 	 *
@@ -1143,6 +1277,18 @@ public class FragmentCompositionUtil {
 		long groupId, String fragmentCompositionKey) {
 
 		return getPersistence().countByG_FCK(groupId, fragmentCompositionKey);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_FCI_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_FCI_LikeN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_FCI_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationCountByG_FCI_LikeN();
 	}
 
 	/**
@@ -1354,6 +1500,24 @@ public class FragmentCompositionUtil {
 			groupId, fragmentCollectionId, name);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_FCI_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_FCI_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_FCI_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_FCI_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_FCI_S() {
+
+		return getPersistence().getFinderPathCountByG_FCI_S();
+	}
+
 	/**
 	 * Returns all the fragment compositions where groupId = &#63; and fragmentCollectionId = &#63; and status = &#63;.
 	 *
@@ -1561,6 +1725,20 @@ public class FragmentCompositionUtil {
 
 		return getPersistence().countByG_FCI_S(
 			groupId, fragmentCollectionId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_FCI_LikeN_S() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByG_FCI_LikeN_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByG_FCI_LikeN_S() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByG_FCI_LikeN_S();
 	}
 
 	/**
@@ -1940,6 +2118,12 @@ public class FragmentCompositionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static FragmentCompositionPersistence getPersistence() {

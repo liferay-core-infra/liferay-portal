@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -59,6 +60,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -97,9 +99,42 @@ public class AnnouncementsEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the announcements entries where uuid = &#63;.
@@ -1063,8 +1098,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"(announcementsEntry.uuid_ IS NULL OR announcementsEntry.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the announcements entries where uuid = &#63; and companyId = &#63;.
@@ -2094,8 +2146,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"announcementsEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the announcements entries where companyId = &#63;.
@@ -2983,8 +3052,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"announcementsEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the announcements entries where userId = &#63;.
@@ -3862,8 +3948,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"announcementsEntry.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the announcements entries where classNameId = &#63; and classPK = &#63;.
@@ -4809,8 +4912,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"announcementsEntry.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_C() {
+		return _finderPathWithPaginationFindByC_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C() {
+		return _finderPathWithoutPaginationFindByC_C_C;
+	}
+
 	private FinderPath _finderPathCountByC_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_C() {
+		return _finderPathCountByC_C_C;
+	}
 
 	/**
 	 * Returns all the announcements entries where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -5815,8 +5935,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"announcementsEntry.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_A() {
+		return _finderPathWithPaginationFindByC_C_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_A() {
+		return _finderPathWithoutPaginationFindByC_C_A;
+	}
+
 	private FinderPath _finderPathCountByC_C_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_A() {
+		return _finderPathCountByC_C_A;
+	}
 
 	/**
 	 * Returns all the announcements entries where classNameId = &#63; and classPK = &#63; and alert = &#63;.
@@ -6818,8 +6955,25 @@ public class AnnouncementsEntryPersistenceImpl
 		"announcementsEntry.alert = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_C_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_C_A() {
+		return _finderPathWithPaginationFindByC_C_C_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_C_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C_A() {
+		return _finderPathWithoutPaginationFindByC_C_C_A;
+	}
+
 	private FinderPath _finderPathCountByC_C_C_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_C_A() {
+		return _finderPathCountByC_C_C_A;
+	}
 
 	/**
 	 * Returns all the announcements entries where companyId = &#63; and classNameId = &#63; and classPK = &#63; and alert = &#63;.
@@ -8668,6 +8822,61 @@ public class AnnouncementsEntryPersistenceImpl
 		_setAnnouncementsEntryUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(AnnouncementsEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<AnnouncementsEntry> announcementsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<AnnouncementsEntry>> resultMap =
+				new HashMap<>();
+
+			for (AnnouncementsEntry announcementsEntry : announcementsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AnnouncementsEntryModelImpl announcementsEntryModelImpl =
+						(AnnouncementsEntryModelImpl)announcementsEntry;
+
+					arguments.add(
+						announcementsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), announcementsEntry);
+				}
+				else {
+					List<AnnouncementsEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(announcementsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<AnnouncementsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<AnnouncementsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAnnouncementsEntryUtilPersistence(

@@ -14,6 +14,7 @@
 
 package com.liferay.analytics.message.storage.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -372,6 +373,11 @@ public class AnalyticsMessageLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _analyticsMessageLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_analyticsMessageLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

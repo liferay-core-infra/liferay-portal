@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutSetPrototypeUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,9 +93,42 @@ public class LayoutSetPrototypePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the layout set prototypes where uuid = &#63;.
@@ -1060,8 +1095,25 @@ public class LayoutSetPrototypePersistenceImpl
 		"(layoutSetPrototype.uuid_ IS NULL OR layoutSetPrototype.uuid_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the layout set prototypes where uuid = &#63; and companyId = &#63;.
@@ -2093,8 +2145,25 @@ public class LayoutSetPrototypePersistenceImpl
 		"layoutSetPrototype.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the layout set prototypes where companyId = &#63;.
@@ -2984,8 +3053,25 @@ public class LayoutSetPrototypePersistenceImpl
 		"layoutSetPrototype.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A() {
+		return _finderPathWithPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A() {
+		return _finderPathWithoutPaginationFindByC_A;
+	}
+
 	private FinderPath _finderPathCountByC_A;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A() {
+		return _finderPathCountByC_A;
+	}
 
 	/**
 	 * Returns all the layout set prototypes where companyId = &#63; and active = &#63;.
@@ -4591,6 +4677,61 @@ public class LayoutSetPrototypePersistenceImpl
 		_setLayoutSetPrototypeUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(LayoutSetPrototypeImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LayoutSetPrototype> layoutSetPrototypes = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LayoutSetPrototype>> resultMap =
+				new HashMap<>();
+
+			for (LayoutSetPrototype layoutSetPrototype : layoutSetPrototypes) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LayoutSetPrototypeModelImpl layoutSetPrototypeModelImpl =
+						(LayoutSetPrototypeModelImpl)layoutSetPrototype;
+
+					arguments.add(
+						layoutSetPrototypeModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), layoutSetPrototype);
+				}
+				else {
+					List<LayoutSetPrototype> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(layoutSetPrototype);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LayoutSetPrototype>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LayoutSetPrototype> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLayoutSetPrototypeUtilPersistence(

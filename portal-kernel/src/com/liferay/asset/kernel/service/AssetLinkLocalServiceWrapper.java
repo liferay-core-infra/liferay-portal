@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service;
 
 import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -487,6 +488,11 @@ public class AssetLinkLocalServiceWrapper
 	@Override
 	public java.util.List<AssetLink> getReverseLinks(long entryId, int typeId) {
 		return _assetLinkLocalService.getReverseLinks(entryId, typeId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_assetLinkLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

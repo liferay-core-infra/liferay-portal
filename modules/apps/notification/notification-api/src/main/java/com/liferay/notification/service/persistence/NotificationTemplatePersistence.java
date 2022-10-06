@@ -16,6 +16,7 @@ package com.liferay.notification.service.persistence;
 
 import com.liferay.notification.exception.NoSuchNotificationTemplateException;
 import com.liferay.notification.model.NotificationTemplate;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface NotificationTemplatePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link NotificationTemplateUtil} to access the notification template persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the notification templates where uuid = &#63;.
@@ -247,6 +259,12 @@ public interface NotificationTemplatePersistence
 	 * @return the number of matching notification templates that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the notification templates where uuid = &#63; and companyId = &#63;.
@@ -594,5 +612,7 @@ public interface NotificationTemplatePersistence
 	 * @return the number of notification templates
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

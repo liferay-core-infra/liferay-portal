@@ -14,6 +14,7 @@
 
 package com.liferay.change.tracking.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -333,6 +334,11 @@ public class CTCommentLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ctCommentLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ctCommentLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

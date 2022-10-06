@@ -14,6 +14,7 @@
 
 package com.liferay.adaptive.media.image.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -566,6 +567,11 @@ public class AMImageEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _amImageEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_amImageEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

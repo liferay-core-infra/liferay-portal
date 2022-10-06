@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,9 +50,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -92,8 +95,35 @@ public class DLSyncEventPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGtModifiedTime;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGtModifiedTime() {
+		return _finderPathWithPaginationFindByGtModifiedTime;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByGtModifiedTime;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByGtModifiedTime() {
+		return _finderPathWithPaginationCountByGtModifiedTime;
+	}
 
 	/**
 	 * Returns all the dl sync events where modifiedTime &gt; &#63;.
@@ -577,7 +607,18 @@ public class DLSyncEventPersistenceImpl
 		"dlSyncEvent.modifiedTime > ?";
 
 	private FinderPath _finderPathFetchByTypePK;
+
+	@Override
+	public FinderPath getFinderPathFetchByTypePK() {
+		return _finderPathFetchByTypePK;
+	}
+
 	private FinderPath _finderPathCountByTypePK;
+
+	@Override
+	public FinderPath getFinderPathCountByTypePK() {
+		return _finderPathCountByTypePK;
+	}
 
 	/**
 	 * Returns the dl sync event where typePK = &#63; or throws a <code>NoSuchEventException</code> if it could not be found.
@@ -1337,6 +1378,59 @@ public class DLSyncEventPersistenceImpl
 		_setDLSyncEventUtilPersistence(null);
 
 		entityCache.removeCache(DLSyncEventImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DLSyncEvent> dlSyncEvents = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DLSyncEvent>> resultMap = new HashMap<>();
+
+			for (DLSyncEvent dlSyncEvent : dlSyncEvents) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DLSyncEventModelImpl dlSyncEventModelImpl =
+						(DLSyncEventModelImpl)dlSyncEvent;
+
+					arguments.add(
+						dlSyncEventModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), dlSyncEvent);
+				}
+				else {
+					List<DLSyncEvent> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(dlSyncEvent);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DLSyncEvent>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DLSyncEvent> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDLSyncEventUtilPersistence(

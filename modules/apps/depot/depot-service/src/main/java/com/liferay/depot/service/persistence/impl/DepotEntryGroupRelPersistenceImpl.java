@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -53,6 +54,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +103,42 @@ public class DepotEntryGroupRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the depot entry group rels where uuid = &#63;.
@@ -641,7 +676,18 @@ public class DepotEntryGroupRelPersistenceImpl
 		"(depotEntryGroupRel.uuid IS NULL OR depotEntryGroupRel.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the depot entry group rel where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryGroupRelException</code> if it could not be found.
@@ -889,8 +935,25 @@ public class DepotEntryGroupRelPersistenceImpl
 		"depotEntryGroupRel.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the depot entry group rels where uuid = &#63; and companyId = &#63;.
@@ -1472,8 +1535,25 @@ public class DepotEntryGroupRelPersistenceImpl
 		"depotEntryGroupRel.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDepotEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDepotEntryId() {
+		return _finderPathWithPaginationFindByDepotEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDepotEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDepotEntryId() {
+		return _finderPathWithoutPaginationFindByDepotEntryId;
+	}
+
 	private FinderPath _finderPathCountByDepotEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByDepotEntryId() {
+		return _finderPathCountByDepotEntryId;
+	}
 
 	/**
 	 * Returns all the depot entry group rels where depotEntryId = &#63;.
@@ -1979,8 +2059,25 @@ public class DepotEntryGroupRelPersistenceImpl
 		"depotEntryGroupRel.depotEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByToGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByToGroupId() {
+		return _finderPathWithPaginationFindByToGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByToGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByToGroupId() {
+		return _finderPathWithoutPaginationFindByToGroupId;
+	}
+
 	private FinderPath _finderPathCountByToGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByToGroupId() {
+		return _finderPathCountByToGroupId;
+	}
 
 	/**
 	 * Returns all the depot entry group rels where toGroupId = &#63;.
@@ -2484,8 +2581,25 @@ public class DepotEntryGroupRelPersistenceImpl
 		"depotEntryGroupRel.toGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDDMSA_TGI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDDMSA_TGI() {
+		return _finderPathWithPaginationFindByDDMSA_TGI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDDMSA_TGI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDDMSA_TGI() {
+		return _finderPathWithoutPaginationFindByDDMSA_TGI;
+	}
+
 	private FinderPath _finderPathCountByDDMSA_TGI;
+
+	@Override
+	public FinderPath getFinderPathCountByDDMSA_TGI() {
+		return _finderPathCountByDDMSA_TGI;
+	}
 
 	/**
 	 * Returns all the depot entry group rels where ddmStructuresAvailable = &#63; and toGroupId = &#63;.
@@ -3039,7 +3153,18 @@ public class DepotEntryGroupRelPersistenceImpl
 		"depotEntryGroupRel.toGroupId = ?";
 
 	private FinderPath _finderPathFetchByD_TGI;
+
+	@Override
+	public FinderPath getFinderPathFetchByD_TGI() {
+		return _finderPathFetchByD_TGI;
+	}
+
 	private FinderPath _finderPathCountByD_TGI;
+
+	@Override
+	public FinderPath getFinderPathCountByD_TGI() {
+		return _finderPathCountByD_TGI;
+	}
 
 	/**
 	 * Returns the depot entry group rel where depotEntryId = &#63; and toGroupId = &#63; or throws a <code>NoSuchEntryGroupRelException</code> if it could not be found.
@@ -3260,8 +3385,25 @@ public class DepotEntryGroupRelPersistenceImpl
 		"depotEntryGroupRel.toGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByS_TGI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByS_TGI() {
+		return _finderPathWithPaginationFindByS_TGI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByS_TGI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByS_TGI() {
+		return _finderPathWithoutPaginationFindByS_TGI;
+	}
+
 	private FinderPath _finderPathCountByS_TGI;
+
+	@Override
+	public FinderPath getFinderPathCountByS_TGI() {
+		return _finderPathCountByS_TGI;
+	}
 
 	/**
 	 * Returns all the depot entry group rels where searchable = &#63; and toGroupId = &#63;.
@@ -4557,6 +4699,61 @@ public class DepotEntryGroupRelPersistenceImpl
 		_setDepotEntryGroupRelUtilPersistence(null);
 
 		entityCache.removeCache(DepotEntryGroupRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DepotEntryGroupRel> depotEntryGroupRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DepotEntryGroupRel>> resultMap =
+				new HashMap<>();
+
+			for (DepotEntryGroupRel depotEntryGroupRel : depotEntryGroupRels) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DepotEntryGroupRelModelImpl depotEntryGroupRelModelImpl =
+						(DepotEntryGroupRelModelImpl)depotEntryGroupRel;
+
+					arguments.add(
+						depotEntryGroupRelModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), depotEntryGroupRel);
+				}
+				else {
+					List<DepotEntryGroupRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(depotEntryGroupRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DepotEntryGroupRel>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DepotEntryGroupRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDepotEntryGroupRelUtilPersistence(

@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -50,7 +51,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -99,9 +102,42 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the sharepoint o auth2 token entries where userId = &#63;.
@@ -606,7 +642,18 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 		"sharepointOAuth2TokenEntry.userId = ?";
 
 	private FinderPath _finderPathFetchByU_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_C() {
+		return _finderPathFetchByU_C;
+	}
+
 	private FinderPath _finderPathCountByU_C;
+
+	@Override
+	public FinderPath getFinderPathCountByU_C() {
+		return _finderPathCountByU_C;
+	}
 
 	/**
 	 * Returns the sharepoint o auth2 token entry where userId = &#63; and configurationPid = &#63; or throws a <code>NoSuch2TokenEntryException</code> if it could not be found.
@@ -1498,6 +1545,68 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 		_setSharepointOAuth2TokenEntryUtilPersistence(null);
 
 		entityCache.removeCache(SharepointOAuth2TokenEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SharepointOAuth2TokenEntry> sharepointOAuth2TokenEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SharepointOAuth2TokenEntry>> resultMap =
+				new HashMap<>();
+
+			for (SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry :
+					sharepointOAuth2TokenEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SharepointOAuth2TokenEntryModelImpl
+						sharepointOAuth2TokenEntryModelImpl =
+							(SharepointOAuth2TokenEntryModelImpl)
+								sharepointOAuth2TokenEntry;
+
+					arguments.add(
+						sharepointOAuth2TokenEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						sharepointOAuth2TokenEntry);
+				}
+				else {
+					List<SharepointOAuth2TokenEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(sharepointOAuth2TokenEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SharepointOAuth2TokenEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SharepointOAuth2TokenEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSharepointOAuth2TokenEntryUtilPersistence(

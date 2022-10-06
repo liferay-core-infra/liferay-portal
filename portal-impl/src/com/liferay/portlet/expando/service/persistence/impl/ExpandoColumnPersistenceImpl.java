@@ -98,9 +98,42 @@ public class ExpandoColumnPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByTableId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByTableId() {
+		return _finderPathWithPaginationFindByTableId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByTableId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByTableId() {
+		return _finderPathWithoutPaginationFindByTableId;
+	}
+
 	private FinderPath _finderPathCountByTableId;
+
+	@Override
+	public FinderPath getFinderPathCountByTableId() {
+		return _finderPathCountByTableId;
+	}
 
 	/**
 	 * Returns all the expando columns where tableId = &#63;.
@@ -987,10 +1020,39 @@ public class ExpandoColumnPersistenceImpl
 		"expandoColumn.tableId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_N() {
+		return _finderPathWithPaginationFindByT_N;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_N;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_N() {
+		return _finderPathWithoutPaginationFindByT_N;
+	}
+
 	private FinderPath _finderPathFetchByT_N;
+
+	@Override
+	public FinderPath getFinderPathFetchByT_N() {
+		return _finderPathFetchByT_N;
+	}
+
 	private FinderPath _finderPathCountByT_N;
+
+	@Override
+	public FinderPath getFinderPathCountByT_N() {
+		return _finderPathCountByT_N;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByT_N;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByT_N() {
+		return _finderPathWithPaginationCountByT_N;
+	}
 
 	/**
 	 * Returns all the expando columns where tableId = &#63; and name = any &#63;.
@@ -2575,6 +2637,59 @@ public class ExpandoColumnPersistenceImpl
 		_setExpandoColumnUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ExpandoColumnImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ExpandoColumn> expandoColumns = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExpandoColumn>> resultMap = new HashMap<>();
+
+			for (ExpandoColumn expandoColumn : expandoColumns) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExpandoColumnModelImpl expandoColumnModelImpl =
+						(ExpandoColumnModelImpl)expandoColumn;
+
+					arguments.add(
+						expandoColumnModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), expandoColumn);
+				}
+				else {
+					List<ExpandoColumn> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(expandoColumn);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExpandoColumn>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExpandoColumn> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setExpandoColumnUtilPersistence(

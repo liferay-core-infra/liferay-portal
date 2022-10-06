@@ -130,6 +130,45 @@ public class CommerceShippingFixedOptionQualifierUtil {
 			commerceShippingFixedOptionQualifier, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommerceShippingFixedOptionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommerceShippingFixedOptionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommerceShippingFixedOptionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommerceShippingFixedOptionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommerceShippingFixedOptionId() {
+
+		return getPersistence().
+			getFinderPathCountByCommerceShippingFixedOptionId();
+	}
+
 	/**
 	 * Returns all the commerce shipping fixed option qualifiers where commerceShippingFixedOptionId = &#63;.
 	 *
@@ -333,6 +372,24 @@ public class CommerceShippingFixedOptionQualifierUtil {
 
 		return getPersistence().countByCommerceShippingFixedOptionId(
 			commerceShippingFixedOptionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -544,6 +601,18 @@ public class CommerceShippingFixedOptionQualifierUtil {
 
 		return getPersistence().countByC_C(
 			classNameId, commerceShippingFixedOptionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_C() {
+
+		return getPersistence().getFinderPathFetchByC_C_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_C() {
+
+		return getPersistence().getFinderPathCountByC_C_C();
 	}
 
 	/**
@@ -800,6 +869,12 @@ public class CommerceShippingFixedOptionQualifierUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommerceShippingFixedOptionQualifierPersistence

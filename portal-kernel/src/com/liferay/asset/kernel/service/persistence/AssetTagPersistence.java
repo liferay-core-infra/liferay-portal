@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service.persistence;
 
 import com.liferay.asset.kernel.exception.NoSuchTagException;
 import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface AssetTagPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetTagUtil} to access the asset tag persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the asset tags where uuid = &#63;.
@@ -184,6 +196,10 @@ public interface AssetTagPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the asset tag where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchTagException</code> if it could not be found.
 	 *
@@ -233,6 +249,12 @@ public interface AssetTagPersistence
 	 * @return the number of matching asset tags
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the asset tags where uuid = &#63; and companyId = &#63;.
@@ -387,6 +409,14 @@ public interface AssetTagPersistence
 	 * @return the number of matching asset tags
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the asset tags where groupId = &#63;.
@@ -604,6 +634,14 @@ public interface AssetTagPersistence
 	 */
 	public int countByGroupId(long[] groupIds);
 
+	public FinderPath getFinderPathWithPaginationFindByName();
+
+	public FinderPath getFinderPathWithoutPaginationFindByName();
+
+	public FinderPath getFinderPathCountByName();
+
+	public FinderPath getFinderPathWithPaginationCountByName();
+
 	/**
 	 * Returns all the asset tags where name = &#63;.
 	 *
@@ -819,6 +857,10 @@ public interface AssetTagPersistence
 	 */
 	public int countByName(String[] names);
 
+	public FinderPath getFinderPathFetchByG_N();
+
+	public FinderPath getFinderPathCountByG_N();
+
 	/**
 	 * Returns the asset tag where groupId = &#63; and name = &#63; or throws a <code>NoSuchTagException</code> if it could not be found.
 	 *
@@ -868,6 +910,10 @@ public interface AssetTagPersistence
 	 * @return the number of matching asset tags
 	 */
 	public int countByG_N(long groupId, String name);
+
+	public FinderPath getFinderPathWithPaginationFindByG_LikeN();
+
+	public FinderPath getFinderPathWithPaginationCountByG_LikeN();
 
 	/**
 	 * Returns all the asset tags where groupId = &#63; and name LIKE &#63;.
@@ -1389,5 +1435,7 @@ public interface AssetTagPersistence
 	public void setAssetEntries(
 		long pk,
 		java.util.List<com.liferay.asset.kernel.model.AssetEntry> assetEntries);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

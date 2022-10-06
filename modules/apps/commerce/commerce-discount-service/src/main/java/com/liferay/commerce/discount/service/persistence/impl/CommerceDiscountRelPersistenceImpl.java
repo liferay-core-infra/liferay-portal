@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -50,9 +51,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -96,9 +100,42 @@ public class CommerceDiscountRelPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCommerceDiscountId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCommerceDiscountId() {
+		return _finderPathWithPaginationFindByCommerceDiscountId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCommerceDiscountId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCommerceDiscountId() {
+		return _finderPathWithoutPaginationFindByCommerceDiscountId;
+	}
+
 	private FinderPath _finderPathCountByCommerceDiscountId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceDiscountId() {
+		return _finderPathCountByCommerceDiscountId;
+	}
 
 	/**
 	 * Returns all the commerce discount rels where commerceDiscountId = &#63;.
@@ -613,8 +650,25 @@ public class CommerceDiscountRelPersistenceImpl
 			"commerceDiscountRel.commerceDiscountId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCD_CN;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCD_CN() {
+		return _finderPathWithPaginationFindByCD_CN;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCD_CN;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCD_CN() {
+		return _finderPathWithoutPaginationFindByCD_CN;
+	}
+
 	private FinderPath _finderPathCountByCD_CN;
+
+	@Override
+	public FinderPath getFinderPathCountByCD_CN() {
+		return _finderPathCountByCD_CN;
+	}
 
 	/**
 	 * Returns all the commerce discount rels where commerceDiscountId = &#63; and classNameId = &#63;.
@@ -1162,8 +1216,25 @@ public class CommerceDiscountRelPersistenceImpl
 		"commerceDiscountRel.classNameId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCN_CPK() {
+		return _finderPathWithPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCN_CPK() {
+		return _finderPathWithoutPaginationFindByCN_CPK;
+	}
+
 	private FinderPath _finderPathCountByCN_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByCN_CPK() {
+		return _finderPathCountByCN_CPK;
+	}
 
 	/**
 	 * Returns all the commerce discount rels where classNameId = &#63; and classPK = &#63;.
@@ -2324,6 +2395,64 @@ public class CommerceDiscountRelPersistenceImpl
 		_setCommerceDiscountRelUtilPersistence(null);
 
 		entityCache.removeCache(CommerceDiscountRelImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceDiscountRel> commerceDiscountRels = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceDiscountRel>> resultMap =
+				new HashMap<>();
+
+			for (CommerceDiscountRel commerceDiscountRel :
+					commerceDiscountRels) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceDiscountRelModelImpl commerceDiscountRelModelImpl =
+						(CommerceDiscountRelModelImpl)commerceDiscountRel;
+
+					arguments.add(
+						commerceDiscountRelModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), commerceDiscountRel);
+				}
+				else {
+					List<CommerceDiscountRel> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceDiscountRel);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceDiscountRel>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceDiscountRel> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceDiscountRelUtilPersistence(

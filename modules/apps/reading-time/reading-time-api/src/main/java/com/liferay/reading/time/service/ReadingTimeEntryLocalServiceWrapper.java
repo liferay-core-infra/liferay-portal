@@ -15,6 +15,7 @@
 package com.liferay.reading.time.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.reading.time.model.ReadingTimeEntry;
@@ -454,6 +455,11 @@ public class ReadingTimeEntryLocalServiceWrapper
 
 		return _readingTimeEntryLocalService.
 			getReadingTimeEntryByUuidAndGroupId(uuid, groupId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_readingTimeEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

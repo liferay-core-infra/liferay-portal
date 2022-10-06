@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -52,7 +53,9 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -99,9 +102,42 @@ public class OpenIdConnectSessionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the open ID connect sessions where userId = &#63;.
@@ -602,8 +638,23 @@ public class OpenIdConnectSessionPersistenceImpl
 
 	private FinderPath
 		_finderPathWithPaginationFindByLtAccessTokenExpirationDate;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByLtAccessTokenExpirationDate() {
+
+		return _finderPathWithPaginationFindByLtAccessTokenExpirationDate;
+	}
+
 	private FinderPath
 		_finderPathWithPaginationCountByLtAccessTokenExpirationDate;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationCountByLtAccessTokenExpirationDate() {
+
+		return _finderPathWithPaginationCountByLtAccessTokenExpirationDate;
+	}
 
 	/**
 	 * Returns all the open ID connect sessions where accessTokenExpirationDate &lt; &#63;.
@@ -1163,8 +1214,25 @@ public class OpenIdConnectSessionPersistenceImpl
 			"openIdConnectSession.accessTokenExpirationDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_A_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_A_C() {
+		return _finderPathWithPaginationFindByC_A_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_A_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_C() {
+		return _finderPathWithoutPaginationFindByC_A_C;
+	}
+
 	private FinderPath _finderPathCountByC_A_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_A_C() {
+		return _finderPathCountByC_A_C;
+	}
 
 	/**
 	 * Returns all the open ID connect sessions where companyId = &#63; and authServerWellKnownURI = &#63; and clientId = &#63;.
@@ -1840,7 +1908,18 @@ public class OpenIdConnectSessionPersistenceImpl
 		"(openIdConnectSession.clientId IS NULL OR openIdConnectSession.clientId = '')";
 
 	private FinderPath _finderPathFetchByU_A_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_A_C() {
+		return _finderPathFetchByU_A_C;
+	}
+
 	private FinderPath _finderPathCountByU_A_C;
+
+	@Override
+	public FinderPath getFinderPathCountByU_A_C() {
+		return _finderPathCountByU_A_C;
+	}
 
 	/**
 	 * Returns the open ID connect session where userId = &#63; and authServerWellKnownURI = &#63; and clientId = &#63; or throws a <code>NoSuchSessionException</code> if it could not be found.
@@ -2815,6 +2894,65 @@ public class OpenIdConnectSessionPersistenceImpl
 		_setOpenIdConnectSessionUtilPersistence(null);
 
 		entityCache.removeCache(OpenIdConnectSessionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OpenIdConnectSession> openIdConnectSessions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OpenIdConnectSession>> resultMap =
+				new HashMap<>();
+
+			for (OpenIdConnectSession openIdConnectSession :
+					openIdConnectSessions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OpenIdConnectSessionModelImpl
+						openIdConnectSessionModelImpl =
+							(OpenIdConnectSessionModelImpl)openIdConnectSession;
+
+					arguments.add(
+						openIdConnectSessionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), openIdConnectSession);
+				}
+				else {
+					List<OpenIdConnectSession> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(openIdConnectSession);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OpenIdConnectSession>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OpenIdConnectSession> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOpenIdConnectSessionUtilPersistence(

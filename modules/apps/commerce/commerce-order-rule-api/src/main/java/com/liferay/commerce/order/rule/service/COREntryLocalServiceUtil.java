@@ -17,6 +17,7 @@ package com.liferay.commerce.order.rule.service;
 import com.liferay.commerce.order.rule.model.COREntry;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -484,6 +485,10 @@ public class COREntryLocalServiceUtil {
 
 	public static List<COREntry> getUnqualifiedCOREntries(long companyId) {
 		return getService().getUnqualifiedCOREntries(companyId);
+	}
+
+	public static void loadFinderCache(FinderPath[] finderPaths) {
+		getService().loadFinderCache(finderPaths);
 	}
 
 	/**

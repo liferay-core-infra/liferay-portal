@@ -120,6 +120,38 @@ public class SamlSpMessageUtil {
 		return getPersistence().update(samlSpMessage, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLtExpirationDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtExpirationDate();
+	}
+
 	/**
 	 * Returns all the saml sp messages where expirationDate &lt; &#63;.
 	 *
@@ -294,6 +326,18 @@ public class SamlSpMessageUtil {
 	 */
 	public static int countByLtExpirationDate(Date expirationDate) {
 		return getPersistence().countByLtExpirationDate(expirationDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchBySIEI_SIRK() {
+
+		return getPersistence().getFinderPathFetchBySIEI_SIRK();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySIEI_SIRK() {
+
+		return getPersistence().getFinderPathCountBySIEI_SIRK();
 	}
 
 	/**
@@ -517,6 +561,12 @@ public class SamlSpMessageUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static SamlSpMessagePersistence getPersistence() {

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchRecentLayoutRevisionException;
 import com.liferay.portal.kernel.model.RecentLayoutRevision;
 
@@ -39,6 +40,17 @@ public interface RecentLayoutRevisionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RecentLayoutRevisionUtil} to access the recent layout revision persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the recent layout revisions where groupId = &#63;.
@@ -183,6 +195,12 @@ public interface RecentLayoutRevisionPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the recent layout revisions where userId = &#63;.
 	 *
@@ -325,6 +343,12 @@ public interface RecentLayoutRevisionPersistence
 	 * @return the number of matching recent layout revisions
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByLayoutRevisionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLayoutRevisionId();
+
+	public FinderPath getFinderPathCountByLayoutRevisionId();
 
 	/**
 	 * Returns all the recent layout revisions where layoutRevisionId = &#63;.
@@ -469,6 +493,10 @@ public interface RecentLayoutRevisionPersistence
 	 * @return the number of matching recent layout revisions
 	 */
 	public int countByLayoutRevisionId(long layoutRevisionId);
+
+	public FinderPath getFinderPathFetchByU_L_P();
+
+	public FinderPath getFinderPathCountByU_L_P();
 
 	/**
 	 * Returns the recent layout revision where userId = &#63; and layoutSetBranchId = &#63; and plid = &#63; or throws a <code>NoSuchRecentLayoutRevisionException</code> if it could not be found.
@@ -649,5 +677,7 @@ public interface RecentLayoutRevisionPersistence
 	 * @return the number of recent layout revisions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

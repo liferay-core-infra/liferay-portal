@@ -14,6 +14,7 @@
 
 package com.liferay.object.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -547,6 +548,11 @@ public class ObjectDefinitionLocalServiceWrapper
 	public boolean hasObjectRelationship(long objectDefinitionId) {
 		return _objectDefinitionLocalService.hasObjectRelationship(
 			objectDefinitionId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_objectDefinitionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

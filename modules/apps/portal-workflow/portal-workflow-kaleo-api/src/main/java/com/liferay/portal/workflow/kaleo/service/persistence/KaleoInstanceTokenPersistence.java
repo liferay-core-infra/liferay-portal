@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.exception.NoSuchInstanceTokenException;
@@ -44,6 +45,17 @@ public interface KaleoInstanceTokenPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoInstanceTokenUtil} to access the kaleo instance token persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the kaleo instance tokens where companyId = &#63;.
@@ -187,6 +199,14 @@ public interface KaleoInstanceTokenPersistence
 	 * @return the number of matching kaleo instance tokens
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId();
+
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId();
 
 	/**
 	 * Returns all the kaleo instance tokens where kaleoDefinitionVersionId = &#63;.
@@ -332,6 +352,12 @@ public interface KaleoInstanceTokenPersistence
 	 */
 	public int countByKaleoDefinitionVersionId(long kaleoDefinitionVersionId);
 
+	public FinderPath getFinderPathWithPaginationFindByKaleoInstanceId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoInstanceId();
+
+	public FinderPath getFinderPathCountByKaleoInstanceId();
+
 	/**
 	 * Returns all the kaleo instance tokens where kaleoInstanceId = &#63;.
 	 *
@@ -475,6 +501,12 @@ public interface KaleoInstanceTokenPersistence
 	 * @return the number of matching kaleo instance tokens
 	 */
 	public int countByKaleoInstanceId(long kaleoInstanceId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_PKITI();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_PKITI();
+
+	public FinderPath getFinderPathCountByC_PKITI();
 
 	/**
 	 * Returns all the kaleo instance tokens where companyId = &#63; and parentKaleoInstanceTokenId = &#63;.
@@ -632,6 +664,12 @@ public interface KaleoInstanceTokenPersistence
 	 * @return the number of matching kaleo instance tokens
 	 */
 	public int countByC_PKITI(long companyId, long parentKaleoInstanceTokenId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_PKITI_CD();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_PKITI_CD();
+
+	public FinderPath getFinderPathCountByC_PKITI_CD();
 
 	/**
 	 * Returns all the kaleo instance tokens where companyId = &#63; and parentKaleoInstanceTokenId = &#63; and completionDate = &#63;.
@@ -927,5 +965,7 @@ public interface KaleoInstanceTokenPersistence
 	 * @return the number of kaleo instance tokens
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -93,9 +94,42 @@ public class SocialRequestPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the social requests where uuid = &#63;.
@@ -641,7 +675,18 @@ public class SocialRequestPersistenceImpl
 		"(socialRequest.uuid IS NULL OR socialRequest.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the social request where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchRequestException</code> if it could not be found.
@@ -905,8 +950,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the social requests where uuid = &#63; and companyId = &#63;.
@@ -1503,8 +1565,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the social requests where companyId = &#63;.
@@ -2016,8 +2095,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the social requests where userId = &#63;.
@@ -2524,8 +2620,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByReceiverUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByReceiverUserId() {
+		return _finderPathWithPaginationFindByReceiverUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByReceiverUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByReceiverUserId() {
+		return _finderPathWithoutPaginationFindByReceiverUserId;
+	}
+
 	private FinderPath _finderPathCountByReceiverUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByReceiverUserId() {
+		return _finderPathCountByReceiverUserId;
+	}
 
 	/**
 	 * Returns all the social requests where receiverUserId = &#63;.
@@ -3045,8 +3158,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.receiverUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_S() {
+		return _finderPathWithPaginationFindByU_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_S() {
+		return _finderPathWithoutPaginationFindByU_S;
+	}
+
 	private FinderPath _finderPathCountByU_S;
+
+	@Override
+	public FinderPath getFinderPathCountByU_S() {
+		return _finderPathCountByU_S;
+	}
 
 	/**
 	 * Returns all the social requests where userId = &#63; and status = &#63;.
@@ -3599,8 +3729,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the social requests where classNameId = &#63; and classPK = &#63;.
@@ -4155,8 +4302,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByR_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByR_S() {
+		return _finderPathWithPaginationFindByR_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByR_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByR_S() {
+		return _finderPathWithoutPaginationFindByR_S;
+	}
+
 	private FinderPath _finderPathCountByR_S;
+
+	@Override
+	public FinderPath getFinderPathCountByR_S() {
+		return _finderPathCountByR_S;
+	}
 
 	/**
 	 * Returns all the social requests where receiverUserId = &#63; and status = &#63;.
@@ -4711,7 +4875,18 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.status = ?";
 
 	private FinderPath _finderPathFetchByU_C_C_T_R;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_C_C_T_R() {
+		return _finderPathFetchByU_C_C_T_R;
+	}
+
 	private FinderPath _finderPathCountByU_C_C_T_R;
+
+	@Override
+	public FinderPath getFinderPathCountByU_C_C_T_R() {
+		return _finderPathCountByU_C_C_T_R;
+	}
 
 	/**
 	 * Returns the social request where userId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; or throws a <code>NoSuchRequestException</code> if it could not be found.
@@ -5024,8 +5199,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.receiverUserId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_C_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_C_C_T_S() {
+		return _finderPathWithPaginationFindByU_C_C_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_C_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_C_C_T_S() {
+		return _finderPathWithoutPaginationFindByU_C_C_T_S;
+	}
+
 	private FinderPath _finderPathCountByU_C_C_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByU_C_C_T_S() {
+		return _finderPathCountByU_C_C_T_S;
+	}
 
 	/**
 	 * Returns all the social requests where userId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and status = &#63;.
@@ -5699,8 +5891,25 @@ public class SocialRequestPersistenceImpl
 		"socialRequest.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_T_R_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_T_R_S() {
+		return _finderPathWithPaginationFindByC_C_T_R_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_T_R_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_T_R_S() {
+		return _finderPathWithoutPaginationFindByC_C_T_R_S;
+	}
+
 	private FinderPath _finderPathCountByC_C_T_R_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_T_R_S() {
+		return _finderPathCountByC_C_T_R_S;
+	}
 
 	/**
 	 * Returns all the social requests where classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; and status = &#63;.
@@ -7456,6 +7665,59 @@ public class SocialRequestPersistenceImpl
 		_setSocialRequestUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(SocialRequestImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SocialRequest> socialRequests = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SocialRequest>> resultMap = new HashMap<>();
+
+			for (SocialRequest socialRequest : socialRequests) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SocialRequestModelImpl socialRequestModelImpl =
+						(SocialRequestModelImpl)socialRequest;
+
+					arguments.add(
+						socialRequestModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), socialRequest);
+				}
+				else {
+					List<SocialRequest> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(socialRequest);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SocialRequest>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SocialRequest> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSocialRequestUtilPersistence(

@@ -119,6 +119,42 @@ public class DispatchTriggerUtil {
 		return getPersistence().update(dispatchTrigger, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the dispatch triggers where uuid = &#63;.
 	 *
@@ -358,6 +394,24 @@ public class DispatchTriggerUtil {
 	 */
 	public static int filterCountByUuid(String uuid) {
 		return getPersistence().filterCountByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -630,6 +684,24 @@ public class DispatchTriggerUtil {
 		return getPersistence().filterCountByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the dispatch triggers where companyId = &#63;.
 	 *
@@ -876,6 +948,24 @@ public class DispatchTriggerUtil {
 	 */
 	public static int filterCountByCompanyId(long companyId) {
 		return getPersistence().filterCountByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_U() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_U() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_U();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_U() {
+
+		return getPersistence().getFinderPathCountByC_U();
 	}
 
 	/**
@@ -1144,6 +1234,24 @@ public class DispatchTriggerUtil {
 	 */
 	public static int filterCountByC_U(long companyId, long userId) {
 		return getPersistence().filterCountByC_U(companyId, userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_DTET() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_DTET();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_DTET() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_DTET();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_DTET() {
+
+		return getPersistence().getFinderPathCountByC_DTET();
 	}
 
 	/**
@@ -1433,6 +1541,18 @@ public class DispatchTriggerUtil {
 			companyId, dispatchTaskExecutorType);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_N() {
+
+		return getPersistence().getFinderPathFetchByC_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_N() {
+
+		return getPersistence().getFinderPathCountByC_N();
+	}
+
 	/**
 	 * Returns the dispatch trigger where companyId = &#63; and name = &#63; or throws a <code>NoSuchTriggerException</code> if it could not be found.
 	 *
@@ -1494,6 +1614,30 @@ public class DispatchTriggerUtil {
 	 */
 	public static int countByC_N(long companyId, String name) {
 		return getPersistence().countByC_N(companyId, name);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByA_DTCM() {
+
+		return getPersistence().getFinderPathWithPaginationFindByA_DTCM();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByA_DTCM() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByA_DTCM();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByA_DTCM() {
+
+		return getPersistence().getFinderPathCountByA_DTCM();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByA_DTCM() {
+
+		return getPersistence().getFinderPathWithPaginationCountByA_DTCM();
 	}
 
 	/**
@@ -1946,6 +2090,18 @@ public class DispatchTriggerUtil {
 			active, dispatchTaskClusterModes);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_ERC() {
+
+		return getPersistence().getFinderPathFetchByC_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ERC() {
+
+		return getPersistence().getFinderPathCountByC_ERC();
+	}
+
 	/**
 	 * Returns the dispatch trigger where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchTriggerException</code> if it could not be found.
 	 *
@@ -2163,6 +2319,12 @@ public class DispatchTriggerUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DispatchTriggerPersistence getPersistence() {

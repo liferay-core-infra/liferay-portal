@@ -18,6 +18,7 @@ import com.liferay.oauth.client.persistence.model.OAuthClientASLocalMetadata;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -295,6 +296,9 @@ public interface OAuthClientASLocalMetadataLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OAuthClientASLocalMetadata> getUserOAuthClientASLocalMetadata(
 		long userId, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 	public OAuthClientASLocalMetadata updateOAuthClientASLocalMetadata(
 			long oAuthClientASLocalMetadataId, String metadataJSON,

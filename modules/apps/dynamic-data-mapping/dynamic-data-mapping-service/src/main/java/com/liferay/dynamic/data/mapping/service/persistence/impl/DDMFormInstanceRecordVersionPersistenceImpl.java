@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -107,9 +108,44 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByFormInstanceRecordId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFormInstanceRecordId() {
+		return _finderPathWithPaginationFindByFormInstanceRecordId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFormInstanceRecordId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByFormInstanceRecordId() {
+
+		return _finderPathWithoutPaginationFindByFormInstanceRecordId;
+	}
+
 	private FinderPath _finderPathCountByFormInstanceRecordId;
+
+	@Override
+	public FinderPath getFinderPathCountByFormInstanceRecordId() {
+		return _finderPathCountByFormInstanceRecordId;
+	}
 
 	/**
 	 * Returns all the ddm form instance record versions where formInstanceRecordId = &#63;.
@@ -650,8 +686,25 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 			"ddmFormInstanceRecordVersion.formInstanceRecordId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_F() {
+		return _finderPathWithPaginationFindByU_F;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_F;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_F() {
+		return _finderPathWithoutPaginationFindByU_F;
+	}
+
 	private FinderPath _finderPathCountByU_F;
+
+	@Override
+	public FinderPath getFinderPathCountByU_F() {
+		return _finderPathCountByU_F;
+	}
 
 	/**
 	 * Returns all the ddm form instance record versions where userId = &#63; and formInstanceId = &#63;.
@@ -1214,8 +1267,25 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		"ddmFormInstanceRecordVersion.formInstanceId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByF_F;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByF_F() {
+		return _finderPathWithPaginationFindByF_F;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByF_F;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByF_F() {
+		return _finderPathWithoutPaginationFindByF_F;
+	}
+
 	private FinderPath _finderPathCountByF_F;
+
+	@Override
+	public FinderPath getFinderPathCountByF_F() {
+		return _finderPathCountByF_F;
+	}
 
 	/**
 	 * Returns all the ddm form instance record versions where formInstanceId = &#63; and formInstanceVersion = &#63;.
@@ -1829,7 +1899,18 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		"(ddmFormInstanceRecordVersion.formInstanceVersion IS NULL OR ddmFormInstanceRecordVersion.formInstanceVersion = '')";
 
 	private FinderPath _finderPathFetchByF_V;
+
+	@Override
+	public FinderPath getFinderPathFetchByF_V() {
+		return _finderPathFetchByF_V;
+	}
+
 	private FinderPath _finderPathCountByF_V;
+
+	@Override
+	public FinderPath getFinderPathCountByF_V() {
+		return _finderPathCountByF_V;
+	}
 
 	/**
 	 * Returns the ddm form instance record version where formInstanceRecordId = &#63; and version = &#63; or throws a <code>NoSuchFormInstanceRecordVersionException</code> if it could not be found.
@@ -2102,8 +2183,25 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		"(ddmFormInstanceRecordVersion.version IS NULL OR ddmFormInstanceRecordVersion.version = '')";
 
 	private FinderPath _finderPathWithPaginationFindByF_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByF_S() {
+		return _finderPathWithPaginationFindByF_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByF_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByF_S() {
+		return _finderPathWithoutPaginationFindByF_S;
+	}
+
 	private FinderPath _finderPathCountByF_S;
+
+	@Override
+	public FinderPath getFinderPathCountByF_S() {
+		return _finderPathCountByF_S;
+	}
 
 	/**
 	 * Returns all the ddm form instance record versions where formInstanceRecordId = &#63; and status = &#63;.
@@ -2669,8 +2767,25 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		"ddmFormInstanceRecordVersion.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_F_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_F_F_S() {
+		return _finderPathWithPaginationFindByU_F_F_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_F_F_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_F_F_S() {
+		return _finderPathWithoutPaginationFindByU_F_F_S;
+	}
+
 	private FinderPath _finderPathCountByU_F_F_S;
+
+	@Override
+	public FinderPath getFinderPathCountByU_F_F_S() {
+		return _finderPathCountByU_F_F_S;
+	}
 
 	/**
 	 * Returns all the ddm form instance record versions where userId = &#63; and formInstanceId = &#63; and formInstanceVersion = &#63; and status = &#63;.
@@ -4349,6 +4464,69 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 
 		entityCache.removeCache(
 			DDMFormInstanceRecordVersionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DDMFormInstanceRecordVersion> ddmFormInstanceRecordVersions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DDMFormInstanceRecordVersion>> resultMap =
+				new HashMap<>();
+
+			for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
+					ddmFormInstanceRecordVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DDMFormInstanceRecordVersionModelImpl
+						ddmFormInstanceRecordVersionModelImpl =
+							(DDMFormInstanceRecordVersionModelImpl)
+								ddmFormInstanceRecordVersion;
+
+					arguments.add(
+						ddmFormInstanceRecordVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						ddmFormInstanceRecordVersion);
+				}
+				else {
+					List<DDMFormInstanceRecordVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(ddmFormInstanceRecordVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DDMFormInstanceRecordVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DDMFormInstanceRecordVersion> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDDMFormInstanceRecordVersionUtilPersistence(

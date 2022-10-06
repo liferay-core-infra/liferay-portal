@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,9 +107,42 @@ public class MBThreadFlagPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the message boards thread flags where uuid = &#63;.
@@ -651,7 +685,18 @@ public class MBThreadFlagPersistenceImpl
 		"(mbThreadFlag.uuid IS NULL OR mbThreadFlag.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the message boards thread flag where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchThreadFlagException</code> if it could not be found.
@@ -914,8 +959,25 @@ public class MBThreadFlagPersistenceImpl
 		"mbThreadFlag.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the message boards thread flags where uuid = &#63; and companyId = &#63;.
@@ -1509,8 +1571,25 @@ public class MBThreadFlagPersistenceImpl
 		"mbThreadFlag.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the message boards thread flags where userId = &#63;.
@@ -2014,8 +2093,25 @@ public class MBThreadFlagPersistenceImpl
 		"mbThreadFlag.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByThreadId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByThreadId() {
+		return _finderPathWithPaginationFindByThreadId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByThreadId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByThreadId() {
+		return _finderPathWithoutPaginationFindByThreadId;
+	}
+
 	private FinderPath _finderPathCountByThreadId;
+
+	@Override
+	public FinderPath getFinderPathCountByThreadId() {
+		return _finderPathCountByThreadId;
+	}
 
 	/**
 	 * Returns all the message boards thread flags where threadId = &#63;.
@@ -2523,7 +2619,18 @@ public class MBThreadFlagPersistenceImpl
 		"mbThreadFlag.threadId = ?";
 
 	private FinderPath _finderPathFetchByU_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_T() {
+		return _finderPathFetchByU_T;
+	}
+
 	private FinderPath _finderPathCountByU_T;
+
+	@Override
+	public FinderPath getFinderPathCountByU_T() {
+		return _finderPathCountByU_T;
+	}
 
 	/**
 	 * Returns the message boards thread flag where userId = &#63; and threadId = &#63; or throws a <code>NoSuchThreadFlagException</code> if it could not be found.
@@ -3678,6 +3785,59 @@ public class MBThreadFlagPersistenceImpl
 		_setMBThreadFlagUtilPersistence(null);
 
 		entityCache.removeCache(MBThreadFlagImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<MBThreadFlag> mbThreadFlags = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<MBThreadFlag>> resultMap = new HashMap<>();
+
+			for (MBThreadFlag mbThreadFlag : mbThreadFlags) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					MBThreadFlagModelImpl mbThreadFlagModelImpl =
+						(MBThreadFlagModelImpl)mbThreadFlag;
+
+					arguments.add(
+						mbThreadFlagModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), mbThreadFlag);
+				}
+				else {
+					List<MBThreadFlag> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(mbThreadFlag);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<MBThreadFlag>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<MBThreadFlag> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setMBThreadFlagUtilPersistence(

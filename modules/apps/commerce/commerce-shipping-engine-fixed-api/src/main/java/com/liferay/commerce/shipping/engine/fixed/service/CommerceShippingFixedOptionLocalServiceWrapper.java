@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.shipping.engine.fixed.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -451,6 +452,11 @@ public class CommerceShippingFixedOptionLocalServiceWrapper
 
 		return _commerceShippingFixedOptionLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceShippingFixedOptionLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

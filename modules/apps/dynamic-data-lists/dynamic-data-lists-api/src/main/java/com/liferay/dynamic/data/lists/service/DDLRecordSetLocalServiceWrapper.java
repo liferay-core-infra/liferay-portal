@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.lists.service;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -663,6 +664,11 @@ public class DDLRecordSetLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddlRecordSetLocalService.getRecordSetSettingsModel(recordSet);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ddlRecordSetLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

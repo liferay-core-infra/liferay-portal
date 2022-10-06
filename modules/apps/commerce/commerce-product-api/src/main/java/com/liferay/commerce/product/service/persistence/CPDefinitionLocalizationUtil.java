@@ -125,6 +125,44 @@ public class CPDefinitionLocalizationUtil {
 			cpDefinitionLocalization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCPDefinitionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCPDefinitionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCPDefinitionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCPDefinitionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPDefinitionId() {
+
+		return getPersistence().getFinderPathCountByCPDefinitionId();
+	}
+
 	/**
 	 * Returns all the cp definition localizations where CPDefinitionId = &#63;.
 	 *
@@ -302,6 +340,18 @@ public class CPDefinitionLocalizationUtil {
 	 */
 	public static int countByCPDefinitionId(long CPDefinitionId) {
 		return getPersistence().countByCPDefinitionId(CPDefinitionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByCPDefinitionId_LanguageId() {
+
+		return getPersistence().getFinderPathFetchByCPDefinitionId_LanguageId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPDefinitionId_LanguageId() {
+
+		return getPersistence().getFinderPathCountByCPDefinitionId_LanguageId();
 	}
 
 	/**
@@ -541,6 +591,12 @@ public class CPDefinitionLocalizationUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CPDefinitionLocalizationPersistence getPersistence() {

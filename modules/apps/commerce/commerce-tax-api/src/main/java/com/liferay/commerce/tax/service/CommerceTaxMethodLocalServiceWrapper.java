@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.tax.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -392,6 +393,11 @@ public class CommerceTaxMethodLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _commerceTaxMethodLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceTaxMethodLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

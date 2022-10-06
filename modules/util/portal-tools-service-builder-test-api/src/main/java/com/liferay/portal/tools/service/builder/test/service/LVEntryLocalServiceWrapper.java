@@ -14,6 +14,7 @@
 
 package com.liferay.portal.tools.service.builder.test.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -623,6 +624,11 @@ public class LVEntryLocalServiceWrapper
 
 		return _lvEntryLocalService.hasBigDecimalEntryLVEntry(
 			bigDecimalEntryId, lvEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_lvEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.push.notifications.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -363,6 +364,11 @@ public class PushNotificationsDeviceLocalServiceWrapper
 	public int getPushNotificationsDevicesCount() {
 		return _pushNotificationsDeviceLocalService.
 			getPushNotificationsDevicesCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_pushNotificationsDeviceLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

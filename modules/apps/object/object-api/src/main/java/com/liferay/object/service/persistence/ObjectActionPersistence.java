@@ -16,6 +16,7 @@ package com.liferay.object.service.persistence;
 
 import com.liferay.object.exception.NoSuchObjectActionException;
 import com.liferay.object.model.ObjectAction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ObjectActionUtil} to access the object action persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the object actions where uuid = &#63;.
@@ -182,6 +194,12 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 * @return the number of matching object actions
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the object actions where uuid = &#63; and companyId = &#63;.
@@ -338,6 +356,12 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByObjectDefinitionId();
+
+	public FinderPath getFinderPathCountByObjectDefinitionId();
+
 	/**
 	 * Returns all the object actions where objectDefinitionId = &#63;.
 	 *
@@ -481,6 +505,12 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 * @return the number of matching object actions
 	 */
 	public int countByObjectDefinitionId(long objectDefinitionId);
+
+	public FinderPath getFinderPathWithPaginationFindByO_A_OATK();
+
+	public FinderPath getFinderPathWithoutPaginationFindByO_A_OATK();
+
+	public FinderPath getFinderPathCountByO_A_OATK();
 
 	/**
 	 * Returns all the object actions where objectDefinitionId = &#63; and active = &#63; and objectActionTriggerKey = &#63;.
@@ -775,5 +805,7 @@ public interface ObjectActionPersistence extends BasePersistence<ObjectAction> {
 	 * @return the number of object actions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

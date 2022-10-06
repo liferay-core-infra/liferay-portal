@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service.persistence;
 
 import com.liferay.commerce.product.exception.NoSuchCPInstanceException;
 import com.liferay.commerce.product.model.CPInstance;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -43,6 +44,17 @@ public interface CPInstancePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CPInstanceUtil} to access the cp instance persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the cp instances where uuid = &#63;.
@@ -187,6 +199,10 @@ public interface CPInstancePersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the cp instance where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchCPInstanceException</code> if it could not be found.
 	 *
@@ -236,6 +252,12 @@ public interface CPInstancePersistence
 	 * @return the number of matching cp instances
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the cp instances where uuid = &#63; and companyId = &#63;.
@@ -391,6 +413,12 @@ public interface CPInstancePersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
 	/**
 	 * Returns all the cp instances where groupId = &#63;.
 	 *
@@ -533,6 +561,12 @@ public interface CPInstancePersistence
 	 * @return the number of matching cp instances
 	 */
 	public int countByGroupId(long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the cp instances where companyId = &#63;.
@@ -677,6 +711,12 @@ public interface CPInstancePersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCPDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCPDefinitionId();
+
+	public FinderPath getFinderPathCountByCPDefinitionId();
+
 	/**
 	 * Returns all the cp instances where CPDefinitionId = &#63;.
 	 *
@@ -819,6 +859,12 @@ public interface CPInstancePersistence
 	 * @return the number of matching cp instances
 	 */
 	public int countByCPDefinitionId(long CPDefinitionId);
+
+	public FinderPath getFinderPathWithPaginationFindByCPInstanceUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCPInstanceUuid();
+
+	public FinderPath getFinderPathCountByCPInstanceUuid();
 
 	/**
 	 * Returns all the cp instances where CPInstanceUuid = &#63;.
@@ -963,6 +1009,12 @@ public interface CPInstancePersistence
 	 * @return the number of matching cp instances
 	 */
 	public int countByCPInstanceUuid(String CPInstanceUuid);
+
+	public FinderPath getFinderPathWithPaginationFindByG_ST();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_ST();
+
+	public FinderPath getFinderPathCountByG_ST();
 
 	/**
 	 * Returns all the cp instances where groupId = &#63; and status = &#63;.
@@ -1118,6 +1170,12 @@ public interface CPInstancePersistence
 	 */
 	public int countByG_ST(long groupId, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByC_SKU();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_SKU();
+
+	public FinderPath getFinderPathCountByC_SKU();
+
 	/**
 	 * Returns all the cp instances where companyId = &#63; and sku = &#63;.
 	 *
@@ -1272,6 +1330,10 @@ public interface CPInstancePersistence
 	 */
 	public int countByC_SKU(long companyId, String sku);
 
+	public FinderPath getFinderPathFetchByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
+
 	/**
 	 * Returns the cp instance where CPDefinitionId = &#63; and CPInstanceUuid = &#63; or throws a <code>NoSuchCPInstanceException</code> if it could not be found.
 	 *
@@ -1322,6 +1384,10 @@ public interface CPInstancePersistence
 	 */
 	public int countByC_C(long CPDefinitionId, String CPInstanceUuid);
 
+	public FinderPath getFinderPathFetchByCPDI_SKU();
+
+	public FinderPath getFinderPathCountByCPDI_SKU();
+
 	/**
 	 * Returns the cp instance where CPDefinitionId = &#63; and sku = &#63; or throws a <code>NoSuchCPInstanceException</code> if it could not be found.
 	 *
@@ -1371,6 +1437,12 @@ public interface CPInstancePersistence
 	 * @return the number of matching cp instances
 	 */
 	public int countByCPDI_SKU(long CPDefinitionId, String sku);
+
+	public FinderPath getFinderPathWithPaginationFindByC_ST();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_ST();
+
+	public FinderPath getFinderPathCountByC_ST();
 
 	/**
 	 * Returns all the cp instances where CPDefinitionId = &#63; and status = &#63;.
@@ -1527,6 +1599,10 @@ public interface CPInstancePersistence
 	 */
 	public int countByC_ST(long CPDefinitionId, int status);
 
+	public FinderPath getFinderPathWithPaginationFindByLtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtD_S();
+
 	/**
 	 * Returns all the cp instances where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1680,6 +1756,10 @@ public interface CPInstancePersistence
 	 * @return the number of matching cp instances
 	 */
 	public int countByLtD_S(Date displayDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LtD_S();
 
 	/**
 	 * Returns all the cp instances where CPDefinitionId = &#63; and displayDate &lt; &#63; and status = &#63;.
@@ -1849,6 +1929,10 @@ public interface CPInstancePersistence
 	 */
 	public int countByC_LtD_S(
 		long CPDefinitionId, Date displayDate, int status);
+
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
 
 	/**
 	 * Returns the cp instance where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCPInstanceException</code> if it could not be found.
@@ -2021,5 +2105,7 @@ public interface CPInstancePersistence
 	 * @return the number of cp instances
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

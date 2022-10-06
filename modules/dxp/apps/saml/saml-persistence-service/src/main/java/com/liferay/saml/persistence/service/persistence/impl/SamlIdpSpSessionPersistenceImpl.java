@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -52,9 +53,12 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -96,8 +100,35 @@ public class SamlIdpSpSessionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLtCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLtCreateDate() {
+		return _finderPathWithPaginationFindByLtCreateDate;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByLtCreateDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByLtCreateDate() {
+		return _finderPathWithPaginationCountByLtCreateDate;
+	}
 
 	/**
 	 * Returns all the saml idp sp sessions where createDate &lt; &#63;.
@@ -629,8 +660,27 @@ public class SamlIdpSpSessionPersistenceImpl
 		"samlIdpSpSession.createDate < ?";
 
 	private FinderPath _finderPathWithPaginationFindBySamlIdpSsoSessionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySamlIdpSsoSessionId() {
+		return _finderPathWithPaginationFindBySamlIdpSsoSessionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySamlIdpSsoSessionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindBySamlIdpSsoSessionId() {
+
+		return _finderPathWithoutPaginationFindBySamlIdpSsoSessionId;
+	}
+
 	private FinderPath _finderPathCountBySamlIdpSsoSessionId;
+
+	@Override
+	public FinderPath getFinderPathCountBySamlIdpSsoSessionId() {
+		return _finderPathCountBySamlIdpSsoSessionId;
+	}
 
 	/**
 	 * Returns all the saml idp sp sessions where samlIdpSsoSessionId = &#63;.
@@ -1728,6 +1778,61 @@ public class SamlIdpSpSessionPersistenceImpl
 		_setSamlIdpSpSessionUtilPersistence(null);
 
 		entityCache.removeCache(SamlIdpSpSessionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<SamlIdpSpSession> samlIdpSpSessions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<SamlIdpSpSession>> resultMap =
+				new HashMap<>();
+
+			for (SamlIdpSpSession samlIdpSpSession : samlIdpSpSessions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					SamlIdpSpSessionModelImpl samlIdpSpSessionModelImpl =
+						(SamlIdpSpSessionModelImpl)samlIdpSpSession;
+
+					arguments.add(
+						samlIdpSpSessionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), samlIdpSpSession);
+				}
+				else {
+					List<SamlIdpSpSession> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(samlIdpSpSession);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<SamlIdpSpSession>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<SamlIdpSpSession> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setSamlIdpSpSessionUtilPersistence(

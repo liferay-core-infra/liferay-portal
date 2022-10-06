@@ -115,6 +115,42 @@ public class FolderUtil {
 		return getPersistence().update(folder, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByAccountId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByAccountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByAccountId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByAccountId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByAccountId() {
+
+		return getPersistence().getFinderPathCountByAccountId();
+	}
+
 	/**
 	 * Returns all the folders where accountId = &#63;.
 	 *
@@ -281,6 +317,18 @@ public class FolderUtil {
 	 */
 	public static int countByAccountId(long accountId) {
 		return getPersistence().countByAccountId(accountId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByA_F() {
+
+		return getPersistence().getFinderPathFetchByA_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByA_F() {
+
+		return getPersistence().getFinderPathCountByA_F();
 	}
 
 	/**
@@ -491,6 +539,12 @@ public class FolderUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static FolderPersistence getPersistence() {

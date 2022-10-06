@@ -14,6 +14,8 @@
 
 package com.liferay.portal.kernel.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
+
 /**
  * Provides a wrapper for {@link OrgLaborLocalService}.
  *
@@ -314,7 +316,7 @@ public class OrgLaborLocalServiceWrapper
 	 * @return the OSGi service identifier
 	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _orgLaborLocalService.getOSGiServiceIdentifier();
 	}
 
@@ -327,6 +329,11 @@ public class OrgLaborLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _orgLaborLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_orgLaborLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

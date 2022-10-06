@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.RecentLayoutRevisionPersistence;
 import com.liferay.portal.kernel.service.persistence.RecentLayoutRevisionUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -46,8 +47,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -81,9 +85,42 @@ public class RecentLayoutRevisionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the recent layout revisions where groupId = &#63;.
@@ -586,8 +623,25 @@ public class RecentLayoutRevisionPersistenceImpl
 		"recentLayoutRevision.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the recent layout revisions where userId = &#63;.
@@ -1088,8 +1142,25 @@ public class RecentLayoutRevisionPersistenceImpl
 		"recentLayoutRevision.userId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLayoutRevisionId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLayoutRevisionId() {
+		return _finderPathWithPaginationFindByLayoutRevisionId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLayoutRevisionId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLayoutRevisionId() {
+		return _finderPathWithoutPaginationFindByLayoutRevisionId;
+	}
+
 	private FinderPath _finderPathCountByLayoutRevisionId;
+
+	@Override
+	public FinderPath getFinderPathCountByLayoutRevisionId() {
+		return _finderPathCountByLayoutRevisionId;
+	}
 
 	/**
 	 * Returns all the recent layout revisions where layoutRevisionId = &#63;.
@@ -1602,7 +1673,18 @@ public class RecentLayoutRevisionPersistenceImpl
 			"recentLayoutRevision.layoutRevisionId = ?";
 
 	private FinderPath _finderPathFetchByU_L_P;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_L_P() {
+		return _finderPathFetchByU_L_P;
+	}
+
 	private FinderPath _finderPathCountByU_L_P;
+
+	@Override
+	public FinderPath getFinderPathCountByU_L_P() {
+		return _finderPathCountByU_L_P;
+	}
 
 	/**
 	 * Returns the recent layout revision where userId = &#63; and layoutSetBranchId = &#63; and plid = &#63; or throws a <code>NoSuchRecentLayoutRevisionException</code> if it could not be found.
@@ -2486,6 +2568,65 @@ public class RecentLayoutRevisionPersistenceImpl
 		_setRecentLayoutRevisionUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(RecentLayoutRevisionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<RecentLayoutRevision> recentLayoutRevisions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RecentLayoutRevision>> resultMap =
+				new HashMap<>();
+
+			for (RecentLayoutRevision recentLayoutRevision :
+					recentLayoutRevisions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RecentLayoutRevisionModelImpl
+						recentLayoutRevisionModelImpl =
+							(RecentLayoutRevisionModelImpl)recentLayoutRevision;
+
+					arguments.add(
+						recentLayoutRevisionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), recentLayoutRevision);
+				}
+				else {
+					List<RecentLayoutRevision> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(recentLayoutRevision);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RecentLayoutRevision>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RecentLayoutRevision> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRecentLayoutRevisionUtilPersistence(

@@ -119,6 +119,43 @@ public class DDMStructureLinkUtil {
 		return getPersistence().update(ddmStructureLink, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByStructureId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByStructureId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByStructureId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByStructureId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByStructureId() {
+
+		return getPersistence().getFinderPathCountByStructureId();
+	}
+
 	/**
 	 * Returns all the ddm structure links where structureId = &#63;.
 	 *
@@ -293,6 +330,24 @@ public class DDMStructureLinkUtil {
 	 */
 	public static int countByStructureId(long structureId) {
 		return getPersistence().countByStructureId(structureId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -483,6 +538,18 @@ public class DDMStructureLinkUtil {
 	 */
 	public static int countByC_C(long classNameId, long classPK) {
 		return getPersistence().countByC_C(classNameId, classPK);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C_S() {
+
+		return getPersistence().getFinderPathFetchByC_C_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C_S() {
+
+		return getPersistence().getFinderPathCountByC_C_S();
 	}
 
 	/**
@@ -715,6 +782,12 @@ public class DDMStructureLinkUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DDMStructureLinkPersistence getPersistence() {

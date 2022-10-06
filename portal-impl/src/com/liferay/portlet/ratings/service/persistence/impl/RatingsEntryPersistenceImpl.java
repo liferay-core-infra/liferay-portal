@@ -98,9 +98,42 @@ public class RatingsEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the ratings entries where uuid = &#63;.
@@ -644,8 +677,25 @@ public class RatingsEntryPersistenceImpl
 		"(ratingsEntry.uuid IS NULL OR ratingsEntry.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the ratings entries where uuid = &#63; and companyId = &#63;.
@@ -1240,8 +1290,25 @@ public class RatingsEntryPersistenceImpl
 		"ratingsEntry.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the ratings entries where classNameId = &#63; and classPK = &#63;.
@@ -1795,10 +1862,39 @@ public class RatingsEntryPersistenceImpl
 		"ratingsEntry.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_C_C() {
+		return _finderPathWithPaginationFindByU_C_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_C_C() {
+		return _finderPathWithoutPaginationFindByU_C_C;
+	}
+
 	private FinderPath _finderPathFetchByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_C_C() {
+		return _finderPathFetchByU_C_C;
+	}
+
 	private FinderPath _finderPathCountByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByU_C_C() {
+		return _finderPathCountByU_C_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByU_C_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByU_C_C() {
+		return _finderPathWithPaginationCountByU_C_C;
+	}
 
 	/**
 	 * Returns all the ratings entries where userId = &#63; and classNameId = &#63; and classPK = any &#63;.
@@ -2437,8 +2533,25 @@ public class RatingsEntryPersistenceImpl
 		"ratingsEntry.classPK IN (";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_S() {
+		return _finderPathWithPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S() {
+		return _finderPathWithoutPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathCountByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_S() {
+		return _finderPathCountByC_C_S;
+	}
 
 	/**
 	 * Returns all the ratings entries where classNameId = &#63; and classPK = &#63; and score = &#63;.
@@ -3962,6 +4075,59 @@ public class RatingsEntryPersistenceImpl
 		_setRatingsEntryUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(RatingsEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<RatingsEntry> ratingsEntrys = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<RatingsEntry>> resultMap = new HashMap<>();
+
+			for (RatingsEntry ratingsEntry : ratingsEntrys) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					RatingsEntryModelImpl ratingsEntryModelImpl =
+						(RatingsEntryModelImpl)ratingsEntry;
+
+					arguments.add(
+						ratingsEntryModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), ratingsEntry);
+				}
+				else {
+					List<RatingsEntry> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(ratingsEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<RatingsEntry>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<RatingsEntry> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setRatingsEntryUtilPersistence(

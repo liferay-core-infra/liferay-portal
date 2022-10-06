@@ -16,6 +16,7 @@ package com.liferay.calendar.service;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -442,6 +443,11 @@ public class CalendarLocalServiceWrapper
 	@Override
 	public boolean isStagingCalendar(Calendar calendar) {
 		return _calendarLocalService.isStagingCalendar(calendar);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_calendarLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

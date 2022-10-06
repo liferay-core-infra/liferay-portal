@@ -15,6 +15,7 @@
 package com.liferay.subscription.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.subscription.model.Subscription;
@@ -585,6 +586,11 @@ public class SubscriptionLocalServiceWrapper
 
 		return _subscriptionLocalService.isSubscribed(
 			companyId, userId, className, classPKs);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_subscriptionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

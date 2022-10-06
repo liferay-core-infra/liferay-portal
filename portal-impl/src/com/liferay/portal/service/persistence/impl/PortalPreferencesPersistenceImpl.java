@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.PortalPreferencesPersistence;
 import com.liferay.portal.kernel.service.persistence.PortalPreferencesUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -47,9 +48,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -83,8 +87,35 @@ public class PortalPreferencesPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathFetchByO_O;
+
+	@Override
+	public FinderPath getFinderPathFetchByO_O() {
+		return _finderPathFetchByO_O;
+	}
+
 	private FinderPath _finderPathCountByO_O;
+
+	@Override
+	public FinderPath getFinderPathCountByO_O() {
+		return _finderPathCountByO_O;
+	}
 
 	/**
 	 * Returns the portal preferences where ownerId = &#63; and ownerType = &#63; or throws a <code>NoSuchPreferencesException</code> if it could not be found.
@@ -884,6 +915,61 @@ public class PortalPreferencesPersistenceImpl
 		_setPortalPreferencesUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(PortalPreferencesImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<PortalPreferences> portalPreferencess = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<PortalPreferences>> resultMap =
+				new HashMap<>();
+
+			for (PortalPreferences portalPreferences : portalPreferencess) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					PortalPreferencesModelImpl portalPreferencesModelImpl =
+						(PortalPreferencesModelImpl)portalPreferences;
+
+					arguments.add(
+						portalPreferencesModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), portalPreferences);
+				}
+				else {
+					List<PortalPreferences> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(portalPreferences);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<PortalPreferences>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<PortalPreferences> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setPortalPreferencesUtilPersistence(

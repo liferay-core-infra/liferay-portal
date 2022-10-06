@@ -119,6 +119,42 @@ public class DLFileShortcutUtil {
 		return getPersistence().update(dlFileShortcut, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the document library file shortcuts where uuid = &#63;.
 	 *
@@ -286,6 +322,18 @@ public class DLFileShortcutUtil {
 		return getPersistence().countByUuid(uuid);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByUUID_G() {
+
+		return getPersistence().getFinderPathFetchByUUID_G();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUUID_G() {
+
+		return getPersistence().getFinderPathCountByUUID_G();
+	}
+
 	/**
 	 * Returns the document library file shortcut where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchFileShortcutException</code> if it could not be found.
 	 *
@@ -349,6 +397,24 @@ public class DLFileShortcutUtil {
 	 */
 	public static int countByUUID_G(String uuid, long groupId) {
 		return getPersistence().countByUUID_G(uuid, groupId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -540,6 +606,24 @@ public class DLFileShortcutUtil {
 		return getPersistence().countByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the document library file shortcuts where companyId = &#63;.
 	 *
@@ -710,6 +794,26 @@ public class DLFileShortcutUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByToFileEntryId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByToFileEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByToFileEntryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByToFileEntryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByToFileEntryId() {
+
+		return getPersistence().getFinderPathCountByToFileEntryId();
 	}
 
 	/**
@@ -886,6 +990,24 @@ public class DLFileShortcutUtil {
 	 */
 	public static int countByToFileEntryId(long toFileEntryId) {
 		return getPersistence().countByToFileEntryId(toFileEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_F() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_F() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_F();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_F() {
+
+		return getPersistence().getFinderPathCountByG_F();
 	}
 
 	/**
@@ -1160,6 +1282,18 @@ public class DLFileShortcutUtil {
 		return getPersistence().filterCountByG_F(groupId, folderId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_NotS();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_NotS() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_NotS();
+	}
+
 	/**
 	 * Returns all the document library file shortcuts where companyId = &#63; and status &ne; &#63;.
 	 *
@@ -1347,6 +1481,24 @@ public class DLFileShortcutUtil {
 	 */
 	public static int countByC_NotS(long companyId, int status) {
 		return getPersistence().countByC_NotS(companyId, status);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_F_A() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_F_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_F_A() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_F_A();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_F_A() {
+
+		return getPersistence().getFinderPathCountByG_F_A();
 	}
 
 	/**
@@ -1646,6 +1798,24 @@ public class DLFileShortcutUtil {
 		long groupId, long folderId, boolean active) {
 
 		return getPersistence().filterCountByG_F_A(groupId, folderId, active);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByG_F_A_S() {
+
+		return getPersistence().getFinderPathWithPaginationFindByG_F_A_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByG_F_A_S() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByG_F_A_S();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByG_F_A_S() {
+
+		return getPersistence().getFinderPathCountByG_F_A_S();
 	}
 
 	/**
@@ -2119,6 +2289,12 @@ public class DLFileShortcutUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static DLFileShortcutPersistence getPersistence() {

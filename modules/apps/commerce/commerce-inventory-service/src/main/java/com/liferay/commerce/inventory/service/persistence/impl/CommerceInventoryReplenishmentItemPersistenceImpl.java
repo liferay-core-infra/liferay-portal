@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -55,6 +56,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -106,9 +108,42 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where uuid = &#63;.
@@ -668,8 +703,25 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		"(commerceInventoryReplenishmentItem.uuid IS NULL OR commerceInventoryReplenishmentItem.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where uuid = &#63; and companyId = &#63;.
@@ -1273,9 +1325,30 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 
 	private FinderPath
 		_finderPathWithPaginationFindByCommerceInventoryWarehouseId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceInventoryWarehouseId() {
+
+		return _finderPathWithPaginationFindByCommerceInventoryWarehouseId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByCommerceInventoryWarehouseId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceInventoryWarehouseId() {
+
+		return _finderPathWithoutPaginationFindByCommerceInventoryWarehouseId;
+	}
+
 	private FinderPath _finderPathCountByCommerceInventoryWarehouseId;
+
+	@Override
+	public FinderPath getFinderPathCountByCommerceInventoryWarehouseId() {
+		return _finderPathCountByCommerceInventoryWarehouseId;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where commerceInventoryWarehouseId = &#63;.
@@ -1832,8 +1905,25 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 			"commerceInventoryReplenishmentItem.commerceInventoryWarehouseId = ?";
 
 	private FinderPath _finderPathWithPaginationFindBySku;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindBySku() {
+		return _finderPathWithPaginationFindBySku;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindBySku;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindBySku() {
+		return _finderPathWithoutPaginationFindBySku;
+	}
+
 	private FinderPath _finderPathCountBySku;
+
+	@Override
+	public FinderPath getFinderPathCountBySku() {
+		return _finderPathCountBySku;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where sku = &#63;.
@@ -2393,8 +2483,25 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		"(commerceInventoryReplenishmentItem.sku IS NULL OR commerceInventoryReplenishmentItem.sku = '')";
 
 	private FinderPath _finderPathWithPaginationFindByAvailabilityDate;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByAvailabilityDate() {
+		return _finderPathWithPaginationFindByAvailabilityDate;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByAvailabilityDate;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByAvailabilityDate() {
+		return _finderPathWithoutPaginationFindByAvailabilityDate;
+	}
+
 	private FinderPath _finderPathCountByAvailabilityDate;
+
+	@Override
+	public FinderPath getFinderPathCountByAvailabilityDate() {
+		return _finderPathCountByAvailabilityDate;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where availabilityDate = &#63;.
@@ -2964,8 +3071,25 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 			"commerceInventoryReplenishmentItem.availabilityDate = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_S() {
+		return _finderPathWithPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_S() {
+		return _finderPathWithoutPaginationFindByC_S;
+	}
+
 	private FinderPath _finderPathCountByC_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_S() {
+		return _finderPathCountByC_S;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where companyId = &#63; and sku = &#63;.
@@ -3567,8 +3691,25 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		"(commerceInventoryReplenishmentItem.sku IS NULL OR commerceInventoryReplenishmentItem.sku = '')";
 
 	private FinderPath _finderPathWithPaginationFindByS_AD;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByS_AD() {
+		return _finderPathWithPaginationFindByS_AD;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByS_AD;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByS_AD() {
+		return _finderPathWithoutPaginationFindByS_AD;
+	}
+
 	private FinderPath _finderPathCountByS_AD;
+
+	@Override
+	public FinderPath getFinderPathCountByS_AD() {
+		return _finderPathCountByS_AD;
+	}
 
 	/**
 	 * Returns all the commerce inventory replenishment items where sku = &#63; and availabilityDate = &#63;.
@@ -4208,7 +4349,18 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		"commerceInventoryReplenishmentItem.availabilityDate = ?";
 
 	private FinderPath _finderPathFetchByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_ERC() {
+		return _finderPathFetchByC_ERC;
+	}
+
 	private FinderPath _finderPathCountByC_ERC;
+
+	@Override
+	public FinderPath getFinderPathCountByC_ERC() {
+		return _finderPathCountByC_ERC;
+	}
 
 	/**
 	 * Returns the commerce inventory replenishment item where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchInventoryReplenishmentItemException</code> if it could not be found.
@@ -5286,6 +5438,71 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceInventoryReplenishmentItemImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceInventoryReplenishmentItem>
+			commerceInventoryReplenishmentItems = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceInventoryReplenishmentItem>>
+				resultMap = new HashMap<>();
+
+			for (CommerceInventoryReplenishmentItem
+					commerceInventoryReplenishmentItem :
+						commerceInventoryReplenishmentItems) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceInventoryReplenishmentItemModelImpl
+						commerceInventoryReplenishmentItemModelImpl =
+							(CommerceInventoryReplenishmentItemModelImpl)
+								commerceInventoryReplenishmentItem;
+
+					arguments.add(
+						commerceInventoryReplenishmentItemModelImpl.
+							getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceInventoryReplenishmentItem);
+				}
+				else {
+					List<CommerceInventoryReplenishmentItem> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceInventoryReplenishmentItem);
+				}
+			}
+
+			for (Map.Entry
+					<List<Object>, List<CommerceInventoryReplenishmentItem>>
+						resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceInventoryReplenishmentItem> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceInventoryReplenishmentItemUtilPersistence(

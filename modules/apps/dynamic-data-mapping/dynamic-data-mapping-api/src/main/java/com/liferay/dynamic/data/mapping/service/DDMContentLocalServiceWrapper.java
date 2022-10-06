@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service;
 
 import com.liferay.dynamic.data.mapping.model.DDMContent;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -429,6 +430,11 @@ public class DDMContentLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmContentLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ddmContentLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

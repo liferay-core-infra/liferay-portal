@@ -119,6 +119,42 @@ public class UserTrackerUtil {
 		return getPersistence().update(userTracker, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the user trackers where companyId = &#63;.
 	 *
@@ -288,6 +324,24 @@ public class UserTrackerUtil {
 		return getPersistence().countByCompanyId(companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the user trackers where userId = &#63;.
 	 *
@@ -451,6 +505,24 @@ public class UserTrackerUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindBySessionId() {
+
+		return getPersistence().getFinderPathWithPaginationFindBySessionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindBySessionId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindBySessionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountBySessionId() {
+
+		return getPersistence().getFinderPathCountBySessionId();
 	}
 
 	/**
@@ -767,6 +839,12 @@ public class UserTrackerUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static UserTrackerPersistence getPersistence() {

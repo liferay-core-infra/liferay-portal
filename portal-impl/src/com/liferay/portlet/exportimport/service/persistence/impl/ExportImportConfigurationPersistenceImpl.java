@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,10 +50,12 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -86,9 +89,42 @@ public class ExportImportConfigurationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63;.
@@ -595,8 +631,25 @@ public class ExportImportConfigurationPersistenceImpl
 		"exportImportConfiguration.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the export import configurations where companyId = &#63;.
@@ -1105,8 +1158,25 @@ public class ExportImportConfigurationPersistenceImpl
 		"exportImportConfiguration.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T() {
+		return _finderPathWithPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T() {
+		return _finderPathWithoutPaginationFindByG_T;
+	}
+
 	private FinderPath _finderPathCountByG_T;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T() {
+		return _finderPathCountByG_T;
+	}
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and type = &#63;.
@@ -1650,8 +1720,25 @@ public class ExportImportConfigurationPersistenceImpl
 		"exportImportConfiguration.type = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_S() {
+		return _finderPathWithPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_S() {
+		return _finderPathWithoutPaginationFindByG_S;
+	}
+
 	private FinderPath _finderPathCountByG_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_S() {
+		return _finderPathCountByG_S;
+	}
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and status = &#63;.
@@ -2195,8 +2282,25 @@ public class ExportImportConfigurationPersistenceImpl
 		"exportImportConfiguration.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_T_S() {
+		return _finderPathWithPaginationFindByG_T_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_T_S() {
+		return _finderPathWithoutPaginationFindByG_T_S;
+	}
+
 	private FinderPath _finderPathCountByG_T_S;
+
+	@Override
+	public FinderPath getFinderPathCountByG_T_S() {
+		return _finderPathCountByG_T_S;
+	}
 
 	/**
 	 * Returns all the export import configurations where groupId = &#63; and type = &#63; and status = &#63;.
@@ -3474,6 +3578,67 @@ public class ExportImportConfigurationPersistenceImpl
 
 		EntityCacheUtil.removeCache(
 			ExportImportConfigurationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ExportImportConfiguration> exportImportConfigurations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExportImportConfiguration>> resultMap =
+				new HashMap<>();
+
+			for (ExportImportConfiguration exportImportConfiguration :
+					exportImportConfigurations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExportImportConfigurationModelImpl
+						exportImportConfigurationModelImpl =
+							(ExportImportConfigurationModelImpl)
+								exportImportConfiguration;
+
+					arguments.add(
+						exportImportConfigurationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(),
+						exportImportConfiguration);
+				}
+				else {
+					List<ExportImportConfiguration> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(exportImportConfiguration);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExportImportConfiguration>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExportImportConfiguration> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setExportImportConfigurationUtilPersistence(

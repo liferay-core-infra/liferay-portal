@@ -16,6 +16,7 @@ package com.liferay.commerce.service.persistence;
 
 import com.liferay.commerce.exception.NoSuchOrderTypeException;
 import com.liferay.commerce.model.CommerceOrderType;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceOrderTypePersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceOrderTypeUtil} to access the commerce order type persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce order types where uuid = &#63;.
@@ -249,6 +261,12 @@ public interface CommerceOrderTypePersistence
 	 * @return the number of matching commerce order types that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce order types where uuid = &#63; and companyId = &#63;.
@@ -475,6 +493,12 @@ public interface CommerceOrderTypePersistence
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the commerce order types where companyId = &#63;.
 	 *
@@ -682,6 +706,12 @@ public interface CommerceOrderTypePersistence
 	 * @return the number of matching commerce order types that the user has permission to view
 	 */
 	public int filterCountByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A();
+
+	public FinderPath getFinderPathCountByC_A();
 
 	/**
 	 * Returns all the commerce order types where companyId = &#63; and active = &#63;.
@@ -908,6 +938,10 @@ public interface CommerceOrderTypePersistence
 	 */
 	public int filterCountByC_A(long companyId, boolean active);
 
+	public FinderPath getFinderPathWithPaginationFindByLtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtD_S();
+
 	/**
 	 * Returns all the commerce order types where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1132,6 +1166,10 @@ public interface CommerceOrderTypePersistence
 	 * @return the number of matching commerce order types that the user has permission to view
 	 */
 	public int filterCountByLtD_S(Date displayDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByLtE_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtE_S();
 
 	/**
 	 * Returns all the commerce order types where expirationDate &lt; &#63; and status = &#63;.
@@ -1358,6 +1396,10 @@ public interface CommerceOrderTypePersistence
 	 */
 	public int filterCountByLtE_S(Date expirationDate, int status);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the commerce order type where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchOrderTypeException</code> if it could not be found.
 	 *
@@ -1531,5 +1573,7 @@ public interface CommerceOrderTypePersistence
 	 * @return the number of commerce order types
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

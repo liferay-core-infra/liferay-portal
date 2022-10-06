@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.lists.service;
 
 import com.liferay.dynamic.data.lists.model.DDLRecordSetVersion;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -378,6 +379,11 @@ public class DDLRecordSetVersionLocalServiceWrapper
 	public int getRecordSetVersionsCount(long recordSetId) {
 		return _ddlRecordSetVersionLocalService.getRecordSetVersionsCount(
 			recordSetId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ddlRecordSetVersionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -129,6 +129,44 @@ public class CommercePricingClassCPDefinitionRelUtil {
 			commercePricingClassCPDefinitionRel, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCommercePricingClassId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCommercePricingClassId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCommercePricingClassId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCommercePricingClassId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCommercePricingClassId() {
+
+		return getPersistence().getFinderPathCountByCommercePricingClassId();
+	}
+
 	/**
 	 * Returns all the commerce pricing class cp definition rels where commercePricingClassId = &#63;.
 	 *
@@ -332,6 +370,26 @@ public class CommercePricingClassCPDefinitionRelUtil {
 			commercePricingClassId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCPDefinitionId() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCPDefinitionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCPDefinitionId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCPDefinitionId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCPDefinitionId() {
+
+		return getPersistence().getFinderPathCountByCPDefinitionId();
+	}
+
 	/**
 	 * Returns all the commerce pricing class cp definition rels where CPDefinitionId = &#63;.
 	 *
@@ -523,6 +581,18 @@ public class CommercePricingClassCPDefinitionRelUtil {
 	 */
 	public static int countByCPDefinitionId(long CPDefinitionId) {
 		return getPersistence().countByCPDefinitionId(CPDefinitionId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_C() {
+
+		return getPersistence().getFinderPathFetchByC_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_C() {
+
+		return getPersistence().getFinderPathCountByC_C();
 	}
 
 	/**
@@ -772,6 +842,12 @@ public class CommercePricingClassCPDefinitionRelUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CommercePricingClassCPDefinitionRelPersistence

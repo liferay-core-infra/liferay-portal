@@ -14,6 +14,7 @@
 
 package com.liferay.akismet.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -329,6 +330,11 @@ public class AkismetEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _akismetEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_akismetEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

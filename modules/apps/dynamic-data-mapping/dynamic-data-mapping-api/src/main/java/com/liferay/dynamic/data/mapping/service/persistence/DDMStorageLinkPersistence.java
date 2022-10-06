@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.service.persistence;
 
 import com.liferay.dynamic.data.mapping.exception.NoSuchStorageLinkException;
 import com.liferay.dynamic.data.mapping.model.DDMStorageLink;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -41,6 +42,17 @@ public interface DDMStorageLinkPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link DDMStorageLinkUtil} to access the ddm storage link persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the ddm storage links where uuid = &#63;.
@@ -184,6 +196,12 @@ public interface DDMStorageLinkPersistence
 	 * @return the number of matching ddm storage links
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the ddm storage links where uuid = &#63; and companyId = &#63;.
@@ -340,6 +358,10 @@ public interface DDMStorageLinkPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathFetchByClassPK();
+
+	public FinderPath getFinderPathCountByClassPK();
+
 	/**
 	 * Returns the ddm storage link where classPK = &#63; or throws a <code>NoSuchStorageLinkException</code> if it could not be found.
 	 *
@@ -383,6 +405,12 @@ public interface DDMStorageLinkPersistence
 	 * @return the number of matching ddm storage links
 	 */
 	public int countByClassPK(long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByStructureId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByStructureId();
+
+	public FinderPath getFinderPathCountByStructureId();
 
 	/**
 	 * Returns all the ddm storage links where structureId = &#63;.
@@ -526,6 +554,14 @@ public interface DDMStorageLinkPersistence
 	 * @return the number of matching ddm storage links
 	 */
 	public int countByStructureId(long structureId);
+
+	public FinderPath getFinderPathWithPaginationFindByStructureVersionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByStructureVersionId();
+
+	public FinderPath getFinderPathCountByStructureVersionId();
+
+	public FinderPath getFinderPathWithPaginationCountByStructureVersionId();
 
 	/**
 	 * Returns all the ddm storage links where structureVersionId = &#63;.
@@ -864,5 +900,7 @@ public interface DDMStorageLinkPersistence
 	 * @return the number of ddm storage links
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

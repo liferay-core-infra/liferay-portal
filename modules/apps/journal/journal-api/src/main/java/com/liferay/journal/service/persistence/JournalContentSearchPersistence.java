@@ -16,6 +16,7 @@ package com.liferay.journal.service.persistence;
 
 import com.liferay.journal.exception.NoSuchContentSearchException;
 import com.liferay.journal.model.JournalContentSearch;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface JournalContentSearchPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link JournalContentSearchUtil} to access the journal content search persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the journal content searches where companyId = &#63;.
@@ -185,6 +197,12 @@ public interface JournalContentSearchPersistence
 	 * @return the number of matching journal content searches
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByPortletId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByPortletId();
+
+	public FinderPath getFinderPathCountByPortletId();
 
 	/**
 	 * Returns all the journal content searches where portletId = &#63;.
@@ -330,6 +348,12 @@ public interface JournalContentSearchPersistence
 	 */
 	public int countByPortletId(String portletId);
 
+	public FinderPath getFinderPathWithPaginationFindByArticleId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByArticleId();
+
+	public FinderPath getFinderPathCountByArticleId();
+
 	/**
 	 * Returns all the journal content searches where articleId = &#63;.
 	 *
@@ -473,6 +497,12 @@ public interface JournalContentSearchPersistence
 	 * @return the number of matching journal content searches
 	 */
 	public int countByArticleId(String articleId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P();
+
+	public FinderPath getFinderPathCountByG_P();
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63;.
@@ -629,6 +659,12 @@ public interface JournalContentSearchPersistence
 	 */
 	public int countByG_P(long groupId, boolean privateLayout);
 
+	public FinderPath getFinderPathWithPaginationFindByG_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_A();
+
+	public FinderPath getFinderPathCountByG_A();
+
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and articleId = &#63;.
 	 *
@@ -783,6 +819,12 @@ public interface JournalContentSearchPersistence
 	 * @return the number of matching journal content searches
 	 */
 	public int countByG_A(long groupId, String articleId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P_L();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_L();
+
+	public FinderPath getFinderPathCountByG_P_L();
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and layoutId = &#63;.
@@ -951,6 +993,12 @@ public interface JournalContentSearchPersistence
 	 * @return the number of matching journal content searches
 	 */
 	public int countByG_P_L(long groupId, boolean privateLayout, long layoutId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_A();
+
+	public FinderPath getFinderPathCountByG_P_A();
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and articleId = &#63;.
@@ -1123,6 +1171,12 @@ public interface JournalContentSearchPersistence
 	 */
 	public int countByG_P_A(
 		long groupId, boolean privateLayout, String articleId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P_L_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P_L_P();
+
+	public FinderPath getFinderPathCountByG_P_L_P();
 
 	/**
 	 * Returns all the journal content searches where groupId = &#63; and privateLayout = &#63; and layoutId = &#63; and portletId = &#63;.
@@ -1308,6 +1362,10 @@ public interface JournalContentSearchPersistence
 	 */
 	public int countByG_P_L_P(
 		long groupId, boolean privateLayout, long layoutId, String portletId);
+
+	public FinderPath getFinderPathFetchByG_P_L_P_A();
+
+	public FinderPath getFinderPathCountByG_P_L_P_A();
 
 	/**
 	 * Returns the journal content search where groupId = &#63; and privateLayout = &#63; and layoutId = &#63; and portletId = &#63; and articleId = &#63; or throws a <code>NoSuchContentSearchException</code> if it could not be found.
@@ -1504,5 +1562,7 @@ public interface JournalContentSearchPersistence
 	 * @return the number of journal content searches
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

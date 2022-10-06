@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,7 +50,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -96,9 +99,42 @@ public class DepotAppCustomizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByDepotEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDepotEntryId() {
+		return _finderPathWithPaginationFindByDepotEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDepotEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDepotEntryId() {
+		return _finderPathWithoutPaginationFindByDepotEntryId;
+	}
+
 	private FinderPath _finderPathCountByDepotEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByDepotEntryId() {
+		return _finderPathCountByDepotEntryId;
+	}
 
 	/**
 	 * Returns all the depot app customizations where depotEntryId = &#63;.
@@ -606,7 +642,18 @@ public class DepotAppCustomizationPersistenceImpl
 		"depotAppCustomization.depotEntryId = ?";
 
 	private FinderPath _finderPathFetchByD_E;
+
+	@Override
+	public FinderPath getFinderPathFetchByD_E() {
+		return _finderPathFetchByD_E;
+	}
+
 	private FinderPath _finderPathCountByD_E;
+
+	@Override
+	public FinderPath getFinderPathCountByD_E() {
+		return _finderPathCountByD_E;
+	}
 
 	/**
 	 * Returns the depot app customization where depotEntryId = &#63; and enabled = &#63; or throws a <code>NoSuchAppCustomizationException</code> if it could not be found.
@@ -847,7 +894,18 @@ public class DepotAppCustomizationPersistenceImpl
 		"depotAppCustomization.enabled = ?";
 
 	private FinderPath _finderPathFetchByD_P;
+
+	@Override
+	public FinderPath getFinderPathFetchByD_P() {
+		return _finderPathFetchByD_P;
+	}
+
 	private FinderPath _finderPathCountByD_P;
+
+	@Override
+	public FinderPath getFinderPathCountByD_P() {
+		return _finderPathCountByD_P;
+	}
 
 	/**
 	 * Returns the depot app customization where depotEntryId = &#63; and portletId = &#63; or throws a <code>NoSuchAppCustomizationException</code> if it could not be found.
@@ -1730,6 +1788,66 @@ public class DepotAppCustomizationPersistenceImpl
 		_setDepotAppCustomizationUtilPersistence(null);
 
 		entityCache.removeCache(DepotAppCustomizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DepotAppCustomization> depotAppCustomizations = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DepotAppCustomization>> resultMap =
+				new HashMap<>();
+
+			for (DepotAppCustomization depotAppCustomization :
+					depotAppCustomizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DepotAppCustomizationModelImpl
+						depotAppCustomizationModelImpl =
+							(DepotAppCustomizationModelImpl)
+								depotAppCustomization;
+
+					arguments.add(
+						depotAppCustomizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), depotAppCustomization);
+				}
+				else {
+					List<DepotAppCustomization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(depotAppCustomization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DepotAppCustomization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DepotAppCustomization> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDepotAppCustomizationUtilPersistence(

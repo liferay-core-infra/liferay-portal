@@ -14,6 +14,7 @@
 
 package com.liferay.segments.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.segments.exception.NoSuchEntryException;
@@ -41,6 +42,17 @@ public interface SegmentsEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SegmentsEntryUtil} to access the segments entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the segments entries where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface SegmentsEntryPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the segments entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -234,6 +250,12 @@ public interface SegmentsEntryPersistence
 	 * @return the number of matching segments entries
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the segments entries where uuid = &#63; and companyId = &#63;.
@@ -389,6 +411,14 @@ public interface SegmentsEntryPersistence
 	 * @return the number of matching segments entries
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
+	public FinderPath getFinderPathWithPaginationCountByGroupId();
 
 	/**
 	 * Returns all the segments entries where groupId = &#63;.
@@ -719,6 +749,12 @@ public interface SegmentsEntryPersistence
 	 */
 	public int filterCountByGroupId(long[] groupIds);
 
+	public FinderPath getFinderPathWithPaginationFindBySource();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySource();
+
+	public FinderPath getFinderPathCountBySource();
+
 	/**
 	 * Returns all the segments entries where source = &#63;.
 	 *
@@ -861,6 +897,12 @@ public interface SegmentsEntryPersistence
 	 * @return the number of matching segments entries
 	 */
 	public int countBySource(String source);
+
+	public FinderPath getFinderPathWithPaginationFindByType();
+
+	public FinderPath getFinderPathWithoutPaginationFindByType();
+
+	public FinderPath getFinderPathCountByType();
 
 	/**
 	 * Returns all the segments entries where type = &#63;.
@@ -1005,6 +1047,10 @@ public interface SegmentsEntryPersistence
 	 */
 	public int countByType(String type);
 
+	public FinderPath getFinderPathFetchByG_S();
+
+	public FinderPath getFinderPathCountByG_S();
+
 	/**
 	 * Returns the segments entry where groupId = &#63; and segmentsEntryKey = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -1054,6 +1100,14 @@ public interface SegmentsEntryPersistence
 	 * @return the number of matching segments entries
 	 */
 	public int countByG_S(long groupId, String segmentsEntryKey);
+
+	public FinderPath getFinderPathWithPaginationFindByG_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_A();
+
+	public FinderPath getFinderPathCountByG_A();
+
+	public FinderPath getFinderPathWithPaginationCountByG_A();
 
 	/**
 	 * Returns all the segments entries where groupId = &#63; and active = &#63;.
@@ -1413,6 +1467,12 @@ public interface SegmentsEntryPersistence
 	 */
 	public int filterCountByG_A(long[] groupIds, boolean active);
 
+	public FinderPath getFinderPathWithPaginationFindByA_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByA_T();
+
+	public FinderPath getFinderPathCountByA_T();
+
 	/**
 	 * Returns all the segments entries where active = &#63; and type = &#63;.
 	 *
@@ -1566,6 +1626,14 @@ public interface SegmentsEntryPersistence
 	 * @return the number of matching segments entries
 	 */
 	public int countByA_T(boolean active, String type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_A_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_A_T();
+
+	public FinderPath getFinderPathCountByG_A_T();
+
+	public FinderPath getFinderPathWithPaginationCountByG_A_T();
 
 	/**
 	 * Returns all the segments entries where groupId = &#63; and active = &#63; and type = &#63;.
@@ -1949,6 +2017,14 @@ public interface SegmentsEntryPersistence
 	 * @return the number of matching segments entries that the user has permission to view
 	 */
 	public int filterCountByG_A_T(long[] groupIds, boolean active, String type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_A_S_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_A_S_T();
+
+	public FinderPath getFinderPathCountByG_A_S_T();
+
+	public FinderPath getFinderPathWithPaginationCountByG_A_S_T();
 
 	/**
 	 * Returns all the segments entries where groupId = &#63; and active = &#63; and source = &#63; and type = &#63;.
@@ -2494,5 +2570,7 @@ public interface SegmentsEntryPersistence
 	 * @return the number of segments entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

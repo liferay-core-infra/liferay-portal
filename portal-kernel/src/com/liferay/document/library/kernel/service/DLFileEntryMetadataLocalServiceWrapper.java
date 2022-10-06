@@ -16,6 +16,7 @@ package com.liferay.document.library.kernel.service;
 
 import com.liferay.document.library.kernel.model.DLFileEntryMetadata;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -442,6 +443,11 @@ public class DLFileEntryMetadataLocalServiceWrapper
 
 		return _dlFileEntryMetadataLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFileEntryMetadataLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

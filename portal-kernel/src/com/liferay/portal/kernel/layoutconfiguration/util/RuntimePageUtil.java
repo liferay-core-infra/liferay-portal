@@ -70,17 +70,6 @@ public class RuntimePageUtil {
 			templateResource, langType);
 	}
 
-	public static void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
-		throws Exception {
-
-		_runtimePage.processTemplate(
-			httpServletRequest, httpServletResponse, templateResource,
-			langType);
-	}
-
 	public static String processXML(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String content)

@@ -147,18 +147,6 @@ public class RuntimePageImpl implements RuntimePage {
 	}
 
 	@Override
-	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource, String langType)
-		throws Exception {
-
-		processTemplate(
-			httpServletRequest, httpServletResponse, null, templateResource,
-			langType);
-	}
-
-	@Override
 	public String processXML(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String content)

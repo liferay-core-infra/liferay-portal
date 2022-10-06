@@ -42,7 +42,7 @@
 		if (Validator.isNotNull(templateContent)) {
 			HttpServletRequest originalServletRequest = (HttpServletRequest)request.getAttribute(PortletLayoutTypeControllerWebKeys.ORIGINAL_HTTP_SERVLET_REQUEST);
 
-			RuntimePageUtil.processTemplate(originalServletRequest, response, ppid, new StringTemplateResource(templateId, templateContent), langType);
+			RuntimePageUtil.processTemplate(originalServletRequest, response, ppid, templateId, templateContent, langType);
 		}
 		%>
 

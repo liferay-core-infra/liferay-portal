@@ -55,12 +55,6 @@ public interface RuntimePage {
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse,
-			TemplateResource templateResource)
-		throws Exception;
-
-	public void processTemplate(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse,
 			TemplateResource templateResource, String langType)
 		throws Exception;
 

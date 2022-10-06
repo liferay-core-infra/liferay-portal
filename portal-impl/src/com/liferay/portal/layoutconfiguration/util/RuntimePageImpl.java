@@ -30,9 +30,7 @@ import com.liferay.portal.kernel.servlet.PluginContextListener;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -110,24 +108,24 @@ public class RuntimePageImpl implements RuntimePage {
 	public StringBundler getProcessedTemplate(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource)
+			String templateId, String content)
 		throws Exception {
 
 		return doDispatch(
-			httpServletRequest, httpServletResponse, portletId,
-			templateResource, TemplateConstants.LANG_TYPE_VM);
+			httpServletRequest, httpServletResponse, portletId, templateId,
+			content, TemplateConstants.LANG_TYPE_VM);
 	}
 
 	@Override
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource)
+			String templateId, String content)
 		throws Exception {
 
 		StringBundler sb = doDispatch(
-			httpServletRequest, httpServletResponse, portletId,
-			templateResource, TemplateConstants.LANG_TYPE_VM);
+			httpServletRequest, httpServletResponse, portletId, templateId,
+			content, TemplateConstants.LANG_TYPE_VM);
 
 		sb.writeTo(httpServletResponse.getWriter());
 	}
@@ -136,12 +134,12 @@ public class RuntimePageImpl implements RuntimePage {
 	public void processTemplate(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource, String langType)
+			String templateId, String content, String langType)
 		throws Exception {
 
 		StringBundler sb = doDispatch(
-			httpServletRequest, httpServletResponse, portletId,
-			templateResource, langType);
+			httpServletRequest, httpServletResponse, portletId, templateId,
+			content, langType);
 
 		sb.writeTo(httpServletResponse.getWriter());
 	}
@@ -280,13 +278,12 @@ public class RuntimePageImpl implements RuntimePage {
 	protected StringBundler doDispatch(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource, String langType)
+			String templateId, String content, String langType)
 		throws Exception {
 
 		ClassLoader pluginClassLoader = null;
 
-		LayoutTemplate layoutTemplate = getLayoutTemplate(
-			templateResource.getTemplateId());
+		LayoutTemplate layoutTemplate = getLayoutTemplate(templateId);
 
 		if (layoutTemplate != null) {
 			String pluginServletContextName = GetterUtil.getString(
@@ -314,8 +311,8 @@ public class RuntimePageImpl implements RuntimePage {
 			}
 
 			return doProcessTemplate(
-				httpServletRequest, httpServletResponse, portletId,
-				templateResource, langType, false);
+				httpServletRequest, httpServletResponse, portletId, templateId,
+				content, langType, false);
 		}
 		finally {
 			if ((pluginClassLoader != null) &&
@@ -329,18 +326,15 @@ public class RuntimePageImpl implements RuntimePage {
 	protected StringBundler doProcessTemplate(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, String portletId,
-			TemplateResource templateResource, String langType,
+			String templateId, String content, String langType,
 			boolean restricted)
 		throws Exception {
 
 		TemplateProcessor processor = new TemplateProcessor(
 			httpServletRequest, httpServletResponse, portletId);
 
-		TemplateManager templateManager =
-			TemplateManagerUtil.getTemplateManager(langType);
-
-		Template template = templateManager.getTemplate(
-			templateResource, restricted);
+		Template template = TemplateManagerUtil.getTemplate(
+			langType, templateId, content, restricted);
 
 		template.put("processor", processor);
 

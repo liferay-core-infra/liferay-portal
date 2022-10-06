@@ -27,11 +27,9 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
-import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.TemplateVariableDefinition;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -223,11 +221,8 @@ public class DDMTemplateHelperImpl implements DDMTemplateHelper {
 
 		// Other variables
 
-		TemplateResource templateResource = new StringTemplateResource(
-			_TEMPLATE_ID, _TEMPLATE_CONTENT);
-
 		Template template = TemplateManagerUtil.getTemplate(
-			language, templateResource, false);
+			language, _TEMPLATE_ID, _TEMPLATE_CONTENT, false);
 
 		for (String key : template.keySet()) {
 			Object value = template.get(key);

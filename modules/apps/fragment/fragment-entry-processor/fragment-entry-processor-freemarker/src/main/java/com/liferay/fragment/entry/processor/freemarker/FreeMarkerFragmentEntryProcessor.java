@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.servlet.DummyHttpServletResponse;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateException;
@@ -124,8 +123,8 @@ public class FreeMarkerFragmentEntryProcessor
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL,
-			new StringTemplateResource("template_id", "[#ftl] " + html), true);
+			TemplateConstants.LANG_TYPE_FTL, "template_id", "[#ftl] " + html,
+			true);
 
 		template.put(TemplateConstants.WRITER, unsyncStringWriter);
 
@@ -212,8 +211,8 @@ public class FreeMarkerFragmentEntryProcessor
 		}
 
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_FTL,
-			new StringTemplateResource("template_id", "[#ftl] " + html), true);
+			TemplateConstants.LANG_TYPE_FTL, "template_id", "[#ftl] " + html,
+			true);
 
 		try {
 			HttpServletRequest httpServletRequest = null;

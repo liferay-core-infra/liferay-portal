@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.mobile.device.UnknownDevice;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
@@ -189,11 +188,8 @@ public class Transformer {
 			String templateId, String script, String langType)
 		throws Exception {
 
-		TemplateResource templateResource = new StringTemplateResource(
-			templateId, script);
-
 		return TemplateManagerUtil.getTemplate(
-			langType, templateResource, _restricted);
+			langType, templateId, script, _restricted);
 	}
 
 	protected String getTemplateId(

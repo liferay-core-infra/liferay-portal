@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.model.LayoutTemplateConstants;
 import com.liferay.portal.kernel.model.PluginSetting;
 import com.liferay.portal.kernel.plugin.PluginPackage;
 import com.liferay.portal.kernel.service.PluginSettingLocalService;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
@@ -510,8 +509,7 @@ public class LayoutTemplateLocalServiceImpl
 			InitColumnProcessor processor = new InitColumnProcessor();
 
 			Template template = TemplateManagerUtil.getTemplate(
-				langType,
-				new StringTemplateResource(templateId, templateContent), false);
+				langType, templateId, templateContent, false);
 
 			template.put("processor", processor);
 

@@ -48,10 +48,8 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -390,15 +388,9 @@ public class EditFragmentEntryDisplayContext {
 	}
 
 	private Map<String, Object> _getProps() throws Exception {
-		TemplateManager templateManager =
-			TemplateManagerUtil.getTemplateManager(
-				TemplateConstants.LANG_TYPE_FTL);
-
-		Template template = templateManager.getTemplate(
-			new StringTemplateResource(
-				TemplateConstants.LANG_TYPE_FTL,
-				TemplateConstants.LANG_TYPE_FTL),
-			true);
+		Template template = TemplateManagerUtil.getTemplate(
+			TemplateConstants.LANG_TYPE_FTL, TemplateConstants.LANG_TYPE_FTL,
+			TemplateConstants.LANG_TYPE_FTL, true);
 
 		template.prepare(_httpServletRequest);
 

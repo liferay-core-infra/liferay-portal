@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
@@ -83,9 +82,7 @@ public class TemplateNotificationMessageGenerator
 				notificationName + kaleoClassName + kaleoClassPK;
 
 			Template template = TemplateManagerUtil.getTemplate(
-				templateManagerName,
-				new StringTemplateResource(templateId, notificationTemplate),
-				false);
+				templateManagerName, templateId, notificationTemplate, false);
 
 			_populateContextVariables(template, executionContext);
 

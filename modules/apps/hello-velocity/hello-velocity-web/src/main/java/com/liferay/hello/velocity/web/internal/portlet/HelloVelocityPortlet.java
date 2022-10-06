@@ -15,8 +15,6 @@
 package com.liferay.hello.velocity.web.internal.portlet;
 
 import com.liferay.hello.velocity.web.internal.constants.HelloVelocityPortletKeys;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -85,9 +83,6 @@ public class HelloVelocityPortlet extends VelocityPortlet {
 		return new URLTemplateResource(
 			templateId, classLoader.getResource(templateId));
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		HelloVelocityPortlet.class);
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.hello.velocity.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"

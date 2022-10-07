@@ -315,7 +315,7 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#list>
 	</#if>
 
-	<#if dependencyInjectorDS>
+	<#if dependencyInjectorDS && serviceBuilder.isVersionLTE_7_3_0()>
 		<#if serviceBuilder.isVersionGTE_7_3_0()>
 			/**
 			* @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -1668,43 +1668,45 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 		</#if>
 	}
 
-	<#if serviceBuilder.isVersionGTE_7_3_0()>
-		/**
-		* @deprecated As of Athanasius (7.3.x), with no direct replacement
-		*/
-		@Deprecated
-	</#if>
-	@Override
-	public boolean isEntityCacheEnabled() {
-		<#if dependencyInjectorDS>
-			<#if serviceBuilder.isVersionGTE_7_3_0()>
-				return true;
-			<#else>
-				return _entityCacheEnabled;
-			</#if>
-		<#else>
-			return ENTITY_CACHE_ENABLED;
+	<#if serviceBuilder.isVersionLTE_7_3_0()>
+		<#if serviceBuilder.isVersionGTE_7_3_0()>
+			/**
+			* @deprecated As of Athanasius (7.3.x), with no direct replacement
+			*/
+			@Deprecated
 		</#if>
-	}
+		@Override
+		public boolean isEntityCacheEnabled() {
+			<#if dependencyInjectorDS>
+				<#if serviceBuilder.isVersionGTE_7_3_0()>
+					return true;
+				<#else>
+					return _entityCacheEnabled;
+				</#if>
+			<#else>
+				return ENTITY_CACHE_ENABLED;
+			</#if>
+		}
 
-	<#if serviceBuilder.isVersionGTE_7_3_0()>
-		/**
-		* @deprecated As of Athanasius (7.3.x), with no direct replacement
-		*/
-		@Deprecated
-	</#if>
-	@Override
-	public boolean isFinderCacheEnabled() {
-		<#if dependencyInjectorDS>
-			<#if serviceBuilder.isVersionGTE_7_3_0()>
-				return true;
-			<#else>
-				return _finderCacheEnabled;
-			</#if>
-		<#else>
-			return FINDER_CACHE_ENABLED;
+		<#if serviceBuilder.isVersionGTE_7_3_0()>
+			/**
+			* @deprecated As of Athanasius (7.3.x), with no direct replacement
+			*/
+			@Deprecated
 		</#if>
-	}
+		@Override
+		public boolean isFinderCacheEnabled() {
+			<#if dependencyInjectorDS>
+				<#if serviceBuilder.isVersionGTE_7_3_0()>
+					return true;
+				<#else>
+					return _finderCacheEnabled;
+				</#if>
+			<#else>
+				return FINDER_CACHE_ENABLED;
+			</#if>
+		}
+	</#if>
 
 	@Override
 	public void resetOriginalValues() {

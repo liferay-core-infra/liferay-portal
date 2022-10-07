@@ -38,7 +38,6 @@ import com.liferay.petra.sql.dsl.spi.query.SetOperation;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -93,7 +92,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -690,23 +688,6 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		return model;
 	}
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public void setConfiguration(Configuration configuration) {
-		String modelClassName = _modelClass.getName();
-
-		entityCacheEnabled = GetterUtil.getBoolean(
-			configuration.get(
-				"value.object.entity.cache.enabled.".concat(modelClassName)),
-			entityCacheEnabled);
-		finderCacheEnabled = GetterUtil.getBoolean(
-			configuration.get(
-				"value.object.finder.cache.enabled.".concat(modelClassName)),
-			finderCacheEnabled);
-	}
-
 	@Override
 	public void setDataSource(DataSource dataSource) {
 		_dataSource = dataSource;
@@ -950,10 +931,6 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		_dbColumnNames = dbColumnNames;
 	}
 
-	protected void setEntityCacheEnabled(boolean entityCacheEnabled) {
-		this.entityCacheEnabled = entityCacheEnabled;
-	}
-
 	protected void setModelClass(Class<T> modelClass) {
 		_modelClass = modelClass;
 
@@ -1002,13 +979,6 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	protected static final Object[] FINDER_ARGS_EMPTY = new Object[0];
 
-	/**
-	 * @deprecated As of Mueller (7.2.x), with no direct replacement
-	 */
-	@Deprecated
-	protected static final Comparator<String> NULL_SAFE_STRING_COMPARATOR =
-		Comparator.nullsLast(Comparator.naturalOrder());
-
 	protected static final String ORDER_BY_ASC = " ASC";
 
 	protected static final String ORDER_BY_ASC_HAS_NEXT = " ASC, ";
@@ -1039,18 +1009,6 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	protected int databaseInMaxParameters;
 	protected Map<String, String> dbColumnNames;
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	protected boolean entityCacheEnabled = true;
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	protected boolean finderCacheEnabled = true;
 
 	private Object[] _getArguments(
 		DefaultASTNodeListener defaultASTNodeListener) {
@@ -1286,26 +1244,8 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 			throw new UnsupportedOperationException();
 		}
 
-		/**
-		 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-		 */
-		@Deprecated
-		@Override
-		public boolean isEntityCacheEnabled() {
-			throw new UnsupportedOperationException();
-		}
-
 		@Override
 		public boolean isEscapedModel() {
-			throw new UnsupportedOperationException();
-		}
-
-		/**
-		 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-		 */
-		@Deprecated
-		@Override
-		public boolean isFinderCacheEnabled() {
 			throw new UnsupportedOperationException();
 		}
 

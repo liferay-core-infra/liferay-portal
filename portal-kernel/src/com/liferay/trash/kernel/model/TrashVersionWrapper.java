@@ -443,16 +443,6 @@ public class TrashVersionWrapper implements TrashVersion,
 	}
 
 	@Override
-	public boolean isEntityCacheEnabled() {
-		return _trashVersion.isEntityCacheEnabled();
-	}
-
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return _trashVersion.isFinderCacheEnabled();
-	}
-
-	@Override
 	public void resetOriginalValues() {
 		_trashVersion.resetOriginalValues();
 	}

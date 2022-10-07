@@ -60,7 +60,7 @@ import org.osgi.service.component.annotations.ReferencePolicy;
  * @author Carlos Lancha
  */
 @Component(
-	immediate = true, property = "ddm.form.field.type.name=image",
+	property = "ddm.form.field.type.name=image",
 	service = {
 		DDMFormFieldTemplateContextContributor.class,
 		ImageDDMFormFieldTemplateContextContributor.class

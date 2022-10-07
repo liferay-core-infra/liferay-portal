@@ -18,9 +18,7 @@ import com.liferay.dynamic.data.mapping.data.provider.display.DDMDataProviderDis
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapperFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-import com.liferay.portal.kernel.util.ListUtil;
 
-import java.util.List;
 import java.util.Set;
 
 import org.osgi.framework.BundleContext;
@@ -36,10 +34,6 @@ public class DDMDataProviderDisplayTracker {
 
 	public DDMDataProviderDisplay getDDMDataProviderDisplay(String portletId) {
 		return _serviceTrackerMap.getService(portletId);
-	}
-
-	public List<DDMDataProviderDisplay> getDDMDataProviderDisplays() {
-		return _getDDMDataProviderDisplays();
 	}
 
 	public String[] getPortletIds() {
@@ -59,10 +53,6 @@ public class DDMDataProviderDisplayTracker {
 	@Deactivate
 	protected void deactivate() {
 		_serviceTrackerMap.close();
-	}
-
-	private List<DDMDataProviderDisplay> _getDDMDataProviderDisplays() {
-		return ListUtil.fromCollection(_serviceTrackerMap.values());
 	}
 
 	private String[] _getPortletIds() {

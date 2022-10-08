@@ -1778,7 +1778,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 	private static final List<String> _configurationBundleSymbolicNames =
 		Arrays.asList(
-			PropsValues.MODULE_FRAMEWORK_CONFIGURATION_BUNDLE_SYMBOLIC_NAMES);
+			ModuleFrameworkPropsValues.
+				MODULE_FRAMEWORK_CONFIGURATION_BUNDLE_SYMBOLIC_NAMES);
 
 	private BundleListener _bundleListener;
 	private Framework _framework;

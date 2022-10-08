@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.PortalLifecycle;
 import com.liferay.portal.kernel.util.PortalLifecycleUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
@@ -88,7 +89,7 @@ public class StartupAction extends SimpleAction {
 							"Files ", Arrays.toString(extJarFiles), " in ",
 							extDir, " are no longer read. Move them to ",
 							libPath, " or ",
-							PropsValues.
+							ModuleFrameworkPropsValues.
 								LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
 							"."));
 				}

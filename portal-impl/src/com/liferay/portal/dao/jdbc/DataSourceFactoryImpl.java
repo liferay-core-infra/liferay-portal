@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.JavaDetector;
+import com.liferay.portal.kernel.util.ModuleFrameworkPropsValues;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ServerDetector;
@@ -150,7 +151,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 					StringBundler.concat(
 						"Unable to find the JDBC driver class ",
 						driverClassName, " in a JAR in the directory ",
-						PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR));
+						ModuleFrameworkPropsValues.
+							LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR));
 
 				throw classNotFoundException;
 			}
@@ -316,7 +318,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				JarUtil.downloadAndInstallJar(
 					new URL(url),
 					Paths.get(
-						PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+						ModuleFrameworkPropsValues.
+							LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
 						name),
 					(URLClassLoader)classLoader, sha1);
 			}
@@ -324,7 +327,8 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 				_log.error(
 					StringBundler.concat(
 						"Unable to download and install ", name, " to ",
-						PropsValues.LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
+						ModuleFrameworkPropsValues.
+							LIFERAY_SHIELDED_CONTAINER_LIB_PORTAL_DIR,
 						" from ", url),
 					exception);
 

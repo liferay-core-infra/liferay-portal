@@ -309,6 +309,10 @@ public class VerifyProperties {
 			"http.header.secure.x.frame.options.255"
 		},
 		{
+			"liferay.shielded.container.lib.portal.dir",
+			"liferay.shielded.container.lib.portal.dir"
+		},
+		{
 			"module.framework.beginning.start.level",
 			"module.framework.beginning.start.level"
 		},

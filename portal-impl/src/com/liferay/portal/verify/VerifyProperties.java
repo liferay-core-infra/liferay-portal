@@ -332,6 +332,7 @@ public class VerifyProperties {
 			"module.framework.services.ignored.interfaces",
 			"module.framework.services.ignored.interfaces"
 		},
+		{"module.framework.static.jars", "module.framework.static.jars"},
 		{
 			"module.framework.system.packages.extra",
 			"module.framework.system.packages.extra"

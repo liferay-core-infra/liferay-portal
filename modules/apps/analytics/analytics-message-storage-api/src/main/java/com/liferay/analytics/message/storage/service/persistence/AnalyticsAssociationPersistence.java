@@ -16,6 +16,7 @@ package com.liferay.analytics.message.storage.service.persistence;
 
 import com.liferay.analytics.message.storage.exception.NoSuchAssociationException;
 import com.liferay.analytics.message.storage.model.AnalyticsAssociation;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface AnalyticsAssociationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AnalyticsAssociationUtil} to access the analytics association persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByC_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A();
+
+	public FinderPath getFinderPathCountByC_A();
 
 	/**
 	 * Returns all the analytics associations where companyId = &#63; and associationClassName = &#63;.
@@ -198,6 +210,10 @@ public interface AnalyticsAssociationPersistence
 	 * @return the number of matching analytics associations
 	 */
 	public int countByC_A(long companyId, String associationClassName);
+
+	public FinderPath getFinderPathWithPaginationFindByC_GtM_A();
+
+	public FinderPath getFinderPathWithPaginationCountByC_GtM_A();
 
 	/**
 	 * Returns all the analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
@@ -370,6 +386,12 @@ public interface AnalyticsAssociationPersistence
 	 */
 	public int countByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A_A();
+
+	public FinderPath getFinderPathCountByC_A_A();
 
 	/**
 	 * Returns all the analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
@@ -666,5 +688,7 @@ public interface AnalyticsAssociationPersistence
 	 * @return the number of analytics associations
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -57,6 +57,7 @@ import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -108,9 +109,42 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where uuid = &#63;.
@@ -656,8 +690,25 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		"(commerceMLForecastAlertEntry.uuid IS NULL OR commerceMLForecastAlertEntry.uuid = '')";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where uuid = &#63; and companyId = &#63;.
@@ -1247,7 +1298,18 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		"commerceMLForecastAlertEntry.companyId = ?";
 
 	private FinderPath _finderPathFetchByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C_T() {
+		return _finderPathFetchByC_C_T;
+	}
+
 	private FinderPath _finderPathCountByC_C_T;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_T() {
+		return _finderPathCountByC_C_T;
+	}
 
 	/**
 	 * Returns the commerce ml forecast alert entry where companyId = &#63; and commerceAccountId = &#63; and timestamp = &#63; or throws a <code>NoSuchMLForecastAlertEntryException</code> if it could not be found.
@@ -1546,9 +1608,32 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		"commerceMLForecastAlertEntry.timestamp = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_S() {
+		return _finderPathWithPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S() {
+		return _finderPathWithoutPaginationFindByC_C_S;
+	}
+
 	private FinderPath _finderPathCountByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C_S() {
+		return _finderPathCountByC_C_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_S() {
+		return _finderPathWithPaginationCountByC_C_S;
+	}
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where companyId = &#63; and commerceAccountId = &#63; and status = &#63;.
@@ -2454,7 +2539,18 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		"commerceMLForecastAlertEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_GtRc_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_GtRc_S() {
+		return _finderPathWithPaginationFindByC_C_GtRc_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_GtRc_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_GtRc_S() {
+		return _finderPathWithPaginationCountByC_C_GtRc_S;
+	}
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where companyId = &#63; and commerceAccountId = &#63; and relativeChange &gt; &#63; and status = &#63;.
@@ -3421,7 +3517,18 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		"commerceMLForecastAlertEntry.status = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C_LtRc_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C_LtRc_S() {
+		return _finderPathWithPaginationFindByC_C_LtRc_S;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_C_LtRc_S;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_C_LtRc_S() {
+		return _finderPathWithPaginationCountByC_C_LtRc_S;
+	}
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where companyId = &#63; and commerceAccountId = &#63; and relativeChange &lt; &#63; and status = &#63;.
@@ -5170,6 +5277,69 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 
 		entityCache.removeCache(
 			CommerceMLForecastAlertEntryImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CommerceMLForecastAlertEntry> commerceMLForecastAlertEntrys =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CommerceMLForecastAlertEntry>> resultMap =
+				new HashMap<>();
+
+			for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
+					commerceMLForecastAlertEntrys) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CommerceMLForecastAlertEntryModelImpl
+						commerceMLForecastAlertEntryModelImpl =
+							(CommerceMLForecastAlertEntryModelImpl)
+								commerceMLForecastAlertEntry;
+
+					arguments.add(
+						commerceMLForecastAlertEntryModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						commerceMLForecastAlertEntry);
+				}
+				else {
+					List<CommerceMLForecastAlertEntry> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(commerceMLForecastAlertEntry);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CommerceMLForecastAlertEntry>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CommerceMLForecastAlertEntry> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCommerceMLForecastAlertEntryUtilPersistence(

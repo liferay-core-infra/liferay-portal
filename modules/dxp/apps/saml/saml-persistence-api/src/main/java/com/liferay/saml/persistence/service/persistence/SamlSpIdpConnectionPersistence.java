@@ -14,6 +14,7 @@
 
 package com.liferay.saml.persistence.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.saml.persistence.exception.NoSuchSpIdpConnectionException;
 import com.liferay.saml.persistence.model.SamlSpIdpConnection;
@@ -40,6 +41,17 @@ public interface SamlSpIdpConnectionPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SamlSpIdpConnectionUtil} to access the saml sp idp connection persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the saml sp idp connections where companyId = &#63;.
@@ -183,6 +195,10 @@ public interface SamlSpIdpConnectionPersistence
 	 * @return the number of matching saml sp idp connections
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathFetchByC_SIEI();
+
+	public FinderPath getFinderPathCountByC_SIEI();
 
 	/**
 	 * Returns the saml sp idp connection where companyId = &#63; and samlIdpEntityId = &#63; or throws a <code>NoSuchSpIdpConnectionException</code> if it could not be found.
@@ -358,5 +374,7 @@ public interface SamlSpIdpConnectionPersistence
 	 * @return the number of saml sp idp connections
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

@@ -15,6 +15,7 @@
 package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -1626,6 +1627,11 @@ public class LayoutLocalServiceWrapper
 
 		return _layoutLocalService.hasLayoutSetPrototypeLayout(
 			layoutSetPrototypeUuid, companyId, layoutUuid);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_layoutLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

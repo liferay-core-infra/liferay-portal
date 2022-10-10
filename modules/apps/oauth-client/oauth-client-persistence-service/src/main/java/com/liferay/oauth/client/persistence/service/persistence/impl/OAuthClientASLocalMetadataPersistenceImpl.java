@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -52,7 +53,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -101,9 +104,42 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the o auth client as local metadatas where companyId = &#63;.
@@ -1002,8 +1038,25 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		"oAuthClientASLocalMetadata.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserId() {
+		return _finderPathWithPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserId() {
+		return _finderPathWithoutPaginationFindByUserId;
+	}
+
 	private FinderPath _finderPathCountByUserId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserId() {
+		return _finderPathCountByUserId;
+	}
 
 	/**
 	 * Returns all the o auth client as local metadatas where userId = &#63;.
@@ -1895,7 +1948,18 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		"oAuthClientASLocalMetadata.userId = ?";
 
 	private FinderPath _finderPathFetchByLocalWellKnownURI;
+
+	@Override
+	public FinderPath getFinderPathFetchByLocalWellKnownURI() {
+		return _finderPathFetchByLocalWellKnownURI;
+	}
+
 	private FinderPath _finderPathCountByLocalWellKnownURI;
+
+	@Override
+	public FinderPath getFinderPathCountByLocalWellKnownURI() {
+		return _finderPathCountByLocalWellKnownURI;
+	}
 
 	/**
 	 * Returns the o auth client as local metadata where localWellKnownURI = &#63; or throws a <code>NoSuchOAuthClientASLocalMetadataException</code> if it could not be found.
@@ -2798,6 +2862,68 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 		_setOAuthClientASLocalMetadataUtilPersistence(null);
 
 		entityCache.removeCache(OAuthClientASLocalMetadataImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<OAuthClientASLocalMetadata> oAuthClientASLocalMetadatas =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<OAuthClientASLocalMetadata>> resultMap =
+				new HashMap<>();
+
+			for (OAuthClientASLocalMetadata oAuthClientASLocalMetadata :
+					oAuthClientASLocalMetadatas) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					OAuthClientASLocalMetadataModelImpl
+						oAuthClientASLocalMetadataModelImpl =
+							(OAuthClientASLocalMetadataModelImpl)
+								oAuthClientASLocalMetadata;
+
+					arguments.add(
+						oAuthClientASLocalMetadataModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						oAuthClientASLocalMetadata);
+				}
+				else {
+					List<OAuthClientASLocalMetadata> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(oAuthClientASLocalMetadata);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<OAuthClientASLocalMetadata>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<OAuthClientASLocalMetadata> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setOAuthClientASLocalMetadataUtilPersistence(

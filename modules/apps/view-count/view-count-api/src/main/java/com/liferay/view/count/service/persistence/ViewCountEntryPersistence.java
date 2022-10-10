@@ -14,6 +14,7 @@
 
 package com.liferay.view.count.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.view.count.exception.NoSuchEntryException;
 import com.liferay.view.count.model.ViewCountEntry;
@@ -42,6 +43,11 @@ public interface ViewCountEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ViewCountEntryUtil} to access the view count entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
 
 	/**
 	 * Caches the view count entry in the entity cache if it is enabled.
@@ -164,5 +170,7 @@ public interface ViewCountEntryPersistence
 	public int countAll();
 
 	public Set<String> getCompoundPKColumnNames();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

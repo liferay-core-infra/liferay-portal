@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.product.type.virtual.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -524,6 +525,11 @@ public class CPDefinitionVirtualSettingLocalServiceWrapper
 
 		return _cpDefinitionVirtualSettingLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_cpDefinitionVirtualSettingLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

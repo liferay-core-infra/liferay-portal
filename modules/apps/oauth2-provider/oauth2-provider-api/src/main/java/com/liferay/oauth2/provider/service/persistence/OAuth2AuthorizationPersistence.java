@@ -16,6 +16,7 @@ package com.liferay.oauth2.provider.service.persistence;
 
 import com.liferay.oauth2.provider.exception.NoSuchOAuth2AuthorizationException;
 import com.liferay.oauth2.provider.model.OAuth2Authorization;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface OAuth2AuthorizationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OAuth2AuthorizationUtil} to access the o auth2 authorization persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns all the o auth2 authorizations where userId = &#63;.
@@ -184,6 +196,12 @@ public interface OAuth2AuthorizationPersistence
 	 */
 	public int countByUserId(long userId);
 
+	public FinderPath getFinderPathWithPaginationFindByOAuth2ApplicationId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByOAuth2ApplicationId();
+
+	public FinderPath getFinderPathCountByOAuth2ApplicationId();
+
 	/**
 	 * Returns all the o auth2 authorizations where oAuth2ApplicationId = &#63;.
 	 *
@@ -327,6 +345,12 @@ public interface OAuth2AuthorizationPersistence
 	 * @return the number of matching o auth2 authorizations
 	 */
 	public int countByOAuth2ApplicationId(long oAuth2ApplicationId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_ATCH();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_ATCH();
+
+	public FinderPath getFinderPathCountByC_ATCH();
 
 	/**
 	 * Returns all the o auth2 authorizations where companyId = &#63; and accessTokenContentHash = &#63;.
@@ -484,6 +508,12 @@ public interface OAuth2AuthorizationPersistence
 	 */
 	public int countByC_ATCH(long companyId, long accessTokenContentHash);
 
+	public FinderPath getFinderPathWithPaginationFindByC_RTCH();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_RTCH();
+
+	public FinderPath getFinderPathCountByC_RTCH();
+
 	/**
 	 * Returns all the o auth2 authorizations where companyId = &#63; and refreshTokenContentHash = &#63;.
 	 *
@@ -639,6 +669,12 @@ public interface OAuth2AuthorizationPersistence
 	 * @return the number of matching o auth2 authorizations
 	 */
 	public int countByC_RTCH(long companyId, long refreshTokenContentHash);
+
+	public FinderPath getFinderPathWithPaginationFindByU_O_R();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_O_R();
+
+	public FinderPath getFinderPathCountByU_O_R();
 
 	/**
 	 * Returns all the o auth2 authorizations where userId = &#63; and oAuth2ApplicationId = &#63; and rememberDeviceContent = &#63;.
@@ -1109,5 +1145,7 @@ public interface OAuth2AuthorizationPersistence
 		long pk,
 		java.util.List<com.liferay.oauth2.provider.model.OAuth2ScopeGrant>
 			oAuth2ScopeGrants);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

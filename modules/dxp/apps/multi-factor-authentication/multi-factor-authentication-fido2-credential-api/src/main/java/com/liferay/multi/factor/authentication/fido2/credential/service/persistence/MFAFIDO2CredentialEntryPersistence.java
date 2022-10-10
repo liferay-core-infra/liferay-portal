@@ -16,6 +16,7 @@ package com.liferay.multi.factor.authentication.fido2.credential.service.persist
 
 import com.liferay.multi.factor.authentication.fido2.credential.exception.NoSuchMFAFIDO2CredentialEntryException;
 import com.liferay.multi.factor.authentication.fido2.credential.model.MFAFIDO2CredentialEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface MFAFIDO2CredentialEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MFAFIDO2CredentialEntryUtil} to access the mfafido2 credential entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns all the mfafido2 credential entries where userId = &#63;.
@@ -184,6 +196,12 @@ public interface MFAFIDO2CredentialEntryPersistence
 	 */
 	public int countByUserId(long userId);
 
+	public FinderPath getFinderPathWithPaginationFindByCredentialKeyHash();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCredentialKeyHash();
+
+	public FinderPath getFinderPathCountByCredentialKeyHash();
+
 	/**
 	 * Returns all the mfafido2 credential entries where credentialKeyHash = &#63;.
 	 *
@@ -327,6 +345,10 @@ public interface MFAFIDO2CredentialEntryPersistence
 	 * @return the number of matching mfafido2 credential entries
 	 */
 	public int countByCredentialKeyHash(long credentialKeyHash);
+
+	public FinderPath getFinderPathFetchByU_C();
+
+	public FinderPath getFinderPathCountByU_C();
 
 	/**
 	 * Returns the mfafido2 credential entry where userId = &#63; and credentialKeyHash = &#63; or throws a <code>NoSuchMFAFIDO2CredentialEntryException</code> if it could not be found.
@@ -504,5 +526,7 @@ public interface MFAFIDO2CredentialEntryPersistence
 	 * @return the number of mfafido2 credential entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

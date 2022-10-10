@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -106,9 +107,42 @@ public class DEDataListViewPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the de data list views where uuid = &#63;.
@@ -654,7 +688,18 @@ public class DEDataListViewPersistenceImpl
 		"(deDataListView.uuid IS NULL OR deDataListView.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the de data list view where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchDataListViewException</code> if it could not be found.
@@ -917,8 +962,25 @@ public class DEDataListViewPersistenceImpl
 		"deDataListView.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the de data list views where uuid = &#63; and companyId = &#63;.
@@ -1514,8 +1576,25 @@ public class DEDataListViewPersistenceImpl
 		"deDataListView.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByDDMStructureId() {
+		return _finderPathWithPaginationFindByDDMStructureId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByDDMStructureId() {
+		return _finderPathWithoutPaginationFindByDDMStructureId;
+	}
+
 	private FinderPath _finderPathCountByDDMStructureId;
+
+	@Override
+	public FinderPath getFinderPathCountByDDMStructureId() {
+		return _finderPathCountByDDMStructureId;
+	}
 
 	/**
 	 * Returns all the de data list views where ddmStructureId = &#63;.
@@ -2034,8 +2113,25 @@ public class DEDataListViewPersistenceImpl
 		"deDataListView.ddmStructureId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_DDMSI;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_DDMSI() {
+		return _finderPathWithPaginationFindByG_C_DDMSI;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_DDMSI;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_DDMSI() {
+		return _finderPathWithoutPaginationFindByG_C_DDMSI;
+	}
+
 	private FinderPath _finderPathCountByG_C_DDMSI;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_DDMSI() {
+		return _finderPathCountByG_C_DDMSI;
+	}
 
 	/**
 	 * Returns all the de data list views where groupId = &#63; and companyId = &#63; and ddmStructureId = &#63;.
@@ -3549,6 +3645,59 @@ public class DEDataListViewPersistenceImpl
 		_setDEDataListViewUtilPersistence(null);
 
 		entityCache.removeCache(DEDataListViewImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<DEDataListView> deDataListViews = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<DEDataListView>> resultMap = new HashMap<>();
+
+			for (DEDataListView deDataListView : deDataListViews) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					DEDataListViewModelImpl deDataListViewModelImpl =
+						(DEDataListViewModelImpl)deDataListView;
+
+					arguments.add(
+						deDataListViewModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), deDataListView);
+				}
+				else {
+					List<DEDataListView> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(deDataListView);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<DEDataListView>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<DEDataListView> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setDEDataListViewUtilPersistence(

@@ -16,6 +16,7 @@ package com.liferay.asset.kernel.service.persistence;
 
 import com.liferay.asset.kernel.exception.NoSuchEntryException;
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -43,6 +44,17 @@ public interface AssetEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetEntryUtil} to access the asset entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the asset entries where groupId = &#63;.
@@ -187,6 +199,12 @@ public interface AssetEntryPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the asset entries where companyId = &#63;.
 	 *
@@ -329,6 +347,12 @@ public interface AssetEntryPersistence
 	 * @return the number of matching asset entries
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByVisible();
+
+	public FinderPath getFinderPathWithoutPaginationFindByVisible();
+
+	public FinderPath getFinderPathCountByVisible();
 
 	/**
 	 * Returns all the asset entries where visible = &#63;.
@@ -473,6 +497,12 @@ public interface AssetEntryPersistence
 	 */
 	public int countByVisible(boolean visible);
 
+	public FinderPath getFinderPathWithPaginationFindByPublishDate();
+
+	public FinderPath getFinderPathWithoutPaginationFindByPublishDate();
+
+	public FinderPath getFinderPathCountByPublishDate();
+
 	/**
 	 * Returns all the asset entries where publishDate = &#63;.
 	 *
@@ -615,6 +645,12 @@ public interface AssetEntryPersistence
 	 * @return the number of matching asset entries
 	 */
 	public int countByPublishDate(Date publishDate);
+
+	public FinderPath getFinderPathWithPaginationFindByExpirationDate();
+
+	public FinderPath getFinderPathWithoutPaginationFindByExpirationDate();
+
+	public FinderPath getFinderPathCountByExpirationDate();
 
 	/**
 	 * Returns all the asset entries where expirationDate = &#63;.
@@ -759,6 +795,12 @@ public interface AssetEntryPersistence
 	 */
 	public int countByExpirationDate(Date expirationDate);
 
+	public FinderPath getFinderPathWithPaginationFindByLayoutUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByLayoutUuid();
+
+	public FinderPath getFinderPathCountByLayoutUuid();
+
 	/**
 	 * Returns all the asset entries where layoutUuid = &#63;.
 	 *
@@ -902,6 +944,10 @@ public interface AssetEntryPersistence
 	 */
 	public int countByLayoutUuid(String layoutUuid);
 
+	public FinderPath getFinderPathFetchByG_CU();
+
+	public FinderPath getFinderPathCountByG_CU();
+
 	/**
 	 * Returns the asset entry where groupId = &#63; and classUuid = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -952,6 +998,10 @@ public interface AssetEntryPersistence
 	 */
 	public int countByG_CU(long groupId, String classUuid);
 
+	public FinderPath getFinderPathFetchByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
+
 	/**
 	 * Returns the asset entry where classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchEntryException</code> if it could not be found.
 	 *
@@ -1001,6 +1051,12 @@ public interface AssetEntryPersistence
 	 * @return the number of matching asset entries
 	 */
 	public int countByC_C(long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_V();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_V();
+
+	public FinderPath getFinderPathCountByG_C_V();
 
 	/**
 	 * Returns all the asset entries where groupId = &#63; and classNameId = &#63; and visible = &#63;.
@@ -1167,6 +1223,12 @@ public interface AssetEntryPersistence
 	 * @return the number of matching asset entries
 	 */
 	public int countByG_C_V(long groupId, long classNameId, boolean visible);
+
+	public FinderPath getFinderPathWithPaginationFindByG_C_P_E();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_P_E();
+
+	public FinderPath getFinderPathCountByG_C_P_E();
 
 	/**
 	 * Returns all the asset entries where groupId = &#63; and classNameId = &#63; and publishDate = &#63; and expirationDate = &#63;.
@@ -1641,5 +1703,7 @@ public interface AssetEntryPersistence
 	public void setAssetTags(
 		long pk,
 		java.util.List<com.liferay.asset.kernel.model.AssetTag> assetTags);
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

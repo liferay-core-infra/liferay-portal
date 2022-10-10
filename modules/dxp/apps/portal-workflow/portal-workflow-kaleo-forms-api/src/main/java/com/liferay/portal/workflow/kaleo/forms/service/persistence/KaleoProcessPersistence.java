@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.workflow.kaleo.forms.exception.NoSuchKaleoProcessException;
 import com.liferay.portal.workflow.kaleo.forms.model.KaleoProcess;
@@ -39,6 +40,17 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoProcessUtil} to access the kaleo process persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the kaleo processes where uuid = &#63;.
@@ -183,6 +195,10 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the kaleo process where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchKaleoProcessException</code> if it could not be found.
 	 *
@@ -232,6 +248,12 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	 * @return the number of matching kaleo processes
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the kaleo processes where uuid = &#63; and companyId = &#63;.
@@ -387,6 +409,12 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	 * @return the number of matching kaleo processes
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the kaleo processes where groupId = &#63;.
@@ -595,6 +623,10 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	 */
 	public int filterCountByGroupId(long groupId);
 
+	public FinderPath getFinderPathFetchByDDLRecordSetId();
+
+	public FinderPath getFinderPathCountByDDLRecordSetId();
+
 	/**
 	 * Returns the kaleo process where DDLRecordSetId = &#63; or throws a <code>NoSuchKaleoProcessException</code> if it could not be found.
 	 *
@@ -759,5 +791,7 @@ public interface KaleoProcessPersistence extends BasePersistence<KaleoProcess> {
 	 * @return the number of kaleo processes
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

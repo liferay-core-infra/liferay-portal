@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.term.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -412,6 +413,11 @@ public class CommerceTermEntryRelLocalServiceWrapper
 
 		return _commerceTermEntryRelLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_commerceTermEntryRelLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.wedeploy.auth.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -342,6 +343,11 @@ public class WeDeployAuthAppLocalServiceWrapper
 	@Override
 	public int getWeDeployAuthAppsCount() {
 		return _weDeployAuthAppLocalService.getWeDeployAuthAppsCount();
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_weDeployAuthAppLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

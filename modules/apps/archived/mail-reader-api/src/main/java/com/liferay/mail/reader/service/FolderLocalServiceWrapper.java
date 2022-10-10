@@ -14,6 +14,7 @@
 
 package com.liferay.mail.reader.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -354,6 +355,11 @@ public class FolderLocalServiceWrapper
 
 		return _folderLocalService.getRemotePageCount(
 			folderId, messagesPerPage);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_folderLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -91,9 +92,42 @@ public class ExpandoValuePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByTableId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByTableId() {
+		return _finderPathWithPaginationFindByTableId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByTableId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByTableId() {
+		return _finderPathWithoutPaginationFindByTableId;
+	}
+
 	private FinderPath _finderPathCountByTableId;
+
+	@Override
+	public FinderPath getFinderPathCountByTableId() {
+		return _finderPathCountByTableId;
+	}
 
 	/**
 	 * Returns all the expando values where tableId = &#63;.
@@ -600,8 +634,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.tableId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByColumnId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByColumnId() {
+		return _finderPathWithPaginationFindByColumnId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByColumnId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByColumnId() {
+		return _finderPathWithoutPaginationFindByColumnId;
+	}
+
 	private FinderPath _finderPathCountByColumnId;
+
+	@Override
+	public FinderPath getFinderPathCountByColumnId() {
+		return _finderPathCountByColumnId;
+	}
 
 	/**
 	 * Returns all the expando values where columnId = &#63;.
@@ -1110,8 +1161,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.columnId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByRowId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRowId() {
+		return _finderPathWithPaginationFindByRowId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRowId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRowId() {
+		return _finderPathWithoutPaginationFindByRowId;
+	}
+
 	private FinderPath _finderPathCountByRowId;
+
+	@Override
+	public FinderPath getFinderPathCountByRowId() {
+		return _finderPathCountByRowId;
+	}
 
 	/**
 	 * Returns all the expando values where rowId = &#63;.
@@ -1615,8 +1683,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.rowId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_C() {
+		return _finderPathWithPaginationFindByT_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_C() {
+		return _finderPathWithoutPaginationFindByT_C;
+	}
+
 	private FinderPath _finderPathCountByT_C;
+
+	@Override
+	public FinderPath getFinderPathCountByT_C() {
+		return _finderPathCountByT_C;
+	}
 
 	/**
 	 * Returns all the expando values where tableId = &#63; and columnId = &#63;.
@@ -2169,8 +2254,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.columnId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_R() {
+		return _finderPathWithPaginationFindByT_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_R() {
+		return _finderPathWithoutPaginationFindByT_R;
+	}
+
 	private FinderPath _finderPathCountByT_R;
+
+	@Override
+	public FinderPath getFinderPathCountByT_R() {
+		return _finderPathCountByT_R;
+	}
 
 	/**
 	 * Returns all the expando values where tableId = &#63; and rowId = &#63;.
@@ -2721,8 +2823,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.rowId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_CPK() {
+		return _finderPathWithPaginationFindByT_CPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_CPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_CPK() {
+		return _finderPathWithoutPaginationFindByT_CPK;
+	}
+
 	private FinderPath _finderPathCountByT_CPK;
+
+	@Override
+	public FinderPath getFinderPathCountByT_CPK() {
+		return _finderPathCountByT_CPK;
+	}
 
 	/**
 	 * Returns all the expando values where tableId = &#63; and classPK = &#63;.
@@ -3275,7 +3394,18 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.classPK = ?";
 
 	private FinderPath _finderPathFetchByC_R;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_R() {
+		return _finderPathFetchByC_R;
+	}
+
 	private FinderPath _finderPathCountByC_R;
+
+	@Override
+	public FinderPath getFinderPathCountByC_R() {
+		return _finderPathCountByC_R;
+	}
 
 	/**
 	 * Returns the expando value where columnId = &#63; and rowId = &#63; or throws a <code>NoSuchValueException</code> if it could not be found.
@@ -3510,8 +3640,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.rowId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_C() {
+		return _finderPathWithPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_C() {
+		return _finderPathWithoutPaginationFindByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns all the expando values where classNameId = &#63; and classPK = &#63;.
@@ -4065,7 +4212,18 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.classPK = ?";
 
 	private FinderPath _finderPathFetchByT_C_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByT_C_C() {
+		return _finderPathFetchByT_C_C;
+	}
+
 	private FinderPath _finderPathCountByT_C_C;
+
+	@Override
+	public FinderPath getFinderPathCountByT_C_C() {
+		return _finderPathCountByT_C_C;
+	}
 
 	/**
 	 * Returns the expando value where tableId = &#63; and columnId = &#63; and classPK = &#63; or throws a <code>NoSuchValueException</code> if it could not be found.
@@ -4322,8 +4480,25 @@ public class ExpandoValuePersistenceImpl
 		"expandoValue.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByT_C_D;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByT_C_D() {
+		return _finderPathWithPaginationFindByT_C_D;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByT_C_D;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByT_C_D() {
+		return _finderPathWithoutPaginationFindByT_C_D;
+	}
+
 	private FinderPath _finderPathCountByT_C_D;
+
+	@Override
+	public FinderPath getFinderPathCountByT_C_D() {
+		return _finderPathCountByT_C_D;
+	}
 
 	/**
 	 * Returns all the expando values where tableId = &#63; and columnId = &#63; and data = &#63;.
@@ -5927,6 +6102,59 @@ public class ExpandoValuePersistenceImpl
 		_setExpandoValueUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(ExpandoValueImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<ExpandoValue> expandoValues = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<ExpandoValue>> resultMap = new HashMap<>();
+
+			for (ExpandoValue expandoValue : expandoValues) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					ExpandoValueModelImpl expandoValueModelImpl =
+						(ExpandoValueModelImpl)expandoValue;
+
+					arguments.add(
+						expandoValueModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), expandoValue);
+				}
+				else {
+					List<ExpandoValue> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(expandoValue);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<ExpandoValue>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<ExpandoValue> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setExpandoValueUtilPersistence(

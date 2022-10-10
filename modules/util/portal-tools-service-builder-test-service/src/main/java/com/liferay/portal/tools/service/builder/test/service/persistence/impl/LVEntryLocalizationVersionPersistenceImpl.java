@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -45,6 +46,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -81,9 +84,44 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByLvEntryLocalizationId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLvEntryLocalizationId() {
+		return _finderPathWithPaginationFindByLvEntryLocalizationId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLvEntryLocalizationId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByLvEntryLocalizationId() {
+
+		return _finderPathWithoutPaginationFindByLvEntryLocalizationId;
+	}
+
 	private FinderPath _finderPathCountByLvEntryLocalizationId;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryLocalizationId() {
+		return _finderPathCountByLvEntryLocalizationId;
+	}
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryLocalizationId = &#63;.
@@ -605,7 +643,18 @@ public class LVEntryLocalizationVersionPersistenceImpl
 			"lvEntryLocalizationVersion.lvEntryLocalizationId = ?";
 
 	private FinderPath _finderPathFetchByLvEntryLocalizationId_Version;
+
+	@Override
+	public FinderPath getFinderPathFetchByLvEntryLocalizationId_Version() {
+		return _finderPathFetchByLvEntryLocalizationId_Version;
+	}
+
 	private FinderPath _finderPathCountByLvEntryLocalizationId_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryLocalizationId_Version() {
+		return _finderPathCountByLvEntryLocalizationId_Version;
+	}
 
 	/**
 	 * Returns the lv entry localization version where lvEntryLocalizationId = &#63; and version = &#63; or throws a <code>NoSuchLVEntryLocalizationVersionException</code> if it could not be found.
@@ -843,8 +892,25 @@ public class LVEntryLocalizationVersionPersistenceImpl
 			"lvEntryLocalizationVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLvEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId() {
+		return _finderPathWithPaginationFindByLvEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLvEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLvEntryId() {
+		return _finderPathWithoutPaginationFindByLvEntryId;
+	}
+
 	private FinderPath _finderPathCountByLvEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryId() {
+		return _finderPathCountByLvEntryId;
+	}
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryId = &#63;.
@@ -1354,8 +1420,25 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		"lvEntryLocalizationVersion.lvEntryId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLvEntryId_Version;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId_Version() {
+		return _finderPathWithPaginationFindByLvEntryId_Version;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLvEntryId_Version;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByLvEntryId_Version() {
+		return _finderPathWithoutPaginationFindByLvEntryId_Version;
+	}
+
 	private FinderPath _finderPathCountByLvEntryId_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryId_Version() {
+		return _finderPathCountByLvEntryId_Version;
+	}
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryId = &#63; and version = &#63;.
@@ -1905,8 +1988,27 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		"lvEntryLocalizationVersion.version = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLvEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByLvEntryId_LanguageId() {
+		return _finderPathWithPaginationFindByLvEntryId_LanguageId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByLvEntryId_LanguageId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByLvEntryId_LanguageId() {
+
+		return _finderPathWithoutPaginationFindByLvEntryId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByLvEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryId_LanguageId() {
+		return _finderPathCountByLvEntryId_LanguageId;
+	}
 
 	/**
 	 * Returns all the lv entry localization versions where lvEntryId = &#63; and languageId = &#63;.
@@ -2506,7 +2608,18 @@ public class LVEntryLocalizationVersionPersistenceImpl
 			"(lvEntryLocalizationVersion.languageId IS NULL OR lvEntryLocalizationVersion.languageId = '')";
 
 	private FinderPath _finderPathFetchByLvEntryId_LanguageId_Version;
+
+	@Override
+	public FinderPath getFinderPathFetchByLvEntryId_LanguageId_Version() {
+		return _finderPathFetchByLvEntryId_LanguageId_Version;
+	}
+
 	private FinderPath _finderPathCountByLvEntryId_LanguageId_Version;
+
+	@Override
+	public FinderPath getFinderPathCountByLvEntryId_LanguageId_Version() {
+		return _finderPathCountByLvEntryId_LanguageId_Version;
+	}
 
 	/**
 	 * Returns the lv entry localization version where lvEntryId = &#63; and languageId = &#63; and version = &#63; or throws a <code>NoSuchLVEntryLocalizationVersionException</code> if it could not be found.
@@ -3523,6 +3636,68 @@ public class LVEntryLocalizationVersionPersistenceImpl
 		_setLVEntryLocalizationVersionUtilPersistence(null);
 
 		entityCache.removeCache(LVEntryLocalizationVersionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<LVEntryLocalizationVersion> lvEntryLocalizationVersions =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<LVEntryLocalizationVersion>> resultMap =
+				new HashMap<>();
+
+			for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
+					lvEntryLocalizationVersions) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					LVEntryLocalizationVersionModelImpl
+						lvEntryLocalizationVersionModelImpl =
+							(LVEntryLocalizationVersionModelImpl)
+								lvEntryLocalizationVersion;
+
+					arguments.add(
+						lvEntryLocalizationVersionModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						lvEntryLocalizationVersion);
+				}
+				else {
+					List<LVEntryLocalizationVersion> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(lvEntryLocalizationVersion);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<LVEntryLocalizationVersion>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<LVEntryLocalizationVersion> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setLVEntryLocalizationVersionUtilPersistence(

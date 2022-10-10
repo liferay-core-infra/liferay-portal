@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.service.persistence.UserGroupGroupRolePersisten
 import com.liferay.portal.kernel.service.persistence.UserGroupGroupRoleUtil;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelperUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -56,6 +57,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -89,9 +91,42 @@ public class UserGroupGroupRolePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUserGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUserGroupId() {
+		return _finderPathWithPaginationFindByUserGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUserGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUserGroupId() {
+		return _finderPathWithoutPaginationFindByUserGroupId;
+	}
+
 	private FinderPath _finderPathCountByUserGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByUserGroupId() {
+		return _finderPathCountByUserGroupId;
+	}
 
 	/**
 	 * Returns all the user group group roles where userGroupId = &#63;.
@@ -613,8 +648,25 @@ public class UserGroupGroupRolePersistenceImpl
 		"userGroupGroupRole.userGroupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the user group group roles where groupId = &#63;.
@@ -1128,8 +1180,25 @@ public class UserGroupGroupRolePersistenceImpl
 		"userGroupGroupRole.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByRoleId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByRoleId() {
+		return _finderPathWithPaginationFindByRoleId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByRoleId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByRoleId() {
+		return _finderPathWithoutPaginationFindByRoleId;
+	}
+
 	private FinderPath _finderPathCountByRoleId;
+
+	@Override
+	public FinderPath getFinderPathCountByRoleId() {
+		return _finderPathCountByRoleId;
+	}
 
 	/**
 	 * Returns all the user group group roles where roleId = &#63;.
@@ -1642,8 +1711,25 @@ public class UserGroupGroupRolePersistenceImpl
 		"userGroupGroupRole.roleId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByU_G;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByU_G() {
+		return _finderPathWithPaginationFindByU_G;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByU_G;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByU_G() {
+		return _finderPathWithoutPaginationFindByU_G;
+	}
+
 	private FinderPath _finderPathCountByU_G;
+
+	@Override
+	public FinderPath getFinderPathCountByU_G() {
+		return _finderPathCountByU_G;
+	}
 
 	/**
 	 * Returns all the user group group roles where userGroupId = &#63; and groupId = &#63;.
@@ -2200,8 +2286,25 @@ public class UserGroupGroupRolePersistenceImpl
 		"userGroupGroupRole.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_R;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_R() {
+		return _finderPathWithPaginationFindByG_R;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_R;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_R() {
+		return _finderPathWithoutPaginationFindByG_R;
+	}
+
 	private FinderPath _finderPathCountByG_R;
+
+	@Override
+	public FinderPath getFinderPathCountByG_R() {
+		return _finderPathCountByG_R;
+	}
 
 	/**
 	 * Returns all the user group group roles where groupId = &#63; and roleId = &#63;.
@@ -2756,7 +2859,18 @@ public class UserGroupGroupRolePersistenceImpl
 		"userGroupGroupRole.roleId = ?";
 
 	private FinderPath _finderPathFetchByU_G_R;
+
+	@Override
+	public FinderPath getFinderPathFetchByU_G_R() {
+		return _finderPathFetchByU_G_R;
+	}
+
 	private FinderPath _finderPathCountByU_G_R;
+
+	@Override
+	public FinderPath getFinderPathCountByU_G_R() {
+		return _finderPathCountByU_G_R;
+	}
 
 	/**
 	 * Returns the user group group role where userGroupId = &#63; and groupId = &#63; and roleId = &#63; or throws a <code>NoSuchUserGroupGroupRoleException</code> if it could not be found.
@@ -3910,6 +4024,61 @@ public class UserGroupGroupRolePersistenceImpl
 		_setUserGroupGroupRoleUtilPersistence(null);
 
 		EntityCacheUtil.removeCache(UserGroupGroupRoleImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<UserGroupGroupRole> userGroupGroupRoles = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<UserGroupGroupRole>> resultMap =
+				new HashMap<>();
+
+			for (UserGroupGroupRole userGroupGroupRole : userGroupGroupRoles) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					UserGroupGroupRoleModelImpl userGroupGroupRoleModelImpl =
+						(UserGroupGroupRoleModelImpl)userGroupGroupRole;
+
+					arguments.add(
+						userGroupGroupRoleModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					FinderCacheUtil.putResult(
+						finderPath, arguments.toArray(), userGroupGroupRole);
+				}
+				else {
+					List<UserGroupGroupRole> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(userGroupGroupRole);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<UserGroupGroupRole>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<UserGroupGroupRole> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					FinderCacheUtil.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					FinderCacheUtil.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setUserGroupGroupRoleUtilPersistence(

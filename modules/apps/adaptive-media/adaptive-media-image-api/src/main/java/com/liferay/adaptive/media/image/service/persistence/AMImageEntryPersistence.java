@@ -16,6 +16,7 @@ package com.liferay.adaptive.media.image.service.persistence;
 
 import com.liferay.adaptive.media.image.exception.NoSuchAMImageEntryException;
 import com.liferay.adaptive.media.image.model.AMImageEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AMImageEntryUtil} to access the am image entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the am image entries where uuid = &#63;.
@@ -183,6 +195,10 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the am image entry where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchAMImageEntryException</code> if it could not be found.
 	 *
@@ -232,6 +248,12 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 * @return the number of matching am image entries
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the am image entries where uuid = &#63; and companyId = &#63;.
@@ -388,6 +410,12 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
+
 	/**
 	 * Returns all the am image entries where groupId = &#63;.
 	 *
@@ -531,6 +559,12 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the am image entries where companyId = &#63;.
 	 *
@@ -673,6 +707,12 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 * @return the number of matching am image entries
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByConfigurationUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByConfigurationUuid();
+
+	public FinderPath getFinderPathCountByConfigurationUuid();
 
 	/**
 	 * Returns all the am image entries where configurationUuid = &#63;.
@@ -818,6 +858,12 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 */
 	public int countByConfigurationUuid(String configurationUuid);
 
+	public FinderPath getFinderPathWithPaginationFindByFileVersionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByFileVersionId();
+
+	public FinderPath getFinderPathCountByFileVersionId();
+
 	/**
 	 * Returns all the am image entries where fileVersionId = &#63;.
 	 *
@@ -960,6 +1006,12 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 * @return the number of matching am image entries
 	 */
 	public int countByFileVersionId(long fileVersionId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the am image entries where companyId = &#63; and configurationUuid = &#63;.
@@ -1115,6 +1167,10 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 * @return the number of matching am image entries
 	 */
 	public int countByC_C(long companyId, String configurationUuid);
+
+	public FinderPath getFinderPathFetchByC_F();
+
+	public FinderPath getFinderPathCountByC_F();
 
 	/**
 	 * Returns the am image entry where configurationUuid = &#63; and fileVersionId = &#63; or throws a <code>NoSuchAMImageEntryException</code> if it could not be found.
@@ -1287,5 +1343,7 @@ public interface AMImageEntryPersistence extends BasePersistence<AMImageEntry> {
 	 * @return the number of am image entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

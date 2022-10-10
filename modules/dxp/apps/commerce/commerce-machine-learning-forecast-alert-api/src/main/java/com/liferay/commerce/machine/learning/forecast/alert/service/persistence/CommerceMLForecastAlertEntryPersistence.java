@@ -16,6 +16,7 @@ package com.liferay.commerce.machine.learning.forecast.alert.service.persistence
 
 import com.liferay.commerce.machine.learning.forecast.alert.exception.NoSuchMLForecastAlertEntryException;
 import com.liferay.commerce.machine.learning.forecast.alert.model.CommerceMLForecastAlertEntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public interface CommerceMLForecastAlertEntryPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceMLForecastAlertEntryUtil} to access the commerce ml forecast alert entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where uuid = &#63;.
@@ -185,6 +197,12 @@ public interface CommerceMLForecastAlertEntryPersistence
 	 * @return the number of matching commerce ml forecast alert entries
 	 */
 	public int countByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where uuid = &#63; and companyId = &#63;.
@@ -341,6 +359,10 @@ public interface CommerceMLForecastAlertEntryPersistence
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathFetchByC_C_T();
+
+	public FinderPath getFinderPathCountByC_C_T();
+
 	/**
 	 * Returns the commerce ml forecast alert entry where companyId = &#63; and commerceAccountId = &#63; and timestamp = &#63; or throws a <code>NoSuchMLForecastAlertEntryException</code> if it could not be found.
 	 *
@@ -400,6 +422,14 @@ public interface CommerceMLForecastAlertEntryPersistence
 	 */
 	public int countByC_C_T(
 		long companyId, long commerceAccountId, Date timestamp);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_S();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_S();
+
+	public FinderPath getFinderPathCountByC_C_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_S();
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where companyId = &#63; and commerceAccountId = &#63; and status = &#63;.
@@ -656,6 +686,10 @@ public interface CommerceMLForecastAlertEntryPersistence
 	 */
 	public int countByC_C_S(
 		long companyId, long[] commerceAccountIds, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_GtRc_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_GtRc_S();
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where companyId = &#63; and commerceAccountId = &#63; and relativeChange &gt; &#63; and status = &#63;.
@@ -941,6 +975,10 @@ public interface CommerceMLForecastAlertEntryPersistence
 	public int countByC_C_GtRc_S(
 		long companyId, long[] commerceAccountIds, double relativeChange,
 		int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_LtRc_S();
+
+	public FinderPath getFinderPathWithPaginationCountByC_C_LtRc_S();
 
 	/**
 	 * Returns all the commerce ml forecast alert entries where companyId = &#63; and commerceAccountId = &#63; and relativeChange &lt; &#63; and status = &#63;.
@@ -1355,5 +1393,7 @@ public interface CommerceMLForecastAlertEntryPersistence
 	 * @return the number of commerce ml forecast alert entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

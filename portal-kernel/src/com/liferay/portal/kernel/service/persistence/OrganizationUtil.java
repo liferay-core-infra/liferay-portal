@@ -119,6 +119,42 @@ public class OrganizationUtil {
 		return getPersistence().update(organization, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid() {
+
+		return getPersistence().getFinderPathCountByUuid();
+	}
+
 	/**
 	 * Returns all the organizations where uuid = &#63;.
 	 *
@@ -358,6 +394,24 @@ public class OrganizationUtil {
 	 */
 	public static int filterCountByUuid(String uuid) {
 		return getPersistence().filterCountByUuid(uuid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUuid_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUuid_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUuid_C() {
+
+		return getPersistence().getFinderPathCountByUuid_C();
 	}
 
 	/**
@@ -628,6 +682,24 @@ public class OrganizationUtil {
 		return getPersistence().filterCountByUuid_C(uuid, companyId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the organizations where companyId = &#63;.
 	 *
@@ -872,6 +944,26 @@ public class OrganizationUtil {
 	 */
 	public static int filterCountByCompanyId(long companyId) {
 		return getPersistence().filterCountByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyIdLocations() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByCompanyIdLocations();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyIdLocations() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCompanyIdLocations();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyIdLocations() {
+
+		return getPersistence().getFinderPathCountByCompanyIdLocations();
 	}
 
 	/**
@@ -1121,6 +1213,24 @@ public class OrganizationUtil {
 	 */
 	public static int filterCountByCompanyIdLocations(long companyId) {
 		return getPersistence().filterCountByCompanyIdLocations(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_P() {
+
+		return getPersistence().getFinderPathCountByC_P();
 	}
 
 	/**
@@ -1400,6 +1510,18 @@ public class OrganizationUtil {
 			companyId, parentOrganizationId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LikeT() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LikeT();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LikeT() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LikeT();
+	}
+
 	/**
 	 * Returns all the organizations where companyId = &#63; and treePath LIKE &#63;.
 	 *
@@ -1671,6 +1793,18 @@ public class OrganizationUtil {
 		return getPersistence().filterCountByC_LikeT(companyId, treePath);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_N() {
+
+		return getPersistence().getFinderPathFetchByC_N();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_N() {
+
+		return getPersistence().getFinderPathCountByC_N();
+	}
+
 	/**
 	 * Returns the organization where companyId = &#63; and name = &#63; or throws a <code>NoSuchOrganizationException</code> if it could not be found.
 	 *
@@ -1732,6 +1866,18 @@ public class OrganizationUtil {
 	 */
 	public static int countByC_N(long companyId, String name) {
 		return getPersistence().countByC_N(companyId, name);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_LikeN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_LikeN();
 	}
 
 	/**
@@ -2005,6 +2151,18 @@ public class OrganizationUtil {
 		return getPersistence().filterCountByC_LikeN(companyId, name);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByGtO_C_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByGtO_C_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByGtO_C_P() {
+
+		return getPersistence().getFinderPathWithPaginationCountByGtO_C_P();
+	}
+
 	/**
 	 * Returns all the organizations where organizationId &gt; &#63; and companyId = &#63; and parentOrganizationId = &#63;.
 	 *
@@ -2267,6 +2425,18 @@ public class OrganizationUtil {
 
 		return getPersistence().filterCountByGtO_C_P(
 			organizationId, companyId, parentOrganizationId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_P_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_P_LikeN();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_P_LikeN() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_P_LikeN();
 	}
 
 	/**
@@ -2573,6 +2743,18 @@ public class OrganizationUtil {
 
 		return getPersistence().filterCountByC_P_LikeN(
 			companyId, parentOrganizationId, name);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByC_ERC() {
+
+		return getPersistence().getFinderPathFetchByC_ERC();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_ERC() {
+
+		return getPersistence().getFinderPathCountByC_ERC();
 	}
 
 	/**
@@ -3210,6 +3392,12 @@ public class OrganizationUtil {
 		long pk, List<com.liferay.portal.kernel.model.User> users) {
 
 		getPersistence().setUsers(pk, users);
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static OrganizationPersistence getPersistence() {

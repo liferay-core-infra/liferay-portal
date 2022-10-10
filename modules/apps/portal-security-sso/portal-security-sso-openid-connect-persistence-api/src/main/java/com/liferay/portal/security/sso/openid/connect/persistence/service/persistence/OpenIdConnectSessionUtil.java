@@ -123,6 +123,42 @@ public class OpenIdConnectSessionUtil {
 		return getPersistence().update(openIdConnectSession, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByUserId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByUserId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByUserId() {
+
+		return getPersistence().getFinderPathCountByUserId();
+	}
+
 	/**
 	 * Returns all the open ID connect sessions where userId = &#63;.
 	 *
@@ -293,6 +329,20 @@ public class OpenIdConnectSessionUtil {
 	 */
 	public static int countByUserId(long userId) {
 		return getPersistence().countByUserId(userId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByLtAccessTokenExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationFindByLtAccessTokenExpirationDate();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByLtAccessTokenExpirationDate() {
+
+		return getPersistence().
+			getFinderPathWithPaginationCountByLtAccessTokenExpirationDate();
 	}
 
 	/**
@@ -482,6 +532,24 @@ public class OpenIdConnectSessionUtil {
 
 		return getPersistence().countByLtAccessTokenExpirationDate(
 			accessTokenExpirationDate);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_A_C() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_A_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_A_C() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_A_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_A_C() {
+
+		return getPersistence().getFinderPathCountByC_A_C();
 	}
 
 	/**
@@ -697,6 +765,18 @@ public class OpenIdConnectSessionUtil {
 
 		return getPersistence().countByC_A_C(
 			companyId, authServerWellKnownURI, clientId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByU_A_C() {
+
+		return getPersistence().getFinderPathFetchByU_A_C();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByU_A_C() {
+
+		return getPersistence().getFinderPathCountByU_A_C();
 	}
 
 	/**
@@ -937,6 +1017,12 @@ public class OpenIdConnectSessionUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static OpenIdConnectSessionPersistence getPersistence() {

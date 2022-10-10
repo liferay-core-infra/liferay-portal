@@ -14,6 +14,7 @@
 
 package com.liferay.object.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -414,6 +415,11 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 		return _objectStateTransitionLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_objectStateTransitionLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

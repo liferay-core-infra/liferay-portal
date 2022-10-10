@@ -16,6 +16,7 @@ package com.liferay.knowledge.base.service.persistence;
 
 import com.liferay.knowledge.base.exception.NoSuchFolderException;
 import com.liferay.knowledge.base.model.KBFolder;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -39,6 +40,17 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KBFolderUtil} to access the kb folder persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the kb folders where uuid = &#63;.
@@ -182,6 +194,10 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the kb folder where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
 	 *
@@ -231,6 +247,12 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 * @return the number of matching kb folders
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the kb folders where uuid = &#63; and companyId = &#63;.
@@ -386,6 +408,12 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 */
 	public int countByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the kb folders where companyId = &#63;.
 	 *
@@ -528,6 +556,12 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 * @return the number of matching kb folders
 	 */
 	public int countByCompanyId(long companyId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_P();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_P();
+
+	public FinderPath getFinderPathCountByG_P();
 
 	/**
 	 * Returns all the kb folders where groupId = &#63; and parentKBFolderId = &#63;.
@@ -754,6 +788,10 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 */
 	public int filterCountByG_P(long groupId, long parentKBFolderId);
 
+	public FinderPath getFinderPathFetchByG_P_N();
+
+	public FinderPath getFinderPathCountByG_P_N();
+
 	/**
 	 * Returns the kb folder where groupId = &#63; and parentKBFolderId = &#63; and name = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
 	 *
@@ -812,6 +850,10 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 * @return the number of matching kb folders
 	 */
 	public int countByG_P_N(long groupId, long parentKBFolderId, String name);
+
+	public FinderPath getFinderPathFetchByG_P_UT();
+
+	public FinderPath getFinderPathCountByG_P_UT();
 
 	/**
 	 * Returns the kb folder where groupId = &#63; and parentKBFolderId = &#63; and urlTitle = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
@@ -872,6 +914,10 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 */
 	public int countByG_P_UT(
 		long groupId, long parentKBFolderId, String urlTitle);
+
+	public FinderPath getFinderPathFetchByG_ERC();
+
+	public FinderPath getFinderPathCountByG_ERC();
 
 	/**
 	 * Returns the kb folder where groupId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchFolderException</code> if it could not be found.
@@ -1041,5 +1087,7 @@ public interface KBFolderPersistence extends BasePersistence<KBFolder> {
 	 * @return the number of kb folders
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

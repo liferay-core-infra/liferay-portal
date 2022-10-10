@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -104,9 +105,42 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByFriendlyURLEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByFriendlyURLEntryId() {
+		return _finderPathWithPaginationFindByFriendlyURLEntryId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByFriendlyURLEntryId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByFriendlyURLEntryId() {
+		return _finderPathWithoutPaginationFindByFriendlyURLEntryId;
+	}
+
 	private FinderPath _finderPathCountByFriendlyURLEntryId;
+
+	@Override
+	public FinderPath getFinderPathCountByFriendlyURLEntryId() {
+		return _finderPathCountByFriendlyURLEntryId;
+	}
 
 	/**
 	 * Returns all the friendly url entry localizations where friendlyURLEntryId = &#63;.
@@ -641,7 +675,18 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 			"friendlyURLEntryLocalization.friendlyURLEntryId = ?";
 
 	private FinderPath _finderPathFetchByFriendlyURLEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathFetchByFriendlyURLEntryId_LanguageId() {
+		return _finderPathFetchByFriendlyURLEntryId_LanguageId;
+	}
+
 	private FinderPath _finderPathCountByFriendlyURLEntryId_LanguageId;
+
+	@Override
+	public FinderPath getFinderPathCountByFriendlyURLEntryId_LanguageId() {
+		return _finderPathCountByFriendlyURLEntryId_LanguageId;
+	}
 
 	/**
 	 * Returns the friendly url entry localization where friendlyURLEntryId = &#63; and languageId = &#63; or throws a <code>NoSuchFriendlyURLEntryLocalizationException</code> if it could not be found.
@@ -930,7 +975,18 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 			"(friendlyURLEntryLocalization.languageId IS NULL OR friendlyURLEntryLocalization.languageId = '')";
 
 	private FinderPath _finderPathFetchByG_C_U;
+
+	@Override
+	public FinderPath getFinderPathFetchByG_C_U() {
+		return _finderPathFetchByG_C_U;
+	}
+
 	private FinderPath _finderPathCountByG_C_U;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_U() {
+		return _finderPathCountByG_C_U;
+	}
 
 	/**
 	 * Returns the friendly url entry localization where groupId = &#63; and classNameId = &#63; and urlTitle = &#63; or throws a <code>NoSuchFriendlyURLEntryLocalizationException</code> if it could not be found.
@@ -1225,8 +1281,25 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 		"(friendlyURLEntryLocalization.urlTitle IS NULL OR friendlyURLEntryLocalization.urlTitle = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_C_C_L;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C_C_L() {
+		return _finderPathWithPaginationFindByG_C_C_L;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C_C_L;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C_C_L() {
+		return _finderPathWithoutPaginationFindByG_C_C_L;
+	}
+
 	private FinderPath _finderPathCountByG_C_C_L;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C_C_L() {
+		return _finderPathCountByG_C_C_L;
+	}
 
 	/**
 	 * Returns all the friendly url entry localizations where groupId = &#63; and classNameId = &#63; and classPK = &#63; and languageId = &#63;.
@@ -2855,6 +2928,69 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 		entityCache.removeCache(
 			FriendlyURLEntryLocalizationImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<FriendlyURLEntryLocalization> friendlyURLEntryLocalizations =
+			findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<FriendlyURLEntryLocalization>> resultMap =
+				new HashMap<>();
+
+			for (FriendlyURLEntryLocalization friendlyURLEntryLocalization :
+					friendlyURLEntryLocalizations) {
+
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					FriendlyURLEntryLocalizationModelImpl
+						friendlyURLEntryLocalizationModelImpl =
+							(FriendlyURLEntryLocalizationModelImpl)
+								friendlyURLEntryLocalization;
+
+					arguments.add(
+						friendlyURLEntryLocalizationModelImpl.getColumnValue(
+							columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(),
+						friendlyURLEntryLocalization);
+				}
+				else {
+					List<FriendlyURLEntryLocalization> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(friendlyURLEntryLocalization);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<FriendlyURLEntryLocalization>>
+					resultEntry : resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<FriendlyURLEntryLocalization> value =
+					resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setFriendlyURLEntryLocalizationUtilPersistence(

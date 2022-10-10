@@ -122,6 +122,42 @@ public class AssetCategoryPropertyUtil {
 		return getPersistence().update(assetCategoryProperty, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCompanyId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByCompanyId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCompanyId() {
+
+		return getPersistence().getFinderPathCountByCompanyId();
+	}
+
 	/**
 	 * Returns all the asset category properties where companyId = &#63;.
 	 *
@@ -296,6 +332,25 @@ public class AssetCategoryPropertyUtil {
 	 */
 	public static int countByCompanyId(long companyId) {
 		return getPersistence().countByCompanyId(companyId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByCategoryId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByCategoryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByCategoryId() {
+
+		return getPersistence().
+			getFinderPathWithoutPaginationFindByCategoryId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCategoryId() {
+
+		return getPersistence().getFinderPathCountByCategoryId();
 	}
 
 	/**
@@ -474,6 +529,24 @@ public class AssetCategoryPropertyUtil {
 	 */
 	public static int countByCategoryId(long categoryId) {
 		return getPersistence().countByCategoryId(categoryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_K() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_K();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByC_K() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByC_K();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByC_K() {
+
+		return getPersistence().getFinderPathCountByC_K();
 	}
 
 	/**
@@ -663,6 +736,18 @@ public class AssetCategoryPropertyUtil {
 	 */
 	public static int countByC_K(long companyId, String key) {
 		return getPersistence().countByC_K(companyId, key);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByCA_K() {
+
+		return getPersistence().getFinderPathFetchByCA_K();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByCA_K() {
+
+		return getPersistence().getFinderPathCountByCA_K();
 	}
 
 	/**
@@ -891,6 +976,12 @@ public class AssetCategoryPropertyUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static AssetCategoryPropertyPersistence getPersistence() {

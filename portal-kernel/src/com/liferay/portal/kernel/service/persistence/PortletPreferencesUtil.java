@@ -121,6 +121,42 @@ public class PortletPreferencesUtil {
 		return getPersistence().update(portletPreferences, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByOwnerId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByOwnerId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByOwnerId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByOwnerId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByOwnerId() {
+
+		return getPersistence().getFinderPathCountByOwnerId();
+	}
+
 	/**
 	 * Returns all the portlet preferenceses where ownerId = &#63;.
 	 *
@@ -292,6 +328,24 @@ public class PortletPreferencesUtil {
 		return getPersistence().countByOwnerId(ownerId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByPlid() {
+
+		return getPersistence().getFinderPathWithPaginationFindByPlid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByPlid() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByPlid();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByPlid() {
+
+		return getPersistence().getFinderPathCountByPlid();
+	}
+
 	/**
 	 * Returns all the portlet preferenceses where plid = &#63;.
 	 *
@@ -457,6 +511,24 @@ public class PortletPreferencesUtil {
 	 */
 	public static int countByPlid(long plid) {
 		return getPersistence().countByPlid(plid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByPortletId() {
+
+		return getPersistence().getFinderPathWithPaginationFindByPortletId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByPortletId() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByPortletId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByPortletId() {
+
+		return getPersistence().getFinderPathCountByPortletId();
 	}
 
 	/**
@@ -633,6 +705,24 @@ public class PortletPreferencesUtil {
 	 */
 	public static int countByPortletId(String portletId) {
 		return getPersistence().countByPortletId(portletId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByO_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByO_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByO_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByO_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByO_P() {
+
+		return getPersistence().getFinderPathCountByO_P();
 	}
 
 	/**
@@ -825,6 +915,24 @@ public class PortletPreferencesUtil {
 		return getPersistence().countByO_P(ownerType, portletId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByP_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByP_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByP_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByP_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByP_P() {
+
+		return getPersistence().getFinderPathCountByP_P();
+	}
+
 	/**
 	 * Returns all the portlet preferenceses where plid = &#63; and portletId = &#63;.
 	 *
@@ -1012,6 +1120,24 @@ public class PortletPreferencesUtil {
 	 */
 	public static int countByP_P(long plid, String portletId) {
 		return getPersistence().countByP_P(plid, portletId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByO_O_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByO_O_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByO_O_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByO_O_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByO_O_P() {
+
+		return getPersistence().getFinderPathCountByO_O_P();
 	}
 
 	/**
@@ -1214,6 +1340,24 @@ public class PortletPreferencesUtil {
 	 */
 	public static int countByO_O_P(long ownerId, int ownerType, long plid) {
 		return getPersistence().countByO_O_P(ownerId, ownerType, plid);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByO_O_PI() {
+
+		return getPersistence().getFinderPathWithPaginationFindByO_O_PI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByO_O_PI() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByO_O_PI();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByO_O_PI() {
+
+		return getPersistence().getFinderPathCountByO_O_PI();
 	}
 
 	/**
@@ -1424,6 +1568,24 @@ public class PortletPreferencesUtil {
 		return getPersistence().countByO_O_PI(ownerId, ownerType, portletId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByO_P_P() {
+
+		return getPersistence().getFinderPathWithPaginationFindByO_P_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindByO_P_P() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindByO_P_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByO_P_P() {
+
+		return getPersistence().getFinderPathCountByO_P_P();
+	}
+
 	/**
 	 * Returns all the portlet preferenceses where ownerType = &#63; and plid = &#63; and portletId = &#63;.
 	 *
@@ -1628,6 +1790,18 @@ public class PortletPreferencesUtil {
 	 */
 	public static int countByO_P_P(int ownerType, long plid, String portletId) {
 		return getPersistence().countByO_P_P(ownerType, plid, portletId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindByC_O_O_LikeP() {
+
+		return getPersistence().getFinderPathWithPaginationFindByC_O_O_LikeP();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationCountByC_O_O_LikeP() {
+
+		return getPersistence().getFinderPathWithPaginationCountByC_O_O_LikeP();
 	}
 
 	/**
@@ -1854,6 +2028,18 @@ public class PortletPreferencesUtil {
 
 		return getPersistence().countByC_O_O_LikeP(
 			companyId, ownerId, ownerType, portletId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByO_O_P_P() {
+
+		return getPersistence().getFinderPathFetchByO_O_P_P();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByO_O_P_P() {
+
+		return getPersistence().getFinderPathCountByO_O_P_P();
 	}
 
 	/**
@@ -2098,6 +2284,12 @@ public class PortletPreferencesUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static PortletPreferencesPersistence getPersistence() {

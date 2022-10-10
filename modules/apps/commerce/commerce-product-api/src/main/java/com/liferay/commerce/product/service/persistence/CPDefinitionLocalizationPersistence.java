@@ -16,6 +16,7 @@ package com.liferay.commerce.product.service.persistence;
 
 import com.liferay.commerce.product.exception.NoSuchCPDefinitionLocalizationException;
 import com.liferay.commerce.product.model.CPDefinitionLocalization;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -42,6 +43,17 @@ public interface CPDefinitionLocalizationPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CPDefinitionLocalizationUtil} to access the cp definition localization persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCPDefinitionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCPDefinitionId();
+
+	public FinderPath getFinderPathCountByCPDefinitionId();
 
 	/**
 	 * Returns all the cp definition localizations where CPDefinitionId = &#63;.
@@ -186,6 +198,10 @@ public interface CPDefinitionLocalizationPersistence
 	 * @return the number of matching cp definition localizations
 	 */
 	public int countByCPDefinitionId(long CPDefinitionId);
+
+	public FinderPath getFinderPathFetchByCPDefinitionId_LanguageId();
+
+	public FinderPath getFinderPathCountByCPDefinitionId_LanguageId();
 
 	/**
 	 * Returns the cp definition localization where CPDefinitionId = &#63; and languageId = &#63; or throws a <code>NoSuchCPDefinitionLocalizationException</code> if it could not be found.
@@ -364,5 +380,7 @@ public interface CPDefinitionLocalizationPersistence
 	 * @return the number of cp definition localizations
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

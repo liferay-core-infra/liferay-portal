@@ -14,6 +14,7 @@
 
 package com.liferay.portal.language.override.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -358,6 +359,11 @@ public class PLOEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ploEntryLocalService.getPLOEntry(ploEntryId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_ploEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

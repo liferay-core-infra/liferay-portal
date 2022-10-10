@@ -14,6 +14,7 @@
 
 package com.liferay.social.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.social.kernel.exception.NoSuchActivityException;
@@ -41,6 +42,17 @@ public interface SocialActivityPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SocialActivityUtil} to access the social activity persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByGroupId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId();
+
+	public FinderPath getFinderPathCountByGroupId();
 
 	/**
 	 * Returns all the social activities where groupId = &#63;.
@@ -185,6 +197,12 @@ public interface SocialActivityPersistence
 	 */
 	public int countByGroupId(long groupId);
 
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
+
 	/**
 	 * Returns all the social activities where companyId = &#63;.
 	 *
@@ -328,6 +346,12 @@ public interface SocialActivityPersistence
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the social activities where userId = &#63;.
 	 *
@@ -470,6 +494,12 @@ public interface SocialActivityPersistence
 	 * @return the number of matching social activities
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByActivitySetId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByActivitySetId();
+
+	public FinderPath getFinderPathCountByActivitySetId();
 
 	/**
 	 * Returns all the social activities where activitySetId = &#63;.
@@ -615,6 +645,10 @@ public interface SocialActivityPersistence
 	 */
 	public int countByActivitySetId(long activitySetId);
 
+	public FinderPath getFinderPathFetchByMirrorActivityId();
+
+	public FinderPath getFinderPathCountByMirrorActivityId();
+
 	/**
 	 * Returns the social activity where mirrorActivityId = &#63; or throws a <code>NoSuchActivityException</code> if it could not be found.
 	 *
@@ -659,6 +693,12 @@ public interface SocialActivityPersistence
 	 * @return the number of matching social activities
 	 */
 	public int countByMirrorActivityId(long mirrorActivityId);
+
+	public FinderPath getFinderPathWithPaginationFindByReceiverUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByReceiverUserId();
+
+	public FinderPath getFinderPathCountByReceiverUserId();
 
 	/**
 	 * Returns all the social activities where receiverUserId = &#63;.
@@ -803,6 +843,12 @@ public interface SocialActivityPersistence
 	 * @return the number of matching social activities
 	 */
 	public int countByReceiverUserId(long receiverUserId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C();
+
+	public FinderPath getFinderPathCountByC_C();
 
 	/**
 	 * Returns all the social activities where classNameId = &#63; and classPK = &#63;.
@@ -958,6 +1004,12 @@ public interface SocialActivityPersistence
 	 * @return the number of matching social activities
 	 */
 	public int countByC_C(long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByM_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByM_C_C();
+
+	public FinderPath getFinderPathCountByM_C_C();
 
 	/**
 	 * Returns all the social activities where mirrorActivityId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -1131,6 +1183,12 @@ public interface SocialActivityPersistence
 	public int countByM_C_C(
 		long mirrorActivityId, long classNameId, long classPK);
 
+	public FinderPath getFinderPathWithPaginationFindByC_C_T();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_T();
+
+	public FinderPath getFinderPathCountByC_C_T();
+
 	/**
 	 * Returns all the social activities where classNameId = &#63; and classPK = &#63; and type = &#63;.
 	 *
@@ -1296,6 +1354,12 @@ public interface SocialActivityPersistence
 	 * @return the number of matching social activities
 	 */
 	public int countByC_C_T(long classNameId, long classPK, int type);
+
+	public FinderPath getFinderPathWithPaginationFindByG_U_C_C_T_R();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_U_C_C_T_R();
+
+	public FinderPath getFinderPathCountByG_U_C_C_T_R();
 
 	/**
 	 * Returns all the social activities where groupId = &#63; and userId = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63;.
@@ -1509,6 +1573,10 @@ public interface SocialActivityPersistence
 		long groupId, long userId, long classNameId, long classPK, int type,
 		long receiverUserId);
 
+	public FinderPath getFinderPathFetchByG_U_CD_C_C_T_R();
+
+	public FinderPath getFinderPathCountByG_U_CD_C_C_T_R();
+
 	/**
 	 * Returns the social activity where groupId = &#63; and userId = &#63; and createDate = &#63; and classNameId = &#63; and classPK = &#63; and type = &#63; and receiverUserId = &#63; or throws a <code>NoSuchActivityException</code> if it could not be found.
 	 *
@@ -1712,5 +1780,7 @@ public interface SocialActivityPersistence
 	 * @return the number of social activities
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

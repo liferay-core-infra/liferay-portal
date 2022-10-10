@@ -14,6 +14,7 @@
 
 package com.liferay.redirect.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -476,6 +477,11 @@ public class RedirectEntryLocalServiceWrapper
 
 		return _redirectEntryLocalService.getRedirectEntryByUuidAndGroupId(
 			uuid, groupId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_redirectEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

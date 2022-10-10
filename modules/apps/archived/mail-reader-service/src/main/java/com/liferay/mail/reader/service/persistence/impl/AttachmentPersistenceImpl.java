@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -49,9 +50,11 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.sql.DataSource;
@@ -92,9 +95,42 @@ public class AttachmentPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByMessageId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByMessageId() {
+		return _finderPathWithPaginationFindByMessageId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByMessageId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByMessageId() {
+		return _finderPathWithoutPaginationFindByMessageId;
+	}
+
 	private FinderPath _finderPathCountByMessageId;
+
+	@Override
+	public FinderPath getFinderPathCountByMessageId() {
+		return _finderPathCountByMessageId;
+	}
 
 	/**
 	 * Returns all the attachments where messageId = &#63;.
@@ -1138,6 +1174,59 @@ public class AttachmentPersistenceImpl
 		_setAttachmentUtilPersistence(null);
 
 		entityCache.removeCache(AttachmentImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<Attachment> attachments = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<Attachment>> resultMap = new HashMap<>();
+
+			for (Attachment attachment : attachments) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					AttachmentModelImpl attachmentModelImpl =
+						(AttachmentModelImpl)attachment;
+
+					arguments.add(
+						attachmentModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), attachment);
+				}
+				else {
+					List<Attachment> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(attachment);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<Attachment>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<Attachment> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setAttachmentUtilPersistence(

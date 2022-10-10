@@ -16,6 +16,7 @@ package com.liferay.commerce.notification.service.persistence;
 
 import com.liferay.commerce.notification.exception.NoSuchNotificationAttachmentException;
 import com.liferay.commerce.notification.model.CommerceNotificationAttachment;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import org.osgi.annotation.versioning.ProviderType;
@@ -40,6 +41,17 @@ public interface CommerceNotificationAttachmentPersistence
 	 *
 	 * Never modify or reference this interface directly. Always use {@link CommerceNotificationAttachmentUtil} to access the commerce notification attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the commerce notification attachments where uuid = &#63;.
@@ -185,6 +197,10 @@ public interface CommerceNotificationAttachmentPersistence
 	 */
 	public int countByUuid(String uuid);
 
+	public FinderPath getFinderPathFetchByUUID_G();
+
+	public FinderPath getFinderPathCountByUUID_G();
+
 	/**
 	 * Returns the commerce notification attachment where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchNotificationAttachmentException</code> if it could not be found.
 	 *
@@ -237,6 +253,12 @@ public interface CommerceNotificationAttachmentPersistence
 	 * @return the number of matching commerce notification attachments
 	 */
 	public int countByUUID_G(String uuid, long groupId);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the commerce notification attachments where uuid = &#63; and companyId = &#63;.
@@ -392,6 +414,14 @@ public interface CommerceNotificationAttachmentPersistence
 	 * @return the number of matching commerce notification attachments
 	 */
 	public int countByUuid_C(String uuid, long companyId);
+
+	public FinderPath
+		getFinderPathWithPaginationFindByCommerceNotificationQueueEntryId();
+
+	public FinderPath
+		getFinderPathWithoutPaginationFindByCommerceNotificationQueueEntryId();
+
+	public FinderPath getFinderPathCountByCommerceNotificationQueueEntryId();
 
 	/**
 	 * Returns all the commerce notification attachments where commerceNotificationQueueEntryId = &#63;.
@@ -677,5 +707,7 @@ public interface CommerceNotificationAttachmentPersistence
 	 * @return the number of commerce notification attachments
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

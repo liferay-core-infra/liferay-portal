@@ -16,6 +16,7 @@ package com.liferay.commerce.order.rule.service.persistence;
 
 import com.liferay.commerce.order.rule.exception.NoSuchCOREntryException;
 import com.liferay.commerce.order.rule.model.COREntry;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 import java.util.Date;
@@ -41,6 +42,17 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link COREntryUtil} to access the cor entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUuid();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid();
+
+	public FinderPath getFinderPathCountByUuid();
 
 	/**
 	 * Returns all the cor entries where uuid = &#63;.
@@ -247,6 +259,12 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 * @return the number of matching cor entries that the user has permission to view
 	 */
 	public int filterCountByUuid(String uuid);
+
+	public FinderPath getFinderPathWithPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C();
+
+	public FinderPath getFinderPathCountByUuid_C();
 
 	/**
 	 * Returns all the cor entries where uuid = &#63; and companyId = &#63;.
@@ -472,6 +490,12 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 */
 	public int filterCountByUuid_C(String uuid, long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByC_A();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_A();
+
+	public FinderPath getFinderPathCountByC_A();
+
 	/**
 	 * Returns all the cor entries where companyId = &#63; and active = &#63;.
 	 *
@@ -695,6 +719,10 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 * @return the number of matching cor entries that the user has permission to view
 	 */
 	public int filterCountByC_A(long companyId, boolean active);
+
+	public FinderPath getFinderPathWithPaginationFindByC_LikeType();
+
+	public FinderPath getFinderPathWithPaginationCountByC_LikeType();
 
 	/**
 	 * Returns all the cor entries where companyId = &#63; and type LIKE &#63;.
@@ -921,6 +949,10 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 */
 	public int filterCountByC_LikeType(long companyId, String type);
 
+	public FinderPath getFinderPathWithPaginationFindByLtD_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtD_S();
+
 	/**
 	 * Returns all the cor entries where displayDate &lt; &#63; and status = &#63;.
 	 *
@@ -1144,6 +1176,10 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 * @return the number of matching cor entries that the user has permission to view
 	 */
 	public int filterCountByLtD_S(Date displayDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByLtE_S();
+
+	public FinderPath getFinderPathWithPaginationCountByLtE_S();
 
 	/**
 	 * Returns all the cor entries where expirationDate &lt; &#63; and status = &#63;.
@@ -1369,6 +1405,10 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 * @return the number of matching cor entries that the user has permission to view
 	 */
 	public int filterCountByLtE_S(Date expirationDate, int status);
+
+	public FinderPath getFinderPathWithPaginationFindByC_A_LikeType();
+
+	public FinderPath getFinderPathWithPaginationCountByC_A_LikeType();
 
 	/**
 	 * Returns all the cor entries where companyId = &#63; and active = &#63; and type LIKE &#63;.
@@ -1613,6 +1653,10 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	public int filterCountByC_A_LikeType(
 		long companyId, boolean active, String type);
 
+	public FinderPath getFinderPathFetchByC_ERC();
+
+	public FinderPath getFinderPathCountByC_ERC();
+
 	/**
 	 * Returns the cor entry where companyId = &#63; and externalReferenceCode = &#63; or throws a <code>NoSuchCOREntryException</code> if it could not be found.
 	 *
@@ -1781,5 +1825,7 @@ public interface COREntryPersistence extends BasePersistence<COREntry> {
 	 * @return the number of cor entries
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

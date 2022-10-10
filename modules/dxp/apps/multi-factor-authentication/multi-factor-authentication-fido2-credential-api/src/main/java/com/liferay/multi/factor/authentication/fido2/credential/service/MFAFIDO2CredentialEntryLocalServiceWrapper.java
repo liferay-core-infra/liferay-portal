@@ -14,6 +14,7 @@
 
 package com.liferay.multi.factor.authentication.fido2.credential.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -379,6 +380,11 @@ public class MFAFIDO2CredentialEntryLocalServiceWrapper
 
 		return _mfaFIDO2CredentialEntryLocalService.getPersistedModel(
 			primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_mfaFIDO2CredentialEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

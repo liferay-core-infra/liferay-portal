@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -48,6 +49,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -92,9 +95,42 @@ public class KaleoProcessLinkPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByKaleoProcessId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKaleoProcessId() {
+		return _finderPathWithPaginationFindByKaleoProcessId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKaleoProcessId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKaleoProcessId() {
+		return _finderPathWithoutPaginationFindByKaleoProcessId;
+	}
+
 	private FinderPath _finderPathCountByKaleoProcessId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoProcessId() {
+		return _finderPathCountByKaleoProcessId;
+	}
 
 	/**
 	 * Returns all the kaleo process links where kaleoProcessId = &#63;.
@@ -602,7 +638,18 @@ public class KaleoProcessLinkPersistenceImpl
 		"kaleoProcessLink.kaleoProcessId = ?";
 
 	private FinderPath _finderPathFetchByKPI_WTN;
+
+	@Override
+	public FinderPath getFinderPathFetchByKPI_WTN() {
+		return _finderPathFetchByKPI_WTN;
+	}
+
 	private FinderPath _finderPathCountByKPI_WTN;
+
+	@Override
+	public FinderPath getFinderPathCountByKPI_WTN() {
+		return _finderPathCountByKPI_WTN;
+	}
 
 	/**
 	 * Returns the kaleo process link where kaleoProcessId = &#63; and workflowTaskName = &#63; or throws a <code>NoSuchKaleoProcessLinkException</code> if it could not be found.
@@ -1437,6 +1484,61 @@ public class KaleoProcessLinkPersistenceImpl
 		_setKaleoProcessLinkUtilPersistence(null);
 
 		entityCache.removeCache(KaleoProcessLinkImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoProcessLink> kaleoProcessLinks = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoProcessLink>> resultMap =
+				new HashMap<>();
+
+			for (KaleoProcessLink kaleoProcessLink : kaleoProcessLinks) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoProcessLinkModelImpl kaleoProcessLinkModelImpl =
+						(KaleoProcessLinkModelImpl)kaleoProcessLink;
+
+					arguments.add(
+						kaleoProcessLinkModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoProcessLink);
+				}
+				else {
+					List<KaleoProcessLink> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoProcessLink);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoProcessLink>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoProcessLink> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoProcessLinkUtilPersistence(

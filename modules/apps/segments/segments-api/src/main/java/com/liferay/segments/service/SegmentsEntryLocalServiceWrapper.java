@@ -15,6 +15,7 @@
 package com.liferay.segments.service;
 
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.segments.model.SegmentsEntry;
@@ -505,6 +506,11 @@ public class SegmentsEntryLocalServiceWrapper
 
 		return _segmentsEntryLocalService.getSegmentsEntryByUuidAndGroupId(
 			uuid, groupId);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_segmentsEntryLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

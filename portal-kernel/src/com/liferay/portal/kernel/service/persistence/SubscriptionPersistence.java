@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchSubscriptionException;
 import com.liferay.portal.kernel.model.Subscription;
 
@@ -40,6 +41,17 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SubscriptionUtil} to access the subscription persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
 
 	/**
 	 * Returns all the subscriptions where userId = &#63;.
@@ -183,6 +195,12 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 * @return the number of matching subscriptions
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindByG_U();
+
+	public FinderPath getFinderPathWithoutPaginationFindByG_U();
+
+	public FinderPath getFinderPathCountByG_U();
 
 	/**
 	 * Returns all the subscriptions where groupId = &#63; and userId = &#63;.
@@ -338,6 +356,12 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 */
 	public int countByG_U(long groupId, long userId);
 
+	public FinderPath getFinderPathWithPaginationFindByU_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByU_C();
+
+	public FinderPath getFinderPathCountByU_C();
+
 	/**
 	 * Returns all the subscriptions where userId = &#63; and classNameId = &#63;.
 	 *
@@ -492,6 +516,12 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 * @return the number of matching subscriptions
 	 */
 	public int countByU_C(long userId, long classNameId);
+
+	public FinderPath getFinderPathWithPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_C_C();
+
+	public FinderPath getFinderPathCountByC_C_C();
 
 	/**
 	 * Returns all the subscriptions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
@@ -658,6 +688,16 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 * @return the number of matching subscriptions
 	 */
 	public int countByC_C_C(long companyId, long classNameId, long classPK);
+
+	public FinderPath getFinderPathWithPaginationFindByC_U_C_C();
+
+	public FinderPath getFinderPathWithoutPaginationFindByC_U_C_C();
+
+	public FinderPath getFinderPathFetchByC_U_C_C();
+
+	public FinderPath getFinderPathCountByC_U_C_C();
+
+	public FinderPath getFinderPathWithPaginationCountByC_U_C_C();
 
 	/**
 	 * Returns all the subscriptions where companyId = &#63; and userId = &#63; and classNameId = &#63; and classPK = any &#63;.
@@ -936,5 +976,7 @@ public interface SubscriptionPersistence extends BasePersistence<Subscription> {
 	 * @return the number of subscriptions
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

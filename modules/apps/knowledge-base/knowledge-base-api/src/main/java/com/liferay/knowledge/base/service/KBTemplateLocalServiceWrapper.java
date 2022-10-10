@@ -14,6 +14,7 @@
 
 package com.liferay.knowledge.base.service;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -431,6 +432,11 @@ public class KBTemplateLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _kbTemplateLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_kbTemplateLocalService.loadFinderCache(finderPaths);
 	}
 
 	@Override

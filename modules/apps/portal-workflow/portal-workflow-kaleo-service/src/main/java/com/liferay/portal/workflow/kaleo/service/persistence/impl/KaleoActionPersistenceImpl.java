@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -102,9 +103,42 @@ public class KaleoActionPersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByCompanyId() {
+		return _finderPathWithPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId() {
+		return _finderPathWithoutPaginationFindByCompanyId;
+	}
+
 	private FinderPath _finderPathCountByCompanyId;
+
+	@Override
+	public FinderPath getFinderPathCountByCompanyId() {
+		return _finderPathCountByCompanyId;
+	}
 
 	/**
 	 * Returns all the kaleo actions where companyId = &#63;.
@@ -614,9 +648,30 @@ public class KaleoActionPersistenceImpl
 		"kaleoAction.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath
 		_finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath
+		getFinderPathWithoutPaginationFindByKaleoDefinitionVersionId() {
+
+		return _finderPathWithoutPaginationFindByKaleoDefinitionVersionId;
+	}
+
 	private FinderPath _finderPathCountByKaleoDefinitionVersionId;
+
+	@Override
+	public FinderPath getFinderPathCountByKaleoDefinitionVersionId() {
+		return _finderPathCountByKaleoDefinitionVersionId;
+	}
 
 	/**
 	 * Returns all the kaleo actions where kaleoDefinitionVersionId = &#63;.
@@ -1148,8 +1203,25 @@ public class KaleoActionPersistenceImpl
 			"kaleoAction.kaleoDefinitionVersionId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKCN_KCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKCN_KCPK() {
+		return _finderPathWithPaginationFindByKCN_KCPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKCN_KCPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKCN_KCPK() {
+		return _finderPathWithoutPaginationFindByKCN_KCPK;
+	}
+
 	private FinderPath _finderPathCountByKCN_KCPK;
+
+	@Override
+	public FinderPath getFinderPathCountByKCN_KCPK() {
+		return _finderPathCountByKCN_KCPK;
+	}
 
 	/**
 	 * Returns all the kaleo actions where kaleoClassName = &#63; and kaleoClassPK = &#63;.
@@ -1748,8 +1820,25 @@ public class KaleoActionPersistenceImpl
 		"kaleoAction.kaleoClassPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_KCN_KCPK;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_KCN_KCPK() {
+		return _finderPathWithPaginationFindByC_KCN_KCPK;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_KCN_KCPK;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_KCN_KCPK() {
+		return _finderPathWithoutPaginationFindByC_KCN_KCPK;
+	}
+
 	private FinderPath _finderPathCountByC_KCN_KCPK;
+
+	@Override
+	public FinderPath getFinderPathCountByC_KCN_KCPK() {
+		return _finderPathCountByC_KCN_KCPK;
+	}
 
 	/**
 	 * Returns all the kaleo actions where companyId = &#63; and kaleoClassName = &#63; and kaleoClassPK = &#63;.
@@ -2392,8 +2481,25 @@ public class KaleoActionPersistenceImpl
 		"kaleoAction.kaleoClassPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByKCN_KCPK_ET;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByKCN_KCPK_ET() {
+		return _finderPathWithPaginationFindByKCN_KCPK_ET;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByKCN_KCPK_ET;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByKCN_KCPK_ET() {
+		return _finderPathWithoutPaginationFindByKCN_KCPK_ET;
+	}
+
 	private FinderPath _finderPathCountByKCN_KCPK_ET;
+
+	@Override
+	public FinderPath getFinderPathCountByKCN_KCPK_ET() {
+		return _finderPathCountByKCN_KCPK_ET;
+	}
 
 	/**
 	 * Returns all the kaleo actions where kaleoClassName = &#63; and kaleoClassPK = &#63; and executionType = &#63;.
@@ -3080,8 +3186,25 @@ public class KaleoActionPersistenceImpl
 		"(kaleoAction.executionType IS NULL OR kaleoAction.executionType = '')";
 
 	private FinderPath _finderPathWithPaginationFindByC_KCN_KCPK_ET;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_KCN_KCPK_ET() {
+		return _finderPathWithPaginationFindByC_KCN_KCPK_ET;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByC_KCN_KCPK_ET;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByC_KCN_KCPK_ET() {
+		return _finderPathWithoutPaginationFindByC_KCN_KCPK_ET;
+	}
+
 	private FinderPath _finderPathCountByC_KCN_KCPK_ET;
+
+	@Override
+	public FinderPath getFinderPathCountByC_KCN_KCPK_ET() {
+		return _finderPathCountByC_KCN_KCPK_ET;
+	}
 
 	/**
 	 * Returns all the kaleo actions where companyId = &#63; and kaleoClassName = &#63; and kaleoClassPK = &#63; and executionType = &#63;.
@@ -4738,6 +4861,59 @@ public class KaleoActionPersistenceImpl
 		_setKaleoActionUtilPersistence(null);
 
 		entityCache.removeCache(KaleoActionImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<KaleoAction> kaleoActions = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<KaleoAction>> resultMap = new HashMap<>();
+
+			for (KaleoAction kaleoAction : kaleoActions) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					KaleoActionModelImpl kaleoActionModelImpl =
+						(KaleoActionModelImpl)kaleoAction;
+
+					arguments.add(
+						kaleoActionModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), kaleoAction);
+				}
+				else {
+					List<KaleoAction> resultList = resultMap.computeIfAbsent(
+						arguments, key -> new ArrayList<>());
+
+					resultList.add(kaleoAction);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<KaleoAction>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<KaleoAction> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setKaleoActionUtilPersistence(

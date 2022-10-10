@@ -14,6 +14,7 @@
 
 package com.liferay.portal.kernel.service.persistence;
 
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.exception.NoSuchUserTrackerException;
 import com.liferay.portal.kernel.model.UserTracker;
 
@@ -38,6 +39,17 @@ public interface UserTrackerPersistence extends BasePersistence<UserTracker> {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link UserTrackerUtil} to access the user tracker persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
 	 */
+	public FinderPath getFinderPathWithPaginationFindAll();
+
+	public FinderPath getFinderPathWithoutPaginationFindAll();
+
+	public FinderPath getFinderPathCountAll();
+
+	public FinderPath getFinderPathWithPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByCompanyId();
+
+	public FinderPath getFinderPathCountByCompanyId();
 
 	/**
 	 * Returns all the user trackers where companyId = &#63;.
@@ -182,6 +194,12 @@ public interface UserTrackerPersistence extends BasePersistence<UserTracker> {
 	 */
 	public int countByCompanyId(long companyId);
 
+	public FinderPath getFinderPathWithPaginationFindByUserId();
+
+	public FinderPath getFinderPathWithoutPaginationFindByUserId();
+
+	public FinderPath getFinderPathCountByUserId();
+
 	/**
 	 * Returns all the user trackers where userId = &#63;.
 	 *
@@ -324,6 +342,12 @@ public interface UserTrackerPersistence extends BasePersistence<UserTracker> {
 	 * @return the number of matching user trackers
 	 */
 	public int countByUserId(long userId);
+
+	public FinderPath getFinderPathWithPaginationFindBySessionId();
+
+	public FinderPath getFinderPathWithoutPaginationFindBySessionId();
+
+	public FinderPath getFinderPathCountBySessionId();
 
 	/**
 	 * Returns all the user trackers where sessionId = &#63;.
@@ -587,5 +611,7 @@ public interface UserTrackerPersistence extends BasePersistence<UserTracker> {
 	 * @return the number of user trackers
 	 */
 	public int countAll();
+
+	public void loadFinderCache(FinderPath[] finderPaths);
 
 }

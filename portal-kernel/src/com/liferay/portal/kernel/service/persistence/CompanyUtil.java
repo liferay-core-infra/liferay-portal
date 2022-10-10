@@ -119,6 +119,36 @@ public class CompanyUtil {
 		return getPersistence().update(company, serviceContext);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathWithoutPaginationFindAll() {
+
+		return getPersistence().getFinderPathWithoutPaginationFindAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountAll() {
+
+		return getPersistence().getFinderPathCountAll();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByWebId() {
+
+		return getPersistence().getFinderPathFetchByWebId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByWebId() {
+
+		return getPersistence().getFinderPathCountByWebId();
+	}
+
 	/**
 	 * Returns the company where webId = &#63; or throws a <code>NoSuchCompanyException</code> if it could not be found.
 	 *
@@ -175,6 +205,18 @@ public class CompanyUtil {
 		return getPersistence().countByWebId(webId);
 	}
 
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByMx() {
+
+		return getPersistence().getFinderPathFetchByMx();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByMx() {
+
+		return getPersistence().getFinderPathCountByMx();
+	}
+
 	/**
 	 * Returns the company where mx = &#63; or throws a <code>NoSuchCompanyException</code> if it could not be found.
 	 *
@@ -229,6 +271,18 @@ public class CompanyUtil {
 	 */
 	public static int countByMx(String mx) {
 		return getPersistence().countByMx(mx);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathFetchByLogoId() {
+
+		return getPersistence().getFinderPathFetchByLogoId();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.FinderPath
+		getFinderPathCountByLogoId() {
+
+		return getPersistence().getFinderPathCountByLogoId();
 	}
 
 	/**
@@ -432,6 +486,12 @@ public class CompanyUtil {
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();
+	}
+
+	public static void loadFinderCache(
+		com.liferay.portal.kernel.dao.orm.FinderPath[] finderPaths) {
+
+		getPersistence().loadFinderCache(finderPaths);
 	}
 
 	public static CompanyPersistence getPersistence() {

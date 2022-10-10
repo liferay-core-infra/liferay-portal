@@ -16,6 +16,7 @@ package com.liferay.document.library.service;
 
 import com.liferay.document.library.model.DLFileVersionPreview;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
@@ -392,6 +393,11 @@ public class DLFileVersionPreviewLocalServiceWrapper
 
 		return _dlFileVersionPreviewLocalService.hasDLFileVersionPreview(
 			fileEntryId, fileVersionId, previewStatus);
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		_dlFileVersionPreviewLocalService.loadFinderCache(finderPaths);
 	}
 
 	/**

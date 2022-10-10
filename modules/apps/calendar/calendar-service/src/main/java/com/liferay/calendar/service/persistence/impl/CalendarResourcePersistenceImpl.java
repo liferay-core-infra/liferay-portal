@@ -110,9 +110,42 @@ public class CalendarResourcePersistenceImpl
 	private FinderPath _finderPathWithPaginationFindAll;
 	private FinderPath _finderPathWithoutPaginationFindAll;
 	private FinderPath _finderPathCountAll;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindAll() {
+		return _finderPathWithPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindAll() {
+		return _finderPathWithoutPaginationFindAll;
+	}
+
+	@Override
+	public FinderPath getFinderPathCountAll() {
+		return _finderPathCountAll;
+	}
+
 	private FinderPath _finderPathWithPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid() {
+		return _finderPathWithPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid() {
+		return _finderPathWithoutPaginationFindByUuid;
+	}
+
 	private FinderPath _finderPathCountByUuid;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid() {
+		return _finderPathCountByUuid;
+	}
 
 	/**
 	 * Returns all the calendar resources where uuid = &#63;.
@@ -660,7 +693,18 @@ public class CalendarResourcePersistenceImpl
 		"(calendarResource.uuid IS NULL OR calendarResource.uuid = '')";
 
 	private FinderPath _finderPathFetchByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathFetchByUUID_G() {
+		return _finderPathFetchByUUID_G;
+	}
+
 	private FinderPath _finderPathCountByUUID_G;
+
+	@Override
+	public FinderPath getFinderPathCountByUUID_G() {
+		return _finderPathCountByUUID_G;
+	}
 
 	/**
 	 * Returns the calendar resource where uuid = &#63; and groupId = &#63; or throws a <code>NoSuchResourceException</code> if it could not be found.
@@ -923,8 +967,25 @@ public class CalendarResourcePersistenceImpl
 		"calendarResource.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByUuid_C() {
+		return _finderPathWithPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByUuid_C() {
+		return _finderPathWithoutPaginationFindByUuid_C;
+	}
+
 	private FinderPath _finderPathCountByUuid_C;
+
+	@Override
+	public FinderPath getFinderPathCountByUuid_C() {
+		return _finderPathCountByUuid_C;
+	}
 
 	/**
 	 * Returns all the calendar resources where uuid = &#63; and companyId = &#63;.
@@ -1521,8 +1582,25 @@ public class CalendarResourcePersistenceImpl
 		"calendarResource.companyId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByGroupId() {
+		return _finderPathWithPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByGroupId;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByGroupId() {
+		return _finderPathWithoutPaginationFindByGroupId;
+	}
+
 	private FinderPath _finderPathCountByGroupId;
+
+	@Override
+	public FinderPath getFinderPathCountByGroupId() {
+		return _finderPathCountByGroupId;
+	}
 
 	/**
 	 * Returns all the calendar resources where groupId = &#63;.
@@ -2416,8 +2494,25 @@ public class CalendarResourcePersistenceImpl
 		"calendarResource.groupId = ?";
 
 	private FinderPath _finderPathWithPaginationFindByActive;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByActive() {
+		return _finderPathWithPaginationFindByActive;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByActive;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByActive() {
+		return _finderPathWithoutPaginationFindByActive;
+	}
+
 	private FinderPath _finderPathCountByActive;
+
+	@Override
+	public FinderPath getFinderPathCountByActive() {
+		return _finderPathCountByActive;
+	}
 
 	/**
 	 * Returns all the calendar resources where active = &#63;.
@@ -2929,9 +3024,32 @@ public class CalendarResourcePersistenceImpl
 		"calendarResource.active = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_C() {
+		return _finderPathWithPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_C() {
+		return _finderPathWithoutPaginationFindByG_C;
+	}
+
 	private FinderPath _finderPathCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathCountByG_C() {
+		return _finderPathCountByG_C;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByG_C;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByG_C() {
+		return _finderPathWithPaginationCountByG_C;
+	}
 
 	/**
 	 * Returns all the calendar resources where groupId = &#63; and code = &#63;.
@@ -4535,8 +4653,25 @@ public class CalendarResourcePersistenceImpl
 		"(calendarResource.code_ IS NULL OR calendarResource.code_ = '')";
 
 	private FinderPath _finderPathWithPaginationFindByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByG_A() {
+		return _finderPathWithPaginationFindByG_A;
+	}
+
 	private FinderPath _finderPathWithoutPaginationFindByG_A;
+
+	@Override
+	public FinderPath getFinderPathWithoutPaginationFindByG_A() {
+		return _finderPathWithoutPaginationFindByG_A;
+	}
+
 	private FinderPath _finderPathCountByG_A;
+
+	@Override
+	public FinderPath getFinderPathCountByG_A() {
+		return _finderPathCountByG_A;
+	}
 
 	/**
 	 * Returns all the calendar resources where groupId = &#63; and active = &#63;.
@@ -5497,7 +5632,18 @@ public class CalendarResourcePersistenceImpl
 		"calendarResource.active_ = ?";
 
 	private FinderPath _finderPathFetchByC_C;
+
+	@Override
+	public FinderPath getFinderPathFetchByC_C() {
+		return _finderPathFetchByC_C;
+	}
+
 	private FinderPath _finderPathCountByC_C;
+
+	@Override
+	public FinderPath getFinderPathCountByC_C() {
+		return _finderPathCountByC_C;
+	}
 
 	/**
 	 * Returns the calendar resource where classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchResourceException</code> if it could not be found.
@@ -5731,7 +5877,18 @@ public class CalendarResourcePersistenceImpl
 		"calendarResource.classPK = ?";
 
 	private FinderPath _finderPathWithPaginationFindByC_LikeC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationFindByC_LikeC_A() {
+		return _finderPathWithPaginationFindByC_LikeC_A;
+	}
+
 	private FinderPath _finderPathWithPaginationCountByC_LikeC_A;
+
+	@Override
+	public FinderPath getFinderPathWithPaginationCountByC_LikeC_A() {
+		return _finderPathWithPaginationCountByC_LikeC_A;
+	}
 
 	/**
 	 * Returns all the calendar resources where companyId = &#63; and code LIKE &#63; and active = &#63;.
@@ -7364,6 +7521,61 @@ public class CalendarResourcePersistenceImpl
 		_setCalendarResourceUtilPersistence(null);
 
 		entityCache.removeCache(CalendarResourceImpl.class.getName());
+	}
+
+	@Override
+	public void loadFinderCache(FinderPath[] finderPaths) {
+		if (ArrayUtil.isEmpty(finderPaths)) {
+			return;
+		}
+
+		List<CalendarResource> calendarResources = findAll();
+
+		for (FinderPath finderPath : finderPaths) {
+			Map<List<Object>, List<CalendarResource>> resultMap =
+				new HashMap<>();
+
+			for (CalendarResource calendarResource : calendarResources) {
+				List<Object> arguments = new ArrayList<>();
+
+				for (String columnName : finderPath.getColumnNames()) {
+					CalendarResourceModelImpl calendarResourceModelImpl =
+						(CalendarResourceModelImpl)calendarResource;
+
+					arguments.add(
+						calendarResourceModelImpl.getColumnValue(columnName));
+				}
+
+				if (Objects.equals(
+						finderPath.getCacheName(), FINDER_CLASS_NAME_ENTITY)) {
+
+					finderCache.putResult(
+						finderPath, arguments.toArray(), calendarResource);
+				}
+				else {
+					List<CalendarResource> resultList =
+						resultMap.computeIfAbsent(
+							arguments, key -> new ArrayList<>());
+
+					resultList.add(calendarResource);
+				}
+			}
+
+			for (Map.Entry<List<Object>, List<CalendarResource>> resultEntry :
+					resultMap.entrySet()) {
+
+				List<Object> key = resultEntry.getKey();
+				List<CalendarResource> value = resultEntry.getValue();
+
+				if (finderPath.isBaseModelResult()) {
+					finderCache.putResult(finderPath, key.toArray(), value);
+				}
+				else {
+					finderCache.putResult(
+						finderPath, key.toArray(), value.size());
+				}
+			}
+		}
 	}
 
 	private void _setCalendarResourceUtilPersistence(

@@ -14,7 +14,6 @@
 
 package com.liferay.style.book.internal.frontend.css.variables;
 
-import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.frontend.css.variables.ScopedCSSVariables;
 import com.liferay.frontend.css.variables.ScopedCSSVariablesProvider;
 import com.liferay.petra.string.StringPool;
@@ -25,13 +24,11 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.style.book.model.StyleBookEntry;
-import com.liferay.style.book.service.StyleBookEntryLocalService;
 import com.liferay.style.book.util.DefaultStyleBookEntryUtil;
 
 import java.util.Collection;
@@ -43,7 +40,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
@@ -139,14 +135,5 @@ public class StyleBookScopedCSSVariablesProvider
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		StyleBookScopedCSSVariablesProvider.class);
-
-	@Reference
-	private LayoutLocalService _layoutLocalService;
-
-	@Reference
-	private Staging _staging;
-
-	@Reference
-	private StyleBookEntryLocalService _styleBookEntryLocalService;
 
 }

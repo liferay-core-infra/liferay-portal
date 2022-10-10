@@ -45,10 +45,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 		}
 	}
 
-	protected String getClientPortletId() {
-		return StringPool.BLANK;
-	}
-
 	protected Response getResponse(User user, OAuthRequest oAuthRequest)
 		throws Exception {
 

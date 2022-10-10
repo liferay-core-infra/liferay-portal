@@ -534,7 +534,6 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		FileUtil.write(file, response.getStream());
 	}
 
-	@Override
 	protected String getClientPortletId() {
 		return MarketplaceStorePortletKeys.MARKETPLACE_STORE;
 	}

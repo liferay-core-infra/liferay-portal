@@ -15,7 +15,6 @@
 package com.liferay.search.experiences.rest.internal.resource.v1_0;
 
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -158,8 +157,5 @@ public class FieldMappingInfoResourceImpl
 
 	@Reference
 	private IndexNameBuilder _indexNameBuilder;
-
-	@Reference
-	private JSONFactory _jsonFactory;
 
 }

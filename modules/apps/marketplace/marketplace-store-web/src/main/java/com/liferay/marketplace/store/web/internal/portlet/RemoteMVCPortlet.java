@@ -21,8 +21,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.util.Map;
-
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
@@ -79,15 +77,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 
 	protected String getServerPortletId() {
 		return StringPool.BLANK;
-	}
-
-	protected String getServerPortletURL() {
-		return StringPool.BLANK;
-	}
-
-	protected void processPortletParameterMap(
-		PortletRequest portletRequest, PortletResponse portletResponse,
-		Map<String, String[]> parameterMap) {
 	}
 
 	protected void setBaseRequestParameters(

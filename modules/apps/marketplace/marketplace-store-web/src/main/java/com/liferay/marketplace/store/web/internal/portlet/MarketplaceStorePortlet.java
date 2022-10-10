@@ -191,16 +191,16 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		_setBaseRequestParameters(actionRequest, oAuthRequest);
 
-		addOAuthParameter(oAuthRequest, "p_p_lifecycle", "1");
-		addOAuthParameter(
+		_addOAuthParameter(oAuthRequest, "p_p_lifecycle", "1");
+		_addOAuthParameter(
 			oAuthRequest, "p_p_state", WindowState.NORMAL.toString());
 
 		String serverNamespace = _getServerNamespace();
 
-		addOAuthParameter(
+		_addOAuthParameter(
 			oAuthRequest, serverNamespace.concat("compatibility"),
 			String.valueOf(ReleaseInfo.getBuildNumber()));
-		addOAuthParameter(
+		_addOAuthParameter(
 			oAuthRequest, serverNamespace.concat("javax.portlet.action"),
 			"getPrepackagedApps");
 
@@ -215,7 +215,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			jsonObject.put(key, prepackagedApps.get(key));
 		}
 
-		addOAuthParameter(
+		_addOAuthParameter(
 			oAuthRequest, serverNamespace.concat("prepackagedApps"),
 			jsonObject.toString());
 
@@ -515,18 +515,18 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		String serverNamespace = _getServerNamespace();
 
-		addOAuthParameter(
+		_addOAuthParameter(
 			oAuthRequest, serverNamespace.concat("appPackageId"),
 			String.valueOf(appPackageId));
 
-		addOAuthParameter(oAuthRequest, "p_p_lifecycle", "2");
+		_addOAuthParameter(oAuthRequest, "p_p_lifecycle", "2");
 
 		if (unlicensed) {
-			addOAuthParameter(
+			_addOAuthParameter(
 				oAuthRequest, "p_p_resource_id", "serveUnlicensedApp");
 		}
 		else {
-			addOAuthParameter(oAuthRequest, "p_p_resource_id", "serveApp");
+			_addOAuthParameter(oAuthRequest, "p_p_resource_id", "serveApp");
 		}
 
 		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
@@ -587,6 +587,17 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 	@Reference
 	protected Portal portal;
+
+	private void _addOAuthParameter(
+		OAuthRequest oAuthRequest, String key, String value) {
+
+		if (oAuthRequest.getVerb() == Verb.GET) {
+			oAuthRequest.addQuerystringParameter(key, value);
+		}
+		else if (oAuthRequest.getVerb() == Verb.POST) {
+			oAuthRequest.addBodyParameter(key, value);
+		}
+	}
 
 	private void _checkOmniAdmin() throws PortletException {
 		PermissionChecker permissionChecker =
@@ -672,8 +683,8 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		_setRequestParameters(actionRequest, actionResponse, oAuthRequest);
 
-		addOAuthParameter(oAuthRequest, "p_p_lifecycle", "1");
-		addOAuthParameter(
+		_addOAuthParameter(oAuthRequest, "p_p_lifecycle", "1");
+		_addOAuthParameter(
 			oAuthRequest, "p_p_state", WindowState.NORMAL.toString());
 
 		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
@@ -707,8 +718,8 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		_setRequestParameters(resourceRequest, resourceResponse, oAuthRequest);
 
-		addOAuthParameter(oAuthRequest, "p_p_lifecycle", "2");
-		addOAuthParameter(
+		_addOAuthParameter(oAuthRequest, "p_p_lifecycle", "2");
+		_addOAuthParameter(
 			oAuthRequest, "p_p_resource_id", resourceRequest.getResourceID());
 
 		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
@@ -742,14 +753,14 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		String clientAuthToken = AuthTokenUtil.getToken(httpServletRequest);
 
-		addOAuthParameter(oAuthRequest, "clientAuthToken", clientAuthToken);
+		_addOAuthParameter(oAuthRequest, "clientAuthToken", clientAuthToken);
 
-		addOAuthParameter(
+		_addOAuthParameter(
 			oAuthRequest, "clientPortletId", getClientPortletId());
-		addOAuthParameter(
+		_addOAuthParameter(
 			oAuthRequest, "clientURL",
 			portal.getCurrentCompleteURL(httpServletRequest));
-		addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
+		_addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
 	}
 
 	private void _setRequestParameters(
@@ -782,7 +793,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 				continue;
 			}
 
-			addOAuthParameter(oAuthRequest, key, values[0]);
+			_addOAuthParameter(oAuthRequest, key, values[0]);
 		}
 	}
 

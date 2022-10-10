@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
-import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 /**
@@ -31,17 +30,6 @@ import org.scribe.oauth.OAuthService;
  * @author Haote Chou
  */
 public class RemoteMVCPortlet extends MVCPortlet {
-
-	protected void addOAuthParameter(
-		OAuthRequest oAuthRequest, String key, String value) {
-
-		if (oAuthRequest.getVerb() == Verb.GET) {
-			oAuthRequest.addQuerystringParameter(key, value);
-		}
-		else if (oAuthRequest.getVerb() == Verb.POST) {
-			oAuthRequest.addBodyParameter(key, value);
-		}
-	}
 
 	protected Response getResponse(User user, OAuthRequest oAuthRequest)
 		throws Exception {

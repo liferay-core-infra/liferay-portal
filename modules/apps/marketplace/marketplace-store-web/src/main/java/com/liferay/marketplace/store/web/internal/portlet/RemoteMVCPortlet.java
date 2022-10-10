@@ -18,12 +18,7 @@ import com.liferay.marketplace.store.web.internal.oauth.util.OAuthManager;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-
-import javax.portlet.PortletRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -76,24 +71,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 
 	protected String getServerPortletId() {
 		return StringPool.BLANK;
-	}
-
-	protected void setBaseRequestParameters(
-		PortletRequest portletRequest, OAuthRequest oAuthRequest) {
-
-		HttpServletRequest httpServletRequest =
-			PortalUtil.getHttpServletRequest(portletRequest);
-
-		String clientAuthToken = AuthTokenUtil.getToken(httpServletRequest);
-
-		addOAuthParameter(oAuthRequest, "clientAuthToken", clientAuthToken);
-
-		addOAuthParameter(
-			oAuthRequest, "clientPortletId", getClientPortletId());
-		addOAuthParameter(
-			oAuthRequest, "clientURL",
-			PortalUtil.getCurrentCompleteURL(httpServletRequest));
-		addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
 	}
 
 	protected void setOAuthManager(OAuthManager oAuthManager) {

@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.patcher.Patcher;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -46,6 +47,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -71,6 +73,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.WindowState;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
@@ -187,7 +190,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		OAuthRequest oAuthRequest = new OAuthRequest(
 			Verb.POST, getServerPortletURL());
 
-		setBaseRequestParameters(actionRequest, oAuthRequest);
+		_setBaseRequestParameters(actionRequest, oAuthRequest);
 
 		addOAuthParameter(oAuthRequest, "p_p_lifecycle", "1");
 		addOAuthParameter(
@@ -509,7 +512,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		OAuthRequest oAuthRequest = new OAuthRequest(
 			Verb.GET, getServerPortletURL());
 
-		setBaseRequestParameters(portletRequest, oAuthRequest);
+		_setBaseRequestParameters(portletRequest, oAuthRequest);
 
 		String serverNamespace = getServerNamespace();
 
@@ -730,11 +733,29 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		}
 	}
 
+	private void _setBaseRequestParameters(
+		PortletRequest portletRequest, OAuthRequest oAuthRequest) {
+
+		HttpServletRequest httpServletRequest =
+			PortalUtil.getHttpServletRequest(portletRequest);
+
+		String clientAuthToken = AuthTokenUtil.getToken(httpServletRequest);
+
+		addOAuthParameter(oAuthRequest, "clientAuthToken", clientAuthToken);
+
+		addOAuthParameter(
+			oAuthRequest, "clientPortletId", getClientPortletId());
+		addOAuthParameter(
+			oAuthRequest, "clientURL",
+			PortalUtil.getCurrentCompleteURL(httpServletRequest));
+		addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
+	}
+
 	private void _setRequestParameters(
 		PortletRequest portletRequest, PortletResponse portletResponse,
 		OAuthRequest oAuthRequest) {
 
-		setBaseRequestParameters(portletRequest, oAuthRequest);
+		_setBaseRequestParameters(portletRequest, oAuthRequest);
 
 		Map<String, String[]> parameterMap = new HashMap<>();
 

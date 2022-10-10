@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -40,7 +38,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,8 +47,6 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.WindowState;
@@ -64,7 +59,6 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 /**
@@ -74,46 +68,6 @@ import org.scribe.oauth.OAuthService;
  * @author Haote Chou
  */
 public class RemoteMVCPortlet extends MVCPortlet {
-
-	public void authorize(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		OAuthService oAuthService = oAuthManager.getOAuthService();
-
-		Token requestToken = oAuthService.getRequestToken();
-
-		oAuthManager.updateRequestToken(themeDisplay.getUser(), requestToken);
-
-		String redirect = oAuthService.getAuthorizationUrl(requestToken);
-
-		String callbackURL = ParamUtil.getString(actionRequest, "callbackURL");
-
-		redirect = HttpComponentsUtil.addParameter(
-			redirect, OAuthConstants.CALLBACK, callbackURL);
-
-		actionResponse.sendRedirect(redirect);
-	}
-
-	public void deauthorize(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		oAuthManager.deleteAccessToken(themeDisplay.getUser());
-
-		actionResponse.sendRedirect(
-			PortletURLBuilder.createRenderURL(
-				PortalUtil.getLiferayPortletResponse(actionResponse)
-			).setMVCPath(
-				"/view.jsp"
-			).buildString());
-	}
 
 	@Override
 	public void processAction(
@@ -338,27 +292,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 		}
 	}
 
-	private void _remoteRender(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		OAuthRequest oAuthRequest = new OAuthRequest(
-			Verb.GET, getServerPortletURL());
-
-		_setRequestParameters(renderRequest, renderResponse, oAuthRequest);
-
-		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
-
-		renderResponse.setContentType(ContentTypes.TEXT_HTML);
-
-		PrintWriter printWriter = renderResponse.getWriter();
-
-		printWriter.write(response.getBody());
-	}
-
 	private void _remoteServeResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
@@ -430,26 +363,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 
 			addOAuthParameter(oAuthRequest, key, values[0]);
 		}
-	}
-
-	private void _updateAccessToken(
-			RenderRequest renderRequest, String oAuthVerifier)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		Token requestToken = oAuthManager.getRequestToken(
-			themeDisplay.getUser());
-
-		OAuthService oAuthService = oAuthManager.getOAuthService();
-
-		oAuthManager.updateAccessToken(
-			themeDisplay.getUser(),
-			oAuthService.getAccessToken(
-				requestToken, new Verifier(oAuthVerifier)));
-
-		oAuthManager.deleteRequestToken(themeDisplay.getUser());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

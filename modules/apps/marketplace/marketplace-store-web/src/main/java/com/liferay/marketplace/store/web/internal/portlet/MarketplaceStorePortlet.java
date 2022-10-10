@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.patcher.Patcher;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -113,7 +114,7 @@ import org.scribe.oauth.OAuthService;
 	},
 	service = Portlet.class
 )
-public class MarketplaceStorePortlet extends RemoteMVCPortlet {
+public class MarketplaceStorePortlet extends MVCPortlet {
 
 	public void downloadApp(
 			ActionRequest actionRequest, ActionResponse actionResponse)

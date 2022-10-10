@@ -2657,48 +2657,6 @@ public class VirtualHostPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all virtual hosts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(VirtualHostImpl.class);
-
-		FinderCacheUtil.clearCache(VirtualHostImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the virtual host.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(VirtualHost virtualHost) {
-		EntityCacheUtil.removeResult(VirtualHostImpl.class, virtualHost);
-	}
-
-	@Override
-	public void clearCache(List<VirtualHost> virtualHosts) {
-		for (VirtualHost virtualHost : virtualHosts) {
-			EntityCacheUtil.removeResult(VirtualHostImpl.class, virtualHost);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(VirtualHostImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(VirtualHostImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		VirtualHostModelImpl virtualHostModelImpl) {
 

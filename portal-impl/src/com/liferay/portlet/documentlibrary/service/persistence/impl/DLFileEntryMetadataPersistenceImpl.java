@@ -2604,51 +2604,6 @@ public class DLFileEntryMetadataPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library file entry metadatas.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(DLFileEntryMetadataImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileEntryMetadataImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library file entry metadata.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFileEntryMetadata dlFileEntryMetadata) {
-		EntityCacheUtil.removeResult(
-			DLFileEntryMetadataImpl.class, dlFileEntryMetadata);
-	}
-
-	@Override
-	public void clearCache(List<DLFileEntryMetadata> dlFileEntryMetadatas) {
-		for (DLFileEntryMetadata dlFileEntryMetadata : dlFileEntryMetadatas) {
-			EntityCacheUtil.removeResult(
-				DLFileEntryMetadataImpl.class, dlFileEntryMetadata);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileEntryMetadataImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				DLFileEntryMetadataImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFileEntryMetadataModelImpl dlFileEntryMetadataModelImpl) {
 

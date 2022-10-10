@@ -336,48 +336,6 @@ public class CompanyInfoPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all company infos.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(CompanyInfoImpl.class);
-
-		FinderCacheUtil.clearCache(CompanyInfoImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the company info.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CompanyInfo companyInfo) {
-		EntityCacheUtil.removeResult(CompanyInfoImpl.class, companyInfo);
-	}
-
-	@Override
-	public void clearCache(List<CompanyInfo> companyInfos) {
-		for (CompanyInfo companyInfo : companyInfos) {
-			EntityCacheUtil.removeResult(CompanyInfoImpl.class, companyInfo);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(CompanyInfoImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(CompanyInfoImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CompanyInfoModelImpl companyInfoModelImpl) {
 

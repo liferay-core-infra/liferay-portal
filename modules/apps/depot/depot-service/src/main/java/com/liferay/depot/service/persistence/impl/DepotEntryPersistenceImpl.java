@@ -1706,48 +1706,6 @@ public class DepotEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all depot entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DepotEntryImpl.class);
-
-		finderCache.clearCache(DepotEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the depot entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DepotEntry depotEntry) {
-		entityCache.removeResult(DepotEntryImpl.class, depotEntry);
-	}
-
-	@Override
-	public void clearCache(List<DepotEntry> depotEntries) {
-		for (DepotEntry depotEntry : depotEntries) {
-			entityCache.removeResult(DepotEntryImpl.class, depotEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DepotEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DepotEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DepotEntryModelImpl depotEntryModelImpl) {
 

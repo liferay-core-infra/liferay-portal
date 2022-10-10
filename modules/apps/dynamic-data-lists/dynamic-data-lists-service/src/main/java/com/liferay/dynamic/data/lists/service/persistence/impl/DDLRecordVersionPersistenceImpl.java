@@ -2782,49 +2782,6 @@ public class DDLRecordVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddl record versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDLRecordVersionImpl.class);
-
-		finderCache.clearCache(DDLRecordVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddl record version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDLRecordVersion ddlRecordVersion) {
-		entityCache.removeResult(DDLRecordVersionImpl.class, ddlRecordVersion);
-	}
-
-	@Override
-	public void clearCache(List<DDLRecordVersion> ddlRecordVersions) {
-		for (DDLRecordVersion ddlRecordVersion : ddlRecordVersions) {
-			entityCache.removeResult(
-				DDLRecordVersionImpl.class, ddlRecordVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDLRecordVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDLRecordVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDLRecordVersionModelImpl ddlRecordVersionModelImpl) {
 

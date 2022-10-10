@@ -674,48 +674,6 @@ public class CSDiagramPinPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all cs diagram pins.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CSDiagramPinImpl.class);
-
-		finderCache.clearCache(CSDiagramPinImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cs diagram pin.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CSDiagramPin csDiagramPin) {
-		entityCache.removeResult(CSDiagramPinImpl.class, csDiagramPin);
-	}
-
-	@Override
-	public void clearCache(List<CSDiagramPin> csDiagramPins) {
-		for (CSDiagramPin csDiagramPin : csDiagramPins) {
-			entityCache.removeResult(CSDiagramPinImpl.class, csDiagramPin);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CSDiagramPinImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CSDiagramPinImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new cs diagram pin with the primary key. Does not add the cs diagram pin to the database.
 	 *
 	 * @param CSDiagramPinId the primary key for the new cs diagram pin

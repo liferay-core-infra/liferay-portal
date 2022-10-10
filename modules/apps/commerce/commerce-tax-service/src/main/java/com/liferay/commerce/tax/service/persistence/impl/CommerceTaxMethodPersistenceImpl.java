@@ -1445,50 +1445,6 @@ public class CommerceTaxMethodPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce tax methods.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceTaxMethodImpl.class);
-
-		finderCache.clearCache(CommerceTaxMethodImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce tax method.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceTaxMethod commerceTaxMethod) {
-		entityCache.removeResult(
-			CommerceTaxMethodImpl.class, commerceTaxMethod);
-	}
-
-	@Override
-	public void clearCache(List<CommerceTaxMethod> commerceTaxMethods) {
-		for (CommerceTaxMethod commerceTaxMethod : commerceTaxMethods) {
-			entityCache.removeResult(
-				CommerceTaxMethodImpl.class, commerceTaxMethod);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTaxMethodImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceTaxMethodImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceTaxMethodModelImpl commerceTaxMethodModelImpl) {
 

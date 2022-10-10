@@ -4724,57 +4724,6 @@ public class CommerceSubscriptionEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce subscription entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceSubscriptionEntryImpl.class);
-
-		finderCache.clearCache(CommerceSubscriptionEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce subscription entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceSubscriptionEntry commerceSubscriptionEntry) {
-
-		entityCache.removeResult(
-			CommerceSubscriptionEntryImpl.class, commerceSubscriptionEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceSubscriptionEntry> commerceSubscriptionEntries) {
-
-		for (CommerceSubscriptionEntry commerceSubscriptionEntry :
-				commerceSubscriptionEntries) {
-
-			entityCache.removeResult(
-				CommerceSubscriptionEntryImpl.class, commerceSubscriptionEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceSubscriptionEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceSubscriptionEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceSubscriptionEntryModelImpl commerceSubscriptionEntryModelImpl) {
 

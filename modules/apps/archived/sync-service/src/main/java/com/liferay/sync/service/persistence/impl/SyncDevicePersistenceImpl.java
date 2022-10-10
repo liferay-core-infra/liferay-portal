@@ -2317,48 +2317,6 @@ public class SyncDevicePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all sync devices.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SyncDeviceImpl.class);
-
-		finderCache.clearCache(SyncDeviceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sync device.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SyncDevice syncDevice) {
-		entityCache.removeResult(SyncDeviceImpl.class, syncDevice);
-	}
-
-	@Override
-	public void clearCache(List<SyncDevice> syncDevices) {
-		for (SyncDevice syncDevice : syncDevices) {
-			entityCache.removeResult(SyncDeviceImpl.class, syncDevice);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SyncDeviceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SyncDeviceImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new sync device with the primary key. Does not add the sync device to the database.
 	 *
 	 * @param syncDeviceId the primary key for the new sync device

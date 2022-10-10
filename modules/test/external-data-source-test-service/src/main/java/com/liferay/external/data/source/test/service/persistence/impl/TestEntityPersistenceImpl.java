@@ -131,48 +131,6 @@ public class TestEntityPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all test entities.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(TestEntityImpl.class);
-
-		finderCache.clearCache(TestEntityImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the test entity.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(TestEntity testEntity) {
-		entityCache.removeResult(TestEntityImpl.class, testEntity);
-	}
-
-	@Override
-	public void clearCache(List<TestEntity> testEntities) {
-		for (TestEntity testEntity : testEntities) {
-			entityCache.removeResult(TestEntityImpl.class, testEntity);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TestEntityImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(TestEntityImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new test entity with the primary key. Does not add the test entity to the database.
 	 *
 	 * @param id the primary key for the new test entity

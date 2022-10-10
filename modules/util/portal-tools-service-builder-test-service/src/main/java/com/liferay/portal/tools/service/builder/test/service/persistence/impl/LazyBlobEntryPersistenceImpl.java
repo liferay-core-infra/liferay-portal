@@ -921,48 +921,6 @@ public class LazyBlobEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all lazy blob entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LazyBlobEntryImpl.class);
-
-		finderCache.clearCache(LazyBlobEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the lazy blob entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LazyBlobEntry lazyBlobEntry) {
-		entityCache.removeResult(LazyBlobEntryImpl.class, lazyBlobEntry);
-	}
-
-	@Override
-	public void clearCache(List<LazyBlobEntry> lazyBlobEntries) {
-		for (LazyBlobEntry lazyBlobEntry : lazyBlobEntries) {
-			entityCache.removeResult(LazyBlobEntryImpl.class, lazyBlobEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LazyBlobEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LazyBlobEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LazyBlobEntryModelImpl lazyBlobEntryModelImpl) {
 

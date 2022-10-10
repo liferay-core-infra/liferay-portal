@@ -4171,48 +4171,6 @@ public class SAPEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sap entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SAPEntryImpl.class);
-
-		finderCache.clearCache(SAPEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sap entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SAPEntry sapEntry) {
-		entityCache.removeResult(SAPEntryImpl.class, sapEntry);
-	}
-
-	@Override
-	public void clearCache(List<SAPEntry> sapEntries) {
-		for (SAPEntry sapEntry : sapEntries) {
-			entityCache.removeResult(SAPEntryImpl.class, sapEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SAPEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SAPEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SAPEntryModelImpl sapEntryModelImpl) {
 

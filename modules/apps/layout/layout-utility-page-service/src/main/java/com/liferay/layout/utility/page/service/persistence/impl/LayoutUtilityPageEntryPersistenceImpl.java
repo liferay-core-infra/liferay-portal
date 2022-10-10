@@ -4805,55 +4805,6 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout utility page entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutUtilityPageEntryImpl.class);
-
-		finderCache.clearCache(LayoutUtilityPageEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout utility page entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutUtilityPageEntry layoutUtilityPageEntry) {
-		entityCache.removeResult(
-			LayoutUtilityPageEntryImpl.class, layoutUtilityPageEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<LayoutUtilityPageEntry> layoutUtilityPageEntries) {
-
-		for (LayoutUtilityPageEntry layoutUtilityPageEntry :
-				layoutUtilityPageEntries) {
-
-			entityCache.removeResult(
-				LayoutUtilityPageEntryImpl.class, layoutUtilityPageEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutUtilityPageEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LayoutUtilityPageEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutUtilityPageEntryModelImpl layoutUtilityPageEntryModelImpl) {
 

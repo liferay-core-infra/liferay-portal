@@ -2481,62 +2481,6 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all workflow metrics sla definition versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(WorkflowMetricsSLADefinitionVersionImpl.class);
-
-		finderCache.clearCache(WorkflowMetricsSLADefinitionVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the workflow metrics sla definition version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		WorkflowMetricsSLADefinitionVersion
-			workflowMetricsSLADefinitionVersion) {
-
-		entityCache.removeResult(
-			WorkflowMetricsSLADefinitionVersionImpl.class,
-			workflowMetricsSLADefinitionVersion);
-	}
-
-	@Override
-	public void clearCache(
-		List<WorkflowMetricsSLADefinitionVersion>
-			workflowMetricsSLADefinitionVersions) {
-
-		for (WorkflowMetricsSLADefinitionVersion
-				workflowMetricsSLADefinitionVersion :
-					workflowMetricsSLADefinitionVersions) {
-
-			entityCache.removeResult(
-				WorkflowMetricsSLADefinitionVersionImpl.class,
-				workflowMetricsSLADefinitionVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WorkflowMetricsSLADefinitionVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				WorkflowMetricsSLADefinitionVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		WorkflowMetricsSLADefinitionVersionModelImpl
 			workflowMetricsSLADefinitionVersionModelImpl) {

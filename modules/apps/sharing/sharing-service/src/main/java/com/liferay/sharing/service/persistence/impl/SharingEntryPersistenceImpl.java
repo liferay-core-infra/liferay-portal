@@ -5394,48 +5394,6 @@ public class SharingEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sharing entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SharingEntryImpl.class);
-
-		finderCache.clearCache(SharingEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sharing entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SharingEntry sharingEntry) {
-		entityCache.removeResult(SharingEntryImpl.class, sharingEntry);
-	}
-
-	@Override
-	public void clearCache(List<SharingEntry> sharingEntries) {
-		for (SharingEntry sharingEntry : sharingEntries) {
-			entityCache.removeResult(SharingEntryImpl.class, sharingEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SharingEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SharingEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SharingEntryModelImpl sharingEntryModelImpl) {
 

@@ -644,50 +644,6 @@ public class UserTrackerPathPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all user tracker paths.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserTrackerPathImpl.class);
-
-		FinderCacheUtil.clearCache(UserTrackerPathImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user tracker path.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserTrackerPath userTrackerPath) {
-		EntityCacheUtil.removeResult(
-			UserTrackerPathImpl.class, userTrackerPath);
-	}
-
-	@Override
-	public void clearCache(List<UserTrackerPath> userTrackerPaths) {
-		for (UserTrackerPath userTrackerPath : userTrackerPaths) {
-			EntityCacheUtil.removeResult(
-				UserTrackerPathImpl.class, userTrackerPath);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserTrackerPathImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(UserTrackerPathImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new user tracker path with the primary key. Does not add the user tracker path to the database.
 	 *
 	 * @param userTrackerPathId the primary key for the new user tracker path

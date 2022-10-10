@@ -50,7 +50,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the commerce order payment service.
@@ -643,53 +642,6 @@ public class CommerceOrderPaymentPersistenceImpl
 
 				cacheResult(commerceOrderPayment);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce order payments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceOrderPaymentImpl.class);
-
-		finderCache.clearCache(CommerceOrderPaymentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce order payment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceOrderPayment commerceOrderPayment) {
-		entityCache.removeResult(
-			CommerceOrderPaymentImpl.class, commerceOrderPayment);
-	}
-
-	@Override
-	public void clearCache(List<CommerceOrderPayment> commerceOrderPayments) {
-		for (CommerceOrderPayment commerceOrderPayment :
-				commerceOrderPayments) {
-
-			entityCache.removeResult(
-				CommerceOrderPaymentImpl.class, commerceOrderPayment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceOrderPaymentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceOrderPaymentImpl.class, primaryKey);
 		}
 	}
 

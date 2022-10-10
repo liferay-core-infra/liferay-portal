@@ -2664,48 +2664,6 @@ public class ListTypeEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all list type entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ListTypeEntryImpl.class);
-
-		finderCache.clearCache(ListTypeEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the list type entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ListTypeEntry listTypeEntry) {
-		entityCache.removeResult(ListTypeEntryImpl.class, listTypeEntry);
-	}
-
-	@Override
-	public void clearCache(List<ListTypeEntry> listTypeEntries) {
-		for (ListTypeEntry listTypeEntry : listTypeEntries) {
-			entityCache.removeResult(ListTypeEntryImpl.class, listTypeEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ListTypeEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ListTypeEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ListTypeEntryModelImpl listTypeEntryModelImpl) {
 

@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -336,48 +335,6 @@ public class DLStorageQuotaPersistenceImpl
 
 				cacheResult(dlStorageQuota);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all dl storage quotas.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DLStorageQuotaImpl.class);
-
-		finderCache.clearCache(DLStorageQuotaImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dl storage quota.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLStorageQuota dlStorageQuota) {
-		entityCache.removeResult(DLStorageQuotaImpl.class, dlStorageQuota);
-	}
-
-	@Override
-	public void clearCache(List<DLStorageQuota> dlStorageQuotas) {
-		for (DLStorageQuota dlStorageQuota : dlStorageQuotas) {
-			entityCache.removeResult(DLStorageQuotaImpl.class, dlStorageQuota);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLStorageQuotaImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DLStorageQuotaImpl.class, primaryKey);
 		}
 	}
 

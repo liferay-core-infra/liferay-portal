@@ -4530,50 +4530,6 @@ public class OAuth2ApplicationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all o auth2 applications.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OAuth2ApplicationImpl.class);
-
-		finderCache.clearCache(OAuth2ApplicationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the o auth2 application.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(OAuth2Application oAuth2Application) {
-		entityCache.removeResult(
-			OAuth2ApplicationImpl.class, oAuth2Application);
-	}
-
-	@Override
-	public void clearCache(List<OAuth2Application> oAuth2Applications) {
-		for (OAuth2Application oAuth2Application : oAuth2Applications) {
-			entityCache.removeResult(
-				OAuth2ApplicationImpl.class, oAuth2Application);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2ApplicationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(OAuth2ApplicationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		OAuth2ApplicationModelImpl oAuth2ApplicationModelImpl) {
 

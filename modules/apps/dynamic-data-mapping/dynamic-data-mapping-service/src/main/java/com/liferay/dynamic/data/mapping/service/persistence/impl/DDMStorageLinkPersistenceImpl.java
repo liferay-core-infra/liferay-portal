@@ -2840,48 +2840,6 @@ public class DDMStorageLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm storage links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMStorageLinkImpl.class);
-
-		finderCache.clearCache(DDMStorageLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm storage link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMStorageLink ddmStorageLink) {
-		entityCache.removeResult(DDMStorageLinkImpl.class, ddmStorageLink);
-	}
-
-	@Override
-	public void clearCache(List<DDMStorageLink> ddmStorageLinks) {
-		for (DDMStorageLink ddmStorageLink : ddmStorageLinks) {
-			entityCache.removeResult(DDMStorageLinkImpl.class, ddmStorageLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStorageLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMStorageLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMStorageLinkModelImpl ddmStorageLinkModelImpl) {
 

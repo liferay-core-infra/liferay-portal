@@ -8273,48 +8273,6 @@ public class UserPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all users.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserImpl.class);
-
-		FinderCacheUtil.clearCache(UserImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(User user) {
-		EntityCacheUtil.removeResult(UserImpl.class, user);
-	}
-
-	@Override
-	public void clearCache(List<User> users) {
-		for (User user : users) {
-			EntityCacheUtil.removeResult(UserImpl.class, user);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(UserImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(UserModelImpl userModelImpl) {
 		Object[] args = new Object[] {userModelImpl.getContactId()};
 

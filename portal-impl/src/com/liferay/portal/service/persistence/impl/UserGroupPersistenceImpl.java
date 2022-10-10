@@ -6175,48 +6175,6 @@ public class UserGroupPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all user groups.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserGroupImpl.class);
-
-		FinderCacheUtil.clearCache(UserGroupImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user group.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserGroup userGroup) {
-		EntityCacheUtil.removeResult(UserGroupImpl.class, userGroup);
-	}
-
-	@Override
-	public void clearCache(List<UserGroup> userGroups) {
-		for (UserGroup userGroup : userGroups) {
-			EntityCacheUtil.removeResult(UserGroupImpl.class, userGroup);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserGroupImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(UserGroupImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		UserGroupModelImpl userGroupModelImpl) {
 

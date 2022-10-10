@@ -46,7 +46,6 @@ import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -129,48 +128,6 @@ public class RSVEntryPersistenceImpl
 
 				cacheResult(rsvEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all rsv entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(RSVEntryImpl.class);
-
-		finderCache.clearCache(RSVEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the rsv entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RSVEntry rsvEntry) {
-		entityCache.removeResult(RSVEntryImpl.class, rsvEntry);
-	}
-
-	@Override
-	public void clearCache(List<RSVEntry> rsvEntries) {
-		for (RSVEntry rsvEntry : rsvEntries) {
-			entityCache.removeResult(RSVEntryImpl.class, rsvEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RSVEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(RSVEntryImpl.class, primaryKey);
 		}
 	}
 

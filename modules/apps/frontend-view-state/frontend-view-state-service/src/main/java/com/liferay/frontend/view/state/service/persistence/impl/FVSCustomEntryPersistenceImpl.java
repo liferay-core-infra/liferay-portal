@@ -1267,48 +1267,6 @@ public class FVSCustomEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all fvs custom entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FVSCustomEntryImpl.class);
-
-		finderCache.clearCache(FVSCustomEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the fvs custom entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FVSCustomEntry fvsCustomEntry) {
-		entityCache.removeResult(FVSCustomEntryImpl.class, fvsCustomEntry);
-	}
-
-	@Override
-	public void clearCache(List<FVSCustomEntry> fvsCustomEntries) {
-		for (FVSCustomEntry fvsCustomEntry : fvsCustomEntries) {
-			entityCache.removeResult(FVSCustomEntryImpl.class, fvsCustomEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FVSCustomEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FVSCustomEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new fvs custom entry with the primary key. Does not add the fvs custom entry to the database.
 	 *
 	 * @param fvsCustomEntryId the primary key for the new fvs custom entry

@@ -377,48 +377,6 @@ public class ReleasePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all releases.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ReleaseImpl.class);
-
-		FinderCacheUtil.clearCache(ReleaseImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the release.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Release release) {
-		EntityCacheUtil.removeResult(ReleaseImpl.class, release);
-	}
-
-	@Override
-	public void clearCache(List<Release> releases) {
-		for (Release release : releases) {
-			EntityCacheUtil.removeResult(ReleaseImpl.class, release);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ReleaseImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ReleaseImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(ReleaseModelImpl releaseModelImpl) {
 		Object[] args = new Object[] {releaseModelImpl.getServletContextName()};
 

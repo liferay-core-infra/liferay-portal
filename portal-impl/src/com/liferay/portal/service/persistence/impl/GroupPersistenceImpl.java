@@ -13587,48 +13587,6 @@ public class GroupPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all groups.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(GroupImpl.class);
-
-		FinderCacheUtil.clearCache(GroupImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the group.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Group group) {
-		EntityCacheUtil.removeResult(GroupImpl.class, group);
-	}
-
-	@Override
-	public void clearCache(List<Group> groups) {
-		for (Group group : groups) {
-			EntityCacheUtil.removeResult(GroupImpl.class, group);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(GroupImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(GroupImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(GroupModelImpl groupModelImpl) {
 		Object[] args = new Object[] {
 			groupModelImpl.getUuid(), groupModelImpl.getGroupId()

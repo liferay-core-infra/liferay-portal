@@ -12550,50 +12550,6 @@ public class CommercePriceListPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce price lists.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommercePriceListImpl.class);
-
-		finderCache.clearCache(CommercePriceListImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce price list.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommercePriceList commercePriceList) {
-		entityCache.removeResult(
-			CommercePriceListImpl.class, commercePriceList);
-	}
-
-	@Override
-	public void clearCache(List<CommercePriceList> commercePriceLists) {
-		for (CommercePriceList commercePriceList : commercePriceLists) {
-			entityCache.removeResult(
-				CommercePriceListImpl.class, commercePriceList);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePriceListImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommercePriceListImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommercePriceListModelImpl commercePriceListModelImpl) {
 

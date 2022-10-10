@@ -52,7 +52,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1163,53 +1162,6 @@ public class DepotAppCustomizationPersistenceImpl
 
 				cacheResult(depotAppCustomization);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all depot app customizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DepotAppCustomizationImpl.class);
-
-		finderCache.clearCache(DepotAppCustomizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the depot app customization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DepotAppCustomization depotAppCustomization) {
-		entityCache.removeResult(
-			DepotAppCustomizationImpl.class, depotAppCustomization);
-	}
-
-	@Override
-	public void clearCache(List<DepotAppCustomization> depotAppCustomizations) {
-		for (DepotAppCustomization depotAppCustomization :
-				depotAppCustomizations) {
-
-			entityCache.removeResult(
-				DepotAppCustomizationImpl.class, depotAppCustomization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DepotAppCustomizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DepotAppCustomizationImpl.class, primaryKey);
 		}
 	}
 

@@ -2257,50 +2257,6 @@ public class DDMFieldAttributePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm field attributes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMFieldAttributeImpl.class);
-
-		finderCache.clearCache(DDMFieldAttributeImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm field attribute.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMFieldAttribute ddmFieldAttribute) {
-		entityCache.removeResult(
-			DDMFieldAttributeImpl.class, ddmFieldAttribute);
-	}
-
-	@Override
-	public void clearCache(List<DDMFieldAttribute> ddmFieldAttributes) {
-		for (DDMFieldAttribute ddmFieldAttribute : ddmFieldAttributes) {
-			entityCache.removeResult(
-				DDMFieldAttributeImpl.class, ddmFieldAttribute);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMFieldAttributeImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMFieldAttributeImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMFieldAttributeModelImpl ddmFieldAttributeModelImpl) {
 

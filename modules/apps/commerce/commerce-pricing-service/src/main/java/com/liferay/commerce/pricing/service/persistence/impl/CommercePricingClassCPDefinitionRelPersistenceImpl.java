@@ -1558,62 +1558,6 @@ public class CommercePricingClassCPDefinitionRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce pricing class cp definition rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommercePricingClassCPDefinitionRelImpl.class);
-
-		finderCache.clearCache(CommercePricingClassCPDefinitionRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce pricing class cp definition rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommercePricingClassCPDefinitionRel
-			commercePricingClassCPDefinitionRel) {
-
-		entityCache.removeResult(
-			CommercePricingClassCPDefinitionRelImpl.class,
-			commercePricingClassCPDefinitionRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommercePricingClassCPDefinitionRel>
-			commercePricingClassCPDefinitionRels) {
-
-		for (CommercePricingClassCPDefinitionRel
-				commercePricingClassCPDefinitionRel :
-					commercePricingClassCPDefinitionRels) {
-
-			entityCache.removeResult(
-				CommercePricingClassCPDefinitionRelImpl.class,
-				commercePricingClassCPDefinitionRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePricingClassCPDefinitionRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommercePricingClassCPDefinitionRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommercePricingClassCPDefinitionRelModelImpl
 			commercePricingClassCPDefinitionRelModelImpl) {

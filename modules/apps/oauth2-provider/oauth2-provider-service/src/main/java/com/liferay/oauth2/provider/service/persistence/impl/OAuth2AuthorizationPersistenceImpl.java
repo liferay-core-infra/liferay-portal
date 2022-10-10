@@ -2919,50 +2919,6 @@ public class OAuth2AuthorizationPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all o auth2 authorizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OAuth2AuthorizationImpl.class);
-
-		finderCache.clearCache(OAuth2AuthorizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the o auth2 authorization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(OAuth2Authorization oAuth2Authorization) {
-		entityCache.removeResult(
-			OAuth2AuthorizationImpl.class, oAuth2Authorization);
-	}
-
-	@Override
-	public void clearCache(List<OAuth2Authorization> oAuth2Authorizations) {
-		for (OAuth2Authorization oAuth2Authorization : oAuth2Authorizations) {
-			entityCache.removeResult(
-				OAuth2AuthorizationImpl.class, oAuth2Authorization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2AuthorizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(OAuth2AuthorizationImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new o auth2 authorization with the primary key. Does not add the o auth2 authorization to the database.
 	 *
 	 * @param oAuth2AuthorizationId the primary key for the new o auth2 authorization

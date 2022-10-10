@@ -4540,61 +4540,6 @@ public class CommerceInventoryReplenishmentItemPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce inventory replenishment items.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceInventoryReplenishmentItemImpl.class);
-
-		finderCache.clearCache(CommerceInventoryReplenishmentItemImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce inventory replenishment item.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceInventoryReplenishmentItem commerceInventoryReplenishmentItem) {
-
-		entityCache.removeResult(
-			CommerceInventoryReplenishmentItemImpl.class,
-			commerceInventoryReplenishmentItem);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceInventoryReplenishmentItem>
-			commerceInventoryReplenishmentItems) {
-
-		for (CommerceInventoryReplenishmentItem
-				commerceInventoryReplenishmentItem :
-					commerceInventoryReplenishmentItems) {
-
-			entityCache.removeResult(
-				CommerceInventoryReplenishmentItemImpl.class,
-				commerceInventoryReplenishmentItem);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryReplenishmentItemImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceInventoryReplenishmentItemImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceInventoryReplenishmentItemModelImpl
 			commerceInventoryReplenishmentItemModelImpl) {

@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the resource action service.
@@ -939,49 +938,6 @@ public class ResourceActionPersistenceImpl
 
 				cacheResult(resourceAction);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all resource actions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ResourceActionImpl.class);
-
-		FinderCacheUtil.clearCache(ResourceActionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the resource action.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ResourceAction resourceAction) {
-		EntityCacheUtil.removeResult(ResourceActionImpl.class, resourceAction);
-	}
-
-	@Override
-	public void clearCache(List<ResourceAction> resourceActions) {
-		for (ResourceAction resourceAction : resourceActions) {
-			EntityCacheUtil.removeResult(
-				ResourceActionImpl.class, resourceAction);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ResourceActionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ResourceActionImpl.class, primaryKey);
 		}
 	}
 

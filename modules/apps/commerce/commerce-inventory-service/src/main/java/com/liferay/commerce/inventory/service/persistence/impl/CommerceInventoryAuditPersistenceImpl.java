@@ -1277,55 +1277,6 @@ public class CommerceInventoryAuditPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce inventory audits.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceInventoryAuditImpl.class);
-
-		finderCache.clearCache(CommerceInventoryAuditImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce inventory audit.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceInventoryAudit commerceInventoryAudit) {
-		entityCache.removeResult(
-			CommerceInventoryAuditImpl.class, commerceInventoryAudit);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceInventoryAudit> commerceInventoryAudits) {
-
-		for (CommerceInventoryAudit commerceInventoryAudit :
-				commerceInventoryAudits) {
-
-			entityCache.removeResult(
-				CommerceInventoryAuditImpl.class, commerceInventoryAudit);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryAuditImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceInventoryAuditImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce inventory audit with the primary key. Does not add the commerce inventory audit to the database.
 	 *
 	 * @param commerceInventoryAuditId the primary key for the new commerce inventory audit

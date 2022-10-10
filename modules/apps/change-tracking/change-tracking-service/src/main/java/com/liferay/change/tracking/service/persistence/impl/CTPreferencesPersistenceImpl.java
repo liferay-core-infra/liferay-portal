@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1380,48 +1379,6 @@ public class CTPreferencesPersistenceImpl
 
 				cacheResult(ctPreferences);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all ct preferenceses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTPreferencesImpl.class);
-
-		finderCache.clearCache(CTPreferencesImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ct preferences.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTPreferences ctPreferences) {
-		entityCache.removeResult(CTPreferencesImpl.class, ctPreferences);
-	}
-
-	@Override
-	public void clearCache(List<CTPreferences> ctPreferenceses) {
-		for (CTPreferences ctPreferences : ctPreferenceses) {
-			entityCache.removeResult(CTPreferencesImpl.class, ctPreferences);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTPreferencesImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CTPreferencesImpl.class, primaryKey);
 		}
 	}
 

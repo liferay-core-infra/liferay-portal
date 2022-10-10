@@ -1531,50 +1531,6 @@ public class DDMStructureVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm structure versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMStructureVersionImpl.class);
-
-		finderCache.clearCache(DDMStructureVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm structure version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMStructureVersion ddmStructureVersion) {
-		entityCache.removeResult(
-			DDMStructureVersionImpl.class, ddmStructureVersion);
-	}
-
-	@Override
-	public void clearCache(List<DDMStructureVersion> ddmStructureVersions) {
-		for (DDMStructureVersion ddmStructureVersion : ddmStructureVersions) {
-			entityCache.removeResult(
-				DDMStructureVersionImpl.class, ddmStructureVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMStructureVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMStructureVersionModelImpl ddmStructureVersionModelImpl) {
 

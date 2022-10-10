@@ -1768,49 +1768,6 @@ public class BigDecimalEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all big decimal entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BigDecimalEntryImpl.class);
-
-		finderCache.clearCache(BigDecimalEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the big decimal entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BigDecimalEntry bigDecimalEntry) {
-		entityCache.removeResult(BigDecimalEntryImpl.class, bigDecimalEntry);
-	}
-
-	@Override
-	public void clearCache(List<BigDecimalEntry> bigDecimalEntries) {
-		for (BigDecimalEntry bigDecimalEntry : bigDecimalEntries) {
-			entityCache.removeResult(
-				BigDecimalEntryImpl.class, bigDecimalEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BigDecimalEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(BigDecimalEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new big decimal entry with the primary key. Does not add the big decimal entry to the database.
 	 *
 	 * @param bigDecimalEntryId the primary key for the new big decimal entry

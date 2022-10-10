@@ -3496,48 +3496,6 @@ public class SubscriptionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all subscriptions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SubscriptionImpl.class);
-
-		finderCache.clearCache(SubscriptionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the subscription.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Subscription subscription) {
-		entityCache.removeResult(SubscriptionImpl.class, subscription);
-	}
-
-	@Override
-	public void clearCache(List<Subscription> subscriptions) {
-		for (Subscription subscription : subscriptions) {
-			entityCache.removeResult(SubscriptionImpl.class, subscription);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SubscriptionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SubscriptionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SubscriptionModelImpl subscriptionModelImpl) {
 

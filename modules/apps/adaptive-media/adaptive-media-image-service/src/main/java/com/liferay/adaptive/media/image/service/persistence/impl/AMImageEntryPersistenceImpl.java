@@ -4399,48 +4399,6 @@ public class AMImageEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all am image entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AMImageEntryImpl.class);
-
-		finderCache.clearCache(AMImageEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the am image entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AMImageEntry amImageEntry) {
-		entityCache.removeResult(AMImageEntryImpl.class, amImageEntry);
-	}
-
-	@Override
-	public void clearCache(List<AMImageEntry> amImageEntries) {
-		for (AMImageEntry amImageEntry : amImageEntries) {
-			entityCache.removeResult(AMImageEntryImpl.class, amImageEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AMImageEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AMImageEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AMImageEntryModelImpl amImageEntryModelImpl) {
 

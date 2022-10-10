@@ -2582,48 +2582,6 @@ public class LockPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all locks.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LockImpl.class);
-
-		finderCache.clearCache(LockImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the lock.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Lock lock) {
-		entityCache.removeResult(LockImpl.class, lock);
-	}
-
-	@Override
-	public void clearCache(List<Lock> locks) {
-		for (Lock lock : locks) {
-			entityCache.removeResult(LockImpl.class, lock);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LockImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LockImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(LockModelImpl lockModelImpl) {
 		Object[] args = new Object[] {
 			lockModelImpl.getClassName(), lockModelImpl.getKey()

@@ -1505,50 +1505,6 @@ public class CommerceChannelRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce channel rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceChannelRelImpl.class);
-
-		finderCache.clearCache(CommerceChannelRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce channel rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceChannelRel commerceChannelRel) {
-		entityCache.removeResult(
-			CommerceChannelRelImpl.class, commerceChannelRel);
-	}
-
-	@Override
-	public void clearCache(List<CommerceChannelRel> commerceChannelRels) {
-		for (CommerceChannelRel commerceChannelRel : commerceChannelRels) {
-			entityCache.removeResult(
-				CommerceChannelRelImpl.class, commerceChannelRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceChannelRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceChannelRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceChannelRelModelImpl commerceChannelRelModelImpl) {
 

@@ -2329,48 +2329,6 @@ public class CProductPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all c products.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CProductImpl.class);
-
-		finderCache.clearCache(CProductImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the c product.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CProduct cProduct) {
-		entityCache.removeResult(CProductImpl.class, cProduct);
-	}
-
-	@Override
-	public void clearCache(List<CProduct> cProducts) {
-		for (CProduct cProduct : cProducts) {
-			entityCache.removeResult(CProductImpl.class, cProduct);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CProductImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CProductImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CProductModelImpl cProductModelImpl) {
 

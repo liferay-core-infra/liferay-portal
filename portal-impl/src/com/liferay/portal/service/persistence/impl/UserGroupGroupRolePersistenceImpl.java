@@ -3074,51 +3074,6 @@ public class UserGroupGroupRolePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all user group group roles.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserGroupGroupRoleImpl.class);
-
-		FinderCacheUtil.clearCache(UserGroupGroupRoleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user group group role.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserGroupGroupRole userGroupGroupRole) {
-		EntityCacheUtil.removeResult(
-			UserGroupGroupRoleImpl.class, userGroupGroupRole);
-	}
-
-	@Override
-	public void clearCache(List<UserGroupGroupRole> userGroupGroupRoles) {
-		for (UserGroupGroupRole userGroupGroupRole : userGroupGroupRoles) {
-			EntityCacheUtil.removeResult(
-				UserGroupGroupRoleImpl.class, userGroupGroupRole);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserGroupGroupRoleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				UserGroupGroupRoleImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		UserGroupGroupRoleModelImpl userGroupGroupRoleModelImpl) {
 

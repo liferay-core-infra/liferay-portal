@@ -54,7 +54,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -409,49 +408,6 @@ public class HtmlPreviewEntryPersistenceImpl
 
 				cacheResult(htmlPreviewEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all html preview entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(HtmlPreviewEntryImpl.class);
-
-		finderCache.clearCache(HtmlPreviewEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the html preview entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(HtmlPreviewEntry htmlPreviewEntry) {
-		entityCache.removeResult(HtmlPreviewEntryImpl.class, htmlPreviewEntry);
-	}
-
-	@Override
-	public void clearCache(List<HtmlPreviewEntry> htmlPreviewEntries) {
-		for (HtmlPreviewEntry htmlPreviewEntry : htmlPreviewEntries) {
-			entityCache.removeResult(
-				HtmlPreviewEntryImpl.class, htmlPreviewEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(HtmlPreviewEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(HtmlPreviewEntryImpl.class, primaryKey);
 		}
 	}
 

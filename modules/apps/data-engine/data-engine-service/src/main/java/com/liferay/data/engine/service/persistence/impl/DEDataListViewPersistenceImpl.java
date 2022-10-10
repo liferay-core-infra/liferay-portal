@@ -2701,48 +2701,6 @@ public class DEDataListViewPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all de data list views.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DEDataListViewImpl.class);
-
-		finderCache.clearCache(DEDataListViewImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the de data list view.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DEDataListView deDataListView) {
-		entityCache.removeResult(DEDataListViewImpl.class, deDataListView);
-	}
-
-	@Override
-	public void clearCache(List<DEDataListView> deDataListViews) {
-		for (DEDataListView deDataListView : deDataListViews) {
-			entityCache.removeResult(DEDataListViewImpl.class, deDataListView);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DEDataListViewImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DEDataListViewImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DEDataListViewModelImpl deDataListViewModelImpl) {
 

@@ -1768,48 +1768,6 @@ public class KaleoNodePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo nodes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoNodeImpl.class);
-
-		finderCache.clearCache(KaleoNodeImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo node.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoNode kaleoNode) {
-		entityCache.removeResult(KaleoNodeImpl.class, kaleoNode);
-	}
-
-	@Override
-	public void clearCache(List<KaleoNode> kaleoNodes) {
-		for (KaleoNode kaleoNode : kaleoNodes) {
-			entityCache.removeResult(KaleoNodeImpl.class, kaleoNode);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoNodeImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoNodeImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo node with the primary key. Does not add the kaleo node to the database.
 	 *
 	 * @param kaleoNodeId the primary key for the new kaleo node

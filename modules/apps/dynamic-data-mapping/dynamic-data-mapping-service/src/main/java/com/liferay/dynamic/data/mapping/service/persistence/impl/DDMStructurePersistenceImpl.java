@@ -10392,48 +10392,6 @@ public class DDMStructurePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm structures.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMStructureImpl.class);
-
-		finderCache.clearCache(DDMStructureImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm structure.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMStructure ddmStructure) {
-		entityCache.removeResult(DDMStructureImpl.class, ddmStructure);
-	}
-
-	@Override
-	public void clearCache(List<DDMStructure> ddmStructures) {
-		for (DDMStructure ddmStructure : ddmStructures) {
-			entityCache.removeResult(DDMStructureImpl.class, ddmStructure);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMStructureImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMStructureModelImpl ddmStructureModelImpl) {
 

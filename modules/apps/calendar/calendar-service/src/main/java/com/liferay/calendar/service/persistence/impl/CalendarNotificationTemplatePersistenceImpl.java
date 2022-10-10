@@ -2523,59 +2523,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all calendar notification templates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CalendarNotificationTemplateImpl.class);
-
-		finderCache.clearCache(CalendarNotificationTemplateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the calendar notification template.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CalendarNotificationTemplate calendarNotificationTemplate) {
-
-		entityCache.removeResult(
-			CalendarNotificationTemplateImpl.class,
-			calendarNotificationTemplate);
-	}
-
-	@Override
-	public void clearCache(
-		List<CalendarNotificationTemplate> calendarNotificationTemplates) {
-
-		for (CalendarNotificationTemplate calendarNotificationTemplate :
-				calendarNotificationTemplates) {
-
-			entityCache.removeResult(
-				CalendarNotificationTemplateImpl.class,
-				calendarNotificationTemplate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarNotificationTemplateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CalendarNotificationTemplateImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CalendarNotificationTemplateModelImpl
 			calendarNotificationTemplateModelImpl) {

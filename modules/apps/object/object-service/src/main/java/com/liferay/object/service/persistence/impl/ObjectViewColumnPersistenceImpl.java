@@ -2364,49 +2364,6 @@ public class ObjectViewColumnPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object view columns.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectViewColumnImpl.class);
-
-		finderCache.clearCache(ObjectViewColumnImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object view column.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectViewColumn objectViewColumn) {
-		entityCache.removeResult(ObjectViewColumnImpl.class, objectViewColumn);
-	}
-
-	@Override
-	public void clearCache(List<ObjectViewColumn> objectViewColumns) {
-		for (ObjectViewColumn objectViewColumn : objectViewColumns) {
-			entityCache.removeResult(
-				ObjectViewColumnImpl.class, objectViewColumn);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectViewColumnImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectViewColumnImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object view column with the primary key. Does not add the object view column to the database.
 	 *
 	 * @param objectViewColumnId the primary key for the new object view column

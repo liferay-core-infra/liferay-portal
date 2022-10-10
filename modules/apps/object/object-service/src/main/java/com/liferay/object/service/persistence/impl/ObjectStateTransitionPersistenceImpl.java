@@ -2833,53 +2833,6 @@ public class ObjectStateTransitionPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object state transitions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectStateTransitionImpl.class);
-
-		finderCache.clearCache(ObjectStateTransitionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object state transition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectStateTransition objectStateTransition) {
-		entityCache.removeResult(
-			ObjectStateTransitionImpl.class, objectStateTransition);
-	}
-
-	@Override
-	public void clearCache(List<ObjectStateTransition> objectStateTransitions) {
-		for (ObjectStateTransition objectStateTransition :
-				objectStateTransitions) {
-
-			entityCache.removeResult(
-				ObjectStateTransitionImpl.class, objectStateTransition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectStateTransitionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				ObjectStateTransitionImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object state transition with the primary key. Does not add the object state transition to the database.
 	 *
 	 * @param objectStateTransitionId the primary key for the new object state transition

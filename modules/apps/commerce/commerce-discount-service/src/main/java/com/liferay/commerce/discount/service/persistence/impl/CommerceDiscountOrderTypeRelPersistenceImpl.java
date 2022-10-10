@@ -2585,59 +2585,6 @@ public class CommerceDiscountOrderTypeRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce discount order type rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceDiscountOrderTypeRelImpl.class);
-
-		finderCache.clearCache(CommerceDiscountOrderTypeRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce discount order type rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceDiscountOrderTypeRel commerceDiscountOrderTypeRel) {
-
-		entityCache.removeResult(
-			CommerceDiscountOrderTypeRelImpl.class,
-			commerceDiscountOrderTypeRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceDiscountOrderTypeRel> commerceDiscountOrderTypeRels) {
-
-		for (CommerceDiscountOrderTypeRel commerceDiscountOrderTypeRel :
-				commerceDiscountOrderTypeRels) {
-
-			entityCache.removeResult(
-				CommerceDiscountOrderTypeRelImpl.class,
-				commerceDiscountOrderTypeRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountOrderTypeRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceDiscountOrderTypeRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceDiscountOrderTypeRelModelImpl
 			commerceDiscountOrderTypeRelModelImpl) {

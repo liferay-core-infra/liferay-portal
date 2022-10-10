@@ -1486,49 +1486,6 @@ public class ObjectStateFlowPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object state flows.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectStateFlowImpl.class);
-
-		finderCache.clearCache(ObjectStateFlowImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object state flow.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectStateFlow objectStateFlow) {
-		entityCache.removeResult(ObjectStateFlowImpl.class, objectStateFlow);
-	}
-
-	@Override
-	public void clearCache(List<ObjectStateFlow> objectStateFlows) {
-		for (ObjectStateFlow objectStateFlow : objectStateFlows) {
-			entityCache.removeResult(
-				ObjectStateFlowImpl.class, objectStateFlow);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectStateFlowImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectStateFlowImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectStateFlowModelImpl objectStateFlowModelImpl) {
 

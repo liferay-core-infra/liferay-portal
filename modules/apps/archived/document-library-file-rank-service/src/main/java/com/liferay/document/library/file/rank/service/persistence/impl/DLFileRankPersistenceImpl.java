@@ -2508,48 +2508,6 @@ public class DLFileRankPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library file ranks.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DLFileRankImpl.class);
-
-		finderCache.clearCache(DLFileRankImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library file rank.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFileRank dlFileRank) {
-		entityCache.removeResult(DLFileRankImpl.class, dlFileRank);
-	}
-
-	@Override
-	public void clearCache(List<DLFileRank> dlFileRanks) {
-		for (DLFileRank dlFileRank : dlFileRanks) {
-			entityCache.removeResult(DLFileRankImpl.class, dlFileRank);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLFileRankImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DLFileRankImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFileRankModelImpl dlFileRankModelImpl) {
 

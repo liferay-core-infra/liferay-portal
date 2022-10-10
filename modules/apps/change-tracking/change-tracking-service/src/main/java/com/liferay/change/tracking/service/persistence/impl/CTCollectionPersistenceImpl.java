@@ -56,7 +56,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -3331,48 +3330,6 @@ public class CTCollectionPersistenceImpl
 
 				cacheResult(ctCollection);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all ct collections.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTCollectionImpl.class);
-
-		finderCache.clearCache(CTCollectionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ct collection.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTCollection ctCollection) {
-		entityCache.removeResult(CTCollectionImpl.class, ctCollection);
-	}
-
-	@Override
-	public void clearCache(List<CTCollection> ctCollections) {
-		for (CTCollection ctCollection : ctCollections) {
-			entityCache.removeResult(CTCollectionImpl.class, ctCollection);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTCollectionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CTCollectionImpl.class, primaryKey);
 		}
 	}
 

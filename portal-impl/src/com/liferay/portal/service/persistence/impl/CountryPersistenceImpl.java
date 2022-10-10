@@ -4936,48 +4936,6 @@ public class CountryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all countries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(CountryImpl.class);
-
-		FinderCacheUtil.clearCache(CountryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the country.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Country country) {
-		EntityCacheUtil.removeResult(CountryImpl.class, country);
-	}
-
-	@Override
-	public void clearCache(List<Country> countries) {
-		for (Country country : countries) {
-			EntityCacheUtil.removeResult(CountryImpl.class, country);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(CountryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(CountryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(CountryModelImpl countryModelImpl) {
 		Object[] args = new Object[] {
 			countryModelImpl.getCompanyId(), countryModelImpl.getA2()

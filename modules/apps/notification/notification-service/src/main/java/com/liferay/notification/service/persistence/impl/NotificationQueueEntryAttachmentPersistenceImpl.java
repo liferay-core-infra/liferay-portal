@@ -713,60 +713,6 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all notification queue entry attachments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(NotificationQueueEntryAttachmentImpl.class);
-
-		finderCache.clearCache(NotificationQueueEntryAttachmentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the notification queue entry attachment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		NotificationQueueEntryAttachment notificationQueueEntryAttachment) {
-
-		entityCache.removeResult(
-			NotificationQueueEntryAttachmentImpl.class,
-			notificationQueueEntryAttachment);
-	}
-
-	@Override
-	public void clearCache(
-		List<NotificationQueueEntryAttachment>
-			notificationQueueEntryAttachments) {
-
-		for (NotificationQueueEntryAttachment notificationQueueEntryAttachment :
-				notificationQueueEntryAttachments) {
-
-			entityCache.removeResult(
-				NotificationQueueEntryAttachmentImpl.class,
-				notificationQueueEntryAttachment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NotificationQueueEntryAttachmentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				NotificationQueueEntryAttachmentImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new notification queue entry attachment with the primary key. Does not add the notification queue entry attachment to the database.
 	 *
 	 * @param notificationQueueEntryAttachmentId the primary key for the new notification queue entry attachment

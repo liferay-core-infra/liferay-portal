@@ -2476,49 +2476,6 @@ public class JSONStorageEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all json storage entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(JSONStorageEntryImpl.class);
-
-		finderCache.clearCache(JSONStorageEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the json storage entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(JSONStorageEntry jsonStorageEntry) {
-		entityCache.removeResult(JSONStorageEntryImpl.class, jsonStorageEntry);
-	}
-
-	@Override
-	public void clearCache(List<JSONStorageEntry> jsonStorageEntries) {
-		for (JSONStorageEntry jsonStorageEntry : jsonStorageEntries) {
-			entityCache.removeResult(
-				JSONStorageEntryImpl.class, jsonStorageEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JSONStorageEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(JSONStorageEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JSONStorageEntryModelImpl jsonStorageEntryModelImpl) {
 

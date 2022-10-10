@@ -1800,59 +1800,6 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce availability estimates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceAvailabilityEstimateImpl.class);
-
-		finderCache.clearCache(CommerceAvailabilityEstimateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce availability estimate.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceAvailabilityEstimate commerceAvailabilityEstimate) {
-
-		entityCache.removeResult(
-			CommerceAvailabilityEstimateImpl.class,
-			commerceAvailabilityEstimate);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceAvailabilityEstimate> commerceAvailabilityEstimates) {
-
-		for (CommerceAvailabilityEstimate commerceAvailabilityEstimate :
-				commerceAvailabilityEstimates) {
-
-			entityCache.removeResult(
-				CommerceAvailabilityEstimateImpl.class,
-				commerceAvailabilityEstimate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceAvailabilityEstimateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceAvailabilityEstimateImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce availability estimate with the primary key. Does not add the commerce availability estimate to the database.
 	 *
 	 * @param commerceAvailabilityEstimateId the primary key for the new commerce availability estimate

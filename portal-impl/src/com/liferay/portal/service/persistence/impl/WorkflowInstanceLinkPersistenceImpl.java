@@ -1389,53 +1389,6 @@ public class WorkflowInstanceLinkPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all workflow instance links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(WorkflowInstanceLinkImpl.class);
-
-		FinderCacheUtil.clearCache(WorkflowInstanceLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the workflow instance link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WorkflowInstanceLink workflowInstanceLink) {
-		EntityCacheUtil.removeResult(
-			WorkflowInstanceLinkImpl.class, workflowInstanceLink);
-	}
-
-	@Override
-	public void clearCache(List<WorkflowInstanceLink> workflowInstanceLinks) {
-		for (WorkflowInstanceLink workflowInstanceLink :
-				workflowInstanceLinks) {
-
-			EntityCacheUtil.removeResult(
-				WorkflowInstanceLinkImpl.class, workflowInstanceLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WorkflowInstanceLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				WorkflowInstanceLinkImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new workflow instance link with the primary key. Does not add the workflow instance link to the database.
 	 *
 	 * @param workflowInstanceLinkId the primary key for the new workflow instance link

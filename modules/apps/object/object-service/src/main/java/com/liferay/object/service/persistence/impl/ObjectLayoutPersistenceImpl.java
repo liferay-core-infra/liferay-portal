@@ -2328,48 +2328,6 @@ public class ObjectLayoutPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object layouts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectLayoutImpl.class);
-
-		finderCache.clearCache(ObjectLayoutImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object layout.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectLayout objectLayout) {
-		entityCache.removeResult(ObjectLayoutImpl.class, objectLayout);
-	}
-
-	@Override
-	public void clearCache(List<ObjectLayout> objectLayouts) {
-		for (ObjectLayout objectLayout : objectLayouts) {
-			entityCache.removeResult(ObjectLayoutImpl.class, objectLayout);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectLayoutImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object layout with the primary key. Does not add the object layout to the database.
 	 *
 	 * @param objectLayoutId the primary key for the new object layout

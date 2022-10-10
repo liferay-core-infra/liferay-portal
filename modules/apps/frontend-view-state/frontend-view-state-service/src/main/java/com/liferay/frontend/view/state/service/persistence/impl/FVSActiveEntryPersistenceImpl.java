@@ -1610,48 +1610,6 @@ public class FVSActiveEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all fvs active entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FVSActiveEntryImpl.class);
-
-		finderCache.clearCache(FVSActiveEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the fvs active entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FVSActiveEntry fvsActiveEntry) {
-		entityCache.removeResult(FVSActiveEntryImpl.class, fvsActiveEntry);
-	}
-
-	@Override
-	public void clearCache(List<FVSActiveEntry> fvsActiveEntries) {
-		for (FVSActiveEntry fvsActiveEntry : fvsActiveEntries) {
-			entityCache.removeResult(FVSActiveEntryImpl.class, fvsActiveEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FVSActiveEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FVSActiveEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		FVSActiveEntryModelImpl fvsActiveEntryModelImpl) {
 

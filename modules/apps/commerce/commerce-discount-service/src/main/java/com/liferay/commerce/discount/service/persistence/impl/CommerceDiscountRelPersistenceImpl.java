@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1749,50 +1748,6 @@ public class CommerceDiscountRelPersistenceImpl
 
 				cacheResult(commerceDiscountRel);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce discount rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceDiscountRelImpl.class);
-
-		finderCache.clearCache(CommerceDiscountRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce discount rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceDiscountRel commerceDiscountRel) {
-		entityCache.removeResult(
-			CommerceDiscountRelImpl.class, commerceDiscountRel);
-	}
-
-	@Override
-	public void clearCache(List<CommerceDiscountRel> commerceDiscountRels) {
-		for (CommerceDiscountRel commerceDiscountRel : commerceDiscountRels) {
-			entityCache.removeResult(
-				CommerceDiscountRelImpl.class, commerceDiscountRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceDiscountRelImpl.class, primaryKey);
 		}
 	}
 

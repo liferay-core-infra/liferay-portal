@@ -3457,50 +3457,6 @@ public class DLFileEntryTypePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library file entry types.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(DLFileEntryTypeImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileEntryTypeImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library file entry type.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFileEntryType dlFileEntryType) {
-		EntityCacheUtil.removeResult(
-			DLFileEntryTypeImpl.class, dlFileEntryType);
-	}
-
-	@Override
-	public void clearCache(List<DLFileEntryType> dlFileEntryTypes) {
-		for (DLFileEntryType dlFileEntryType : dlFileEntryTypes) {
-			EntityCacheUtil.removeResult(
-				DLFileEntryTypeImpl.class, dlFileEntryType);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileEntryTypeImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(DLFileEntryTypeImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFileEntryTypeModelImpl dlFileEntryTypeModelImpl) {
 

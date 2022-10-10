@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the class name service.
@@ -349,48 +348,6 @@ public class ClassNamePersistenceImpl
 
 				cacheResult(className);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all class names.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ClassNameImpl.class);
-
-		FinderCacheUtil.clearCache(ClassNameImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the class name.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ClassName className) {
-		EntityCacheUtil.removeResult(ClassNameImpl.class, className);
-	}
-
-	@Override
-	public void clearCache(List<ClassName> classNames) {
-		for (ClassName className : classNames) {
-			EntityCacheUtil.removeResult(ClassNameImpl.class, className);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ClassNameImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ClassNameImpl.class, primaryKey);
 		}
 	}
 

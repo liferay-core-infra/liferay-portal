@@ -55,7 +55,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the subscription service.
@@ -2877,48 +2876,6 @@ public class SubscriptionPersistenceImpl
 
 				cacheResult(subscription);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all subscriptions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SubscriptionImpl.class);
-
-		FinderCacheUtil.clearCache(SubscriptionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the subscription.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Subscription subscription) {
-		EntityCacheUtil.removeResult(SubscriptionImpl.class, subscription);
-	}
-
-	@Override
-	public void clearCache(List<Subscription> subscriptions) {
-		for (Subscription subscription : subscriptions) {
-			EntityCacheUtil.removeResult(SubscriptionImpl.class, subscription);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SubscriptionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(SubscriptionImpl.class, primaryKey);
 		}
 	}
 

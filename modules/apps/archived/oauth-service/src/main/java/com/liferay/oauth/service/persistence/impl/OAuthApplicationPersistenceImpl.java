@@ -56,7 +56,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -4169,49 +4168,6 @@ public class OAuthApplicationPersistenceImpl
 
 				cacheResult(oAuthApplication);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all o auth applications.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OAuthApplicationImpl.class);
-
-		finderCache.clearCache(OAuthApplicationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the o auth application.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(OAuthApplication oAuthApplication) {
-		entityCache.removeResult(OAuthApplicationImpl.class, oAuthApplication);
-	}
-
-	@Override
-	public void clearCache(List<OAuthApplication> oAuthApplications) {
-		for (OAuthApplication oAuthApplication : oAuthApplications) {
-			entityCache.removeResult(
-				OAuthApplicationImpl.class, oAuthApplication);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuthApplicationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(OAuthApplicationImpl.class, primaryKey);
 		}
 	}
 

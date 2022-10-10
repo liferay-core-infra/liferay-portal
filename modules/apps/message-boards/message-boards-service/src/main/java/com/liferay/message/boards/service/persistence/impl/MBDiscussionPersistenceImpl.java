@@ -2027,48 +2027,6 @@ public class MBDiscussionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards discussions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBDiscussionImpl.class);
-
-		finderCache.clearCache(MBDiscussionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards discussion.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBDiscussion mbDiscussion) {
-		entityCache.removeResult(MBDiscussionImpl.class, mbDiscussion);
-	}
-
-	@Override
-	public void clearCache(List<MBDiscussion> mbDiscussions) {
-		for (MBDiscussion mbDiscussion : mbDiscussions) {
-			entityCache.removeResult(MBDiscussionImpl.class, mbDiscussion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBDiscussionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBDiscussionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBDiscussionModelImpl mbDiscussionModelImpl) {
 

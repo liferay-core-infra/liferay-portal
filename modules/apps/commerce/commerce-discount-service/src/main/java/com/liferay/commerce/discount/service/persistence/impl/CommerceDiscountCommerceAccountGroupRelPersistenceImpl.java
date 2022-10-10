@@ -1529,65 +1529,6 @@ public class CommerceDiscountCommerceAccountGroupRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce discount commerce account group rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(
-			CommerceDiscountCommerceAccountGroupRelImpl.class);
-
-		finderCache.clearCache(
-			CommerceDiscountCommerceAccountGroupRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce discount commerce account group rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceDiscountCommerceAccountGroupRel
-			commerceDiscountCommerceAccountGroupRel) {
-
-		entityCache.removeResult(
-			CommerceDiscountCommerceAccountGroupRelImpl.class,
-			commerceDiscountCommerceAccountGroupRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceDiscountCommerceAccountGroupRel>
-			commerceDiscountCommerceAccountGroupRels) {
-
-		for (CommerceDiscountCommerceAccountGroupRel
-				commerceDiscountCommerceAccountGroupRel :
-					commerceDiscountCommerceAccountGroupRels) {
-
-			entityCache.removeResult(
-				CommerceDiscountCommerceAccountGroupRelImpl.class,
-				commerceDiscountCommerceAccountGroupRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(
-			CommerceDiscountCommerceAccountGroupRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceDiscountCommerceAccountGroupRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceDiscountCommerceAccountGroupRelModelImpl
 			commerceDiscountCommerceAccountGroupRelModelImpl) {

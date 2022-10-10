@@ -54,7 +54,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2004,49 +2003,6 @@ public class AccountGroupRelPersistenceImpl
 
 				cacheResult(accountGroupRel);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all account group rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AccountGroupRelImpl.class);
-
-		finderCache.clearCache(AccountGroupRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the account group rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AccountGroupRel accountGroupRel) {
-		entityCache.removeResult(AccountGroupRelImpl.class, accountGroupRel);
-	}
-
-	@Override
-	public void clearCache(List<AccountGroupRel> accountGroupRels) {
-		for (AccountGroupRel accountGroupRel : accountGroupRels) {
-			entityCache.removeResult(
-				AccountGroupRelImpl.class, accountGroupRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountGroupRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AccountGroupRelImpl.class, primaryKey);
 		}
 	}
 

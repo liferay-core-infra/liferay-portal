@@ -1414,48 +1414,6 @@ public class SamlSpSessionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all saml sp sessions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SamlSpSessionImpl.class);
-
-		finderCache.clearCache(SamlSpSessionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the saml sp session.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SamlSpSession samlSpSession) {
-		entityCache.removeResult(SamlSpSessionImpl.class, samlSpSession);
-	}
-
-	@Override
-	public void clearCache(List<SamlSpSession> samlSpSessions) {
-		for (SamlSpSession samlSpSession : samlSpSessions) {
-			entityCache.removeResult(SamlSpSessionImpl.class, samlSpSession);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlSpSessionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SamlSpSessionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SamlSpSessionModelImpl samlSpSessionModelImpl) {
 

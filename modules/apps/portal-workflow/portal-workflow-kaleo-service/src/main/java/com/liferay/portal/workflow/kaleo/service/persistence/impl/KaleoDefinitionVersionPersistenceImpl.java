@@ -1608,55 +1608,6 @@ public class KaleoDefinitionVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo definition versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoDefinitionVersionImpl.class);
-
-		finderCache.clearCache(KaleoDefinitionVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo definition version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoDefinitionVersion kaleoDefinitionVersion) {
-		entityCache.removeResult(
-			KaleoDefinitionVersionImpl.class, kaleoDefinitionVersion);
-	}
-
-	@Override
-	public void clearCache(
-		List<KaleoDefinitionVersion> kaleoDefinitionVersions) {
-
-		for (KaleoDefinitionVersion kaleoDefinitionVersion :
-				kaleoDefinitionVersions) {
-
-			entityCache.removeResult(
-				KaleoDefinitionVersionImpl.class, kaleoDefinitionVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoDefinitionVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				KaleoDefinitionVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoDefinitionVersionModelImpl kaleoDefinitionVersionModelImpl) {
 

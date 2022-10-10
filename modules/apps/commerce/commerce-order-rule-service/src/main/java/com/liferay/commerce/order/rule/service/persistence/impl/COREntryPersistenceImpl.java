@@ -7341,48 +7341,6 @@ public class COREntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cor entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(COREntryImpl.class);
-
-		finderCache.clearCache(COREntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cor entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(COREntry corEntry) {
-		entityCache.removeResult(COREntryImpl.class, corEntry);
-	}
-
-	@Override
-	public void clearCache(List<COREntry> corEntries) {
-		for (COREntry corEntry : corEntries) {
-			entityCache.removeResult(COREntryImpl.class, corEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(COREntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(COREntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		COREntryModelImpl corEntryModelImpl) {
 

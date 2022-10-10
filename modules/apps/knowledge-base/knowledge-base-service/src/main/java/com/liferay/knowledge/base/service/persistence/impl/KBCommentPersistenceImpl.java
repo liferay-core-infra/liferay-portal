@@ -5051,48 +5051,6 @@ public class KBCommentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kb comments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KBCommentImpl.class);
-
-		finderCache.clearCache(KBCommentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kb comment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KBComment kbComment) {
-		entityCache.removeResult(KBCommentImpl.class, kbComment);
-	}
-
-	@Override
-	public void clearCache(List<KBComment> kbComments) {
-		for (KBComment kbComment : kbComments) {
-			entityCache.removeResult(KBCommentImpl.class, kbComment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBCommentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KBCommentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KBCommentModelImpl kbCommentModelImpl) {
 

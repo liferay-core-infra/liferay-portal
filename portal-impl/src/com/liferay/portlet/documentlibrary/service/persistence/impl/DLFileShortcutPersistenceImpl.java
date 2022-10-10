@@ -6196,49 +6196,6 @@ public class DLFileShortcutPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library file shortcuts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(DLFileShortcutImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileShortcutImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library file shortcut.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFileShortcut dlFileShortcut) {
-		EntityCacheUtil.removeResult(DLFileShortcutImpl.class, dlFileShortcut);
-	}
-
-	@Override
-	public void clearCache(List<DLFileShortcut> dlFileShortcuts) {
-		for (DLFileShortcut dlFileShortcut : dlFileShortcuts) {
-			EntityCacheUtil.removeResult(
-				DLFileShortcutImpl.class, dlFileShortcut);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileShortcutImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(DLFileShortcutImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFileShortcutModelImpl dlFileShortcutModelImpl) {
 

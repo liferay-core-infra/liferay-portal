@@ -2521,48 +2521,6 @@ public class ObjectStatePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object states.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectStateImpl.class);
-
-		finderCache.clearCache(ObjectStateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object state.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectState objectState) {
-		entityCache.removeResult(ObjectStateImpl.class, objectState);
-	}
-
-	@Override
-	public void clearCache(List<ObjectState> objectStates) {
-		for (ObjectState objectState : objectStates) {
-			entityCache.removeResult(ObjectStateImpl.class, objectState);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectStateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectStateImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectStateModelImpl objectStateModelImpl) {
 

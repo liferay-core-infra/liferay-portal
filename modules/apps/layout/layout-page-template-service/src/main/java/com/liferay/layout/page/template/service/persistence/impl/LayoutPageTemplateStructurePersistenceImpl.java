@@ -2415,58 +2415,6 @@ public class LayoutPageTemplateStructurePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout page template structures.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutPageTemplateStructureImpl.class);
-
-		finderCache.clearCache(LayoutPageTemplateStructureImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout page template structure.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		LayoutPageTemplateStructure layoutPageTemplateStructure) {
-
-		entityCache.removeResult(
-			LayoutPageTemplateStructureImpl.class, layoutPageTemplateStructure);
-	}
-
-	@Override
-	public void clearCache(
-		List<LayoutPageTemplateStructure> layoutPageTemplateStructures) {
-
-		for (LayoutPageTemplateStructure layoutPageTemplateStructure :
-				layoutPageTemplateStructures) {
-
-			entityCache.removeResult(
-				LayoutPageTemplateStructureImpl.class,
-				layoutPageTemplateStructure);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutPageTemplateStructureImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LayoutPageTemplateStructureImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutPageTemplateStructureModelImpl
 			layoutPageTemplateStructureModelImpl) {

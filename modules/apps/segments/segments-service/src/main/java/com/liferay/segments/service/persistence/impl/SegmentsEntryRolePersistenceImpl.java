@@ -1439,50 +1439,6 @@ public class SegmentsEntryRolePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all segments entry roles.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SegmentsEntryRoleImpl.class);
-
-		finderCache.clearCache(SegmentsEntryRoleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the segments entry role.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SegmentsEntryRole segmentsEntryRole) {
-		entityCache.removeResult(
-			SegmentsEntryRoleImpl.class, segmentsEntryRole);
-	}
-
-	@Override
-	public void clearCache(List<SegmentsEntryRole> segmentsEntryRoles) {
-		for (SegmentsEntryRole segmentsEntryRole : segmentsEntryRoles) {
-			entityCache.removeResult(
-				SegmentsEntryRoleImpl.class, segmentsEntryRole);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsEntryRoleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SegmentsEntryRoleImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SegmentsEntryRoleModelImpl segmentsEntryRoleModelImpl) {
 

@@ -2666,50 +2666,6 @@ public class LayoutLocalizationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutLocalizationImpl.class);
-
-		finderCache.clearCache(LayoutLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutLocalization layoutLocalization) {
-		entityCache.removeResult(
-			LayoutLocalizationImpl.class, layoutLocalization);
-	}
-
-	@Override
-	public void clearCache(List<LayoutLocalization> layoutLocalizations) {
-		for (LayoutLocalization layoutLocalization : layoutLocalizations) {
-			entityCache.removeResult(
-				LayoutLocalizationImpl.class, layoutLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LayoutLocalizationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutLocalizationModelImpl layoutLocalizationModelImpl) {
 

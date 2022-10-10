@@ -7750,49 +7750,6 @@ public class ObjectDefinitionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object definitions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectDefinitionImpl.class);
-
-		finderCache.clearCache(ObjectDefinitionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object definition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectDefinition objectDefinition) {
-		entityCache.removeResult(ObjectDefinitionImpl.class, objectDefinition);
-	}
-
-	@Override
-	public void clearCache(List<ObjectDefinition> objectDefinitions) {
-		for (ObjectDefinition objectDefinition : objectDefinitions) {
-			entityCache.removeResult(
-				ObjectDefinitionImpl.class, objectDefinition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectDefinitionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectDefinitionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectDefinitionModelImpl objectDefinitionModelImpl) {
 

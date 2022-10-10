@@ -7799,49 +7799,6 @@ public class CommerceDiscountPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce discounts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceDiscountImpl.class);
-
-		finderCache.clearCache(CommerceDiscountImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce discount.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceDiscount commerceDiscount) {
-		entityCache.removeResult(CommerceDiscountImpl.class, commerceDiscount);
-	}
-
-	@Override
-	public void clearCache(List<CommerceDiscount> commerceDiscounts) {
-		for (CommerceDiscount commerceDiscount : commerceDiscounts) {
-			entityCache.removeResult(
-				CommerceDiscountImpl.class, commerceDiscount);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceDiscountImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceDiscountModelImpl commerceDiscountModelImpl) {
 

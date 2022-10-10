@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1470,53 +1469,6 @@ public class CommerceTermEntryRelPersistenceImpl
 
 				cacheResult(commerceTermEntryRel);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce term entry rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceTermEntryRelImpl.class);
-
-		finderCache.clearCache(CommerceTermEntryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce term entry rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceTermEntryRel commerceTermEntryRel) {
-		entityCache.removeResult(
-			CommerceTermEntryRelImpl.class, commerceTermEntryRel);
-	}
-
-	@Override
-	public void clearCache(List<CommerceTermEntryRel> commerceTermEntryRels) {
-		for (CommerceTermEntryRel commerceTermEntryRel :
-				commerceTermEntryRels) {
-
-			entityCache.removeResult(
-				CommerceTermEntryRelImpl.class, commerceTermEntryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTermEntryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceTermEntryRelImpl.class, primaryKey);
 		}
 	}
 

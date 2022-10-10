@@ -3775,55 +3775,6 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo task instance tokens.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoTaskInstanceTokenImpl.class);
-
-		finderCache.clearCache(KaleoTaskInstanceTokenImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo task instance token.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoTaskInstanceToken kaleoTaskInstanceToken) {
-		entityCache.removeResult(
-			KaleoTaskInstanceTokenImpl.class, kaleoTaskInstanceToken);
-	}
-
-	@Override
-	public void clearCache(
-		List<KaleoTaskInstanceToken> kaleoTaskInstanceTokens) {
-
-		for (KaleoTaskInstanceToken kaleoTaskInstanceToken :
-				kaleoTaskInstanceTokens) {
-
-			entityCache.removeResult(
-				KaleoTaskInstanceTokenImpl.class, kaleoTaskInstanceToken);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTaskInstanceTokenImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				KaleoTaskInstanceTokenImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoTaskInstanceTokenModelImpl kaleoTaskInstanceTokenModelImpl) {
 

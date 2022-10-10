@@ -3078,48 +3078,6 @@ public class AssetLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AssetLinkImpl.class);
-
-		FinderCacheUtil.clearCache(AssetLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetLink assetLink) {
-		EntityCacheUtil.removeResult(AssetLinkImpl.class, assetLink);
-	}
-
-	@Override
-	public void clearCache(List<AssetLink> assetLinks) {
-		for (AssetLink assetLink : assetLinks) {
-			EntityCacheUtil.removeResult(AssetLinkImpl.class, assetLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(AssetLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetLinkModelImpl assetLinkModelImpl) {
 

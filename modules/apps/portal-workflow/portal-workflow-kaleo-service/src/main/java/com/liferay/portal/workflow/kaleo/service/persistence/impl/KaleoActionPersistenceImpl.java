@@ -3866,48 +3866,6 @@ public class KaleoActionPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo actions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoActionImpl.class);
-
-		finderCache.clearCache(KaleoActionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo action.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoAction kaleoAction) {
-		entityCache.removeResult(KaleoActionImpl.class, kaleoAction);
-	}
-
-	@Override
-	public void clearCache(List<KaleoAction> kaleoActions) {
-		for (KaleoAction kaleoAction : kaleoActions) {
-			entityCache.removeResult(KaleoActionImpl.class, kaleoAction);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoActionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoActionImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo action with the primary key. Does not add the kaleo action to the database.
 	 *
 	 * @param kaleoActionId the primary key for the new kaleo action

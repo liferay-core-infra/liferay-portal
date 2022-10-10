@@ -5508,50 +5508,6 @@ public class ObjectRelationshipPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object relationships.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectRelationshipImpl.class);
-
-		finderCache.clearCache(ObjectRelationshipImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object relationship.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectRelationship objectRelationship) {
-		entityCache.removeResult(
-			ObjectRelationshipImpl.class, objectRelationship);
-	}
-
-	@Override
-	public void clearCache(List<ObjectRelationship> objectRelationships) {
-		for (ObjectRelationship objectRelationship : objectRelationships) {
-			entityCache.removeResult(
-				ObjectRelationshipImpl.class, objectRelationship);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectRelationshipImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectRelationshipImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectRelationshipModelImpl objectRelationshipModelImpl) {
 

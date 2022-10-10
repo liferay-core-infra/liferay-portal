@@ -4524,59 +4524,6 @@ public class CommerceNotificationTemplatePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce notification templates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceNotificationTemplateImpl.class);
-
-		finderCache.clearCache(CommerceNotificationTemplateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce notification template.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceNotificationTemplate commerceNotificationTemplate) {
-
-		entityCache.removeResult(
-			CommerceNotificationTemplateImpl.class,
-			commerceNotificationTemplate);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceNotificationTemplate> commerceNotificationTemplates) {
-
-		for (CommerceNotificationTemplate commerceNotificationTemplate :
-				commerceNotificationTemplates) {
-
-			entityCache.removeResult(
-				CommerceNotificationTemplateImpl.class,
-				commerceNotificationTemplate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceNotificationTemplateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceNotificationTemplateImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceNotificationTemplateModelImpl
 			commerceNotificationTemplateModelImpl) {

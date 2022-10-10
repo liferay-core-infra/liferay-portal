@@ -2167,53 +2167,6 @@ public class NotificationTemplatePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all notification templates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(NotificationTemplateImpl.class);
-
-		finderCache.clearCache(NotificationTemplateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the notification template.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(NotificationTemplate notificationTemplate) {
-		entityCache.removeResult(
-			NotificationTemplateImpl.class, notificationTemplate);
-	}
-
-	@Override
-	public void clearCache(List<NotificationTemplate> notificationTemplates) {
-		for (NotificationTemplate notificationTemplate :
-				notificationTemplates) {
-
-			entityCache.removeResult(
-				NotificationTemplateImpl.class, notificationTemplate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NotificationTemplateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				NotificationTemplateImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new notification template with the primary key. Does not add the notification template to the database.
 	 *
 	 * @param notificationTemplateId the primary key for the new notification template

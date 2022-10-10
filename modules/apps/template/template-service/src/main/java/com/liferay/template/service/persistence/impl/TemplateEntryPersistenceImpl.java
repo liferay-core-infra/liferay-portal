@@ -4275,48 +4275,6 @@ public class TemplateEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all template entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(TemplateEntryImpl.class);
-
-		finderCache.clearCache(TemplateEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the template entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(TemplateEntry templateEntry) {
-		entityCache.removeResult(TemplateEntryImpl.class, templateEntry);
-	}
-
-	@Override
-	public void clearCache(List<TemplateEntry> templateEntries) {
-		for (TemplateEntry templateEntry : templateEntries) {
-			entityCache.removeResult(TemplateEntryImpl.class, templateEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TemplateEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(TemplateEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		TemplateEntryModelImpl templateEntryModelImpl) {
 

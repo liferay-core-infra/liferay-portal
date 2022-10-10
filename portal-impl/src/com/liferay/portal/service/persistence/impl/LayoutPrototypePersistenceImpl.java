@@ -3958,50 +3958,6 @@ public class LayoutPrototypePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all layout prototypes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(LayoutPrototypeImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutPrototypeImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout prototype.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutPrototype layoutPrototype) {
-		EntityCacheUtil.removeResult(
-			LayoutPrototypeImpl.class, layoutPrototype);
-	}
-
-	@Override
-	public void clearCache(List<LayoutPrototype> layoutPrototypes) {
-		for (LayoutPrototype layoutPrototype : layoutPrototypes) {
-			EntityCacheUtil.removeResult(
-				LayoutPrototypeImpl.class, layoutPrototype);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutPrototypeImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(LayoutPrototypeImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new layout prototype with the primary key. Does not add the layout prototype to the database.
 	 *
 	 * @param layoutPrototypeId the primary key for the new layout prototype

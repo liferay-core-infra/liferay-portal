@@ -1851,49 +1851,6 @@ public class ReadingTimeEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all reading time entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ReadingTimeEntryImpl.class);
-
-		finderCache.clearCache(ReadingTimeEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the reading time entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ReadingTimeEntry readingTimeEntry) {
-		entityCache.removeResult(ReadingTimeEntryImpl.class, readingTimeEntry);
-	}
-
-	@Override
-	public void clearCache(List<ReadingTimeEntry> readingTimeEntries) {
-		for (ReadingTimeEntry readingTimeEntry : readingTimeEntries) {
-			entityCache.removeResult(
-				ReadingTimeEntryImpl.class, readingTimeEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ReadingTimeEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ReadingTimeEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ReadingTimeEntryModelImpl readingTimeEntryModelImpl) {
 

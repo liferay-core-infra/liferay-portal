@@ -3025,53 +3025,6 @@ public class PortalPreferenceValuePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all portal preference values.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PortalPreferenceValueImpl.class);
-
-		FinderCacheUtil.clearCache(PortalPreferenceValueImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the portal preference value.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PortalPreferenceValue portalPreferenceValue) {
-		EntityCacheUtil.removeResult(
-			PortalPreferenceValueImpl.class, portalPreferenceValue);
-	}
-
-	@Override
-	public void clearCache(List<PortalPreferenceValue> portalPreferenceValues) {
-		for (PortalPreferenceValue portalPreferenceValue :
-				portalPreferenceValues) {
-
-			EntityCacheUtil.removeResult(
-				PortalPreferenceValueImpl.class, portalPreferenceValue);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortalPreferenceValueImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				PortalPreferenceValueImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		PortalPreferenceValueModelImpl portalPreferenceValueModelImpl) {
 

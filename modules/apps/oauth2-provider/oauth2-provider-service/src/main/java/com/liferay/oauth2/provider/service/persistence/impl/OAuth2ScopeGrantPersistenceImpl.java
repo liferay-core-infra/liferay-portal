@@ -1111,49 +1111,6 @@ public class OAuth2ScopeGrantPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all o auth2 scope grants.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OAuth2ScopeGrantImpl.class);
-
-		finderCache.clearCache(OAuth2ScopeGrantImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the o auth2 scope grant.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(OAuth2ScopeGrant oAuth2ScopeGrant) {
-		entityCache.removeResult(OAuth2ScopeGrantImpl.class, oAuth2ScopeGrant);
-	}
-
-	@Override
-	public void clearCache(List<OAuth2ScopeGrant> oAuth2ScopeGrants) {
-		for (OAuth2ScopeGrant oAuth2ScopeGrant : oAuth2ScopeGrants) {
-			entityCache.removeResult(
-				OAuth2ScopeGrantImpl.class, oAuth2ScopeGrant);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2ScopeGrantImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(OAuth2ScopeGrantImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		OAuth2ScopeGrantModelImpl oAuth2ScopeGrantModelImpl) {
 

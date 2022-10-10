@@ -1589,66 +1589,6 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce notification template commerce account group rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(
-			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class);
-
-		finderCache.clearCache(
-			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce notification template commerce account group rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceNotificationTemplateCommerceAccountGroupRel
-			commerceNotificationTemplateCommerceAccountGroupRel) {
-
-		entityCache.removeResult(
-			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class,
-			commerceNotificationTemplateCommerceAccountGroupRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceNotificationTemplateCommerceAccountGroupRel>
-			commerceNotificationTemplateCommerceAccountGroupRels) {
-
-		for (CommerceNotificationTemplateCommerceAccountGroupRel
-				commerceNotificationTemplateCommerceAccountGroupRel :
-					commerceNotificationTemplateCommerceAccountGroupRels) {
-
-			entityCache.removeResult(
-				CommerceNotificationTemplateCommerceAccountGroupRelImpl.class,
-				commerceNotificationTemplateCommerceAccountGroupRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(
-			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceNotificationTemplateCommerceAccountGroupRelImpl.class,
-				primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceNotificationTemplateCommerceAccountGroupRelModelImpl
 			commerceNotificationTemplateCommerceAccountGroupRelModelImpl) {

@@ -2437,49 +2437,6 @@ public class TranslationEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all translation entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(TranslationEntryImpl.class);
-
-		finderCache.clearCache(TranslationEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the translation entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(TranslationEntry translationEntry) {
-		entityCache.removeResult(TranslationEntryImpl.class, translationEntry);
-	}
-
-	@Override
-	public void clearCache(List<TranslationEntry> translationEntries) {
-		for (TranslationEntry translationEntry : translationEntries) {
-			entityCache.removeResult(
-				TranslationEntryImpl.class, translationEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TranslationEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(TranslationEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		TranslationEntryModelImpl translationEntryModelImpl) {
 

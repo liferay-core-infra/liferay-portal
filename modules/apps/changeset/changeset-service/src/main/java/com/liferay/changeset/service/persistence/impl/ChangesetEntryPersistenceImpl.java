@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2992,48 +2991,6 @@ public class ChangesetEntryPersistenceImpl
 
 				cacheResult(changesetEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all changeset entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ChangesetEntryImpl.class);
-
-		finderCache.clearCache(ChangesetEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the changeset entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ChangesetEntry changesetEntry) {
-		entityCache.removeResult(ChangesetEntryImpl.class, changesetEntry);
-	}
-
-	@Override
-	public void clearCache(List<ChangesetEntry> changesetEntries) {
-		for (ChangesetEntry changesetEntry : changesetEntries) {
-			entityCache.removeResult(ChangesetEntryImpl.class, changesetEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ChangesetEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ChangesetEntryImpl.class, primaryKey);
 		}
 	}
 

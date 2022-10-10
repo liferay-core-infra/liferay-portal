@@ -3505,49 +3505,6 @@ public class PasswordPolicyPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all password policies.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PasswordPolicyImpl.class);
-
-		FinderCacheUtil.clearCache(PasswordPolicyImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the password policy.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PasswordPolicy passwordPolicy) {
-		EntityCacheUtil.removeResult(PasswordPolicyImpl.class, passwordPolicy);
-	}
-
-	@Override
-	public void clearCache(List<PasswordPolicy> passwordPolicies) {
-		for (PasswordPolicy passwordPolicy : passwordPolicies) {
-			EntityCacheUtil.removeResult(
-				PasswordPolicyImpl.class, passwordPolicy);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PasswordPolicyImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(PasswordPolicyImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		PasswordPolicyModelImpl passwordPolicyModelImpl) {
 

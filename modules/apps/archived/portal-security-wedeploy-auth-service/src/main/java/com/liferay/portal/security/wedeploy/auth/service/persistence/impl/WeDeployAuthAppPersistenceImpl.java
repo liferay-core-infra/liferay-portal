@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -739,49 +738,6 @@ public class WeDeployAuthAppPersistenceImpl
 
 				cacheResult(weDeployAuthApp);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all we deploy auth apps.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(WeDeployAuthAppImpl.class);
-
-		finderCache.clearCache(WeDeployAuthAppImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the we deploy auth app.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WeDeployAuthApp weDeployAuthApp) {
-		entityCache.removeResult(WeDeployAuthAppImpl.class, weDeployAuthApp);
-	}
-
-	@Override
-	public void clearCache(List<WeDeployAuthApp> weDeployAuthApps) {
-		for (WeDeployAuthApp weDeployAuthApp : weDeployAuthApps) {
-			entityCache.removeResult(
-				WeDeployAuthAppImpl.class, weDeployAuthApp);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WeDeployAuthAppImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(WeDeployAuthAppImpl.class, primaryKey);
 		}
 	}
 

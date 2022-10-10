@@ -1767,55 +1767,6 @@ public class CommerceVirtualOrderItemPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce virtual order items.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceVirtualOrderItemImpl.class);
-
-		finderCache.clearCache(CommerceVirtualOrderItemImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce virtual order item.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceVirtualOrderItem commerceVirtualOrderItem) {
-		entityCache.removeResult(
-			CommerceVirtualOrderItemImpl.class, commerceVirtualOrderItem);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceVirtualOrderItem> commerceVirtualOrderItems) {
-
-		for (CommerceVirtualOrderItem commerceVirtualOrderItem :
-				commerceVirtualOrderItems) {
-
-			entityCache.removeResult(
-				CommerceVirtualOrderItemImpl.class, commerceVirtualOrderItem);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceVirtualOrderItemImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceVirtualOrderItemImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceVirtualOrderItemModelImpl commerceVirtualOrderItemModelImpl) {
 

@@ -3912,58 +3912,6 @@ public class AssetListEntryAssetEntryRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset list entry asset entry rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AssetListEntryAssetEntryRelImpl.class);
-
-		finderCache.clearCache(AssetListEntryAssetEntryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset list entry asset entry rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		AssetListEntryAssetEntryRel assetListEntryAssetEntryRel) {
-
-		entityCache.removeResult(
-			AssetListEntryAssetEntryRelImpl.class, assetListEntryAssetEntryRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<AssetListEntryAssetEntryRel> assetListEntryAssetEntryRels) {
-
-		for (AssetListEntryAssetEntryRel assetListEntryAssetEntryRel :
-				assetListEntryAssetEntryRels) {
-
-			entityCache.removeResult(
-				AssetListEntryAssetEntryRelImpl.class,
-				assetListEntryAssetEntryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetListEntryAssetEntryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				AssetListEntryAssetEntryRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetListEntryAssetEntryRelModelImpl
 			assetListEntryAssetEntryRelModelImpl) {

@@ -2348,53 +2348,6 @@ public class ObjectValidationRulePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object validation rules.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectValidationRuleImpl.class);
-
-		finderCache.clearCache(ObjectValidationRuleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object validation rule.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectValidationRule objectValidationRule) {
-		entityCache.removeResult(
-			ObjectValidationRuleImpl.class, objectValidationRule);
-	}
-
-	@Override
-	public void clearCache(List<ObjectValidationRule> objectValidationRules) {
-		for (ObjectValidationRule objectValidationRule :
-				objectValidationRules) {
-
-			entityCache.removeResult(
-				ObjectValidationRuleImpl.class, objectValidationRule);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectValidationRuleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				ObjectValidationRuleImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object validation rule with the primary key. Does not add the object validation rule to the database.
 	 *
 	 * @param objectValidationRuleId the primary key for the new object validation rule

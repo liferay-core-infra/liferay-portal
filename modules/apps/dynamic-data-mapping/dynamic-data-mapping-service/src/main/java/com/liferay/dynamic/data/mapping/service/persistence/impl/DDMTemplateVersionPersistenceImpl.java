@@ -1507,50 +1507,6 @@ public class DDMTemplateVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm template versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMTemplateVersionImpl.class);
-
-		finderCache.clearCache(DDMTemplateVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm template version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMTemplateVersion ddmTemplateVersion) {
-		entityCache.removeResult(
-			DDMTemplateVersionImpl.class, ddmTemplateVersion);
-	}
-
-	@Override
-	public void clearCache(List<DDMTemplateVersion> ddmTemplateVersions) {
-		for (DDMTemplateVersion ddmTemplateVersion : ddmTemplateVersions) {
-			entityCache.removeResult(
-				DDMTemplateVersionImpl.class, ddmTemplateVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMTemplateVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMTemplateVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMTemplateVersionModelImpl ddmTemplateVersionModelImpl) {
 

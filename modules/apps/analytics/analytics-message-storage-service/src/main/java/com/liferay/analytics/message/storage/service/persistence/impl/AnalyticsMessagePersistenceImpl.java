@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -639,49 +638,6 @@ public class AnalyticsMessagePersistenceImpl
 
 				cacheResult(analyticsMessage);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all analytics messages.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AnalyticsMessageImpl.class);
-
-		finderCache.clearCache(AnalyticsMessageImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the analytics message.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AnalyticsMessage analyticsMessage) {
-		entityCache.removeResult(AnalyticsMessageImpl.class, analyticsMessage);
-	}
-
-	@Override
-	public void clearCache(List<AnalyticsMessage> analyticsMessages) {
-		for (AnalyticsMessage analyticsMessage : analyticsMessages) {
-			entityCache.removeResult(
-				AnalyticsMessageImpl.class, analyticsMessage);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AnalyticsMessageImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AnalyticsMessageImpl.class, primaryKey);
 		}
 	}
 

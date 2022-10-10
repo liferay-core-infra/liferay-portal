@@ -7986,48 +7986,6 @@ public class StyleBookEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all style book entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(StyleBookEntryImpl.class);
-
-		finderCache.clearCache(StyleBookEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the style book entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(StyleBookEntry styleBookEntry) {
-		entityCache.removeResult(StyleBookEntryImpl.class, styleBookEntry);
-	}
-
-	@Override
-	public void clearCache(List<StyleBookEntry> styleBookEntries) {
-		for (StyleBookEntry styleBookEntry : styleBookEntries) {
-			entityCache.removeResult(StyleBookEntryImpl.class, styleBookEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(StyleBookEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(StyleBookEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		StyleBookEntryModelImpl styleBookEntryModelImpl) {
 

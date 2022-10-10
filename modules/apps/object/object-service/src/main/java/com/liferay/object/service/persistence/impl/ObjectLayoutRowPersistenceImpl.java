@@ -1781,49 +1781,6 @@ public class ObjectLayoutRowPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object layout rows.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectLayoutRowImpl.class);
-
-		finderCache.clearCache(ObjectLayoutRowImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object layout row.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectLayoutRow objectLayoutRow) {
-		entityCache.removeResult(ObjectLayoutRowImpl.class, objectLayoutRow);
-	}
-
-	@Override
-	public void clearCache(List<ObjectLayoutRow> objectLayoutRows) {
-		for (ObjectLayoutRow objectLayoutRow : objectLayoutRows) {
-			entityCache.removeResult(
-				ObjectLayoutRowImpl.class, objectLayoutRow);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutRowImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectLayoutRowImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object layout row with the primary key. Does not add the object layout row to the database.
 	 *
 	 * @param objectLayoutRowId the primary key for the new object layout row

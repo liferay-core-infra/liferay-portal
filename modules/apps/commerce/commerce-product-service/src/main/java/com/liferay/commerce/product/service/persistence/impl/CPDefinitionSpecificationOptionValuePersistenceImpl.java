@@ -5365,62 +5365,6 @@ public class CPDefinitionSpecificationOptionValuePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition specification option values.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionSpecificationOptionValueImpl.class);
-
-		finderCache.clearCache(CPDefinitionSpecificationOptionValueImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition specification option value.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CPDefinitionSpecificationOptionValue
-			cpDefinitionSpecificationOptionValue) {
-
-		entityCache.removeResult(
-			CPDefinitionSpecificationOptionValueImpl.class,
-			cpDefinitionSpecificationOptionValue);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPDefinitionSpecificationOptionValue>
-			cpDefinitionSpecificationOptionValues) {
-
-		for (CPDefinitionSpecificationOptionValue
-				cpDefinitionSpecificationOptionValue :
-					cpDefinitionSpecificationOptionValues) {
-
-			entityCache.removeResult(
-				CPDefinitionSpecificationOptionValueImpl.class,
-				cpDefinitionSpecificationOptionValue);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionSpecificationOptionValueImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDefinitionSpecificationOptionValueImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionSpecificationOptionValueModelImpl
 			cpDefinitionSpecificationOptionValueModelImpl) {

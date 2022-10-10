@@ -53,7 +53,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the layout revision service.
@@ -7811,49 +7810,6 @@ public class LayoutRevisionPersistenceImpl
 
 				cacheResult(layoutRevision);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all layout revisions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(LayoutRevisionImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutRevisionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout revision.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutRevision layoutRevision) {
-		EntityCacheUtil.removeResult(LayoutRevisionImpl.class, layoutRevision);
-	}
-
-	@Override
-	public void clearCache(List<LayoutRevision> layoutRevisions) {
-		for (LayoutRevision layoutRevision : layoutRevisions) {
-			EntityCacheUtil.removeResult(
-				LayoutRevisionImpl.class, layoutRevision);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutRevisionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(LayoutRevisionImpl.class, primaryKey);
 		}
 	}
 

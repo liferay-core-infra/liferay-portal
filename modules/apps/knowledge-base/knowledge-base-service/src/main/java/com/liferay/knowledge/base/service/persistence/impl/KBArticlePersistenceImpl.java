@@ -34803,48 +34803,6 @@ public class KBArticlePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kb articles.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KBArticleImpl.class);
-
-		finderCache.clearCache(KBArticleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kb article.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KBArticle kbArticle) {
-		entityCache.removeResult(KBArticleImpl.class, kbArticle);
-	}
-
-	@Override
-	public void clearCache(List<KBArticle> kbArticles) {
-		for (KBArticle kbArticle : kbArticles) {
-			entityCache.removeResult(KBArticleImpl.class, kbArticle);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBArticleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KBArticleImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KBArticleModelImpl kbArticleModelImpl) {
 

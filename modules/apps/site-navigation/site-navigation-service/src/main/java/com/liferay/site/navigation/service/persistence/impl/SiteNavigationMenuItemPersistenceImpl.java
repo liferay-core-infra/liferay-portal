@@ -4396,55 +4396,6 @@ public class SiteNavigationMenuItemPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all site navigation menu items.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SiteNavigationMenuItemImpl.class);
-
-		finderCache.clearCache(SiteNavigationMenuItemImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the site navigation menu item.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SiteNavigationMenuItem siteNavigationMenuItem) {
-		entityCache.removeResult(
-			SiteNavigationMenuItemImpl.class, siteNavigationMenuItem);
-	}
-
-	@Override
-	public void clearCache(
-		List<SiteNavigationMenuItem> siteNavigationMenuItems) {
-
-		for (SiteNavigationMenuItem siteNavigationMenuItem :
-				siteNavigationMenuItems) {
-
-			entityCache.removeResult(
-				SiteNavigationMenuItemImpl.class, siteNavigationMenuItem);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SiteNavigationMenuItemImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				SiteNavigationMenuItemImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SiteNavigationMenuItemModelImpl siteNavigationMenuItemModelImpl) {
 

@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -890,48 +889,6 @@ public class EntryPersistenceImpl
 
 				cacheResult(entry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(EntryImpl.class);
-
-		finderCache.clearCache(EntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Entry entry) {
-		entityCache.removeResult(EntryImpl.class, entry);
-	}
-
-	@Override
-	public void clearCache(List<Entry> entries) {
-		for (Entry entry : entries) {
-			entityCache.removeResult(EntryImpl.class, entry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(EntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(EntryImpl.class, primaryKey);
 		}
 	}
 

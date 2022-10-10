@@ -54,7 +54,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1569,53 +1568,6 @@ public class CTAutoResolutionInfoPersistenceImpl
 
 				cacheResult(ctAutoResolutionInfo);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all ct auto resolution infos.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTAutoResolutionInfoImpl.class);
-
-		finderCache.clearCache(CTAutoResolutionInfoImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ct auto resolution info.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTAutoResolutionInfo ctAutoResolutionInfo) {
-		entityCache.removeResult(
-			CTAutoResolutionInfoImpl.class, ctAutoResolutionInfo);
-	}
-
-	@Override
-	public void clearCache(List<CTAutoResolutionInfo> ctAutoResolutionInfos) {
-		for (CTAutoResolutionInfo ctAutoResolutionInfo :
-				ctAutoResolutionInfos) {
-
-			entityCache.removeResult(
-				CTAutoResolutionInfoImpl.class, ctAutoResolutionInfo);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTAutoResolutionInfoImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CTAutoResolutionInfoImpl.class, primaryKey);
 		}
 	}
 

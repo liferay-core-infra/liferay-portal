@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1399,55 +1398,6 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 
 				cacheResult(mfaFIDO2CredentialEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all mfafido2 credential entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MFAFIDO2CredentialEntryImpl.class);
-
-		finderCache.clearCache(MFAFIDO2CredentialEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the mfafido2 credential entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry) {
-		entityCache.removeResult(
-			MFAFIDO2CredentialEntryImpl.class, mfaFIDO2CredentialEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<MFAFIDO2CredentialEntry> mfaFIDO2CredentialEntries) {
-
-		for (MFAFIDO2CredentialEntry mfaFIDO2CredentialEntry :
-				mfaFIDO2CredentialEntries) {
-
-			entityCache.removeResult(
-				MFAFIDO2CredentialEntryImpl.class, mfaFIDO2CredentialEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MFAFIDO2CredentialEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				MFAFIDO2CredentialEntryImpl.class, primaryKey);
 		}
 	}
 

@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2191,58 +2190,6 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 
 				cacheResult(oAuthClientASLocalMetadata);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all o auth client as local metadatas.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OAuthClientASLocalMetadataImpl.class);
-
-		finderCache.clearCache(OAuthClientASLocalMetadataImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the o auth client as local metadata.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		OAuthClientASLocalMetadata oAuthClientASLocalMetadata) {
-
-		entityCache.removeResult(
-			OAuthClientASLocalMetadataImpl.class, oAuthClientASLocalMetadata);
-	}
-
-	@Override
-	public void clearCache(
-		List<OAuthClientASLocalMetadata> oAuthClientASLocalMetadatas) {
-
-		for (OAuthClientASLocalMetadata oAuthClientASLocalMetadata :
-				oAuthClientASLocalMetadatas) {
-
-			entityCache.removeResult(
-				OAuthClientASLocalMetadataImpl.class,
-				oAuthClientASLocalMetadata);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuthClientASLocalMetadataImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				OAuthClientASLocalMetadataImpl.class, primaryKey);
 		}
 	}
 

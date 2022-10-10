@@ -3544,48 +3544,6 @@ public class CalendarPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all calendars.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CalendarImpl.class);
-
-		finderCache.clearCache(CalendarImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the calendar.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Calendar calendar) {
-		entityCache.removeResult(CalendarImpl.class, calendar);
-	}
-
-	@Override
-	public void clearCache(List<Calendar> calendars) {
-		for (Calendar calendar : calendars) {
-			entityCache.removeResult(CalendarImpl.class, calendar);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CalendarImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CalendarModelImpl calendarModelImpl) {
 

@@ -4057,49 +4057,6 @@ public class CPDisplayLayoutPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp display layouts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDisplayLayoutImpl.class);
-
-		finderCache.clearCache(CPDisplayLayoutImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp display layout.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDisplayLayout cpDisplayLayout) {
-		entityCache.removeResult(CPDisplayLayoutImpl.class, cpDisplayLayout);
-	}
-
-	@Override
-	public void clearCache(List<CPDisplayLayout> cpDisplayLayouts) {
-		for (CPDisplayLayout cpDisplayLayout : cpDisplayLayouts) {
-			entityCache.removeResult(
-				CPDisplayLayoutImpl.class, cpDisplayLayout);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDisplayLayoutImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CPDisplayLayoutImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDisplayLayoutModelImpl cpDisplayLayoutModelImpl) {
 

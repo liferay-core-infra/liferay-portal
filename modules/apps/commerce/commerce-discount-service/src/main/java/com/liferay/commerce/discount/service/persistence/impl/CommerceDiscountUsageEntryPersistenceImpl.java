@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2406,58 +2405,6 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 
 				cacheResult(commerceDiscountUsageEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce discount usage entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceDiscountUsageEntryImpl.class);
-
-		finderCache.clearCache(CommerceDiscountUsageEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce discount usage entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceDiscountUsageEntry commerceDiscountUsageEntry) {
-
-		entityCache.removeResult(
-			CommerceDiscountUsageEntryImpl.class, commerceDiscountUsageEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceDiscountUsageEntry> commerceDiscountUsageEntries) {
-
-		for (CommerceDiscountUsageEntry commerceDiscountUsageEntry :
-				commerceDiscountUsageEntries) {
-
-			entityCache.removeResult(
-				CommerceDiscountUsageEntryImpl.class,
-				commerceDiscountUsageEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountUsageEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceDiscountUsageEntryImpl.class, primaryKey);
 		}
 	}
 

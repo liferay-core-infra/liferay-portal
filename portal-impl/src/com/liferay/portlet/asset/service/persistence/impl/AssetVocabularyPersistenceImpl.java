@@ -6571,50 +6571,6 @@ public class AssetVocabularyPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset vocabularies.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AssetVocabularyImpl.class);
-
-		FinderCacheUtil.clearCache(AssetVocabularyImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset vocabulary.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetVocabulary assetVocabulary) {
-		EntityCacheUtil.removeResult(
-			AssetVocabularyImpl.class, assetVocabulary);
-	}
-
-	@Override
-	public void clearCache(List<AssetVocabulary> assetVocabularies) {
-		for (AssetVocabulary assetVocabulary : assetVocabularies) {
-			EntityCacheUtil.removeResult(
-				AssetVocabularyImpl.class, assetVocabulary);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetVocabularyImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(AssetVocabularyImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetVocabularyModelImpl assetVocabularyModelImpl) {
 

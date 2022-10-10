@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the layout branch service.
@@ -2035,48 +2034,6 @@ public class LayoutBranchPersistenceImpl
 
 				cacheResult(layoutBranch);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all layout branches.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(LayoutBranchImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutBranchImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout branch.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutBranch layoutBranch) {
-		EntityCacheUtil.removeResult(LayoutBranchImpl.class, layoutBranch);
-	}
-
-	@Override
-	public void clearCache(List<LayoutBranch> layoutBranchs) {
-		for (LayoutBranch layoutBranch : layoutBranchs) {
-			EntityCacheUtil.removeResult(LayoutBranchImpl.class, layoutBranch);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutBranchImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(LayoutBranchImpl.class, primaryKey);
 		}
 	}
 

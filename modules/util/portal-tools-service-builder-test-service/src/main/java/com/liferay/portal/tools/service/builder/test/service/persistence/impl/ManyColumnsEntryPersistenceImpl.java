@@ -43,7 +43,6 @@ import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the many columns entry service.
@@ -122,49 +121,6 @@ public class ManyColumnsEntryPersistenceImpl
 
 				cacheResult(manyColumnsEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all many columns entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ManyColumnsEntryImpl.class);
-
-		finderCache.clearCache(ManyColumnsEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the many columns entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ManyColumnsEntry manyColumnsEntry) {
-		entityCache.removeResult(ManyColumnsEntryImpl.class, manyColumnsEntry);
-	}
-
-	@Override
-	public void clearCache(List<ManyColumnsEntry> manyColumnsEntries) {
-		for (ManyColumnsEntry manyColumnsEntry : manyColumnsEntries) {
-			entityCache.removeResult(
-				ManyColumnsEntryImpl.class, manyColumnsEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ManyColumnsEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ManyColumnsEntryImpl.class, primaryKey);
 		}
 	}
 

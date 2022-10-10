@@ -1497,49 +1497,6 @@ public class DDMStructureLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm structure links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMStructureLinkImpl.class);
-
-		finderCache.clearCache(DDMStructureLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm structure link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMStructureLink ddmStructureLink) {
-		entityCache.removeResult(DDMStructureLinkImpl.class, ddmStructureLink);
-	}
-
-	@Override
-	public void clearCache(List<DDMStructureLink> ddmStructureLinks) {
-		for (DDMStructureLink ddmStructureLink : ddmStructureLinks) {
-			entityCache.removeResult(
-				DDMStructureLinkImpl.class, ddmStructureLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMStructureLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMStructureLinkModelImpl ddmStructureLinkModelImpl) {
 

@@ -2363,50 +2363,6 @@ public class RepositoryEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all repository entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RepositoryEntryImpl.class);
-
-		FinderCacheUtil.clearCache(RepositoryEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the repository entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RepositoryEntry repositoryEntry) {
-		EntityCacheUtil.removeResult(
-			RepositoryEntryImpl.class, repositoryEntry);
-	}
-
-	@Override
-	public void clearCache(List<RepositoryEntry> repositoryEntries) {
-		for (RepositoryEntry repositoryEntry : repositoryEntries) {
-			EntityCacheUtil.removeResult(
-				RepositoryEntryImpl.class, repositoryEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RepositoryEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(RepositoryEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		RepositoryEntryModelImpl repositoryEntryModelImpl) {
 

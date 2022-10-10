@@ -7940,51 +7940,6 @@ public class AnnouncementsEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all announcements entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-
-		FinderCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the announcements entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AnnouncementsEntry announcementsEntry) {
-		EntityCacheUtil.removeResult(
-			AnnouncementsEntryImpl.class, announcementsEntry);
-	}
-
-	@Override
-	public void clearCache(List<AnnouncementsEntry> announcementsEntries) {
-		for (AnnouncementsEntry announcementsEntry : announcementsEntries) {
-			EntityCacheUtil.removeResult(
-				AnnouncementsEntryImpl.class, announcementsEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				AnnouncementsEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new announcements entry with the primary key. Does not add the announcements entry to the database.
 	 *
 	 * @param entryId the primary key for the new announcements entry

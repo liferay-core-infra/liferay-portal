@@ -3688,49 +3688,6 @@ public class CommerceCurrencyPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce currencies.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceCurrencyImpl.class);
-
-		finderCache.clearCache(CommerceCurrencyImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce currency.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceCurrency commerceCurrency) {
-		entityCache.removeResult(CommerceCurrencyImpl.class, commerceCurrency);
-	}
-
-	@Override
-	public void clearCache(List<CommerceCurrency> commerceCurrencies) {
-		for (CommerceCurrency commerceCurrency : commerceCurrencies) {
-			entityCache.removeResult(
-				CommerceCurrencyImpl.class, commerceCurrency);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceCurrencyImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceCurrencyImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceCurrencyModelImpl commerceCurrencyModelImpl) {
 

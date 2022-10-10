@@ -3787,48 +3787,6 @@ public class KBFolderPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kb folders.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KBFolderImpl.class);
-
-		finderCache.clearCache(KBFolderImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kb folder.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KBFolder kbFolder) {
-		entityCache.removeResult(KBFolderImpl.class, kbFolder);
-	}
-
-	@Override
-	public void clearCache(List<KBFolder> kbFolders) {
-		for (KBFolder kbFolder : kbFolders) {
-			entityCache.removeResult(KBFolderImpl.class, kbFolder);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBFolderImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KBFolderImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KBFolderModelImpl kbFolderModelImpl) {
 

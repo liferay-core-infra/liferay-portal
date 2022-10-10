@@ -5550,50 +5550,6 @@ public class AssetListEntryUsagePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset list entry usages.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AssetListEntryUsageImpl.class);
-
-		finderCache.clearCache(AssetListEntryUsageImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset list entry usage.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetListEntryUsage assetListEntryUsage) {
-		entityCache.removeResult(
-			AssetListEntryUsageImpl.class, assetListEntryUsage);
-	}
-
-	@Override
-	public void clearCache(List<AssetListEntryUsage> assetListEntryUsages) {
-		for (AssetListEntryUsage assetListEntryUsage : assetListEntryUsages) {
-			entityCache.removeResult(
-				AssetListEntryUsageImpl.class, assetListEntryUsage);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetListEntryUsageImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AssetListEntryUsageImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetListEntryUsageModelImpl assetListEntryUsageModelImpl) {
 

@@ -1494,58 +1494,6 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset entry asset category rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AssetEntryAssetCategoryRelImpl.class);
-
-		finderCache.clearCache(AssetEntryAssetCategoryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset entry asset category rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		AssetEntryAssetCategoryRel assetEntryAssetCategoryRel) {
-
-		entityCache.removeResult(
-			AssetEntryAssetCategoryRelImpl.class, assetEntryAssetCategoryRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<AssetEntryAssetCategoryRel> assetEntryAssetCategoryRels) {
-
-		for (AssetEntryAssetCategoryRel assetEntryAssetCategoryRel :
-				assetEntryAssetCategoryRels) {
-
-			entityCache.removeResult(
-				AssetEntryAssetCategoryRelImpl.class,
-				assetEntryAssetCategoryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetEntryAssetCategoryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				AssetEntryAssetCategoryRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetEntryAssetCategoryRelModelImpl
 			assetEntryAssetCategoryRelModelImpl) {

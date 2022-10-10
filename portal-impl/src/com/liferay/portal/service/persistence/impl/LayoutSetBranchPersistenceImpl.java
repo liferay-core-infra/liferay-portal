@@ -3260,50 +3260,6 @@ public class LayoutSetBranchPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout set branches.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(LayoutSetBranchImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutSetBranchImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout set branch.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutSetBranch layoutSetBranch) {
-		EntityCacheUtil.removeResult(
-			LayoutSetBranchImpl.class, layoutSetBranch);
-	}
-
-	@Override
-	public void clearCache(List<LayoutSetBranch> layoutSetBranchs) {
-		for (LayoutSetBranch layoutSetBranch : layoutSetBranchs) {
-			EntityCacheUtil.removeResult(
-				LayoutSetBranchImpl.class, layoutSetBranch);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutSetBranchImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(LayoutSetBranchImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutSetBranchModelImpl layoutSetBranchModelImpl) {
 

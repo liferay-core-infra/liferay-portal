@@ -2146,48 +2146,6 @@ public class TicketPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all tickets.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(TicketImpl.class);
-
-		FinderCacheUtil.clearCache(TicketImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ticket.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Ticket ticket) {
-		EntityCacheUtil.removeResult(TicketImpl.class, ticket);
-	}
-
-	@Override
-	public void clearCache(List<Ticket> tickets) {
-		for (Ticket ticket : tickets) {
-			EntityCacheUtil.removeResult(TicketImpl.class, ticket);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(TicketImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(TicketImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(TicketModelImpl ticketModelImpl) {
 		Object[] args = new Object[] {ticketModelImpl.getKey()};
 

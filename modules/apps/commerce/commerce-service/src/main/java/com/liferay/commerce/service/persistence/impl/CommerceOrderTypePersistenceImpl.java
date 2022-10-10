@@ -6257,50 +6257,6 @@ public class CommerceOrderTypePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce order types.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceOrderTypeImpl.class);
-
-		finderCache.clearCache(CommerceOrderTypeImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce order type.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceOrderType commerceOrderType) {
-		entityCache.removeResult(
-			CommerceOrderTypeImpl.class, commerceOrderType);
-	}
-
-	@Override
-	public void clearCache(List<CommerceOrderType> commerceOrderTypes) {
-		for (CommerceOrderType commerceOrderType : commerceOrderTypes) {
-			entityCache.removeResult(
-				CommerceOrderTypeImpl.class, commerceOrderType);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceOrderTypeImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceOrderTypeImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceOrderTypeModelImpl commerceOrderTypeModelImpl) {
 

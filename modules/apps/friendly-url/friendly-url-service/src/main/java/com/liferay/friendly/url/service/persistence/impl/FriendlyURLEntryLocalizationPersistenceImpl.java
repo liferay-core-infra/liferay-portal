@@ -1995,59 +1995,6 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all friendly url entry localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FriendlyURLEntryLocalizationImpl.class);
-
-		finderCache.clearCache(FriendlyURLEntryLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the friendly url entry localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		FriendlyURLEntryLocalization friendlyURLEntryLocalization) {
-
-		entityCache.removeResult(
-			FriendlyURLEntryLocalizationImpl.class,
-			friendlyURLEntryLocalization);
-	}
-
-	@Override
-	public void clearCache(
-		List<FriendlyURLEntryLocalization> friendlyURLEntryLocalizations) {
-
-		for (FriendlyURLEntryLocalization friendlyURLEntryLocalization :
-				friendlyURLEntryLocalizations) {
-
-			entityCache.removeResult(
-				FriendlyURLEntryLocalizationImpl.class,
-				friendlyURLEntryLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FriendlyURLEntryLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				FriendlyURLEntryLocalizationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		FriendlyURLEntryLocalizationModelImpl
 			friendlyURLEntryLocalizationModelImpl) {

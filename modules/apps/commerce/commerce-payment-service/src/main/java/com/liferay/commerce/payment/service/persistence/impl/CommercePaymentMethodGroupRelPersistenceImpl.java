@@ -2290,59 +2290,6 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce payment method group rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommercePaymentMethodGroupRelImpl.class);
-
-		finderCache.clearCache(CommercePaymentMethodGroupRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce payment method group rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommercePaymentMethodGroupRel commercePaymentMethodGroupRel) {
-
-		entityCache.removeResult(
-			CommercePaymentMethodGroupRelImpl.class,
-			commercePaymentMethodGroupRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommercePaymentMethodGroupRel> commercePaymentMethodGroupRels) {
-
-		for (CommercePaymentMethodGroupRel commercePaymentMethodGroupRel :
-				commercePaymentMethodGroupRels) {
-
-			entityCache.removeResult(
-				CommercePaymentMethodGroupRelImpl.class,
-				commercePaymentMethodGroupRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePaymentMethodGroupRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommercePaymentMethodGroupRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommercePaymentMethodGroupRelModelImpl
 			commercePaymentMethodGroupRelModelImpl) {

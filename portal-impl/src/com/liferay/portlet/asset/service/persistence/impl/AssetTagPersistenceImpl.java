@@ -4325,48 +4325,6 @@ public class AssetTagPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset tags.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AssetTagImpl.class);
-
-		FinderCacheUtil.clearCache(AssetTagImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset tag.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetTag assetTag) {
-		EntityCacheUtil.removeResult(AssetTagImpl.class, assetTag);
-	}
-
-	@Override
-	public void clearCache(List<AssetTag> assetTags) {
-		for (AssetTag assetTag : assetTags) {
-			EntityCacheUtil.removeResult(AssetTagImpl.class, assetTag);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetTagImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(AssetTagImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetTagModelImpl assetTagModelImpl) {
 

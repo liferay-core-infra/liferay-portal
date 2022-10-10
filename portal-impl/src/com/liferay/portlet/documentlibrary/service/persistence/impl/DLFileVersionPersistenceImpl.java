@@ -5821,49 +5821,6 @@ public class DLFileVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library file versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(DLFileVersionImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library file version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFileVersion dlFileVersion) {
-		EntityCacheUtil.removeResult(DLFileVersionImpl.class, dlFileVersion);
-	}
-
-	@Override
-	public void clearCache(List<DLFileVersion> dlFileVersions) {
-		for (DLFileVersion dlFileVersion : dlFileVersions) {
-			EntityCacheUtil.removeResult(
-				DLFileVersionImpl.class, dlFileVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(DLFileVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFileVersionModelImpl dlFileVersionModelImpl) {
 

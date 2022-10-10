@@ -3269,48 +3269,6 @@ public class SXPBlueprintPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sxp blueprints.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SXPBlueprintImpl.class);
-
-		finderCache.clearCache(SXPBlueprintImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sxp blueprint.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SXPBlueprint sxpBlueprint) {
-		entityCache.removeResult(SXPBlueprintImpl.class, sxpBlueprint);
-	}
-
-	@Override
-	public void clearCache(List<SXPBlueprint> sxpBlueprints) {
-		for (SXPBlueprint sxpBlueprint : sxpBlueprints) {
-			entityCache.removeResult(SXPBlueprintImpl.class, sxpBlueprint);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SXPBlueprintImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SXPBlueprintImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SXPBlueprintModelImpl sxpBlueprintModelImpl) {
 

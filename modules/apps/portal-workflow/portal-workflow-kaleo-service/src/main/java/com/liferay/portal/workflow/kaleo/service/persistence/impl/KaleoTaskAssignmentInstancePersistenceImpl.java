@@ -4719,58 +4719,6 @@ public class KaleoTaskAssignmentInstancePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo task assignment instances.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoTaskAssignmentInstanceImpl.class);
-
-		finderCache.clearCache(KaleoTaskAssignmentInstanceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo task assignment instance.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance) {
-
-		entityCache.removeResult(
-			KaleoTaskAssignmentInstanceImpl.class, kaleoTaskAssignmentInstance);
-	}
-
-	@Override
-	public void clearCache(
-		List<KaleoTaskAssignmentInstance> kaleoTaskAssignmentInstances) {
-
-		for (KaleoTaskAssignmentInstance kaleoTaskAssignmentInstance :
-				kaleoTaskAssignmentInstances) {
-
-			entityCache.removeResult(
-				KaleoTaskAssignmentInstanceImpl.class,
-				kaleoTaskAssignmentInstance);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTaskAssignmentInstanceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				KaleoTaskAssignmentInstanceImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo task assignment instance with the primary key. Does not add the kaleo task assignment instance to the database.
 	 *
 	 * @param kaleoTaskAssignmentInstanceId the primary key for the new kaleo task assignment instance

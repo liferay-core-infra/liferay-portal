@@ -6749,48 +6749,6 @@ public class AddressPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all addresses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AddressImpl.class);
-
-		FinderCacheUtil.clearCache(AddressImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the address.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Address address) {
-		EntityCacheUtil.removeResult(AddressImpl.class, address);
-	}
-
-	@Override
-	public void clearCache(List<Address> addresses) {
-		for (Address address : addresses) {
-			EntityCacheUtil.removeResult(AddressImpl.class, address);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AddressImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(AddressImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(AddressModelImpl addressModelImpl) {
 		Object[] args = new Object[] {
 			addressModelImpl.getCompanyId(),

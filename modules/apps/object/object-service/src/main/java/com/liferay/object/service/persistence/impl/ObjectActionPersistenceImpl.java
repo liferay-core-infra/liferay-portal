@@ -2416,48 +2416,6 @@ public class ObjectActionPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object actions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectActionImpl.class);
-
-		finderCache.clearCache(ObjectActionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object action.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectAction objectAction) {
-		entityCache.removeResult(ObjectActionImpl.class, objectAction);
-	}
-
-	@Override
-	public void clearCache(List<ObjectAction> objectActions) {
-		for (ObjectAction objectAction : objectActions) {
-			entityCache.removeResult(ObjectActionImpl.class, objectAction);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectActionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectActionImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object action with the primary key. Does not add the object action to the database.
 	 *
 	 * @param objectActionId the primary key for the new object action

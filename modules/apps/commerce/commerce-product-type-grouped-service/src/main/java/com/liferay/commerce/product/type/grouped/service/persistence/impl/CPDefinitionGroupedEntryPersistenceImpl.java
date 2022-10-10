@@ -2300,55 +2300,6 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition grouped entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionGroupedEntryImpl.class);
-
-		finderCache.clearCache(CPDefinitionGroupedEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition grouped entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDefinitionGroupedEntry cpDefinitionGroupedEntry) {
-		entityCache.removeResult(
-			CPDefinitionGroupedEntryImpl.class, cpDefinitionGroupedEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPDefinitionGroupedEntry> cpDefinitionGroupedEntries) {
-
-		for (CPDefinitionGroupedEntry cpDefinitionGroupedEntry :
-				cpDefinitionGroupedEntries) {
-
-			entityCache.removeResult(
-				CPDefinitionGroupedEntryImpl.class, cpDefinitionGroupedEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionGroupedEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDefinitionGroupedEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionGroupedEntryModelImpl cpDefinitionGroupedEntryModelImpl) {
 

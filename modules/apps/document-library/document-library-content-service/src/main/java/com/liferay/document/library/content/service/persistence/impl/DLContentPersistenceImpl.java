@@ -2320,48 +2320,6 @@ public class DLContentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library contents.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DLContentImpl.class);
-
-		finderCache.clearCache(DLContentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library content.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLContent dlContent) {
-		entityCache.removeResult(DLContentImpl.class, dlContent);
-	}
-
-	@Override
-	public void clearCache(List<DLContent> dlContents) {
-		for (DLContent dlContent : dlContents) {
-			entityCache.removeResult(DLContentImpl.class, dlContent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLContentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DLContentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLContentModelImpl dlContentModelImpl) {
 

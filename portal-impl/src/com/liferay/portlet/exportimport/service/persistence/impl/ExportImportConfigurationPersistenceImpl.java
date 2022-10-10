@@ -2834,57 +2834,6 @@ public class ExportImportConfigurationPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all export import configurations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ExportImportConfigurationImpl.class);
-
-		FinderCacheUtil.clearCache(ExportImportConfigurationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the export import configuration.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		ExportImportConfiguration exportImportConfiguration) {
-
-		EntityCacheUtil.removeResult(
-			ExportImportConfigurationImpl.class, exportImportConfiguration);
-	}
-
-	@Override
-	public void clearCache(
-		List<ExportImportConfiguration> exportImportConfigurations) {
-
-		for (ExportImportConfiguration exportImportConfiguration :
-				exportImportConfigurations) {
-
-			EntityCacheUtil.removeResult(
-				ExportImportConfigurationImpl.class, exportImportConfiguration);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExportImportConfigurationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				ExportImportConfigurationImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new export import configuration with the primary key. Does not add the export import configuration to the database.
 	 *
 	 * @param exportImportConfigurationId the primary key for the new export import configuration

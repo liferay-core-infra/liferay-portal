@@ -2835,50 +2835,6 @@ public class CommerceOrderNotePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce order notes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceOrderNoteImpl.class);
-
-		finderCache.clearCache(CommerceOrderNoteImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce order note.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceOrderNote commerceOrderNote) {
-		entityCache.removeResult(
-			CommerceOrderNoteImpl.class, commerceOrderNote);
-	}
-
-	@Override
-	public void clearCache(List<CommerceOrderNote> commerceOrderNotes) {
-		for (CommerceOrderNote commerceOrderNote : commerceOrderNotes) {
-			entityCache.removeResult(
-				CommerceOrderNoteImpl.class, commerceOrderNote);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceOrderNoteImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceOrderNoteImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceOrderNoteModelImpl commerceOrderNoteModelImpl) {
 

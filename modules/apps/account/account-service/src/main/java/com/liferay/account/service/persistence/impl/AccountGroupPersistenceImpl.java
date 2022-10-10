@@ -6229,48 +6229,6 @@ public class AccountGroupPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all account groups.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AccountGroupImpl.class);
-
-		finderCache.clearCache(AccountGroupImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the account group.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AccountGroup accountGroup) {
-		entityCache.removeResult(AccountGroupImpl.class, accountGroup);
-	}
-
-	@Override
-	public void clearCache(List<AccountGroup> accountGroups) {
-		for (AccountGroup accountGroup : accountGroups) {
-			entityCache.removeResult(AccountGroupImpl.class, accountGroup);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountGroupImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AccountGroupImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AccountGroupModelImpl accountGroupModelImpl) {
 

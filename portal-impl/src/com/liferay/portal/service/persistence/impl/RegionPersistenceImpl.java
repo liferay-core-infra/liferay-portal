@@ -3007,48 +3007,6 @@ public class RegionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all regions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RegionImpl.class);
-
-		FinderCacheUtil.clearCache(RegionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the region.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Region region) {
-		EntityCacheUtil.removeResult(RegionImpl.class, region);
-	}
-
-	@Override
-	public void clearCache(List<Region> regions) {
-		for (Region region : regions) {
-			EntityCacheUtil.removeResult(RegionImpl.class, region);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RegionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(RegionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(RegionModelImpl regionModelImpl) {
 		Object[] args = new Object[] {
 			regionModelImpl.getCountryId(), regionModelImpl.getRegionCode()

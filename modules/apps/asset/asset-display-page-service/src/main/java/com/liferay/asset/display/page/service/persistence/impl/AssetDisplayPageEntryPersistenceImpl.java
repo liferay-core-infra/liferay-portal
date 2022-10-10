@@ -2936,55 +2936,6 @@ public class AssetDisplayPageEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset display page entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AssetDisplayPageEntryImpl.class);
-
-		finderCache.clearCache(AssetDisplayPageEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset display page entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetDisplayPageEntry assetDisplayPageEntry) {
-		entityCache.removeResult(
-			AssetDisplayPageEntryImpl.class, assetDisplayPageEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<AssetDisplayPageEntry> assetDisplayPageEntries) {
-
-		for (AssetDisplayPageEntry assetDisplayPageEntry :
-				assetDisplayPageEntries) {
-
-			entityCache.removeResult(
-				AssetDisplayPageEntryImpl.class, assetDisplayPageEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetDisplayPageEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				AssetDisplayPageEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetDisplayPageEntryModelImpl assetDisplayPageEntryModelImpl) {
 

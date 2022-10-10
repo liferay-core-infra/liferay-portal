@@ -2322,48 +2322,6 @@ public class ObjectViewPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object views.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectViewImpl.class);
-
-		finderCache.clearCache(ObjectViewImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object view.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectView objectView) {
-		entityCache.removeResult(ObjectViewImpl.class, objectView);
-	}
-
-	@Override
-	public void clearCache(List<ObjectView> objectViews) {
-		for (ObjectView objectView : objectViews) {
-			entityCache.removeResult(ObjectViewImpl.class, objectView);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectViewImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectViewImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object view with the primary key. Does not add the object view to the database.
 	 *
 	 * @param objectViewId the primary key for the new object view

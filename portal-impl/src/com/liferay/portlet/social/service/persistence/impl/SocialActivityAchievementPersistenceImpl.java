@@ -3301,57 +3301,6 @@ public class SocialActivityAchievementPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all social activity achievements.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialActivityAchievementImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivityAchievementImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social activity achievement.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		SocialActivityAchievement socialActivityAchievement) {
-
-		EntityCacheUtil.removeResult(
-			SocialActivityAchievementImpl.class, socialActivityAchievement);
-	}
-
-	@Override
-	public void clearCache(
-		List<SocialActivityAchievement> socialActivityAchievements) {
-
-		for (SocialActivityAchievement socialActivityAchievement :
-				socialActivityAchievements) {
-
-			EntityCacheUtil.removeResult(
-				SocialActivityAchievementImpl.class, socialActivityAchievement);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivityAchievementImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				SocialActivityAchievementImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SocialActivityAchievementModelImpl socialActivityAchievementModelImpl) {
 

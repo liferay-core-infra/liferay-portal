@@ -3955,48 +3955,6 @@ public class PhonePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all phones.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PhoneImpl.class);
-
-		FinderCacheUtil.clearCache(PhoneImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the phone.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Phone phone) {
-		EntityCacheUtil.removeResult(PhoneImpl.class, phone);
-	}
-
-	@Override
-	public void clearCache(List<Phone> phones) {
-		for (Phone phone : phones) {
-			EntityCacheUtil.removeResult(PhoneImpl.class, phone);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PhoneImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(PhoneImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new phone with the primary key. Does not add the phone to the database.
 	 *
 	 * @param phoneId the primary key for the new phone

@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -8713,48 +8712,6 @@ public class BackgroundTaskPersistenceImpl
 
 				cacheResult(backgroundTask);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all background tasks.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BackgroundTaskImpl.class);
-
-		finderCache.clearCache(BackgroundTaskImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the background task.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BackgroundTask backgroundTask) {
-		entityCache.removeResult(BackgroundTaskImpl.class, backgroundTask);
-	}
-
-	@Override
-	public void clearCache(List<BackgroundTask> backgroundTasks) {
-		for (BackgroundTask backgroundTask : backgroundTasks) {
-			entityCache.removeResult(BackgroundTaskImpl.class, backgroundTask);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BackgroundTaskImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(BackgroundTaskImpl.class, primaryKey);
 		}
 	}
 

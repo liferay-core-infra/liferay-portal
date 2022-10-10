@@ -46,7 +46,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the versioned entry version service.
@@ -1931,53 +1930,6 @@ public class VersionedEntryVersionPersistenceImpl
 
 				cacheResult(versionedEntryVersion);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all versioned entry versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(VersionedEntryVersionImpl.class);
-
-		finderCache.clearCache(VersionedEntryVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the versioned entry version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(VersionedEntryVersion versionedEntryVersion) {
-		entityCache.removeResult(
-			VersionedEntryVersionImpl.class, versionedEntryVersion);
-	}
-
-	@Override
-	public void clearCache(List<VersionedEntryVersion> versionedEntryVersions) {
-		for (VersionedEntryVersion versionedEntryVersion :
-				versionedEntryVersions) {
-
-			entityCache.removeResult(
-				VersionedEntryVersionImpl.class, versionedEntryVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(VersionedEntryVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				VersionedEntryVersionImpl.class, primaryKey);
 		}
 	}
 

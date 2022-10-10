@@ -2824,48 +2824,6 @@ public class MBThreadFlagPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards thread flags.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBThreadFlagImpl.class);
-
-		finderCache.clearCache(MBThreadFlagImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards thread flag.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBThreadFlag mbThreadFlag) {
-		entityCache.removeResult(MBThreadFlagImpl.class, mbThreadFlag);
-	}
-
-	@Override
-	public void clearCache(List<MBThreadFlag> mbThreadFlags) {
-		for (MBThreadFlag mbThreadFlag : mbThreadFlags) {
-			entityCache.removeResult(MBThreadFlagImpl.class, mbThreadFlag);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBThreadFlagImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBThreadFlagImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBThreadFlagModelImpl mbThreadFlagModelImpl) {
 

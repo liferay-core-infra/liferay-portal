@@ -2920,55 +2920,6 @@ public class NotificationQueueEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all notification queue entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(NotificationQueueEntryImpl.class);
-
-		finderCache.clearCache(NotificationQueueEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the notification queue entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(NotificationQueueEntry notificationQueueEntry) {
-		entityCache.removeResult(
-			NotificationQueueEntryImpl.class, notificationQueueEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<NotificationQueueEntry> notificationQueueEntries) {
-
-		for (NotificationQueueEntry notificationQueueEntry :
-				notificationQueueEntries) {
-
-			entityCache.removeResult(
-				NotificationQueueEntryImpl.class, notificationQueueEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NotificationQueueEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				NotificationQueueEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new notification queue entry with the primary key. Does not add the notification queue entry to the database.
 	 *
 	 * @param notificationQueueEntryId the primary key for the new notification queue entry

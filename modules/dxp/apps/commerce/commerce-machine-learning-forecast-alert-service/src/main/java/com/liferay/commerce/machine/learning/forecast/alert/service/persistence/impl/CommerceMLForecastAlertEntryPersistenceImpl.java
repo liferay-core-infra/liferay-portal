@@ -4455,59 +4455,6 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce ml forecast alert entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceMLForecastAlertEntryImpl.class);
-
-		finderCache.clearCache(CommerceMLForecastAlertEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce ml forecast alert entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceMLForecastAlertEntry commerceMLForecastAlertEntry) {
-
-		entityCache.removeResult(
-			CommerceMLForecastAlertEntryImpl.class,
-			commerceMLForecastAlertEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceMLForecastAlertEntry> commerceMLForecastAlertEntries) {
-
-		for (CommerceMLForecastAlertEntry commerceMLForecastAlertEntry :
-				commerceMLForecastAlertEntries) {
-
-			entityCache.removeResult(
-				CommerceMLForecastAlertEntryImpl.class,
-				commerceMLForecastAlertEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceMLForecastAlertEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceMLForecastAlertEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceMLForecastAlertEntryModelImpl
 			commerceMLForecastAlertEntryModelImpl) {

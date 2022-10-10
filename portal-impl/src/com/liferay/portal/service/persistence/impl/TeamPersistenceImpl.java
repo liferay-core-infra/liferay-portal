@@ -3201,48 +3201,6 @@ public class TeamPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all teams.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(TeamImpl.class);
-
-		FinderCacheUtil.clearCache(TeamImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the team.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Team team) {
-		EntityCacheUtil.removeResult(TeamImpl.class, team);
-	}
-
-	@Override
-	public void clearCache(List<Team> teams) {
-		for (Team team : teams) {
-			EntityCacheUtil.removeResult(TeamImpl.class, team);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(TeamImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(TeamImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(TeamModelImpl teamModelImpl) {
 		Object[] args = new Object[] {
 			teamModelImpl.getUuid(), teamModelImpl.getGroupId()

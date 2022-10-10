@@ -954,58 +954,6 @@ public class CommerceShippingFixedOptionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce shipping fixed options.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceShippingFixedOptionImpl.class);
-
-		finderCache.clearCache(CommerceShippingFixedOptionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce shipping fixed option.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceShippingFixedOption commerceShippingFixedOption) {
-
-		entityCache.removeResult(
-			CommerceShippingFixedOptionImpl.class, commerceShippingFixedOption);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceShippingFixedOption> commerceShippingFixedOptions) {
-
-		for (CommerceShippingFixedOption commerceShippingFixedOption :
-				commerceShippingFixedOptions) {
-
-			entityCache.removeResult(
-				CommerceShippingFixedOptionImpl.class,
-				commerceShippingFixedOption);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShippingFixedOptionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceShippingFixedOptionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceShippingFixedOptionModelImpl
 			commerceShippingFixedOptionModelImpl) {

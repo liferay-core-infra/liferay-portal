@@ -2139,55 +2139,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo timer instance tokens.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoTimerInstanceTokenImpl.class);
-
-		finderCache.clearCache(KaleoTimerInstanceTokenImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo timer instance token.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoTimerInstanceToken kaleoTimerInstanceToken) {
-		entityCache.removeResult(
-			KaleoTimerInstanceTokenImpl.class, kaleoTimerInstanceToken);
-	}
-
-	@Override
-	public void clearCache(
-		List<KaleoTimerInstanceToken> kaleoTimerInstanceTokens) {
-
-		for (KaleoTimerInstanceToken kaleoTimerInstanceToken :
-				kaleoTimerInstanceTokens) {
-
-			entityCache.removeResult(
-				KaleoTimerInstanceTokenImpl.class, kaleoTimerInstanceToken);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTimerInstanceTokenImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				KaleoTimerInstanceTokenImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoTimerInstanceTokenModelImpl kaleoTimerInstanceTokenModelImpl) {
 

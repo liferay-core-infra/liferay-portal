@@ -2868,48 +2868,6 @@ public class DefinitionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all definitions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DefinitionImpl.class);
-
-		finderCache.clearCache(DefinitionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the definition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Definition definition) {
-		entityCache.removeResult(DefinitionImpl.class, definition);
-	}
-
-	@Override
-	public void clearCache(List<Definition> definitions) {
-		for (Definition definition : definitions) {
-			entityCache.removeResult(DefinitionImpl.class, definition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DefinitionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DefinitionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DefinitionModelImpl definitionModelImpl) {
 

@@ -1254,48 +1254,6 @@ public class FVSEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all fvs entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FVSEntryImpl.class);
-
-		finderCache.clearCache(FVSEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the fvs entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FVSEntry fvsEntry) {
-		entityCache.removeResult(FVSEntryImpl.class, fvsEntry);
-	}
-
-	@Override
-	public void clearCache(List<FVSEntry> fvsEntries) {
-		for (FVSEntry fvsEntry : fvsEntries) {
-			entityCache.removeResult(FVSEntryImpl.class, fvsEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FVSEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FVSEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new fvs entry with the primary key. Does not add the fvs entry to the database.
 	 *
 	 * @param fvsEntryId the primary key for the new fvs entry

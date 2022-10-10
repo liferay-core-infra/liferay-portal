@@ -2603,48 +2603,6 @@ public class KaleoProcessPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo processes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoProcessImpl.class);
-
-		finderCache.clearCache(KaleoProcessImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo process.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoProcess kaleoProcess) {
-		entityCache.removeResult(KaleoProcessImpl.class, kaleoProcess);
-	}
-
-	@Override
-	public void clearCache(List<KaleoProcess> kaleoProcesses) {
-		for (KaleoProcess kaleoProcess : kaleoProcesses) {
-			entityCache.removeResult(KaleoProcessImpl.class, kaleoProcess);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoProcessImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoProcessImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoProcessModelImpl kaleoProcessModelImpl) {
 

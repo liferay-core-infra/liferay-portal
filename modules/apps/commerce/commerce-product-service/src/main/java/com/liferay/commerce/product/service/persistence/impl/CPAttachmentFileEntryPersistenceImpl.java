@@ -6185,55 +6185,6 @@ public class CPAttachmentFileEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp attachment file entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPAttachmentFileEntryImpl.class);
-
-		finderCache.clearCache(CPAttachmentFileEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp attachment file entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPAttachmentFileEntry cpAttachmentFileEntry) {
-		entityCache.removeResult(
-			CPAttachmentFileEntryImpl.class, cpAttachmentFileEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPAttachmentFileEntry> cpAttachmentFileEntries) {
-
-		for (CPAttachmentFileEntry cpAttachmentFileEntry :
-				cpAttachmentFileEntries) {
-
-			entityCache.removeResult(
-				CPAttachmentFileEntryImpl.class, cpAttachmentFileEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPAttachmentFileEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPAttachmentFileEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPAttachmentFileEntryModelImpl cpAttachmentFileEntryModelImpl) {
 

@@ -993,48 +993,6 @@ public class ExpandoTablePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all expando tables.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ExpandoTableImpl.class);
-
-		FinderCacheUtil.clearCache(ExpandoTableImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the expando table.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ExpandoTable expandoTable) {
-		EntityCacheUtil.removeResult(ExpandoTableImpl.class, expandoTable);
-	}
-
-	@Override
-	public void clearCache(List<ExpandoTable> expandoTables) {
-		for (ExpandoTable expandoTable : expandoTables) {
-			EntityCacheUtil.removeResult(ExpandoTableImpl.class, expandoTable);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExpandoTableImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ExpandoTableImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ExpandoTableModelImpl expandoTableModelImpl) {
 

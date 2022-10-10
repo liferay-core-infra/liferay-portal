@@ -8036,50 +8036,6 @@ public class CommerceTermEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce term entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceTermEntryImpl.class);
-
-		finderCache.clearCache(CommerceTermEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce term entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceTermEntry commerceTermEntry) {
-		entityCache.removeResult(
-			CommerceTermEntryImpl.class, commerceTermEntry);
-	}
-
-	@Override
-	public void clearCache(List<CommerceTermEntry> commerceTermEntries) {
-		for (CommerceTermEntry commerceTermEntry : commerceTermEntries) {
-			entityCache.removeResult(
-				CommerceTermEntryImpl.class, commerceTermEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTermEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceTermEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceTermEntryModelImpl commerceTermEntryModelImpl) {
 

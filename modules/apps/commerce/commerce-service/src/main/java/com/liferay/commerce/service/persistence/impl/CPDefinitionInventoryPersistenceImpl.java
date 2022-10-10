@@ -1813,55 +1813,6 @@ public class CPDefinitionInventoryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition inventories.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionInventoryImpl.class);
-
-		finderCache.clearCache(CPDefinitionInventoryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition inventory.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDefinitionInventory cpDefinitionInventory) {
-		entityCache.removeResult(
-			CPDefinitionInventoryImpl.class, cpDefinitionInventory);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPDefinitionInventory> cpDefinitionInventories) {
-
-		for (CPDefinitionInventory cpDefinitionInventory :
-				cpDefinitionInventories) {
-
-			entityCache.removeResult(
-				CPDefinitionInventoryImpl.class, cpDefinitionInventory);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionInventoryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDefinitionInventoryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionInventoryModelImpl cpDefinitionInventoryModelImpl) {
 

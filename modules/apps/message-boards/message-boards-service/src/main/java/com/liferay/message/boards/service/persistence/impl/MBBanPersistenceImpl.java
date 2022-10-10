@@ -3301,48 +3301,6 @@ public class MBBanPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards bans.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBBanImpl.class);
-
-		finderCache.clearCache(MBBanImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards ban.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBBan mbBan) {
-		entityCache.removeResult(MBBanImpl.class, mbBan);
-	}
-
-	@Override
-	public void clearCache(List<MBBan> mbBans) {
-		for (MBBan mbBan : mbBans) {
-			entityCache.removeResult(MBBanImpl.class, mbBan);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBBanImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBBanImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(MBBanModelImpl mbBanModelImpl) {
 		Object[] args = new Object[] {
 			mbBanModelImpl.getUuid(), mbBanModelImpl.getGroupId()

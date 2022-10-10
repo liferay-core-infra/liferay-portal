@@ -2116,51 +2116,6 @@ public class SocialActivityLimitPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all social activity limits.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialActivityLimitImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivityLimitImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social activity limit.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SocialActivityLimit socialActivityLimit) {
-		EntityCacheUtil.removeResult(
-			SocialActivityLimitImpl.class, socialActivityLimit);
-	}
-
-	@Override
-	public void clearCache(List<SocialActivityLimit> socialActivityLimits) {
-		for (SocialActivityLimit socialActivityLimit : socialActivityLimits) {
-			EntityCacheUtil.removeResult(
-				SocialActivityLimitImpl.class, socialActivityLimit);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivityLimitImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				SocialActivityLimitImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SocialActivityLimitModelImpl socialActivityLimitModelImpl) {
 

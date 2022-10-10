@@ -2722,48 +2722,6 @@ public class JournalFeedPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all journal feeds.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(JournalFeedImpl.class);
-
-		finderCache.clearCache(JournalFeedImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the journal feed.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(JournalFeed journalFeed) {
-		entityCache.removeResult(JournalFeedImpl.class, journalFeed);
-	}
-
-	@Override
-	public void clearCache(List<JournalFeed> journalFeeds) {
-		for (JournalFeed journalFeed : journalFeeds) {
-			entityCache.removeResult(JournalFeedImpl.class, journalFeed);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalFeedImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(JournalFeedImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JournalFeedModelImpl journalFeedModelImpl) {
 

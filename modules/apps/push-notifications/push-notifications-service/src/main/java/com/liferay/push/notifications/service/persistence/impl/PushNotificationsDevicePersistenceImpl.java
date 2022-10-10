@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1271,55 +1270,6 @@ public class PushNotificationsDevicePersistenceImpl
 
 				cacheResult(pushNotificationsDevice);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all push notifications devices.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(PushNotificationsDeviceImpl.class);
-
-		finderCache.clearCache(PushNotificationsDeviceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the push notifications device.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PushNotificationsDevice pushNotificationsDevice) {
-		entityCache.removeResult(
-			PushNotificationsDeviceImpl.class, pushNotificationsDevice);
-	}
-
-	@Override
-	public void clearCache(
-		List<PushNotificationsDevice> pushNotificationsDevices) {
-
-		for (PushNotificationsDevice pushNotificationsDevice :
-				pushNotificationsDevices) {
-
-			entityCache.removeResult(
-				PushNotificationsDeviceImpl.class, pushNotificationsDevice);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(PushNotificationsDeviceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				PushNotificationsDeviceImpl.class, primaryKey);
 		}
 	}
 

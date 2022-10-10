@@ -53,7 +53,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -921,58 +920,6 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 
 				cacheResult(sharepointOAuth2TokenEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all sharepoint o auth2 token entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SharepointOAuth2TokenEntryImpl.class);
-
-		finderCache.clearCache(SharepointOAuth2TokenEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sharepoint o auth2 token entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry) {
-
-		entityCache.removeResult(
-			SharepointOAuth2TokenEntryImpl.class, sharepointOAuth2TokenEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<SharepointOAuth2TokenEntry> sharepointOAuth2TokenEntries) {
-
-		for (SharepointOAuth2TokenEntry sharepointOAuth2TokenEntry :
-				sharepointOAuth2TokenEntries) {
-
-			entityCache.removeResult(
-				SharepointOAuth2TokenEntryImpl.class,
-				sharepointOAuth2TokenEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SharepointOAuth2TokenEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				SharepointOAuth2TokenEntryImpl.class, primaryKey);
 		}
 	}
 

@@ -1407,55 +1407,6 @@ public class AnnouncementsDeliveryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all announcements deliveries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AnnouncementsDeliveryImpl.class);
-
-		FinderCacheUtil.clearCache(AnnouncementsDeliveryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the announcements delivery.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AnnouncementsDelivery announcementsDelivery) {
-		EntityCacheUtil.removeResult(
-			AnnouncementsDeliveryImpl.class, announcementsDelivery);
-	}
-
-	@Override
-	public void clearCache(
-		List<AnnouncementsDelivery> announcementsDeliveries) {
-
-		for (AnnouncementsDelivery announcementsDelivery :
-				announcementsDeliveries) {
-
-			EntityCacheUtil.removeResult(
-				AnnouncementsDeliveryImpl.class, announcementsDelivery);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AnnouncementsDeliveryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				AnnouncementsDeliveryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AnnouncementsDeliveryModelImpl announcementsDeliveryModelImpl) {
 

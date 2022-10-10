@@ -2087,62 +2087,6 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce shipping option account entry rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceShippingOptionAccountEntryRelImpl.class);
-
-		finderCache.clearCache(CommerceShippingOptionAccountEntryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce shipping option account entry rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceShippingOptionAccountEntryRel
-			commerceShippingOptionAccountEntryRel) {
-
-		entityCache.removeResult(
-			CommerceShippingOptionAccountEntryRelImpl.class,
-			commerceShippingOptionAccountEntryRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceShippingOptionAccountEntryRel>
-			commerceShippingOptionAccountEntryRels) {
-
-		for (CommerceShippingOptionAccountEntryRel
-				commerceShippingOptionAccountEntryRel :
-					commerceShippingOptionAccountEntryRels) {
-
-			entityCache.removeResult(
-				CommerceShippingOptionAccountEntryRelImpl.class,
-				commerceShippingOptionAccountEntryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShippingOptionAccountEntryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceShippingOptionAccountEntryRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceShippingOptionAccountEntryRelModelImpl
 			commerceShippingOptionAccountEntryRelModelImpl) {

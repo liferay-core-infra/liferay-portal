@@ -47,7 +47,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the localized entry localization service.
@@ -927,58 +926,6 @@ public class LocalizedEntryLocalizationPersistenceImpl
 
 				cacheResult(localizedEntryLocalization);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all localized entry localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LocalizedEntryLocalizationImpl.class);
-
-		finderCache.clearCache(LocalizedEntryLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the localized entry localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		LocalizedEntryLocalization localizedEntryLocalization) {
-
-		entityCache.removeResult(
-			LocalizedEntryLocalizationImpl.class, localizedEntryLocalization);
-	}
-
-	@Override
-	public void clearCache(
-		List<LocalizedEntryLocalization> localizedEntryLocalizations) {
-
-		for (LocalizedEntryLocalization localizedEntryLocalization :
-				localizedEntryLocalizations) {
-
-			entityCache.removeResult(
-				LocalizedEntryLocalizationImpl.class,
-				localizedEntryLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LocalizedEntryLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LocalizedEntryLocalizationImpl.class, primaryKey);
 		}
 	}
 

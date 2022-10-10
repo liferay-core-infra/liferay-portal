@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -346,53 +345,6 @@ public class MFATimeBasedOTPEntryPersistenceImpl
 
 				cacheResult(mfaTimeBasedOTPEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all mfa time based otp entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MFATimeBasedOTPEntryImpl.class);
-
-		finderCache.clearCache(MFATimeBasedOTPEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the mfa time based otp entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MFATimeBasedOTPEntry mfaTimeBasedOTPEntry) {
-		entityCache.removeResult(
-			MFATimeBasedOTPEntryImpl.class, mfaTimeBasedOTPEntry);
-	}
-
-	@Override
-	public void clearCache(List<MFATimeBasedOTPEntry> mfaTimeBasedOTPEntries) {
-		for (MFATimeBasedOTPEntry mfaTimeBasedOTPEntry :
-				mfaTimeBasedOTPEntries) {
-
-			entityCache.removeResult(
-				MFATimeBasedOTPEntryImpl.class, mfaTimeBasedOTPEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MFATimeBasedOTPEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				MFATimeBasedOTPEntryImpl.class, primaryKey);
 		}
 	}
 

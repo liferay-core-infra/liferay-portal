@@ -47,7 +47,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the finder where clause entry service.
@@ -674,55 +673,6 @@ public class FinderWhereClauseEntryPersistenceImpl
 
 				cacheResult(finderWhereClauseEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all finder where clause entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FinderWhereClauseEntryImpl.class);
-
-		finderCache.clearCache(FinderWhereClauseEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the finder where clause entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FinderWhereClauseEntry finderWhereClauseEntry) {
-		entityCache.removeResult(
-			FinderWhereClauseEntryImpl.class, finderWhereClauseEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<FinderWhereClauseEntry> finderWhereClauseEntries) {
-
-		for (FinderWhereClauseEntry finderWhereClauseEntry :
-				finderWhereClauseEntries) {
-
-			entityCache.removeResult(
-				FinderWhereClauseEntryImpl.class, finderWhereClauseEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FinderWhereClauseEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				FinderWhereClauseEntryImpl.class, primaryKey);
 		}
 	}
 

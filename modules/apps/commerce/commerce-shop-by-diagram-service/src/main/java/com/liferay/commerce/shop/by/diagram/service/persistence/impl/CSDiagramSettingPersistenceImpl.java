@@ -1535,49 +1535,6 @@ public class CSDiagramSettingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cs diagram settings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CSDiagramSettingImpl.class);
-
-		finderCache.clearCache(CSDiagramSettingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cs diagram setting.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CSDiagramSetting csDiagramSetting) {
-		entityCache.removeResult(CSDiagramSettingImpl.class, csDiagramSetting);
-	}
-
-	@Override
-	public void clearCache(List<CSDiagramSetting> csDiagramSettings) {
-		for (CSDiagramSetting csDiagramSetting : csDiagramSettings) {
-			entityCache.removeResult(
-				CSDiagramSettingImpl.class, csDiagramSetting);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CSDiagramSettingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CSDiagramSettingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CSDiagramSettingModelImpl csDiagramSettingModelImpl) {
 

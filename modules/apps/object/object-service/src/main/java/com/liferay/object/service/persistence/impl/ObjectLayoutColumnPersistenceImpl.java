@@ -2302,50 +2302,6 @@ public class ObjectLayoutColumnPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object layout columns.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectLayoutColumnImpl.class);
-
-		finderCache.clearCache(ObjectLayoutColumnImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object layout column.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectLayoutColumn objectLayoutColumn) {
-		entityCache.removeResult(
-			ObjectLayoutColumnImpl.class, objectLayoutColumn);
-	}
-
-	@Override
-	public void clearCache(List<ObjectLayoutColumn> objectLayoutColumns) {
-		for (ObjectLayoutColumn objectLayoutColumn : objectLayoutColumns) {
-			entityCache.removeResult(
-				ObjectLayoutColumnImpl.class, objectLayoutColumn);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutColumnImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectLayoutColumnImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object layout column with the primary key. Does not add the object layout column to the database.
 	 *
 	 * @param objectLayoutColumnId the primary key for the new object layout column

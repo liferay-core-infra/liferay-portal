@@ -4525,48 +4525,6 @@ public class KaleoInstancePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo instances.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoInstanceImpl.class);
-
-		finderCache.clearCache(KaleoInstanceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo instance.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoInstance kaleoInstance) {
-		entityCache.removeResult(KaleoInstanceImpl.class, kaleoInstance);
-	}
-
-	@Override
-	public void clearCache(List<KaleoInstance> kaleoInstances) {
-		for (KaleoInstance kaleoInstance : kaleoInstances) {
-			entityCache.removeResult(KaleoInstanceImpl.class, kaleoInstance);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoInstanceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoInstanceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoInstanceModelImpl kaleoInstanceModelImpl) {
 

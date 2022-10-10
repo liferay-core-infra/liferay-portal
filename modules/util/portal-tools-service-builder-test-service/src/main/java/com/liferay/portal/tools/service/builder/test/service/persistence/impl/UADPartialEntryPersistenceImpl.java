@@ -43,7 +43,6 @@ import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the uad partial entry service.
@@ -122,49 +121,6 @@ public class UADPartialEntryPersistenceImpl
 
 				cacheResult(uadPartialEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all uad partial entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(UADPartialEntryImpl.class);
-
-		finderCache.clearCache(UADPartialEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the uad partial entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UADPartialEntry uadPartialEntry) {
-		entityCache.removeResult(UADPartialEntryImpl.class, uadPartialEntry);
-	}
-
-	@Override
-	public void clearCache(List<UADPartialEntry> uadPartialEntries) {
-		for (UADPartialEntry uadPartialEntry : uadPartialEntries) {
-			entityCache.removeResult(
-				UADPartialEntryImpl.class, uadPartialEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(UADPartialEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(UADPartialEntryImpl.class, primaryKey);
 		}
 	}
 

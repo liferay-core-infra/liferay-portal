@@ -46,7 +46,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the cache disabled entry service.
@@ -353,51 +352,6 @@ public class CacheDisabledEntryPersistenceImpl
 
 				cacheResult(cacheDisabledEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all cache disabled entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		dummyEntityCache.clearCache(CacheDisabledEntryImpl.class);
-
-		dummyFinderCache.clearCache(CacheDisabledEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cache disabled entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CacheDisabledEntry cacheDisabledEntry) {
-		dummyEntityCache.removeResult(
-			CacheDisabledEntryImpl.class, cacheDisabledEntry);
-	}
-
-	@Override
-	public void clearCache(List<CacheDisabledEntry> cacheDisabledEntries) {
-		for (CacheDisabledEntry cacheDisabledEntry : cacheDisabledEntries) {
-			dummyEntityCache.removeResult(
-				CacheDisabledEntryImpl.class, cacheDisabledEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(CacheDisabledEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			dummyEntityCache.removeResult(
-				CacheDisabledEntryImpl.class, primaryKey);
 		}
 	}
 

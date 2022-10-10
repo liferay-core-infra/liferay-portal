@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -338,49 +337,6 @@ public class MFAEmailOTPEntryPersistenceImpl
 
 				cacheResult(mfaEmailOTPEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all mfa email otp entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MFAEmailOTPEntryImpl.class);
-
-		finderCache.clearCache(MFAEmailOTPEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the mfa email otp entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MFAEmailOTPEntry mfaEmailOTPEntry) {
-		entityCache.removeResult(MFAEmailOTPEntryImpl.class, mfaEmailOTPEntry);
-	}
-
-	@Override
-	public void clearCache(List<MFAEmailOTPEntry> mfaEmailOTPEntries) {
-		for (MFAEmailOTPEntry mfaEmailOTPEntry : mfaEmailOTPEntries) {
-			entityCache.removeResult(
-				MFAEmailOTPEntryImpl.class, mfaEmailOTPEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MFAEmailOTPEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MFAEmailOTPEntryImpl.class, primaryKey);
 		}
 	}
 

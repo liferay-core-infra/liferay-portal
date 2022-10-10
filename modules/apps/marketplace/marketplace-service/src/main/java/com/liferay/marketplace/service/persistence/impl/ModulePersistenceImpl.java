@@ -3419,48 +3419,6 @@ public class ModulePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all modules.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ModuleImpl.class);
-
-		finderCache.clearCache(ModuleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the module.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Module module) {
-		entityCache.removeResult(ModuleImpl.class, module);
-	}
-
-	@Override
-	public void clearCache(List<Module> modules) {
-		for (Module module : modules) {
-			entityCache.removeResult(ModuleImpl.class, module);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ModuleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ModuleImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(ModuleModelImpl moduleModelImpl) {
 		Object[] args = new Object[] {
 			moduleModelImpl.getAppId(), moduleModelImpl.getContextName()

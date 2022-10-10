@@ -2279,49 +2279,6 @@ public class KaleoTransitionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo transitions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoTransitionImpl.class);
-
-		finderCache.clearCache(KaleoTransitionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo transition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoTransition kaleoTransition) {
-		entityCache.removeResult(KaleoTransitionImpl.class, kaleoTransition);
-	}
-
-	@Override
-	public void clearCache(List<KaleoTransition> kaleoTransitions) {
-		for (KaleoTransition kaleoTransition : kaleoTransitions) {
-			entityCache.removeResult(
-				KaleoTransitionImpl.class, kaleoTransition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTransitionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoTransitionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoTransitionModelImpl kaleoTransitionModelImpl) {
 

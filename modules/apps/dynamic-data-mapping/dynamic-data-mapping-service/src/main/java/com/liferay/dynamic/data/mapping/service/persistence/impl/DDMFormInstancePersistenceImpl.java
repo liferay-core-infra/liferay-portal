@@ -2956,49 +2956,6 @@ public class DDMFormInstancePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm form instances.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMFormInstanceImpl.class);
-
-		finderCache.clearCache(DDMFormInstanceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm form instance.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMFormInstance ddmFormInstance) {
-		entityCache.removeResult(DDMFormInstanceImpl.class, ddmFormInstance);
-	}
-
-	@Override
-	public void clearCache(List<DDMFormInstance> ddmFormInstances) {
-		for (DDMFormInstance ddmFormInstance : ddmFormInstances) {
-			entityCache.removeResult(
-				DDMFormInstanceImpl.class, ddmFormInstance);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMFormInstanceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMFormInstanceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMFormInstanceModelImpl ddmFormInstanceModelImpl) {
 

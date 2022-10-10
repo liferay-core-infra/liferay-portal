@@ -49,7 +49,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the rename finder column entry service.
@@ -387,55 +386,6 @@ public class RenameFinderColumnEntryPersistenceImpl
 
 				cacheResult(renameFinderColumnEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all rename finder column entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(RenameFinderColumnEntryImpl.class);
-
-		finderCache.clearCache(RenameFinderColumnEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the rename finder column entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RenameFinderColumnEntry renameFinderColumnEntry) {
-		entityCache.removeResult(
-			RenameFinderColumnEntryImpl.class, renameFinderColumnEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<RenameFinderColumnEntry> renameFinderColumnEntries) {
-
-		for (RenameFinderColumnEntry renameFinderColumnEntry :
-				renameFinderColumnEntries) {
-
-			entityCache.removeResult(
-				RenameFinderColumnEntryImpl.class, renameFinderColumnEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RenameFinderColumnEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				RenameFinderColumnEntryImpl.class, primaryKey);
 		}
 	}
 

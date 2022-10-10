@@ -46,7 +46,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the null convertible entry service.
@@ -359,53 +358,6 @@ public class NullConvertibleEntryPersistenceImpl
 
 				cacheResult(nullConvertibleEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all null convertible entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		dummyEntityCache.clearCache(NullConvertibleEntryImpl.class);
-
-		dummyFinderCache.clearCache(NullConvertibleEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the null convertible entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(NullConvertibleEntry nullConvertibleEntry) {
-		dummyEntityCache.removeResult(
-			NullConvertibleEntryImpl.class, nullConvertibleEntry);
-	}
-
-	@Override
-	public void clearCache(List<NullConvertibleEntry> nullConvertibleEntries) {
-		for (NullConvertibleEntry nullConvertibleEntry :
-				nullConvertibleEntries) {
-
-			dummyEntityCache.removeResult(
-				NullConvertibleEntryImpl.class, nullConvertibleEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(NullConvertibleEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			dummyEntityCache.removeResult(
-				NullConvertibleEntryImpl.class, primaryKey);
 		}
 	}
 

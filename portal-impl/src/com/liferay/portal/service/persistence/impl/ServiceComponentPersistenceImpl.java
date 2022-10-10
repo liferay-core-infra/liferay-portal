@@ -952,51 +952,6 @@ public class ServiceComponentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all service components.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ServiceComponentImpl.class);
-
-		FinderCacheUtil.clearCache(ServiceComponentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the service component.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ServiceComponent serviceComponent) {
-		EntityCacheUtil.removeResult(
-			ServiceComponentImpl.class, serviceComponent);
-	}
-
-	@Override
-	public void clearCache(List<ServiceComponent> serviceComponents) {
-		for (ServiceComponent serviceComponent : serviceComponents) {
-			EntityCacheUtil.removeResult(
-				ServiceComponentImpl.class, serviceComponent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ServiceComponentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				ServiceComponentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ServiceComponentModelImpl serviceComponentModelImpl) {
 

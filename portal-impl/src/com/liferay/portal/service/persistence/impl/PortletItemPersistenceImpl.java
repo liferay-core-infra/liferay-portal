@@ -54,7 +54,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the portlet item service.
@@ -1640,48 +1639,6 @@ public class PortletItemPersistenceImpl
 
 				cacheResult(portletItem);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all portlet items.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PortletItemImpl.class);
-
-		FinderCacheUtil.clearCache(PortletItemImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the portlet item.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PortletItem portletItem) {
-		EntityCacheUtil.removeResult(PortletItemImpl.class, portletItem);
-	}
-
-	@Override
-	public void clearCache(List<PortletItem> portletItems) {
-		for (PortletItem portletItem : portletItems) {
-			EntityCacheUtil.removeResult(PortletItemImpl.class, portletItem);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortletItemImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(PortletItemImpl.class, primaryKey);
 		}
 	}
 

@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -3177,53 +3176,6 @@ public class CommerceWishListItemPersistenceImpl
 
 				cacheResult(commerceWishListItem);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce wish list items.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceWishListItemImpl.class);
-
-		finderCache.clearCache(CommerceWishListItemImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce wish list item.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceWishListItem commerceWishListItem) {
-		entityCache.removeResult(
-			CommerceWishListItemImpl.class, commerceWishListItem);
-	}
-
-	@Override
-	public void clearCache(List<CommerceWishListItem> commerceWishListItems) {
-		for (CommerceWishListItem commerceWishListItem :
-				commerceWishListItems) {
-
-			entityCache.removeResult(
-				CommerceWishListItemImpl.class, commerceWishListItem);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceWishListItemImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceWishListItemImpl.class, primaryKey);
 		}
 	}
 

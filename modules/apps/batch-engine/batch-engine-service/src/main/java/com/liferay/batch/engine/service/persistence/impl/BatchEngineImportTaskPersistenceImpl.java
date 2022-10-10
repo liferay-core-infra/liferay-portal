@@ -2609,53 +2609,6 @@ public class BatchEngineImportTaskPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all batch engine import tasks.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BatchEngineImportTaskImpl.class);
-
-		finderCache.clearCache(BatchEngineImportTaskImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the batch engine import task.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BatchEngineImportTask batchEngineImportTask) {
-		entityCache.removeResult(
-			BatchEngineImportTaskImpl.class, batchEngineImportTask);
-	}
-
-	@Override
-	public void clearCache(List<BatchEngineImportTask> batchEngineImportTasks) {
-		for (BatchEngineImportTask batchEngineImportTask :
-				batchEngineImportTasks) {
-
-			entityCache.removeResult(
-				BatchEngineImportTaskImpl.class, batchEngineImportTask);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchEngineImportTaskImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				BatchEngineImportTaskImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		BatchEngineImportTaskModelImpl batchEngineImportTaskModelImpl) {
 

@@ -6444,49 +6444,6 @@ public class SocialRequestPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all social requests.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialRequestImpl.class);
-
-		FinderCacheUtil.clearCache(SocialRequestImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social request.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SocialRequest socialRequest) {
-		EntityCacheUtil.removeResult(SocialRequestImpl.class, socialRequest);
-	}
-
-	@Override
-	public void clearCache(List<SocialRequest> socialRequests) {
-		for (SocialRequest socialRequest : socialRequests) {
-			EntityCacheUtil.removeResult(
-				SocialRequestImpl.class, socialRequest);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialRequestImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(SocialRequestImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SocialRequestModelImpl socialRequestModelImpl) {
 

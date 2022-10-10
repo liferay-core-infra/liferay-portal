@@ -2912,49 +2912,6 @@ public class SiteFriendlyURLPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all site friendly urls.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SiteFriendlyURLImpl.class);
-
-		finderCache.clearCache(SiteFriendlyURLImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the site friendly url.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SiteFriendlyURL siteFriendlyURL) {
-		entityCache.removeResult(SiteFriendlyURLImpl.class, siteFriendlyURL);
-	}
-
-	@Override
-	public void clearCache(List<SiteFriendlyURL> siteFriendlyURLs) {
-		for (SiteFriendlyURL siteFriendlyURL : siteFriendlyURLs) {
-			entityCache.removeResult(
-				SiteFriendlyURLImpl.class, siteFriendlyURL);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SiteFriendlyURLImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SiteFriendlyURLImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SiteFriendlyURLModelImpl siteFriendlyURLModelImpl) {
 

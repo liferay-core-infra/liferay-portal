@@ -5683,57 +5683,6 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all de data definition field links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DEDataDefinitionFieldLinkImpl.class);
-
-		finderCache.clearCache(DEDataDefinitionFieldLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the de data definition field link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		DEDataDefinitionFieldLink deDataDefinitionFieldLink) {
-
-		entityCache.removeResult(
-			DEDataDefinitionFieldLinkImpl.class, deDataDefinitionFieldLink);
-	}
-
-	@Override
-	public void clearCache(
-		List<DEDataDefinitionFieldLink> deDataDefinitionFieldLinks) {
-
-		for (DEDataDefinitionFieldLink deDataDefinitionFieldLink :
-				deDataDefinitionFieldLinks) {
-
-			entityCache.removeResult(
-				DEDataDefinitionFieldLinkImpl.class, deDataDefinitionFieldLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DEDataDefinitionFieldLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DEDataDefinitionFieldLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DEDataDefinitionFieldLinkModelImpl deDataDefinitionFieldLinkModelImpl) {
 

@@ -3627,51 +3627,6 @@ public class SocialActivitySetPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all social activity sets.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialActivitySetImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivitySetImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social activity set.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SocialActivitySet socialActivitySet) {
-		EntityCacheUtil.removeResult(
-			SocialActivitySetImpl.class, socialActivitySet);
-	}
-
-	@Override
-	public void clearCache(List<SocialActivitySet> socialActivitySets) {
-		for (SocialActivitySet socialActivitySet : socialActivitySets) {
-			EntityCacheUtil.removeResult(
-				SocialActivitySetImpl.class, socialActivitySet);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivitySetImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				SocialActivitySetImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new social activity set with the primary key. Does not add the social activity set to the database.
 	 *
 	 * @param activitySetId the primary key for the new social activity set

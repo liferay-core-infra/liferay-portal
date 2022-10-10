@@ -826,48 +826,6 @@ public class CompanyPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all companies.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(CompanyImpl.class);
-
-		FinderCacheUtil.clearCache(CompanyImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the company.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Company company) {
-		EntityCacheUtil.removeResult(CompanyImpl.class, company);
-	}
-
-	@Override
-	public void clearCache(List<Company> companies) {
-		for (Company company : companies) {
-			EntityCacheUtil.removeResult(CompanyImpl.class, company);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(CompanyImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(CompanyImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(CompanyModelImpl companyModelImpl) {
 		Object[] args = new Object[] {companyModelImpl.getWebId()};
 

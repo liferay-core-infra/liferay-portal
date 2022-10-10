@@ -2736,53 +2736,6 @@ public class SocialActivitySettingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all social activity settings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialActivitySettingImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivitySettingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social activity setting.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SocialActivitySetting socialActivitySetting) {
-		EntityCacheUtil.removeResult(
-			SocialActivitySettingImpl.class, socialActivitySetting);
-	}
-
-	@Override
-	public void clearCache(List<SocialActivitySetting> socialActivitySettings) {
-		for (SocialActivitySetting socialActivitySetting :
-				socialActivitySettings) {
-
-			EntityCacheUtil.removeResult(
-				SocialActivitySettingImpl.class, socialActivitySetting);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivitySettingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				SocialActivitySettingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SocialActivitySettingModelImpl socialActivitySettingModelImpl) {
 

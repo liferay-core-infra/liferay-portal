@@ -2983,50 +2983,6 @@ public class KaleoInstanceTokenPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo instance tokens.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoInstanceTokenImpl.class);
-
-		finderCache.clearCache(KaleoInstanceTokenImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo instance token.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoInstanceToken kaleoInstanceToken) {
-		entityCache.removeResult(
-			KaleoInstanceTokenImpl.class, kaleoInstanceToken);
-	}
-
-	@Override
-	public void clearCache(List<KaleoInstanceToken> kaleoInstanceTokens) {
-		for (KaleoInstanceToken kaleoInstanceToken : kaleoInstanceTokens) {
-			entityCache.removeResult(
-				KaleoInstanceTokenImpl.class, kaleoInstanceToken);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoInstanceTokenImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoInstanceTokenImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo instance token with the primary key. Does not add the kaleo instance token to the database.
 	 *
 	 * @param kaleoInstanceTokenId the primary key for the new kaleo instance token

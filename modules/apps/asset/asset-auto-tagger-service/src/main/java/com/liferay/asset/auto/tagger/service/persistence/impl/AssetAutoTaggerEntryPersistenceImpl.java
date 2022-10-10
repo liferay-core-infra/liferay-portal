@@ -1451,53 +1451,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset auto tagger entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AssetAutoTaggerEntryImpl.class);
-
-		finderCache.clearCache(AssetAutoTaggerEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset auto tagger entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetAutoTaggerEntry assetAutoTaggerEntry) {
-		entityCache.removeResult(
-			AssetAutoTaggerEntryImpl.class, assetAutoTaggerEntry);
-	}
-
-	@Override
-	public void clearCache(List<AssetAutoTaggerEntry> assetAutoTaggerEntries) {
-		for (AssetAutoTaggerEntry assetAutoTaggerEntry :
-				assetAutoTaggerEntries) {
-
-			entityCache.removeResult(
-				AssetAutoTaggerEntryImpl.class, assetAutoTaggerEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetAutoTaggerEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				AssetAutoTaggerEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetAutoTaggerEntryModelImpl assetAutoTaggerEntryModelImpl) {
 

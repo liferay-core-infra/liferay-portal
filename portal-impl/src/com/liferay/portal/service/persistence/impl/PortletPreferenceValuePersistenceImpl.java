@@ -2284,55 +2284,6 @@ public class PortletPreferenceValuePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all portlet preference values.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PortletPreferenceValueImpl.class);
-
-		FinderCacheUtil.clearCache(PortletPreferenceValueImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the portlet preference value.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PortletPreferenceValue portletPreferenceValue) {
-		EntityCacheUtil.removeResult(
-			PortletPreferenceValueImpl.class, portletPreferenceValue);
-	}
-
-	@Override
-	public void clearCache(
-		List<PortletPreferenceValue> portletPreferenceValues) {
-
-		for (PortletPreferenceValue portletPreferenceValue :
-				portletPreferenceValues) {
-
-			EntityCacheUtil.removeResult(
-				PortletPreferenceValueImpl.class, portletPreferenceValue);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortletPreferenceValueImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				PortletPreferenceValueImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		PortletPreferenceValueModelImpl portletPreferenceValueModelImpl) {
 

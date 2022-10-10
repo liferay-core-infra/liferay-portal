@@ -21465,48 +21465,6 @@ public class MBMessagePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message-boards messages.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBMessageImpl.class);
-
-		finderCache.clearCache(MBMessageImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message-boards message.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBMessage mbMessage) {
-		entityCache.removeResult(MBMessageImpl.class, mbMessage);
-	}
-
-	@Override
-	public void clearCache(List<MBMessage> mbMessages) {
-		for (MBMessage mbMessage : mbMessages) {
-			entityCache.removeResult(MBMessageImpl.class, mbMessage);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBMessageImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBMessageImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBMessageModelImpl mbMessageModelImpl) {
 

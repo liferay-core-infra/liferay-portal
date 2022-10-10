@@ -2327,48 +2327,6 @@ public class MBMailingListPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards mailing lists.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBMailingListImpl.class);
-
-		finderCache.clearCache(MBMailingListImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards mailing list.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBMailingList mbMailingList) {
-		entityCache.removeResult(MBMailingListImpl.class, mbMailingList);
-	}
-
-	@Override
-	public void clearCache(List<MBMailingList> mbMailingLists) {
-		for (MBMailingList mbMailingList : mbMailingLists) {
-			entityCache.removeResult(MBMailingListImpl.class, mbMailingList);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBMailingListImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBMailingListImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBMailingListModelImpl mbMailingListModelImpl) {
 

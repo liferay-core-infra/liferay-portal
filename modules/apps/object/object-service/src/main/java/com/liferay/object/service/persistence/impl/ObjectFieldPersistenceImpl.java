@@ -5152,48 +5152,6 @@ public class ObjectFieldPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object fields.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectFieldImpl.class);
-
-		finderCache.clearCache(ObjectFieldImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object field.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectField objectField) {
-		entityCache.removeResult(ObjectFieldImpl.class, objectField);
-	}
-
-	@Override
-	public void clearCache(List<ObjectField> objectFields) {
-		for (ObjectField objectField : objectFields) {
-			entityCache.removeResult(ObjectFieldImpl.class, objectField);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectFieldImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectFieldImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectFieldModelImpl objectFieldModelImpl) {
 

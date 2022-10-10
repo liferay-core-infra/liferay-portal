@@ -1196,48 +1196,6 @@ public class DispatchLogPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all dispatch logs.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DispatchLogImpl.class);
-
-		finderCache.clearCache(DispatchLogImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dispatch log.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DispatchLog dispatchLog) {
-		entityCache.removeResult(DispatchLogImpl.class, dispatchLog);
-	}
-
-	@Override
-	public void clearCache(List<DispatchLog> dispatchLogs) {
-		for (DispatchLog dispatchLog : dispatchLogs) {
-			entityCache.removeResult(DispatchLogImpl.class, dispatchLog);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DispatchLogImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DispatchLogImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new dispatch log with the primary key. Does not add the dispatch log to the database.
 	 *
 	 * @param dispatchLogId the primary key for the new dispatch log

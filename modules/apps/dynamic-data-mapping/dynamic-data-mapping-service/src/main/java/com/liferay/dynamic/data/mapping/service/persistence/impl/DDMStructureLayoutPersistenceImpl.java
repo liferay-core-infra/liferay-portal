@@ -4406,50 +4406,6 @@ public class DDMStructureLayoutPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm structure layouts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMStructureLayoutImpl.class);
-
-		finderCache.clearCache(DDMStructureLayoutImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm structure layout.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMStructureLayout ddmStructureLayout) {
-		entityCache.removeResult(
-			DDMStructureLayoutImpl.class, ddmStructureLayout);
-	}
-
-	@Override
-	public void clearCache(List<DDMStructureLayout> ddmStructureLayouts) {
-		for (DDMStructureLayout ddmStructureLayout : ddmStructureLayouts) {
-			entityCache.removeResult(
-				DDMStructureLayoutImpl.class, ddmStructureLayout);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureLayoutImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMStructureLayoutImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMStructureLayoutModelImpl ddmStructureLayoutModelImpl) {
 

@@ -1721,59 +1721,6 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce tax fixed rate address rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceTaxFixedRateAddressRelImpl.class);
-
-		finderCache.clearCache(CommerceTaxFixedRateAddressRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce tax fixed rate address rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel) {
-
-		entityCache.removeResult(
-			CommerceTaxFixedRateAddressRelImpl.class,
-			commerceTaxFixedRateAddressRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceTaxFixedRateAddressRel> commerceTaxFixedRateAddressRels) {
-
-		for (CommerceTaxFixedRateAddressRel commerceTaxFixedRateAddressRel :
-				commerceTaxFixedRateAddressRels) {
-
-			entityCache.removeResult(
-				CommerceTaxFixedRateAddressRelImpl.class,
-				commerceTaxFixedRateAddressRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTaxFixedRateAddressRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceTaxFixedRateAddressRelImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce tax fixed rate address rel with the primary key. Does not add the commerce tax fixed rate address rel to the database.
 	 *
 	 * @param commerceTaxFixedRateAddressRelId the primary key for the new commerce tax fixed rate address rel

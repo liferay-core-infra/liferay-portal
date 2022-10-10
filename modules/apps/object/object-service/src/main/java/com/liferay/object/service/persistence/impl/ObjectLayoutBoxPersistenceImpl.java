@@ -1782,49 +1782,6 @@ public class ObjectLayoutBoxPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object layout boxes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectLayoutBoxImpl.class);
-
-		finderCache.clearCache(ObjectLayoutBoxImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object layout box.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectLayoutBox objectLayoutBox) {
-		entityCache.removeResult(ObjectLayoutBoxImpl.class, objectLayoutBox);
-	}
-
-	@Override
-	public void clearCache(List<ObjectLayoutBox> objectLayoutBoxes) {
-		for (ObjectLayoutBox objectLayoutBox : objectLayoutBoxes) {
-			entityCache.removeResult(
-				ObjectLayoutBoxImpl.class, objectLayoutBox);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutBoxImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectLayoutBoxImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object layout box with the primary key. Does not add the object layout box to the database.
 	 *
 	 * @param objectLayoutBoxId the primary key for the new object layout box

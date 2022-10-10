@@ -2378,48 +2378,6 @@ public class KBTemplatePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kb templates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KBTemplateImpl.class);
-
-		finderCache.clearCache(KBTemplateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kb template.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KBTemplate kbTemplate) {
-		entityCache.removeResult(KBTemplateImpl.class, kbTemplate);
-	}
-
-	@Override
-	public void clearCache(List<KBTemplate> kbTemplates) {
-		for (KBTemplate kbTemplate : kbTemplates) {
-			entityCache.removeResult(KBTemplateImpl.class, kbTemplate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBTemplateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KBTemplateImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KBTemplateModelImpl kbTemplateModelImpl) {
 

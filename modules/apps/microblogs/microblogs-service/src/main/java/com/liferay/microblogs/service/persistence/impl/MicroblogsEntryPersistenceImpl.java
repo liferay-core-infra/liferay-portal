@@ -13221,49 +13221,6 @@ public class MicroblogsEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all microblogs entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MicroblogsEntryImpl.class);
-
-		finderCache.clearCache(MicroblogsEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the microblogs entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MicroblogsEntry microblogsEntry) {
-		entityCache.removeResult(MicroblogsEntryImpl.class, microblogsEntry);
-	}
-
-	@Override
-	public void clearCache(List<MicroblogsEntry> microblogsEntries) {
-		for (MicroblogsEntry microblogsEntry : microblogsEntries) {
-			entityCache.removeResult(
-				MicroblogsEntryImpl.class, microblogsEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MicroblogsEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MicroblogsEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new microblogs entry with the primary key. Does not add the microblogs entry to the database.
 	 *
 	 * @param microblogsEntryId the primary key for the new microblogs entry

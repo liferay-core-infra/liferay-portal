@@ -2089,48 +2089,6 @@ public class CPTaxCategoryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp tax categories.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPTaxCategoryImpl.class);
-
-		finderCache.clearCache(CPTaxCategoryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp tax category.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPTaxCategory cpTaxCategory) {
-		entityCache.removeResult(CPTaxCategoryImpl.class, cpTaxCategory);
-	}
-
-	@Override
-	public void clearCache(List<CPTaxCategory> cpTaxCategories) {
-		for (CPTaxCategory cpTaxCategory : cpTaxCategories) {
-			entityCache.removeResult(CPTaxCategoryImpl.class, cpTaxCategory);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPTaxCategoryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CPTaxCategoryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPTaxCategoryModelImpl cpTaxCategoryModelImpl) {
 

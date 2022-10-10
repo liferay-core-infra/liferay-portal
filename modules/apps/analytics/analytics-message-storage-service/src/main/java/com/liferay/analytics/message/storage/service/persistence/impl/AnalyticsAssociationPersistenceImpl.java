@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2045,53 +2044,6 @@ public class AnalyticsAssociationPersistenceImpl
 
 				cacheResult(analyticsAssociation);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all analytics associations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AnalyticsAssociationImpl.class);
-
-		finderCache.clearCache(AnalyticsAssociationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the analytics association.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AnalyticsAssociation analyticsAssociation) {
-		entityCache.removeResult(
-			AnalyticsAssociationImpl.class, analyticsAssociation);
-	}
-
-	@Override
-	public void clearCache(List<AnalyticsAssociation> analyticsAssociations) {
-		for (AnalyticsAssociation analyticsAssociation :
-				analyticsAssociations) {
-
-			entityCache.removeResult(
-				AnalyticsAssociationImpl.class, analyticsAssociation);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AnalyticsAssociationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				AnalyticsAssociationImpl.class, primaryKey);
 		}
 	}
 

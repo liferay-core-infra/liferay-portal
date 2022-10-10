@@ -3678,48 +3678,6 @@ public class RedirectEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all redirect entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(RedirectEntryImpl.class);
-
-		finderCache.clearCache(RedirectEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the redirect entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RedirectEntry redirectEntry) {
-		entityCache.removeResult(RedirectEntryImpl.class, redirectEntry);
-	}
-
-	@Override
-	public void clearCache(List<RedirectEntry> redirectEntries) {
-		for (RedirectEntry redirectEntry : redirectEntries) {
-			entityCache.removeResult(RedirectEntryImpl.class, redirectEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RedirectEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(RedirectEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		RedirectEntryModelImpl redirectEntryModelImpl) {
 

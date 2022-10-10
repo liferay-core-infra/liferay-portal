@@ -1766,48 +1766,6 @@ public class ERCGroupEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all erc group entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ERCGroupEntryImpl.class);
-
-		finderCache.clearCache(ERCGroupEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the erc group entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ERCGroupEntry ercGroupEntry) {
-		entityCache.removeResult(ERCGroupEntryImpl.class, ercGroupEntry);
-	}
-
-	@Override
-	public void clearCache(List<ERCGroupEntry> ercGroupEntries) {
-		for (ERCGroupEntry ercGroupEntry : ercGroupEntries) {
-			entityCache.removeResult(ERCGroupEntryImpl.class, ercGroupEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ERCGroupEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ERCGroupEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ERCGroupEntryModelImpl ercGroupEntryModelImpl) {
 

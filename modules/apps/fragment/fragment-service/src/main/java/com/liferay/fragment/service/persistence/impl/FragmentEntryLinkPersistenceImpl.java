@@ -10497,50 +10497,6 @@ public class FragmentEntryLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all fragment entry links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FragmentEntryLinkImpl.class);
-
-		finderCache.clearCache(FragmentEntryLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the fragment entry link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FragmentEntryLink fragmentEntryLink) {
-		entityCache.removeResult(
-			FragmentEntryLinkImpl.class, fragmentEntryLink);
-	}
-
-	@Override
-	public void clearCache(List<FragmentEntryLink> fragmentEntryLinks) {
-		for (FragmentEntryLink fragmentEntryLink : fragmentEntryLinks) {
-			entityCache.removeResult(
-				FragmentEntryLinkImpl.class, fragmentEntryLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FragmentEntryLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FragmentEntryLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		FragmentEntryLinkModelImpl fragmentEntryLinkModelImpl) {
 

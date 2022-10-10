@@ -3709,55 +3709,6 @@ public class ClientExtensionEntryRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all client extension entry rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ClientExtensionEntryRelImpl.class);
-
-		finderCache.clearCache(ClientExtensionEntryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the client extension entry rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ClientExtensionEntryRel clientExtensionEntryRel) {
-		entityCache.removeResult(
-			ClientExtensionEntryRelImpl.class, clientExtensionEntryRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<ClientExtensionEntryRel> clientExtensionEntryRels) {
-
-		for (ClientExtensionEntryRel clientExtensionEntryRel :
-				clientExtensionEntryRels) {
-
-			entityCache.removeResult(
-				ClientExtensionEntryRelImpl.class, clientExtensionEntryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ClientExtensionEntryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				ClientExtensionEntryRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ClientExtensionEntryRelModelImpl clientExtensionEntryRelModelImpl) {
 

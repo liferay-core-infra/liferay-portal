@@ -53,7 +53,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1929,49 +1928,6 @@ public class SamlPeerBindingPersistenceImpl
 
 				cacheResult(samlPeerBinding);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all saml peer bindings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SamlPeerBindingImpl.class);
-
-		finderCache.clearCache(SamlPeerBindingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the saml peer binding.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SamlPeerBinding samlPeerBinding) {
-		entityCache.removeResult(SamlPeerBindingImpl.class, samlPeerBinding);
-	}
-
-	@Override
-	public void clearCache(List<SamlPeerBinding> samlPeerBindings) {
-		for (SamlPeerBinding samlPeerBinding : samlPeerBindings) {
-			entityCache.removeResult(
-				SamlPeerBindingImpl.class, samlPeerBinding);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlPeerBindingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SamlPeerBindingImpl.class, primaryKey);
 		}
 	}
 

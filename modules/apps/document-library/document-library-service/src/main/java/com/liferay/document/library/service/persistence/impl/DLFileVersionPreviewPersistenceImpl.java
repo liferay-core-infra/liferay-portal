@@ -1728,53 +1728,6 @@ public class DLFileVersionPreviewPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all dl file version previews.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DLFileVersionPreviewImpl.class);
-
-		finderCache.clearCache(DLFileVersionPreviewImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dl file version preview.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFileVersionPreview dlFileVersionPreview) {
-		entityCache.removeResult(
-			DLFileVersionPreviewImpl.class, dlFileVersionPreview);
-	}
-
-	@Override
-	public void clearCache(List<DLFileVersionPreview> dlFileVersionPreviews) {
-		for (DLFileVersionPreview dlFileVersionPreview :
-				dlFileVersionPreviews) {
-
-			entityCache.removeResult(
-				DLFileVersionPreviewImpl.class, dlFileVersionPreview);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLFileVersionPreviewImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DLFileVersionPreviewImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFileVersionPreviewModelImpl dlFileVersionPreviewModelImpl) {
 

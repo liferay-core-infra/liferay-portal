@@ -4337,48 +4337,6 @@ public class DDLRecordPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddl records.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDLRecordImpl.class);
-
-		finderCache.clearCache(DDLRecordImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddl record.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDLRecord ddlRecord) {
-		entityCache.removeResult(DDLRecordImpl.class, ddlRecord);
-	}
-
-	@Override
-	public void clearCache(List<DDLRecord> ddlRecords) {
-		for (DDLRecord ddlRecord : ddlRecords) {
-			entityCache.removeResult(DDLRecordImpl.class, ddlRecord);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDLRecordImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDLRecordImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDLRecordModelImpl ddlRecordModelImpl) {
 

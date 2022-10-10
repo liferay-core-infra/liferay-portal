@@ -4895,55 +4895,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout classed model usages.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutClassedModelUsageImpl.class);
-
-		finderCache.clearCache(LayoutClassedModelUsageImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout classed model usage.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutClassedModelUsage layoutClassedModelUsage) {
-		entityCache.removeResult(
-			LayoutClassedModelUsageImpl.class, layoutClassedModelUsage);
-	}
-
-	@Override
-	public void clearCache(
-		List<LayoutClassedModelUsage> layoutClassedModelUsages) {
-
-		for (LayoutClassedModelUsage layoutClassedModelUsage :
-				layoutClassedModelUsages) {
-
-			entityCache.removeResult(
-				LayoutClassedModelUsageImpl.class, layoutClassedModelUsage);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutClassedModelUsageImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LayoutClassedModelUsageImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutClassedModelUsageModelImpl layoutClassedModelUsageModelImpl) {
 

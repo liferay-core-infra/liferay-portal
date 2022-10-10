@@ -5904,49 +5904,6 @@ public class BatchPlannerPlanPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all batch planner plans.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BatchPlannerPlanImpl.class);
-
-		finderCache.clearCache(BatchPlannerPlanImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the batch planner plan.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BatchPlannerPlan batchPlannerPlan) {
-		entityCache.removeResult(BatchPlannerPlanImpl.class, batchPlannerPlan);
-	}
-
-	@Override
-	public void clearCache(List<BatchPlannerPlan> batchPlannerPlans) {
-		for (BatchPlannerPlan batchPlannerPlan : batchPlannerPlans) {
-			entityCache.removeResult(
-				BatchPlannerPlanImpl.class, batchPlannerPlan);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchPlannerPlanImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(BatchPlannerPlanImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new batch planner plan with the primary key. Does not add the batch planner plan to the database.
 	 *
 	 * @param batchPlannerPlanId the primary key for the new batch planner plan

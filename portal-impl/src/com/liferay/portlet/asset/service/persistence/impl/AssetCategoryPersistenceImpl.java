@@ -12215,49 +12215,6 @@ public class AssetCategoryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset categories.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AssetCategoryImpl.class);
-
-		FinderCacheUtil.clearCache(AssetCategoryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset category.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetCategory assetCategory) {
-		EntityCacheUtil.removeResult(AssetCategoryImpl.class, assetCategory);
-	}
-
-	@Override
-	public void clearCache(List<AssetCategory> assetCategories) {
-		for (AssetCategory assetCategory : assetCategories) {
-			EntityCacheUtil.removeResult(
-				AssetCategoryImpl.class, assetCategory);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetCategoryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(AssetCategoryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetCategoryModelImpl assetCategoryModelImpl) {
 

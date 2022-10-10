@@ -7364,48 +7364,6 @@ public class CPInstancePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp instances.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPInstanceImpl.class);
-
-		finderCache.clearCache(CPInstanceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp instance.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPInstance cpInstance) {
-		entityCache.removeResult(CPInstanceImpl.class, cpInstance);
-	}
-
-	@Override
-	public void clearCache(List<CPInstance> cpInstances) {
-		for (CPInstance cpInstance : cpInstances) {
-			entityCache.removeResult(CPInstanceImpl.class, cpInstance);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPInstanceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CPInstanceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPInstanceModelImpl cpInstanceModelImpl) {
 

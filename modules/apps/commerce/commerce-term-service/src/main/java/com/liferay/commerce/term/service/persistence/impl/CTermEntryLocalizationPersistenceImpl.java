@@ -56,7 +56,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -945,55 +944,6 @@ public class CTermEntryLocalizationPersistenceImpl
 
 				cacheResult(cTermEntryLocalization);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all c term entry localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTermEntryLocalizationImpl.class);
-
-		finderCache.clearCache(CTermEntryLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the c term entry localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTermEntryLocalization cTermEntryLocalization) {
-		entityCache.removeResult(
-			CTermEntryLocalizationImpl.class, cTermEntryLocalization);
-	}
-
-	@Override
-	public void clearCache(
-		List<CTermEntryLocalization> cTermEntryLocalizations) {
-
-		for (CTermEntryLocalization cTermEntryLocalization :
-				cTermEntryLocalizations) {
-
-			entityCache.removeResult(
-				CTermEntryLocalizationImpl.class, cTermEntryLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTermEntryLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CTermEntryLocalizationImpl.class, primaryKey);
 		}
 	}
 

@@ -4115,49 +4115,6 @@ public class CPDefinitionLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionLinkImpl.class);
-
-		finderCache.clearCache(CPDefinitionLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDefinitionLink cpDefinitionLink) {
-		entityCache.removeResult(CPDefinitionLinkImpl.class, cpDefinitionLink);
-	}
-
-	@Override
-	public void clearCache(List<CPDefinitionLink> cpDefinitionLinks) {
-		for (CPDefinitionLink cpDefinitionLink : cpDefinitionLinks) {
-			entityCache.removeResult(
-				CPDefinitionLinkImpl.class, cpDefinitionLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CPDefinitionLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionLinkModelImpl cpDefinitionLinkModelImpl) {
 

@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -635,49 +634,6 @@ public class CTSchemaVersionPersistenceImpl
 
 				cacheResult(ctSchemaVersion);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all ct schema versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTSchemaVersionImpl.class);
-
-		finderCache.clearCache(CTSchemaVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ct schema version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTSchemaVersion ctSchemaVersion) {
-		entityCache.removeResult(CTSchemaVersionImpl.class, ctSchemaVersion);
-	}
-
-	@Override
-	public void clearCache(List<CTSchemaVersion> ctSchemaVersions) {
-		for (CTSchemaVersion ctSchemaVersion : ctSchemaVersions) {
-			entityCache.removeResult(
-				CTSchemaVersionImpl.class, ctSchemaVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTSchemaVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CTSchemaVersionImpl.class, primaryKey);
 		}
 	}
 

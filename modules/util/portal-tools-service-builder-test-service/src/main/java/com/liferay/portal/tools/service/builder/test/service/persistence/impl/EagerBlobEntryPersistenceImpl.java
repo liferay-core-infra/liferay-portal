@@ -926,49 +926,6 @@ public class EagerBlobEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all eager blob entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		dummyEntityCache.clearCache(EagerBlobEntryImpl.class);
-
-		dummyFinderCache.clearCache(EagerBlobEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the eager blob entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(EagerBlobEntry eagerBlobEntry) {
-		dummyEntityCache.removeResult(EagerBlobEntryImpl.class, eagerBlobEntry);
-	}
-
-	@Override
-	public void clearCache(List<EagerBlobEntry> eagerBlobEntries) {
-		for (EagerBlobEntry eagerBlobEntry : eagerBlobEntries) {
-			dummyEntityCache.removeResult(
-				EagerBlobEntryImpl.class, eagerBlobEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(EagerBlobEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			dummyEntityCache.removeResult(EagerBlobEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		EagerBlobEntryModelImpl eagerBlobEntryModelImpl) {
 

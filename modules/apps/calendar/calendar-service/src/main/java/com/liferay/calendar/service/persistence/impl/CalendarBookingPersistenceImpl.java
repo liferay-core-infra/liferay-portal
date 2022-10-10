@@ -5624,49 +5624,6 @@ public class CalendarBookingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all calendar bookings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CalendarBookingImpl.class);
-
-		finderCache.clearCache(CalendarBookingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the calendar booking.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CalendarBooking calendarBooking) {
-		entityCache.removeResult(CalendarBookingImpl.class, calendarBooking);
-	}
-
-	@Override
-	public void clearCache(List<CalendarBooking> calendarBookings) {
-		for (CalendarBooking calendarBooking : calendarBookings) {
-			entityCache.removeResult(
-				CalendarBookingImpl.class, calendarBooking);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarBookingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CalendarBookingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CalendarBookingModelImpl calendarBookingModelImpl) {
 

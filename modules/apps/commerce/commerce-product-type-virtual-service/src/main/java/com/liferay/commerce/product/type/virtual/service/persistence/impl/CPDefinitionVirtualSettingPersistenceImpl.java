@@ -1796,58 +1796,6 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition virtual settings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionVirtualSettingImpl.class);
-
-		finderCache.clearCache(CPDefinitionVirtualSettingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition virtual setting.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CPDefinitionVirtualSetting cpDefinitionVirtualSetting) {
-
-		entityCache.removeResult(
-			CPDefinitionVirtualSettingImpl.class, cpDefinitionVirtualSetting);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPDefinitionVirtualSetting> cpDefinitionVirtualSettings) {
-
-		for (CPDefinitionVirtualSetting cpDefinitionVirtualSetting :
-				cpDefinitionVirtualSettings) {
-
-			entityCache.removeResult(
-				CPDefinitionVirtualSettingImpl.class,
-				cpDefinitionVirtualSetting);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionVirtualSettingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDefinitionVirtualSettingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionVirtualSettingModelImpl
 			cpDefinitionVirtualSettingModelImpl) {

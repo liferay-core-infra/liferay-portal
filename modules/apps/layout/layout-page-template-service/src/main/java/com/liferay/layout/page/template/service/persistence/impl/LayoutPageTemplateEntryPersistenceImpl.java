@@ -26071,55 +26071,6 @@ public class LayoutPageTemplateEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout page template entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutPageTemplateEntryImpl.class);
-
-		finderCache.clearCache(LayoutPageTemplateEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout page template entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutPageTemplateEntry layoutPageTemplateEntry) {
-		entityCache.removeResult(
-			LayoutPageTemplateEntryImpl.class, layoutPageTemplateEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<LayoutPageTemplateEntry> layoutPageTemplateEntries) {
-
-		for (LayoutPageTemplateEntry layoutPageTemplateEntry :
-				layoutPageTemplateEntries) {
-
-			entityCache.removeResult(
-				LayoutPageTemplateEntryImpl.class, layoutPageTemplateEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutPageTemplateEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LayoutPageTemplateEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutPageTemplateEntryModelImpl layoutPageTemplateEntryModelImpl) {
 

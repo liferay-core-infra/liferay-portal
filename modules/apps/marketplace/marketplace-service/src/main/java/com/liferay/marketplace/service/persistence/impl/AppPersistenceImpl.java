@@ -2473,48 +2473,6 @@ public class AppPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all apps.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AppImpl.class);
-
-		finderCache.clearCache(AppImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the app.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(App app) {
-		entityCache.removeResult(AppImpl.class, app);
-	}
-
-	@Override
-	public void clearCache(List<App> apps) {
-		for (App app : apps) {
-			entityCache.removeResult(AppImpl.class, app);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AppImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AppImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(AppModelImpl appModelImpl) {
 		Object[] args = new Object[] {appModelImpl.getRemoteAppId()};
 

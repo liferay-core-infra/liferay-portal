@@ -4822,48 +4822,6 @@ public class WikiNodePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all wiki nodes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(WikiNodeImpl.class);
-
-		finderCache.clearCache(WikiNodeImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the wiki node.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WikiNode wikiNode) {
-		entityCache.removeResult(WikiNodeImpl.class, wikiNode);
-	}
-
-	@Override
-	public void clearCache(List<WikiNode> wikiNodes) {
-		for (WikiNode wikiNode : wikiNodes) {
-			entityCache.removeResult(WikiNodeImpl.class, wikiNode);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WikiNodeImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(WikiNodeImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		WikiNodeModelImpl wikiNodeModelImpl) {
 

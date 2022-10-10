@@ -2043,50 +2043,6 @@ public class ObjectFieldSettingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object field settings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectFieldSettingImpl.class);
-
-		finderCache.clearCache(ObjectFieldSettingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object field setting.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectFieldSetting objectFieldSetting) {
-		entityCache.removeResult(
-			ObjectFieldSettingImpl.class, objectFieldSetting);
-	}
-
-	@Override
-	public void clearCache(List<ObjectFieldSetting> objectFieldSettings) {
-		for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
-			entityCache.removeResult(
-				ObjectFieldSettingImpl.class, objectFieldSetting);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectFieldSettingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectFieldSettingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectFieldSettingModelImpl objectFieldSettingModelImpl) {
 

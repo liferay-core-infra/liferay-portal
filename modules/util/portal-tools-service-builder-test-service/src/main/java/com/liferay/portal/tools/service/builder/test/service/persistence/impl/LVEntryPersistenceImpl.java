@@ -6019,48 +6019,6 @@ public class LVEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all lv entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LVEntryImpl.class);
-
-		finderCache.clearCache(LVEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the lv entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LVEntry lvEntry) {
-		entityCache.removeResult(LVEntryImpl.class, lvEntry);
-	}
-
-	@Override
-	public void clearCache(List<LVEntry> lvEntries) {
-		for (LVEntry lvEntry : lvEntries) {
-			entityCache.removeResult(LVEntryImpl.class, lvEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LVEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LVEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(LVEntryModelImpl lvEntryModelImpl) {
 		Object[] args = new Object[] {
 			lvEntryModelImpl.getUuid(), lvEntryModelImpl.getGroupId(),

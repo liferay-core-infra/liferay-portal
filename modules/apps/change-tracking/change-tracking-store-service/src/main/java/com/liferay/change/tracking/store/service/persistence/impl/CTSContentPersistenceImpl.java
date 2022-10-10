@@ -2629,48 +2629,6 @@ public class CTSContentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cts contents.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTSContentImpl.class);
-
-		finderCache.clearCache(CTSContentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cts content.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTSContent ctsContent) {
-		entityCache.removeResult(CTSContentImpl.class, ctsContent);
-	}
-
-	@Override
-	public void clearCache(List<CTSContent> ctsContents) {
-		for (CTSContent ctsContent : ctsContents) {
-			entityCache.removeResult(CTSContentImpl.class, ctsContent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTSContentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CTSContentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CTSContentModelImpl ctsContentModelImpl) {
 

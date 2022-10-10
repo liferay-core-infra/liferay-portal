@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the data limit entry service.
@@ -128,48 +127,6 @@ public class DataLimitEntryPersistenceImpl
 
 				cacheResult(dataLimitEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all data limit entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DataLimitEntryImpl.class);
-
-		finderCache.clearCache(DataLimitEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the data limit entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DataLimitEntry dataLimitEntry) {
-		entityCache.removeResult(DataLimitEntryImpl.class, dataLimitEntry);
-	}
-
-	@Override
-	public void clearCache(List<DataLimitEntry> dataLimitEntries) {
-		for (DataLimitEntry dataLimitEntry : dataLimitEntries) {
-			entityCache.removeResult(DataLimitEntryImpl.class, dataLimitEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DataLimitEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DataLimitEntryImpl.class, primaryKey);
 		}
 	}
 

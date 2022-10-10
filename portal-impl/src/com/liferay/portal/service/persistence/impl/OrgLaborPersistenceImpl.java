@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the org labor service.
@@ -619,48 +618,6 @@ public class OrgLaborPersistenceImpl
 
 				cacheResult(orgLabor);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all org labors.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(OrgLaborImpl.class);
-
-		FinderCacheUtil.clearCache(OrgLaborImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the org labor.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(OrgLabor orgLabor) {
-		EntityCacheUtil.removeResult(OrgLaborImpl.class, orgLabor);
-	}
-
-	@Override
-	public void clearCache(List<OrgLabor> orgLabors) {
-		for (OrgLabor orgLabor : orgLabors) {
-			EntityCacheUtil.removeResult(OrgLaborImpl.class, orgLabor);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(OrgLaborImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(OrgLaborImpl.class, primaryKey);
 		}
 	}
 

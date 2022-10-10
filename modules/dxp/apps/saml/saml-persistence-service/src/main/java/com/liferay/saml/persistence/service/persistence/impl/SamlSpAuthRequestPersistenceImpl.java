@@ -57,7 +57,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -994,50 +993,6 @@ public class SamlSpAuthRequestPersistenceImpl
 
 				cacheResult(samlSpAuthRequest);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all saml sp auth requests.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SamlSpAuthRequestImpl.class);
-
-		finderCache.clearCache(SamlSpAuthRequestImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the saml sp auth request.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SamlSpAuthRequest samlSpAuthRequest) {
-		entityCache.removeResult(
-			SamlSpAuthRequestImpl.class, samlSpAuthRequest);
-	}
-
-	@Override
-	public void clearCache(List<SamlSpAuthRequest> samlSpAuthRequests) {
-		for (SamlSpAuthRequest samlSpAuthRequest : samlSpAuthRequests) {
-			entityCache.removeResult(
-				SamlSpAuthRequestImpl.class, samlSpAuthRequest);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlSpAuthRequestImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SamlSpAuthRequestImpl.class, primaryKey);
 		}
 	}
 

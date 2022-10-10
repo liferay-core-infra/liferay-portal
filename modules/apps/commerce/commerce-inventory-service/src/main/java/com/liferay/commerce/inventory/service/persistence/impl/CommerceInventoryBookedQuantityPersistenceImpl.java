@@ -1861,60 +1861,6 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce inventory booked quantities.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceInventoryBookedQuantityImpl.class);
-
-		finderCache.clearCache(CommerceInventoryBookedQuantityImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce inventory booked quantity.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceInventoryBookedQuantity commerceInventoryBookedQuantity) {
-
-		entityCache.removeResult(
-			CommerceInventoryBookedQuantityImpl.class,
-			commerceInventoryBookedQuantity);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceInventoryBookedQuantity>
-			commerceInventoryBookedQuantities) {
-
-		for (CommerceInventoryBookedQuantity commerceInventoryBookedQuantity :
-				commerceInventoryBookedQuantities) {
-
-			entityCache.removeResult(
-				CommerceInventoryBookedQuantityImpl.class,
-				commerceInventoryBookedQuantity);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryBookedQuantityImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceInventoryBookedQuantityImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce inventory booked quantity with the primary key. Does not add the commerce inventory booked quantity to the database.
 	 *
 	 * @param commerceInventoryBookedQuantityId the primary key for the new commerce inventory booked quantity

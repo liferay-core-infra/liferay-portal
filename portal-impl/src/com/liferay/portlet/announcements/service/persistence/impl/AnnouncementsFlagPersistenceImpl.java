@@ -51,7 +51,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the announcements flag service.
@@ -1381,51 +1380,6 @@ public class AnnouncementsFlagPersistenceImpl
 
 				cacheResult(announcementsFlag);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all announcements flags.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(AnnouncementsFlagImpl.class);
-
-		FinderCacheUtil.clearCache(AnnouncementsFlagImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the announcements flag.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AnnouncementsFlag announcementsFlag) {
-		EntityCacheUtil.removeResult(
-			AnnouncementsFlagImpl.class, announcementsFlag);
-	}
-
-	@Override
-	public void clearCache(List<AnnouncementsFlag> announcementsFlags) {
-		for (AnnouncementsFlag announcementsFlag : announcementsFlags) {
-			EntityCacheUtil.removeResult(
-				AnnouncementsFlagImpl.class, announcementsFlag);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AnnouncementsFlagImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				AnnouncementsFlagImpl.class, primaryKey);
 		}
 	}
 

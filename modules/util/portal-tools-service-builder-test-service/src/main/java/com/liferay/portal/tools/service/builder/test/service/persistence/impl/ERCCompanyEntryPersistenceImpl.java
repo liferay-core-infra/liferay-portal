@@ -1517,49 +1517,6 @@ public class ERCCompanyEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all erc company entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ERCCompanyEntryImpl.class);
-
-		finderCache.clearCache(ERCCompanyEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the erc company entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ERCCompanyEntry ercCompanyEntry) {
-		entityCache.removeResult(ERCCompanyEntryImpl.class, ercCompanyEntry);
-	}
-
-	@Override
-	public void clearCache(List<ERCCompanyEntry> ercCompanyEntries) {
-		for (ERCCompanyEntry ercCompanyEntry : ercCompanyEntries) {
-			entityCache.removeResult(
-				ERCCompanyEntryImpl.class, ercCompanyEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ERCCompanyEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ERCCompanyEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ERCCompanyEntryModelImpl ercCompanyEntryModelImpl) {
 

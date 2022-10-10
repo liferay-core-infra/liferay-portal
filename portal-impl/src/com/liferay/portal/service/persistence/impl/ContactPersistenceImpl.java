@@ -51,7 +51,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the contact service.
@@ -1153,48 +1152,6 @@ public class ContactPersistenceImpl
 
 				cacheResult(contact);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all contacts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ContactImpl.class);
-
-		FinderCacheUtil.clearCache(ContactImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the contact.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Contact contact) {
-		EntityCacheUtil.removeResult(ContactImpl.class, contact);
-	}
-
-	@Override
-	public void clearCache(List<Contact> contacts) {
-		for (Contact contact : contacts) {
-			EntityCacheUtil.removeResult(ContactImpl.class, contact);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ContactImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ContactImpl.class, primaryKey);
 		}
 	}
 

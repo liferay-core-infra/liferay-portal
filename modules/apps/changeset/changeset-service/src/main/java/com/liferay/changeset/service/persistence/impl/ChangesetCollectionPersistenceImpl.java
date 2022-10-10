@@ -53,7 +53,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2527,50 +2526,6 @@ public class ChangesetCollectionPersistenceImpl
 
 				cacheResult(changesetCollection);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all changeset collections.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ChangesetCollectionImpl.class);
-
-		finderCache.clearCache(ChangesetCollectionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the changeset collection.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ChangesetCollection changesetCollection) {
-		entityCache.removeResult(
-			ChangesetCollectionImpl.class, changesetCollection);
-	}
-
-	@Override
-	public void clearCache(List<ChangesetCollection> changesetCollections) {
-		for (ChangesetCollection changesetCollection : changesetCollections) {
-			entityCache.removeResult(
-				ChangesetCollectionImpl.class, changesetCollection);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ChangesetCollectionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ChangesetCollectionImpl.class, primaryKey);
 		}
 	}
 

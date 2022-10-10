@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the recent layout set branch service.
@@ -1881,53 +1880,6 @@ public class RecentLayoutSetBranchPersistenceImpl
 
 				cacheResult(recentLayoutSetBranch);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all recent layout set branches.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RecentLayoutSetBranchImpl.class);
-
-		FinderCacheUtil.clearCache(RecentLayoutSetBranchImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the recent layout set branch.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RecentLayoutSetBranch recentLayoutSetBranch) {
-		EntityCacheUtil.removeResult(
-			RecentLayoutSetBranchImpl.class, recentLayoutSetBranch);
-	}
-
-	@Override
-	public void clearCache(List<RecentLayoutSetBranch> recentLayoutSetBranchs) {
-		for (RecentLayoutSetBranch recentLayoutSetBranch :
-				recentLayoutSetBranchs) {
-
-			EntityCacheUtil.removeResult(
-				RecentLayoutSetBranchImpl.class, recentLayoutSetBranch);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RecentLayoutSetBranchImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				RecentLayoutSetBranchImpl.class, primaryKey);
 		}
 	}
 

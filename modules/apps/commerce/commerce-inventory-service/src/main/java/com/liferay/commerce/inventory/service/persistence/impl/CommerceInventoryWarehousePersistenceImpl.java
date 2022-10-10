@@ -6499,58 +6499,6 @@ public class CommerceInventoryWarehousePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce inventory warehouses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceInventoryWarehouseImpl.class);
-
-		finderCache.clearCache(CommerceInventoryWarehouseImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce inventory warehouse.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceInventoryWarehouse commerceInventoryWarehouse) {
-
-		entityCache.removeResult(
-			CommerceInventoryWarehouseImpl.class, commerceInventoryWarehouse);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceInventoryWarehouse> commerceInventoryWarehouses) {
-
-		for (CommerceInventoryWarehouse commerceInventoryWarehouse :
-				commerceInventoryWarehouses) {
-
-			entityCache.removeResult(
-				CommerceInventoryWarehouseImpl.class,
-				commerceInventoryWarehouse);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryWarehouseImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceInventoryWarehouseImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceInventoryWarehouseModelImpl
 			commerceInventoryWarehouseModelImpl) {

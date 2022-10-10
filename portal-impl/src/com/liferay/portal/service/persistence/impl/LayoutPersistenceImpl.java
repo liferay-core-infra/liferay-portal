@@ -19368,48 +19368,6 @@ public class LayoutPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layouts.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(LayoutImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Layout layout) {
-		EntityCacheUtil.removeResult(LayoutImpl.class, layout);
-	}
-
-	@Override
-	public void clearCache(List<Layout> layouts) {
-		for (Layout layout : layouts) {
-			EntityCacheUtil.removeResult(LayoutImpl.class, layout);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(LayoutImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(LayoutModelImpl layoutModelImpl) {
 		Object[] args = new Object[] {
 			layoutModelImpl.getUuid(), layoutModelImpl.getGroupId(),

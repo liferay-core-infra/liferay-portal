@@ -670,53 +670,6 @@ public class CommerceDiscountRulePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce discount rules.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceDiscountRuleImpl.class);
-
-		finderCache.clearCache(CommerceDiscountRuleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce discount rule.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceDiscountRule commerceDiscountRule) {
-		entityCache.removeResult(
-			CommerceDiscountRuleImpl.class, commerceDiscountRule);
-	}
-
-	@Override
-	public void clearCache(List<CommerceDiscountRule> commerceDiscountRules) {
-		for (CommerceDiscountRule commerceDiscountRule :
-				commerceDiscountRules) {
-
-			entityCache.removeResult(
-				CommerceDiscountRuleImpl.class, commerceDiscountRule);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountRuleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceDiscountRuleImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce discount rule with the primary key. Does not add the commerce discount rule to the database.
 	 *
 	 * @param commerceDiscountRuleId the primary key for the new commerce discount rule

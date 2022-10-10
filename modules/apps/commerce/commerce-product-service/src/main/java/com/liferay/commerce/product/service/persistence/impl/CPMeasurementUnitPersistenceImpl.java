@@ -3793,50 +3793,6 @@ public class CPMeasurementUnitPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp measurement units.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPMeasurementUnitImpl.class);
-
-		finderCache.clearCache(CPMeasurementUnitImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp measurement unit.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPMeasurementUnit cpMeasurementUnit) {
-		entityCache.removeResult(
-			CPMeasurementUnitImpl.class, cpMeasurementUnit);
-	}
-
-	@Override
-	public void clearCache(List<CPMeasurementUnit> cpMeasurementUnits) {
-		for (CPMeasurementUnit cpMeasurementUnit : cpMeasurementUnits) {
-			entityCache.removeResult(
-				CPMeasurementUnitImpl.class, cpMeasurementUnit);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPMeasurementUnitImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CPMeasurementUnitImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPMeasurementUnitModelImpl cpMeasurementUnitModelImpl) {
 

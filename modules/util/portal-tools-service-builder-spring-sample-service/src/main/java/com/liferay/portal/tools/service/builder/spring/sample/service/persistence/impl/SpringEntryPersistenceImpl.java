@@ -1744,48 +1744,6 @@ public class SpringEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all spring entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SpringEntryImpl.class);
-
-		finderCache.clearCache(SpringEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the spring entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SpringEntry springEntry) {
-		entityCache.removeResult(SpringEntryImpl.class, springEntry);
-	}
-
-	@Override
-	public void clearCache(List<SpringEntry> springEntries) {
-		for (SpringEntry springEntry : springEntries) {
-			entityCache.removeResult(SpringEntryImpl.class, springEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SpringEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SpringEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new spring entry with the primary key. Does not add the spring entry to the database.
 	 *
 	 * @param springEntryId the primary key for the new spring entry

@@ -3577,48 +3577,6 @@ public class KaleoLogPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo logs.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoLogImpl.class);
-
-		finderCache.clearCache(KaleoLogImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo log.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoLog kaleoLog) {
-		entityCache.removeResult(KaleoLogImpl.class, kaleoLog);
-	}
-
-	@Override
-	public void clearCache(List<KaleoLog> kaleoLogs) {
-		for (KaleoLog kaleoLog : kaleoLogs) {
-			entityCache.removeResult(KaleoLogImpl.class, kaleoLog);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoLogImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoLogImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo log with the primary key. Does not add the kaleo log to the database.
 	 *
 	 * @param kaleoLogId the primary key for the new kaleo log

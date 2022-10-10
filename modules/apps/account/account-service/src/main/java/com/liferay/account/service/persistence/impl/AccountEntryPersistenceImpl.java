@@ -5215,48 +5215,6 @@ public class AccountEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all account entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AccountEntryImpl.class);
-
-		finderCache.clearCache(AccountEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the account entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AccountEntry accountEntry) {
-		entityCache.removeResult(AccountEntryImpl.class, accountEntry);
-	}
-
-	@Override
-	public void clearCache(List<AccountEntry> accountEntries) {
-		for (AccountEntry accountEntry : accountEntries) {
-			entityCache.removeResult(AccountEntryImpl.class, accountEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AccountEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AccountEntryModelImpl accountEntryModelImpl) {
 

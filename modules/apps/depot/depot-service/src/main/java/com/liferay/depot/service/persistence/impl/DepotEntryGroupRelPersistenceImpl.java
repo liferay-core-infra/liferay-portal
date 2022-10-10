@@ -3870,50 +3870,6 @@ public class DepotEntryGroupRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all depot entry group rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DepotEntryGroupRelImpl.class);
-
-		finderCache.clearCache(DepotEntryGroupRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the depot entry group rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DepotEntryGroupRel depotEntryGroupRel) {
-		entityCache.removeResult(
-			DepotEntryGroupRelImpl.class, depotEntryGroupRel);
-	}
-
-	@Override
-	public void clearCache(List<DepotEntryGroupRel> depotEntryGroupRels) {
-		for (DepotEntryGroupRel depotEntryGroupRel : depotEntryGroupRels) {
-			entityCache.removeResult(
-				DepotEntryGroupRelImpl.class, depotEntryGroupRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DepotEntryGroupRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DepotEntryGroupRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DepotEntryGroupRelModelImpl depotEntryGroupRelModelImpl) {
 

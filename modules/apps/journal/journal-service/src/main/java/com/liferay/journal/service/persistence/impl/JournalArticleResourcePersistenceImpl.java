@@ -2396,55 +2396,6 @@ public class JournalArticleResourcePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all journal article resources.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(JournalArticleResourceImpl.class);
-
-		finderCache.clearCache(JournalArticleResourceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the journal article resource.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(JournalArticleResource journalArticleResource) {
-		entityCache.removeResult(
-			JournalArticleResourceImpl.class, journalArticleResource);
-	}
-
-	@Override
-	public void clearCache(
-		List<JournalArticleResource> journalArticleResources) {
-
-		for (JournalArticleResource journalArticleResource :
-				journalArticleResources) {
-
-			entityCache.removeResult(
-				JournalArticleResourceImpl.class, journalArticleResource);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalArticleResourceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				JournalArticleResourceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JournalArticleResourceModelImpl journalArticleResourceModelImpl) {
 

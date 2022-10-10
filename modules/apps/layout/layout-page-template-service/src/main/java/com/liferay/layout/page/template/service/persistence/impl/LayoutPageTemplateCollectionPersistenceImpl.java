@@ -4160,59 +4160,6 @@ public class LayoutPageTemplateCollectionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout page template collections.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutPageTemplateCollectionImpl.class);
-
-		finderCache.clearCache(LayoutPageTemplateCollectionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout page template collection.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		LayoutPageTemplateCollection layoutPageTemplateCollection) {
-
-		entityCache.removeResult(
-			LayoutPageTemplateCollectionImpl.class,
-			layoutPageTemplateCollection);
-	}
-
-	@Override
-	public void clearCache(
-		List<LayoutPageTemplateCollection> layoutPageTemplateCollections) {
-
-		for (LayoutPageTemplateCollection layoutPageTemplateCollection :
-				layoutPageTemplateCollections) {
-
-			entityCache.removeResult(
-				LayoutPageTemplateCollectionImpl.class,
-				layoutPageTemplateCollection);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutPageTemplateCollectionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LayoutPageTemplateCollectionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutPageTemplateCollectionModelImpl
 			layoutPageTemplateCollectionModelImpl) {

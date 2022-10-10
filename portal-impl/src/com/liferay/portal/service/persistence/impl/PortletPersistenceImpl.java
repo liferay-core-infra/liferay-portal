@@ -879,48 +879,6 @@ public class PortletPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all portlets.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PortletImpl.class);
-
-		FinderCacheUtil.clearCache(PortletImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the portlet.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Portlet portlet) {
-		EntityCacheUtil.removeResult(PortletImpl.class, portlet);
-	}
-
-	@Override
-	public void clearCache(List<Portlet> portlets) {
-		for (Portlet portlet : portlets) {
-			EntityCacheUtil.removeResult(PortletImpl.class, portlet);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortletImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(PortletImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(PortletModelImpl portletModelImpl) {
 		Object[] args = new Object[] {
 			portletModelImpl.getCompanyId(), portletModelImpl.getPortletId()

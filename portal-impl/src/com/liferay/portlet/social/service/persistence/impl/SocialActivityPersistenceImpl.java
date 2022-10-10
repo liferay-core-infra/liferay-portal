@@ -5795,49 +5795,6 @@ public class SocialActivityPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all social activities.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialActivityImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivityImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social activity.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SocialActivity socialActivity) {
-		EntityCacheUtil.removeResult(SocialActivityImpl.class, socialActivity);
-	}
-
-	@Override
-	public void clearCache(List<SocialActivity> socialActivities) {
-		for (SocialActivity socialActivity : socialActivities) {
-			EntityCacheUtil.removeResult(
-				SocialActivityImpl.class, socialActivity);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivityImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(SocialActivityImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SocialActivityModelImpl socialActivityModelImpl) {
 

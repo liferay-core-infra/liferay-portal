@@ -2438,48 +2438,6 @@ public class SystemEventPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all system events.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SystemEventImpl.class);
-
-		FinderCacheUtil.clearCache(SystemEventImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the system event.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SystemEvent systemEvent) {
-		EntityCacheUtil.removeResult(SystemEventImpl.class, systemEvent);
-	}
-
-	@Override
-	public void clearCache(List<SystemEvent> systemEvents) {
-		for (SystemEvent systemEvent : systemEvents) {
-			EntityCacheUtil.removeResult(SystemEventImpl.class, systemEvent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SystemEventImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(SystemEventImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new system event with the primary key. Does not add the system event to the database.
 	 *
 	 * @param systemEventId the primary key for the new system event

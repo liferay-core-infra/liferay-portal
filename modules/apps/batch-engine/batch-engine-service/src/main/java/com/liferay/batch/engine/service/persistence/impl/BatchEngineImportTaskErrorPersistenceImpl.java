@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -678,58 +677,6 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 
 				cacheResult(batchEngineImportTaskError);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all batch engine import task errors.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BatchEngineImportTaskErrorImpl.class);
-
-		finderCache.clearCache(BatchEngineImportTaskErrorImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the batch engine import task error.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		BatchEngineImportTaskError batchEngineImportTaskError) {
-
-		entityCache.removeResult(
-			BatchEngineImportTaskErrorImpl.class, batchEngineImportTaskError);
-	}
-
-	@Override
-	public void clearCache(
-		List<BatchEngineImportTaskError> batchEngineImportTaskErrors) {
-
-		for (BatchEngineImportTaskError batchEngineImportTaskError :
-				batchEngineImportTaskErrors) {
-
-			entityCache.removeResult(
-				BatchEngineImportTaskErrorImpl.class,
-				batchEngineImportTaskError);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchEngineImportTaskErrorImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				BatchEngineImportTaskErrorImpl.class, primaryKey);
 		}
 	}
 

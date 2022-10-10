@@ -977,55 +977,6 @@ public class CPDefinitionLocalizationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionLocalizationImpl.class);
-
-		finderCache.clearCache(CPDefinitionLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDefinitionLocalization cpDefinitionLocalization) {
-		entityCache.removeResult(
-			CPDefinitionLocalizationImpl.class, cpDefinitionLocalization);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPDefinitionLocalization> cpDefinitionLocalizations) {
-
-		for (CPDefinitionLocalization cpDefinitionLocalization :
-				cpDefinitionLocalizations) {
-
-			entityCache.removeResult(
-				CPDefinitionLocalizationImpl.class, cpDefinitionLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDefinitionLocalizationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionLocalizationModelImpl cpDefinitionLocalizationModelImpl) {
 

@@ -10789,50 +10789,6 @@ public class SegmentsExperiencePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all segments experiences.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SegmentsExperienceImpl.class);
-
-		finderCache.clearCache(SegmentsExperienceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the segments experience.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SegmentsExperience segmentsExperience) {
-		entityCache.removeResult(
-			SegmentsExperienceImpl.class, segmentsExperience);
-	}
-
-	@Override
-	public void clearCache(List<SegmentsExperience> segmentsExperiences) {
-		for (SegmentsExperience segmentsExperience : segmentsExperiences) {
-			entityCache.removeResult(
-				SegmentsExperienceImpl.class, segmentsExperience);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsExperienceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SegmentsExperienceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SegmentsExperienceModelImpl segmentsExperienceModelImpl) {
 

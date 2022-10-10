@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1409,53 +1408,6 @@ public class CommerceTaxFixedRatePersistenceImpl
 
 				cacheResult(commerceTaxFixedRate);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce tax fixed rates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceTaxFixedRateImpl.class);
-
-		finderCache.clearCache(CommerceTaxFixedRateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce tax fixed rate.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceTaxFixedRate commerceTaxFixedRate) {
-		entityCache.removeResult(
-			CommerceTaxFixedRateImpl.class, commerceTaxFixedRate);
-	}
-
-	@Override
-	public void clearCache(List<CommerceTaxFixedRate> commerceTaxFixedRates) {
-		for (CommerceTaxFixedRate commerceTaxFixedRate :
-				commerceTaxFixedRates) {
-
-			entityCache.removeResult(
-				CommerceTaxFixedRateImpl.class, commerceTaxFixedRate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTaxFixedRateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceTaxFixedRateImpl.class, primaryKey);
 		}
 	}
 

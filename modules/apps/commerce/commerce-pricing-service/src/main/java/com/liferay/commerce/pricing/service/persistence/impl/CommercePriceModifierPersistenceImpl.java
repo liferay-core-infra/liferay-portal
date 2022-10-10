@@ -6508,53 +6508,6 @@ public class CommercePriceModifierPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce price modifiers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommercePriceModifierImpl.class);
-
-		finderCache.clearCache(CommercePriceModifierImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce price modifier.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommercePriceModifier commercePriceModifier) {
-		entityCache.removeResult(
-			CommercePriceModifierImpl.class, commercePriceModifier);
-	}
-
-	@Override
-	public void clearCache(List<CommercePriceModifier> commercePriceModifiers) {
-		for (CommercePriceModifier commercePriceModifier :
-				commercePriceModifiers) {
-
-			entityCache.removeResult(
-				CommercePriceModifierImpl.class, commercePriceModifier);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePriceModifierImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommercePriceModifierImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommercePriceModifierModelImpl commercePriceModifierModelImpl) {
 

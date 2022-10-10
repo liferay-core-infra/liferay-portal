@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the lv entry localization version service.
@@ -2863,58 +2862,6 @@ public class LVEntryLocalizationVersionPersistenceImpl
 
 				cacheResult(lvEntryLocalizationVersion);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all lv entry localization versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LVEntryLocalizationVersionImpl.class);
-
-		finderCache.clearCache(LVEntryLocalizationVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the lv entry localization version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		LVEntryLocalizationVersion lvEntryLocalizationVersion) {
-
-		entityCache.removeResult(
-			LVEntryLocalizationVersionImpl.class, lvEntryLocalizationVersion);
-	}
-
-	@Override
-	public void clearCache(
-		List<LVEntryLocalizationVersion> lvEntryLocalizationVersions) {
-
-		for (LVEntryLocalizationVersion lvEntryLocalizationVersion :
-				lvEntryLocalizationVersions) {
-
-			entityCache.removeResult(
-				LVEntryLocalizationVersionImpl.class,
-				lvEntryLocalizationVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LVEntryLocalizationVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				LVEntryLocalizationVersionImpl.class, primaryKey);
 		}
 	}
 

@@ -5960,48 +5960,6 @@ public class LVEntryVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all lv entry versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LVEntryVersionImpl.class);
-
-		finderCache.clearCache(LVEntryVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the lv entry version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LVEntryVersion lvEntryVersion) {
-		entityCache.removeResult(LVEntryVersionImpl.class, lvEntryVersion);
-	}
-
-	@Override
-	public void clearCache(List<LVEntryVersion> lvEntryVersions) {
-		for (LVEntryVersion lvEntryVersion : lvEntryVersions) {
-			entityCache.removeResult(LVEntryVersionImpl.class, lvEntryVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LVEntryVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LVEntryVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LVEntryVersionModelImpl lvEntryVersionModelImpl) {
 

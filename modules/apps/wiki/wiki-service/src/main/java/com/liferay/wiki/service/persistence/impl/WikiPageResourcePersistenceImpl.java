@@ -1773,49 +1773,6 @@ public class WikiPageResourcePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all wiki page resources.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(WikiPageResourceImpl.class);
-
-		finderCache.clearCache(WikiPageResourceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the wiki page resource.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WikiPageResource wikiPageResource) {
-		entityCache.removeResult(WikiPageResourceImpl.class, wikiPageResource);
-	}
-
-	@Override
-	public void clearCache(List<WikiPageResource> wikiPageResources) {
-		for (WikiPageResource wikiPageResource : wikiPageResources) {
-			entityCache.removeResult(
-				WikiPageResourceImpl.class, wikiPageResource);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WikiPageResourceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(WikiPageResourceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		WikiPageResourceModelImpl wikiPageResourceModelImpl) {
 

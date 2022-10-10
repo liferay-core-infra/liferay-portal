@@ -633,58 +633,6 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all dl opener file entry references.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DLOpenerFileEntryReferenceImpl.class);
-
-		finderCache.clearCache(DLOpenerFileEntryReferenceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dl opener file entry reference.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		DLOpenerFileEntryReference dlOpenerFileEntryReference) {
-
-		entityCache.removeResult(
-			DLOpenerFileEntryReferenceImpl.class, dlOpenerFileEntryReference);
-	}
-
-	@Override
-	public void clearCache(
-		List<DLOpenerFileEntryReference> dlOpenerFileEntryReferences) {
-
-		for (DLOpenerFileEntryReference dlOpenerFileEntryReference :
-				dlOpenerFileEntryReferences) {
-
-			entityCache.removeResult(
-				DLOpenerFileEntryReferenceImpl.class,
-				dlOpenerFileEntryReference);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLOpenerFileEntryReferenceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DLOpenerFileEntryReferenceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLOpenerFileEntryReferenceModelImpl
 			dlOpenerFileEntryReferenceModelImpl) {

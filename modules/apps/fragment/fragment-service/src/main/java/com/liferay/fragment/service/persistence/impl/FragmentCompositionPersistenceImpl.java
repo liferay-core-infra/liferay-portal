@@ -5406,50 +5406,6 @@ public class FragmentCompositionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all fragment compositions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FragmentCompositionImpl.class);
-
-		finderCache.clearCache(FragmentCompositionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the fragment composition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FragmentComposition fragmentComposition) {
-		entityCache.removeResult(
-			FragmentCompositionImpl.class, fragmentComposition);
-	}
-
-	@Override
-	public void clearCache(List<FragmentComposition> fragmentCompositions) {
-		for (FragmentComposition fragmentComposition : fragmentCompositions) {
-			entityCache.removeResult(
-				FragmentCompositionImpl.class, fragmentComposition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FragmentCompositionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FragmentCompositionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		FragmentCompositionModelImpl fragmentCompositionModelImpl) {
 

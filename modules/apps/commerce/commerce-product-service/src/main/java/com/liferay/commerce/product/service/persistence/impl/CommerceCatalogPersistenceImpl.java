@@ -4308,49 +4308,6 @@ public class CommerceCatalogPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce catalogs.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceCatalogImpl.class);
-
-		finderCache.clearCache(CommerceCatalogImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce catalog.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceCatalog commerceCatalog) {
-		entityCache.removeResult(CommerceCatalogImpl.class, commerceCatalog);
-	}
-
-	@Override
-	public void clearCache(List<CommerceCatalog> commerceCatalogs) {
-		for (CommerceCatalog commerceCatalog : commerceCatalogs) {
-			entityCache.removeResult(
-				CommerceCatalogImpl.class, commerceCatalog);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceCatalogImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceCatalogImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceCatalogModelImpl commerceCatalogModelImpl) {
 

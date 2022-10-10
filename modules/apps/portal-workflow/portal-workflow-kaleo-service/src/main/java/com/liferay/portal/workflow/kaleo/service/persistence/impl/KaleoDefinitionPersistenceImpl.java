@@ -3373,49 +3373,6 @@ public class KaleoDefinitionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo definitions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoDefinitionImpl.class);
-
-		finderCache.clearCache(KaleoDefinitionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo definition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoDefinition kaleoDefinition) {
-		entityCache.removeResult(KaleoDefinitionImpl.class, kaleoDefinition);
-	}
-
-	@Override
-	public void clearCache(List<KaleoDefinition> kaleoDefinitions) {
-		for (KaleoDefinition kaleoDefinition : kaleoDefinitions) {
-			entityCache.removeResult(
-				KaleoDefinitionImpl.class, kaleoDefinition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoDefinitionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoDefinitionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoDefinitionModelImpl kaleoDefinitionModelImpl) {
 

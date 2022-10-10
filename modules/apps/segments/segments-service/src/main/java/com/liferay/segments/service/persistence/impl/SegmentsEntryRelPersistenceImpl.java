@@ -2103,49 +2103,6 @@ public class SegmentsEntryRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all segments entry rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SegmentsEntryRelImpl.class);
-
-		finderCache.clearCache(SegmentsEntryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the segments entry rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SegmentsEntryRel segmentsEntryRel) {
-		entityCache.removeResult(SegmentsEntryRelImpl.class, segmentsEntryRel);
-	}
-
-	@Override
-	public void clearCache(List<SegmentsEntryRel> segmentsEntryRels) {
-		for (SegmentsEntryRel segmentsEntryRel : segmentsEntryRels) {
-			entityCache.removeResult(
-				SegmentsEntryRelImpl.class, segmentsEntryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsEntryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SegmentsEntryRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SegmentsEntryRelModelImpl segmentsEntryRelModelImpl) {
 

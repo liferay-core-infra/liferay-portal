@@ -11471,53 +11471,6 @@ public class UserNotificationEventPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all user notification events.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserNotificationEventImpl.class);
-
-		FinderCacheUtil.clearCache(UserNotificationEventImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user notification event.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserNotificationEvent userNotificationEvent) {
-		EntityCacheUtil.removeResult(
-			UserNotificationEventImpl.class, userNotificationEvent);
-	}
-
-	@Override
-	public void clearCache(List<UserNotificationEvent> userNotificationEvents) {
-		for (UserNotificationEvent userNotificationEvent :
-				userNotificationEvents) {
-
-			EntityCacheUtil.removeResult(
-				UserNotificationEventImpl.class, userNotificationEvent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserNotificationEventImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				UserNotificationEventImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new user notification event with the primary key. Does not add the user notification event to the database.
 	 *
 	 * @param userNotificationEventId the primary key for the new user notification event

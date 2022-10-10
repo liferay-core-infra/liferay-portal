@@ -21719,48 +21719,6 @@ public class BlogsEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all blogs entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BlogsEntryImpl.class);
-
-		finderCache.clearCache(BlogsEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the blogs entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BlogsEntry blogsEntry) {
-		entityCache.removeResult(BlogsEntryImpl.class, blogsEntry);
-	}
-
-	@Override
-	public void clearCache(List<BlogsEntry> blogsEntries) {
-		for (BlogsEntry blogsEntry : blogsEntries) {
-			entityCache.removeResult(BlogsEntryImpl.class, blogsEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BlogsEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(BlogsEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		BlogsEntryModelImpl blogsEntryModelImpl) {
 

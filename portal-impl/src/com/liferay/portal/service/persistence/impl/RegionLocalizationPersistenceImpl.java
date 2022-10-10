@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the region localization service.
@@ -895,51 +894,6 @@ public class RegionLocalizationPersistenceImpl
 
 				cacheResult(regionLocalization);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all region localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RegionLocalizationImpl.class);
-
-		FinderCacheUtil.clearCache(RegionLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the region localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RegionLocalization regionLocalization) {
-		EntityCacheUtil.removeResult(
-			RegionLocalizationImpl.class, regionLocalization);
-	}
-
-	@Override
-	public void clearCache(List<RegionLocalization> regionLocalizations) {
-		for (RegionLocalization regionLocalization : regionLocalizations) {
-			EntityCacheUtil.removeResult(
-				RegionLocalizationImpl.class, regionLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RegionLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				RegionLocalizationImpl.class, primaryKey);
 		}
 	}
 

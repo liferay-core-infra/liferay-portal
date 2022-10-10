@@ -2290,49 +2290,6 @@ public class ObjectLayoutTabPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object layout tabs.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectLayoutTabImpl.class);
-
-		finderCache.clearCache(ObjectLayoutTabImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object layout tab.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectLayoutTab objectLayoutTab) {
-		entityCache.removeResult(ObjectLayoutTabImpl.class, objectLayoutTab);
-	}
-
-	@Override
-	public void clearCache(List<ObjectLayoutTab> objectLayoutTabs) {
-		for (ObjectLayoutTab objectLayoutTab : objectLayoutTabs) {
-			entityCache.removeResult(
-				ObjectLayoutTabImpl.class, objectLayoutTab);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutTabImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectLayoutTabImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object layout tab with the primary key. Does not add the object layout tab to the database.
 	 *
 	 * @param objectLayoutTabId the primary key for the new object layout tab

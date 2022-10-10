@@ -6089,48 +6089,6 @@ public class SXPElementPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sxp elements.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SXPElementImpl.class);
-
-		finderCache.clearCache(SXPElementImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sxp element.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SXPElement sxpElement) {
-		entityCache.removeResult(SXPElementImpl.class, sxpElement);
-	}
-
-	@Override
-	public void clearCache(List<SXPElement> sxpElements) {
-		for (SXPElement sxpElement : sxpElements) {
-			entityCache.removeResult(SXPElementImpl.class, sxpElement);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SXPElementImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SXPElementImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SXPElementModelImpl sxpElementModelImpl) {
 

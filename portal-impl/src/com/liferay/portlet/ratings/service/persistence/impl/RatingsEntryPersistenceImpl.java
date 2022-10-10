@@ -3090,48 +3090,6 @@ public class RatingsEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ratings entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RatingsEntryImpl.class);
-
-		FinderCacheUtil.clearCache(RatingsEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ratings entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RatingsEntry ratingsEntry) {
-		EntityCacheUtil.removeResult(RatingsEntryImpl.class, ratingsEntry);
-	}
-
-	@Override
-	public void clearCache(List<RatingsEntry> ratingsEntries) {
-		for (RatingsEntry ratingsEntry : ratingsEntries) {
-			EntityCacheUtil.removeResult(RatingsEntryImpl.class, ratingsEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RatingsEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(RatingsEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		RatingsEntryModelImpl ratingsEntryModelImpl) {
 

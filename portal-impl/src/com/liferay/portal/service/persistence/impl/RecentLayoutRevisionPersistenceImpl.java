@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the recent layout revision service.
@@ -1902,53 +1901,6 @@ public class RecentLayoutRevisionPersistenceImpl
 
 				cacheResult(recentLayoutRevision);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all recent layout revisions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RecentLayoutRevisionImpl.class);
-
-		FinderCacheUtil.clearCache(RecentLayoutRevisionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the recent layout revision.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RecentLayoutRevision recentLayoutRevision) {
-		EntityCacheUtil.removeResult(
-			RecentLayoutRevisionImpl.class, recentLayoutRevision);
-	}
-
-	@Override
-	public void clearCache(List<RecentLayoutRevision> recentLayoutRevisions) {
-		for (RecentLayoutRevision recentLayoutRevision :
-				recentLayoutRevisions) {
-
-			EntityCacheUtil.removeResult(
-				RecentLayoutRevisionImpl.class, recentLayoutRevision);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RecentLayoutRevisionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				RecentLayoutRevisionImpl.class, primaryKey);
 		}
 	}
 

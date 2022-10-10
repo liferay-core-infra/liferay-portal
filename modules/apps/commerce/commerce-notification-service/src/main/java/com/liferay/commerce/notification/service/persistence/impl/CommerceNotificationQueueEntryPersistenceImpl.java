@@ -2917,59 +2917,6 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce notification queue entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceNotificationQueueEntryImpl.class);
-
-		finderCache.clearCache(CommerceNotificationQueueEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce notification queue entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceNotificationQueueEntry commerceNotificationQueueEntry) {
-
-		entityCache.removeResult(
-			CommerceNotificationQueueEntryImpl.class,
-			commerceNotificationQueueEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceNotificationQueueEntry> commerceNotificationQueueEntries) {
-
-		for (CommerceNotificationQueueEntry commerceNotificationQueueEntry :
-				commerceNotificationQueueEntries) {
-
-			entityCache.removeResult(
-				CommerceNotificationQueueEntryImpl.class,
-				commerceNotificationQueueEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceNotificationQueueEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceNotificationQueueEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce notification queue entry with the primary key. Does not add the commerce notification queue entry to the database.
 	 *
 	 * @param commerceNotificationQueueEntryId the primary key for the new commerce notification queue entry

@@ -7820,48 +7820,6 @@ public class JournalFolderPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all journal folders.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(JournalFolderImpl.class);
-
-		finderCache.clearCache(JournalFolderImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the journal folder.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(JournalFolder journalFolder) {
-		entityCache.removeResult(JournalFolderImpl.class, journalFolder);
-	}
-
-	@Override
-	public void clearCache(List<JournalFolder> journalFolders) {
-		for (JournalFolder journalFolder : journalFolders) {
-			entityCache.removeResult(JournalFolderImpl.class, journalFolder);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalFolderImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(JournalFolderImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JournalFolderModelImpl journalFolderModelImpl) {
 

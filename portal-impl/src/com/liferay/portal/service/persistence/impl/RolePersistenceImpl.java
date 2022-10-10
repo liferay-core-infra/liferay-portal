@@ -9996,48 +9996,6 @@ public class RolePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all roles.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(RoleImpl.class);
-
-		FinderCacheUtil.clearCache(RoleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the role.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Role role) {
-		EntityCacheUtil.removeResult(RoleImpl.class, role);
-	}
-
-	@Override
-	public void clearCache(List<Role> roles) {
-		for (Role role : roles) {
-			EntityCacheUtil.removeResult(RoleImpl.class, role);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RoleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(RoleImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(RoleModelImpl roleModelImpl) {
 		Object[] args = new Object[] {
 			roleModelImpl.getCompanyId(), roleModelImpl.getName()

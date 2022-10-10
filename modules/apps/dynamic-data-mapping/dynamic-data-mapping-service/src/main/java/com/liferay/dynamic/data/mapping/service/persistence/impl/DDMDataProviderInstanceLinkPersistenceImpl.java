@@ -1488,58 +1488,6 @@ public class DDMDataProviderInstanceLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm data provider instance links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMDataProviderInstanceLinkImpl.class);
-
-		finderCache.clearCache(DDMDataProviderInstanceLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm data provider instance link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		DDMDataProviderInstanceLink ddmDataProviderInstanceLink) {
-
-		entityCache.removeResult(
-			DDMDataProviderInstanceLinkImpl.class, ddmDataProviderInstanceLink);
-	}
-
-	@Override
-	public void clearCache(
-		List<DDMDataProviderInstanceLink> ddmDataProviderInstanceLinks) {
-
-		for (DDMDataProviderInstanceLink ddmDataProviderInstanceLink :
-				ddmDataProviderInstanceLinks) {
-
-			entityCache.removeResult(
-				DDMDataProviderInstanceLinkImpl.class,
-				ddmDataProviderInstanceLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMDataProviderInstanceLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DDMDataProviderInstanceLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMDataProviderInstanceLinkModelImpl
 			ddmDataProviderInstanceLinkModelImpl) {

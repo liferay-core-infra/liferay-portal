@@ -5240,55 +5240,6 @@ public class CommerceTierPriceEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce tier price entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceTierPriceEntryImpl.class);
-
-		finderCache.clearCache(CommerceTierPriceEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce tier price entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceTierPriceEntry commerceTierPriceEntry) {
-		entityCache.removeResult(
-			CommerceTierPriceEntryImpl.class, commerceTierPriceEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceTierPriceEntry> commerceTierPriceEntries) {
-
-		for (CommerceTierPriceEntry commerceTierPriceEntry :
-				commerceTierPriceEntries) {
-
-			entityCache.removeResult(
-				CommerceTierPriceEntryImpl.class, commerceTierPriceEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTierPriceEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceTierPriceEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceTierPriceEntryModelImpl commerceTierPriceEntryModelImpl) {
 

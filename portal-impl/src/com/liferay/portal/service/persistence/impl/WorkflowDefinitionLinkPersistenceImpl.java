@@ -3521,55 +3521,6 @@ public class WorkflowDefinitionLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all workflow definition links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(WorkflowDefinitionLinkImpl.class);
-
-		FinderCacheUtil.clearCache(WorkflowDefinitionLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the workflow definition link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WorkflowDefinitionLink workflowDefinitionLink) {
-		EntityCacheUtil.removeResult(
-			WorkflowDefinitionLinkImpl.class, workflowDefinitionLink);
-	}
-
-	@Override
-	public void clearCache(
-		List<WorkflowDefinitionLink> workflowDefinitionLinks) {
-
-		for (WorkflowDefinitionLink workflowDefinitionLink :
-				workflowDefinitionLinks) {
-
-			EntityCacheUtil.removeResult(
-				WorkflowDefinitionLinkImpl.class, workflowDefinitionLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WorkflowDefinitionLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				WorkflowDefinitionLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		WorkflowDefinitionLinkModelImpl workflowDefinitionLinkModelImpl) {
 

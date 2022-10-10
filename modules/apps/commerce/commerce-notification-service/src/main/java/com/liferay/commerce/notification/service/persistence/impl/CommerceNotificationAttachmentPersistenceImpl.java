@@ -2133,59 +2133,6 @@ public class CommerceNotificationAttachmentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce notification attachments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceNotificationAttachmentImpl.class);
-
-		finderCache.clearCache(CommerceNotificationAttachmentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce notification attachment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceNotificationAttachment commerceNotificationAttachment) {
-
-		entityCache.removeResult(
-			CommerceNotificationAttachmentImpl.class,
-			commerceNotificationAttachment);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceNotificationAttachment> commerceNotificationAttachments) {
-
-		for (CommerceNotificationAttachment commerceNotificationAttachment :
-				commerceNotificationAttachments) {
-
-			entityCache.removeResult(
-				CommerceNotificationAttachmentImpl.class,
-				commerceNotificationAttachment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceNotificationAttachmentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceNotificationAttachmentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceNotificationAttachmentModelImpl
 			commerceNotificationAttachmentModelImpl) {

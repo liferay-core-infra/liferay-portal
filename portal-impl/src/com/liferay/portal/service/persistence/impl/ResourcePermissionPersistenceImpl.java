@@ -6682,51 +6682,6 @@ public class ResourcePermissionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all resource permissions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ResourcePermissionImpl.class);
-
-		FinderCacheUtil.clearCache(ResourcePermissionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the resource permission.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ResourcePermission resourcePermission) {
-		EntityCacheUtil.removeResult(
-			ResourcePermissionImpl.class, resourcePermission);
-	}
-
-	@Override
-	public void clearCache(List<ResourcePermission> resourcePermissions) {
-		for (ResourcePermission resourcePermission : resourcePermissions) {
-			EntityCacheUtil.removeResult(
-				ResourcePermissionImpl.class, resourcePermission);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ResourcePermissionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				ResourcePermissionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ResourcePermissionModelImpl resourcePermissionModelImpl) {
 

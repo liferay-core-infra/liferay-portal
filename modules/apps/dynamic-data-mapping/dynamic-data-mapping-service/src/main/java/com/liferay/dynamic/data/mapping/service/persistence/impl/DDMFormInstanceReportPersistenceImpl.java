@@ -407,53 +407,6 @@ public class DDMFormInstanceReportPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm form instance reports.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMFormInstanceReportImpl.class);
-
-		finderCache.clearCache(DDMFormInstanceReportImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm form instance report.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMFormInstanceReport ddmFormInstanceReport) {
-		entityCache.removeResult(
-			DDMFormInstanceReportImpl.class, ddmFormInstanceReport);
-	}
-
-	@Override
-	public void clearCache(List<DDMFormInstanceReport> ddmFormInstanceReports) {
-		for (DDMFormInstanceReport ddmFormInstanceReport :
-				ddmFormInstanceReports) {
-
-			entityCache.removeResult(
-				DDMFormInstanceReportImpl.class, ddmFormInstanceReport);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMFormInstanceReportImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DDMFormInstanceReportImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMFormInstanceReportModelImpl ddmFormInstanceReportModelImpl) {
 

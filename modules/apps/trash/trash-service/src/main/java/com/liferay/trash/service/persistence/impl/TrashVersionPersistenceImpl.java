@@ -1453,48 +1453,6 @@ public class TrashVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all trash versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(TrashVersionImpl.class);
-
-		finderCache.clearCache(TrashVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the trash version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(TrashVersion trashVersion) {
-		entityCache.removeResult(TrashVersionImpl.class, trashVersion);
-	}
-
-	@Override
-	public void clearCache(List<TrashVersion> trashVersions) {
-		for (TrashVersion trashVersion : trashVersions) {
-			entityCache.removeResult(TrashVersionImpl.class, trashVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TrashVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(TrashVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		TrashVersionModelImpl trashVersionModelImpl) {
 

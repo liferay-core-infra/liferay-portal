@@ -2587,48 +2587,6 @@ public class DDMContentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm contents.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMContentImpl.class);
-
-		finderCache.clearCache(DDMContentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm content.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMContent ddmContent) {
-		entityCache.removeResult(DDMContentImpl.class, ddmContent);
-	}
-
-	@Override
-	public void clearCache(List<DDMContent> ddmContents) {
-		for (DDMContent ddmContent : ddmContents) {
-			entityCache.removeResult(DDMContentImpl.class, ddmContent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMContentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMContentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMContentModelImpl ddmContentModelImpl) {
 

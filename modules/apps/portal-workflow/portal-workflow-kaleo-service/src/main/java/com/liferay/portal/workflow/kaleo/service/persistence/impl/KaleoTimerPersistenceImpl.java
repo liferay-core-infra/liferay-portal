@@ -1404,48 +1404,6 @@ public class KaleoTimerPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo timers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoTimerImpl.class);
-
-		finderCache.clearCache(KaleoTimerImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo timer.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoTimer kaleoTimer) {
-		entityCache.removeResult(KaleoTimerImpl.class, kaleoTimer);
-	}
-
-	@Override
-	public void clearCache(List<KaleoTimer> kaleoTimers) {
-		for (KaleoTimer kaleoTimer : kaleoTimers) {
-			entityCache.removeResult(KaleoTimerImpl.class, kaleoTimer);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTimerImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoTimerImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo timer with the primary key. Does not add the kaleo timer to the database.
 	 *
 	 * @param kaleoTimerId the primary key for the new kaleo timer

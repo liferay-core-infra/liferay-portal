@@ -2383,53 +2383,6 @@ public class ObjectViewSortColumnPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object view sort columns.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectViewSortColumnImpl.class);
-
-		finderCache.clearCache(ObjectViewSortColumnImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object view sort column.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectViewSortColumn objectViewSortColumn) {
-		entityCache.removeResult(
-			ObjectViewSortColumnImpl.class, objectViewSortColumn);
-	}
-
-	@Override
-	public void clearCache(List<ObjectViewSortColumn> objectViewSortColumns) {
-		for (ObjectViewSortColumn objectViewSortColumn :
-				objectViewSortColumns) {
-
-			entityCache.removeResult(
-				ObjectViewSortColumnImpl.class, objectViewSortColumn);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectViewSortColumnImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				ObjectViewSortColumnImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object view sort column with the primary key. Does not add the object view sort column to the database.
 	 *
 	 * @param objectViewSortColumnId the primary key for the new object view sort column

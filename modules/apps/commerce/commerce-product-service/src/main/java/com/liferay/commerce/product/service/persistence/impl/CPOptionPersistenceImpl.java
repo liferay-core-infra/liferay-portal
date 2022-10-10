@@ -3555,48 +3555,6 @@ public class CPOptionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp options.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPOptionImpl.class);
-
-		finderCache.clearCache(CPOptionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp option.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPOption cpOption) {
-		entityCache.removeResult(CPOptionImpl.class, cpOption);
-	}
-
-	@Override
-	public void clearCache(List<CPOption> cpOptions) {
-		for (CPOption cpOption : cpOptions) {
-			entityCache.removeResult(CPOptionImpl.class, cpOption);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPOptionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CPOptionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPOptionModelImpl cpOptionModelImpl) {
 

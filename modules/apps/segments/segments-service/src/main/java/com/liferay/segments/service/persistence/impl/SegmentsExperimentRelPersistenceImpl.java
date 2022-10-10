@@ -1488,53 +1488,6 @@ public class SegmentsExperimentRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all segments experiment rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SegmentsExperimentRelImpl.class);
-
-		finderCache.clearCache(SegmentsExperimentRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the segments experiment rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SegmentsExperimentRel segmentsExperimentRel) {
-		entityCache.removeResult(
-			SegmentsExperimentRelImpl.class, segmentsExperimentRel);
-	}
-
-	@Override
-	public void clearCache(List<SegmentsExperimentRel> segmentsExperimentRels) {
-		for (SegmentsExperimentRel segmentsExperimentRel :
-				segmentsExperimentRels) {
-
-			entityCache.removeResult(
-				SegmentsExperimentRelImpl.class, segmentsExperimentRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsExperimentRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				SegmentsExperimentRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SegmentsExperimentRelModelImpl segmentsExperimentRelModelImpl) {
 

@@ -9255,48 +9255,6 @@ public class OrganizationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all organizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(OrganizationImpl.class);
-
-		FinderCacheUtil.clearCache(OrganizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the organization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Organization organization) {
-		EntityCacheUtil.removeResult(OrganizationImpl.class, organization);
-	}
-
-	@Override
-	public void clearCache(List<Organization> organizations) {
-		for (Organization organization : organizations) {
-			EntityCacheUtil.removeResult(OrganizationImpl.class, organization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(OrganizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(OrganizationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		OrganizationModelImpl organizationModelImpl) {
 

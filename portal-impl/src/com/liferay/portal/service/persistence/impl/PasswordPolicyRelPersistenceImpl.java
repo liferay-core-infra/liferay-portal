@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the password policy rel service.
@@ -866,51 +865,6 @@ public class PasswordPolicyRelPersistenceImpl
 
 				cacheResult(passwordPolicyRel);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all password policy rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PasswordPolicyRelImpl.class);
-
-		FinderCacheUtil.clearCache(PasswordPolicyRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the password policy rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PasswordPolicyRel passwordPolicyRel) {
-		EntityCacheUtil.removeResult(
-			PasswordPolicyRelImpl.class, passwordPolicyRel);
-	}
-
-	@Override
-	public void clearCache(List<PasswordPolicyRel> passwordPolicyRels) {
-		for (PasswordPolicyRel passwordPolicyRel : passwordPolicyRels) {
-			EntityCacheUtil.removeResult(
-				PasswordPolicyRelImpl.class, passwordPolicyRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PasswordPolicyRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				PasswordPolicyRelImpl.class, primaryKey);
 		}
 	}
 

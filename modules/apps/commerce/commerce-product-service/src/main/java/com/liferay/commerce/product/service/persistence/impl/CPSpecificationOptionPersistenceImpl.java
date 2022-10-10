@@ -4299,53 +4299,6 @@ public class CPSpecificationOptionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp specification options.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPSpecificationOptionImpl.class);
-
-		finderCache.clearCache(CPSpecificationOptionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp specification option.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPSpecificationOption cpSpecificationOption) {
-		entityCache.removeResult(
-			CPSpecificationOptionImpl.class, cpSpecificationOption);
-	}
-
-	@Override
-	public void clearCache(List<CPSpecificationOption> cpSpecificationOptions) {
-		for (CPSpecificationOption cpSpecificationOption :
-				cpSpecificationOptions) {
-
-			entityCache.removeResult(
-				CPSpecificationOptionImpl.class, cpSpecificationOption);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPSpecificationOptionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPSpecificationOptionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPSpecificationOptionModelImpl cpSpecificationOptionModelImpl) {
 

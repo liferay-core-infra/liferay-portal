@@ -639,48 +639,6 @@ public class AttachmentPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all attachments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AttachmentImpl.class);
-
-		finderCache.clearCache(AttachmentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the attachment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Attachment attachment) {
-		entityCache.removeResult(AttachmentImpl.class, attachment);
-	}
-
-	@Override
-	public void clearCache(List<Attachment> attachments) {
-		for (Attachment attachment : attachments) {
-			entityCache.removeResult(AttachmentImpl.class, attachment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AttachmentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AttachmentImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new attachment with the primary key. Does not add the attachment to the database.
 	 *
 	 * @param attachmentId the primary key for the new attachment

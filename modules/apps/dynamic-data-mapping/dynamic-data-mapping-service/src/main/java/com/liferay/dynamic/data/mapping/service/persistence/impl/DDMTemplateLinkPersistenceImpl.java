@@ -910,49 +910,6 @@ public class DDMTemplateLinkPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm template links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMTemplateLinkImpl.class);
-
-		finderCache.clearCache(DDMTemplateLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm template link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DDMTemplateLink ddmTemplateLink) {
-		entityCache.removeResult(DDMTemplateLinkImpl.class, ddmTemplateLink);
-	}
-
-	@Override
-	public void clearCache(List<DDMTemplateLink> ddmTemplateLinks) {
-		for (DDMTemplateLink ddmTemplateLink : ddmTemplateLinks) {
-			entityCache.removeResult(
-				DDMTemplateLinkImpl.class, ddmTemplateLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMTemplateLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DDMTemplateLinkImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMTemplateLinkModelImpl ddmTemplateLinkModelImpl) {
 

@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -630,48 +629,6 @@ public class AuditEventPersistenceImpl
 
 				cacheResult(auditEvent);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all audit events.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AuditEventImpl.class);
-
-		finderCache.clearCache(AuditEventImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the audit event.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AuditEvent auditEvent) {
-		entityCache.removeResult(AuditEventImpl.class, auditEvent);
-	}
-
-	@Override
-	public void clearCache(List<AuditEvent> auditEvents) {
-		for (AuditEvent auditEvent : auditEvents) {
-			entityCache.removeResult(AuditEventImpl.class, auditEvent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AuditEventImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AuditEventImpl.class, primaryKey);
 		}
 	}
 

@@ -1365,48 +1365,6 @@ public class MessagePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all messages.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MessageImpl.class);
-
-		finderCache.clearCache(MessageImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Message message) {
-		entityCache.removeResult(MessageImpl.class, message);
-	}
-
-	@Override
-	public void clearCache(List<Message> messages) {
-		for (Message message : messages) {
-			entityCache.removeResult(MessageImpl.class, message);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MessageImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MessageImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(MessageModelImpl messageModelImpl) {
 		Object[] args = new Object[] {
 			messageModelImpl.getFolderId(),

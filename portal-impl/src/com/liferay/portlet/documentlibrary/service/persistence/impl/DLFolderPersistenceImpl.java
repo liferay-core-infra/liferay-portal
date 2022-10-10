@@ -14455,48 +14455,6 @@ public class DLFolderPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all document library folders.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(DLFolderImpl.class);
-
-		FinderCacheUtil.clearCache(DLFolderImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the document library folder.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLFolder dlFolder) {
-		EntityCacheUtil.removeResult(DLFolderImpl.class, dlFolder);
-	}
-
-	@Override
-	public void clearCache(List<DLFolder> dlFolders) {
-		for (DLFolder dlFolder : dlFolders) {
-			EntityCacheUtil.removeResult(DLFolderImpl.class, dlFolder);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFolderImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(DLFolderImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLFolderModelImpl dlFolderModelImpl) {
 

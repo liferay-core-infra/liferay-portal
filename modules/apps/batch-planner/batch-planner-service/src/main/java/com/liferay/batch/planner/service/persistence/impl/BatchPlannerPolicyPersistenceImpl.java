@@ -53,7 +53,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -917,50 +916,6 @@ public class BatchPlannerPolicyPersistenceImpl
 
 				cacheResult(batchPlannerPolicy);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all batch planner policies.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BatchPlannerPolicyImpl.class);
-
-		finderCache.clearCache(BatchPlannerPolicyImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the batch planner policy.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BatchPlannerPolicy batchPlannerPolicy) {
-		entityCache.removeResult(
-			BatchPlannerPolicyImpl.class, batchPlannerPolicy);
-	}
-
-	@Override
-	public void clearCache(List<BatchPlannerPolicy> batchPlannerPolicies) {
-		for (BatchPlannerPolicy batchPlannerPolicy : batchPlannerPolicies) {
-			entityCache.removeResult(
-				BatchPlannerPolicyImpl.class, batchPlannerPolicy);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchPlannerPolicyImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(BatchPlannerPolicyImpl.class, primaryKey);
 		}
 	}
 

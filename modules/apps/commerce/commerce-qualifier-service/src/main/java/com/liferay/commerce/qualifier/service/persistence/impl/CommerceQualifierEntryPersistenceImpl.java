@@ -2756,55 +2756,6 @@ public class CommerceQualifierEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce qualifier entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceQualifierEntryImpl.class);
-
-		finderCache.clearCache(CommerceQualifierEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce qualifier entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceQualifierEntry commerceQualifierEntry) {
-		entityCache.removeResult(
-			CommerceQualifierEntryImpl.class, commerceQualifierEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceQualifierEntry> commerceQualifierEntries) {
-
-		for (CommerceQualifierEntry commerceQualifierEntry :
-				commerceQualifierEntries) {
-
-			entityCache.removeResult(
-				CommerceQualifierEntryImpl.class, commerceQualifierEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceQualifierEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceQualifierEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceQualifierEntryModelImpl commerceQualifierEntryModelImpl) {
 

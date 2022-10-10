@@ -4808,48 +4808,6 @@ public class ObjectEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all object entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectEntryImpl.class);
-
-		finderCache.clearCache(ObjectEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectEntry objectEntry) {
-		entityCache.removeResult(ObjectEntryImpl.class, objectEntry);
-	}
-
-	@Override
-	public void clearCache(List<ObjectEntry> objectEntries) {
-		for (ObjectEntry objectEntry : objectEntries) {
-			entityCache.removeResult(ObjectEntryImpl.class, objectEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ObjectEntryModelImpl objectEntryModelImpl) {
 

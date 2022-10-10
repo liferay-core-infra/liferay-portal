@@ -7005,49 +7005,6 @@ public class DispatchTriggerPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all dispatch triggers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DispatchTriggerImpl.class);
-
-		finderCache.clearCache(DispatchTriggerImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dispatch trigger.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DispatchTrigger dispatchTrigger) {
-		entityCache.removeResult(DispatchTriggerImpl.class, dispatchTrigger);
-	}
-
-	@Override
-	public void clearCache(List<DispatchTrigger> dispatchTriggers) {
-		for (DispatchTrigger dispatchTrigger : dispatchTriggers) {
-			entityCache.removeResult(
-				DispatchTriggerImpl.class, dispatchTrigger);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DispatchTriggerImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DispatchTriggerImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DispatchTriggerModelImpl dispatchTriggerModelImpl) {
 

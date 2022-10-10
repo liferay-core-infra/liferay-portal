@@ -1890,58 +1890,6 @@ public class JournalArticleLocalizationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all journal article localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(JournalArticleLocalizationImpl.class);
-
-		finderCache.clearCache(JournalArticleLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the journal article localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		JournalArticleLocalization journalArticleLocalization) {
-
-		entityCache.removeResult(
-			JournalArticleLocalizationImpl.class, journalArticleLocalization);
-	}
-
-	@Override
-	public void clearCache(
-		List<JournalArticleLocalization> journalArticleLocalizations) {
-
-		for (JournalArticleLocalization journalArticleLocalization :
-				journalArticleLocalizations) {
-
-			entityCache.removeResult(
-				JournalArticleLocalizationImpl.class,
-				journalArticleLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalArticleLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				JournalArticleLocalizationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JournalArticleLocalizationModelImpl
 			journalArticleLocalizationModelImpl) {

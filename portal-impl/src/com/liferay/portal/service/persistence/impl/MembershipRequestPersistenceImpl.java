@@ -51,7 +51,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the membership request service.
@@ -2243,51 +2242,6 @@ public class MembershipRequestPersistenceImpl
 
 				cacheResult(membershipRequest);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all membership requests.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(MembershipRequestImpl.class);
-
-		FinderCacheUtil.clearCache(MembershipRequestImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the membership request.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MembershipRequest membershipRequest) {
-		EntityCacheUtil.removeResult(
-			MembershipRequestImpl.class, membershipRequest);
-	}
-
-	@Override
-	public void clearCache(List<MembershipRequest> membershipRequests) {
-		for (MembershipRequest membershipRequest : membershipRequests) {
-			EntityCacheUtil.removeResult(
-				MembershipRequestImpl.class, membershipRequest);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(MembershipRequestImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				MembershipRequestImpl.class, primaryKey);
 		}
 	}
 

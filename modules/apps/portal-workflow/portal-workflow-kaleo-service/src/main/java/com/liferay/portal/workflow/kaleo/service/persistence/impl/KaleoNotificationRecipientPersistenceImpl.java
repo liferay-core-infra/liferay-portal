@@ -1778,58 +1778,6 @@ public class KaleoNotificationRecipientPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all kaleo notification recipients.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoNotificationRecipientImpl.class);
-
-		finderCache.clearCache(KaleoNotificationRecipientImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo notification recipient.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-		entityCache.removeResult(
-			KaleoNotificationRecipientImpl.class, kaleoNotificationRecipient);
-	}
-
-	@Override
-	public void clearCache(
-		List<KaleoNotificationRecipient> kaleoNotificationRecipients) {
-
-		for (KaleoNotificationRecipient kaleoNotificationRecipient :
-				kaleoNotificationRecipients) {
-
-			entityCache.removeResult(
-				KaleoNotificationRecipientImpl.class,
-				kaleoNotificationRecipient);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoNotificationRecipientImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				KaleoNotificationRecipientImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new kaleo notification recipient with the primary key. Does not add the kaleo notification recipient to the database.
 	 *
 	 * @param kaleoNotificationRecipientId the primary key for the new kaleo notification recipient

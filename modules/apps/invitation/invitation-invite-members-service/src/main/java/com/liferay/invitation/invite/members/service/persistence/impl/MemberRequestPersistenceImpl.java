@@ -1708,48 +1708,6 @@ public class MemberRequestPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all member requests.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MemberRequestImpl.class);
-
-		finderCache.clearCache(MemberRequestImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the member request.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MemberRequest memberRequest) {
-		entityCache.removeResult(MemberRequestImpl.class, memberRequest);
-	}
-
-	@Override
-	public void clearCache(List<MemberRequest> memberRequests) {
-		for (MemberRequest memberRequest : memberRequests) {
-			entityCache.removeResult(MemberRequestImpl.class, memberRequest);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MemberRequestImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MemberRequestImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MemberRequestModelImpl memberRequestModelImpl) {
 

@@ -3957,48 +3957,6 @@ public class WebsitePersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all websites.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(WebsiteImpl.class);
-
-		FinderCacheUtil.clearCache(WebsiteImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the website.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Website website) {
-		EntityCacheUtil.removeResult(WebsiteImpl.class, website);
-	}
-
-	@Override
-	public void clearCache(List<Website> websites) {
-		for (Website website : websites) {
-			EntityCacheUtil.removeResult(WebsiteImpl.class, website);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WebsiteImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(WebsiteImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new website with the primary key. Does not add the website to the database.
 	 *
 	 * @param websiteId the primary key for the new website

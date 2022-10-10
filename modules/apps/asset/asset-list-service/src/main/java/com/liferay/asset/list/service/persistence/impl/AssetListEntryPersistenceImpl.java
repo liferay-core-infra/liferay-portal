@@ -13607,48 +13607,6 @@ public class AssetListEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all asset list entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AssetListEntryImpl.class);
-
-		finderCache.clearCache(AssetListEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the asset list entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AssetListEntry assetListEntry) {
-		entityCache.removeResult(AssetListEntryImpl.class, assetListEntry);
-	}
-
-	@Override
-	public void clearCache(List<AssetListEntry> assetListEntries) {
-		for (AssetListEntry assetListEntry : assetListEntries) {
-			entityCache.removeResult(AssetListEntryImpl.class, assetListEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetListEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AssetListEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AssetListEntryModelImpl assetListEntryModelImpl) {
 

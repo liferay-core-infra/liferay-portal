@@ -51,7 +51,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1410,50 +1409,6 @@ public class AccountEntryUserRelPersistenceImpl
 
 				cacheResult(accountEntryUserRel);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all account entry user rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AccountEntryUserRelImpl.class);
-
-		finderCache.clearCache(AccountEntryUserRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the account entry user rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AccountEntryUserRel accountEntryUserRel) {
-		entityCache.removeResult(
-			AccountEntryUserRelImpl.class, accountEntryUserRel);
-	}
-
-	@Override
-	public void clearCache(List<AccountEntryUserRel> accountEntryUserRels) {
-		for (AccountEntryUserRel accountEntryUserRel : accountEntryUserRels) {
-			entityCache.removeResult(
-				AccountEntryUserRelImpl.class, accountEntryUserRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountEntryUserRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AccountEntryUserRelImpl.class, primaryKey);
 		}
 	}
 

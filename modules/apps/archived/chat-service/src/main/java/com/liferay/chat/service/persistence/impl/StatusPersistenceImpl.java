@@ -1852,48 +1852,6 @@ public class StatusPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all statuses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(StatusImpl.class);
-
-		finderCache.clearCache(StatusImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the status.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Status status) {
-		entityCache.removeResult(StatusImpl.class, status);
-	}
-
-	@Override
-	public void clearCache(List<Status> statuses) {
-		for (Status status : statuses) {
-			entityCache.removeResult(StatusImpl.class, status);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(StatusImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(StatusImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(StatusModelImpl statusModelImpl) {
 		Object[] args = new Object[] {statusModelImpl.getUserId()};
 

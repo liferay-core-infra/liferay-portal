@@ -54,7 +54,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1186,49 +1185,6 @@ public class SamlIdpSpSessionPersistenceImpl
 
 				cacheResult(samlIdpSpSession);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all saml idp sp sessions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SamlIdpSpSessionImpl.class);
-
-		finderCache.clearCache(SamlIdpSpSessionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the saml idp sp session.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SamlIdpSpSession samlIdpSpSession) {
-		entityCache.removeResult(SamlIdpSpSessionImpl.class, samlIdpSpSession);
-	}
-
-	@Override
-	public void clearCache(List<SamlIdpSpSession> samlIdpSpSessions) {
-		for (SamlIdpSpSession samlIdpSpSession : samlIdpSpSessions) {
-			entityCache.removeResult(
-				SamlIdpSpSessionImpl.class, samlIdpSpSession);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlIdpSpSessionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SamlIdpSpSessionImpl.class, primaryKey);
 		}
 	}
 

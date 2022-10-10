@@ -5387,51 +5387,6 @@ public class LayoutFriendlyURLPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout friendly urls.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(LayoutFriendlyURLImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutFriendlyURLImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout friendly url.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutFriendlyURL layoutFriendlyURL) {
-		EntityCacheUtil.removeResult(
-			LayoutFriendlyURLImpl.class, layoutFriendlyURL);
-	}
-
-	@Override
-	public void clearCache(List<LayoutFriendlyURL> layoutFriendlyURLs) {
-		for (LayoutFriendlyURL layoutFriendlyURL : layoutFriendlyURLs) {
-			EntityCacheUtil.removeResult(
-				LayoutFriendlyURLImpl.class, layoutFriendlyURL);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutFriendlyURLImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				LayoutFriendlyURLImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutFriendlyURLModelImpl layoutFriendlyURLModelImpl) {
 

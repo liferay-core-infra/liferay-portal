@@ -15427,48 +15427,6 @@ public class FragmentEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all fragment entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FragmentEntryImpl.class);
-
-		finderCache.clearCache(FragmentEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the fragment entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FragmentEntry fragmentEntry) {
-		entityCache.removeResult(FragmentEntryImpl.class, fragmentEntry);
-	}
-
-	@Override
-	public void clearCache(List<FragmentEntry> fragmentEntries) {
-		for (FragmentEntry fragmentEntry : fragmentEntries) {
-			entityCache.removeResult(FragmentEntryImpl.class, fragmentEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FragmentEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FragmentEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		FragmentEntryModelImpl fragmentEntryModelImpl) {
 

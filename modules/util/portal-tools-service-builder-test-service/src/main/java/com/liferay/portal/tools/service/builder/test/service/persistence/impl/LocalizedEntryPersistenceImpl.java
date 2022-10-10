@@ -45,7 +45,6 @@ import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the localized entry service.
@@ -124,48 +123,6 @@ public class LocalizedEntryPersistenceImpl
 
 				cacheResult(localizedEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all localized entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LocalizedEntryImpl.class);
-
-		finderCache.clearCache(LocalizedEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the localized entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LocalizedEntry localizedEntry) {
-		entityCache.removeResult(LocalizedEntryImpl.class, localizedEntry);
-	}
-
-	@Override
-	public void clearCache(List<LocalizedEntry> localizedEntries) {
-		for (LocalizedEntry localizedEntry : localizedEntries) {
-			entityCache.removeResult(LocalizedEntryImpl.class, localizedEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LocalizedEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LocalizedEntryImpl.class, primaryKey);
 		}
 	}
 

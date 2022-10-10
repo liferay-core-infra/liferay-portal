@@ -4164,49 +4164,6 @@ public class CommerceShipmentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce shipments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceShipmentImpl.class);
-
-		finderCache.clearCache(CommerceShipmentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce shipment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceShipment commerceShipment) {
-		entityCache.removeResult(CommerceShipmentImpl.class, commerceShipment);
-	}
-
-	@Override
-	public void clearCache(List<CommerceShipment> commerceShipments) {
-		for (CommerceShipment commerceShipment : commerceShipments) {
-			entityCache.removeResult(
-				CommerceShipmentImpl.class, commerceShipment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShipmentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceShipmentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceShipmentModelImpl commerceShipmentModelImpl) {
 

@@ -51,7 +51,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the nested sets tree entry service.
@@ -134,50 +133,6 @@ public class NestedSetsTreeEntryPersistenceImpl
 
 				cacheResult(nestedSetsTreeEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all nested sets tree entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(NestedSetsTreeEntryImpl.class);
-
-		finderCache.clearCache(NestedSetsTreeEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the nested sets tree entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(NestedSetsTreeEntry nestedSetsTreeEntry) {
-		entityCache.removeResult(
-			NestedSetsTreeEntryImpl.class, nestedSetsTreeEntry);
-	}
-
-	@Override
-	public void clearCache(List<NestedSetsTreeEntry> nestedSetsTreeEntries) {
-		for (NestedSetsTreeEntry nestedSetsTreeEntry : nestedSetsTreeEntries) {
-			entityCache.removeResult(
-				NestedSetsTreeEntryImpl.class, nestedSetsTreeEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NestedSetsTreeEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(NestedSetsTreeEntryImpl.class, primaryKey);
 		}
 	}
 

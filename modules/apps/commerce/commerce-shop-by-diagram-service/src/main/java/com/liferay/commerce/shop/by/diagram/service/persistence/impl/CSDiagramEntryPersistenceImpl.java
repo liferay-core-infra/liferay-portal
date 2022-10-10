@@ -1466,48 +1466,6 @@ public class CSDiagramEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cs diagram entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CSDiagramEntryImpl.class);
-
-		finderCache.clearCache(CSDiagramEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cs diagram entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CSDiagramEntry csDiagramEntry) {
-		entityCache.removeResult(CSDiagramEntryImpl.class, csDiagramEntry);
-	}
-
-	@Override
-	public void clearCache(List<CSDiagramEntry> csDiagramEntries) {
-		for (CSDiagramEntry csDiagramEntry : csDiagramEntries) {
-			entityCache.removeResult(CSDiagramEntryImpl.class, csDiagramEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CSDiagramEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CSDiagramEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CSDiagramEntryModelImpl csDiagramEntryModelImpl) {
 

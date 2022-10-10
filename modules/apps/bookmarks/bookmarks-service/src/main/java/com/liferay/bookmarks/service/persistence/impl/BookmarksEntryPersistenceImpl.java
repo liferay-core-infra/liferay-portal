@@ -12517,48 +12517,6 @@ public class BookmarksEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all bookmarks entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(BookmarksEntryImpl.class);
-
-		finderCache.clearCache(BookmarksEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the bookmarks entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BookmarksEntry bookmarksEntry) {
-		entityCache.removeResult(BookmarksEntryImpl.class, bookmarksEntry);
-	}
-
-	@Override
-	public void clearCache(List<BookmarksEntry> bookmarksEntries) {
-		for (BookmarksEntry bookmarksEntry : bookmarksEntries) {
-			entityCache.removeResult(BookmarksEntryImpl.class, bookmarksEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BookmarksEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(BookmarksEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		BookmarksEntryModelImpl bookmarksEntryModelImpl) {
 

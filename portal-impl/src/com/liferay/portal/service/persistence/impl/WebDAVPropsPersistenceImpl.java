@@ -51,7 +51,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the web dav props service.
@@ -352,48 +351,6 @@ public class WebDAVPropsPersistenceImpl
 
 				cacheResult(webDAVProps);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all web dav propses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(WebDAVPropsImpl.class);
-
-		FinderCacheUtil.clearCache(WebDAVPropsImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the web dav props.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WebDAVProps webDAVProps) {
-		EntityCacheUtil.removeResult(WebDAVPropsImpl.class, webDAVProps);
-	}
-
-	@Override
-	public void clearCache(List<WebDAVProps> webDAVPropses) {
-		for (WebDAVProps webDAVProps : webDAVPropses) {
-			EntityCacheUtil.removeResult(WebDAVPropsImpl.class, webDAVProps);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WebDAVPropsImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(WebDAVPropsImpl.class, primaryKey);
 		}
 	}
 

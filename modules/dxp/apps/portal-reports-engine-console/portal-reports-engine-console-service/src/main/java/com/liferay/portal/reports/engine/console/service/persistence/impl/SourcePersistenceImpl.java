@@ -2847,48 +2847,6 @@ public class SourcePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sources.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SourceImpl.class);
-
-		finderCache.clearCache(SourceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the source.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Source source) {
-		entityCache.removeResult(SourceImpl.class, source);
-	}
-
-	@Override
-	public void clearCache(List<Source> sources) {
-		for (Source source : sources) {
-			entityCache.removeResult(SourceImpl.class, source);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SourceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SourceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(SourceModelImpl sourceModelImpl) {
 		Object[] args = new Object[] {
 			sourceModelImpl.getUuid(), sourceModelImpl.getGroupId()

@@ -1851,48 +1851,6 @@ public class LayoutSEOEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all layout seo entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(LayoutSEOEntryImpl.class);
-
-		finderCache.clearCache(LayoutSEOEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the layout seo entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(LayoutSEOEntry layoutSEOEntry) {
-		entityCache.removeResult(LayoutSEOEntryImpl.class, layoutSEOEntry);
-	}
-
-	@Override
-	public void clearCache(List<LayoutSEOEntry> layoutSEOEntries) {
-		for (LayoutSEOEntry layoutSEOEntry : layoutSEOEntries) {
-			entityCache.removeResult(LayoutSEOEntryImpl.class, layoutSEOEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutSEOEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(LayoutSEOEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		LayoutSEOEntryModelImpl layoutSEOEntryModelImpl) {
 

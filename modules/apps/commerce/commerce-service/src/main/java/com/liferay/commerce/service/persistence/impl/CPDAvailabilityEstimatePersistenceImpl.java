@@ -2024,55 +2024,6 @@ public class CPDAvailabilityEstimatePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cpd availability estimates.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDAvailabilityEstimateImpl.class);
-
-		finderCache.clearCache(CPDAvailabilityEstimateImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cpd availability estimate.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDAvailabilityEstimate cpdAvailabilityEstimate) {
-		entityCache.removeResult(
-			CPDAvailabilityEstimateImpl.class, cpdAvailabilityEstimate);
-	}
-
-	@Override
-	public void clearCache(
-		List<CPDAvailabilityEstimate> cpdAvailabilityEstimates) {
-
-		for (CPDAvailabilityEstimate cpdAvailabilityEstimate :
-				cpdAvailabilityEstimates) {
-
-			entityCache.removeResult(
-				CPDAvailabilityEstimateImpl.class, cpdAvailabilityEstimate);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDAvailabilityEstimateImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDAvailabilityEstimateImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDAvailabilityEstimateModelImpl cpdAvailabilityEstimateModelImpl) {
 

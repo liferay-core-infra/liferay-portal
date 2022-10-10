@@ -3055,53 +3055,6 @@ public class KaleoTaskFormInstancePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all kaleo task form instances.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoTaskFormInstanceImpl.class);
-
-		finderCache.clearCache(KaleoTaskFormInstanceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo task form instance.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoTaskFormInstance kaleoTaskFormInstance) {
-		entityCache.removeResult(
-			KaleoTaskFormInstanceImpl.class, kaleoTaskFormInstance);
-	}
-
-	@Override
-	public void clearCache(List<KaleoTaskFormInstance> kaleoTaskFormInstances) {
-		for (KaleoTaskFormInstance kaleoTaskFormInstance :
-				kaleoTaskFormInstances) {
-
-			entityCache.removeResult(
-				KaleoTaskFormInstanceImpl.class, kaleoTaskFormInstance);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTaskFormInstanceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				KaleoTaskFormInstanceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		KaleoTaskFormInstanceModelImpl kaleoTaskFormInstanceModelImpl) {
 

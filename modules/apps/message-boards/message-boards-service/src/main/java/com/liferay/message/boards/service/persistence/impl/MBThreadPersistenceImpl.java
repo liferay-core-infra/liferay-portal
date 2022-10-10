@@ -13303,48 +13303,6 @@ public class MBThreadPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards threads.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBThreadImpl.class);
-
-		finderCache.clearCache(MBThreadImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards thread.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBThread mbThread) {
-		entityCache.removeResult(MBThreadImpl.class, mbThread);
-	}
-
-	@Override
-	public void clearCache(List<MBThread> mbThreads) {
-		for (MBThread mbThread : mbThreads) {
-			entityCache.removeResult(MBThreadImpl.class, mbThread);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBThreadImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBThreadImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBThreadModelImpl mbThreadModelImpl) {
 

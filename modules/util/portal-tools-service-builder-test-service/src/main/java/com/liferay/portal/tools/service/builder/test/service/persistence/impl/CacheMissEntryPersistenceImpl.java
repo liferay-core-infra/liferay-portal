@@ -142,49 +142,6 @@ public class CacheMissEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all cache miss entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		dummyEntityCache.clearCache(CacheMissEntryImpl.class);
-
-		dummyFinderCache.clearCache(CacheMissEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cache miss entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CacheMissEntry cacheMissEntry) {
-		dummyEntityCache.removeResult(CacheMissEntryImpl.class, cacheMissEntry);
-	}
-
-	@Override
-	public void clearCache(List<CacheMissEntry> cacheMissEntries) {
-		for (CacheMissEntry cacheMissEntry : cacheMissEntries) {
-			dummyEntityCache.removeResult(
-				CacheMissEntryImpl.class, cacheMissEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(CacheMissEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			dummyEntityCache.removeResult(CacheMissEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new cache miss entry with the primary key. Does not add the cache miss entry to the database.
 	 *
 	 * @param cacheMissEntryId the primary key for the new cache miss entry

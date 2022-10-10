@@ -3975,48 +3975,6 @@ public class EmailAddressPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all email addresses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(EmailAddressImpl.class);
-
-		FinderCacheUtil.clearCache(EmailAddressImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the email address.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(EmailAddress emailAddress) {
-		EntityCacheUtil.removeResult(EmailAddressImpl.class, emailAddress);
-	}
-
-	@Override
-	public void clearCache(List<EmailAddress> emailAddresses) {
-		for (EmailAddress emailAddress : emailAddresses) {
-			EntityCacheUtil.removeResult(EmailAddressImpl.class, emailAddress);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(EmailAddressImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(EmailAddressImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new email address with the primary key. Does not add the email address to the database.
 	 *
 	 * @param emailAddressId the primary key for the new email address

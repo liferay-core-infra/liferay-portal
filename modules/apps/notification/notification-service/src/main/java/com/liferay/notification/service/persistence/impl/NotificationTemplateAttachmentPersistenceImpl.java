@@ -933,59 +933,6 @@ public class NotificationTemplateAttachmentPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all notification template attachments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(NotificationTemplateAttachmentImpl.class);
-
-		finderCache.clearCache(NotificationTemplateAttachmentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the notification template attachment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		NotificationTemplateAttachment notificationTemplateAttachment) {
-
-		entityCache.removeResult(
-			NotificationTemplateAttachmentImpl.class,
-			notificationTemplateAttachment);
-	}
-
-	@Override
-	public void clearCache(
-		List<NotificationTemplateAttachment> notificationTemplateAttachments) {
-
-		for (NotificationTemplateAttachment notificationTemplateAttachment :
-				notificationTemplateAttachments) {
-
-			entityCache.removeResult(
-				NotificationTemplateAttachmentImpl.class,
-				notificationTemplateAttachment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NotificationTemplateAttachmentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				NotificationTemplateAttachmentImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		NotificationTemplateAttachmentModelImpl
 			notificationTemplateAttachmentModelImpl) {

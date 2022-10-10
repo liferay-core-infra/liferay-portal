@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -891,48 +890,6 @@ public class FolderPersistenceImpl
 
 				cacheResult(folder);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all folders.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FolderImpl.class);
-
-		finderCache.clearCache(FolderImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the folder.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(Folder folder) {
-		entityCache.removeResult(FolderImpl.class, folder);
-	}
-
-	@Override
-	public void clearCache(List<Folder> folders) {
-		for (Folder folder : folders) {
-			entityCache.removeResult(FolderImpl.class, folder);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FolderImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(FolderImpl.class, primaryKey);
 		}
 	}
 

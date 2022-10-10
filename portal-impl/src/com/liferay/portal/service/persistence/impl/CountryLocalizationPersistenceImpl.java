@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the country localization service.
@@ -901,51 +900,6 @@ public class CountryLocalizationPersistenceImpl
 
 				cacheResult(countryLocalization);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all country localizations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(CountryLocalizationImpl.class);
-
-		FinderCacheUtil.clearCache(CountryLocalizationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the country localization.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CountryLocalization countryLocalization) {
-		EntityCacheUtil.removeResult(
-			CountryLocalizationImpl.class, countryLocalization);
-	}
-
-	@Override
-	public void clearCache(List<CountryLocalization> countryLocalizations) {
-		for (CountryLocalization countryLocalization : countryLocalizations) {
-			EntityCacheUtil.removeResult(
-				CountryLocalizationImpl.class, countryLocalization);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(CountryLocalizationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				CountryLocalizationImpl.class, primaryKey);
 		}
 	}
 

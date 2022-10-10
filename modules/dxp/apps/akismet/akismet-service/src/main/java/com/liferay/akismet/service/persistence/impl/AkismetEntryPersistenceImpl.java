@@ -918,48 +918,6 @@ public class AkismetEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all akismet entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AkismetEntryImpl.class);
-
-		finderCache.clearCache(AkismetEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the akismet entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AkismetEntry akismetEntry) {
-		entityCache.removeResult(AkismetEntryImpl.class, akismetEntry);
-	}
-
-	@Override
-	public void clearCache(List<AkismetEntry> akismetEntries) {
-		for (AkismetEntry akismetEntry : akismetEntries) {
-			entityCache.removeResult(AkismetEntryImpl.class, akismetEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AkismetEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AkismetEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		AkismetEntryModelImpl akismetEntryModelImpl) {
 

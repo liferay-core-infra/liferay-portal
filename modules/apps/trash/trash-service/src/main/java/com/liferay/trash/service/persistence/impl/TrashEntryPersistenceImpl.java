@@ -2541,48 +2541,6 @@ public class TrashEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all trash entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(TrashEntryImpl.class);
-
-		finderCache.clearCache(TrashEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the trash entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(TrashEntry trashEntry) {
-		entityCache.removeResult(TrashEntryImpl.class, trashEntry);
-	}
-
-	@Override
-	public void clearCache(List<TrashEntry> trashEntries) {
-		for (TrashEntry trashEntry : trashEntries) {
-			entityCache.removeResult(TrashEntryImpl.class, trashEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TrashEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(TrashEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		TrashEntryModelImpl trashEntryModelImpl) {
 

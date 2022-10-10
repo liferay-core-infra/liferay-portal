@@ -11644,48 +11644,6 @@ public class MBCategoryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards categories.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBCategoryImpl.class);
-
-		finderCache.clearCache(MBCategoryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards category.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBCategory mbCategory) {
-		entityCache.removeResult(MBCategoryImpl.class, mbCategory);
-	}
-
-	@Override
-	public void clearCache(List<MBCategory> mbCategories) {
-		for (MBCategory mbCategory : mbCategories) {
-			entityCache.removeResult(MBCategoryImpl.class, mbCategory);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBCategoryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(MBCategoryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBCategoryModelImpl mbCategoryModelImpl) {
 

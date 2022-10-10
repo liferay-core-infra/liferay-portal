@@ -946,49 +946,6 @@ public class PluginSettingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all plugin settings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PluginSettingImpl.class);
-
-		FinderCacheUtil.clearCache(PluginSettingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the plugin setting.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PluginSetting pluginSetting) {
-		EntityCacheUtil.removeResult(PluginSettingImpl.class, pluginSetting);
-	}
-
-	@Override
-	public void clearCache(List<PluginSetting> pluginSettings) {
-		for (PluginSetting pluginSetting : pluginSettings) {
-			EntityCacheUtil.removeResult(
-				PluginSettingImpl.class, pluginSetting);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PluginSettingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(PluginSettingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		PluginSettingModelImpl pluginSettingModelImpl) {
 

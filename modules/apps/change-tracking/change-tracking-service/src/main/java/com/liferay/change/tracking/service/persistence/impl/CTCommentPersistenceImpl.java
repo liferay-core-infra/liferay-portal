@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1126,48 +1125,6 @@ public class CTCommentPersistenceImpl
 
 				cacheResult(ctComment);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all ct comments.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTCommentImpl.class);
-
-		finderCache.clearCache(CTCommentImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ct comment.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTComment ctComment) {
-		entityCache.removeResult(CTCommentImpl.class, ctComment);
-	}
-
-	@Override
-	public void clearCache(List<CTComment> ctComments) {
-		for (CTComment ctComment : ctComments) {
-			entityCache.removeResult(CTCommentImpl.class, ctComment);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTCommentImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CTCommentImpl.class, primaryKey);
 		}
 	}
 

@@ -1760,48 +1760,6 @@ public class ObjectFilterPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object filters.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectFilterImpl.class);
-
-		finderCache.clearCache(ObjectFilterImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object filter.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectFilter objectFilter) {
-		entityCache.removeResult(ObjectFilterImpl.class, objectFilter);
-	}
-
-	@Override
-	public void clearCache(List<ObjectFilter> objectFilters) {
-		for (ObjectFilter objectFilter : objectFilters) {
-			entityCache.removeResult(ObjectFilterImpl.class, objectFilter);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectFilterImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ObjectFilterImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object filter with the primary key. Does not add the object filter to the database.
 	 *
 	 * @param objectFilterId the primary key for the new object filter

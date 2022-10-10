@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1424,48 +1423,6 @@ public class COREntryRelPersistenceImpl
 
 				cacheResult(corEntryRel);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all cor entry rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(COREntryRelImpl.class);
-
-		finderCache.clearCache(COREntryRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cor entry rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(COREntryRel corEntryRel) {
-		entityCache.removeResult(COREntryRelImpl.class, corEntryRel);
-	}
-
-	@Override
-	public void clearCache(List<COREntryRel> corEntryRels) {
-		for (COREntryRel corEntryRel : corEntryRels) {
-			entityCache.removeResult(COREntryRelImpl.class, corEntryRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(COREntryRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(COREntryRelImpl.class, primaryKey);
 		}
 	}
 

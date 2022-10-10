@@ -1198,59 +1198,6 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all o auth2 application scope aliaseses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OAuth2ApplicationScopeAliasesImpl.class);
-
-		finderCache.clearCache(OAuth2ApplicationScopeAliasesImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the o auth2 application scope aliases.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases) {
-
-		entityCache.removeResult(
-			OAuth2ApplicationScopeAliasesImpl.class,
-			oAuth2ApplicationScopeAliases);
-	}
-
-	@Override
-	public void clearCache(
-		List<OAuth2ApplicationScopeAliases> oAuth2ApplicationScopeAliaseses) {
-
-		for (OAuth2ApplicationScopeAliases oAuth2ApplicationScopeAliases :
-				oAuth2ApplicationScopeAliaseses) {
-
-			entityCache.removeResult(
-				OAuth2ApplicationScopeAliasesImpl.class,
-				oAuth2ApplicationScopeAliases);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2ApplicationScopeAliasesImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				OAuth2ApplicationScopeAliasesImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new o auth2 application scope aliases with the primary key. Does not add the o auth2 application scope aliases to the database.
 	 *
 	 * @param oAuth2ApplicationScopeAliasesId the primary key for the new o auth2 application scope aliases

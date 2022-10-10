@@ -823,48 +823,6 @@ public class DLSyncEventPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all dl sync events.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DLSyncEventImpl.class);
-
-		finderCache.clearCache(DLSyncEventImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dl sync event.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DLSyncEvent dlSyncEvent) {
-		entityCache.removeResult(DLSyncEventImpl.class, dlSyncEvent);
-	}
-
-	@Override
-	public void clearCache(List<DLSyncEvent> dlSyncEvents) {
-		for (DLSyncEvent dlSyncEvent : dlSyncEvents) {
-			entityCache.removeResult(DLSyncEventImpl.class, dlSyncEvent);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLSyncEventImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DLSyncEventImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DLSyncEventModelImpl dlSyncEventModelImpl) {
 

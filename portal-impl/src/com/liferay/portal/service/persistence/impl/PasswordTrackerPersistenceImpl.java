@@ -634,50 +634,6 @@ public class PasswordTrackerPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all password trackers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PasswordTrackerImpl.class);
-
-		FinderCacheUtil.clearCache(PasswordTrackerImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the password tracker.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PasswordTracker passwordTracker) {
-		EntityCacheUtil.removeResult(
-			PasswordTrackerImpl.class, passwordTracker);
-	}
-
-	@Override
-	public void clearCache(List<PasswordTracker> passwordTrackers) {
-		for (PasswordTracker passwordTracker : passwordTrackers) {
-			EntityCacheUtil.removeResult(
-				PasswordTrackerImpl.class, passwordTracker);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PasswordTrackerImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(PasswordTrackerImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new password tracker with the primary key. Does not add the password tracker to the database.
 	 *
 	 * @param passwordTrackerId the primary key for the new password tracker

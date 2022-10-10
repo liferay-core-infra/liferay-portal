@@ -1469,53 +1469,6 @@ public class SyncDLFileVersionDiffPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sync dl file version diffs.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SyncDLFileVersionDiffImpl.class);
-
-		finderCache.clearCache(SyncDLFileVersionDiffImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sync dl file version diff.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SyncDLFileVersionDiff syncDLFileVersionDiff) {
-		entityCache.removeResult(
-			SyncDLFileVersionDiffImpl.class, syncDLFileVersionDiff);
-	}
-
-	@Override
-	public void clearCache(List<SyncDLFileVersionDiff> syncDLFileVersionDiffs) {
-		for (SyncDLFileVersionDiff syncDLFileVersionDiff :
-				syncDLFileVersionDiffs) {
-
-			entityCache.removeResult(
-				SyncDLFileVersionDiffImpl.class, syncDLFileVersionDiff);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SyncDLFileVersionDiffImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				SyncDLFileVersionDiffImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SyncDLFileVersionDiffModelImpl syncDLFileVersionDiffModelImpl) {
 

@@ -3442,59 +3442,6 @@ public class DDMFormInstanceRecordVersionPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all ddm form instance record versions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DDMFormInstanceRecordVersionImpl.class);
-
-		finderCache.clearCache(DDMFormInstanceRecordVersionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ddm form instance record version.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion) {
-
-		entityCache.removeResult(
-			DDMFormInstanceRecordVersionImpl.class,
-			ddmFormInstanceRecordVersion);
-	}
-
-	@Override
-	public void clearCache(
-		List<DDMFormInstanceRecordVersion> ddmFormInstanceRecordVersions) {
-
-		for (DDMFormInstanceRecordVersion ddmFormInstanceRecordVersion :
-				ddmFormInstanceRecordVersions) {
-
-			entityCache.removeResult(
-				DDMFormInstanceRecordVersionImpl.class,
-				ddmFormInstanceRecordVersion);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMFormInstanceRecordVersionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				DDMFormInstanceRecordVersionImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		DDMFormInstanceRecordVersionModelImpl
 			ddmFormInstanceRecordVersionModelImpl) {

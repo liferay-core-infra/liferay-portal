@@ -1162,48 +1162,6 @@ public class UserIdMapperPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all user ID mappers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserIdMapperImpl.class);
-
-		FinderCacheUtil.clearCache(UserIdMapperImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user ID mapper.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserIdMapper userIdMapper) {
-		EntityCacheUtil.removeResult(UserIdMapperImpl.class, userIdMapper);
-	}
-
-	@Override
-	public void clearCache(List<UserIdMapper> userIdMappers) {
-		for (UserIdMapper userIdMapper : userIdMappers) {
-			EntityCacheUtil.removeResult(UserIdMapperImpl.class, userIdMapper);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserIdMapperImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(UserIdMapperImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		UserIdMapperModelImpl userIdMapperModelImpl) {
 

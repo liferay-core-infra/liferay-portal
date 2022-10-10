@@ -57,7 +57,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -992,48 +991,6 @@ public class SamlSpMessagePersistenceImpl
 
 				cacheResult(samlSpMessage);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all saml sp messages.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SamlSpMessageImpl.class);
-
-		finderCache.clearCache(SamlSpMessageImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the saml sp message.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SamlSpMessage samlSpMessage) {
-		entityCache.removeResult(SamlSpMessageImpl.class, samlSpMessage);
-	}
-
-	@Override
-	public void clearCache(List<SamlSpMessage> samlSpMessages) {
-		for (SamlSpMessage samlSpMessage : samlSpMessages) {
-			entityCache.removeResult(SamlSpMessageImpl.class, samlSpMessage);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlSpMessageImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SamlSpMessageImpl.class, primaryKey);
 		}
 	}
 

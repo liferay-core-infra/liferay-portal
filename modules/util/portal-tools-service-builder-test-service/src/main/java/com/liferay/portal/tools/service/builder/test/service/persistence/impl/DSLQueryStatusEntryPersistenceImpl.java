@@ -43,7 +43,6 @@ import java.lang.reflect.Field;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the dsl query status entry service.
@@ -122,50 +121,6 @@ public class DSLQueryStatusEntryPersistenceImpl
 
 				cacheResult(dslQueryStatusEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all dsl query status entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(DSLQueryStatusEntryImpl.class);
-
-		finderCache.clearCache(DSLQueryStatusEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the dsl query status entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(DSLQueryStatusEntry dslQueryStatusEntry) {
-		entityCache.removeResult(
-			DSLQueryStatusEntryImpl.class, dslQueryStatusEntry);
-	}
-
-	@Override
-	public void clearCache(List<DSLQueryStatusEntry> dslQueryStatusEntries) {
-		for (DSLQueryStatusEntry dslQueryStatusEntry : dslQueryStatusEntries) {
-			entityCache.removeResult(
-				DSLQueryStatusEntryImpl.class, dslQueryStatusEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DSLQueryStatusEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(DSLQueryStatusEntryImpl.class, primaryKey);
 		}
 	}
 

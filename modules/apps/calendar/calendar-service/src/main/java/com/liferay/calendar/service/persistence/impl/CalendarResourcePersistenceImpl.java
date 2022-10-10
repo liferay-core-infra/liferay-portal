@@ -6433,49 +6433,6 @@ public class CalendarResourcePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all calendar resources.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CalendarResourceImpl.class);
-
-		finderCache.clearCache(CalendarResourceImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the calendar resource.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CalendarResource calendarResource) {
-		entityCache.removeResult(CalendarResourceImpl.class, calendarResource);
-	}
-
-	@Override
-	public void clearCache(List<CalendarResource> calendarResources) {
-		for (CalendarResource calendarResource : calendarResources) {
-			entityCache.removeResult(
-				CalendarResourceImpl.class, calendarResource);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarResourceImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CalendarResourceImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CalendarResourceModelImpl calendarResourceModelImpl) {
 

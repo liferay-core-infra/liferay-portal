@@ -2138,58 +2138,6 @@ public class CommercePriceListAccountRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce price list account rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommercePriceListAccountRelImpl.class);
-
-		finderCache.clearCache(CommercePriceListAccountRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce price list account rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommercePriceListAccountRel commercePriceListAccountRel) {
-
-		entityCache.removeResult(
-			CommercePriceListAccountRelImpl.class, commercePriceListAccountRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommercePriceListAccountRel> commercePriceListAccountRels) {
-
-		for (CommercePriceListAccountRel commercePriceListAccountRel :
-				commercePriceListAccountRels) {
-
-			entityCache.removeResult(
-				CommercePriceListAccountRelImpl.class,
-				commercePriceListAccountRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePriceListAccountRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommercePriceListAccountRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommercePriceListAccountRelModelImpl
 			commercePriceListAccountRelModelImpl) {

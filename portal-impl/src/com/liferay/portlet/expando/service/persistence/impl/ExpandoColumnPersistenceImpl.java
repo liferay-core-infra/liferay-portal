@@ -1797,49 +1797,6 @@ public class ExpandoColumnPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all expando columns.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ExpandoColumnImpl.class);
-
-		FinderCacheUtil.clearCache(ExpandoColumnImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the expando column.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ExpandoColumn expandoColumn) {
-		EntityCacheUtil.removeResult(ExpandoColumnImpl.class, expandoColumn);
-	}
-
-	@Override
-	public void clearCache(List<ExpandoColumn> expandoColumns) {
-		for (ExpandoColumn expandoColumn : expandoColumns) {
-			EntityCacheUtil.removeResult(
-				ExpandoColumnImpl.class, expandoColumn);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExpandoColumnImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ExpandoColumnImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ExpandoColumnModelImpl expandoColumnModelImpl) {
 

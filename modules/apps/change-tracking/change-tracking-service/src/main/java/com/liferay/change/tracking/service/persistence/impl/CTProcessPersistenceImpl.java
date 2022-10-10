@@ -52,7 +52,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -1126,48 +1125,6 @@ public class CTProcessPersistenceImpl
 
 				cacheResult(ctProcess);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all ct processes.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CTProcessImpl.class);
-
-		finderCache.clearCache(CTProcessImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the ct process.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CTProcess ctProcess) {
-		entityCache.removeResult(CTProcessImpl.class, ctProcess);
-	}
-
-	@Override
-	public void clearCache(List<CTProcess> ctProcesses) {
-		for (CTProcess ctProcess : ctProcesses) {
-			entityCache.removeResult(CTProcessImpl.class, ctProcess);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTProcessImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CTProcessImpl.class, primaryKey);
 		}
 	}
 

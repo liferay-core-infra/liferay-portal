@@ -6281,48 +6281,6 @@ public class SyncDLObjectPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all sync dl objects.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(SyncDLObjectImpl.class);
-
-		finderCache.clearCache(SyncDLObjectImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the sync dl object.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SyncDLObject syncDLObject) {
-		entityCache.removeResult(SyncDLObjectImpl.class, syncDLObject);
-	}
-
-	@Override
-	public void clearCache(List<SyncDLObject> syncDLObjects) {
-		for (SyncDLObject syncDLObject : syncDLObjects) {
-			entityCache.removeResult(SyncDLObjectImpl.class, syncDLObject);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SyncDLObjectImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(SyncDLObjectImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SyncDLObjectModelImpl syncDLObjectModelImpl) {
 

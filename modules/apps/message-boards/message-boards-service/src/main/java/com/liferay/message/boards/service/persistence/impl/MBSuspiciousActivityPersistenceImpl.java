@@ -3159,53 +3159,6 @@ public class MBSuspiciousActivityPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all message boards suspicious activities.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(MBSuspiciousActivityImpl.class);
-
-		finderCache.clearCache(MBSuspiciousActivityImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the message boards suspicious activity.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(MBSuspiciousActivity mbSuspiciousActivity) {
-		entityCache.removeResult(
-			MBSuspiciousActivityImpl.class, mbSuspiciousActivity);
-	}
-
-	@Override
-	public void clearCache(List<MBSuspiciousActivity> mbSuspiciousActivities) {
-		for (MBSuspiciousActivity mbSuspiciousActivity :
-				mbSuspiciousActivities) {
-
-			entityCache.removeResult(
-				MBSuspiciousActivityImpl.class, mbSuspiciousActivity);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBSuspiciousActivityImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				MBSuspiciousActivityImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		MBSuspiciousActivityModelImpl mbSuspiciousActivityModelImpl) {
 

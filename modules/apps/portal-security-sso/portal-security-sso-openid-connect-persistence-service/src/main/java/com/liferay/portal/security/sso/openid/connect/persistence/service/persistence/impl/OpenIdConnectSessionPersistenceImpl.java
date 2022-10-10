@@ -55,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -2204,53 +2203,6 @@ public class OpenIdConnectSessionPersistenceImpl
 
 				cacheResult(openIdConnectSession);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all open ID connect sessions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(OpenIdConnectSessionImpl.class);
-
-		finderCache.clearCache(OpenIdConnectSessionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the open ID connect session.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(OpenIdConnectSession openIdConnectSession) {
-		entityCache.removeResult(
-			OpenIdConnectSessionImpl.class, openIdConnectSession);
-	}
-
-	@Override
-	public void clearCache(List<OpenIdConnectSession> openIdConnectSessions) {
-		for (OpenIdConnectSession openIdConnectSession :
-				openIdConnectSessions) {
-
-			entityCache.removeResult(
-				OpenIdConnectSessionImpl.class, openIdConnectSession);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OpenIdConnectSessionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				OpenIdConnectSessionImpl.class, primaryKey);
 		}
 	}
 

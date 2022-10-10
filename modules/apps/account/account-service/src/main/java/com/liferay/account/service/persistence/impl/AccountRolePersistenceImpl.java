@@ -54,7 +54,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -3990,48 +3989,6 @@ public class AccountRolePersistenceImpl
 
 				cacheResult(accountRole);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all account roles.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(AccountRoleImpl.class);
-
-		finderCache.clearCache(AccountRoleImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the account role.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(AccountRole accountRole) {
-		entityCache.removeResult(AccountRoleImpl.class, accountRole);
-	}
-
-	@Override
-	public void clearCache(List<AccountRole> accountRoles) {
-		for (AccountRole accountRole : accountRoles) {
-			entityCache.removeResult(AccountRoleImpl.class, accountRole);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountRoleImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(AccountRoleImpl.class, primaryKey);
 		}
 	}
 

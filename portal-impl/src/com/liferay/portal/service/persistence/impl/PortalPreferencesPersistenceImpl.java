@@ -50,7 +50,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the portal preferences service.
@@ -369,51 +368,6 @@ public class PortalPreferencesPersistenceImpl
 
 				cacheResult(portalPreferences);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all portal preferenceses.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(PortalPreferencesImpl.class);
-
-		FinderCacheUtil.clearCache(PortalPreferencesImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the portal preferences.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PortalPreferences portalPreferences) {
-		EntityCacheUtil.removeResult(
-			PortalPreferencesImpl.class, portalPreferences);
-	}
-
-	@Override
-	public void clearCache(List<PortalPreferences> portalPreferenceses) {
-		for (PortalPreferences portalPreferences : portalPreferenceses) {
-			EntityCacheUtil.removeResult(
-				PortalPreferencesImpl.class, portalPreferences);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortalPreferencesImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				PortalPreferencesImpl.class, primaryKey);
 		}
 	}
 

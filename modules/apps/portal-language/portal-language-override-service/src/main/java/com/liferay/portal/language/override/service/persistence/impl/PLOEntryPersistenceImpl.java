@@ -2100,48 +2100,6 @@ public class PLOEntryPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all plo entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(PLOEntryImpl.class);
-
-		finderCache.clearCache(PLOEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the plo entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(PLOEntry ploEntry) {
-		entityCache.removeResult(PLOEntryImpl.class, ploEntry);
-	}
-
-	@Override
-	public void clearCache(List<PLOEntry> ploEntries) {
-		for (PLOEntry ploEntry : ploEntries) {
-			entityCache.removeResult(PLOEntryImpl.class, ploEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(PLOEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(PLOEntryImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		PLOEntryModelImpl ploEntryModelImpl) {
 

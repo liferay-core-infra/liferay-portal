@@ -4806,53 +4806,6 @@ public class CPDefinitionOptionRelPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all cp definition option rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CPDefinitionOptionRelImpl.class);
-
-		finderCache.clearCache(CPDefinitionOptionRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cp definition option rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CPDefinitionOptionRel cpDefinitionOptionRel) {
-		entityCache.removeResult(
-			CPDefinitionOptionRelImpl.class, cpDefinitionOptionRel);
-	}
-
-	@Override
-	public void clearCache(List<CPDefinitionOptionRel> cpDefinitionOptionRels) {
-		for (CPDefinitionOptionRel cpDefinitionOptionRel :
-				cpDefinitionOptionRels) {
-
-			entityCache.removeResult(
-				CPDefinitionOptionRelImpl.class, cpDefinitionOptionRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionOptionRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CPDefinitionOptionRelImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CPDefinitionOptionRelModelImpl cpDefinitionOptionRelModelImpl) {
 

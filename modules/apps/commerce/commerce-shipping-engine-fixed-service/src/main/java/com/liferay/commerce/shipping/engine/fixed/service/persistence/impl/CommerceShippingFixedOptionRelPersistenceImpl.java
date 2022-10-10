@@ -1254,59 +1254,6 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all commerce shipping fixed option rels.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceShippingFixedOptionRelImpl.class);
-
-		finderCache.clearCache(CommerceShippingFixedOptionRelImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce shipping fixed option rel.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceShippingFixedOptionRel commerceShippingFixedOptionRel) {
-
-		entityCache.removeResult(
-			CommerceShippingFixedOptionRelImpl.class,
-			commerceShippingFixedOptionRel);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceShippingFixedOptionRel> commerceShippingFixedOptionRels) {
-
-		for (CommerceShippingFixedOptionRel commerceShippingFixedOptionRel :
-				commerceShippingFixedOptionRels) {
-
-			entityCache.removeResult(
-				CommerceShippingFixedOptionRelImpl.class,
-				commerceShippingFixedOptionRel);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShippingFixedOptionRelImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceShippingFixedOptionRelImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new commerce shipping fixed option rel with the primary key. Does not add the commerce shipping fixed option rel to the database.
 	 *
 	 * @param commerceShippingFixedOptionRelId the primary key for the new commerce shipping fixed option rel

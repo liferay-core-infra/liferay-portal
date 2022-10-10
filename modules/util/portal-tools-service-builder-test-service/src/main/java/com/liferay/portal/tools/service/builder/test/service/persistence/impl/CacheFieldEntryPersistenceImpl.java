@@ -46,7 +46,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the cache field entry service.
@@ -630,49 +629,6 @@ public class CacheFieldEntryPersistenceImpl
 				cacheFieldEntryModelImpl.setNickname(
 					cachedCacheFieldEntryModelImpl.getNickname());
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all cache field entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CacheFieldEntryImpl.class);
-
-		finderCache.clearCache(CacheFieldEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the cache field entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CacheFieldEntry cacheFieldEntry) {
-		entityCache.removeResult(CacheFieldEntryImpl.class, cacheFieldEntry);
-	}
-
-	@Override
-	public void clearCache(List<CacheFieldEntry> cacheFieldEntries) {
-		for (CacheFieldEntry cacheFieldEntry : cacheFieldEntries) {
-			entityCache.removeResult(
-				CacheFieldEntryImpl.class, cacheFieldEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CacheFieldEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CacheFieldEntryImpl.class, primaryKey);
 		}
 	}
 

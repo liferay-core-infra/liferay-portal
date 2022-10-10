@@ -4213,49 +4213,6 @@ public class CommerceWishListPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all commerce wish lists.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceWishListImpl.class);
-
-		finderCache.clearCache(CommerceWishListImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce wish list.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(CommerceWishList commerceWishList) {
-		entityCache.removeResult(CommerceWishListImpl.class, commerceWishList);
-	}
-
-	@Override
-	public void clearCache(List<CommerceWishList> commerceWishLists) {
-		for (CommerceWishList commerceWishList : commerceWishLists) {
-			entityCache.removeResult(
-				CommerceWishListImpl.class, commerceWishList);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceWishListImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(CommerceWishListImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		CommerceWishListModelImpl commerceWishListModelImpl) {
 

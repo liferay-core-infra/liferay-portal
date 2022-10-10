@@ -749,50 +749,6 @@ public class WeDeployAuthTokenPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all we deploy auth tokens.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(WeDeployAuthTokenImpl.class);
-
-		finderCache.clearCache(WeDeployAuthTokenImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the we deploy auth token.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(WeDeployAuthToken weDeployAuthToken) {
-		entityCache.removeResult(
-			WeDeployAuthTokenImpl.class, weDeployAuthToken);
-	}
-
-	@Override
-	public void clearCache(List<WeDeployAuthToken> weDeployAuthTokens) {
-		for (WeDeployAuthToken weDeployAuthToken : weDeployAuthTokens) {
-			entityCache.removeResult(
-				WeDeployAuthTokenImpl.class, weDeployAuthToken);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WeDeployAuthTokenImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(WeDeployAuthTokenImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		WeDeployAuthTokenModelImpl weDeployAuthTokenModelImpl) {
 

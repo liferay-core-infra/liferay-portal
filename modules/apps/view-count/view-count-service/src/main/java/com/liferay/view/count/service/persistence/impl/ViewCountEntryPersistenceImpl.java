@@ -139,48 +139,6 @@ public class ViewCountEntryPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all view count entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ViewCountEntryImpl.class);
-
-		finderCache.clearCache(ViewCountEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the view count entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ViewCountEntry viewCountEntry) {
-		entityCache.removeResult(ViewCountEntryImpl.class, viewCountEntry);
-	}
-
-	@Override
-	public void clearCache(List<ViewCountEntry> viewCountEntries) {
-		for (ViewCountEntry viewCountEntry : viewCountEntries) {
-			entityCache.removeResult(ViewCountEntryImpl.class, viewCountEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ViewCountEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ViewCountEntryImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new view count entry with the primary key. Does not add the view count entry to the database.
 	 *
 	 * @param viewCountEntryPK the primary key for the new view count entry

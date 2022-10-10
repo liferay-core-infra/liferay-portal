@@ -2156,50 +2156,6 @@ public class ListTypeDefinitionPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all list type definitions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ListTypeDefinitionImpl.class);
-
-		finderCache.clearCache(ListTypeDefinitionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the list type definition.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ListTypeDefinition listTypeDefinition) {
-		entityCache.removeResult(
-			ListTypeDefinitionImpl.class, listTypeDefinition);
-	}
-
-	@Override
-	public void clearCache(List<ListTypeDefinition> listTypeDefinitions) {
-		for (ListTypeDefinition listTypeDefinition : listTypeDefinitions) {
-			entityCache.removeResult(
-				ListTypeDefinitionImpl.class, listTypeDefinition);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ListTypeDefinitionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(ListTypeDefinitionImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new list type definition with the primary key. Does not add the list type definition to the database.
 	 *
 	 * @param listTypeDefinitionId the primary key for the new list type definition

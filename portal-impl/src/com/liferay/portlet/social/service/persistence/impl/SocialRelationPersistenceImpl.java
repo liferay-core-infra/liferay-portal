@@ -5813,49 +5813,6 @@ public class SocialRelationPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all social relations.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(SocialRelationImpl.class);
-
-		FinderCacheUtil.clearCache(SocialRelationImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the social relation.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(SocialRelation socialRelation) {
-		EntityCacheUtil.removeResult(SocialRelationImpl.class, socialRelation);
-	}
-
-	@Override
-	public void clearCache(List<SocialRelation> socialRelations) {
-		for (SocialRelation socialRelation : socialRelations) {
-			EntityCacheUtil.removeResult(
-				SocialRelationImpl.class, socialRelation);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialRelationImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(SocialRelationImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		SocialRelationModelImpl socialRelationModelImpl) {
 

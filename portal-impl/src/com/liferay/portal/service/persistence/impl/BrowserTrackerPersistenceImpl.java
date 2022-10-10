@@ -48,7 +48,6 @@ import java.lang.reflect.InvocationHandler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the browser tracker service.
@@ -325,49 +324,6 @@ public class BrowserTrackerPersistenceImpl
 
 				cacheResult(browserTracker);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all browser trackers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(BrowserTrackerImpl.class);
-
-		FinderCacheUtil.clearCache(BrowserTrackerImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the browser tracker.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(BrowserTracker browserTracker) {
-		EntityCacheUtil.removeResult(BrowserTrackerImpl.class, browserTracker);
-	}
-
-	@Override
-	public void clearCache(List<BrowserTracker> browserTrackers) {
-		for (BrowserTracker browserTracker : browserTrackers) {
-			EntityCacheUtil.removeResult(
-				BrowserTrackerImpl.class, browserTracker);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(BrowserTrackerImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(BrowserTrackerImpl.class, primaryKey);
 		}
 	}
 

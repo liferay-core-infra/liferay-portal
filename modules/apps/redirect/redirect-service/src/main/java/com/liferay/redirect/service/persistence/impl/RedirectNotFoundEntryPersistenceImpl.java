@@ -59,7 +59,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -911,55 +910,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 
 				cacheResult(redirectNotFoundEntry);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all redirect not found entries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(RedirectNotFoundEntryImpl.class);
-
-		finderCache.clearCache(RedirectNotFoundEntryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the redirect not found entry.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(RedirectNotFoundEntry redirectNotFoundEntry) {
-		entityCache.removeResult(
-			RedirectNotFoundEntryImpl.class, redirectNotFoundEntry);
-	}
-
-	@Override
-	public void clearCache(
-		List<RedirectNotFoundEntry> redirectNotFoundEntries) {
-
-		for (RedirectNotFoundEntry redirectNotFoundEntry :
-				redirectNotFoundEntries) {
-
-			entityCache.removeResult(
-				RedirectNotFoundEntryImpl.class, redirectNotFoundEntry);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RedirectNotFoundEntryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				RedirectNotFoundEntryImpl.class, primaryKey);
 		}
 	}
 

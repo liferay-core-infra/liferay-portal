@@ -2387,55 +2387,6 @@ public class ObjectViewFilterColumnPersistenceImpl
 	}
 
 	/**
-	 * Clears the cache for all object view filter columns.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(ObjectViewFilterColumnImpl.class);
-
-		finderCache.clearCache(ObjectViewFilterColumnImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the object view filter column.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ObjectViewFilterColumn objectViewFilterColumn) {
-		entityCache.removeResult(
-			ObjectViewFilterColumnImpl.class, objectViewFilterColumn);
-	}
-
-	@Override
-	public void clearCache(
-		List<ObjectViewFilterColumn> objectViewFilterColumns) {
-
-		for (ObjectViewFilterColumn objectViewFilterColumn :
-				objectViewFilterColumns) {
-
-			entityCache.removeResult(
-				ObjectViewFilterColumnImpl.class, objectViewFilterColumn);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectViewFilterColumnImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				ObjectViewFilterColumnImpl.class, primaryKey);
-		}
-	}
-
-	/**
 	 * Creates a new object view filter column with the primary key. Does not add the object view filter column to the database.
 	 *
 	 * @param objectViewFilterColumnId the primary key for the new object view filter column

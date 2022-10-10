@@ -49,7 +49,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the user notification delivery service.
@@ -977,55 +976,6 @@ public class UserNotificationDeliveryPersistenceImpl
 
 				cacheResult(userNotificationDelivery);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all user notification deliveries.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserNotificationDeliveryImpl.class);
-
-		FinderCacheUtil.clearCache(UserNotificationDeliveryImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user notification delivery.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserNotificationDelivery userNotificationDelivery) {
-		EntityCacheUtil.removeResult(
-			UserNotificationDeliveryImpl.class, userNotificationDelivery);
-	}
-
-	@Override
-	public void clearCache(
-		List<UserNotificationDelivery> userNotificationDeliveries) {
-
-		for (UserNotificationDelivery userNotificationDelivery :
-				userNotificationDeliveries) {
-
-			EntityCacheUtil.removeResult(
-				UserNotificationDeliveryImpl.class, userNotificationDelivery);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserNotificationDeliveryImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(
-				UserNotificationDeliveryImpl.class, primaryKey);
 		}
 	}
 

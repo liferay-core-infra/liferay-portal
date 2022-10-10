@@ -405,55 +405,6 @@ public class FriendlyURLEntryMappingPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all friendly url entry mappings.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(FriendlyURLEntryMappingImpl.class);
-
-		finderCache.clearCache(FriendlyURLEntryMappingImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the friendly url entry mapping.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(FriendlyURLEntryMapping friendlyURLEntryMapping) {
-		entityCache.removeResult(
-			FriendlyURLEntryMappingImpl.class, friendlyURLEntryMapping);
-	}
-
-	@Override
-	public void clearCache(
-		List<FriendlyURLEntryMapping> friendlyURLEntryMappings) {
-
-		for (FriendlyURLEntryMapping friendlyURLEntryMapping :
-				friendlyURLEntryMappings) {
-
-			entityCache.removeResult(
-				FriendlyURLEntryMappingImpl.class, friendlyURLEntryMapping);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FriendlyURLEntryMappingImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				FriendlyURLEntryMappingImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		FriendlyURLEntryMappingModelImpl friendlyURLEntryMappingModelImpl) {
 

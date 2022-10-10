@@ -5018,48 +5018,6 @@ public class ExpandoValuePersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all expando values.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(ExpandoValueImpl.class);
-
-		FinderCacheUtil.clearCache(ExpandoValueImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the expando value.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(ExpandoValue expandoValue) {
-		EntityCacheUtil.removeResult(ExpandoValueImpl.class, expandoValue);
-	}
-
-	@Override
-	public void clearCache(List<ExpandoValue> expandoValues) {
-		for (ExpandoValue expandoValue : expandoValues) {
-			EntityCacheUtil.removeResult(ExpandoValueImpl.class, expandoValue);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExpandoValueImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(ExpandoValueImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		ExpandoValueModelImpl expandoValueModelImpl) {
 

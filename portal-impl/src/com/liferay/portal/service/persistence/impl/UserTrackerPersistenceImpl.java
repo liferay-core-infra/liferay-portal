@@ -52,7 +52,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * The persistence implementation for the user tracker service.
@@ -1650,48 +1649,6 @@ public class UserTrackerPersistenceImpl
 
 				cacheResult(userTracker);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all user trackers.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		EntityCacheUtil.clearCache(UserTrackerImpl.class);
-
-		FinderCacheUtil.clearCache(UserTrackerImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the user tracker.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(UserTracker userTracker) {
-		EntityCacheUtil.removeResult(UserTrackerImpl.class, userTracker);
-	}
-
-	@Override
-	public void clearCache(List<UserTracker> userTrackers) {
-		for (UserTracker userTracker : userTrackers) {
-			EntityCacheUtil.removeResult(UserTrackerImpl.class, userTracker);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserTrackerImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			EntityCacheUtil.removeResult(UserTrackerImpl.class, primaryKey);
 		}
 	}
 

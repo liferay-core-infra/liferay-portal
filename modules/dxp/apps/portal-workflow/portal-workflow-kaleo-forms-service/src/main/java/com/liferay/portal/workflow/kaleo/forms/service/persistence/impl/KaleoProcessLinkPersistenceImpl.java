@@ -50,7 +50,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -908,49 +907,6 @@ public class KaleoProcessLinkPersistenceImpl
 
 				cacheResult(kaleoProcessLink);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all kaleo process links.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(KaleoProcessLinkImpl.class);
-
-		finderCache.clearCache(KaleoProcessLinkImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the kaleo process link.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(KaleoProcessLink kaleoProcessLink) {
-		entityCache.removeResult(KaleoProcessLinkImpl.class, kaleoProcessLink);
-	}
-
-	@Override
-	public void clearCache(List<KaleoProcessLink> kaleoProcessLinks) {
-		for (KaleoProcessLink kaleoProcessLink : kaleoProcessLinks) {
-			entityCache.removeResult(
-				KaleoProcessLinkImpl.class, kaleoProcessLink);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoProcessLinkImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(KaleoProcessLinkImpl.class, primaryKey);
 		}
 	}
 

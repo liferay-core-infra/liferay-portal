@@ -50,7 +50,6 @@ import java.lang.reflect.InvocationHandler;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The persistence implementation for the commerce address restriction service.
@@ -1450,58 +1449,6 @@ public class CommerceAddressRestrictionPersistenceImpl
 
 				cacheResult(commerceAddressRestriction);
 			}
-		}
-	}
-
-	/**
-	 * Clears the cache for all commerce address restrictions.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(CommerceAddressRestrictionImpl.class);
-
-		finderCache.clearCache(CommerceAddressRestrictionImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the commerce address restriction.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(
-		CommerceAddressRestriction commerceAddressRestriction) {
-
-		entityCache.removeResult(
-			CommerceAddressRestrictionImpl.class, commerceAddressRestriction);
-	}
-
-	@Override
-	public void clearCache(
-		List<CommerceAddressRestriction> commerceAddressRestrictions) {
-
-		for (CommerceAddressRestriction commerceAddressRestriction :
-				commerceAddressRestrictions) {
-
-			entityCache.removeResult(
-				CommerceAddressRestrictionImpl.class,
-				commerceAddressRestriction);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceAddressRestrictionImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				CommerceAddressRestrictionImpl.class, primaryKey);
 		}
 	}
 

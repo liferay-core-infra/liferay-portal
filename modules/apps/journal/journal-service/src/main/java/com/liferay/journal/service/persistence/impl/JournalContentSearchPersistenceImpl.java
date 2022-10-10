@@ -5290,53 +5290,6 @@ public class JournalContentSearchPersistenceImpl
 		}
 	}
 
-	/**
-	 * Clears the cache for all journal content searches.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		entityCache.clearCache(JournalContentSearchImpl.class);
-
-		finderCache.clearCache(JournalContentSearchImpl.class);
-	}
-
-	/**
-	 * Clears the cache for the journal content search.
-	 *
-	 * <p>
-	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(JournalContentSearch journalContentSearch) {
-		entityCache.removeResult(
-			JournalContentSearchImpl.class, journalContentSearch);
-	}
-
-	@Override
-	public void clearCache(List<JournalContentSearch> journalContentSearchs) {
-		for (JournalContentSearch journalContentSearch :
-				journalContentSearchs) {
-
-			entityCache.removeResult(
-				JournalContentSearchImpl.class, journalContentSearch);
-		}
-	}
-
-	@Override
-	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalContentSearchImpl.class);
-
-		for (Serializable primaryKey : primaryKeys) {
-			entityCache.removeResult(
-				JournalContentSearchImpl.class, primaryKey);
-		}
-	}
-
 	protected void cacheUniqueFindersCache(
 		JournalContentSearchModelImpl journalContentSearchModelImpl) {
 

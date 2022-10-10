@@ -14,7 +14,6 @@
 
 package com.liferay.marketplace.store.web.internal.portlet;
 
-import com.liferay.marketplace.store.web.internal.oauth.util.OAuthManager;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 /**
@@ -24,11 +23,4 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
  * @author Haote Chou
  */
 public class RemoteMVCPortlet extends MVCPortlet {
-
-	protected void setOAuthManager(OAuthManager oAuthManager) {
-		this.oAuthManager = oAuthManager;
-	}
-
-	protected OAuthManager oAuthManager;
-
 }

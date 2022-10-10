@@ -578,11 +578,8 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		_appService = appService;
 	}
 
-	@Override
-	@Reference(unbind = "-")
-	protected void setOAuthManager(OAuthManager oAuthManager) {
-		super.setOAuthManager(oAuthManager);
-	}
+	@Reference
+	protected OAuthManager oAuthManager;
 
 	@Reference
 	protected Patcher patcher;

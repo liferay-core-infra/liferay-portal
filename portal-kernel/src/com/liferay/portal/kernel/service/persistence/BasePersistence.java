@@ -74,9 +74,7 @@ public interface BasePersistence<T extends BaseModel<T>> {
 	 */
 	public void clearCache(List<T> modelList);
 
-	public default void clearCache(Set<Serializable> primaryKeys) {
-		clearCache();
-	}
+	public void clearCache(Set<Serializable> primaryKeys);
 
 	/**
 	 * Clears the cache for one instance of this model.

@@ -143,6 +143,18 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		FinderCache finderCache = getFinderCache();
+
+		finderCache.clearCache(_modelImplClass);
+
+		EntityCache entityCache = getEntityCache();
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(_modelImplClass, primaryKey);
+		}
+	}
+
 	@Override
 	public void clearCache(T model) {
 		EntityCache entityCache = getEntityCache();

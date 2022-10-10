@@ -500,28 +500,24 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			}
 		}
-	</#if>
 
-	<#if serviceBuilder.isVersionGTE_7_3_0()>
-		@Override
-	</#if>
-	public void clearCache(Set<Serializable> primaryKeys) {
-		<#if serviceBuilder.isVersionGTE_7_4_0()>
-			${finderCache}.clearCache(${entity.name}Impl.class);
-		<#else>
+		<#if serviceBuilder.isVersionGTE_7_3_0()>
+			@Override
+		</#if>
+		public void clearCache(Set<Serializable> primaryKeys) {
 			${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		</#if>
 
-		for (Serializable primaryKey : primaryKeys) {
-			${entityCache}.removeResult(
-				<#if serviceBuilder.isVersionLTE_7_2_0()>
-					${entityCacheEnabled},
-				</#if>
-				${entity.name}Impl.class, primaryKey);
+			for (Serializable primaryKey : primaryKeys) {
+				${entityCache}.removeResult(
+					<#if serviceBuilder.isVersionLTE_7_2_0()>
+						${entityCacheEnabled},
+					</#if>
+					${entity.name}Impl.class, primaryKey);
+			}
 		}
-	}
+	</#if>
 
 	<#if entity.uniqueEntityFinders?size &gt; 0>
 		protected void cacheUniqueFindersCache(${entity.name}ModelImpl ${entity.variableName}ModelImpl) {

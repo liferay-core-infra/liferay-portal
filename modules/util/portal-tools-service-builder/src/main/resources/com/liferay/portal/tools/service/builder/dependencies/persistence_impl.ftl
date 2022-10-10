@@ -457,30 +457,30 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-	</#if>
 
-	/**
-	 * Clears the cache for the ${entity.humanName}.
-	 *
-	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache(${entity.name} ${entity.variableName}) {
-		<#if serviceBuilder.isVersionGTE_7_3_0()>
-			${entityCache}.removeResult(${entity.name}Impl.class, ${entity.variableName});
-		<#else>
-			${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.variableName}.getPrimaryKey());
+		/**
+		 * Clears the cache for the ${entity.humanName}.
+		 *
+		 * <p>
+		 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+		 * </p>
+		 */
+		@Override
+		public void clearCache(${entity.name} ${entity.variableName}) {
+			<#if serviceBuilder.isVersionGTE_7_3_0()>
+				${entityCache}.removeResult(${entity.name}Impl.class, ${entity.variableName});
+			<#else>
+				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.variableName}.getPrimaryKey());
 
-			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+				${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+				${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-			<#if entity.uniqueEntityFinders?size &gt; 0>
-				clearUniqueFindersCache((${entity.name}ModelImpl)${entity.variableName}, true);
+				<#if entity.uniqueEntityFinders?size &gt; 0>
+					clearUniqueFindersCache((${entity.name}ModelImpl)${entity.variableName}, true);
+				</#if>
 			</#if>
-		</#if>
-	}
+		}
+	</#if>
 
 	@Override
 	public void clearCache(List<${entity.name}> ${entity.pluralVariableName}) {

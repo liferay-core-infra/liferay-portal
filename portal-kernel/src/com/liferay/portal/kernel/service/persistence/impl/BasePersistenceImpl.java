@@ -137,7 +137,10 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	}
 
 	@Override
-	public void clearCache(List<T> model) {
+	public void clearCache(List<T> models) {
+		for (T model : models) {
+			clearCache(model);
+		}
 	}
 
 	@Override

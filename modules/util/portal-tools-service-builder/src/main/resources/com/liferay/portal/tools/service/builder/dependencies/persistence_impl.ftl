@@ -480,27 +480,27 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			</#if>
 		}
-	</#if>
 
-	@Override
-	public void clearCache(List<${entity.name}> ${entity.pluralVariableName}) {
-		<#if serviceBuilder.isVersionLTE_7_2_0()>
-			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
-			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		</#if>
-
-		for (${entity.name} ${entity.variableName} : ${entity.pluralVariableName}) {
-			<#if serviceBuilder.isVersionGTE_7_3_0()>
-				${entityCache}.removeResult(${entity.name}Impl.class, ${entity.variableName});
-			<#else>
-				${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.variableName}.getPrimaryKey());
-
-				<#if entity.uniqueEntityFinders?size &gt; 0>
-					clearUniqueFindersCache((${entity.name}ModelImpl)${entity.variableName}, true);
-				</#if>
+		@Override
+		public void clearCache(List<${entity.name}> ${entity.pluralVariableName}) {
+			<#if serviceBuilder.isVersionLTE_7_2_0()>
+				${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+				${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 			</#if>
+
+			for (${entity.name} ${entity.variableName} : ${entity.pluralVariableName}) {
+				<#if serviceBuilder.isVersionGTE_7_3_0()>
+					${entityCache}.removeResult(${entity.name}Impl.class, ${entity.variableName});
+				<#else>
+					${entityCache}.removeResult(${entityCacheEnabled}, ${entity.name}Impl.class, ${entity.variableName}.getPrimaryKey());
+
+					<#if entity.uniqueEntityFinders?size &gt; 0>
+						clearUniqueFindersCache((${entity.name}ModelImpl)${entity.variableName}, true);
+					</#if>
+				</#if>
+			}
 		}
-	}
+	</#if>
 
 	<#if serviceBuilder.isVersionGTE_7_3_0()>
 		@Override

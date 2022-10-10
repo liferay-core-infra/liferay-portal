@@ -15,7 +15,6 @@
 package com.liferay.marketplace.store.web.internal.portlet;
 
 import com.liferay.marketplace.store.web.internal.oauth.util.OAuthManager;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
@@ -58,10 +57,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 		oAuthRequest.setFollowRedirects(false);
 
 		return oAuthRequest.send();
-	}
-
-	protected String getServerPortletId() {
-		return StringPool.BLANK;
 	}
 
 	protected void setOAuthManager(OAuthManager oAuthManager) {

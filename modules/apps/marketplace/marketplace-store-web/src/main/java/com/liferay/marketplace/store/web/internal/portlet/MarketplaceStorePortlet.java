@@ -538,7 +538,6 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		return MarketplaceStorePortletKeys.MARKETPLACE_STORE;
 	}
 
-	@Override
 	protected String getServerPortletId() {
 		return MarketplaceStoreWebConfigurationValues.MARKETPLACE_PORTLET_ID;
 	}

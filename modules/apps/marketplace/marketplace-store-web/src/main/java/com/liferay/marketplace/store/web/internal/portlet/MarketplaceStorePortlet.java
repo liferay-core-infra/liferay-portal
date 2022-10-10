@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.patcher.Patcher;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
@@ -82,6 +83,7 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
+import org.scribe.oauth.OAuthService;
 
 /**
  * @author Ryan Park
@@ -219,7 +221,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			oAuthRequest, serverNamespace.concat("prepackagedApps"),
 			jsonObject.toString());
 
-		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
+		Response response = _getResponse(themeDisplay.getUser(), oAuthRequest);
 
 		JSONObject responseJSONObject = JSONFactoryUtil.createJSONObject(
 			response.getBody());
@@ -529,7 +531,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			_addOAuthParameter(oAuthRequest, "p_p_resource_id", "serveApp");
 		}
 
-		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
+		Response response = _getResponse(themeDisplay.getUser(), oAuthRequest);
 
 		FileUtil.write(file, response.getStream());
 	}
@@ -667,6 +669,22 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		return jsonArray;
 	}
 
+	private Response _getResponse(User user, OAuthRequest oAuthRequest)
+		throws Exception {
+
+		Token token = oAuthManager.getAccessToken(user);
+
+		if (token != null) {
+			OAuthService oAuthService = oAuthManager.getOAuthService();
+
+			oAuthService.signRequest(token, oAuthRequest);
+		}
+
+		oAuthRequest.setFollowRedirects(false);
+
+		return oAuthRequest.send();
+	}
+
 	private String _getServerNamespace() {
 		return portal.getPortletNamespace(getServerPortletId());
 	}
@@ -687,7 +705,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		_addOAuthParameter(
 			oAuthRequest, "p_p_state", WindowState.NORMAL.toString());
 
-		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
+		Response response = _getResponse(themeDisplay.getUser(), oAuthRequest);
 
 		if (response.getCode() == HttpServletResponse.SC_FOUND) {
 			String redirectLocation = response.getHeader(HttpHeaders.LOCATION);
@@ -722,7 +740,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		_addOAuthParameter(
 			oAuthRequest, "p_p_resource_id", resourceRequest.getResourceID());
 
-		Response response = getResponse(themeDisplay.getUser(), oAuthRequest);
+		Response response = _getResponse(themeDisplay.getUser(), oAuthRequest);
 
 		String contentType = response.getHeader(HttpHeaders.CONTENT_TYPE);
 

@@ -54,7 +54,6 @@ import javax.portlet.WindowState;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -101,45 +100,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 		catch (Exception exception) {
 			throw new PortletException(exception);
 		}
-	}
-
-	@Override
-	public void render(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws IOException, PortletException {
-
-		_checkOmniAdmin();
-
-		try {
-			HttpServletRequest httpServletRequest =
-				PortalUtil.getHttpServletRequest(renderRequest);
-
-			httpServletRequest = PortalUtil.getOriginalServletRequest(
-				httpServletRequest);
-
-			String oAuthVerifier = httpServletRequest.getParameter(
-				OAuthConstants.VERIFIER);
-
-			if (oAuthVerifier != null) {
-				_updateAccessToken(renderRequest, oAuthVerifier);
-			}
-
-			String remoteMVCPath = renderRequest.getParameter("remoteMVCPath");
-
-			if (remoteMVCPath != null) {
-				_remoteRender(renderRequest, renderResponse);
-
-				return;
-			}
-		}
-		catch (IOException ioException) {
-			throw ioException;
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-
-		super.render(renderRequest, renderResponse);
 	}
 
 	@Override

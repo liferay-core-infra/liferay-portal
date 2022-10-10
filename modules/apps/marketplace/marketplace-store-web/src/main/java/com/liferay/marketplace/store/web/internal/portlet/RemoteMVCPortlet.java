@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -80,8 +79,7 @@ public class RemoteMVCPortlet extends MVCPortlet {
 	}
 
 	protected void setBaseRequestParameters(
-		PortletRequest portletRequest, PortletResponse portletResponse,
-		OAuthRequest oAuthRequest) {
+		PortletRequest portletRequest, OAuthRequest oAuthRequest) {
 
 		HttpServletRequest httpServletRequest =
 			PortalUtil.getHttpServletRequest(portletRequest);

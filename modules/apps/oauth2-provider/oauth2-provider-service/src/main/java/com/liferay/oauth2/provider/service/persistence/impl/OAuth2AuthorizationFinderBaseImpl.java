@@ -17,7 +17,6 @@ package com.liferay.oauth2.provider.service.persistence.impl;
 import com.liferay.oauth2.provider.model.OAuth2Authorization;
 import com.liferay.oauth2.provider.service.persistence.OAuth2AuthorizationPersistence;
 import com.liferay.oauth2.provider.service.persistence.impl.constants.OAuthTwoPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,14 +51,6 @@ public abstract class OAuth2AuthorizationFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return oAuth2AuthorizationPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = OAuthTwoPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import com.liferay.knowledge.base.service.persistence.KBFolderPersistence;
 import com.liferay.knowledge.base.service.persistence.KBFolderUtil;
 import com.liferay.knowledge.base.service.persistence.impl.constants.KBPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -4484,14 +4483,6 @@ public class KBFolderPersistenceImpl
 		catch (ReflectiveOperationException reflectiveOperationException) {
 			throw new RuntimeException(reflectiveOperationException);
 		}
-	}
-
-	@Override
-	@Reference(
-		target = KBPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

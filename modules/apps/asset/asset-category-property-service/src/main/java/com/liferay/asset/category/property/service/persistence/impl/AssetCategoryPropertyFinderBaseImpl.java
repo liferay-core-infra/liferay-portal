@@ -17,7 +17,6 @@ package com.liferay.asset.category.property.service.persistence.impl;
 import com.liferay.asset.category.property.model.AssetCategoryProperty;
 import com.liferay.asset.category.property.service.persistence.AssetCategoryPropertyPersistence;
 import com.liferay.asset.category.property.service.persistence.impl.constants.AssetPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class AssetCategoryPropertyFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return assetCategoryPropertyPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = AssetPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

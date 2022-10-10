@@ -14,7 +14,6 @@
 
 package com.liferay.wiki.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class WikiPageFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return wikiPagePersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = WikiPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

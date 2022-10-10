@@ -172,20 +172,6 @@ public class KaleoTransitionModelImpl
 	@Deprecated
 	public static final long KALEOTRANSITIONID_COLUMN_BITMASK = 32L;
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
-	}
-
 	public KaleoTransitionModelImpl() {
 	}
 
@@ -1117,24 +1103,6 @@ public class KaleoTransitionModelImpl
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return true;
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return true;
 	}
 
 	@Override

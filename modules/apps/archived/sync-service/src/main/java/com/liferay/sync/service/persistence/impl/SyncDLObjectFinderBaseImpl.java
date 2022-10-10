@@ -14,7 +14,6 @@
 
 package com.liferay.sync.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,14 +51,6 @@ public abstract class SyncDLObjectFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return syncDLObjectPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = SyncPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

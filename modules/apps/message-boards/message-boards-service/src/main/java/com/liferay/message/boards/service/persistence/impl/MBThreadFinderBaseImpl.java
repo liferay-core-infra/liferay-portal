@@ -17,7 +17,6 @@ package com.liferay.message.boards.service.persistence.impl;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.persistence.MBThreadPersistence;
 import com.liferay.message.boards.service.persistence.impl.constants.MBPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class MBThreadFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return mbThreadPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = MBPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

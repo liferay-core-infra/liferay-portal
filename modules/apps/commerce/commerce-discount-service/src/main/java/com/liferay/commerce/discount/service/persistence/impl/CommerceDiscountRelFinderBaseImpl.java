@@ -17,7 +17,6 @@ package com.liferay.commerce.discount.service.persistence.impl;
 import com.liferay.commerce.discount.model.CommerceDiscountRel;
 import com.liferay.commerce.discount.service.persistence.CommerceDiscountRelPersistence;
 import com.liferay.commerce.discount.service.persistence.impl.constants.CommercePersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
@@ -34,14 +33,6 @@ public abstract class CommerceDiscountRelFinderBaseImpl
 
 	public CommerceDiscountRelFinderBaseImpl() {
 		setModelClass(CommerceDiscountRel.class);
-	}
-
-	@Override
-	@Reference(
-		target = CommercePersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

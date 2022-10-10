@@ -17,7 +17,6 @@ package com.liferay.portal.background.task.service.persistence.impl;
 import com.liferay.portal.background.task.model.BackgroundTask;
 import com.liferay.portal.background.task.service.persistence.BackgroundTaskPersistence;
 import com.liferay.portal.background.task.service.persistence.impl.constants.BackgroundTaskPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
@@ -34,14 +33,6 @@ public abstract class BackgroundTaskFinderBaseImpl
 
 	public BackgroundTaskFinderBaseImpl() {
 		setModelClass(BackgroundTask.class);
-	}
-
-	@Override
-	@Reference(
-		target = BackgroundTaskPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

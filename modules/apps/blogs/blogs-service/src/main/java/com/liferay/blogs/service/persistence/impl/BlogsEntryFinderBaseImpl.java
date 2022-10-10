@@ -17,7 +17,6 @@ package com.liferay.blogs.service.persistence.impl;
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.persistence.BlogsEntryPersistence;
 import com.liferay.blogs.service.persistence.impl.constants.BlogsPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class BlogsEntryFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return blogsEntryPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = BlogsPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

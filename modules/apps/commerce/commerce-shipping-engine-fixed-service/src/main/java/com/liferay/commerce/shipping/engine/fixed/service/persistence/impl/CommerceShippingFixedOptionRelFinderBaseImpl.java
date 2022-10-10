@@ -17,7 +17,6 @@ package com.liferay.commerce.shipping.engine.fixed.service.persistence.impl;
 import com.liferay.commerce.shipping.engine.fixed.model.CommerceShippingFixedOptionRel;
 import com.liferay.commerce.shipping.engine.fixed.service.persistence.CommerceShippingFixedOptionRelPersistence;
 import com.liferay.commerce.shipping.engine.fixed.service.persistence.impl.constants.CommercePersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,14 +51,6 @@ public abstract class CommerceShippingFixedOptionRelFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return commerceShippingFixedOptionRelPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = CommercePersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

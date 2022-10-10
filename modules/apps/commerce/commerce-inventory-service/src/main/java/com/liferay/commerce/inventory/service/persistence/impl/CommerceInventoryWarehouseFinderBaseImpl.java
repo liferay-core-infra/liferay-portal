@@ -17,7 +17,6 @@ package com.liferay.commerce.inventory.service.persistence.impl;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.inventory.service.persistence.CommerceInventoryWarehousePersistence;
 import com.liferay.commerce.inventory.service.persistence.impl.constants.CommercePersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -54,14 +53,6 @@ public abstract class CommerceInventoryWarehouseFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return commerceInventoryWarehousePersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = CommercePersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

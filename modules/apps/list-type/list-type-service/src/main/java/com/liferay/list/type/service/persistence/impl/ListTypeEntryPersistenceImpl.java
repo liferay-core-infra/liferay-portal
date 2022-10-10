@@ -23,7 +23,6 @@ import com.liferay.list.type.service.persistence.ListTypeEntryPersistence;
 import com.liferay.list.type.service.persistence.ListTypeEntryUtil;
 import com.liferay.list.type.service.persistence.impl.constants.ListTypePersistenceConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -3302,14 +3301,6 @@ public class ListTypeEntryPersistenceImpl
 		catch (ReflectiveOperationException reflectiveOperationException) {
 			throw new RuntimeException(reflectiveOperationException);
 		}
-	}
-
-	@Override
-	@Reference(
-		target = ListTypePersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

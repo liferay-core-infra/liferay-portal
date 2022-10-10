@@ -14,7 +14,6 @@
 
 package com.liferay.portal.reports.engine.console.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.reports.engine.console.model.Entry;
@@ -33,14 +32,6 @@ public abstract class EntryFinderBaseImpl extends BasePersistenceImpl<Entry> {
 
 	public EntryFinderBaseImpl() {
 		setModelClass(Entry.class);
-	}
-
-	@Override
-	@Reference(
-		target = ReportsPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

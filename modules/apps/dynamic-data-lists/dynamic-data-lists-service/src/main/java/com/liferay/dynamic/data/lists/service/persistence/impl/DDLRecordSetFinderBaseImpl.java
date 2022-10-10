@@ -17,7 +17,6 @@ package com.liferay.dynamic.data.lists.service.persistence.impl;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.service.persistence.DDLRecordSetPersistence;
 import com.liferay.dynamic.data.lists.service.persistence.impl.constants.DDLPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,14 +51,6 @@ public abstract class DDLRecordSetFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return ddlRecordSetPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = DDLPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

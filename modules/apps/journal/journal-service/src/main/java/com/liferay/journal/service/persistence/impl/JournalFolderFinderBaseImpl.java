@@ -17,7 +17,6 @@ package com.liferay.journal.service.persistence.impl;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.persistence.JournalFolderPersistence;
 import com.liferay.journal.service.persistence.impl.constants.JournalPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class JournalFolderFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return journalFolderPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = JournalPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

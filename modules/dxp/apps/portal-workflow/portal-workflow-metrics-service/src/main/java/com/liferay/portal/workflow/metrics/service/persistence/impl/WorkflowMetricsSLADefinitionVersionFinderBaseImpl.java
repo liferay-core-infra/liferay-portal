@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.metrics.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -58,14 +57,6 @@ public abstract class WorkflowMetricsSLADefinitionVersionFinderBaseImpl
 	public Set<String> getBadColumnNames() {
 		return workflowMetricsSLADefinitionVersionPersistence.
 			getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = WorkflowMetricsPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

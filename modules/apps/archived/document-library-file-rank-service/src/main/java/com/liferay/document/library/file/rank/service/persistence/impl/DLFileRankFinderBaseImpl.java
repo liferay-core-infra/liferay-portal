@@ -17,7 +17,6 @@ package com.liferay.document.library.file.rank.service.persistence.impl;
 import com.liferay.document.library.file.rank.model.DLFileRank;
 import com.liferay.document.library.file.rank.service.persistence.DLFileRankPersistence;
 import com.liferay.document.library.file.rank.service.persistence.impl.constants.DLPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class DLFileRankFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return dlFileRankPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = DLPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

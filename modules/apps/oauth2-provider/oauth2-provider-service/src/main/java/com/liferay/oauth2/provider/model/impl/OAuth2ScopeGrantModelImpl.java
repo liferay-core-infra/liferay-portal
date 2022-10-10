@@ -141,20 +141,6 @@ public class OAuth2ScopeGrantModelImpl
 	@Deprecated
 	public static final long OAUTH2SCOPEGRANTID_COLUMN_BITMASK = 32L;
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
-	}
-
 	public static final String MAPPING_TABLE_OA2AUTHS_OA2SCOPEGRANTS_NAME =
 		"OA2Auths_OA2ScopeGrants";
 
@@ -613,24 +599,6 @@ public class OAuth2ScopeGrantModelImpl
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return true;
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return true;
 	}
 
 	@Override

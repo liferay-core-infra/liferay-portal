@@ -146,20 +146,6 @@ public class CommerceAccountGroupCommerceAccountRelModelImpl
 	public static final long
 		COMMERCEACCOUNTGROUPCOMMERCEACCOUNTRELID_COLUMN_BITMASK = 16L;
 
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setEntityCacheEnabled(boolean entityCacheEnabled) {
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
-	}
-
 	public CommerceAccountGroupCommerceAccountRelModelImpl() {
 	}
 
@@ -710,24 +696,6 @@ public class CommerceAccountGroupCommerceAccountRelModelImpl
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isEntityCacheEnabled() {
-		return true;
-	}
-
-	/**
-	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
-	 */
-	@Deprecated
-	@Override
-	public boolean isFinderCacheEnabled() {
-		return true;
 	}
 
 	@Override

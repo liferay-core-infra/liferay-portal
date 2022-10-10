@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
@@ -34,14 +33,6 @@ public abstract class KaleoTaskInstanceTokenFinderBaseImpl
 
 	public KaleoTaskInstanceTokenFinderBaseImpl() {
 		setModelClass(KaleoTaskInstanceToken.class);
-	}
-
-	@Override
-	@Reference(
-		target = KaleoPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import com.liferay.commerce.product.type.grouped.service.persistence.CPDefinitio
 import com.liferay.commerce.product.type.grouped.service.persistence.CPDefinitionGroupedEntryUtil;
 import com.liferay.commerce.product.type.grouped.service.persistence.impl.constants.CommercePersistenceConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -2963,14 +2962,6 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 		catch (ReflectiveOperationException reflectiveOperationException) {
 			throw new RuntimeException(reflectiveOperationException);
 		}
-	}
-
-	@Override
-	@Reference(
-		target = CommercePersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

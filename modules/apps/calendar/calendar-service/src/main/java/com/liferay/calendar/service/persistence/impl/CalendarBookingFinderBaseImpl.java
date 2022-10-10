@@ -17,7 +17,6 @@ package com.liferay.calendar.service.persistence.impl;
 import com.liferay.calendar.model.CalendarBooking;
 import com.liferay.calendar.service.persistence.CalendarBookingPersistence;
 import com.liferay.calendar.service.persistence.impl.constants.CalendarPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class CalendarBookingFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return calendarBookingPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = CalendarPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

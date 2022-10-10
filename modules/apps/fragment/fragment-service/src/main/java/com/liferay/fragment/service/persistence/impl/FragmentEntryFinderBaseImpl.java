@@ -17,7 +17,6 @@ package com.liferay.fragment.service.persistence.impl;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.persistence.FragmentEntryPersistence;
 import com.liferay.fragment.service.persistence.impl.constants.FragmentPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,14 +51,6 @@ public abstract class FragmentEntryFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return fragmentEntryPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = FragmentPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

@@ -17,7 +17,6 @@ package com.liferay.microblogs.service.persistence.impl;
 import com.liferay.microblogs.model.MicroblogsEntry;
 import com.liferay.microblogs.service.persistence.MicroblogsEntryPersistence;
 import com.liferay.microblogs.service.persistence.impl.constants.MicroblogsPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class MicroblogsEntryFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return microblogsEntryPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = MicroblogsPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

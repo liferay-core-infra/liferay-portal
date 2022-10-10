@@ -17,7 +17,6 @@ package com.liferay.chat.service.persistence.impl;
 import com.liferay.chat.model.Status;
 import com.liferay.chat.service.persistence.StatusPersistence;
 import com.liferay.chat.service.persistence.impl.constants.ChatPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -50,14 +49,6 @@ public abstract class StatusFinderBaseImpl extends BasePersistenceImpl<Status> {
 	@Override
 	public Set<String> getBadColumnNames() {
 		return statusPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = ChatPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

@@ -17,7 +17,6 @@ package com.liferay.asset.list.service.persistence.impl;
 import com.liferay.asset.list.model.AssetListEntryAssetEntryRel;
 import com.liferay.asset.list.service.persistence.AssetListEntryAssetEntryRelPersistence;
 import com.liferay.asset.list.service.persistence.impl.constants.AssetListPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class AssetListEntryAssetEntryRelFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return assetListEntryAssetEntryRelPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = AssetListPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

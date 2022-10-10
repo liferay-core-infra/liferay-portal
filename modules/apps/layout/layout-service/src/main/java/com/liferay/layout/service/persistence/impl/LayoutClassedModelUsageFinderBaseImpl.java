@@ -17,7 +17,6 @@ package com.liferay.layout.service.persistence.impl;
 import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.service.persistence.LayoutClassedModelUsagePersistence;
 import com.liferay.layout.service.persistence.impl.constants.LayoutPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -52,14 +51,6 @@ public abstract class LayoutClassedModelUsageFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return layoutClassedModelUsagePersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = LayoutPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

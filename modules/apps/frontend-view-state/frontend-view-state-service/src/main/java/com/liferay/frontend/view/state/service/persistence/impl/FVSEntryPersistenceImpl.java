@@ -23,7 +23,6 @@ import com.liferay.frontend.view.state.service.persistence.FVSEntryPersistence;
 import com.liferay.frontend.view.state.service.persistence.FVSEntryUtil;
 import com.liferay.frontend.view.state.service.persistence.impl.constants.FVSPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -1817,14 +1816,6 @@ public class FVSEntryPersistenceImpl
 		catch (ReflectiveOperationException reflectiveOperationException) {
 			throw new RuntimeException(reflectiveOperationException);
 		}
-	}
-
-	@Override
-	@Reference(
-		target = FVSPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

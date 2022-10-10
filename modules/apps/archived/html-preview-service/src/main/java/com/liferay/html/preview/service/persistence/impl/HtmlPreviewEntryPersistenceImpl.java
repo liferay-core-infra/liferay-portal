@@ -23,7 +23,6 @@ import com.liferay.html.preview.service.persistence.HtmlPreviewEntryPersistence;
 import com.liferay.html.preview.service.persistence.HtmlPreviewEntryUtil;
 import com.liferay.html.preview.service.persistence.impl.constants.PreviewPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -966,14 +965,6 @@ public class HtmlPreviewEntryPersistenceImpl
 		catch (ReflectiveOperationException reflectiveOperationException) {
 			throw new RuntimeException(reflectiveOperationException);
 		}
-	}
-
-	@Override
-	@Reference(
-		target = PreviewPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

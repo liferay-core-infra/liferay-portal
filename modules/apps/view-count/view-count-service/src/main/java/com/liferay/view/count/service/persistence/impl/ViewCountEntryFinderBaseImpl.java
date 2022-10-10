@@ -14,7 +14,6 @@
 
 package com.liferay.view.count.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.view.count.model.ViewCountEntry;
@@ -34,14 +33,6 @@ public abstract class ViewCountEntryFinderBaseImpl
 
 	public ViewCountEntryFinderBaseImpl() {
 		setModelClass(ViewCountEntry.class);
-	}
-
-	@Override
-	@Reference(
-		target = ViewCountPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

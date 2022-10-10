@@ -17,7 +17,6 @@ package com.liferay.chat.service.persistence.impl;
 import com.liferay.chat.model.Entry;
 import com.liferay.chat.service.persistence.EntryPersistence;
 import com.liferay.chat.service.persistence.impl.constants.ChatPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
@@ -33,14 +32,6 @@ public abstract class EntryFinderBaseImpl extends BasePersistenceImpl<Entry> {
 
 	public EntryFinderBaseImpl() {
 		setModelClass(Entry.class);
-	}
-
-	@Override
-	@Reference(
-		target = ChatPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

@@ -17,7 +17,6 @@ package com.liferay.bookmarks.service.persistence.impl;
 import com.liferay.bookmarks.model.BookmarksFolder;
 import com.liferay.bookmarks.service.persistence.BookmarksFolderPersistence;
 import com.liferay.bookmarks.service.persistence.impl.constants.BookmarksPersistenceConstants;
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class BookmarksFolderFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return bookmarksFolderPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = BookmarksPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

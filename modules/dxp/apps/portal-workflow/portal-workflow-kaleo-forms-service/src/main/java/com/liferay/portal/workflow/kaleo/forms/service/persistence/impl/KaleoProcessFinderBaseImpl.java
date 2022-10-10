@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.forms.service.persistence.impl;
 
-import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -51,14 +50,6 @@ public abstract class KaleoProcessFinderBaseImpl
 	@Override
 	public Set<String> getBadColumnNames() {
 		return kaleoProcessPersistence.getBadColumnNames();
-	}
-
-	@Override
-	@Reference(
-		target = KaleoFormsPersistenceConstants.SERVICE_CONFIGURATION_FILTER,
-		unbind = "-"
-	)
-	public void setConfiguration(Configuration configuration) {
 	}
 
 	@Override

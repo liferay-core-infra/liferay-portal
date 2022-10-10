@@ -441,25 +441,23 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		}
 	}
 
-	/**
-	 * Clears the cache for all ${entity.pluralHumanName}.
-	 *
-	 * <p>
-	 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
-	 * </p>
-	 */
-	@Override
-	public void clearCache() {
-		${entityCache}.clearCache(${entity.name}Impl.class);
+	<#if serviceBuilder.isVersionLTE_7_3_0()>
+		/**
+		 * Clears the cache for all ${entity.pluralHumanName}.
+		 *
+		 * <p>
+		 * The <code>com.liferay.portal.kernel.dao.orm.EntityCache</code> and <code>com.liferay.portal.kernel.dao.orm.FinderCache</code> are both cleared by this method.
+		 * </p>
+		 */
+		@Override
+		public void clearCache() {
+			${entityCache}.clearCache(${entity.name}Impl.class);
 
-		<#if serviceBuilder.isVersionGTE_7_4_0()>
-			${finderCache}.clearCache(${entity.name}Impl.class);
-		<#else>
 			${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-		</#if>
-	}
+		}
+	</#if>
 
 	/**
 	 * Clears the cache for the ${entity.humanName}.

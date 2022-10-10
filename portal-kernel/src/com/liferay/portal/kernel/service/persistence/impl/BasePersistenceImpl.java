@@ -127,6 +127,13 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 	@Override
 	public void clearCache() {
+		EntityCache entityCache = getEntityCache();
+
+		entityCache.clearCache(_modelImplClass);
+
+		FinderCache finderCache = getFinderCache();
+
+		finderCache.clearCache(_modelImplClass);
 	}
 
 	@Override

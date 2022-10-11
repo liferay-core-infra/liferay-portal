@@ -36,7 +36,6 @@ import javax.portlet.GenericPortlet;
 import javax.portlet.MimeResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -122,10 +121,6 @@ public class HelloVelocityPortlet extends GenericPortlet {
 	@Override
 	public void init(PortletConfig portletConfig) throws PortletException {
 		super.init(portletConfig);
-
-		PortletContext portletContext = portletConfig.getPortletContext();
-
-		_portletContextName = portletContext.getPortletContextName();
 
 		_actionTemplateId = getInitParameter("action-template");
 		_editTemplateId = getInitParameter("edit-template");
@@ -266,7 +261,6 @@ public class HelloVelocityPortlet extends GenericPortlet {
 	private String _actionTemplateId;
 	private String _editTemplateId;
 	private String _helpTemplateId;
-	private String _portletContextName;
 	private String _resourceTemplateId;
 	private String _viewTemplateId;
 

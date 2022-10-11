@@ -195,7 +195,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		addOAuthParameter(
 			oAuthRequest, "p_p_state", WindowState.NORMAL.toString());
 
-		String serverNamespace = getServerNamespace();
+		String serverNamespace = _getServerNamespace();
 
 		addOAuthParameter(
 			oAuthRequest, serverNamespace.concat("compatibility"),
@@ -513,7 +513,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 
 		_setBaseRequestParameters(portletRequest, oAuthRequest);
 
-		String serverNamespace = getServerNamespace();
+		String serverNamespace = _getServerNamespace();
 
 		addOAuthParameter(
 			oAuthRequest, serverNamespace.concat("appPackageId"),
@@ -657,6 +657,10 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		return jsonArray;
 	}
 
+	private String _getServerNamespace() {
+		return portal.getPortletNamespace(getServerPortletId());
+	}
+
 	private void _remoteProcessAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -762,7 +766,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		processPortletParameterMap(
 			portletRequest, portletResponse, parameterMap);
 
-		String serverNamespace = getServerNamespace();
+		String serverNamespace = _getServerNamespace();
 
 		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
 			String key = entry.getKey();

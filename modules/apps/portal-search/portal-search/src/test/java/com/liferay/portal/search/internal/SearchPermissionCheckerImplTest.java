@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
@@ -28,6 +27,9 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.configuration.SearchPermissionCheckerConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.HashMap;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -35,6 +37,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
 
 /**
  * @author André de Oliveira
@@ -56,13 +60,18 @@ public class SearchPermissionCheckerImplTest {
 			Mockito.nullable(String.class)
 		);
 
-		_searchPermissionChecker = _createSearchPermissionChecker();
+		_searchPermissionCheckerImpl = _createSearchPermissionChecker();
+	}
+
+	@After
+	public void tearDown() {
+		_searchPermissionCheckerImpl.deactivate();
 	}
 
 	@Test
 	public void testNullInput() {
 		Assert.assertNull(
-			_searchPermissionChecker.getPermissionBooleanFilter(
+			_searchPermissionCheckerImpl.getPermissionBooleanFilter(
 				0, null, 0, null, null, null));
 	}
 
@@ -78,12 +87,12 @@ public class SearchPermissionCheckerImplTest {
 		_whenUserGetUserId(userId);
 
 		Assert.assertNotNull(
-			_searchPermissionChecker.getPermissionBooleanFilter(
+			_searchPermissionCheckerImpl.getPermissionBooleanFilter(
 				0, null, userId, null, null, new SearchContext()));
 	}
 
 	private SearchPermissionCheckerImpl _createSearchPermissionChecker() {
-		return new SearchPermissionCheckerImpl() {
+		_searchPermissionCheckerImpl = new SearchPermissionCheckerImpl() {
 			{
 				indexerRegistry = _indexerRegistry;
 				permissionChecker = _permissionChecker;
@@ -95,6 +104,11 @@ public class SearchPermissionCheckerImplTest {
 				userLocalService = _userLocalService;
 			}
 		};
+
+		_searchPermissionCheckerImpl.activate(
+			_bundleContext, new HashMap<String, Object>());
+
+		return _searchPermissionCheckerImpl;
 	}
 
 	private boolean _whenIndexerIsPermissionAware(boolean permissionAware) {
@@ -131,6 +145,8 @@ public class SearchPermissionCheckerImplTest {
 		).getUserId();
 	}
 
+	private final BundleContext _bundleContext = Mockito.mock(
+		BundleContext.class);
 	private final Indexer<?> _indexer = Mockito.mock(Indexer.class);
 	private final IndexerRegistry _indexerRegistry = Mockito.mock(
 		IndexerRegistry.class);
@@ -141,10 +157,10 @@ public class SearchPermissionCheckerImplTest {
 			ResourcePermissionLocalService.class);
 	private final RoleLocalService _roleLocalService = Mockito.mock(
 		RoleLocalService.class);
-	private SearchPermissionChecker _searchPermissionChecker;
 	private final SearchPermissionCheckerConfiguration
 		_searchPermissionCheckerConfiguration = Mockito.mock(
 			SearchPermissionCheckerConfiguration.class);
+	private SearchPermissionCheckerImpl _searchPermissionCheckerImpl;
 	private final User _user = Mockito.mock(User.class);
 	private final UserBag _userBag = Mockito.mock(UserBag.class);
 	private final UserLocalService _userLocalService = Mockito.mock(

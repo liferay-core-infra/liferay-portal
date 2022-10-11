@@ -47,7 +47,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -736,8 +735,8 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	private void _setBaseRequestParameters(
 		PortletRequest portletRequest, OAuthRequest oAuthRequest) {
 
-		HttpServletRequest httpServletRequest =
-			PortalUtil.getHttpServletRequest(portletRequest);
+		HttpServletRequest httpServletRequest = portal.getHttpServletRequest(
+			portletRequest);
 
 		String clientAuthToken = AuthTokenUtil.getToken(httpServletRequest);
 
@@ -747,7 +746,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 			oAuthRequest, "clientPortletId", getClientPortletId());
 		addOAuthParameter(
 			oAuthRequest, "clientURL",
-			PortalUtil.getCurrentCompleteURL(httpServletRequest));
+			portal.getCurrentCompleteURL(httpServletRequest));
 		addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
 	}
 

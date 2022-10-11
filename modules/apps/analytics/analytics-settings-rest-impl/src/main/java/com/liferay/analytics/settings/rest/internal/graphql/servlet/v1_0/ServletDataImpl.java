@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Riccardo Ferrari
  * @generated
  */
-@Component(immediate = true, service = ServletData.class)
+@Component(service = ServletData.class)
 @Generated("")
 public class ServletDataImpl implements ServletData {
 

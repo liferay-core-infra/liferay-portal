@@ -51,10 +51,6 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface DataSourceResource {
 
-	public static Builder builder() {
-		return FactoryHolder.factory.create();
-	}
-
 	public void deleteDataSource() throws Exception;
 
 	public Response deleteDataSourceBatch(String callbackURL, Object object)
@@ -113,12 +109,6 @@ public interface DataSourceResource {
 		String filterString, Map<String, List<String>> multivaluedMap) {
 
 		return null;
-	}
-
-	public static class FactoryHolder {
-
-		public static volatile Factory factory;
-
 	}
 
 	@ProviderType

@@ -17,6 +17,7 @@ package com.liferay.hello.velocity.web.internal.portlet;
 import com.liferay.hello.velocity.web.internal.constants.HelloVelocityPortletKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
+import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
@@ -25,13 +26,25 @@ import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
-import com.liferay.portlet.VelocityPortlet;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
+import java.io.Writer;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.GenericPortlet;
+import javax.portlet.MimeResponse;
 import javax.portlet.Portlet;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -61,26 +74,103 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = Portlet.class
 )
-public class HelloVelocityPortlet extends VelocityPortlet {
+public class HelloVelocityPortlet extends GenericPortlet {
 
 	@Override
-	protected String getTemplateId(String name) {
-		return name;
+	public void doEdit(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		if (renderRequest.getPreferences() == null) {
+			super.doEdit(renderRequest, renderResponse);
+
+			return;
+		}
+
+		try {
+			_mergeTemplate(_editTemplateId, renderRequest, renderResponse);
+		}
+		catch (Exception exception) {
+			throw new PortletException(exception);
+		}
 	}
 
 	@Override
-	protected void mergeTemplate(
-			String templateId, PortletRequest portletRequest,
-			PortletResponse portletResponse)
-		throws Exception {
+	public void doHelp(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortletException {
 
-		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_VM, _getTemplateResource(templateId),
-			false);
+		try {
+			_mergeTemplate(_helpTemplateId, renderRequest, renderResponse);
+		}
+		catch (Exception exception) {
+			throw new PortletException(exception);
+		}
+	}
 
-		prepareTemplate(template, portletRequest, portletResponse);
+	@Override
+	public void doView(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws PortletException {
 
-		mergeTemplate(template, portletResponse);
+		try {
+			_mergeTemplate(_viewTemplateId, renderRequest, renderResponse);
+		}
+		catch (Exception exception) {
+			throw new PortletException(exception);
+		}
+	}
+
+	@Override
+	public void init(PortletConfig portletConfig) throws PortletException {
+		super.init(portletConfig);
+
+		PortletContext portletContext = portletConfig.getPortletContext();
+
+		_portletContextName = portletContext.getPortletContextName();
+
+		_actionTemplateId = getInitParameter("action-template");
+		_editTemplateId = getInitParameter("edit-template");
+		_helpTemplateId = getInitParameter("help-template");
+		_resourceTemplateId = getInitParameter("resource-template");
+		_viewTemplateId = getInitParameter("view-template");
+	}
+
+	@Override
+	public void processAction(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws PortletException {
+
+		if (Validator.isNull(_actionTemplateId)) {
+			return;
+		}
+
+		try {
+			_mergeTemplate(_actionTemplateId, actionRequest, actionResponse);
+		}
+		catch (Exception exception) {
+			throw new PortletException(exception);
+		}
+	}
+
+	@Override
+	public void serveResource(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws IOException, PortletException {
+
+		if (Validator.isNull(_resourceTemplateId)) {
+			super.serveResource(resourceRequest, resourceResponse);
+
+			return;
+		}
+
+		try {
+			_mergeTemplate(
+				_resourceTemplateId, resourceRequest, resourceResponse);
+		}
+		catch (Exception exception) {
+			throw new PortletException(exception);
+		}
 	}
 
 	private TemplateResource _getTemplateResource(String templateId) {
@@ -105,145 +195,22 @@ public class HelloVelocityPortlet extends VelocityPortlet {
 		return new StringTemplateResource(templateId, content);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		HelloVelocityPortlet.class);
-
-	@Reference(
-		target = "(&(release.bundle.symbolic.name=com.liferay.hello.velocity.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"
-	)
-	private Release _release;
-
-	@Override
-	public void doEdit(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws IOException, PortletException {
-
-		if (renderRequest.getPreferences() == null) {
-			super.doEdit(renderRequest, renderResponse);
-
-			return;
-		}
-
-		try {
-			mergeTemplate(_editTemplateId, renderRequest, renderResponse);
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-	}
-
-	@Override
-	public void doHelp(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws PortletException {
-
-		try {
-			mergeTemplate(_helpTemplateId, renderRequest, renderResponse);
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-	}
-
-	@Override
-	public void doView(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws PortletException {
-
-		try {
-			mergeTemplate(_viewTemplateId, renderRequest, renderResponse);
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-	}
-
-	@Override
-	public void init(PortletConfig portletConfig) throws PortletException {
-		super.init(portletConfig);
-
-		PortletContext portletContext = portletConfig.getPortletContext();
-
-		_portletContextName = portletContext.getPortletContextName();
-
-		_actionTemplateId = getTemplateId(getInitParameter("action-template"));
-		_editTemplateId = getTemplateId(getInitParameter("edit-template"));
-		_helpTemplateId = getTemplateId(getInitParameter("help-template"));
-		_resourceTemplateId = getTemplateId(
-			getInitParameter("resource-template"));
-		_viewTemplateId = getTemplateId(getInitParameter("view-template"));
-	}
-
-	@Override
-	public void processAction(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws PortletException {
-
-		if (Validator.isNull(_actionTemplateId)) {
-			return;
-		}
-
-		try {
-			mergeTemplate(_actionTemplateId, actionRequest, actionResponse);
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-	}
-
-	@Override
-	public void serveResource(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws IOException, PortletException {
-
-		if (Validator.isNull(_resourceTemplateId)) {
-			super.serveResource(resourceRequest, resourceResponse);
-
-			return;
-		}
-
-		try {
-			mergeTemplate(
-				_resourceTemplateId, resourceRequest, resourceResponse);
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-	}
-
-	protected String getTemplateId(String name) {
-		if (Validator.isNull(name)) {
-			return name;
-		}
-
-		return StringBundler.concat(
-			_portletContextName, TemplateConstants.SERVLET_SEPARATOR,
-			StrutsUtil.TEXT_HTML_DIR, name);
-	}
-
-	protected void mergeTemplate(
+	private void _mergeTemplate(
 			String templateId, PortletRequest portletRequest,
 			PortletResponse portletResponse)
 		throws Exception {
 
-		TemplateResource templateResource =
-			TemplateResourceLoaderUtil.getTemplateResource(
-				TemplateConstants.LANG_TYPE_VM, templateId);
-
-		if (templateResource == null) {
-			throw new Exception(
-				"Unable to load template resource " + templateId);
-		}
-
 		Template template = TemplateManagerUtil.getTemplate(
-			TemplateConstants.LANG_TYPE_VM, templateResource, false);
+			TemplateConstants.LANG_TYPE_VM, _getTemplateResource(templateId),
+			false);
 
-		prepareTemplate(template, portletRequest, portletResponse);
+		_prepareTemplate(template, portletRequest, portletResponse);
 
-		mergeTemplate(template, portletResponse);
+		_mergeTemplate(template, portletResponse);
 	}
 
-	protected void mergeTemplate(Template template, PortletResponse portletResponse)
+	private void _mergeTemplate(
+			Template template, PortletResponse portletResponse)
 		throws Exception {
 
 		Writer writer = null;
@@ -260,7 +227,7 @@ public class HelloVelocityPortlet extends VelocityPortlet {
 		template.processTemplate(writer);
 	}
 
-	protected void prepareTemplate(
+	private void _prepareTemplate(
 		Template template, PortletRequest portletRequest,
 		PortletResponse portletResponse) {
 
@@ -295,12 +262,20 @@ public class HelloVelocityPortlet extends VelocityPortlet {
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		HelloVelocityPortlet.class);
+
 	private String _actionTemplateId;
 	private String _editTemplateId;
 	private String _helpTemplateId;
 	private String _portletContextName;
+
+	@Reference(
+		target = "(&(release.bundle.symbolic.name=com.liferay.hello.velocity.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"
+	)
+	private Release _release;
+
 	private String _resourceTemplateId;
 	private String _viewTemplateId;
-
 
 }

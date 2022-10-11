@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -585,6 +585,9 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 	@Reference
 	protected Patcher patcher;
 
+	@Reference
+	protected Portal portal;
+
 	private void _checkOmniAdmin() throws PortletException {
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
@@ -678,7 +681,7 @@ public class MarketplaceStorePortlet extends RemoteMVCPortlet {
 		}
 		else {
 			HttpServletResponse httpServletResponse =
-				PortalUtil.getHttpServletResponse(actionResponse);
+				portal.getHttpServletResponse(actionResponse);
 
 			httpServletResponse.setContentType(
 				response.getHeader(HttpHeaders.CONTENT_TYPE));

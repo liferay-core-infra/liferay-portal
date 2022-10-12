@@ -12,9 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.template.soy.renderer;
+package com.liferay.frontend.taglib.soy.internal.template;
 
+import com.liferay.frontend.js.module.launcher.JSModuleLauncher;
 import com.liferay.portal.kernel.template.TemplateException;
+import com.liferay.portal.kernel.util.Portal;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -22,24 +24,34 @@ import java.io.Writer;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Iván Zaera Avellón
- * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+ * @author Julius Lee
  */
-@Deprecated
-public interface SoyRenderer {
+@Component(service = SoyComponentRenderer.class)
+public class SoyComponentRenderer {
 
-	public void renderSoy(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse, String templateNamespace,
-			Map<String, ?> context)
-		throws IOException, TemplateException;
-
-	public void renderSoy(
+	public void renderSoyComponent(
 			HttpServletRequest httpServletRequest, Writer writer,
-			String templateNamespace, Map<String, ?> context)
-		throws TemplateException;
+			ComponentDescriptor componentDescriptor, Map<String, ?> context)
+		throws IOException, TemplateException {
+
+		SoyComponentRendererHelper soyComponentRendererHelper =
+			new SoyComponentRendererHelper(
+				httpServletRequest, componentDescriptor, context,
+				_jsModuleLauncher, _portal);
+
+		soyComponentRendererHelper.renderSoyComponent(writer);
+	}
+
+	@Reference
+	private JSModuleLauncher _jsModuleLauncher;
+
+	@Reference
+	private Portal _portal;
 
 }

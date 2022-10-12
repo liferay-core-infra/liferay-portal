@@ -237,6 +237,37 @@ public class PortalImplGroupFriendlyURLTest {
 		}
 	}
 
+	@Test
+	public void testIsGroupFriendlyURL() {
+		Layout defaultSiteLayout = _layoutLocalService.fetchDefaultLayout(
+			_group.getGroupId(), false);
+
+		Assert.assertTrue(
+			_portal.isGroupFriendlyURL(
+				_group.getFriendlyURL(), _group.getFriendlyURL(),
+				defaultSiteLayout.getFriendlyURL()));
+		Assert.assertFalse(
+			_portal.isGroupFriendlyURL(
+				_group.getFriendlyURL(
+				).concat(
+					defaultSiteLayout.getFriendlyURL()
+				),
+				_group.getFriendlyURL(), defaultSiteLayout.getFriendlyURL()));
+		Assert.assertFalse(
+			_portal.isGroupFriendlyURL(
+				defaultSiteLayout.getFriendlyURL(
+				).concat(
+					defaultSiteLayout.getFriendlyURL()
+				),
+				defaultSiteLayout.getFriendlyURL(),
+				defaultSiteLayout.getFriendlyURL()));
+		Assert.assertFalse(
+			_portal.isGroupFriendlyURL(
+				defaultSiteLayout.getFriendlyURL(),
+				defaultSiteLayout.getFriendlyURL(),
+				defaultSiteLayout.getFriendlyURL()));
+	}
+
 	private void _testGroupFriendlyURL(
 			String virtualHostname, String expectedURL, Group group,
 			Layout layout)

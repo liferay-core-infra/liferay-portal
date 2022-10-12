@@ -25,7 +25,6 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -43,9 +42,6 @@ public class BackgroundTaskExecutorConfigurator {
 
 		_registerBackgroundTaskExecutor(
 			bundleContext, new LayoutRemoteStagingBackgroundTaskExecutor());
-
-		_registerBackgroundTaskExecutor(
-			bundleContext, _layoutSetPrototypeImportBackgroundTaskExecutor);
 
 		_registerBackgroundTaskExecutor(
 			bundleContext, new LayoutStagingBackgroundTaskExecutor());
@@ -87,10 +83,6 @@ public class BackgroundTaskExecutorConfigurator {
 
 		_serviceRegistrations.add(serviceRegistration);
 	}
-
-	@Reference
-	private LayoutSetPrototypeImportBackgroundTaskExecutor
-		_layoutSetPrototypeImportBackgroundTaskExecutor;
 
 	private final Set<ServiceRegistration<BackgroundTaskExecutor>>
 		_serviceRegistrations = new HashSet<>();

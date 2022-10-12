@@ -63,7 +63,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @generated
  */
 @Component(
-	enabled = false, immediate = true,
+	immediate = true,
 	property = "resource.locator.key=/headless-commerce-machine-learning/v1.0/SkuForecast",
 	service = SkuForecastResource.Factory.class
 )

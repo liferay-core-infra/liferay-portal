@@ -62,24 +62,18 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	configurationPid = "com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeSystemConfiguration",
 	immediate = true,
-	service = LayoutSetPrototypeImportBackgroundTaskExecutor.class
+	property = "background.task.executor.class.name=com.liferay.exportimport.internal.background.task.LayoutSetPrototypeImportBackgroundTaskExecutor",
+	service = {
+		BackgroundTaskExecutor.class,
+		LayoutSetPrototypeImportBackgroundTaskExecutor.class
+	}
 )
 public class LayoutSetPrototypeImportBackgroundTaskExecutor
 	extends BaseExportImportBackgroundTaskExecutor {
 
 	@Override
 	public BackgroundTaskExecutor clone() {
-		LayoutSetPrototypeImportBackgroundTaskExecutor
-			layoutSetPrototypeImportBackgroundTaskExecutor =
-				new LayoutSetPrototypeImportBackgroundTaskExecutor();
-
-		layoutSetPrototypeImportBackgroundTaskExecutor.
-			setBackgroundTaskStatusMessageTranslator(
-				getBackgroundTaskStatusMessageTranslator());
-		layoutSetPrototypeImportBackgroundTaskExecutor.setIsolationLevel(
-			getIsolationLevel());
-
-		return layoutSetPrototypeImportBackgroundTaskExecutor;
+		return this;
 	}
 
 	@Override

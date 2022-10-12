@@ -115,9 +115,6 @@ public class SegmentsExperimentModelListener
 	private LayoutLocalService _layoutLocalService;
 
 	@Reference
-	private Portal _portal;
-
-	@Reference
 	private PortletRegistry _portletRegistry;
 
 	@Reference

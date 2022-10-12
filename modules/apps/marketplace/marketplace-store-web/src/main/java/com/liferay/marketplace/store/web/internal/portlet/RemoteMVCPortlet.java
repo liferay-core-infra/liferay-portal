@@ -57,7 +57,6 @@ import javax.portlet.WindowState;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -108,45 +107,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 	}
 
 	@Override
-	public void render(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws IOException, PortletException {
-
-		_checkOmniAdmin();
-
-		try {
-			HttpServletRequest httpServletRequest =
-				PortalUtil.getHttpServletRequest(renderRequest);
-
-			httpServletRequest = PortalUtil.getOriginalServletRequest(
-				httpServletRequest);
-
-			String oAuthVerifier = httpServletRequest.getParameter(
-				OAuthConstants.VERIFIER);
-
-			if (oAuthVerifier != null) {
-				_updateAccessToken(renderRequest, oAuthVerifier);
-			}
-
-			String remoteMVCPath = renderRequest.getParameter("remoteMVCPath");
-
-			if (remoteMVCPath != null) {
-				_remoteRender(renderRequest, renderResponse);
-
-				return;
-			}
-		}
-		catch (IOException ioException) {
-			throw ioException;
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-
-		super.render(renderRequest, renderResponse);
-	}
-
-	@Override
 	public void serveResource(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws IOException, PortletException {
@@ -175,10 +135,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 		}
 	}
 
-	protected String getClientPortletId() {
-		return StringPool.BLANK;
-	}
-
 	protected Response getResponse(User user, OAuthRequest oAuthRequest)
 		throws Exception {
 
@@ -197,19 +153,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 
 	protected String getServerNamespace() {
 		return PortalUtil.getPortletNamespace(getServerPortletId());
-	}
-
-	protected String getServerPortletId() {
-		return StringPool.BLANK;
-	}
-
-	protected String getServerPortletURL() {
-		return StringPool.BLANK;
-	}
-
-	protected void processPortletParameterMap(
-		PortletRequest portletRequest, PortletResponse portletResponse,
-		Map<String, String[]> parameterMap) {
 	}
 
 	protected void setBaseRequestParameters(

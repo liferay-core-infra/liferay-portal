@@ -15,13 +15,15 @@
 package com.liferay.exportimport.internal.background.task;
 
 import com.liferay.exportimport.kernel.model.ExportImportConfiguration;
-import com.liferay.exportimport.kernel.service.ExportImportLocalServiceUtil;
+import com.liferay.exportimport.kernel.service.ExportImportLocalService;
 import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
 import com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeConfiguration;
+import com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeSystemConfiguration;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
-import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
+import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManager;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskResult;
 import com.liferay.portal.kernel.backgroundtask.constants.BackgroundTaskConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,8 +35,8 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
-import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutSetLocalService;
+import com.liferay.portal.kernel.service.LayoutSetPrototypeLocalService;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -49,29 +51,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Tamas Molnar
  */
+@Component(
+	configurationPid = "com.liferay.layout.set.prototype.configuration.LayoutSetPrototypeSystemConfiguration",
+	immediate = true,
+	service = LayoutSetPrototypeImportBackgroundTaskExecutor.class
+)
 public class LayoutSetPrototypeImportBackgroundTaskExecutor
 	extends BaseExportImportBackgroundTaskExecutor {
-
-	public LayoutSetPrototypeImportBackgroundTaskExecutor(
-		int importTaskIsolationLevel) {
-
-		_importTaskIsolationLevel = importTaskIsolationLevel;
-
-		setBackgroundTaskStatusMessageTranslator(
-			new LayoutExportImportBackgroundTaskStatusMessageTranslator());
-
-		setIsolationLevel(_importTaskIsolationLevel);
-	}
 
 	@Override
 	public BackgroundTaskExecutor clone() {
 		LayoutSetPrototypeImportBackgroundTaskExecutor
 			layoutSetPrototypeImportBackgroundTaskExecutor =
-				new LayoutSetPrototypeImportBackgroundTaskExecutor(
-					_importTaskIsolationLevel);
+				new LayoutSetPrototypeImportBackgroundTaskExecutor();
 
 		layoutSetPrototypeImportBackgroundTaskExecutor.
 			setBackgroundTaskStatusMessageTranslator(
@@ -88,14 +88,14 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 		if (isCancelPropagationImportTask()) {
 			List<BackgroundTask> newBackgroundTasks =
-				BackgroundTaskManagerUtil.getBackgroundTasks(
+				_backgroundTaskManager.getBackgroundTasks(
 					backgroundTask.getGroupId(),
 					LayoutSetPrototypeImportBackgroundTaskExecutor.class.
 						getName(),
 					BackgroundTaskConstants.STATUS_NEW);
 
 			List<BackgroundTask> queuedBackgroundTasks =
-				BackgroundTaskManagerUtil.getBackgroundTasks(
+				_backgroundTaskManager.getBackgroundTasks(
 					backgroundTask.getGroupId(),
 					LayoutSetPrototypeImportBackgroundTaskExecutor.class.
 						getName(),
@@ -139,7 +139,9 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 				TransactionInvokerUtil.invoke(
 					transactionConfig,
-					new LayoutImportCallable(exportImportConfiguration, file));
+					new LayoutImportCallable(
+						exportImportConfiguration, _exportImportLocalService,
+						file));
 			}
 			catch (Throwable throwable) {
 				Map<String, Serializable> settingsMap =
@@ -152,7 +154,7 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 					parameterMap, "layoutSetPrototypeId");
 
 				LayoutSetPrototype layoutSetPrototype =
-					LayoutSetPrototypeLocalServiceUtil.getLayoutSetPrototype(
+					_layoutSetPrototypeLocalService.getLayoutSetPrototype(
 						layoutSetPrototypeId);
 
 				LayoutSet layoutSetPrototypeLayoutSet =
@@ -170,7 +172,7 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 				layoutSetPrototypeSettingsUnicodeProperties.setProperty(
 					Sites.MERGE_FAIL_COUNT, String.valueOf(mergeFailCount));
 
-				LayoutSetLocalServiceUtil.updateLayoutSet(
+				_layoutSetLocalService.updateLayoutSet(
 					layoutSetPrototypeLayoutSet);
 
 				_log.error(
@@ -188,6 +190,31 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 		}
 
 		return BackgroundTaskResult.SUCCESS;
+	}
+
+	@Activate
+	protected void activate(
+			BundleContext bundleContext, Map<String, Object> properties)
+		throws PortalException {
+
+		setBackgroundTaskStatusMessageTranslator(
+			new LayoutExportImportBackgroundTaskStatusMessageTranslator());
+
+		LayoutSetPrototypeSystemConfiguration
+			layoutSetPrototypeSystemConfiguration =
+				ConfigurableUtil.createConfigurable(
+					LayoutSetPrototypeSystemConfiguration.class, properties);
+
+		String importTaskIsolation =
+			layoutSetPrototypeSystemConfiguration.importTaskIsolation();
+
+		if ((importTaskIsolation != null) &&
+			importTaskIsolation.equals("company")) {
+
+			setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_COMPANY);
+		}
+
+		setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_GROUP);
 	}
 
 	protected boolean isCancelPropagationImportTask() {
@@ -230,15 +257,26 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutSetPrototypeImportBackgroundTaskExecutor.class);
 
-	private int _importTaskIsolationLevel =
-		BackgroundTaskConstants.ISOLATION_LEVEL_GROUP;
+	@Reference
+	private BackgroundTaskManager _backgroundTaskManager;
+
+	@Reference
+	private ExportImportLocalService _exportImportLocalService;
+
+	@Reference
+	private LayoutSetLocalService _layoutSetLocalService;
+
+	@Reference
+	private LayoutSetPrototypeLocalService _layoutSetPrototypeLocalService;
 
 	private static class LayoutImportCallable implements Callable<Void> {
 
 		public LayoutImportCallable(
-			ExportImportConfiguration exportImportConfiguration, File file) {
+			ExportImportConfiguration exportImportConfiguration,
+			ExportImportLocalService exportImportLocalService, File file) {
 
 			_exportImportConfiguration = exportImportConfiguration;
+			_exportImportLocalService = exportImportLocalService;
 			_file = file;
 		}
 
@@ -247,10 +285,10 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 			try {
 				MergeLayoutPrototypesThreadLocal.setInProgress(true);
 
-				ExportImportLocalServiceUtil.importLayoutsDataDeletions(
+				_exportImportLocalService.importLayoutsDataDeletions(
 					_exportImportConfiguration, _file);
 
-				ExportImportLocalServiceUtil.importLayouts(
+				_exportImportLocalService.importLayouts(
 					_exportImportConfiguration, _file);
 
 				return null;
@@ -261,6 +299,7 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 		}
 
 		private final ExportImportConfiguration _exportImportConfiguration;
+		private final ExportImportLocalService _exportImportLocalService;
 		private final File _file;
 
 	}

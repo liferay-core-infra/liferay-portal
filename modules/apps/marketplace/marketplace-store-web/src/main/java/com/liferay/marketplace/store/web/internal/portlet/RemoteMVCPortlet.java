@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -74,46 +72,6 @@ import org.scribe.oauth.OAuthService;
  * @author Haote Chou
  */
 public class RemoteMVCPortlet extends MVCPortlet {
-
-	public void authorize(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		OAuthService oAuthService = oAuthManager.getOAuthService();
-
-		Token requestToken = oAuthService.getRequestToken();
-
-		oAuthManager.updateRequestToken(themeDisplay.getUser(), requestToken);
-
-		String redirect = oAuthService.getAuthorizationUrl(requestToken);
-
-		String callbackURL = ParamUtil.getString(actionRequest, "callbackURL");
-
-		redirect = HttpComponentsUtil.addParameter(
-			redirect, OAuthConstants.CALLBACK, callbackURL);
-
-		actionResponse.sendRedirect(redirect);
-	}
-
-	public void deauthorize(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		oAuthManager.deleteAccessToken(themeDisplay.getUser());
-
-		actionResponse.sendRedirect(
-			PortletURLBuilder.createRenderURL(
-				PortalUtil.getLiferayPortletResponse(actionResponse)
-			).setMVCPath(
-				"/view.jsp"
-			).buildString());
-	}
 
 	@Override
 	public void processAction(

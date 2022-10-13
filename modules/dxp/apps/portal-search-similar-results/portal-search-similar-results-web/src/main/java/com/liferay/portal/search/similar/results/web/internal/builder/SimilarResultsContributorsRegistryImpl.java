@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.similar.results.web.internal.builder;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -21,10 +23,11 @@ import com.liferay.portal.search.similar.results.web.spi.contributor.SimilarResu
 import com.liferay.portal.search.similar.results.web.spi.contributor.helper.RouteHelper;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Wade Cao
@@ -40,17 +43,29 @@ public class SimilarResultsContributorsRegistryImpl
 			return Optional.empty();
 		}
 
-		Stream<SimilarResultsContributor> stream =
-			_similarResultsContributorsHolder.stream();
+		for (SimilarResultsContributor similarResultsContributor :
+				_serviceTrackerList) {
 
-		return stream.map(
-			similarResultsContributor -> _detectRoute(
-				similarResultsContributor, urlString)
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).findFirst();
+			Optional<SimilarResultsRoute> similarResultsRouteOptional =
+				_detectRoute(similarResultsContributor, urlString);
+
+			if (similarResultsRouteOptional.isPresent()) {
+				return similarResultsRouteOptional;
+			}
+		}
+
+		return Optional.empty();
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, SimilarResultsContributor.class);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
 	private Optional<SimilarResultsRoute> _detectRoute(
@@ -84,7 +99,6 @@ public class SimilarResultsContributorsRegistryImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		SimilarResultsContributorsRegistryImpl.class);
 
-	@Reference
-	private SimilarResultsContributorsHolder _similarResultsContributorsHolder;
+	private ServiceTrackerList<SimilarResultsContributor> _serviceTrackerList;
 
 }

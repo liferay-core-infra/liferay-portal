@@ -207,8 +207,9 @@ public class LayoutSetPrototypeImportBackgroundTaskExecutor
 
 			setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_COMPANY);
 		}
-
-		setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_GROUP);
+		else {
+			setIsolationLevel(BackgroundTaskConstants.ISOLATION_LEVEL_GROUP);
+		}
 	}
 
 	protected boolean isCancelPropagationImportTask() {

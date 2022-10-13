@@ -64,7 +64,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -73,8 +72,6 @@ import javax.portlet.PortletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -478,42 +475,6 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 		_reindexCommerceDiscounts(companyId);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		service = CommerceDiscountOrderTarget.class
-	)
-	protected void registerCommerceDiscountOrderTarget(
-		CommerceDiscountOrderTarget commerceDiscountOrderTarget) {
-
-		_commerceDiscountOrderTargets.add(commerceDiscountOrderTarget);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		service = CommerceDiscountProductTarget.class
-	)
-	protected void registerCommerceDiscountProductTarget(
-		CommerceDiscountProductTarget commerceDiscountProductTarget) {
-
-		_commerceDiscountProductTargets.add(commerceDiscountProductTarget);
-	}
-
-	protected void unregisterCommerceDiscountOrderTarget(
-		CommerceDiscountOrderTarget commerceDiscountOrderTarget) {
-
-		_commerceDiscountOrderTargets.remove(commerceDiscountOrderTarget);
-	}
-
-	protected void unregisterCommerceDiscountProductTarget(
-		CommerceDiscountProductTarget commerceDiscountProductTarget) {
-
-		_commerceDiscountProductTargets.remove(commerceDiscountProductTarget);
-	}
-
 	private void _reindexCommerceDiscounts(long companyId) throws Exception {
 		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			_commerceDiscountLocalService.getIndexableActionableDynamicQuery();
@@ -558,15 +519,17 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 	@Reference
 	private CommerceDiscountLocalService _commerceDiscountLocalService;
 
-	private final List<CommerceDiscountOrderTarget>
-		_commerceDiscountOrderTargets = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<CommerceDiscountOrderTarget>
+		_commerceDiscountOrderTargets;
 
 	@Reference
 	private CommerceDiscountOrderTypeRelLocalService
 		_commerceDiscountOrderTypeRelLocalService;
 
-	private final List<CommerceDiscountProductTarget>
-		_commerceDiscountProductTargets = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<CommerceDiscountProductTarget>
+		_commerceDiscountProductTargets;
 
 	@Reference
 	private CommerceDiscountTargetRegistry _commerceDiscountTargetRegistry;

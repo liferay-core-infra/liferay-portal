@@ -47,14 +47,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * @author Carlos Lancha
@@ -136,26 +133,6 @@ public class ImageDDMFormFieldTemplateContextContributor
 		}
 
 		return value;
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setImageDDMFormFieldItemSelectorCriterionContributor(
-		ImageDDMFormFieldItemSelectorCriterionContributor
-			imageDDMFormFieldItemSelectorCriterionContributor) {
-
-		_imageDDMFormFieldItemSelectorCriterionContributors.add(
-			imageDDMFormFieldItemSelectorCriterionContributor);
-	}
-
-	protected void unsetImageDDMFormFieldItemSelectorCriterionContributor(
-		ImageDDMFormFieldItemSelectorCriterionContributor
-			imageDDMFormFieldItemSelectorCriterionContributor) {
-
-		_imageDDMFormFieldItemSelectorCriterionContributors.remove(
-			imageDDMFormFieldItemSelectorCriterionContributor);
 	}
 
 	private FileEntry _getFileEntry(JSONObject valueJSONObject) {
@@ -277,9 +254,9 @@ public class ImageDDMFormFieldTemplateContextContributor
 	@Reference
 	private DLURLHelper _dlURLHelper;
 
-	private final List<ImageDDMFormFieldItemSelectorCriterionContributor>
-		_imageDDMFormFieldItemSelectorCriterionContributors =
-			new CopyOnWriteArrayList<>();
+	@Reference
+	private volatile List<ImageDDMFormFieldItemSelectorCriterionContributor>
+		_imageDDMFormFieldItemSelectorCriterionContributors;
 
 	@Reference
 	private ItemSelector _itemSelector;

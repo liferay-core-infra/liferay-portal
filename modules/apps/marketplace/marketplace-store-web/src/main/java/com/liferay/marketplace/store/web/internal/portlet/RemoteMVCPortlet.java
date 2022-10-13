@@ -175,10 +175,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 		}
 	}
 
-	protected String getClientPortletId() {
-		return StringPool.BLANK;
-	}
-
 	protected Response getResponse(User user, OAuthRequest oAuthRequest)
 		throws Exception {
 
@@ -197,19 +193,6 @@ public class RemoteMVCPortlet extends MVCPortlet {
 
 	protected String getServerNamespace() {
 		return PortalUtil.getPortletNamespace(getServerPortletId());
-	}
-
-	protected String getServerPortletId() {
-		return StringPool.BLANK;
-	}
-
-	protected String getServerPortletURL() {
-		return StringPool.BLANK;
-	}
-
-	protected void processPortletParameterMap(
-		PortletRequest portletRequest, PortletResponse portletResponse,
-		Map<String, String[]> parameterMap) {
 	}
 
 	protected void setBaseRequestParameters(

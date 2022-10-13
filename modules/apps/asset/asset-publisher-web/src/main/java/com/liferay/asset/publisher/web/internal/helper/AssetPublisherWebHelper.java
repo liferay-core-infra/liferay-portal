@@ -81,7 +81,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -90,8 +89,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -563,23 +560,6 @@ public class AssetPublisherWebHelper {
 				AssetPublisherPortletInstanceConfiguration.class);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setAssetEntryQueryProcessor(
-		AssetEntryQueryProcessor assetEntryQueryProcessor) {
-
-		_assetEntryQueryProcessors.add(assetEntryQueryProcessor);
-	}
-
-	protected void unsetAssetEntryQueryProcessor(
-		AssetEntryQueryProcessor assetEntryQueryProcessor) {
-
-		_assetEntryQueryProcessors.remove(assetEntryQueryProcessor);
-	}
-
 	private String _getAssetEntryXml(
 		String assetEntryType, String assetEntryUuid) {
 
@@ -648,8 +628,8 @@ public class AssetPublisherWebHelper {
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
 
-	private final List<AssetEntryQueryProcessor> _assetEntryQueryProcessors =
-		new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<AssetEntryQueryProcessor> _assetEntryQueryProcessors;
 
 	@Reference
 	private AssetPublisherHelper _assetPublisherHelper;

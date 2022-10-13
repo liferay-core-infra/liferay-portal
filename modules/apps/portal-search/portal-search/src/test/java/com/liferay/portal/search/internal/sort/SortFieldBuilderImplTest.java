@@ -14,17 +14,20 @@
 
 package com.liferay.portal.search.internal.sort;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.contributor.constants.ContributorConstants;
 import com.liferay.portal.search.contributor.sort.SortFieldNameTranslator;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -32,6 +35,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Michael C. Han
@@ -61,7 +67,14 @@ public class SortFieldBuilderImplTest {
 				"title"
 			});
 
-		_sortFieldBuilderImpl.activate();
+		_bundleContext = SystemBundleUtil.getBundleContext();
+
+		_sortFieldBuilderImpl.activate(_bundleContext);
+	}
+
+	@After
+	public void tearDown() {
+		_sortFieldBuilderImpl.deactivate();
 	}
 
 	@Test
@@ -123,12 +136,14 @@ public class SortFieldBuilderImplTest {
 			}
 		);
 
-		_sortFieldBuilderImpl.addSortFieldNameTranslator(
-			sortFieldNameTranslator,
-			HashMapBuilder.<String, Object>put(
-				ContributorConstants.ENTRY_CLASS_NAME_PROPERTY_KEY,
-				"modelClassName"
-			).build());
+		ServiceRegistration<SortFieldNameTranslator> serviceRegistration =
+			_bundleContext.registerService(
+				SortFieldNameTranslator.class, sortFieldNameTranslator,
+				new HashMapDictionary<>(
+					HashMapBuilder.<String, Object>put(
+						ContributorConstants.ENTRY_CLASS_NAME_PROPERTY_KEY,
+						"modelClassName"
+					).build()));
 
 		Mockito.when(
 			_indexer.getSortField(Mockito.anyString())
@@ -169,8 +184,11 @@ public class SortFieldBuilderImplTest {
 
 		Assert.assertEquals(
 			Field.getSortableFieldName("testField"), sortFieldName);
+
+		serviceRegistration.unregister();
 	}
 
+	private BundleContext _bundleContext;
 	private final Indexer<?> _indexer = Mockito.mock(Indexer.class);
 	private final IndexerRegistry _indexerRegistry = Mockito.mock(
 		IndexerRegistry.class);

@@ -14,21 +14,27 @@
 
 package com.liferay.portal.search.internal.buffer;
 
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.search.configuration.IndexerRegistryConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.mockito.Mockito;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Bryan Engler
@@ -64,6 +70,10 @@ public class IndexerRequestBufferHandlerTest {
 			_indexerRequestBufferHandler.bufferRequest(
 				indexerRequest, _indexerRequestBuffer);
 		}
+
+		_indexerRequestBufferExecutorWatcher.deactivate();
+
+		_serviceRegistration.unregister();
 	}
 
 	private IndexerRegistryConfiguration _createIndexerRegistryConfiguration(
@@ -90,19 +100,24 @@ public class IndexerRequestBufferHandlerTest {
 	private IndexerRequestBufferExecutorWatcher
 		_createIndexerRequestBufferExecutorWatcher() {
 
-		IndexerRequestBufferExecutorWatcher
-			indexerRequestBufferExecutorWatcher =
-				new IndexerRequestBufferExecutorWatcher();
+		_indexerRequestBufferExecutorWatcher =
+			new IndexerRequestBufferExecutorWatcher();
 
-		indexerRequestBufferExecutorWatcher.activate(
-			Collections.<String, Object>emptyMap());
+		Map<String, Object> properties = HashMapBuilder.<String, Object>put(
+			"buffered.execution.mode", (Object)"DEFAULT"
+		).build();
 
-		indexerRequestBufferExecutorWatcher.addIndexerRequestBufferExecutor(
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
+		_serviceRegistration = bundleContext.registerService(
+			IndexerRequestBufferExecutor.class,
 			new DefaultIndexerRequestBufferExecutor(),
-			Collections.singletonMap(
-				"buffered.execution.mode", (Object)"DEFAULT"));
+			new HashMapDictionary<>(properties));
 
-		return indexerRequestBufferExecutorWatcher;
+		_indexerRequestBufferExecutorWatcher.activate(
+			bundleContext, properties);
+
+		return _indexerRequestBufferExecutorWatcher;
 	}
 
 	private IndexerRequestBufferOverflowHandler
@@ -155,7 +170,11 @@ public class IndexerRequestBufferHandlerTest {
 
 	private final Indexer<?> _indexer = Mockito.mock(Indexer.class);
 	private IndexerRequestBuffer _indexerRequestBuffer;
+	private IndexerRequestBufferExecutorWatcher
+		_indexerRequestBufferExecutorWatcher;
 	private IndexerRequestBufferHandler _indexerRequestBufferHandler;
 	private final Method _method;
+	private ServiceRegistration<IndexerRequestBufferExecutor>
+		_serviceRegistration;
 
 }

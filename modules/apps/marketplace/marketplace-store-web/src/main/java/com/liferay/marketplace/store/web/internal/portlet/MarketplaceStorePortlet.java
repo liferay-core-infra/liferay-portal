@@ -291,7 +291,31 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		try {
-			_render(renderRequest, renderResponse);
+			_checkOmniAdmin();
+
+			HttpServletRequest httpServletRequest =
+				PortalUtil.getHttpServletRequest(renderRequest);
+
+			httpServletRequest = PortalUtil.getOriginalServletRequest(
+				httpServletRequest);
+
+			String oAuthVerifier = httpServletRequest.getParameter(
+				OAuthConstants.VERIFIER);
+
+			if (oAuthVerifier != null) {
+				_updateAccessToken(renderRequest, oAuthVerifier);
+			}
+
+			String remoteMVCPath = renderRequest.getParameter("remoteMVCPath");
+
+			if (remoteMVCPath != null) {
+				_remoteRender(renderRequest, renderResponse);
+
+				return;
+			}
+		}
+		catch (IOException ioException) {
+			throw ioException;
 		}
 		catch (PortletException portletException) {
 			if (_log.isDebugEnabled()) {
@@ -300,6 +324,11 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 
 			include("/error.jsp", renderRequest, renderResponse);
 		}
+		catch (Exception exception) {
+			throw new PortletException(exception);
+		}
+
+		super.render(renderRequest, renderResponse);
 	}
 
 	@Override
@@ -798,44 +827,6 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 
 			PortletResponseUtil.write(resourceResponse, response.getStream());
 		}
-	}
-
-	private void _render(
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws IOException, PortletException {
-
-		_checkOmniAdmin();
-
-		try {
-			HttpServletRequest httpServletRequest =
-				PortalUtil.getHttpServletRequest(renderRequest);
-
-			httpServletRequest = PortalUtil.getOriginalServletRequest(
-				httpServletRequest);
-
-			String oAuthVerifier = httpServletRequest.getParameter(
-				OAuthConstants.VERIFIER);
-
-			if (oAuthVerifier != null) {
-				_updateAccessToken(renderRequest, oAuthVerifier);
-			}
-
-			String remoteMVCPath = renderRequest.getParameter("remoteMVCPath");
-
-			if (remoteMVCPath != null) {
-				_remoteRender(renderRequest, renderResponse);
-
-				return;
-			}
-		}
-		catch (IOException ioException) {
-			throw ioException;
-		}
-		catch (Exception exception) {
-			throw new PortletException(exception);
-		}
-
-		super.render(renderRequest, renderResponse);
 	}
 
 	private void _setRequestParameters(

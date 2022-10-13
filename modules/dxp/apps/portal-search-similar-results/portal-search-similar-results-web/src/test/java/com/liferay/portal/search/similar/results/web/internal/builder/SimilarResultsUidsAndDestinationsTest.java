@@ -101,13 +101,13 @@ public class SimilarResultsUidsAndDestinationsTest {
 
 		portalUtil.setPortal(new PortalImpl());
 
-		_similarResultsContributorsRegistry =
+		_similarResultsContributorsRegistryImpl =
 			_createSimilarResultsContributorsRegistry();
 	}
 
 	@After
 	public void tearDown() {
-		_similarResultsContributorsHolderImpl.deactivate();
+		_similarResultsContributorsRegistryImpl.deactivate();
 
 		for (ServiceRegistration<SimilarResultsContributor>
 				serviceRegistration : _serviceRegistrations) {
@@ -448,7 +448,8 @@ public class SimilarResultsUidsAndDestinationsTest {
 	@Test
 	public void testURLBlank() {
 		Optional<SimilarResultsRoute> optional =
-			_similarResultsContributorsRegistry.detectRoute(StringPool.BLANK);
+			_similarResultsContributorsRegistryImpl.detectRoute(
+				StringPool.BLANK);
 
 		Assert.assertFalse(optional.isPresent());
 	}
@@ -686,7 +687,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 
 	protected SimilarResultsRoute detectRoute(String urlString) {
 		Optional<SimilarResultsRoute> optional =
-			_similarResultsContributorsRegistry.detectRoute(urlString);
+			_similarResultsContributorsRegistryImpl.detectRoute(urlString);
 
 		return optional.get();
 	}
@@ -930,7 +931,7 @@ public class SimilarResultsUidsAndDestinationsTest {
 		return messageBoardsSimilarResultsContributor;
 	}
 
-	private SimilarResultsContributorsRegistry
+	private SimilarResultsContributorsRegistryImpl
 		_createSimilarResultsContributorsRegistry() {
 
 		_createAssetPublisherSimilarResultsContributor();
@@ -953,19 +954,11 @@ public class SimilarResultsUidsAndDestinationsTest {
 
 		_createWikiSimilarResultsContributor();
 
-		_similarResultsContributorsHolderImpl =
-			new SimilarResultsContributorsHolderImpl();
-
-		_similarResultsContributorsHolderImpl.activate(_bundleContext);
-
 		SimilarResultsContributorsRegistryImpl
 			similarResultsContributorsRegistryImpl =
 				new SimilarResultsContributorsRegistryImpl();
 
-		ReflectionTestUtil.setFieldValue(
-			similarResultsContributorsRegistryImpl,
-			"_similarResultsContributorsHolder",
-			_similarResultsContributorsHolderImpl);
+		similarResultsContributorsRegistryImpl.activate(_bundleContext);
 
 		return similarResultsContributorsRegistryImpl;
 	}
@@ -1192,10 +1185,8 @@ public class SimilarResultsUidsAndDestinationsTest {
 		MBMessageLocalService.class);
 	private final List<ServiceRegistration<SimilarResultsContributor>>
 		_serviceRegistrations = new ArrayList<>();
-	private SimilarResultsContributorsHolderImpl
-		_similarResultsContributorsHolderImpl;
-	private SimilarResultsContributorsRegistry
-		_similarResultsContributorsRegistry;
+	private SimilarResultsContributorsRegistryImpl
+		_similarResultsContributorsRegistryImpl;
 	private final UIDFactory _uidFactory = Mockito.mock(UIDFactory.class);
 	private final WikiNodeLocalService _wikiNodeLocalService = Mockito.mock(
 		WikiNodeLocalService.class);

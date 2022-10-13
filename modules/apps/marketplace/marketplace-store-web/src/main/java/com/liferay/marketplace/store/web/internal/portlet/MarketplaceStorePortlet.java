@@ -48,7 +48,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -294,9 +294,9 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 			_checkOmniAdmin();
 
 			HttpServletRequest httpServletRequest =
-				PortalUtil.getHttpServletRequest(renderRequest);
+				portal.getHttpServletRequest(renderRequest);
 
-			httpServletRequest = PortalUtil.getOriginalServletRequest(
+			httpServletRequest = portal.getOriginalServletRequest(
 				httpServletRequest);
 
 			String oAuthVerifier = httpServletRequest.getParameter(
@@ -597,7 +597,7 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 	}
 
 	protected String getServerNamespace() {
-		return PortalUtil.getPortletNamespace(getServerPortletId());
+		return portal.getPortletNamespace(getServerPortletId());
 	}
 
 	protected String getServerPortletId() {
@@ -641,8 +641,8 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 	protected void setBaseRequestParameters(
 		PortletRequest portletRequest, OAuthRequest oAuthRequest) {
 
-		HttpServletRequest httpServletRequest =
-			PortalUtil.getHttpServletRequest(portletRequest);
+		HttpServletRequest httpServletRequest = portal.getHttpServletRequest(
+			portletRequest);
 
 		String clientAuthToken = AuthTokenUtil.getToken(httpServletRequest);
 
@@ -652,7 +652,7 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 			oAuthRequest, "clientPortletId", getClientPortletId());
 		addOAuthParameter(
 			oAuthRequest, "clientURL",
-			PortalUtil.getCurrentCompleteURL(httpServletRequest));
+			portal.getCurrentCompleteURL(httpServletRequest));
 		addOAuthParameter(oAuthRequest, "p_p_id", getServerPortletId());
 	}
 
@@ -665,6 +665,9 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 
 	@Reference
 	protected Patcher patcher;
+
+	@Reference
+	protected Portal portal;
 
 	private void _checkOmniAdmin() throws PortletException {
 		PermissionChecker permissionChecker =
@@ -759,7 +762,7 @@ public class MarketplaceStorePortlet extends MVCPortlet {
 		}
 		else {
 			HttpServletResponse httpServletResponse =
-				PortalUtil.getHttpServletResponse(actionResponse);
+				portal.getHttpServletResponse(actionResponse);
 
 			httpServletResponse.setContentType(
 				response.getHeader(HttpHeaders.CONTENT_TYPE));

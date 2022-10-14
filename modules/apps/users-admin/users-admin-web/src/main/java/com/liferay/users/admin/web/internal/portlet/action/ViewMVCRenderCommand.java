@@ -22,15 +22,12 @@ import com.liferay.users.admin.web.internal.constants.UsersAdminWebKeys;
 import com.liferay.users.admin.web.internal.users.admin.management.toolbar.FilterContributorTracker;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -62,27 +59,11 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		return "/view.jsp";
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setUserActionContributor(
-		UserActionContributor userActionContributor) {
-
-		_userActionContributors.add(userActionContributor);
-	}
-
-	protected void unsetUserActionContributor(
-		UserActionContributor userActionContributor) {
-
-		_userActionContributors.remove(userActionContributor);
-	}
 
 	@Reference
 	private FilterContributorTracker _filterContributorTracker;
 
-	private final List<UserActionContributor> _userActionContributors =
-		new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<UserActionContributor> _userActionContributors;
 
 }

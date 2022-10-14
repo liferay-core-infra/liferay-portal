@@ -869,6 +869,10 @@ public class SimilarResultsUidsAndDestinationsTest {
 	private SimilarResultsContributorsRegistry
 		_createSimilarResultsContributorsRegistry() {
 
+		SimilarResultsContributorsRegistryImpl
+			similarResultsContributorsRegistryImpl =
+				new SimilarResultsContributorsRegistryImpl();
+
 		List<SimilarResultsContributor> list = Arrays.asList(
 			_createAssetPublisherSimilarResultsContributor(),
 			_createBlogsSimilarResultsContributor(),
@@ -881,22 +885,9 @@ public class SimilarResultsUidsAndDestinationsTest {
 			_createUIDSimilarResultsContributor(),
 			_createWikiSimilarResultsContributor());
 
-		SimilarResultsContributorsHolderImpl
-			similarResultsContributorsHolderImpl =
-				new SimilarResultsContributorsHolderImpl() {
-					{
-						list.forEach(this::addSimilarResultsContributor);
-					}
-				};
-
-		SimilarResultsContributorsRegistryImpl
-			similarResultsContributorsRegistryImpl =
-				new SimilarResultsContributorsRegistryImpl();
-
 		ReflectionTestUtil.setFieldValue(
 			similarResultsContributorsRegistryImpl,
-			"_similarResultsContributorsHolder",
-			similarResultsContributorsHolderImpl);
+			"_similarResultsContributors", list);
 
 		return similarResultsContributorsRegistryImpl;
 	}

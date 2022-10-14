@@ -64,15 +64,10 @@ public class DDMFormFieldValueRendererRegistryImpl
 				}
 			});
 
-		_ddmFormFieldValueRendererRegistryUtil.
-			setDDMFormFieldValueRendererRegistry(this);
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_ddmFormFieldValueRendererRegistryUtil.
-			setDDMFormFieldValueRendererRegistry(null);
-
 		_serviceTrackerMap.close();
 
 		for (ServiceRegistration<?> serviceRegistration :

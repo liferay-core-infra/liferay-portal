@@ -85,26 +85,16 @@ public class DDMFormFieldRendererRegistryImpl
 					_bundleContext.ungetService(serviceReference);
 				}
 			});
-
-		DDMFormFieldRendererRegistryUtil ddmFormFieldRendererRegistryUtil =
-			new DDMFormFieldRendererRegistryUtil();
-
-		ddmFormFieldRendererRegistryUtil.setDDMFormFieldRendererRegistry(this);
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_ddmFormFieldRendererRegistryUtil.setDDMFormFieldRendererRegistry(null);
-
 		_serviceTrackerMap.close();
 
 		_serviceRegistration.unregister();
 	}
 
 	private BundleContext _bundleContext;
-	private final DDMFormFieldRendererRegistryUtil
-		_ddmFormFieldRendererRegistryUtil =
-			new DDMFormFieldRendererRegistryUtil();
 
 	@Reference
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;

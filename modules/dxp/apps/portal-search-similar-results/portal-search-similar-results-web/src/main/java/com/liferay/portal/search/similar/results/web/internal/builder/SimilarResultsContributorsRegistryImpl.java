@@ -20,11 +20,12 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.similar.results.web.spi.contributor.SimilarResultsContributor;
 import com.liferay.portal.search.similar.results.web.spi.contributor.helper.RouteHelper;
 
+import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Wade Cao
@@ -40,17 +41,18 @@ public class SimilarResultsContributorsRegistryImpl
 			return Optional.empty();
 		}
 
-		Stream<SimilarResultsContributor> stream =
-			_similarResultsContributorsHolder.stream();
+		for (SimilarResultsContributor similarResultsContributor :
+				_similarResultsContributors) {
 
-		return stream.map(
-			similarResultsContributor -> _detectRoute(
-				similarResultsContributor, urlString)
-		).filter(
-			Optional::isPresent
-		).map(
-			Optional::get
-		).findFirst();
+			Optional<SimilarResultsRoute> similarResultsRouteOptional =
+				_detectRoute(similarResultsContributor, urlString);
+
+			if (similarResultsRouteOptional.isPresent()) {
+				return similarResultsRouteOptional;
+			}
+		}
+
+		return Optional.empty();
 	}
 
 	private Optional<SimilarResultsRoute> _detectRoute(
@@ -84,7 +86,8 @@ public class SimilarResultsContributorsRegistryImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		SimilarResultsContributorsRegistryImpl.class);
 
-	@Reference
-	private SimilarResultsContributorsHolder _similarResultsContributorsHolder;
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile Collection<SimilarResultsContributor>
+		_similarResultsContributors;
 
 }

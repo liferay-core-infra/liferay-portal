@@ -16,18 +16,18 @@ package com.liferay.journal.internal.transformer;
 
 import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.util.JournalTransformerListenerRegistry;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.templateparser.TransformerListener;
 import com.liferay.portal.kernel.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Pavel Savinov
@@ -38,13 +38,13 @@ public class DefaultJournalTransformerListenerRegistryImpl
 
 	@Override
 	public TransformerListener getTransformerListener(String className) {
-		return _transformerListeners.get(className);
+		return _serviceTrackerMap.getService(className);
 	}
 
 	@Override
 	public List<TransformerListener> getTransformerListeners() {
 		return ListUtil.filter(
-			new ArrayList<>(_transformerListeners.values()),
+			new ArrayList<>(_serviceTrackerMap.values()),
 			transformerListener -> {
 				if (transformerListener.isEnabled()) {
 					return true;
@@ -54,28 +54,23 @@ public class DefaultJournalTransformerListenerRegistryImpl
 			});
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		target = "(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")"
-	)
-	public void registerTransformerListener(
-		TransformerListener transformerListener) {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, TransformerListener.class,
+			"(javax.portlet.name=" + JournalPortletKeys.JOURNAL + ")",
+			(serviceReference, emitter) -> {
+				Class<?> clazz = serviceReference.getClass();
 
-		Class<?> clazz = transformerListener.getClass();
-
-		_transformerListeners.put(clazz.getName(), transformerListener);
+				emitter.emit(clazz.getName());
+			});
 	}
 
-	public void unregisterTransformerListener(
-		TransformerListener transformerListener) {
-
-		Class<?> clazz = transformerListener.getClass();
-
-		_transformerListeners.remove(clazz.getName());
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
-	private final Map<String, TransformerListener> _transformerListeners =
-		new ConcurrentHashMap<>();
+	private ServiceTrackerMap<String, TransformerListener> _serviceTrackerMap;
 
 }

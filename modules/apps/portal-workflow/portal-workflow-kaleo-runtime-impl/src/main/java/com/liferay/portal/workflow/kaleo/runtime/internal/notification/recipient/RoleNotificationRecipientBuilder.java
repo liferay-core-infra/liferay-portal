@@ -46,8 +46,6 @@ import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -93,17 +91,6 @@ public class RoleNotificationRecipientBuilder
 			notificationReceptionType, executionContext);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addGroupAwareRoleValidator(
-		GroupAwareRoleValidator groupAwareRoleValidator) {
-
-		_groupAwareRoleValidators.add(groupAwareRoleValidator);
-	}
-
 	protected void addRoleRecipientAddresses(
 			Set<NotificationRecipient> notificationRecipients, Role role,
 			NotificationReceptionType notificationReceptionType,
@@ -120,12 +107,6 @@ public class RoleNotificationRecipientBuilder
 				notificationRecipients.add(notificationRecipient);
 			}
 		}
-	}
-
-	protected void removeGroupAwareRoleValidator(
-		GroupAwareRoleValidator groupAwareRoleValidator) {
-
-		_groupAwareRoleValidators.remove(groupAwareRoleValidator);
 	}
 
 	private List<Long> _getAncestorGroupIds(Group group, Role role)
@@ -273,8 +254,8 @@ public class RoleNotificationRecipientBuilder
 		return false;
 	}
 
-	private final List<GroupAwareRoleValidator> _groupAwareRoleValidators =
-		new ArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<GroupAwareRoleValidator> _groupAwareRoleValidators;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

@@ -36,8 +36,6 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -63,23 +61,6 @@ public class GroupAwareRoleKaleoTaskAssignmentSelector
 			kaleoInstanceToken.getGroupId(),
 			_roleLocalService.getRole(
 				kaleoTaskAssignment.getAssigneeClassPK()));
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addGroupAwareRoleValidator(
-		GroupAwareRoleValidator groupAwareRoleValidator) {
-
-		_groupAwareRoleValidators.add(groupAwareRoleValidator);
-	}
-
-	protected void removeGroupAwareRoleValidator(
-		GroupAwareRoleValidator groupAwareRoleValidator) {
-
-		_groupAwareRoleValidators.remove(groupAwareRoleValidator);
 	}
 
 	private List<KaleoTaskAssignment> _createKaleoTaskAssigments(
@@ -203,8 +184,8 @@ public class GroupAwareRoleKaleoTaskAssignmentSelector
 		return false;
 	}
 
-	private final List<GroupAwareRoleValidator> _groupAwareRoleValidators =
-		new ArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<GroupAwareRoleValidator> _groupAwareRoleValidators;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

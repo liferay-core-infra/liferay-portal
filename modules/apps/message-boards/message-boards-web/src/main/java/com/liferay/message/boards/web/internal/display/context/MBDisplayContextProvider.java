@@ -20,16 +20,12 @@ import com.liferay.message.boards.display.context.MBHomeDisplayContext;
 import com.liferay.message.boards.display.context.MBListDisplayContext;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Iván Zaera
@@ -101,25 +97,7 @@ public class MBDisplayContextProvider {
 		return mbListDisplayContext;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.RELUCTANT,
-		service = MBDisplayContextFactory.class
-	)
-	protected void setMBDisplayContextFactory(
-		MBDisplayContextFactory mbDisplayContextFactory) {
-
-		_mbDisplayContextFactories.add(mbDisplayContextFactory);
-	}
-
-	protected void unsetMBDisplayContextFactory(
-		MBDisplayContextFactory mbDisplayContextFactory) {
-
-		_mbDisplayContextFactories.remove(mbDisplayContextFactory);
-	}
-
-	private final List<MBDisplayContextFactory> _mbDisplayContextFactories =
-		new CopyOnWriteArrayList<>();
+	@Reference
+	private volatile List<MBDisplayContextFactory> _mbDisplayContextFactories;
 
 }

@@ -19,12 +19,9 @@ import com.liferay.fragment.listener.FragmentEntryLinkListenerTracker;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * @author Eudaldo Alonso
@@ -38,23 +35,8 @@ public class FragmentEntryLinkListenerTrackerImpl
 		return new ArrayList<>(_fragmentEntryLinkListeners);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void setFragmentEntryLinkListener(
-		FragmentEntryLinkListener fragmentEntryLinkListener) {
-
-		_fragmentEntryLinkListeners.add(fragmentEntryLinkListener);
-	}
-
-	protected void unsetFragmentEntryLinkListener(
-		FragmentEntryLinkListener fragmentEntryLinkListener) {
-
-		_fragmentEntryLinkListeners.remove(fragmentEntryLinkListener);
-	}
-
-	private final List<FragmentEntryLinkListener> _fragmentEntryLinkListeners =
-		new CopyOnWriteArrayList<>();
+	@Reference
+	private volatile List<FragmentEntryLinkListener>
+		_fragmentEntryLinkListeners;
 
 }

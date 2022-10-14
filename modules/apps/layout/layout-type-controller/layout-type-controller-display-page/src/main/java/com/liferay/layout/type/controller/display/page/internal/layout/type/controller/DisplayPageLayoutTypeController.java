@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
@@ -365,9 +364,6 @@ public class DisplayPageLayoutTypeController
 	@Reference
 	private LayoutPageTemplateEntryLocalService
 		_layoutPageTemplateEntryLocalService;
-
-	@Reference
-	private Portal _portal;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.display.page)"

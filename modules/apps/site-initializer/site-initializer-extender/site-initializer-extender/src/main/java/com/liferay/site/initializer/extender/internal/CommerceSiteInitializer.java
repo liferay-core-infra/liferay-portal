@@ -55,7 +55,6 @@ import com.liferay.headless.commerce.admin.channel.resource.v1_0.ChannelResource
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -147,7 +146,7 @@ public class CommerceSiteInitializer {
 			serviceContext.getCompanyId());
 
 		_portletSettingsImporter.importPortletSettings(
-			JSONFactoryUtil.createJSONArray(json), classLoader,
+			_jsonFactory.createJSONArray(json), classLoader,
 			"/site-initializer/portlet-settings/",
 			serviceContext.getScopeGroupId(), group.getGroupId(),
 			serviceContext.getUserId());
@@ -171,7 +170,7 @@ public class CommerceSiteInitializer {
 
 		return _commerceInventoryWarehousesImporter.
 			importCommerceInventoryWarehouses(
-				JSONFactoryUtil.createJSONArray(
+				_jsonFactory.createJSONArray(
 					SiteInitializerUtil.read(
 						"/site-initializer/commerce-inventory-warehouses.json",
 						servletContext)),
@@ -195,7 +194,7 @@ public class CommerceSiteInitializer {
 		}
 
 		JSONObject commerceNotificationTemplateJSONObject =
-			JSONFactoryUtil.createJSONObject(json);
+			_jsonFactory.createJSONObject(json);
 
 		CommerceChannel commerceChannel =
 			_commerceChannelLocalService.getCommerceChannel(commerceChannelId);
@@ -279,7 +278,7 @@ public class CommerceSiteInitializer {
 
 		String json = SiteInitializerUtil.read(resourcePath, servletContext);
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
+		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
 
 		_cpSpecificationOptionsImporter.importCPSpecificationOptions(
 			jsonArray, serviceContext.getScopeGroupId(),
@@ -336,7 +335,7 @@ public class CommerceSiteInitializer {
 				catalog.getId());
 
 		_cpDefinitionsImporter.importCPDefinitions(
-			JSONFactoryUtil.createJSONArray(json), assetVocabularyName,
+			_jsonFactory.createJSONArray(json), assetVocabularyName,
 			commerceCatalogGroup.getGroupId(), channel.getId(),
 			ListUtil.toLongArray(
 				commerceInventoryWarehouses,
@@ -366,7 +365,7 @@ public class CommerceSiteInitializer {
 				serviceContext.fetchUser()
 			).build();
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
+		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject subscriptionPropertiesJSONObject =
@@ -454,7 +453,7 @@ public class CommerceSiteInitializer {
 				catalog.getId());
 
 		_cpOptionsImporter.importCPOptions(
-			JSONFactoryUtil.createJSONArray(json),
+			_jsonFactory.createJSONArray(json),
 			commerceCatalogGroup.getGroupId(), serviceContext.getUserId());
 	}
 
@@ -469,7 +468,7 @@ public class CommerceSiteInitializer {
 			return;
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(json);
 
 		Layout layout = _layoutLocalService.fetchLayoutByFriendlyURL(
 			serviceContext.getScopeGroupId(),
@@ -513,7 +512,7 @@ public class CommerceSiteInitializer {
 			return;
 		}
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
+		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -564,7 +563,7 @@ public class CommerceSiteInitializer {
 			String json = SiteInitializerUtil.read(
 				resourcePath, servletContext);
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+			JSONObject jsonObject = _jsonFactory.createJSONObject(json);
 
 			String assetVocabularyName = jsonObject.getString(
 				"assetVocabularyName");
@@ -624,7 +623,7 @@ public class CommerceSiteInitializer {
 			serviceContext.fetchUser()
 		).build();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+		JSONObject jsonObject = _jsonFactory.createJSONObject(json);
 
 		jsonObject.put("siteGroupId", serviceContext.getScopeGroupId());
 

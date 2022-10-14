@@ -25,16 +25,12 @@ import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.model.WikiPage;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Iván Zaera
@@ -144,28 +140,11 @@ public class WikiDisplayContextProvider {
 		return wikiViewPageDisplayContext;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.RELUCTANT,
-		service = WikiDisplayContextFactory.class
-	)
-	protected void setWikiDisplayContextFactory(
-		WikiDisplayContextFactory wikiDisplayContextFactory) {
-
-		_wikiDisplayContextFactories.add(wikiDisplayContextFactory);
-	}
-
-	protected void unsetWikiDisplayContextFactory(
-		WikiDisplayContextFactory wikiDisplayContextFactory) {
-
-		_wikiDisplayContextFactories.remove(wikiDisplayContextFactory);
-	}
-
 	@Reference
 	private TrashHelper _trashHelper;
 
-	private final List<WikiDisplayContextFactory> _wikiDisplayContextFactories =
-		new CopyOnWriteArrayList<>();
+	@Reference
+	private volatile List<WikiDisplayContextFactory>
+		_wikiDisplayContextFactories;
 
 }

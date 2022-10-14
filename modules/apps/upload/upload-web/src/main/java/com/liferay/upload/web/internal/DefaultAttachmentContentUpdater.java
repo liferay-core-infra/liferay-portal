@@ -22,12 +22,9 @@ import com.liferay.upload.AttachmentContentUpdater;
 import com.liferay.upload.AttachmentElementHandler;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -60,24 +57,7 @@ public class DefaultAttachmentContentUpdater
 		return content;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addAttachmentElementHandler(
-		AttachmentElementHandler attachmentElementHandler) {
-
-		_attachmentElementHandlers.add(attachmentElementHandler);
-	}
-
-	protected void removeAttachmentElementHandler(
-		AttachmentElementHandler attachmentElementHandler) {
-
-		_attachmentElementHandlers.remove(attachmentElementHandler);
-	}
-
-	private static final List<AttachmentElementHandler>
-		_attachmentElementHandlers = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<AttachmentElementHandler> _attachmentElementHandlers;
 
 }

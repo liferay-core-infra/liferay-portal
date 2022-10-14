@@ -17,13 +17,10 @@ package com.liferay.portal.search.similar.results.web.internal.builder;
 import com.liferay.portal.search.similar.results.web.spi.contributor.SimilarResultsContributor;
 
 import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -38,24 +35,8 @@ public class SimilarResultsContributorsHolderImpl
 		return _similarResultsContributors.stream();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSimilarResultsContributor(
-		SimilarResultsContributor similarResultsContributor) {
-
-		_similarResultsContributors.add(similarResultsContributor);
-	}
-
-	protected void removeSimilarResultsContributor(
-		SimilarResultsContributor similarResultsContributor) {
-
-		_similarResultsContributors.remove(similarResultsContributor);
-	}
-
-	private final Collection<SimilarResultsContributor>
-		_similarResultsContributors = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile Collection<SimilarResultsContributor>
+		_similarResultsContributors;
 
 }

@@ -19,6 +19,7 @@ import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,35 +64,77 @@ public abstract class BaseMBThreadUADExporter
 
 		sb.append(
 			"<column><column-name>threadId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getThreadId());
+
+		String threadId = String.valueOf(mbThread.getThreadId());
+
+		sb.append(threadId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(mbThread.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			mbThread.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>rootMessageUserId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getRootMessageUserId());
+
+		String rootMessageUserId = String.valueOf(
+			mbThread.getRootMessageUserId());
+
+		sb.append(rootMessageUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>lastPostByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getLastPostByUserId());
+
+		String lastPostByUserId = String.valueOf(
+			mbThread.getLastPostByUserId());
+
+		sb.append(lastPostByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getUserId());
+
+		String userId = String.valueOf(mbThread.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getUserName());
+
+		String userName = String.valueOf(mbThread.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(mbThread.getTitle());
+
+		String title = String.valueOf(mbThread.getTitle());
+
+		title = StringUtil.replace(title, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(title);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

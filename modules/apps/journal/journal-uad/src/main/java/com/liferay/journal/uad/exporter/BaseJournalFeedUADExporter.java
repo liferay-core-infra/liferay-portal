@@ -19,6 +19,7 @@ import com.liferay.journal.service.JournalFeedLocalService;
 import com.liferay.journal.uad.constants.JournalUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,23 +64,49 @@ public abstract class BaseJournalFeedUADExporter
 
 		sb.append(
 			"<column><column-name>id</column-name><column-value><![CDATA[");
-		sb.append(journalFeed.getId());
+
+		String id = String.valueOf(journalFeed.getId());
+
+		sb.append(id);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(journalFeed.getUserId());
+
+		String userId = String.valueOf(journalFeed.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(journalFeed.getUserName());
+
+		String userName = String.valueOf(journalFeed.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(journalFeed.getName());
+
+		String name = String.valueOf(journalFeed.getName());
+
+		name = StringUtil.replace(name, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(name);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(journalFeed.getDescription());
+
+		String description = String.valueOf(journalFeed.getDescription());
+
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

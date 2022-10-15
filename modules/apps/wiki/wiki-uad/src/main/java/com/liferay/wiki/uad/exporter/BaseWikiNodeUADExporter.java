@@ -16,6 +16,7 @@ package com.liferay.wiki.uad.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.wiki.model.WikiNode;
 import com.liferay.wiki.service.WikiNodeLocalService;
@@ -63,31 +64,69 @@ public abstract class BaseWikiNodeUADExporter
 
 		sb.append(
 			"<column><column-name>nodeId</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getNodeId());
+
+		String nodeId = String.valueOf(wikiNode.getNodeId());
+
+		sb.append(nodeId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(wikiNode.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			wikiNode.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getUserId());
+
+		String userId = String.valueOf(wikiNode.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getUserName());
+
+		String userName = String.valueOf(wikiNode.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getName());
+
+		String name = String.valueOf(wikiNode.getName());
+
+		name = StringUtil.replace(name, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(name);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(wikiNode.getDescription());
+
+		String description = String.valueOf(wikiNode.getDescription());
+
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

@@ -19,6 +19,7 @@ import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.client.extension.uad.constants.ClientExtensionUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -64,23 +65,51 @@ public abstract class BaseClientExtensionEntryUADExporter
 
 		sb.append(
 			"<column><column-name>clientExtensionEntryId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getClientExtensionEntryId());
+
+		String clientExtensionEntryId = String.valueOf(
+			clientExtensionEntry.getClientExtensionEntryId());
+
+		sb.append(clientExtensionEntryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(
+			clientExtensionEntry.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			clientExtensionEntry.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getUserId());
+
+		String userId = String.valueOf(clientExtensionEntry.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(clientExtensionEntry.getUserName());
+
+		String userName = String.valueOf(clientExtensionEntry.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

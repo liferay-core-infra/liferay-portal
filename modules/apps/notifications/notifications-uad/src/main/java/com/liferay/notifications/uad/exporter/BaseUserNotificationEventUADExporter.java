@@ -64,11 +64,20 @@ public abstract class BaseUserNotificationEventUADExporter
 
 		sb.append(
 			"<column><column-name>userNotificationEventId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationEvent.getUserNotificationEventId());
+
+		String userNotificationEventId = String.valueOf(
+			userNotificationEvent.getUserNotificationEventId());
+
+		sb.append(userNotificationEventId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationEvent.getUserId());
+
+		String userId = String.valueOf(userNotificationEvent.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

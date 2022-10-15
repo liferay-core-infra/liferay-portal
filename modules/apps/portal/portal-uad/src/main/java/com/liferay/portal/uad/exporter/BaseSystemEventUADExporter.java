@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.SystemEvent;
 import com.liferay.portal.kernel.service.SystemEventLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,29 @@ public abstract class BaseSystemEventUADExporter
 
 		sb.append(
 			"<column><column-name>systemEventId</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getSystemEventId());
+
+		String systemEventId = String.valueOf(systemEvent.getSystemEventId());
+
+		sb.append(systemEventId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getUserId());
+
+		String userId = String.valueOf(systemEvent.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(systemEvent.getUserName());
+
+		String userName = String.valueOf(systemEvent.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

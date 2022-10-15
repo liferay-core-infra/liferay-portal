@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.service.LayoutSetBranchLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,15 +64,30 @@ public abstract class BaseLayoutSetBranchUADExporter
 
 		sb.append(
 			"<column><column-name>layoutSetBranchId</column-name><column-value><![CDATA[");
-		sb.append(layoutSetBranch.getLayoutSetBranchId());
+
+		String layoutSetBranchId = String.valueOf(
+			layoutSetBranch.getLayoutSetBranchId());
+
+		sb.append(layoutSetBranchId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(layoutSetBranch.getUserId());
+
+		String userId = String.valueOf(layoutSetBranch.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(layoutSetBranch.getUserName());
+
+		String userName = String.valueOf(layoutSetBranch.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

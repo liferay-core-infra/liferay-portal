@@ -16,6 +16,7 @@ package com.liferay.wiki.uad.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 import com.liferay.wiki.model.WikiPage;
 import com.liferay.wiki.service.WikiPageLocalService;
@@ -63,35 +64,79 @@ public abstract class BaseWikiPageUADExporter
 
 		sb.append(
 			"<column><column-name>pageId</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getPageId());
+
+		String pageId = String.valueOf(wikiPage.getPageId());
+
+		sb.append(pageId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(wikiPage.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			wikiPage.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getUserId());
+
+		String userId = String.valueOf(wikiPage.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getUserName());
+
+		String userName = String.valueOf(wikiPage.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getTitle());
+
+		String title = String.valueOf(wikiPage.getTitle());
+
+		title = StringUtil.replace(title, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(title);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>content</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getContent());
+
+		String content = String.valueOf(wikiPage.getContent());
+
+		content = StringUtil.replace(content, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(content);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>summary</column-name><column-value><![CDATA[");
-		sb.append(wikiPage.getSummary());
+
+		String summary = String.valueOf(wikiPage.getSummary());
+
+		summary = StringUtil.replace(summary, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(summary);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

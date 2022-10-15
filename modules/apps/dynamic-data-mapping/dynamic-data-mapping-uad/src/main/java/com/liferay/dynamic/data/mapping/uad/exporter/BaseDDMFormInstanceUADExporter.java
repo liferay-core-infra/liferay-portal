@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalService;
 import com.liferay.dynamic.data.mapping.uad.constants.DDMUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,31 +64,71 @@ public abstract class BaseDDMFormInstanceUADExporter
 
 		sb.append(
 			"<column><column-name>formInstanceId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getFormInstanceId());
+
+		String formInstanceId = String.valueOf(
+			ddmFormInstance.getFormInstanceId());
+
+		sb.append(formInstanceId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>versionUserId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getVersionUserId());
+
+		String versionUserId = String.valueOf(
+			ddmFormInstance.getVersionUserId());
+
+		sb.append(versionUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>versionUserName</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getVersionUserName());
+
+		String versionUserName = String.valueOf(
+			ddmFormInstance.getVersionUserName());
+
+		versionUserName = StringUtil.replace(
+			versionUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(versionUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getUserId());
+
+		String userId = String.valueOf(ddmFormInstance.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getUserName());
+
+		String userName = String.valueOf(ddmFormInstance.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getName());
+
+		String name = String.valueOf(ddmFormInstance.getName());
+
+		name = StringUtil.replace(name, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(name);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(ddmFormInstance.getDescription());
+
+		String description = String.valueOf(ddmFormInstance.getDescription());
+
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

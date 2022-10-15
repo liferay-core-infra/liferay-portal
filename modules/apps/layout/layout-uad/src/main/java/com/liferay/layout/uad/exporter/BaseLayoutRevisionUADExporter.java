@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,23 +64,51 @@ public abstract class BaseLayoutRevisionUADExporter
 
 		sb.append(
 			"<column><column-name>layoutRevisionId</column-name><column-value><![CDATA[");
-		sb.append(layoutRevision.getLayoutRevisionId());
+
+		String layoutRevisionId = String.valueOf(
+			layoutRevision.getLayoutRevisionId());
+
+		sb.append(layoutRevisionId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(layoutRevision.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(
+			layoutRevision.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(layoutRevision.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			layoutRevision.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(layoutRevision.getUserId());
+
+		String userId = String.valueOf(layoutRevision.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(layoutRevision.getUserName());
+
+		String userName = String.valueOf(layoutRevision.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

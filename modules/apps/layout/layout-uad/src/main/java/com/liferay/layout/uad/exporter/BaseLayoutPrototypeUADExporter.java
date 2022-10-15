@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.LayoutPrototype;
 import com.liferay.portal.kernel.service.LayoutPrototypeLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,15 +64,30 @@ public abstract class BaseLayoutPrototypeUADExporter
 
 		sb.append(
 			"<column><column-name>layoutPrototypeId</column-name><column-value><![CDATA[");
-		sb.append(layoutPrototype.getLayoutPrototypeId());
+
+		String layoutPrototypeId = String.valueOf(
+			layoutPrototype.getLayoutPrototypeId());
+
+		sb.append(layoutPrototypeId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(layoutPrototype.getUserId());
+
+		String userId = String.valueOf(layoutPrototype.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(layoutPrototype.getUserName());
+
+		String userName = String.valueOf(layoutPrototype.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

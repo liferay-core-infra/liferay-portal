@@ -66,11 +66,20 @@ public abstract class BaseUserNotificationDeliveryUADExporter
 
 		sb.append(
 			"<column><column-name>userNotificationDeliveryId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationDelivery.getUserNotificationDeliveryId());
+
+		String userNotificationDeliveryId = String.valueOf(
+			userNotificationDelivery.getUserNotificationDeliveryId());
+
+		sb.append(userNotificationDeliveryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userNotificationDelivery.getUserId());
+
+		String userId = String.valueOf(userNotificationDelivery.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

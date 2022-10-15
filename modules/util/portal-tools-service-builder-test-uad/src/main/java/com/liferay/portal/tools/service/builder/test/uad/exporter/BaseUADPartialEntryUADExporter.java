@@ -16,6 +16,7 @@ package com.liferay.portal.tools.service.builder.test.uad.exporter;
 
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.service.builder.test.model.UADPartialEntry;
 import com.liferay.portal.tools.service.builder.test.service.UADPartialEntryLocalService;
 import com.liferay.portal.tools.service.builder.test.uad.constants.SBTestUADConstants;
@@ -64,19 +65,40 @@ public abstract class BaseUADPartialEntryUADExporter
 
 		sb.append(
 			"<column><column-name>uadPartialEntryId</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getUadPartialEntryId());
+
+		String uadPartialEntryId = String.valueOf(
+			uadPartialEntry.getUadPartialEntryId());
+
+		sb.append(uadPartialEntryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getUserId());
+
+		String userId = String.valueOf(uadPartialEntry.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getUserName());
+
+		String userName = String.valueOf(uadPartialEntry.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>message</column-name><column-value><![CDATA[");
-		sb.append(uadPartialEntry.getMessage());
+
+		String message = String.valueOf(uadPartialEntry.getMessage());
+
+		message = StringUtil.replace(message, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(message);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

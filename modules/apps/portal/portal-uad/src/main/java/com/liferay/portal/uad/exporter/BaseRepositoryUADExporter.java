@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.uad.constants.PortalUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,29 @@ public abstract class BaseRepositoryUADExporter
 
 		sb.append(
 			"<column><column-name>repositoryId</column-name><column-value><![CDATA[");
-		sb.append(repository.getRepositoryId());
+
+		String repositoryId = String.valueOf(repository.getRepositoryId());
+
+		sb.append(repositoryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(repository.getUserId());
+
+		String userId = String.valueOf(repository.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(repository.getUserName());
+
+		String userName = String.valueOf(repository.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

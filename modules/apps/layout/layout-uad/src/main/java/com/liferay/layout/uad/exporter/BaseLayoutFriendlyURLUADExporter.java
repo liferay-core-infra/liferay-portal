@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.LayoutFriendlyURL;
 import com.liferay.portal.kernel.service.LayoutFriendlyURLLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,15 +64,30 @@ public abstract class BaseLayoutFriendlyURLUADExporter
 
 		sb.append(
 			"<column><column-name>layoutFriendlyURLId</column-name><column-value><![CDATA[");
-		sb.append(layoutFriendlyURL.getLayoutFriendlyURLId());
+
+		String layoutFriendlyURLId = String.valueOf(
+			layoutFriendlyURL.getLayoutFriendlyURLId());
+
+		sb.append(layoutFriendlyURLId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(layoutFriendlyURL.getUserId());
+
+		String userId = String.valueOf(layoutFriendlyURL.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(layoutFriendlyURL.getUserName());
+
+		String userName = String.valueOf(layoutFriendlyURL.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

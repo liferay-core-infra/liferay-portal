@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.service.TeamLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.site.teams.uad.constants.SiteTeamsUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,29 @@ public abstract class BaseTeamUADExporter
 
 		sb.append(
 			"<column><column-name>teamId</column-name><column-value><![CDATA[");
-		sb.append(team.getTeamId());
+
+		String teamId = String.valueOf(team.getTeamId());
+
+		sb.append(teamId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(team.getUserId());
+
+		String userId = String.valueOf(team.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(team.getUserName());
+
+		String userName = String.valueOf(team.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

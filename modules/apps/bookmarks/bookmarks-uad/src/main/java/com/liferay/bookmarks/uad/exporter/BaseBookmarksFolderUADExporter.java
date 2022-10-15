@@ -19,6 +19,7 @@ import com.liferay.bookmarks.service.BookmarksFolderLocalService;
 import com.liferay.bookmarks.uad.constants.BookmarksUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,35 +64,80 @@ public abstract class BaseBookmarksFolderUADExporter
 
 		sb.append(
 			"<column><column-name>folderId</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getFolderId());
+
+		String folderId = String.valueOf(bookmarksFolder.getFolderId());
+
+		sb.append(folderId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(
+			bookmarksFolder.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			bookmarksFolder.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getUserId());
+
+		String userId = String.valueOf(bookmarksFolder.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getUserName());
+
+		String userName = String.valueOf(bookmarksFolder.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>treePath</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getTreePath());
+
+		String treePath = String.valueOf(bookmarksFolder.getTreePath());
+
+		treePath = StringUtil.replace(treePath, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(treePath);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getName());
+
+		String name = String.valueOf(bookmarksFolder.getName());
+
+		name = StringUtil.replace(name, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(name);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(bookmarksFolder.getDescription());
+
+		String description = String.valueOf(bookmarksFolder.getDescription());
+
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

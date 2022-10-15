@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.uad.constants.PortalWorkflowUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -66,15 +67,30 @@ public abstract class BaseWorkflowDefinitionLinkUADExporter
 
 		sb.append(
 			"<column><column-name>workflowDefinitionLinkId</column-name><column-value><![CDATA[");
-		sb.append(workflowDefinitionLink.getWorkflowDefinitionLinkId());
+
+		String workflowDefinitionLinkId = String.valueOf(
+			workflowDefinitionLink.getWorkflowDefinitionLinkId());
+
+		sb.append(workflowDefinitionLinkId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(workflowDefinitionLink.getUserId());
+
+		String userId = String.valueOf(workflowDefinitionLink.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(workflowDefinitionLink.getUserName());
+
+		String userName = String.valueOf(workflowDefinitionLink.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

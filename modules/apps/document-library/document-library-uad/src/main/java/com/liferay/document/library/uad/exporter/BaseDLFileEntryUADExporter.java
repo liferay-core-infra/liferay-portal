@@ -19,6 +19,7 @@ import com.liferay.document.library.kernel.service.DLFileEntryLocalService;
 import com.liferay.document.library.uad.constants.DLUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,31 +64,69 @@ public abstract class BaseDLFileEntryUADExporter
 
 		sb.append(
 			"<column><column-name>fileEntryId</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getFileEntryId());
+
+		String fileEntryId = String.valueOf(dlFileEntry.getFileEntryId());
+
+		sb.append(fileEntryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getUserId());
+
+		String userId = String.valueOf(dlFileEntry.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getUserName());
+
+		String userName = String.valueOf(dlFileEntry.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>fileName</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getFileName());
+
+		String fileName = String.valueOf(dlFileEntry.getFileName());
+
+		fileName = StringUtil.replace(fileName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(fileName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>extension</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getExtension());
+
+		String extension = String.valueOf(dlFileEntry.getExtension());
+
+		extension = StringUtil.replace(extension, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(extension);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>title</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getTitle());
+
+		String title = String.valueOf(dlFileEntry.getTitle());
+
+		title = StringUtil.replace(title, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(title);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
-		sb.append(dlFileEntry.getDescription());
+
+		String description = String.valueOf(dlFileEntry.getDescription());
+
+		description = StringUtil.replace(description, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(description);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

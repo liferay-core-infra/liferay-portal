@@ -63,11 +63,19 @@ public abstract class BaseUserTrackerUADExporter
 
 		sb.append(
 			"<column><column-name>userTrackerId</column-name><column-value><![CDATA[");
-		sb.append(userTracker.getUserTrackerId());
+
+		String userTrackerId = String.valueOf(userTracker.getUserTrackerId());
+
+		sb.append(userTrackerId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(userTracker.getUserId());
+
+		String userId = String.valueOf(userTracker.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

@@ -19,6 +19,7 @@ import com.liferay.contacts.service.EntryLocalService;
 import com.liferay.contacts.uad.constants.ContactsUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,27 +64,60 @@ public abstract class BaseEntryUADExporter
 
 		sb.append(
 			"<column><column-name>entryId</column-name><column-value><![CDATA[");
-		sb.append(entry.getEntryId());
+
+		String entryId = String.valueOf(entry.getEntryId());
+
+		sb.append(entryId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(entry.getUserId());
+
+		String userId = String.valueOf(entry.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(entry.getUserName());
+
+		String userName = String.valueOf(entry.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>fullName</column-name><column-value><![CDATA[");
-		sb.append(entry.getFullName());
+
+		String fullName = String.valueOf(entry.getFullName());
+
+		fullName = StringUtil.replace(fullName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(fullName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>emailAddress</column-name><column-value><![CDATA[");
-		sb.append(entry.getEmailAddress());
+
+		String emailAddress = String.valueOf(entry.getEmailAddress());
+
+		emailAddress = StringUtil.replace(
+			emailAddress, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(emailAddress);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>comments</column-name><column-value><![CDATA[");
-		sb.append(entry.getComments());
+
+		String comments = String.valueOf(entry.getComments());
+
+		comments = StringUtil.replace(comments, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(comments);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

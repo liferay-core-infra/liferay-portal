@@ -19,6 +19,7 @@ import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.uad.constants.MBUADConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
 import org.osgi.service.component.annotations.Reference;
@@ -63,35 +64,79 @@ public abstract class BaseMBMessageUADExporter
 
 		sb.append(
 			"<column><column-name>messageId</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getMessageId());
+
+		String messageId = String.valueOf(mbMessage.getMessageId());
+
+		sb.append(messageId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getStatusByUserId());
+
+		String statusByUserId = String.valueOf(mbMessage.getStatusByUserId());
+
+		sb.append(statusByUserId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getStatusByUserName());
+
+		String statusByUserName = String.valueOf(
+			mbMessage.getStatusByUserName());
+
+		statusByUserName = StringUtil.replace(
+			statusByUserName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(statusByUserName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUserId());
+
+		String userId = String.valueOf(mbMessage.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUserName());
+
+		String userName = String.valueOf(mbMessage.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>subject</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getSubject());
+
+		String subject = String.valueOf(mbMessage.getSubject());
+
+		subject = StringUtil.replace(subject, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(subject);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>urlSubject</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getUrlSubject());
+
+		String urlSubject = String.valueOf(mbMessage.getUrlSubject());
+
+		urlSubject = StringUtil.replace(urlSubject, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(urlSubject);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>body</column-name><column-value><![CDATA[");
-		sb.append(mbMessage.getBody());
+
+		String body = String.valueOf(mbMessage.getBody());
+
+		body = StringUtil.replace(body, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(body);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

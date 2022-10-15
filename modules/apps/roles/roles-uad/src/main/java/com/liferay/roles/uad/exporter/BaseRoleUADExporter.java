@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.roles.uad.constants.RolesUADConstants;
 import com.liferay.user.associated.data.exporter.DynamicQueryUADExporter;
 
@@ -63,15 +64,29 @@ public abstract class BaseRoleUADExporter
 
 		sb.append(
 			"<column><column-name>roleId</column-name><column-value><![CDATA[");
-		sb.append(role.getRoleId());
+
+		String roleId = String.valueOf(role.getRoleId());
+
+		sb.append(roleId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
-		sb.append(role.getUserId());
+
+		String userId = String.valueOf(role.getUserId());
+
+		sb.append(userId);
+
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userName</column-name><column-value><![CDATA[");
-		sb.append(role.getUserName());
+
+		String userName = String.valueOf(role.getUserName());
+
+		userName = StringUtil.replace(userName, "]]>", "]]]]><![CDATA[>");
+
+		sb.append(userName);
+
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");

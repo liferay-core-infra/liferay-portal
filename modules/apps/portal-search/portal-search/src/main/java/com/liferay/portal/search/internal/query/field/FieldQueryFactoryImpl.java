@@ -19,12 +19,11 @@ import com.liferay.portal.search.query.field.FieldQueryBuilder;
 import com.liferay.portal.search.query.field.FieldQueryBuilderFactory;
 import com.liferay.portal.search.query.field.FieldQueryFactory;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
 /**
  * @author Michael C. Han
@@ -42,16 +41,6 @@ public class FieldQueryFactoryImpl implements FieldQueryFactory {
 		return fieldQueryBuilder.build(fieldName, keywords);
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC
-	)
-	protected void addFieldQueryBuilderFactory(
-		FieldQueryBuilderFactory fieldQueryBuilderFactory) {
-
-		_fieldQueryBuilderFactories.add(fieldQueryBuilderFactory);
-	}
-
 	protected FieldQueryBuilder getQueryBuilder(String fieldName) {
 		for (FieldQueryBuilderFactory fieldQueryBuilderFactory :
 				_fieldQueryBuilderFactories) {
@@ -67,16 +56,11 @@ public class FieldQueryFactoryImpl implements FieldQueryFactory {
 		return descriptionFieldQueryBuilder;
 	}
 
-	protected void removeFieldQueryBuilderFactory(
-		FieldQueryBuilderFactory fieldQueryBuilderFactory) {
-
-		_fieldQueryBuilderFactories.remove(fieldQueryBuilderFactory);
-	}
-
 	@Reference
 	protected DescriptionFieldQueryBuilder descriptionFieldQueryBuilder;
 
-	private final HashSet<FieldQueryBuilderFactory>
+	@Reference
+	private volatile Collection<FieldQueryBuilderFactory>
 		_fieldQueryBuilderFactories = new HashSet<>();
 
 }

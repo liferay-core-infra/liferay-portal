@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.search.query.FieldQueryFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.search.analysis.FieldQueryBuilderFactory;
 import com.liferay.portal.search.expando.ExpandoBridgeIndexer;
@@ -128,14 +129,20 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 	protected static FieldQueryFactoryImpl createFieldQueryFactory(
 		FieldQueryBuilderFactory fieldQueryBuilderFactory) {
 
-		return new FieldQueryFactoryImpl() {
-			{
-				descriptionFieldQueryBuilder =
-					createDescriptionFieldQueryBuilder();
+		FieldQueryFactoryImpl fieldQueryFactoryImpl =
+			new FieldQueryFactoryImpl() {
+				{
+					descriptionFieldQueryBuilder =
+						createDescriptionFieldQueryBuilder();
+				}
+			};
 
-				addFieldQueryBuilderFactory(fieldQueryBuilderFactory);
-			}
-		};
+		ReflectionTestUtil.setFieldValue(
+			fieldQueryFactoryImpl, "_fieldQueryBuilderFactories",
+			SetUtil.fromArray(
+				new FieldQueryBuilderFactory[] {fieldQueryBuilderFactory}));
+
+		return fieldQueryFactoryImpl;
 	}
 
 	protected DocumentCreationHelper addKeyword(String value) {

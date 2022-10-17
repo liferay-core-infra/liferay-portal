@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.test.util.mappings;
 
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.search.internal.analysis.SimpleKeywordTokenizer;
 import com.liferay.portal.search.internal.query.QueriesImpl;
 import com.liferay.portal.search.internal.query.field.AssetTagNamesFieldQueryBuilderFactory;
@@ -22,6 +24,7 @@ import com.liferay.portal.search.internal.query.field.FieldQueryBuilderFactoryIm
 import com.liferay.portal.search.internal.query.field.FieldQueryFactoryImpl;
 import com.liferay.portal.search.internal.query.field.SubstringFieldQueryBuilder;
 import com.liferay.portal.search.internal.query.field.TitleFieldQueryBuilder;
+import com.liferay.portal.search.query.field.FieldQueryBuilderFactory;
 import com.liferay.portal.search.query.field.FieldQueryFactory;
 import com.liferay.portal.search.query.field.QueryPreProcessConfiguration;
 
@@ -67,12 +70,16 @@ public class LiferayFieldQueryFactoryFixture {
 		_fieldQueryFactory = new FieldQueryFactoryImpl() {
 			{
 				descriptionFieldQueryBuilder = _descriptionFieldQueryBuilder;
-
-				addFieldQueryBuilderFactory(
-					assetTagNamesFieldQueryBuilderFactory);
-				addFieldQueryBuilderFactory(fieldQueryBuilderFactoryImpl);
 			}
 		};
+
+		ReflectionTestUtil.setFieldValue(
+			_fieldQueryFactory, "_fieldQueryBuilderFactories",
+			SetUtil.fromArray(
+				new FieldQueryBuilderFactory[] {
+					assetTagNamesFieldQueryBuilderFactory,
+					fieldQueryBuilderFactoryImpl
+				}));
 	}
 
 	public FieldQueryFactory getFieldQueryFactory() {

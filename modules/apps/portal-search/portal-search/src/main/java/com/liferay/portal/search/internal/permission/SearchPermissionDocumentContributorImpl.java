@@ -35,14 +35,10 @@ import com.liferay.portal.search.permission.SearchPermissionDocumentContributor;
 import com.liferay.portal.search.spi.model.permission.SearchPermissionFieldContributor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -103,25 +99,6 @@ public class SearchPermissionDocumentContributorImpl
 
 		_addPermissionFields(
 			companyId, groupId, className, classPK, viewActionId, document);
-	}
-
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSearchPermissionFieldContributor(
-		SearchPermissionFieldContributor searchPermissionFieldContributor) {
-
-		_searchPermissionFieldContributors.add(
-			searchPermissionFieldContributor);
-	}
-
-	protected void removeSearchPermissionFieldContributor(
-		SearchPermissionFieldContributor searchPermissionFieldContributor) {
-
-		_searchPermissionFieldContributors.remove(
-			searchPermissionFieldContributor);
 	}
 
 	private void _addPermissionFields(
@@ -203,7 +180,8 @@ public class SearchPermissionDocumentContributorImpl
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
-	private final Collection<SearchPermissionFieldContributor>
-		_searchPermissionFieldContributors = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<SearchPermissionFieldContributor>
+		_searchPermissionFieldContributors;
 
 }

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import org.osgi.framework.BundleContext;
@@ -30,8 +29,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -64,26 +61,9 @@ public class SearchRequestContributorsHolderImpl
 			"search.request.contributor.id");
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSearchRequestContributor(
-		SearchRequestContributor searchRequestContributor) {
-
-		_searchRequestContributors.add(searchRequestContributor);
-	}
-
 	@Deactivate
 	protected void deactivate() {
 		_serviceTrackerMap.close();
-	}
-
-	protected void removeSearchRequestContributor(
-		SearchRequestContributor searchRequestContributor) {
-
-		_searchRequestContributors.remove(searchRequestContributor);
 	}
 
 	private void _exclude(
@@ -116,8 +96,9 @@ public class SearchRequestContributorsHolderImpl
 		return collection;
 	}
 
-	private final Collection<SearchRequestContributor>
-		_searchRequestContributors = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<SearchRequestContributor> _searchRequestContributors;
+
 	private ServiceTrackerMap<String, List<SearchRequestContributor>>
 		_serviceTrackerMap;
 

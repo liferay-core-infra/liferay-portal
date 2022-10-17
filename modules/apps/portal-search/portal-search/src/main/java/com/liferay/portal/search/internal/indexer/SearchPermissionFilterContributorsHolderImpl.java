@@ -16,14 +16,11 @@ package com.liferay.portal.search.internal.indexer;
 
 import com.liferay.portal.search.permission.SearchPermissionFilterContributor;
 
-import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -40,26 +37,8 @@ public class SearchPermissionFilterContributorsHolderImpl
 		return _searchPermissionFilterContributors.stream();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSearchPermissionFilterContributor(
-		SearchPermissionFilterContributor searchPermissionFilterContributor) {
-
-		_searchPermissionFilterContributors.add(
-			searchPermissionFilterContributor);
-	}
-
-	protected void removeSearchPermissionFilterContributor(
-		SearchPermissionFilterContributor searchPermissionFilterContributor) {
-
-		_searchPermissionFilterContributors.remove(
-			searchPermissionFilterContributor);
-	}
-
-	private final Collection<SearchPermissionFilterContributor>
-		_searchPermissionFilterContributors = new CopyOnWriteArrayList<>();
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	private volatile List<SearchPermissionFilterContributor>
+		_searchPermissionFilterContributors;
 
 }

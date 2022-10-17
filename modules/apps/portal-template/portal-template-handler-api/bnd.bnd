@@ -1,0 +1,4 @@
+Bundle-Name: Liferay Portal Template Handler API
+Bundle-SymbolicName: com.liferay.portal.template.handler.api
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.portal.template.handler

@@ -40,13 +40,6 @@ public class SearchRequestContributorsHolderImpl
 	implements SearchRequestContributorsHolder {
 
 	@Override
-	public Stream<SearchRequestContributor> stream() {
-		return ListUtil.fromIterable(
-			_serviceTrackerList
-		).stream();
-	}
-
-	@Override
 	public Stream<SearchRequestContributor> stream(
 		Collection<String> includeIds, Collection<String> excludeIds) {
 

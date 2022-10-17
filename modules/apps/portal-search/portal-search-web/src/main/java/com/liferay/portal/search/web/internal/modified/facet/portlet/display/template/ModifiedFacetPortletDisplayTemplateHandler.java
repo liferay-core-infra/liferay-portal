@@ -15,7 +15,6 @@
 package com.liferay.portal.search.web.internal.modified.facet.portlet.display.template;
 
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.util.Portal;
@@ -24,6 +23,7 @@ import com.liferay.portal.search.web.internal.modified.facet.constants.ModifiedF
 import com.liferay.portal.search.web.internal.modified.facet.display.context.ModifiedFacetDisplayContext;
 import com.liferay.portal.search.web.internal.modified.facet.display.context.ModifiedFacetTermDisplayContext;
 import com.liferay.portlet.display.template.constants.PortletDisplayTemplateConstants;
+import com.liferay.portlet.display.template.handler.BasePortletDisplayTemplateHandler;
 
 import java.util.List;
 import java.util.Locale;

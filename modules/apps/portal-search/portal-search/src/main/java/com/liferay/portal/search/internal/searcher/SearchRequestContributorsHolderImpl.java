@@ -39,11 +39,6 @@ public class SearchRequestContributorsHolderImpl
 	implements SearchRequestContributorsHolder {
 
 	@Override
-	public Stream<SearchRequestContributor> stream() {
-		return _searchRequestContributors.stream();
-	}
-
-	@Override
 	public Stream<SearchRequestContributor> stream(
 		Collection<String> includeIds, Collection<String> excludeIds) {
 

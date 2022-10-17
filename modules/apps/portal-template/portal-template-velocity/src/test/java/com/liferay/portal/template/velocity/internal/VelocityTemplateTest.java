@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.template.ClassLoaderResourceParser;
 import com.liferay.portal.template.TemplateContextHelper;
+import com.liferay.portal.template.TemplateResourceParser;
 import com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -35,9 +36,11 @@ import java.io.ObjectOutput;
 import java.io.Reader;
 import java.io.StringReader;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,12 +78,18 @@ public class VelocityTemplateTest {
 
 		_velocityTemplateResourceLoader = new VelocityTemplateResourceLoader();
 
+		Collection<TemplateResourceParser> templateResourceParsers =
+			new CopyOnWriteArraySet<>();
+
+		templateResourceParsers.add(new ClassLoaderResourceParser());
+
+		ReflectionTestUtil.setFieldValue(
+			_velocityTemplateResourceLoader, "_templateResourceParsers",
+			templateResourceParsers);
+
 		ReflectionTestUtil.setFieldValue(
 			_velocityTemplateResourceLoader, "_velocityTemplateResourceCache",
 			_templateResourceCache);
-
-		_velocityTemplateResourceLoader.setTemplateResourceParser(
-			new ClassLoaderResourceParser());
 
 		_velocityTemplateResourceLoader.activate(Collections.emptyMap());
 	}

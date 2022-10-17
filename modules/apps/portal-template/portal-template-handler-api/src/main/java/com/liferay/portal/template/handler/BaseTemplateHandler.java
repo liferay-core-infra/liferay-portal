@@ -14,8 +14,11 @@
 
 package com.liferay.portal.template.handler;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
@@ -88,19 +91,32 @@ public abstract class BaseTemplateHandler implements TemplateHandler {
 	public String getTemplatesHelpContent(String language) {
 		String content = StringPool.BLANK;
 
-		try {
-			Class<?> clazz = getClass();
+		ClassLoader classLoader = getClass().getClassLoader();
+		String path = getTemplatesHelpPath(language);
 
-			content = StringUtil.read(
-				clazz.getClassLoader(), getTemplatesHelpPath(language));
+		try {
+			content = StringUtil.read(classLoader, path);
 		}
 		catch (IOException ioException1) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					StringBundler.concat(
+						"Could not read: ", path, " from ", classLoader),
+					ioException1);
+			}
+
 			try {
-				content = StringUtil.read(
-					PortalClassLoaderUtil.getClassLoader(),
-					getTemplatesHelpPath(language));
+				classLoader = PortalClassLoaderUtil.getClassLoader();
+
+				content = StringUtil.read(classLoader, path);
 			}
 			catch (IOException ioException2) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						StringBundler.concat(
+							"Could not read: ", path, " from ", classLoader),
+						ioException2);
+				}
 			}
 		}
 
@@ -121,5 +137,8 @@ public abstract class BaseTemplateHandler implements TemplateHandler {
 	protected String getTemplatesConfigPath() {
 		return null;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		BaseTemplateHandler.class);
 
 }

@@ -30,7 +30,6 @@ import com.liferay.portal.template.TemplateContextHelper;
 import com.liferay.portal.template.TemplatePortletPreferences;
 import com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,8 +49,6 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -204,24 +201,6 @@ public class VelocityTemplateContextHelper extends TemplateContextHelper {
 		}
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(type=" + TemplateContextContributor.TYPE_GLOBAL + ")"
-	)
-	protected synchronized void registerTemplateContextContributor(
-		TemplateContextContributor templateContextContributor) {
-
-		_templateContextContributors.add(templateContextContributor);
-	}
-
-	protected synchronized void unregisterTemplateContextContributor(
-		TemplateContextContributor templateContextContributor) {
-
-		_templateContextContributors.remove(templateContextContributor);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		VelocityTemplateContextHelper.class);
 
@@ -231,7 +210,11 @@ public class VelocityTemplateContextHelper extends TemplateContextHelper {
 	@Reference
 	private RolePermission _rolePermission;
 
-	private final List<TemplateContextContributor>
-		_templateContextContributors = new ArrayList<>();
+	@Reference(
+		policyOption = ReferencePolicyOption.GREEDY,
+		target = "(type=" + TemplateContextContributor.TYPE_GLOBAL + ")"
+	)
+	private volatile List<TemplateContextContributor>
+		_templateContextContributors;
 
 }

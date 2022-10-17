@@ -15,8 +15,8 @@
 package com.liferay.portlet.display.template.handler;
 
 import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManagerUtil;
-import com.liferay.portal.kernel.template.BaseTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
+import com.liferay.portal.template.handler.BaseTemplateHandler;
 
 import java.util.Locale;
 import java.util.Map;

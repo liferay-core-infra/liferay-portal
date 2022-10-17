@@ -16,13 +16,13 @@ package com.liferay.template.web.internal.portlet.template;
 
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.portal.kernel.language.Language;
-import com.liferay.portal.kernel.template.BaseTemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.template.handler.BaseTemplateHandler;
 import com.liferay.template.constants.TemplatePortletKeys;
 import com.liferay.template.web.internal.constants.TemplateConstants;
 

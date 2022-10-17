@@ -19,18 +19,17 @@ import com.liferay.portal.kernel.template.TemplateResourceLoader;
 import com.liferay.portal.template.BaseTemplateResourceLoader;
 import com.liferay.portal.template.TemplateResourceParser;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.FieldOption;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
@@ -49,7 +48,8 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		init(
-			TemplateConstants.LANG_TYPE_VM, _templateResourceParsers,
+			TemplateConstants.LANG_TYPE_VM,
+			(Set<TemplateResourceParser>)_templateResourceParsers,
 			_velocityTemplateResourceCache);
 	}
 
@@ -59,25 +59,12 @@ public class VelocityTemplateResourceLoader extends BaseTemplateResourceLoader {
 	}
 
 	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
+		fieldOption = FieldOption.UPDATE,
 		policyOption = ReferencePolicyOption.GREEDY,
 		target = "(lang.type=" + TemplateConstants.LANG_TYPE_VM + ")"
 	)
-	protected void setTemplateResourceParser(
-		TemplateResourceParser templateResourceParser) {
-
-		_templateResourceParsers.add(templateResourceParser);
-	}
-
-	protected void unsetTemplateResourceParser(
-		TemplateResourceParser templateResourceParser) {
-
-		_templateResourceParsers.remove(templateResourceParser);
-	}
-
-	private final Set<TemplateResourceParser> _templateResourceParsers =
-		Collections.newSetFromMap(new ConcurrentHashMap<>());
+	private volatile Collection<TemplateResourceParser>
+		_templateResourceParsers = new CopyOnWriteArraySet<>();
 
 	@Reference
 	private VelocityTemplateResourceCache _velocityTemplateResourceCache;

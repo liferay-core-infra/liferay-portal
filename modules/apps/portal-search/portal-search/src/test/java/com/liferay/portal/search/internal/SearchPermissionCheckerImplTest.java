@@ -24,9 +24,14 @@ import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.configuration.SearchPermissionCheckerConfiguration;
+import com.liferay.portal.search.spi.model.permission.SearchPermissionFieldContributor;
+import com.liferay.portal.search.spi.model.permission.SearchPermissionFilterContributor;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -83,18 +88,39 @@ public class SearchPermissionCheckerImplTest {
 	}
 
 	private SearchPermissionCheckerImpl _createSearchPermissionChecker() {
-		return new SearchPermissionCheckerImpl() {
-			{
-				indexerRegistry = _indexerRegistry;
-				permissionChecker = _permissionChecker;
-				resourcePermissionLocalService =
-					_resourcePermissionLocalService;
-				roleLocalService = _roleLocalService;
-				searchPermissionCheckerConfiguration =
-					_searchPermissionCheckerConfiguration;
-				userLocalService = _userLocalService;
-			}
-		};
+		SearchPermissionCheckerImpl searchPermissionCheckerImpl =
+			new SearchPermissionCheckerImpl() {
+				{
+					indexerRegistry = _indexerRegistry;
+					permissionChecker = _permissionChecker;
+					resourcePermissionLocalService =
+						_resourcePermissionLocalService;
+					roleLocalService = _roleLocalService;
+					searchPermissionCheckerConfiguration =
+						_searchPermissionCheckerConfiguration;
+					userLocalService = _userLocalService;
+				}
+			};
+
+		SearchPermissionFieldContributorRegistry
+			searchPermissionFieldContributorRegistry =
+				new SearchPermissionFieldContributorRegistry();
+
+		ReflectionTestUtil.setFieldValue(
+			searchPermissionFieldContributorRegistry,
+			"_searchPermissionFieldContributors",
+			new CopyOnWriteArrayList<SearchPermissionFieldContributor>());
+
+		ReflectionTestUtil.setFieldValue(
+			searchPermissionCheckerImpl,
+			"_searchPermissionFieldContributorRegistry",
+			searchPermissionFieldContributorRegistry);
+
+		ReflectionTestUtil.setFieldValue(
+			searchPermissionCheckerImpl, "_searchPermissionFilterContributors",
+			new CopyOnWriteArrayList<SearchPermissionFilterContributor>());
+
+		return searchPermissionCheckerImpl;
 	}
 
 	private boolean _whenIndexerIsPermissionAware(boolean permissionAware) {

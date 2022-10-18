@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.search.internal.SearchPermissionFieldContributorRegistry;
 import com.liferay.portal.search.permission.SearchPermissionDocumentContributor;
 import com.liferay.portal.search.spi.model.permission.SearchPermissionFieldContributor;
 
@@ -39,7 +40,6 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -106,7 +106,8 @@ public class SearchPermissionDocumentContributorImpl
 		String viewActionId, Document document) {
 
 		for (SearchPermissionFieldContributor searchPermissionFieldContributor :
-				_searchPermissionFieldContributors) {
+				_searchPermissionFieldContributorRegistry.
+					getSearchPermissionFieldContributors()) {
 
 			searchPermissionFieldContributor.contribute(
 				document, className, classPK);
@@ -180,8 +181,8 @@ public class SearchPermissionDocumentContributorImpl
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY)
-	private volatile List<SearchPermissionFieldContributor>
-		_searchPermissionFieldContributors;
+	@Reference
+	private SearchPermissionFieldContributorRegistry
+		_searchPermissionFieldContributorRegistry;
 
 }

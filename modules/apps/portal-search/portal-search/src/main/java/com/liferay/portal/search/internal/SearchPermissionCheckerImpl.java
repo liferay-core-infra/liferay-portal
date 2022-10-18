@@ -230,7 +230,8 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 		throws Exception {
 
 		for (SearchPermissionFieldContributor searchPermissionFieldContributor :
-				_searchPermissionFieldContributors) {
+				_searchPermissionFieldContributorRegistry.
+					getSearchPermissionFieldContributors()) {
 
 			searchPermissionFieldContributor.contribute(
 				document, className, classPK);
@@ -581,9 +582,9 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchPermissionCheckerImpl.class);
 
-	@Reference(policyOption = ReferencePolicyOption.GREEDY)
-	private volatile List<SearchPermissionFieldContributor>
-		_searchPermissionFieldContributors;
+	@Reference
+	private SearchPermissionFieldContributorRegistry
+		_searchPermissionFieldContributorRegistry;
 
 	@Reference(policyOption = ReferencePolicyOption.GREEDY)
 	private volatile List<SearchPermissionFilterContributor>

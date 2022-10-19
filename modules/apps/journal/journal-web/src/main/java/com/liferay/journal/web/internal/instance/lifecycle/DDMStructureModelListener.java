@@ -170,9 +170,6 @@ public class DDMStructureModelListener
 	private DDMStructureLocalService _ddmStructureLocalService;
 
 	@Reference
-	private GroupLocalService _groupLocalService;
-
-	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
 
 	@Reference

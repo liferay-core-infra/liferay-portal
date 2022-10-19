@@ -43,7 +43,6 @@ import java.util.Locale;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -108,11 +107,6 @@ public class LayoutPageTemplateCollectionsItemSelectorView
 	@Reference
 	private LayoutPageTemplateCollectionLocalService
 		_layoutPageTemplateCollectionLocalService;
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.layout.page.template.item.selector.web)"
-	)
-	private ServletContext _servletContext;
 
 	private class LayoutPageTemplateCollectionItemDescriptor
 		implements ItemSelectorViewDescriptor.ItemDescriptor {

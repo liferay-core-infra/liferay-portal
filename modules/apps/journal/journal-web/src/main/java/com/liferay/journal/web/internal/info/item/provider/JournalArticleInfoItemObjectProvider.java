@@ -268,9 +268,6 @@ public class JournalArticleInfoItemObjectProvider
 		JournalArticleInfoItemObjectProvider.class);
 
 	@Reference
-	private GroupService _groupService;
-
-	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
 
 	@Reference(

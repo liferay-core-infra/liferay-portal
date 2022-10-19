@@ -453,9 +453,6 @@ public class CookiesManagerImpl implements CookiesManager {
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
-	private CookiesConsentConfiguration _cookiesConsentConfiguration;
-
-	@Reference
 	private Portal _portal;
 
 }

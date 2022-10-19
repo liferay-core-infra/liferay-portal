@@ -35,7 +35,6 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.base.JournalFolderLocalServiceBaseImpl;
 import com.liferay.journal.service.persistence.JournalArticleFinder;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
-import com.liferay.journal.util.JournalValidator;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
@@ -1579,9 +1578,6 @@ public class JournalFolderLocalServiceImpl
 
 	@Reference
 	private JournalArticlePersistence _journalArticlePersistence;
-
-	@Reference
-	private JournalValidator _journalValidator;
 
 	@Reference
 	private RatingsStatsLocalService _ratingsStatsLocalService;

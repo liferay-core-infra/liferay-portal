@@ -15,7 +15,6 @@
 package com.liferay.portal.rules.engine.wiring.internal;
 
 import com.liferay.portal.kernel.messaging.proxy.MessagingProxyInvocationHandler;
-import com.liferay.portal.kernel.messaging.proxy.ProxyMessageListener;
 import com.liferay.portal.kernel.messaging.sender.SynchronousMessageSender;
 import com.liferay.portal.kernel.spring.aop.InvocationHandlerFactory;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
@@ -30,7 +29,6 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Michael C. Han
@@ -75,12 +73,6 @@ public class RulesEngineProxyBeanConfigurator {
 			_serviceRegistration.unregister();
 		}
 	}
-
-	@Reference(
-		service = ProxyMessageListener.class,
-		target = "(destination.name=" + RulesEngineConstants.DESTINATION_NAME + ")"
-	)
-	private ProxyMessageListener _proxyMessageListener;
 
 	private ServiceRegistration<RulesEngine> _serviceRegistration;
 

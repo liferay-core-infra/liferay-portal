@@ -17,7 +17,6 @@ package com.liferay.journal.internal.asset.util;
 import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.publisher.constants.AssetPublisherPortletKeys;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemServiceTracker;
@@ -187,9 +186,6 @@ public class JournalArticleLayoutClassedModelUsageRecorder
 				portletPreferences.getPlid(), serviceContext);
 		}
 	}
-
-	@Reference
-	private AssetEntryLocalService _assetEntryLocalService;
 
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;

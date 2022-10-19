@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.internal.sort;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
@@ -27,16 +29,13 @@ import com.liferay.portal.search.contributor.constants.ContributorConstants;
 import com.liferay.portal.search.contributor.sort.SortFieldNameTranslator;
 import com.liferay.portal.search.sort.SortFieldBuilder;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -69,42 +68,29 @@ public class SortFieldBuilderImpl implements SortFieldBuilder {
 	}
 
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
 		_defaultSortableTextFields = SetUtil.fromArray(
 			props.getArray(PropsKeys.INDEX_SORTABLE_TEXT_FIELDS));
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, SortFieldNameTranslator.class, null,
+			(serviceReference, emitter) -> {
+				String entryClassName = GetterUtil.getString(
+					serviceReference.getProperty(
+						ContributorConstants.ENTRY_CLASS_NAME_PROPERTY_KEY));
+
+				if (Validator.isNull(entryClassName)) {
+					throw new IllegalArgumentException(
+						"No entry.class.name provided");
+				}
+
+				emitter.emit(entryClassName);
+			});
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSortFieldNameTranslator(
-		SortFieldNameTranslator sortFieldNameTranslator,
-		Map<String, Object> properties) {
-
-		String entryClassName = GetterUtil.getString(
-			properties.get(ContributorConstants.ENTRY_CLASS_NAME_PROPERTY_KEY));
-
-		if (Validator.isNull(entryClassName)) {
-			throw new IllegalArgumentException("No entry.class.name provided");
-		}
-
-		_sortFieldNameTranslators.put(entryClassName, sortFieldNameTranslator);
-	}
-
-	protected void removeSortFieldNameTranslator(
-		SortFieldNameTranslator sortFieldNameTranslator,
-		Map<String, Object> properties) {
-
-		String entryClassName = GetterUtil.getString(
-			properties.get(ContributorConstants.ENTRY_CLASS_NAME_PROPERTY_KEY));
-
-		if (Validator.isNull(entryClassName)) {
-			return;
-		}
-
-		_sortFieldNameTranslators.remove(entryClassName);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	@Reference
@@ -115,7 +101,7 @@ public class SortFieldBuilderImpl implements SortFieldBuilder {
 
 	private String _getSortField(String entityClassName, String orderByCol) {
 		SortFieldNameTranslator sortFieldNameTranslator =
-			_sortFieldNameTranslators.get(entityClassName);
+			_serviceTrackerMap.getService(entityClassName);
 
 		if (sortFieldNameTranslator == null) {
 			Indexer<?> indexer = indexerRegistry.getIndexer(entityClassName);
@@ -127,7 +113,7 @@ public class SortFieldBuilderImpl implements SortFieldBuilder {
 	}
 
 	private Set<String> _defaultSortableTextFields;
-	private final Map<String, SortFieldNameTranslator>
-		_sortFieldNameTranslators = new ConcurrentHashMap<>();
+	private ServiceTrackerMap<String, SortFieldNameTranslator>
+		_serviceTrackerMap;
 
 }

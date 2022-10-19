@@ -14,6 +14,8 @@
 
 package com.liferay.portal.search.internal.buffer;
 
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -23,15 +25,13 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.configuration.IndexerRegistryConfiguration;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Michael C. Han
@@ -47,7 +47,7 @@ public class IndexerRequestBufferExecutorWatcher {
 			_indexerRegistryConfiguration.bufferedExecutionMode();
 
 		IndexerRequestBufferExecutor indexerRequestBufferExecutor =
-			_indexerRequestBufferExecutors.get(bufferedExecutionMode);
+			_serviceTrackerMap.getService(bufferedExecutionMode);
 
 		if (indexerRequestBufferExecutor == null) {
 			if (_log.isDebugEnabled()) {
@@ -64,48 +64,41 @@ public class IndexerRequestBufferExecutorWatcher {
 
 	@Activate
 	@Modified
-	protected void activate(Map<String, Object> properties) {
+	protected void activate(
+		BundleContext bundleContext, Map<String, Object> properties) {
+
 		_indexerRegistryConfiguration = ConfigurableUtil.createConfigurable(
 			IndexerRegistryConfiguration.class, properties);
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, IndexerRequestBufferExecutor.class, null,
+			(serviceReference, emitter) -> {
+				String bufferedExecutionMode = GetterUtil.getString(
+					serviceReference.getProperty("buffered.execution.mode"));
+
+				if (Validator.isNull(bufferedExecutionMode)) {
+					try {
+						IndexerRequestBufferExecutor
+							indexerRequestBufferExecutor =
+								bundleContext.getService(serviceReference);
+
+						throw new IllegalArgumentException(
+							"The property \"buffered.execution.mode\" is invalid for " +
+								ClassUtil.getClassName(
+									indexerRequestBufferExecutor));
+					}
+					finally {
+						bundleContext.ungetService(serviceReference);
+					}
+				}
+
+				emitter.emit(bufferedExecutionMode);
+			});
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addIndexerRequestBufferExecutor(
-		IndexerRequestBufferExecutor indexerRequestBufferExecutor,
-		Map<String, Object> properties) {
-
-		_indexerRequestBufferExecutors.put(
-			_getBufferedExecutionMode(indexerRequestBufferExecutor, properties),
-			indexerRequestBufferExecutor);
-	}
-
-	protected void removeIndexerRequestBufferExecutor(
-		IndexerRequestBufferExecutor indexerRequestBufferExecutor,
-		Map<String, Object> properties) {
-
-		_indexerRequestBufferExecutors.remove(
-			_getBufferedExecutionMode(
-				indexerRequestBufferExecutor, properties));
-	}
-
-	private String _getBufferedExecutionMode(
-		IndexerRequestBufferExecutor indexerRequestBufferExecutor,
-		Map<String, Object> properties) {
-
-		String bufferedExecutionMode = GetterUtil.getString(
-			properties.get("buffered.execution.mode"));
-
-		if (Validator.isNull(bufferedExecutionMode)) {
-			throw new IllegalArgumentException(
-				"The property \"buffered.execution.mode\" is invalid for " +
-					ClassUtil.getClassName(indexerRequestBufferExecutor));
-		}
-
-		return bufferedExecutionMode;
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerMap.close();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -115,7 +108,7 @@ public class IndexerRequestBufferExecutorWatcher {
 	private IndexerRequestBufferExecutor _defaultIndexerRequestBufferExecutor;
 
 	private volatile IndexerRegistryConfiguration _indexerRegistryConfiguration;
-	private final Map<String, IndexerRequestBufferExecutor>
-		_indexerRequestBufferExecutors = new ConcurrentHashMap<>();
+	private volatile ServiceTrackerMap<String, IndexerRequestBufferExecutor>
+		_serviceTrackerMap;
 
 }

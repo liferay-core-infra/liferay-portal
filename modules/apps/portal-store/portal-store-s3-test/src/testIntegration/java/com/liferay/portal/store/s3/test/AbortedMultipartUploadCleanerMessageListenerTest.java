@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @author Hai Yu
  */
 @RunWith(Arquillian.class)
-public class AbortedMultipartUploadCleanerTest {
+public class AbortedMultipartUploadCleanerMessageListenerTest {
 
 	@ClassRule
 	@Rule
@@ -56,10 +56,12 @@ public class AbortedMultipartUploadCleanerTest {
 	}
 
 	@Test
-	public void testAbortedMultipartUploadCleanerRegistered() throws Exception {
+	public void testAbortedMultipartUploadCleanerMessageListenerRegistered()
+		throws Exception {
+
 		String className =
-			"com.liferay.portal.store.s3.AbortedMultipartUploadCleaner$S3" +
-				"StoreServiceTrackerCustomizer";
+			"com.liferay.portal.store.s3." +
+				"AbortedMultipartUploadCleanerMessageListener";
 
 		Assert.assertNotNull(
 			_schedulerEngineHelper.getScheduledJob(

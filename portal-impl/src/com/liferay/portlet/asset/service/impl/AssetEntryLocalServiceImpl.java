@@ -798,52 +798,51 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 		}
 
 		// Tags
-		if(tagNames != null && tagNames.length > 0) {
-			if ((tagNames != null) && ((entry != null) || (tagNames.length > 0))) {
-				Group siteGroup = _groupLocalService.getGroup(
-					PortalUtil.getSiteGroupId(groupId));
-	
-				List<AssetTag> tags = _assetTagLocalService.checkTags(
-					userId, siteGroup, tagNames);
-	
-				if (visible) {
-					if (entry == null) {
-						for (AssetTag tag : tags) {
+
+		if (((tagNames != null) && (tagNames.length > 0)) && ((entry != null) || (tagNames.length > 0))) {
+			Group siteGroup = _groupLocalService.getGroup(
+				PortalUtil.getSiteGroupId(groupId));
+
+			List<AssetTag> tags = _assetTagLocalService.checkTags(
+				userId, siteGroup, tagNames);
+
+			if (visible) {
+				if (entry == null) {
+					for (AssetTag tag : tags) {
+						_assetTagLocalService.incrementAssetCount(
+							tag.getTagId(), classNameId);
+					}
+				}
+				else {
+					List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
+						entryId);
+
+					for (AssetTag oldTag : oldTags) {
+						if (!tags.contains(oldTag)) {
+							_assetTagLocalService.decrementAssetCount(
+								oldTag.getTagId(), classNameId);
+						}
+					}
+
+					for (AssetTag tag : tags) {
+						if (!oldTags.contains(tag)) {
 							_assetTagLocalService.incrementAssetCount(
 								tag.getTagId(), classNameId);
 						}
 					}
-					else {
-						List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
-							entryId);
-	
-						for (AssetTag oldTag : oldTags) {
-							if (!tags.contains(oldTag)) {
-								_assetTagLocalService.decrementAssetCount(
-									oldTag.getTagId(), classNameId);
-							}
-						}
-	
-						for (AssetTag tag : tags) {
-							if (!oldTags.contains(tag)) {
-								_assetTagLocalService.incrementAssetCount(
-									tag.getTagId(), classNameId);
-							}
-						}
-					}
 				}
-				else if (oldVisible) {
-					List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
-						entryId);
-	
-					for (AssetTag oldTag : oldTags) {
-						_assetTagLocalService.decrementAssetCount(
-							oldTag.getTagId(), classNameId);
-					}
-				}
-	
-				assetEntryPersistence.setAssetTags(entryId, tags);
 			}
+			else if (oldVisible) {
+				List<AssetTag> oldTags = assetEntryPersistence.getAssetTags(
+					entryId);
+
+				for (AssetTag oldTag : oldTags) {
+					_assetTagLocalService.decrementAssetCount(
+						oldTag.getTagId(), classNameId);
+				}
+			}
+
+			assetEntryPersistence.setAssetTags(entryId, tags);
 		}
 
 		// Update entry after tags so that entry listeners have access to the

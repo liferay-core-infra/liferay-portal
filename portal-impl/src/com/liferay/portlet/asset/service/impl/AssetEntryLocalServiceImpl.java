@@ -799,7 +799,9 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		// Tags
 
-		if (((tagNames != null) && (tagNames.length > 0)) && ((entry != null) || (tagNames.length > 0))) {
+		if ((tagNames != null) && (tagNames.length > 0) &&
+			((entry != null) || (tagNames.length > 0))) {
+
 			Group siteGroup = _groupLocalService.getGroup(
 				PortalUtil.getSiteGroupId(groupId));
 

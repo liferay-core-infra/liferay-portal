@@ -79,7 +79,7 @@ public class IndexerRequestBufferExecutorWatcher {
 		Map<String, Object> properties) {
 
 		_indexerRequestBufferExecutors.put(
-			_getBufferedExecutionMode(properties),
+			_getBufferedExecutionMode(indexerRequestBufferExecutor, properties),
 			indexerRequestBufferExecutor);
 	}
 
@@ -88,17 +88,21 @@ public class IndexerRequestBufferExecutorWatcher {
 		Map<String, Object> properties) {
 
 		_indexerRequestBufferExecutors.remove(
-			_getBufferedExecutionMode(properties));
+			_getBufferedExecutionMode(
+				indexerRequestBufferExecutor, properties));
 	}
 
-	private String _getBufferedExecutionMode(Map<String, Object> properties) {
+	private String _getBufferedExecutionMode(
+		IndexerRequestBufferExecutor indexerRequestBufferExecutor,
+		Map<String, Object> properties) {
+
 		String bufferedExecutionMode = GetterUtil.getString(
 			properties.get("buffered.execution.mode"));
 
 		if (Validator.isNull(bufferedExecutionMode)) {
 			throw new IllegalArgumentException(
 				"The property \"buffered.execution.mode\" is invalid for " +
-					ClassUtil.getClassName(bufferedExecutionMode));
+					ClassUtil.getClassName(indexerRequestBufferExecutor));
 		}
 
 		return bufferedExecutionMode;

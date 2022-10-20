@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
 import com.liferay.portal.kernel.scheduler.TimeUnit;
 import com.liferay.portal.kernel.scheduler.TriggerFactory;
+import com.liferay.portal.util.PropsValues;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -70,6 +71,12 @@ public class AbortedMultipartUploadCleanerMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		String storeClassName = PropsValues.DL_STORE_IMPL;
+
+		if (!storeClassName.equals(S3Store.class.getName())) {
+			return;
+		}
+
 		S3Store s3Store = (S3Store)_store;
 
 		TransferManager transferManager = s3Store.getTransferManager();

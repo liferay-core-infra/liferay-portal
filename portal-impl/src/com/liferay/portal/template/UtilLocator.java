@@ -14,9 +14,8 @@
 
 package com.liferay.portal.template;
 
-import com.liferay.portal.bean.BeanLocatorImpl;
+import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -46,8 +45,8 @@ public class UtilLocator {
 	}
 
 	private String _getUtilName(String utilName) {
-		if (!utilName.endsWith(BeanLocatorImpl.VELOCITY_SUFFIX)) {
-			utilName += BeanLocatorImpl.VELOCITY_SUFFIX;
+		if (!utilName.endsWith(BeanLocator.VELOCITY_SUFFIX)) {
+			utilName += BeanLocator.VELOCITY_SUFFIX;
 		}
 
 		return utilName;

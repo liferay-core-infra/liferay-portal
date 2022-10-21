@@ -33,8 +33,6 @@ import org.springframework.context.support.AbstractApplicationContext;
  */
 public class BeanLocatorImpl implements BeanLocator {
 
-	public static final String VELOCITY_SUFFIX = ".velocity";
-
 	public BeanLocatorImpl(
 		ClassLoader classLoader, ApplicationContext applicationContext) {
 

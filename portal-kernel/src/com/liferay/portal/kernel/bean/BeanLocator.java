@@ -38,4 +38,6 @@ public interface BeanLocator {
 
 	public Object locate(String name) throws BeanLocatorException;
 
+	public String VELOCITY_SUFFIX = ".velocity";
+
 }

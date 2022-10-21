@@ -35,7 +35,6 @@ import java.util.ResourceBundle;
 
 import javax.portlet.PortletURL;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -146,10 +145,5 @@ public class InfoCollectionProviderItemSelectorView
 
 	@Reference
 	private Language _language;
-
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.info.collection.provider.item.selector.web)"
-	)
-	private ServletContext _servletContext;
 
 }

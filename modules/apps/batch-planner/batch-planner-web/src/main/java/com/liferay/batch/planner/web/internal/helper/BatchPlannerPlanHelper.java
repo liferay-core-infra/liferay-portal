@@ -20,7 +20,6 @@ import com.liferay.batch.planner.model.BatchPlannerPlan;
 import com.liferay.batch.planner.model.BatchPlannerPolicy;
 import com.liferay.batch.planner.service.BatchPlannerMappingLocalService;
 import com.liferay.batch.planner.service.BatchPlannerMappingService;
-import com.liferay.batch.planner.service.BatchPlannerPlanLocalService;
 import com.liferay.batch.planner.service.BatchPlannerPlanService;
 import com.liferay.batch.planner.service.BatchPlannerPolicyLocalService;
 import com.liferay.batch.planner.service.BatchPlannerPolicyService;
@@ -435,9 +434,6 @@ public class BatchPlannerPlanHelper {
 
 	@Reference
 	private BatchPlannerMappingService _batchPlannerMappingService;
-
-	@Reference
-	private BatchPlannerPlanLocalService _batchPlannerPlanLocalService;
 
 	@Reference
 	private BatchPlannerPlanService _batchPlannerPlanService;

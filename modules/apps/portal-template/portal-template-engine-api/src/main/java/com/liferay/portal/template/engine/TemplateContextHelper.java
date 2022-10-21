@@ -94,7 +94,7 @@ import com.liferay.portal.kernel.xml.SAXReader;
 import com.liferay.portal.struts.Definition;
 import com.liferay.portal.struts.TilesUtil;
 import com.liferay.portal.template.ServiceLocator;
-import com.liferay.portal.template.UtilLocator;
+import com.liferay.portal.template.engine.util.UtilLocator;
 
 import java.io.IOException;
 import java.io.InputStream;

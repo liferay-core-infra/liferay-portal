@@ -42,20 +42,6 @@ public class UtilLocator {
 		return bean;
 	}
 
-	public Object findUtil(String servletContextName, String utilName) {
-		Object bean = null;
-
-		try {
-			bean = PortletBeanLocatorUtil.locate(
-				servletContextName, _getUtilName(utilName));
-		}
-		catch (Exception exception) {
-			_log.error(exception);
-		}
-
-		return bean;
-	}
-
 	private UtilLocator() {
 	}
 

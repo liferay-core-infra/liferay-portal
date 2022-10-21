@@ -20,7 +20,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.BaseService;
-import com.liferay.portal.util.PropsValues;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 /**
  * @author Brian Wing Shun Chan
@@ -34,7 +36,9 @@ public class ServiceLocator {
 	public Object findService(String serviceName) {
 		Object object = SystemBundleUtil.callService(serviceName, obj -> obj);
 
-		if (PropsValues.TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT &&
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(
+					PropsKeys.TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT)) &&
 			!(object instanceof BaseLocalService) &&
 			!(object instanceof BaseService)) {
 

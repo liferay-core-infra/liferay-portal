@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Phil Jones
  */
 @Component(
-	immediate = true,
+	
 	property = {
 		"layout.type=testLayoutTypeController",
 		"service.ranking:Integer=" + Integer.MAX_VALUE

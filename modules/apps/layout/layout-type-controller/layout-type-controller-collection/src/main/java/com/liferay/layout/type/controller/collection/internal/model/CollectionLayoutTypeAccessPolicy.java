@@ -24,7 +24,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Jürgen Kappler
  */
 @Component(
-	immediate = true,
+	
 	property = "layout.type=" + LayoutConstants.TYPE_COLLECTION,
 	service = LayoutTypeAccessPolicy.class
 )

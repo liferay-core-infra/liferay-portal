@@ -19,7 +19,6 @@ import com.liferay.commerce.account.service.CommerceAccountGroupService;
 import com.liferay.commerce.order.rule.model.COREntry;
 import com.liferay.commerce.order.rule.model.COREntryRel;
 import com.liferay.commerce.order.rule.service.COREntryRelService;
-import com.liferay.commerce.order.rule.service.COREntryService;
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderRuleAccountGroup;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
@@ -74,8 +73,5 @@ public class OrderRuleAccountGroupDTOConverter
 
 	@Reference
 	private COREntryRelService _corEntryRelService;
-
-	@Reference
-	private COREntryService _corEntryService;
 
 }

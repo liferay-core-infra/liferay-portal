@@ -82,10 +82,12 @@ public class IndexerRequestBufferExecutorWatcher {
 							indexerRequestBufferExecutor =
 								bundleContext.getService(serviceReference);
 
+						String className = ClassUtil.getClassName(
+							indexerRequestBufferExecutor);
+
 						throw new IllegalArgumentException(
-							"The property \"buffered.execution.mode\" is invalid for " +
-								ClassUtil.getClassName(
-									indexerRequestBufferExecutor));
+							"The property \"buffered.execution.mode\" is " +
+								"invalid for " + className);
 					}
 					finally {
 						bundleContext.ungetService(serviceReference);

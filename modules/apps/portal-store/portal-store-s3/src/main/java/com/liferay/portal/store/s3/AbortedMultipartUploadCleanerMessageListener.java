@@ -35,6 +35,7 @@ import java.util.Date;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
@@ -43,7 +44,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Samuel Ziemer
  */
 @Component(
-	immediate = true,
+	configurationPid = "com.liferay.portal.store.s3.configuration.S3StoreConfiguration",
+	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	service = AbortedMultipartUploadCleanerMessageListener.class
 )
 public class AbortedMultipartUploadCleanerMessageListener

@@ -82,7 +82,7 @@ import org.quartz.spi.OperableTrigger;
  * @author Edward C. Han
  */
 @Component(
-	enabled = false, immediate = true,
+	enabled = false,
 	service = {QuartzSchedulerEngine.class, SchedulerEngine.class}
 )
 public class QuartzSchedulerEngine implements SchedulerEngine {

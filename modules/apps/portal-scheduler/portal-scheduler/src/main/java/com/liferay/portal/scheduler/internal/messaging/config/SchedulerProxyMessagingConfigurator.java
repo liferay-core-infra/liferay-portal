@@ -34,10 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Tina Tian
  */
-@Component(
-	enabled = false, immediate = true,
-	service = SchedulerProxyMessagingConfigurator.class
-)
+@Component(enabled = false, service = SchedulerProxyMessagingConfigurator.class)
 public class SchedulerProxyMessagingConfigurator {
 
 	@Activate

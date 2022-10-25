@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Tina Tian
  */
 @Component(
-	enabled = false, immediate = true,
+	enabled = false,
 	property = "destination.name=" + DestinationNames.SCHEDULER_ENGINE,
 	service = ProxyMessageListener.class
 )

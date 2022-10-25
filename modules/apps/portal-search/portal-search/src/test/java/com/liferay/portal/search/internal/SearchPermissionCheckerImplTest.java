@@ -15,6 +15,7 @@
 package com.liferay.portal.search.internal;
 
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistry;
 import com.liferay.portal.kernel.search.SearchContext;
@@ -24,10 +25,15 @@ import com.liferay.portal.kernel.security.permission.UserBag;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.search.configuration.SearchPermissionCheckerConfiguration;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
+import java.util.Collections;
+
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -59,6 +65,11 @@ public class SearchPermissionCheckerImplTest {
 		_searchPermissionChecker = _createSearchPermissionChecker();
 	}
 
+	@After
+	public void tearDown() throws Exception {
+		_searchPermissionCheckerImpl.deactivate();
+	}
+
 	@Test
 	public void testNullInput() {
 		Assert.assertNull(
@@ -83,7 +94,7 @@ public class SearchPermissionCheckerImplTest {
 	}
 
 	private SearchPermissionCheckerImpl _createSearchPermissionChecker() {
-		return new SearchPermissionCheckerImpl() {
+		_searchPermissionCheckerImpl = new SearchPermissionCheckerImpl() {
 			{
 				indexerRegistry = _indexerRegistry;
 				permissionChecker = _permissionChecker;
@@ -95,6 +106,16 @@ public class SearchPermissionCheckerImplTest {
 				userLocalService = _userLocalService;
 			}
 		};
+
+		ReflectionTestUtil.setFieldValue(
+			_searchPermissionCheckerImpl,
+			"_searchPermissionFieldContributorRegistry",
+			_searchPermissionFieldContributorRegistry);
+
+		_searchPermissionCheckerImpl.activate(
+			SystemBundleUtil.getBundleContext(), Collections.emptyMap());
+
+		return _searchPermissionCheckerImpl;
 	}
 
 	private boolean _whenIndexerIsPermissionAware(boolean permissionAware) {
@@ -145,6 +166,12 @@ public class SearchPermissionCheckerImplTest {
 	private final SearchPermissionCheckerConfiguration
 		_searchPermissionCheckerConfiguration = Mockito.mock(
 			SearchPermissionCheckerConfiguration.class);
+	private SearchPermissionCheckerImpl _searchPermissionCheckerImpl;
+
+	@Inject
+	private SearchPermissionFieldContributorRegistry
+		_searchPermissionFieldContributorRegistry;
+
 	private final User _user = Mockito.mock(User.class);
 	private final UserBag _userBag = Mockito.mock(UserBag.class);
 	private final UserLocalService _userLocalService = Mockito.mock(

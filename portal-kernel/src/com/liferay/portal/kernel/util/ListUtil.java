@@ -322,6 +322,24 @@ public class ListUtil {
 		return fromFile(new File(fileName));
 	}
 
+	public static <E> List<E> fromIterable(Iterable<? extends E> iterable) {
+		if (iterable == null) {
+			return new ArrayList<>();
+		}
+
+		if (iterable instanceof Collection) {
+			return fromCollection((Collection)iterable);
+		}
+
+		List<E> list = new ArrayList<>();
+
+		for (E e : iterable) {
+			list.add(e);
+		}
+
+		return list;
+	}
+
 	public static <E> List<E> fromMapKeys(Map<? extends E, ?> map) {
 		if (MapUtil.isEmpty(map)) {
 			return new ArrayList<>();

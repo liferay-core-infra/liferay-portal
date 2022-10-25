@@ -106,6 +106,11 @@ public class SystemProperties {
 	public static void load(ClassLoader classLoader) {
 		Properties properties = new Properties();
 
+		// Default liferay home directory
+
+		properties.put(
+			SystemPropsKeys.DEFAULT_LIFERAY_HOME, _getDefaultLiferayHome());
+
 		List<URL> urls = null;
 
 		if (!GetterUtil.getBoolean(
@@ -211,6 +216,40 @@ public class SystemProperties {
 		System.setProperty(key, value);
 
 		_properties.put(key, value);
+	}
+
+	private static String _getDefaultLiferayHome() {
+		String defaultLiferayHome = null;
+
+		if (ServerDetector.isJBoss()) {
+			defaultLiferayHome = get("jboss.home.dir") + "/..";
+		}
+		else if (ServerDetector.isWebLogic()) {
+			defaultLiferayHome = get("env.DOMAIN_HOME") + "/..";
+		}
+		else if (ServerDetector.isTomcat()) {
+			defaultLiferayHome = get("catalina.base") + "/..";
+		}
+		else {
+			defaultLiferayHome = get("user.dir") + "/liferay";
+		}
+
+		defaultLiferayHome = StringUtil.replace(
+			defaultLiferayHome, CharPool.BACK_SLASH, CharPool.SLASH);
+
+		defaultLiferayHome = StringUtil.replace(
+			defaultLiferayHome, StringPool.DOUBLE_SLASH, StringPool.SLASH);
+
+		if (defaultLiferayHome.endsWith("/..")) {
+			int pos = defaultLiferayHome.lastIndexOf(
+				CharPool.SLASH, defaultLiferayHome.length() - 4);
+
+			if (pos != -1) {
+				defaultLiferayHome = defaultLiferayHome.substring(0, pos);
+			}
+		}
+
+		return defaultLiferayHome;
 	}
 
 	private static void _load(URL url, Properties properties)

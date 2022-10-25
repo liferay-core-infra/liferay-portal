@@ -1826,34 +1826,31 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			return sb.toString();
 		}
 
-		<#if serviceBuilder.isVersionLTE_7_3_0()>
-			@Override
-			public String toXmlString() {
-				StringBundler sb = new StringBundler(${entity.regularEntityColumns?size * 3 + 4});
+		public String toXmlString() {
+			StringBundler sb = new StringBundler(${entity.regularEntityColumns?size * 3 + 4});
 
-				sb.append("<model><model-name>");
-				sb.append("${apiPackagePath}.model.${entity.name}");
-				sb.append("</model-name>");
+			sb.append("<model><model-name>");
+			sb.append("${apiPackagePath}.model.${entity.name}");
+			sb.append("</model-name>");
 
-				<#list entity.regularEntityColumns as entityColumn>
-					<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
-						sb.append("<column><column-name>${entityColumn.name}</column-name><column-value><![CDATA[");
+			<#list entity.regularEntityColumns as entityColumn>
+				<#if !stringUtil.equals(entityColumn.type, "Blob") || !entityColumn.lazy>
+					sb.append("<column><column-name>${entityColumn.name}</column-name><column-value><![CDATA[");
 
-						<#if stringUtil.equals(entityColumn.type, "boolean")>
-							sb.append(is${entityColumn.methodName}());
-						<#else>
-							sb.append(get${entityColumn.methodName}());
-						</#if>
-
-						sb.append("]]></column-value></column>");
+					<#if stringUtil.equals(entityColumn.type, "boolean")>
+						sb.append(is${entityColumn.methodName}());
+					<#else>
+						sb.append(get${entityColumn.methodName}());
 					</#if>
-				</#list>
 
-				sb.append("</model>");
+					sb.append("]]></column-value></column>");
+				</#if>
+			</#list>
 
-				return sb.toString();
-			}
-		</#if>
+			sb.append("</model>");
+
+			return sb.toString();
+		}
 	<#else>
 		@Override
 		public String toString() {
@@ -1899,33 +1896,30 @@ public class ${entity.name}ModelImpl extends BaseModelImpl<${entity.name}> imple
 			return sb.toString();
 		}
 
-		<#if serviceBuilder.isVersionLTE_7_3_0()>
-			@Override
-			public String toXmlString() {
-				Map<String, Function<${entity.name}, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
+		public String toXmlString() {
+			Map<String, Function<${entity.name}, Object>> attributeGetterFunctions = getAttributeGetterFunctions();
 
-				StringBundler sb = new StringBundler(5 * attributeGetterFunctions.size() + 4);
+			StringBundler sb = new StringBundler(5 * attributeGetterFunctions.size() + 4);
 
-				sb.append("<model><model-name>");
-				sb.append(getModelClassName());
-				sb.append("</model-name>");
+			sb.append("<model><model-name>");
+			sb.append(getModelClassName());
+			sb.append("</model-name>");
 
-				for (Map.Entry<String, Function<${entity.name}, Object>> entry : attributeGetterFunctions.entrySet()) {
-					String attributeName = entry.getKey();
-					Function<${entity.name}, Object> attributeGetterFunction = entry.getValue();
+			for (Map.Entry<String, Function<${entity.name}, Object>> entry : attributeGetterFunctions.entrySet()) {
+				String attributeName = entry.getKey();
+				Function<${entity.name}, Object> attributeGetterFunction = entry.getValue();
 
-					sb.append("<column><column-name>");
-					sb.append(attributeName);
-					sb.append("</column-name><column-value><![CDATA[");
-					sb.append(attributeGetterFunction.apply((${entity.name})this));
-					sb.append("]]></column-value></column>");
-				}
-
-				sb.append("</model>");
-
-				return sb.toString();
+				sb.append("<column><column-name>");
+				sb.append(attributeName);
+				sb.append("</column-name><column-value><![CDATA[");
+				sb.append(attributeGetterFunction.apply((${entity.name})this));
+				sb.append("]]></column-value></column>");
 			}
-		</#if>
+
+			sb.append("</model>");
+
+			return sb.toString();
+		}
 	</#if>
 
 	private static class EscapedModelProxyProviderFunctionHolder {

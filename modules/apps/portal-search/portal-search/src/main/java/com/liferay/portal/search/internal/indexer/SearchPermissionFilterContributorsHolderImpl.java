@@ -14,17 +14,17 @@
 
 package com.liferay.portal.search.internal.indexer;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.search.permission.SearchPermissionFilterContributor;
 
-import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author André de Oliveira
@@ -37,29 +37,23 @@ public class SearchPermissionFilterContributorsHolderImpl
 
 	@Override
 	public Stream<SearchPermissionFilterContributor> getAll() {
-		return _searchPermissionFilterContributors.stream();
+		return ListUtil.fromIterable(
+			_serviceTrackerList
+		).stream();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void addSearchPermissionFilterContributor(
-		SearchPermissionFilterContributor searchPermissionFilterContributor) {
-
-		_searchPermissionFilterContributors.add(
-			searchPermissionFilterContributor);
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerList = ServiceTrackerListFactory.open(
+			bundleContext, SearchPermissionFilterContributor.class);
 	}
 
-	protected void removeSearchPermissionFilterContributor(
-		SearchPermissionFilterContributor searchPermissionFilterContributor) {
-
-		_searchPermissionFilterContributors.remove(
-			searchPermissionFilterContributor);
+	@Deactivate
+	protected void deactivate() {
+		_serviceTrackerList.close();
 	}
 
-	private final Collection<SearchPermissionFilterContributor>
-		_searchPermissionFilterContributors = new CopyOnWriteArrayList<>();
+	private ServiceTrackerList<SearchPermissionFilterContributor>
+		_serviceTrackerList;
 
 }

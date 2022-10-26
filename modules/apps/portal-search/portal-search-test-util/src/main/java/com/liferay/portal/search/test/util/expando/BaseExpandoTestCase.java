@@ -68,14 +68,23 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 	public static void setUpClassBaseExpandoTestCase() {
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
+		_fieldQueryBuilderFactoryServiceRegistration =
+			bundleContext.registerService(
+				FieldQueryBuilderFactory.class,
+				createExpandoFieldQueryBuilderFactory(), null);
+
 		_serviceRegistration = bundleContext.registerService(
-			FieldQueryFactory.class,
-			createFieldQueryFactory(createExpandoFieldQueryBuilderFactory()),
+			FieldQueryFactory.class, createFieldQueryFactory(bundleContext),
 			null);
 	}
 
 	@AfterClass
 	public static void tearDownClassBaseExpandoTestCase() {
+		ReflectionTestUtil.invoke(
+			_fieldQueryFactoryImpl, "deactivate", new Class<?>[0], null);
+
+		_fieldQueryBuilderFactoryServiceRegistration.unregister();
+
 		_serviceRegistration.unregister();
 	}
 
@@ -126,16 +135,20 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 	}
 
 	protected static FieldQueryFactoryImpl createFieldQueryFactory(
-		FieldQueryBuilderFactory fieldQueryBuilderFactory) {
+		BundleContext bundleContext) {
 
-		return new FieldQueryFactoryImpl() {
+		_fieldQueryFactoryImpl = new FieldQueryFactoryImpl() {
 			{
 				descriptionFieldQueryBuilder =
 					createDescriptionFieldQueryBuilder();
-
-				addFieldQueryBuilderFactory(fieldQueryBuilderFactory);
 			}
 		};
+
+		ReflectionTestUtil.invoke(
+			_fieldQueryFactoryImpl, "activate",
+			new Class<?>[] {BundleContext.class}, bundleContext);
+
+		return _fieldQueryFactoryImpl;
 	}
 
 	protected DocumentCreationHelper addKeyword(String value) {
@@ -357,6 +370,9 @@ public abstract class BaseExpandoTestCase extends BaseIndexingTestCase {
 	private static final String _FIELD_TEXT =
 		"expando__custom_fields__testColumnName";
 
+	private static ServiceRegistration<FieldQueryBuilderFactory>
+		_fieldQueryBuilderFactoryServiceRegistration;
+	private static FieldQueryFactoryImpl _fieldQueryFactoryImpl;
 	private static ServiceRegistration<?> _serviceRegistration;
 
 	@Mock
